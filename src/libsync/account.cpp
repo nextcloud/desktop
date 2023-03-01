@@ -13,14 +13,15 @@
  */
 
 #include "account.h"
-#include "cookiejar.h"
-#include "networkjobs.h"
 #include "accessmanager.h"
+#include "capabilities.h"
+#include "common/asserts.h"
+#include "cookiejar.h"
 #include "creds/abstractcredentials.h"
 #include "creds/credentialmanager.h"
-#include "capabilities.h"
+#include "graphapi/spacesmanager.h"
+#include "networkjobs.h"
 #include "theme.h"
-#include "common/asserts.h"
 
 #include <QSettings>
 #include <QLoggingCategory>
@@ -292,6 +293,9 @@ void Account::setCapabilities(const Capabilities &caps)
     _capabilities = caps;
     if (versionChanged) {
         Q_EMIT serverVersionChanged();
+    }
+    if (!_spacesManager && _capabilities.spacesSupport().enabled) {
+        _spacesManager = new GraphApi::SpacesManager(this);
     }
 }
 

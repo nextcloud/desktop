@@ -1,1 +1,1 @@
-target_sources(libsync PRIVATE drives.cpp)
+target_sources(libsync PRIVATE drives.cpp spacesmanager.cpp)

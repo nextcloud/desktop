@@ -53,6 +53,10 @@ class QuotaInfo;
 class AccessManager;
 class SimpleNetworkJob;
 
+namespace GraphApi {
+    class SpacesManager;
+}
+
 
 /**
  * @brief The Account class represents an account on an ownCloud Server
@@ -191,6 +195,8 @@ public:
 
     CredentialManager *credentialManager() const;
 
+    GraphApi::SpacesManager *spacesManager() const { return _spacesManager; }
+
 public slots:
     /// Used when forgetting credentials
     void clearAMCache();
@@ -246,6 +252,8 @@ private:
     JobQueueGuard _queueGuard;
     CredentialManager *_credentialManager;
     AppProvider _appProvider;
+
+    GraphApi::SpacesManager *_spacesManager = nullptr;
     friend class AccountManager;
 };
 }
