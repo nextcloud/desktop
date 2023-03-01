@@ -11,7 +11,7 @@
 # Webkit style was loosely based on the Qt style
 BasedOnStyle: WebKit
 
-Standard: Cpp11
+Standard: c++17
 ColumnLimit: 0
 
 # Disable reflow of qdoc comments: indentation rules are different.
