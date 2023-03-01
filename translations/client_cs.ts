@@ -3512,167 +3512,167 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="319"/>
+        <location filename="../src/libsync/discovery.cpp" line="320"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Synchronizace nepodporuje symbolické odkazy.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="327"/>
+        <location filename="../src/libsync/discovery.cpp" line="328"/>
         <source>File is listed on the ignore list.</source>
         <translation>Soubor je uveden na seznamu k ignorování.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="331"/>
+        <location filename="../src/libsync/discovery.cpp" line="332"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Na tomto souborovém systému nejsou podporovány názvy souborů končící na tečku.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="341"/>
+        <location filename="../src/libsync/discovery.cpp" line="342"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>Názvy souborů obsahující znak „%1“ nejsou na tomto souborovém systému podporovány.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="343"/>
+        <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File name contains at least one invalid character</source>
         <translation>Název souboru obsahuje přinejmenším jeden neplatný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="345"/>
+        <location filename="../src/libsync/discovery.cpp" line="346"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Název souboru je na tomto souborovém systému rezervovaným názvem (nelze ho použít).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="351"/>
+        <location filename="../src/libsync/discovery.cpp" line="352"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Název souboru končí na mezery.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="355"/>
+        <location filename="../src/libsync/discovery.cpp" line="356"/>
         <source>Filename contains leading spaces.</source>
         <translation>Název souboru začíná na mezery.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="359"/>
+        <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Název souboru začíná a končí mezerami.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="363"/>
+        <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>Filename is too long.</source>
         <translation>Název souboru je příliš dlouhý.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="367"/>
+        <location filename="../src/libsync/discovery.cpp" line="368"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Soubor/složka je ignorovaná, protože je skrytá.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="370"/>
+        <location filename="../src/libsync/discovery.cpp" line="371"/>
         <source>Stat failed.</source>
         <translation>Zjištění existence (stat) se nezdařilo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="373"/>
+        <location filename="../src/libsync/discovery.cpp" line="374"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikt: Stažena verze ze serveru, místní kopie přejmenována a nenahrána.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="377"/>
+        <location filename="../src/libsync/discovery.cpp" line="378"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Kolize stejných názvů lišících se jen velikostí písmen: soubor ze serveru stažen a přejmenován, aby se zabránilo kolizi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="381"/>
+        <location filename="../src/libsync/discovery.cpp" line="382"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Enkódování tohoto názvu souboru je mimo technické možnosti daného souborového systému.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="384"/>
+        <location filename="../src/libsync/discovery.cpp" line="385"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Takový název souboru je na serveru zařazen na seznam nepřípustných.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="474"/>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Soubor má příponu vyhrazenou pro virtuální soubory.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="560"/>
+        <location filename="../src/libsync/discovery.cpp" line="561"/>
         <source>size</source>
         <translation>velikost</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="562"/>
+        <location filename="../src/libsync/discovery.cpp" line="563"/>
         <source>permission</source>
         <translation>oprávnění</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="566"/>
+        <location filename="../src/libsync/discovery.cpp" line="567"/>
         <source>file id</source>
         <translation>identif. souboru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="570"/>
+        <location filename="../src/libsync/discovery.cpp" line="571"/>
         <source>Server reported no %1</source>
         <translation>Server nahlášen číslo %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="940"/>
+        <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Není možné provést synchronizaci z důvodu neplatného času změny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="966"/>
+        <location filename="../src/libsync/discovery.cpp" line="967"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Chyba při mazání záznamu o souboru %1 z databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1216"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Konflikt při nahrávání složky. Bude vymazána!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1220"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Konflikt při nahrávání souboru. Bude odebrán!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1588"/>
+        <location filename="../src/libsync/discovery.cpp" line="1589"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorováno podle nastavení „vybrat co synchronizovat“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1621"/>
+        <location filename="../src/libsync/discovery.cpp" line="1623"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Neumožněno, protože nemáte oprávnění přidávat podsložky do této složky</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1626"/>
+        <location filename="../src/libsync/discovery.cpp" line="1628"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Neumožněno, protože nemáte oprávnění přidávat soubory do této složky</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1639"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není možné tento soubor nahrát, protože je na serveru povoleno pouze čtení – obnovuje se</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1661"/>
+        <location filename="../src/libsync/discovery.cpp" line="1663"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Přesunuto do neplatného cíle – obnovuje se</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1675"/>
+        <location filename="../src/libsync/discovery.cpp" line="1677"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není umožněno – obnovuje se</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1813"/>
+        <location filename="../src/libsync/discovery.cpp" line="1816"/>
         <source>Error while reading the database</source>
         <translation>Chyba při čtení databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1874"/>
+        <location filename="../src/libsync/discovery.cpp" line="1877"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Server vrátil chybu při čtení adresáře „%1“: %2</translation>
     </message>
@@ -4199,7 +4199,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Síť</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="239"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="237"/>
         <source>Account</source>
         <translation>Účet</translation>
     </message>

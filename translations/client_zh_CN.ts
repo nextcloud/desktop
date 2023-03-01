@@ -3500,167 +3500,167 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="319"/>
+        <location filename="../src/libsync/discovery.cpp" line="320"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>符号链接在同步中不受支持。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="327"/>
+        <location filename="../src/libsync/discovery.cpp" line="328"/>
         <source>File is listed on the ignore list.</source>
         <translation>文件位于忽略列表中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="331"/>
+        <location filename="../src/libsync/discovery.cpp" line="332"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>此文件系统不支持以句点结尾的文件名。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="341"/>
+        <location filename="../src/libsync/discovery.cpp" line="342"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>此文件系统不支持包含字符“%1”的文件名</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="343"/>
+        <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File name contains at least one invalid character</source>
         <translation>文件名包含至少一个无效字符</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="345"/>
+        <location filename="../src/libsync/discovery.cpp" line="346"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>此文件名是这个文件系统上的保留名。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="351"/>
+        <location filename="../src/libsync/discovery.cpp" line="352"/>
         <source>Filename contains trailing spaces.</source>
         <translation>文件名包含结尾空白</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="355"/>
+        <location filename="../src/libsync/discovery.cpp" line="356"/>
         <source>Filename contains leading spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="359"/>
+        <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="363"/>
+        <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>Filename is too long.</source>
         <translation>文件名太长</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="367"/>
+        <location filename="../src/libsync/discovery.cpp" line="368"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>文件/文件夹被忽略，因为它是隐藏的。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="370"/>
+        <location filename="../src/libsync/discovery.cpp" line="371"/>
         <source>Stat failed.</source>
         <translation>由于排除或错误，项目被跳过。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="373"/>
+        <location filename="../src/libsync/discovery.cpp" line="374"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>冲突：服务器版本已下载，本地副本已重命名，但未上传。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="377"/>
+        <location filename="../src/libsync/discovery.cpp" line="378"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="381"/>
+        <location filename="../src/libsync/discovery.cpp" line="382"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>文件名无法在您的文件系统上被编码</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="384"/>
+        <location filename="../src/libsync/discovery.cpp" line="385"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>该文件名在服务器上被列入黑名单</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="474"/>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>文件有为虚拟文件保留的扩展名</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="560"/>
+        <location filename="../src/libsync/discovery.cpp" line="561"/>
         <source>size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="562"/>
+        <location filename="../src/libsync/discovery.cpp" line="563"/>
         <source>permission</source>
         <translation>权限</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="566"/>
+        <location filename="../src/libsync/discovery.cpp" line="567"/>
         <source>file id</source>
         <translation>文件标识</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="570"/>
+        <location filename="../src/libsync/discovery.cpp" line="571"/>
         <source>Server reported no %1</source>
         <translation>服务器报告无 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="940"/>
+        <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="966"/>
+        <location filename="../src/libsync/discovery.cpp" line="967"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1216"/>
+        <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>上传文件夹时发生冲突。它会被清除!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1220"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>上传时发生冲突。它将被移除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1588"/>
+        <location filename="../src/libsync/discovery.cpp" line="1589"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>因“选择要同步的内容”黑名单而被忽略</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1621"/>
+        <location filename="../src/libsync/discovery.cpp" line="1623"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>不被允许，因为您没有向该文件夹添加子文件夹的权限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1626"/>
+        <location filename="../src/libsync/discovery.cpp" line="1628"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>不被允许，因为您没有在该文件夹中添加文件的权限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1639"/>
+        <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允许上传这个文件，因为它在这台服务器上是只读的，恢复中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1661"/>
+        <location filename="../src/libsync/discovery.cpp" line="1663"/>
         <source>Moved to invalid target, restoring</source>
         <translation>移动到无效目标，恢复中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1675"/>
+        <location filename="../src/libsync/discovery.cpp" line="1677"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允许移除，恢复中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1813"/>
+        <location filename="../src/libsync/discovery.cpp" line="1816"/>
         <source>Error while reading the database</source>
         <translation>读取数据库时出错</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1874"/>
+        <location filename="../src/libsync/discovery.cpp" line="1877"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>服务器在读取目录 &quot;%1&quot; 时返回了一个错误: %2 </translation>
     </message>
@@ -4187,7 +4187,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>网络</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="239"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="237"/>
         <source>Account</source>
         <translation>账号</translation>
     </message>
