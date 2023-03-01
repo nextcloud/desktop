@@ -49,6 +49,7 @@ public:
         model->setAccountState(accountState.data());
 
         QSharedPointer<OCC::SortedActivityListModel> sortedModel(new OCC::SortedActivityListModel);
+        sortedModel->setActivityListModel(model);
         QAbstractItemModelTester sortedModelTester(sortedModel.data());
 
         return sortedModel;
@@ -83,6 +84,26 @@ private slots:
         testSyncFileItemActivity = exampleSyncFileItemActivity(accName, accUrl);
         testFileIgnoredActivity = exampleFileIgnoredActivity(accName, accUrl);
     };
+
+    void testMatchingRowCounts()
+    {
+        const auto model = testingSortedALM();
+        const auto sourceModel = dynamic_cast<TestingALM*>(model->sourceModel());
+        QCOMPARE(sourceModel->rowCount(), 0);
+        QCOMPARE(model->rowCount(), sourceModel->rowCount());
+
+        sourceModel->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        sourceModel->startFetchJob();
+        QSignalSpy activitiesJob(sourceModel, &TestingALM::activitiesProcessed);
+        QVERIFY(activitiesJob.wait(3000));
+        QCOMPARE(sourceModel->rowCount(), 50);
+        QCOMPARE(model->rowCount(), sourceModel->rowCount());
+    }
+
+    void testSortOrder()
+    {
+
+    }
 };
 
 QTEST_MAIN(TestSortedActivityListModel)
