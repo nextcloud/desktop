@@ -128,6 +128,62 @@ private slots:
         addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
         addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     }
+
+    void testSort()
+    {
+        const auto model = testingSortedALM();
+        const auto sourceModel = dynamic_cast<TestingALM*>(model->sourceModel());
+
+        sourceModel->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        sourceModel->startMaxActivitiesFetchJob();
+        QSignalSpy activitiesJob(sourceModel, &TestingALM::activitiesProcessed);
+        QVERIFY(activitiesJob.wait(3000));
+        QCOMPARE(sourceModel->rowCount(), sourceModel->maxPossibleActivities());
+
+        auto errorSyncFileItemActivity = exampleSyncFileItemActivity(accountState->account()->displayName(), {});
+        errorSyncFileItemActivity._message = QStringLiteral("Something went wrong and eveything exploded!");
+        errorSyncFileItemActivity._syncFileItemStatus = OCC::SyncFileItem::FatalError;
+
+        addActivity(model, &TestingALM::addSyncFileItemToActivityList, errorSyncFileItemActivity);
+        addActivity(model, &TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
+        addActivity(model, &TestingALM::addNotificationToActivityList, testNotificationActivity);
+        addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
+        addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
+
+        const QVector<OCC::Activity::Type> activityDefaultTypeOrder {
+            OCC::Activity::DummyFetchingActivityType,
+            OCC::Activity::NotificationType,
+            OCC::Activity::SyncResultType,
+            OCC::Activity::SyncFileItemType,
+            OCC::Activity::ActivityType,
+            OCC::Activity::DummyMoreActivitiesAvailableType};
+        auto currentTypeSection = 1;
+        auto previousType = activityDefaultTypeOrder[currentTypeSection];
+
+        for (auto i = 0; i < model->rowCount(); ++i) {
+            const auto index = model->index(i, 0);
+            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
+
+            qDebug() << i << activity._type << activity._subject << activity._message;
+            if (i == 0) { // Error syncresult activity should be at top
+                QCOMPARE(activity._type, OCC::Activity::SyncResultType);
+                QCOMPARE(activity._syncResultStatus, OCC::SyncResult::Error);
+            } else if (i == 1) { // Error syncfileitem activity should be next up
+                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
+                QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FatalError);
+            } else if (i == 2) { // Ignored file syncfileitem activity should be next up
+                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
+                QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FileIgnored);
+            } else { // Now normal type order
+                while (i != 3 && activity._type != previousType) {
+                    ++currentTypeSection;
+                    previousType = activityDefaultTypeOrder[currentTypeSection];
+                }
+
+                QCOMPARE(activity._type, activityDefaultTypeOrder[currentTypeSection]);
+            }
+        }
+    }
 };
 
 QTEST_MAIN(TestSortedActivityListModel)
