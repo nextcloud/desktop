@@ -56,3 +56,7 @@ ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCH
 # Allow two empty lines for structuring
 MaxEmptyLinesToKeep: 2
 KeepEmptyLinesAtTheStartOfBlocks: false
+
+# Properly format c++11 initializer
+SpaceBeforeCpp11BracedList: false
+Cpp11BracedListStyle: true
