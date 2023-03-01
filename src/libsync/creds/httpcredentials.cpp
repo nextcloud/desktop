@@ -314,7 +314,7 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
             qCWarning(lcHttpCredentials) << "Too many failed refreshes" << nextTry << "-> log out";
             forgetSensitiveData();
             Q_EMIT authenticationFailed();
-            Q_EMIT _account->invalidCredentials();
+            Q_EMIT fetched();
             return;
         }
         QTimer::singleShot(timeout, this, [nextTry, this] {
@@ -328,8 +328,8 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
         if (refreshToken.isEmpty()) {
             // an error occured, log out
             forgetSensitiveData();
-            Q_EMIT _account->invalidCredentials();
             Q_EMIT authenticationFailed();
+            Q_EMIT fetched();
             return;
         }
         _refreshToken = refreshToken;

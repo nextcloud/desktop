@@ -189,7 +189,7 @@ void AbstractNetworkJob::slotFinished()
     _finished = true;
 
     if (!_account->credentials()->stillValid(_reply) && !ignoreCredentialFailure()) {
-        Q_EMIT _account->invalidCredentials();
+        _account->invalidCredentialsEncountered();
     }
 
     if (_reply->error() != QNetworkReply::NoError) {

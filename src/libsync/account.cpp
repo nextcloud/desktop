@@ -352,6 +352,11 @@ const AppProvider &Account::appProvider() const
     return _appProvider;
 }
 
+void Account::invalidCredentialsEncountered()
+{
+    Q_EMIT invalidCredentials(Account::QPrivateSignal());
+}
+
 } // namespace OCC
 
 

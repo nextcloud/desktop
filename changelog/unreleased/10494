@@ -1,0 +1,4 @@
+Bugfix: Properly handle OAuth invalidation
+
+https://github.com/owncloud/client/issues/10494
+https://github.com/owncloud/client/issues/10495

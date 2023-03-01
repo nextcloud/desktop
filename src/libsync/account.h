@@ -196,13 +196,19 @@ public:
 
     GraphApi::SpacesManager *spacesManager() const { return _spacesManager; }
 
+    /**
+     * We encountered an authentication error.
+     */
+    void invalidCredentialsEncountered();
+
 public slots:
     /// Used when forgetting credentials
     void clearAMCache();
 
 signals:
-    /// Triggered by handleInvalidCredentials()
-    void invalidCredentials();
+    /// Triggered by invalidCredentialsEncountered()
+    // this signal is emited when a network job failed due to invalid credentials
+    void invalidCredentials(QPrivateSignal);
 
     void credentialsFetched(AbstractCredentials *credentials);
     void credentialsAsked(AbstractCredentials *credentials);
