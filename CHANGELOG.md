@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
+* Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
@@ -23,6 +24,10 @@ Details
    Due to legacy reasons the branding flag and its fuction differ.
 
    https://github.com/owncloud/enterprise/issues/5612
+
+* Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
+
+   https://github.com/owncloud/client/issues/9270
 
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 
