@@ -38,6 +38,11 @@ namespace ActivityListModelTestUtils
                                                  const int searchResultsReplyDelay = 0,
                                                  QIODevice * const device = nullptr);
 
+[[nodiscard]] OCC::Activity exampleNotificationActivity(const QString &accountName, const int id = 1);
+[[nodiscard]] OCC::Activity exampleSyncResultErrorActivity(const QString &accountName, const int id = 2);
+[[nodiscard]] OCC::Activity exampleSyncFileItemActivity(const QString &accountName, const QUrl &link, const int id = 3);
+[[nodiscard]] OCC::Activity exampleFileIgnoredActivity(const QString &accountName, const QUrl &link = {}, const int id = 4);
+
 class FakeRemoteActivityStorage
 {
     FakeRemoteActivityStorage() = default;

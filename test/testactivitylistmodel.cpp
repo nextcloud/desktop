@@ -108,41 +108,13 @@ private slots:
 
         OCC::AccountManager::instance()->addAccount(account);
 
-        // Activity comparison is done by checking type, id, and accName
-        // We need an activity with these details, at least
-        testNotificationActivity._accName = accountState->account()->displayName();
-        testNotificationActivity._id = 1;
-        testNotificationActivity._type = OCC::Activity::NotificationType;
-        testNotificationActivity._dateTime = QDateTime::currentDateTime();
-        testNotificationActivity._subject = QStringLiteral("Sample notification text");
+        const auto accName = accountState->account()->displayName();
+        const auto accUrl = accountState->account()->url();
 
-        testSyncResultErrorActivity._id = 2;
-        testSyncResultErrorActivity._type = OCC::Activity::SyncResultType;
-        testSyncResultErrorActivity._syncResultStatus = OCC::SyncResult::Error;
-        testSyncResultErrorActivity._dateTime = QDateTime::currentDateTime();
-        testSyncResultErrorActivity._subject = QStringLiteral("Sample failed sync text");
-        testSyncResultErrorActivity._message = QStringLiteral("/path/to/thingy");
-        testSyncResultErrorActivity._link = QStringLiteral("/path/to/thingy");
-        testSyncResultErrorActivity._accName = accountState->account()->displayName();
-
-        testSyncFileItemActivity._id = 3;
-        testSyncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
-        testSyncFileItemActivity._syncFileItemStatus = OCC::SyncFileItem::Success;
-        testSyncFileItemActivity._dateTime = QDateTime::currentDateTime();
-        testSyncFileItemActivity._message = QStringLiteral("Sample file successfully synced text");
-        testSyncFileItemActivity._link = accountState->account()->url();
-        testSyncFileItemActivity._accName = accountState->account()->displayName();
-        testSyncFileItemActivity._file = QStringLiteral("xyz.pdf");
-
-        testFileIgnoredActivity._id = 4;
-        testFileIgnoredActivity._type = OCC::Activity::SyncFileItemType;
-        testFileIgnoredActivity._syncFileItemStatus = OCC::SyncFileItem::FileIgnored;
-        testFileIgnoredActivity._dateTime = QDateTime::currentDateTime();
-        testFileIgnoredActivity._subject = QStringLiteral("Sample ignored file sync text");
-        testFileIgnoredActivity._link = accountState->account()->url();
-        testFileIgnoredActivity._accName = accountState->account()->displayName();
-        testFileIgnoredActivity._folder = QStringLiteral("thingy");
-        testFileIgnoredActivity._file = QStringLiteral("test.txt");
+        testNotificationActivity = exampleNotificationActivity(accName);
+        testSyncResultErrorActivity = exampleSyncResultErrorActivity(accName);
+        testSyncFileItemActivity = exampleSyncFileItemActivity(accName, accUrl);
+        testFileIgnoredActivity = exampleFileIgnoredActivity(accName, accUrl);
     };
 
     // Test receiving activity from server

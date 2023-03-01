@@ -72,6 +72,71 @@ QNetworkReply *almTestQnamOverride(FakeQNAM * const fakeQnam,
     return reply;
 }
 
+// Activity comparison is done by checking type, id, and accName
+// We need an activity with these details, at least
+
+OCC::Activity exampleNotificationActivity(const QString &accountName, const int id)
+{
+    OCC::Activity testNotificationActivity;
+
+    testNotificationActivity._accName = accountName;
+    testNotificationActivity._id = id;
+    testNotificationActivity._type = OCC::Activity::NotificationType;
+    testNotificationActivity._dateTime = QDateTime::currentDateTime();
+    testNotificationActivity._subject = QStringLiteral("Sample notification text");
+
+    return testNotificationActivity;
+}
+
+OCC::Activity exampleSyncResultErrorActivity(const QString &accountName, const int id)
+{
+    OCC::Activity testSyncResultErrorActivity;
+
+    testSyncResultErrorActivity._id = id;
+    testSyncResultErrorActivity._type = OCC::Activity::SyncResultType;
+    testSyncResultErrorActivity._syncResultStatus = OCC::SyncResult::Error;
+    testSyncResultErrorActivity._dateTime = QDateTime::currentDateTime();
+    testSyncResultErrorActivity._subject = QStringLiteral("Sample failed sync text");
+    testSyncResultErrorActivity._message = QStringLiteral("/path/to/thingy");
+    testSyncResultErrorActivity._link = QStringLiteral("/path/to/thingy");
+    testSyncResultErrorActivity._accName = accountName;
+
+    return testSyncResultErrorActivity;
+}
+
+OCC::Activity exampleSyncFileItemActivity(const QString &accountName, const QUrl &link, const int id)
+{
+    OCC::Activity testSyncFileItemActivity;
+
+    testSyncFileItemActivity._id = id;
+    testSyncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
+    testSyncFileItemActivity._syncFileItemStatus = OCC::SyncFileItem::Success;
+    testSyncFileItemActivity._dateTime = QDateTime::currentDateTime();
+    testSyncFileItemActivity._message = QStringLiteral("Sample file successfully synced text");
+    testSyncFileItemActivity._link = link;
+    testSyncFileItemActivity._accName = accountName;
+    testSyncFileItemActivity._file = QStringLiteral("xyz.pdf");
+
+    return testSyncFileItemActivity;
+}
+
+OCC::Activity exampleFileIgnoredActivity(const QString &accountName, const QUrl &link, const int id)
+{
+    OCC::Activity testFileIgnoredActivity;
+
+    testFileIgnoredActivity._id = id;
+    testFileIgnoredActivity._type = OCC::Activity::SyncFileItemType;
+    testFileIgnoredActivity._syncFileItemStatus = OCC::SyncFileItem::FileIgnored;
+    testFileIgnoredActivity._dateTime = QDateTime::currentDateTime();
+    testFileIgnoredActivity._subject = QStringLiteral("Sample ignored file sync text");
+    testFileIgnoredActivity._link = link;
+    testFileIgnoredActivity._accName = accountName;
+    testFileIgnoredActivity._folder = QStringLiteral("thingy");
+    testFileIgnoredActivity._file = QStringLiteral("test.txt");
+
+    return testFileIgnoredActivity;
+}
+
 FakeRemoteActivityStorage *FakeRemoteActivityStorage::_instance = nullptr;
 
 FakeRemoteActivityStorage* FakeRemoteActivityStorage::instance()
