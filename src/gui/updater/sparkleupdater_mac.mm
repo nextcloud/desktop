@@ -59,7 +59,13 @@
 - (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
     Q_UNUSED(updater)
-    qCDebug(OCC::lcUpdater) << error.description;
+
+    // Warning for end-user:
+    qCWarning(OCC::lcUpdater) << error.localizedDescription;
+
+    // Full error, log it for when we need to debug problems (this will hold the full error object,
+    // including possible nested `NSError`s):
+    qCInfo(OCC::lcUpdater) << "Full error:" << error.description;
 }
 
 - (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
@@ -68,7 +74,6 @@
     Q_UNUSED(appcast)
     qCDebug(OCC::lcUpdater) << "";
 }
-
 
 @end
 
