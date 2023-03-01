@@ -50,16 +50,16 @@ class FakeRemoteActivityStorage
 public:
     static FakeRemoteActivityStorage *instance();
 
-    static void destroy();
-
-    void init();
-    void initActivityData();
-
     [[nodiscard]] QByteArray activityJsonData(const int sinceId, const int limit);
-
     [[nodiscard]] QJsonValue activityById(const int id) const;
 
     [[nodiscard]] int startingIdLast() const;
+    [[nodiscard]] int numItemsToInsert() const;
+    [[nodiscard]] int totalNumActivites() const;
+
+    static void destroy();
+    void init();
+    void initActivityData();
 
 private:
     QJsonArray _activityData;

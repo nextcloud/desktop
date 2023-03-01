@@ -444,6 +444,14 @@ int FakeRemoteActivityStorage::startingIdLast() const
     return _startingId;
 }
 
+int FakeRemoteActivityStorage::numItemsToInsert() const {
+    return _numItemsToInsert;
+}
+
+int FakeRemoteActivityStorage::totalNumActivites() const {
+    return _activityData.count();
+}
+
 
 void TestingALM::startFetchJobWithNumActivities(const int numActivities)
 {
