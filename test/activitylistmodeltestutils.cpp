@@ -459,6 +459,11 @@ void TestingALM::startFetchJob()
     job->start();
 }
 
+void TestingALM::insertOrRemoveDummyFetchingActivity()
+{
+    OCC::ActivityListModel::insertOrRemoveDummyFetchingActivity();
+}
+
 void TestingALM::slotProcessReceivedActivities()
 {
     if (rowCount() > _numRowsPrev) {

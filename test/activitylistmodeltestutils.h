@@ -78,6 +78,7 @@ public:
     TestingALM() = default;
 
     void startFetchJob() override;
+    void insertOrRemoveDummyFetchingActivity();
 
 public slots:
     void slotProcessReceivedActivities();
