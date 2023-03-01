@@ -44,7 +44,8 @@ public:
     OCC::Activity testSyncFileItemActivity;
     OCC::Activity testFileIgnoredActivity;
 
-    QSharedPointer<OCC::SortedActivityListModel> testingSortedALM() {
+    QSharedPointer<OCC::SortedActivityListModel> testingSortedALM()
+    {
         const auto model = new TestingALM;
         model->setAccountState(accountState.data());
 
@@ -53,6 +54,17 @@ public:
         QAbstractItemModelTester sortedModelTester(sortedModel.data());
 
         return sortedModel;
+    }
+
+    void addActivity(QSharedPointer<OCC::SortedActivityListModel> model,
+                     void(OCC::ActivityListModel::*addingMethod)(const OCC::Activity&),
+                     OCC::Activity &activity)
+    {
+        const auto originalRowCount = model->rowCount();
+        const auto sourceModel = dynamic_cast<TestingALM*>(model->sourceModel());
+
+        (sourceModel->*addingMethod)(activity);
+        QCOMPARE(model->rowCount(), originalRowCount + 1);
     }
 
 private slots:
@@ -100,9 +112,21 @@ private slots:
         QCOMPARE(model->rowCount(), sourceModel->rowCount());
     }
 
-    void testSortOrder()
+    void testUpdate()
     {
+        const auto model = testingSortedALM();
+        const auto sourceModel = dynamic_cast<TestingALM*>(model->sourceModel());
 
+        sourceModel->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        sourceModel->startFetchJob();
+        QSignalSpy activitiesJob(sourceModel, &TestingALM::activitiesProcessed);
+        QVERIFY(activitiesJob.wait(3000));
+        QCOMPARE(sourceModel->rowCount(), 50);
+
+        addActivity(model, &TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
+        addActivity(model, &TestingALM::addNotificationToActivityList, testNotificationActivity);
+        addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
+        addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     }
 };
 
