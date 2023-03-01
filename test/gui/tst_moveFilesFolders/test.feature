@@ -42,3 +42,15 @@ Feature: move file and folder
         And as "Alice" file "testFile.txt" should not exist on the server
         And as "Alice" folder "test-folder1" should not exist on the server
         And as "Alice" folder "test-folder2" should not exist on the server
+
+
+    Scenario: Rename a file and a folder
+        Given user "Alice" has uploaded file with content "test file 1" to "textfile.txt" on the server
+        And user "Alice" has set up a client with default settings
+        When the user renames a file "textfile.txt" to "lorem.txt"
+        And the user renames a folder "folder1" to "FOLDER"
+        And the user waits for the files to sync
+        Then as "Alice" file "lorem.txt" should exist on the server
+        And as "Alice" folder "FOLDER" should exist on the server
+        But as "Alice" file "textfile.txt" should not exist on the server
+        And as "Alice" folder "folder1" should not exist on the server
