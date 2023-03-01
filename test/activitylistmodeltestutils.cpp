@@ -172,6 +172,8 @@ void FakeRemoteActivityStorage::init()
 
 void FakeRemoteActivityStorage::initActivityData()
 {
+    _activityData = {};
+
     // Insert activity data
     for (quint32 i = 0; i <= _numItemsToInsert; i++) {
         QJsonObject activity;
@@ -443,7 +445,7 @@ int FakeRemoteActivityStorage::startingIdLast() const
 }
 
 
-void TestingALM::startFetchJob()
+void TestingALM::startFetchJobWithNumActivities(const int numActivities)
 {
     auto *job = new OCC::JsonApiJob(
         accountState()->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
@@ -452,11 +454,21 @@ void TestingALM::startFetchJob()
 
     QUrlQuery params;
     params.addQueryItem(QLatin1String("since"), QString::number(currentItem()));
-    params.addQueryItem(QLatin1String("limit"), QString::number(50));
+    params.addQueryItem(QLatin1String("limit"), QString::number(numActivities));
     job->addQueryParams(params);
 
     setAndRefreshCurrentlyFetching(true);
     job->start();
+}
+
+void TestingALM::startFetchJob()
+{
+    startFetchJobWithNumActivities();
+}
+
+void TestingALM::startMaxActivitiesFetchJob()
+{
+    startFetchJobWithNumActivities(_maxActivities + 1);
 }
 
 void TestingALM::slotProcessReceivedActivities()

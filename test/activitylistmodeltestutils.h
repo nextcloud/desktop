@@ -77,13 +77,16 @@ class TestingALM : public OCC::ActivityListModel
 public:
     TestingALM() = default;
 
-    void startFetchJob() override;
-
 public slots:
+    void startFetchJob() override;
+    void startMaxActivitiesFetchJob();
     void slotProcessReceivedActivities();
 
 signals:
     void activitiesProcessed();
+
+private slots:
+    void startFetchJobWithNumActivities(const int numActivities = 50);
 
 private:
     int _numRowsPrev = 0;
