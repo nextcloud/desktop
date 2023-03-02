@@ -163,7 +163,7 @@ public:
         friend class ProgressInfo;
     };
 
-    Status _status;
+    Status _status = Starting;
 
     struct OWNCLOUDSYNC_EXPORT ProgressItem
     {

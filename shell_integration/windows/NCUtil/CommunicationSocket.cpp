@@ -118,11 +118,11 @@ bool CommunicationSocket::ReadLine(wstring* response)
             return true;
         }
 
-        std::array<char, 128> resp_utf8;
+        std::array<char, 128> resp_utf8 = {};
         DWORD numBytesRead = 0;
         DWORD totalBytesAvailable = 0;
 
-        if (!PeekNamedPipe(_pipe, nullptr, 0, 0, &totalBytesAvailable, 0)) {
+        if (!PeekNamedPipe(_pipe, nullptr, 0, nullptr, &totalBytesAvailable, nullptr)) {
             Close();
             return false;
         }
