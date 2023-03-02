@@ -259,6 +259,8 @@ public:
      */
     [[nodiscard]] bool serverVersionUnsupported() const;
 
+    [[nodiscard]] bool secureFileDropSupported() const;
+
     [[nodiscard]] bool isUsernamePrefillSupported() const;
 
     [[nodiscard]] bool isChecksumRecalculateRequestSupported() const;

@@ -51,6 +51,16 @@ class SocketApi : public QObject
 {
     Q_OBJECT
 
+    enum SharingContextItemEncryptedFlag {
+        EncryptedItem,
+        NotEncryptedItem
+    };
+
+    enum SharingContextItemRootEncryptedFolderFlag {
+        RootEncryptedFolder,
+        NonRootEncryptedFolder
+    };
+
 public:
     explicit SocketApi(QObject *parent = nullptr);
     ~SocketApi() override;
@@ -119,6 +129,7 @@ private:
     Q_INVOKABLE void command_SHARE(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_LEAVESHARE(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, OCC::SocketListener *listener);
+    Q_INVOKABLE void command_COPY_SECUREFILEDROP_LINK(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_COPY_PUBLIC_LINK(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, OCC::SocketListener *listener);
@@ -151,7 +162,7 @@ private:
     Q_INVOKABLE void command_GET_STRINGS(const QString &argument, OCC::SocketListener *listener);
 
     // Sends the context menu options relating to sharing to listener
-    void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, bool enabled);
+    void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, SharingContextItemEncryptedFlag itemEncryptionFlag, SharingContextItemRootEncryptedFolderFlag rootE2eeFolderFlag);
 
     void sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
                                              const FileData &fileData,

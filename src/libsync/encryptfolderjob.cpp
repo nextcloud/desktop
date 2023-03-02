@@ -83,8 +83,8 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
 {
     _folderToken = token;
 
-    FolderMetadata emptyMetadata(_account);
-    auto encryptedMetadata = emptyMetadata.encryptedMetadata();
+    const FolderMetadata emptyMetadata(_account);
+    const auto encryptedMetadata = emptyMetadata.encryptedMetadata();
     if (encryptedMetadata.isEmpty()) {
         //TODO: Mark the folder as unencrypted as the metadata generation failed.
         _errorString = tr("Could not generate the metadata for encryption, Unlocking the folder.\n"

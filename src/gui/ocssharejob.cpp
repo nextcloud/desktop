@@ -155,6 +155,26 @@ void OcsShareJob::createLinkShare(const QString &path,
     start();
 }
 
+void OcsShareJob::createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password)
+{
+    setVerb("POST");
+
+    addParam(QString::fromLatin1("path"), path);
+    addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
+    addParam(QString::fromLatin1("permissions"), QString::number(4));
+
+    if (!name.isEmpty()) {
+        addParam(QString::fromLatin1("name"), name);
+    }
+    if (!password.isEmpty()) {
+        addParam(QString::fromLatin1("password"), password);
+    }
+
+    addPassStatusCode(403);
+
+    start();
+}
+
 void OcsShareJob::createShare(const QString &path,
     const Share::ShareType shareType,
     const QString &shareWith,

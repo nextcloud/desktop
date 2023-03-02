@@ -1014,6 +1014,11 @@ QJsonObject FakeQNAM::forEachReplyPart(QIODevice *outgoingData,
 
 QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
+    if (op == QNetworkAccessManager::CustomOperation) {
+        qInfo() << "Operation" << request.attribute(QNetworkRequest::CustomVerbAttribute).toString() << request.url();
+    } else {
+        qInfo() << "Operation" << op << request.url();
+    }
     QNetworkReply *reply = nullptr;
     auto newRequest = request;
     newRequest.setRawHeader("X-Request-ID", OCC::AccessManager::generateRequestId());

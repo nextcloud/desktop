@@ -1,0 +1,10 @@
+{
+	"ocs": {
+		"data": { "e2e-token": "U1SHqQwKzjEIlJUkFIcpYPJeZsM80T6OkegKFu2pSc6BFqORcGfB0Y8PZzRjc6Lm" },
+		"meta": {
+			"message": "OK",
+			"status": "ok",
+			"statuscode": 200
+		}
+	}
+}

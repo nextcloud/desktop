@@ -69,6 +69,12 @@ nextcloud_add_test(LockFile)
 nextcloud_add_test(ShareModel)
 nextcloud_add_test(ShareeModel)
 nextcloud_add_test(SortedShareModel)
+nextcloud_add_test(SecureFileDrop)
+
+target_link_libraries(SecureFileDropTest PRIVATE Nextcloud::sync)
+configure_file(fake2eelocksucceeded.json "${PROJECT_BINARY_DIR}/bin/fake2eelocksucceeded.json" COPYONLY)
+configure_file(fakefiledrope2eefoldermetadata.json "${PROJECT_BINARY_DIR}/bin/fakefiledrope2eefoldermetadata.json" COPYONLY)
+
 
 if(ADD_E2E_TESTS)
     nextcloud_add_test(E2eServerSetup)

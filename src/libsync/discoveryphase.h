@@ -67,6 +67,7 @@ struct RemoteInfo
     int64_t sizeOfFolder = 0;
     bool isDirectory = false;
     bool isE2eEncrypted = false;
+    bool isFileDropDetected = false;
     QString e2eMangledName;
     bool sharedByMe = false;
 
@@ -142,6 +143,7 @@ public:
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
+    [[nodiscard]] bool isFileDropDetected() const;
 
     // This is not actually a network job, it is just a job
 signals:
@@ -173,6 +175,7 @@ private:
     bool _isExternalStorage = false;
     // If this directory is e2ee
     bool _isE2eEncrypted = false;
+    bool _isFileDropDetected = false;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;

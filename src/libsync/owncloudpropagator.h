@@ -62,7 +62,7 @@ class PropagatorCompositeJob;
  *
  * @ingroup libsync
  */
-class PropagatorJob : public QObject
+class OWNCLOUDSYNC_EXPORT PropagatorJob : public QObject
 {
     Q_OBJECT
 
@@ -98,7 +98,7 @@ public:
 
     Q_ENUM(JobParallelism)
 
-    virtual JobParallelism parallelism() { return FullParallelism; }
+    [[nodiscard]] virtual JobParallelism parallelism() const { return FullParallelism; }
 
     /**
      * For "small" jobs
@@ -215,7 +215,7 @@ public:
         return true;
     }
 
-    JobParallelism parallelism() override { return _parallelism; }
+    [[nodiscard]] JobParallelism parallelism() const override { return _parallelism; }
 
     SyncFileItemPtr _item;
 
@@ -254,7 +254,7 @@ public:
     }
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
 
     /*
      * Abort synchronously or asynchronously - some jobs
@@ -320,7 +320,7 @@ public:
     }
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override
     {
         if (_firstJob)
@@ -366,7 +366,7 @@ public:
     explicit PropagateRootDirectory(OwncloudPropagator *propagator);
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override;
 
     [[nodiscard]] qint64 committedDiskSpace() const override;

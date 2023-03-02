@@ -317,6 +317,8 @@ public:
     time_t _lastShareStateFetchedTimestamp = 0;
 
     bool _sharedByMe = false;
+
+    bool _isFileDropDetected = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

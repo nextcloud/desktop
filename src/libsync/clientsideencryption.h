@@ -4,6 +4,7 @@
 #include <QString>
 #include <QObject>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QFile>
@@ -188,13 +189,18 @@ struct EncryptedFile {
 class OWNCLOUDSYNC_EXPORT FolderMetadata {
 public:
     FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
-    QByteArray encryptedMetadata();
+    [[nodiscard]] QByteArray encryptedMetadata() const;
     void addEncryptedFile(const EncryptedFile& f);
     void removeEncryptedFile(const EncryptedFile& f);
     void removeAllEncryptedFiles();
     [[nodiscard]] QVector<EncryptedFile> files() const;
     [[nodiscard]] bool isMetadataSetup() const;
 
+    [[nodiscard]] bool isFileDropPresent() const;
+
+    [[nodiscard]] bool moveFromFileDropToFiles();
+
+    [[nodiscard]] QJsonObject fileDrop() const;
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -203,8 +209,8 @@ private:
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
 
-    [[nodiscard]] QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
-    [[nodiscard]] QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
+    [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
+    [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
@@ -213,6 +219,7 @@ private:
     QMap<int, QByteArray> _metadataKeys;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
+    QJsonObject _fileDrop;
 };
 
 } // namespace OCC
