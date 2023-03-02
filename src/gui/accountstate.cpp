@@ -110,7 +110,7 @@ AccountState::AccountState(AccountPtr account)
         Qt::QueuedConnection);
 
     connect(account->credentials(), &AbstractCredentials::requestLogout, this, [this] {
-        _state = State::SignedOut;
+        setState(State::SignedOut);
     });
 
     if (FolderMan::instance()) {
@@ -131,7 +131,7 @@ AccountStatePtr AccountState::loadFromSettings(AccountPtr account, const QSettin
     const bool userExplicitlySignedOut = settings.value(userExplicitlySignedOutC(), false).toBool();
     if (userExplicitlySignedOut) {
         // see writeToSettings below
-        accountState->_state = SignedOut;
+        accountState->setState(SignedOut);
     }
     accountState->_supportsSpaces = settings.value(supportsSpacesC(), false).toBool();
     return accountState;
@@ -277,6 +277,9 @@ void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
 
 void AccountState::checkConnectivity(bool blockJobs)
 {
+    if (_state != Connected) {
+        setState(Connecting);
+    }
     qCWarning(lcAccountState) << "checkConnectivity blocking:" << blockJobs;
     if (isSignedOut() || _waitingForNewCredentials) {
         return;

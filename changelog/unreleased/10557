@@ -1,0 +1,6 @@
+Enhancement: Improve presentation of connection state
+
+Don't display `No connection configured` when disconnected but `Disconnected from:`.
+Introduce new state, `Connecting to`.
+
+https://github.com/owncloud/client/issues/10557 

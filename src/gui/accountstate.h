@@ -75,7 +75,9 @@ public:
         ConfigurationError,
 
         /// We are currently asking the user for credentials
-        AskingCredentials
+        AskingCredentials,
+
+        Connecting
     };
     Q_ENUM(State)
 

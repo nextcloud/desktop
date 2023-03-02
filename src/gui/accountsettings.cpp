@@ -758,176 +758,162 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 
 void AccountSettings::slotAccountStateChanged()
 {
-    const AccountState::State state = _accountState ? _accountState->state() : AccountState::Disconnected;
+    const AccountState::State state = _accountState->state();
+    const AccountPtr account = _accountState->account();
 
-    ui->addButton->setEnabled(state == AccountState::Connected);
-    if (state == AccountState::Connected) {
-        if (_accountState->supportsSpaces()) {
-            ui->addButton->setToolTip(tr("Click this button to add a Space."));
-        } else {
-            ui->addButton->setToolTip(tr("Click this button to add a folder to synchronize."));
-        }
-    } else {
-        ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
+    // in 2023 there should never be credentials encoded in the url, but we never know...
+    const auto safeUrl = account->url().adjusted(QUrl::RemoveUserInfo);
+
+    FolderMan *folderMan = FolderMan::instance();
+    for (auto *folder : folderMan->folders()) {
+        _model->slotUpdateFolderState(folder);
     }
 
-
-    if (state != AccountState::Disconnected) {
-        AccountPtr account = _accountState->account();
-        QUrl safeUrl(account->url());
-        safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-        FolderMan *folderMan = FolderMan::instance();
-        for (auto *folder : folderMan->folders()) {
-            _model->slotUpdateFolderState(folder);
+    const QString server = QStringLiteral("<a href=\"%1\">%2</a>")
+                               .arg(Utility::escape(account->url().toString()),
+                                   Utility::escape(safeUrl.toString()));
+    QString serverWithUser = server;
+    if (AbstractCredentials *cred = account->credentials()) {
+        QString user = account->davDisplayName();
+        if (user.isEmpty()) {
+            user = cred->user();
         }
+        serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(user));
+    }
 
-        const QString server = QStringLiteral("<a href=\"%1\">%2</a>")
-                                   .arg(Utility::escape(account->url().toString()),
-                                       Utility::escape(safeUrl.toString()));
-        QString serverWithUser = server;
-        if (AbstractCredentials *cred = account->credentials()) {
-            QString user = account->davDisplayName();
-            if (user.isEmpty()) {
-                user = cred->user();
-            }
-            serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(user));
+    switch (state) {
+    case AccountState::Connected: {
+        QStringList errors;
+        if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
+            errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
         }
-
-        switch (state) {
-        case AccountState::Connected: {
-            QStringList errors;
-            if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
-                errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
-            }
-            showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
+        showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
+        if (_askForOAuthLoginDialog != nullptr) {
+            _askForOAuthLoginDialog->accept();
+        }
+        break;
+    }
+    case AccountState::ServiceUnavailable:
+        showConnectionLabel(tr("Server %1 is temporarily unavailable.").arg(server));
+        break;
+    case AccountState::MaintenanceMode:
+        showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
+        break;
+    case AccountState::SignedOut:
+        showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
+        break;
+    case AccountState::AskingCredentials: {
+        auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials());
+        if (cred && cred->isUsingOAuth()) {
             if (_askForOAuthLoginDialog != nullptr) {
-                _askForOAuthLoginDialog->accept();
+                qCDebug(lcAccountSettings) << "ask for OAuth login dialog is shown already";
+                return;
             }
-            break;
+
+            qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
+
+            _askForOAuthLoginDialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::OAuth, ocApp()->gui()->settingsDialog());
+
+            // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
+            _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
+
+            _askForOAuthLoginDialog->setTopLabelText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(account->displayName()));
+
+            auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_askForOAuthLoginDialog->contentWidget());
+
+            connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [account]() {
+                // TODO: use authorisationLinkAsync
+                auto link = qobject_cast<HttpCredentialsGui *>(account->credentials())->authorisationLink().toString();
+                ocApp()->clipboard()->setText(link);
+            });
+
+            connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, _askForOAuthLoginDialog, [cred]() {
+                cred->openBrowser();
+            });
+
+            contentWidget->setEnabled(false);
+            connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget, [contentWidget]() {
+                contentWidget->setEnabled(true);
+            });
+
+            connect(
+                cred, &HttpCredentialsGui::authorisationLinkChanged,
+                this, &AccountSettings::slotAccountStateChanged,
+                Qt::UniqueConnection);
+
+            connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, this, [this]() {
+                // if a user dismisses the dialog, we have no choice but signing them out
+                _accountState->signOutByUi();
+            });
+
+            connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _askForOAuthLoginDialog, [contentWidget, accountPtr = account]() {
+                auto creds = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials());
+                creds->restartOAuth();
+                contentWidget->hideRetryFrame();
+            });
+
+            connect(cred, &HttpCredentialsGui::oAuthErrorOccurred, _askForOAuthLoginDialog, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
+                Q_ASSERT(!cred->ready());
+
+                ocApp()->gui()->raiseDialog(loginDialog);
+                contentWidget->showRetryFrame();
+            });
+
+            showConnectionLabel(tr("Reauthorization required."));
+
+            _askForOAuthLoginDialog->show();
+            ocApp()->gui()->raiseDialog(_askForOAuthLoginDialog);
+
+            QTimer::singleShot(0, [contentWidget]() {
+                contentWidget->setFocus(Qt::OtherFocusReason);
+            });
+        } else {
+            showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
         }
-        case AccountState::ServiceUnavailable:
-            showConnectionLabel(tr("Server %1 is temporarily unavailable.").arg(server));
-            break;
-        case AccountState::MaintenanceMode:
-            showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
-            break;
-        case AccountState::SignedOut:
-            showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
-            break;
-        case AccountState::AskingCredentials: {
-            auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials());
-            if (cred && cred->isUsingOAuth()) {
-                if (_askForOAuthLoginDialog != nullptr) {
-                    qCDebug(lcAccountSettings) << "ask for OAuth login dialog is shown already";
-                    return;
-                }
-
-                qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
-
-                _askForOAuthLoginDialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::OAuth, ocApp()->gui()->settingsDialog());
-
-                // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
-                _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
-
-                _askForOAuthLoginDialog->setTopLabelText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(account->displayName()));
-
-                auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_askForOAuthLoginDialog->contentWidget());
-
-                connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [account]() {
-                    // TODO: use authorisationLinkAsync
-                    auto link = qobject_cast<HttpCredentialsGui *>(account->credentials())->authorisationLink().toString();
-                    ocApp()->clipboard()->setText(link);
-                });
-
-                connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, _askForOAuthLoginDialog, [cred]() {
-                    cred->openBrowser();
-                });
-
-                contentWidget->setEnabled(false);
-                connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget, [contentWidget]() {
-                    contentWidget->setEnabled(true);
-                });
-
-                connect(
-                    cred, &HttpCredentialsGui::authorisationLinkChanged,
-                    this, &AccountSettings::slotAccountStateChanged,
-                    Qt::UniqueConnection);
-
-                connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, this, [this]() {
-                    // if a user dismisses the dialog, we have no choice but signing them out
-                    _accountState->signOutByUi();
-                });
-
-                connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _askForOAuthLoginDialog, [contentWidget, accountPtr = account]() {
-                    auto creds = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials());
-                    creds->restartOAuth();
-                    contentWidget->hideRetryFrame();
-                });
-
-                connect(cred, &HttpCredentialsGui::oAuthErrorOccurred, _askForOAuthLoginDialog, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
-                    Q_ASSERT(!cred->ready());
-
-                    ocApp()->gui()->raiseDialog(loginDialog);
-                    contentWidget->showRetryFrame();
-                });
-
-                showConnectionLabel(tr("Reauthorization required."));
-
-                _askForOAuthLoginDialog->show();
-                ocApp()->gui()->raiseDialog(_askForOAuthLoginDialog);
-
-                QTimer::singleShot(0, [contentWidget]() {
-                    contentWidget->setFocus(Qt::OtherFocusReason);
-                });
-            } else {
-                showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
-            }
-            break;
-        }
-        case AccountState::NetworkError:
-            // don't display the error to the user, https://github.com/owncloud/client/issues/9790
-            showConnectionLabel(tr("No connection to %1.")
-                                    .arg(server));
-            break;
-        case AccountState::ConfigurationError:
-            showConnectionLabel(tr("Server configuration error: %1.")
-                                    .arg(server),
-                _accountState->connectionErrors());
-            break;
-        case AccountState::Disconnected:
-            // we can't end up here as the whole block is ifdeffed
-            Q_UNREACHABLE();
-            break;
-        }
-    } else {
-        // ownCloud is not yet configured.
-        showConnectionLabel(tr("No connection configured."));
+        break;
     }
-
-    /* Allow to expand the item if the account is connected. */
-    ui->_folderList->setItemsExpandable(state == AccountState::Connected);
-
-    if (state != AccountState::Connected) {
-        /* check if there are expanded root items, if so, close them */
-        int i;
-        for (i = 0; i < _sortModel->rowCount(); ++i) {
-            if (ui->_folderList->isExpanded(_sortModel->index(i, 0)))
-                ui->_folderList->setExpanded(_sortModel->index(i, 0), false);
-        }
+    case AccountState::Connecting:
+        showConnectionLabel(tr("Connecting to: %1.").arg(server));
+        break;
+    case AccountState::ConfigurationError:
+        showConnectionLabel(tr("Server configuration error: %1.")
+                                .arg(server),
+            _accountState->connectionErrors());
+        break;
+    case AccountState::NetworkError:
+        // don't display the error to the user, https://github.com/owncloud/client/issues/9790
+        [[fallthrough]];
+    case AccountState::Disconnected:
+        showConnectionLabel(tr("Disconnected from: %1.").arg(server));
+        break;
     }
 
     // Disabling expansion of folders might require hiding the selective
     // sync user interface buttons.
     refreshSelectiveSyncStatus();
 
-    if (_accountState) {
-        _toggleReconnect->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
-        // set the correct label for the Account toolbox button
-        if (_accountState->isSignedOut()) {
-            _toggleSignInOutAction->setText(tr("Log in"));
+    _toggleReconnect->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
+    // set the correct label for the Account toolbox button
+    if (_accountState->isSignedOut()) {
+        _toggleSignInOutAction->setText(tr("Log in"));
+    } else {
+        _toggleSignInOutAction->setText(tr("Log out"));
+    }
+
+    ui->addButton->setEnabled(state == AccountState::Connected);
+    if (state == AccountState::Connected) {
+        ui->_folderList->setItemsExpandable(true);
+        if (_accountState->supportsSpaces()) {
+            ui->addButton->setToolTip(tr("Click this button to add a Space."));
         } else {
-            _toggleSignInOutAction->setText(tr("Log out"));
+            ui->addButton->setToolTip(tr("Click this button to add a folder to synchronize."));
         }
+    } else {
+        ui->_folderList->setItemsExpandable(false);
+        ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
+
+        /* check if there are expanded root items, if so, close them */
+        ui->_folderList->collapseAll();
     }
 }
 
