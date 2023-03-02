@@ -769,17 +769,8 @@ void AccountSettings::slotAccountStateChanged()
         _model->slotUpdateFolderState(folder);
     }
 
-    const QString server = QStringLiteral("<a href=\"%1\">%2</a>")
-                               .arg(Utility::escape(account->url().toString()),
-                                   Utility::escape(safeUrl.toString()));
-    QString serverWithUser = server;
-    if (AbstractCredentials *cred = account->credentials()) {
-        QString user = account->davDisplayName();
-        if (user.isEmpty()) {
-            user = cred->user();
-        }
-        serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(user));
-    }
+    const QString server = QStringLiteral("<a href=\"%1\">%1</a>")
+                               .arg(Utility::escape(safeUrl.toString()));
 
     switch (state) {
     case AccountState::Connected: {
@@ -787,7 +778,7 @@ void AccountSettings::slotAccountStateChanged()
         if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
             errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
         }
-        showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
+        showConnectionLabel(tr("Connected to %1.").arg(server), errors);
         if (_askForOAuthLoginDialog != nullptr) {
             _askForOAuthLoginDialog->accept();
         }
@@ -800,7 +791,7 @@ void AccountSettings::slotAccountStateChanged()
         showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
         break;
     case AccountState::SignedOut:
-        showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
+        showConnectionLabel(tr("Signed out from %1.").arg(server));
         break;
     case AccountState::AskingCredentials: {
         auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials());
@@ -868,7 +859,7 @@ void AccountSettings::slotAccountStateChanged()
                 contentWidget->setFocus(Qt::OtherFocusReason);
             });
         } else {
-            showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
+            showConnectionLabel(tr("Connecting to %1...").arg(server));
         }
         break;
     }
