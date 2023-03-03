@@ -1,0 +1,5 @@
+Bugfix: Fix encoding issue with basic authentication
+
+In 3.0 we introduced an encoding issue for basic authentication.
+
+https://github.com/owncloud/client/issues/10564

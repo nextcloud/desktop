@@ -26,7 +26,7 @@ namespace OCC {
 
 FetchUserInfoJobFactory FetchUserInfoJobFactory::fromBasicAuthCredentials(QNetworkAccessManager *nam, const QString &username, const QString &password)
 {
-    QString authorizationHeader = QStringLiteral("Basic %1").arg(QString::fromLocal8Bit(QStringLiteral("%1:%2").arg(username, password).toLocal8Bit().toBase64()));
+    QString authorizationHeader = QStringLiteral("Basic %1").arg(QString::fromUtf8(QStringLiteral("%1:%2").arg(username, password).toUtf8().toBase64()));
     return { nam, authorizationHeader };
 }
 

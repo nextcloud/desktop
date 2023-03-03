@@ -31,8 +31,8 @@ CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url, QObject *parent)
 
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
-    QString authorizationHeader = QStringLiteral("Basic %1").arg(QString::fromLocal8Bit(QStringLiteral("%1:%2").arg(_username, _password).toLocal8Bit().toBase64()));
-    req.setRawHeader("Authorization", authorizationHeader.toLocal8Bit());
+    QString authorizationHeader = QStringLiteral("Basic %1").arg(QString::fromUtf8(QStringLiteral("%1:%2").arg(_username, _password).toUtf8().toBase64()));
+    req.setRawHeader("Authorization", authorizationHeader.toUtf8());
 
     auto *job = new CoreJob(nam()->sendCustomRequest(req, "PROPFIND"), parent);
 
