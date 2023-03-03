@@ -84,15 +84,15 @@ class AccountSetting:
 
     @staticmethod
     def isUserSignedOut(displayname, server):
-        signedout_text = 'Signed out from <a href="{server}">{server}</a> as <i>{displayname}</i>.'.format(
-            server=server, displayname=displayname
+        signedout_text = 'Signed out from <a href="{server}">{server}</a>.'.format(
+            server=server
         )
         return signedout_text == AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def isUserSignedIn(displayname, server):
-        signedin_text = 'Connected to <a href="{server}">{server}</a> as <i>{displayname}</i>.'.format(
-            server=server, displayname=displayname
+        signedin_text = 'Connected to <a href="{server}">{server}</a>.'.format(
+            server=server
         )
         return signedin_text == AccountSetting.getAccountConnectionLabel()
 
