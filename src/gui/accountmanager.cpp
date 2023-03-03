@@ -536,6 +536,7 @@ void AccountManager::addAccountState(AccountState *accountState)
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
+    ptr->trySignIn();
     emit accountAdded(accountState);
 }
 }
