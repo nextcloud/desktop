@@ -1,0 +1,6 @@
+Bugfix: Fix crash in Linux AppImage updater
+
+In between the releases 3.0.0 and 3.1.0, a dependency was updated, causing an ABI
+incompatibility with another library. We resolved this by rebuilding both libraries.
+
+https://github.com/owncloud/client/issues/10552
