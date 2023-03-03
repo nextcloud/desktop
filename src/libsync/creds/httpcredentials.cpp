@@ -96,11 +96,6 @@ protected:
                     QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->_password.toUtf8()).toBase64();
                     req.setRawHeader("Authorization", "Basic " + credHash);
                 }
-            } else if (!request.url().password().isEmpty()) {
-                // Typically the requests to get or refresh the OAuth access token. The client
-                // credentials are put in the URL from the code making the request.
-                QByteArray credHash = request.url().userInfo().toUtf8().toBase64();
-                req.setRawHeader("Authorization", "Basic " + credHash);
             }
         }
         return AccessManager::createRequest(op, req, outgoingData);
