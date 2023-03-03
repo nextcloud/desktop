@@ -14,6 +14,7 @@ Summary
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
 * Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
+* Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
@@ -56,6 +57,12 @@ Details
    incompatibility with another library. We resolved this by rebuilding both libraries.
 
    https://github.com/owncloud/client/issues/10552
+
+* Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
+
+   In 3.0 we introduced an encoding issue for basic authentication.
+
+   https://github.com/owncloud/client/issues/10564
 
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
