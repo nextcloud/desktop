@@ -12,6 +12,7 @@ Summary
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
+* Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
 * Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
@@ -43,6 +44,11 @@ Details
 
    https://github.com/owncloud/client/issues/10408
    https://github.com/owncloud/client/pull/10505
+
+* Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
+
+   https://github.com/owncloud/client/issues/10494
+   https://github.com/owncloud/client/issues/10495
 
 * Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
 
