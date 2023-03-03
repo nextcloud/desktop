@@ -226,6 +226,8 @@ private:
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
     void updateUsersEncryptedMetadataKey();
+    void createNewMetadataKey();
+    [[nodiscard]] bool verifyMetadataKey() const;
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
     [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
@@ -234,8 +236,11 @@ private:
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
+    [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
+
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
+    QSet<QByteArray> _keyChecksums;
     QHash<QString, FolderUser> _folderUsers;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;

@@ -101,9 +101,24 @@ static QByteArray calcCryptoHash(QIODevice *device, QCryptographicHash::Algorith
      return arr;
  }
 
+static QByteArray calcCryptoHash(const QByteArray &data, QCryptographicHash::Algorithm algo)
+ {
+     if (data.isEmpty()) {
+         return {};
+     }
+     QCryptographicHash crypto(algo);
+     crypto.addData(data);
+     return crypto.result().toHex();
+ }
+
 QByteArray calcMd5(QIODevice *device)
 {
     return calcCryptoHash(device, QCryptographicHash::Md5);
+}
+
+QByteArray calcMd5(const QByteArray &data)
+{
+    return calcCryptoHash(data, QCryptographicHash::Md5);
 }
 
 QByteArray calcSha1(QIODevice *device)
