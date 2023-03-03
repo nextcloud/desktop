@@ -45,6 +45,8 @@ public:
     enum Roles {
         ShareeRole = Qt::UserRole + 1,
         AutoCompleterStringMatchRole,
+        TypeRole,
+        IconRole,
     };
     Q_ENUM(Roles);
 
@@ -80,12 +82,15 @@ public slots:
     void setSearchString(const QString &searchString);
     void setLookupMode(const OCC::ShareeModel::LookupMode lookupMode);
     void setShareeBlocklist(const QVariantList shareeBlocklist);
+    void searchGlobally();
 
     void fetch();
 
 private slots:
     void shareesFetched(const QJsonDocument &reply);
+    void insertSearchGloballyItem(const QVector<ShareePtr> &newShareesFetched);
     void filterSharees();
+    void slotDarkModeChanged();
 
 private:
     [[nodiscard]] ShareePtr parseSharee(const QJsonObject &data) const;
@@ -100,6 +105,8 @@ private:
 
     QVector<ShareePtr> _sharees;
     QVector<ShareePtr> _shareeBlocklist;
+
+    ShareePtr _searchGloballyPlaceholder;
 };
 
 }

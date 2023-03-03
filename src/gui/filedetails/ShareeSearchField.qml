@@ -41,7 +41,7 @@ TextField {
     readonly property double iconsScaleFactor: 0.6
 
     function triggerSuggestionsVisibility() {
-        shareeListView.count > 0 && text !== "" ? suggestionsPopup.open() : suggestionsPopup.close();
+        shareeListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
     }
 
     placeholderText: qsTr("Search for users or groups…")
@@ -73,7 +73,7 @@ TextField {
             case Qt.Key_Enter:
             case Qt.Key_Return:
                 if(shareeListView.currentIndex > -1) {
-                    shareeListView.itemAtIndex(shareeListView.currentIndex).selectSharee();
+                    shareeListView.itemAtIndex(shareeListView.currentIndex).selectItem();
                     event.accepted = true;
                     break;
                 }
@@ -219,11 +219,23 @@ TextField {
                     anchors.left: parent.left
                     anchors.right: parent.right
 
+                    enabled: model.type !== Sharee.LookupServerSearchResults
+                    hoverEnabled: model.type !== Sharee.LookupServerSearchResults
+
                     function selectSharee() {
                         root.shareeSelected(model.sharee);
                         suggestionsPopup.close();
 
                         root.clear();
+                    }
+
+                    function selectItem() {
+                        if (model.type === Sharee.LookupServerSearch) {
+                            shareeListView.currentIndex = -1
+                            root.shareeModel.searchGlobally()
+                        } else {
+                            selectSharee()
+                        }
                     }
 
                     onHoveredChanged: if (hovered) {
@@ -241,7 +253,7 @@ TextField {
                         shareeListView.preferredHighlightBegin = savedPreferredHighlightBegin;
                         shareeListView.preferredHighlightEnd = savedPreferredHighlightEnd;
                     }
-                    onClicked: selectSharee()
+                    onClicked: selectItem()
                 }
             }
         }
