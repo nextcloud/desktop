@@ -224,12 +224,19 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
 {
     ASSERT(_syncCount.isEmpty());
 
+    QSet<QString> syncedItemCleanDestinations;
     ProblemsMap oldProblems;
     std::swap(_syncProblems, oldProblems);
 
-    foreach (const SyncFileItemPtr &item, items) {
-        qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction;
-        _dirtyPaths.remove(item->destination());
+    for (const auto &item : qAsConst(items)) {
+        const auto destination = item->destination();
+        _dirtyPaths.remove(destination);
+
+        qCDebug(lcStatusTracker) << "Investigating"
+                                 << item->destination()
+                                 << item->_status
+                                 << item->_instruction
+                                 << item->_direction;
 
         if (hasErrorStatus(*item)) {
             _syncProblems[item->destination()] = SyncFileStatus::StatusError;
@@ -238,15 +245,20 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
             _syncProblems[item->destination()] = SyncFileStatus::StatusExcluded;
         }
 
+        // Check we are not propagating the same thing twice
+        const auto cleanDestination = destination.endsWith('/') ? destination.chopped(1) : destination;
+        Q_ASSERT(!syncedItemCleanDestinations.contains(cleanDestination));
+        syncedItemCleanDestinations.insert(cleanDestination);
+
         SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
         if (item->_instruction != CSYNC_INSTRUCTION_NONE
             && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
             && item->_instruction != CSYNC_INSTRUCTION_IGNORE
             && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
             // Mark this path as syncing for instructions that will result in propagation.
-            incSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
+            incSyncCountAndEmitStatusChanged(cleanDestination, sharedFlag);
         } else {
-            emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
+            emit fileStatusChanged(getSystemDestination(cleanDestination), resolveSyncAndErrorStatus(cleanDestination, sharedFlag));
         }
     }
 
