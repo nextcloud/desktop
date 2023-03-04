@@ -4210,7 +4210,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Säker gömd fillista-länk</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="540"/>
@@ -4230,7 +4230,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="599"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Säker gömd fillista</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="806"/>
@@ -4308,6 +4308,22 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 </context>
 <context>
     <name>OCC::ShareeModel</name>
+    <message>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
+        <source>No results found</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
+        <source>Global search results</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="248"/>
         <source>%1 (%2)</source>
@@ -4413,7 +4429,7 @@ Servern svarade med fel: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera säker gömd fillista-länk</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1151"/>
@@ -6463,7 +6479,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
-        <translation>Göm fillista (endast uppladdning)</translation>
+        <translation>Gömd fillista (endast uppladdning)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
