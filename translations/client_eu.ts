@@ -4230,7 +4230,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="599"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-jartze segurua</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="806"/>
@@ -4312,12 +4312,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Bilatu globalki</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Ez da emaitzarik aurkitu</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
