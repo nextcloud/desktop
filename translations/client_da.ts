@@ -3114,7 +3114,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="195"/>
         <source>Update Check</source>
-        <translation>Check for Opdatinger</translation>
+        <translation>Tjek for opdateringer</translation>
     </message>
 </context>
 <context>

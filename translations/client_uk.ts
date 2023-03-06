@@ -1682,7 +1682,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation>Скопіювати посилання</translation>
+        <translation>Копіювати посилання</translation>
     </message>
 </context>
 <context>
@@ -2244,7 +2244,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="137"/>
         <source>Select the source folder</source>
-        <translation>Оберіть початковий каталог</translation>
+        <translation>Оберіть вихідний каталог</translation>
     </message>
 </context>
 <context>
@@ -6552,7 +6552,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
         <source>Copy link</source>
-        <translation>Скопіювати посилання</translation>
+        <translation>Копіювати посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
