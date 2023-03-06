@@ -239,6 +239,27 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    func renameItemMetadata(ocId: String, newFileName: String) {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                guard let itemMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first else {
+                    NSLog("Could not find an item with ocID %@ to rename to %@", ocId, newFileName)
+                    return
+                }
+
+                let oldFileName = itemMetadata.fileName
+                itemMetadata.fileName = newFileName
+                itemMetadata.fileNameView = newFileName
+                database.add(itemMetadata, update: .all)
+                NSLog("Renamed item %@ to %@", oldFileName, newFileName)
+            }
+        } catch let error {
+            NSLog("Could not rename filename of item metadata with ocID: %@ to proposed name %@, received error: %@", ocId, newFileName, error.localizedDescription)
+        }
+    }
+
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
             return NextcloudDirectoryMetadataTable(value: metadata)
