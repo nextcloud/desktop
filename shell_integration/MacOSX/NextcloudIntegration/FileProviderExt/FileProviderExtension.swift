@@ -312,7 +312,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     }
     
     func modifyItem(_ item: NSFileProviderItem, baseVersion version: NSFileProviderItemVersion, changedFields: NSFileProviderItemFields, contents newContents: URL?, options: NSFileProviderModifyItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
-        // TODO: an item was modified on disk, process the item's modification
+        // An item was modified on disk, process the item's modification
+        // TODO: Handle finder things like tags, other possible item changed fields
 
         NSLog("Received modify item request for item with identifier: %@ and filename: %@", item.itemIdentifier.rawValue, item.filename)
 
@@ -359,8 +360,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         var modifiedItem = item
 
-        // TODO: Also handle reparenting here
-        if changedFields.contains(.filename) {
+        if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
             let ocId = item.itemIdentifier.rawValue
 
             guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
@@ -388,10 +388,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     return
                 }
 
+                // Remember that a folder metadata's serverUrl is its direct server URL, while for
+                // an item metadata the server URL is the parent folder's URL
                 if itemTemplateIsFolder {
                     dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
                 } else {
-                    dbManager.renameItemMetadata(ocId: ocId, newFileName: item.filename)
+                    dbManager.renameItemMetadata(ocId: ocId, newServerUrl: parentItemMetadata.serverUrl, newFileName: item.filename)
                 }
 
                 guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
