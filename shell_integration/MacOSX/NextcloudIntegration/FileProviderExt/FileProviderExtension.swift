@@ -396,54 +396,67 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 completionHandler(fpItem, [], false, nil)
             }
 
-            return Progress()
-        } else if itemTemplateIsFolder {
+            if itemTemplateIsFolder {
+                NSLog("Only handling renaming for folders. ocId: %@", item.itemIdentifier.rawValue)
+                return Progress()
+            }
+        }
+
+        guard !itemTemplateIsFolder else {
             NSLog("System requested modification for folder with ocID %@ (%@) of something other than folder name.", item.itemIdentifier.rawValue, newServerUrlFileName)
             completionHandler(item, [], false, nil)
             return Progress()
         }
 
-        self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
-                          fileNameLocalPath: fileNameLocalPath,
-                          requestHandler: { _ in
-        }, taskHandler: { task in
-            self.outstandingSessionTasks[newServerUrlFileName] = task
-            NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
-        }, progressHandler: { _ in
-
-        }) { account, ocId, etag, date, size, _, _, error  in
-            self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
-
-            guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
-                NSLog("Could not upload item with filename: %@, received error: %@", item.filename, error.errorDescription)
-                completionHandler(nil, [], false, NSFileProviderError(.cannotSynchronize))
-                return
+        if changedFields.contains(.contents) {
+            guard newContents != nil else {
+                NSLog("WARNING. Could not upload modified contents as was provided nil contents url. ocId: %@", item.itemIdentifier.rawValue)
+                completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
+                return Progress()
             }
 
-            NSLog("Successfully uploaded item with identifier: %@ and filename: %@", ocId, item.filename)
+            self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
+                              fileNameLocalPath: fileNameLocalPath,
+                              requestHandler: { _ in
+            }, taskHandler: { task in
+                self.outstandingSessionTasks[newServerUrlFileName] = task
+                NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
+            }, progressHandler: { _ in
 
-            let newMetadata = NextcloudItemMetadataTable()
-            newMetadata.date = (date ?? NSDate()) as Date
-            newMetadata.etag = etag ?? ""
-            newMetadata.account = account
-            newMetadata.fileName = item.filename
-            newMetadata.fileNameView = item.filename
-            newMetadata.ocId = ocId
-            newMetadata.size = size
-            newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
-            newMetadata.directory = itemTemplateIsFolder
-            newMetadata.serverUrl = parentItemMetadata.serverUrl
-            newMetadata.session = ""
-            newMetadata.sessionError = ""
-            newMetadata.sessionTaskIdentifier = 0
-            newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+            }) { account, ocId, etag, date, size, _, _, error  in
+                self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
-            dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
-            dbManager.addItemMetadata(newMetadata)
+                guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
+                    NSLog("Could not upload item with filename: %@, received error: %@", item.filename, error.errorDescription)
+                    completionHandler(nil, [], false, NSFileProviderError(.cannotSynchronize))
+                    return
+                }
 
-            let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                NSLog("Successfully uploaded item with identifier: %@ and filename: %@", ocId, item.filename)
 
-            completionHandler(fpItem, [], false, nil)
+                let newMetadata = NextcloudItemMetadataTable()
+                newMetadata.date = (date ?? NSDate()) as Date
+                newMetadata.etag = etag ?? ""
+                newMetadata.account = account
+                newMetadata.fileName = item.filename
+                newMetadata.fileNameView = item.filename
+                newMetadata.ocId = ocId
+                newMetadata.size = size
+                newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
+                newMetadata.directory = itemTemplateIsFolder
+                newMetadata.serverUrl = parentItemMetadata.serverUrl
+                newMetadata.session = ""
+                newMetadata.sessionError = ""
+                newMetadata.sessionTaskIdentifier = 0
+                newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+
+                dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
+                dbManager.addItemMetadata(newMetadata)
+
+                let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+
+                completionHandler(fpItem, [], false, nil)
+            }
         }
 
         return Progress()
