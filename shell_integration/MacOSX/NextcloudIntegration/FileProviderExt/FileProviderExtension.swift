@@ -318,7 +318,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         guard let ncAccount = ncAccount else {
             NSLog("Not modifying item: %@ as account not set up yet", item.itemIdentifier.rawValue)
-            completionHandler(nil, [], false, NSFileProviderError(.notAuthenticated))
+            completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
 
@@ -348,7 +348,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         guard let parentItemMetadata = parentItemMetadata else {
             NSLog("Not modifying item: %@, could not find metadata for parentItemIdentifier %@", item.itemIdentifier.rawValue, parentItemIdentifier.rawValue)
-            completionHandler(nil, [], false, NSFileProviderError(.noSuchItem))
+            completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
@@ -357,24 +357,34 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("About to upload item with identifier: %@ of type: %@ (is folder: %@) and filename: %@ to server url: %@ with contents located at: %@", item.itemIdentifier.rawValue, item.contentType?.identifier ?? "UNKNOWN", itemTemplateIsFolder ? "yes" : "no", item.filename, newServerUrlFileName, fileNameLocalPath)
 
+        var modifiedItem = item
+
         // TODO: Also handle reparenting here
         if changedFields.contains(.filename) {
             let ocId = item.itemIdentifier.rawValue
 
             guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
                 NSLog("Could not acquire metadata of item with identifier: %@", ocId)
-                completionHandler(nil, [], false, NSFileProviderError(.noSuchItem))
+                completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
 
+            var renameError: NSFileProviderError?
             let oldServerUrlFileName = metadata.serverUrl + "/" + metadata.fileName
+
+            // We want to wait for network operations to finish before we fire off subsequent network
+            // operations, or we might cause explosions (e.g. trying to modify items that have just been
+            // moved elsewhere)
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
 
             self.ncKit.moveFileOrFolder(serverUrlFileNameSource: oldServerUrlFileName,
                                         serverUrlFileNameDestination: newServerUrlFileName,
                                         overwrite: false) { account, error in
                 guard error == .success else {
                     NSLog("Could not move file or folder with name: %@, received error: %@", item.filename, error.errorDescription)
-                    completionHandler(nil, [], false, NSFileProviderError(.serverUnreachable))
+                    renameError = NSFileProviderError(.serverUnreachable)
+                    dispatchGroup.leave()
                     return
                 }
 
@@ -386,34 +396,44 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                 guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
                     NSLog("Could not acquire metadata of item with identifier: %@", ocId)
-                    completionHandler(nil, [], false, NSFileProviderError(.noSuchItem))
+                    renameError = NSFileProviderError(.noSuchItem)
+                    dispatchGroup.leave()
                     return
                 }
 
-                // TODO: Handle several modifications, not just a rename or a content change at once
-                let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
-
-                completionHandler(fpItem, [], false, nil)
+                modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                dispatchGroup.leave()
             }
 
-            if itemTemplateIsFolder {
-                NSLog("Only handling renaming for folders. ocId: %@", item.itemIdentifier.rawValue)
+            dispatchGroup.wait()
+
+            guard renameError == nil else {
+                NSLog("Stopping rename of item with ocId %@ due to error.", ocId)
+                completionHandler(modifiedItem, [], false, nil)
+                return Progress()
+            }
+
+            guard !itemTemplateIsFolder else {
+                NSLog("Only handling renaming for folders. ocId: %@", modifiedItem.itemIdentifier.rawValue)
+                completionHandler(modifiedItem, [], false, nil)
                 return Progress()
             }
         }
 
         guard !itemTemplateIsFolder else {
             NSLog("System requested modification for folder with ocID %@ (%@) of something other than folder name.", item.itemIdentifier.rawValue, newServerUrlFileName)
-            completionHandler(item, [], false, nil)
+            completionHandler(modifiedItem, [], false, nil)
             return Progress()
         }
 
         if changedFields.contains(.contents) {
             guard newContents != nil else {
                 NSLog("WARNING. Could not upload modified contents as was provided nil contents url. ocId: %@", item.itemIdentifier.rawValue)
-                completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
+                completionHandler(modifiedItem, [], false, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
+
+            var contentUploadError: NSFileProviderError?
 
             self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                               fileNameLocalPath: fileNameLocalPath,
@@ -428,7 +448,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                 guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
                     NSLog("Could not upload item with filename: %@, received error: %@", item.filename, error.errorDescription)
-                    completionHandler(nil, [], false, NSFileProviderError(.cannotSynchronize))
+                    contentUploadError = NSFileProviderError(.cannotSynchronize)
                     return
                 }
 
@@ -453,12 +473,17 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
                 dbManager.addItemMetadata(newMetadata)
 
-                let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+            }
 
-                completionHandler(fpItem, [], false, nil)
+            guard contentUploadError == nil else {
+                NSLog("Stopping modification of item with ocId %@ due to error.", modifiedItem.itemIdentifier.rawValue)
+                completionHandler(modifiedItem, [], false, nil)
+                return Progress()
             }
         }
 
+        completionHandler(modifiedItem, [], false, nil)
         return Progress()
     }
     
