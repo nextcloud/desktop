@@ -73,24 +73,28 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading"
                                         << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const QString filename = _info.fileName();
-  const FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
-  if (metadata.isMetadataSetup()) {
-      const QVector<EncryptedFile> files = metadata.files();
+  const auto pathSplit = _item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+  const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
+  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), topLevelFolderPath, json.toJson(QJsonDocument::Compact)));
+  connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, &metadata, filename]() {
+      if (metadata->isMetadataSetup()) {
+          const QVector<EncryptedFile> files = metadata->files();
 
-      const QString encryptedFilename = _item->_encryptedFileName.section(QLatin1Char('/'), -1);
-      for (const EncryptedFile &file : files) {
-          if (encryptedFilename == file.encryptedFilename) {
-              _encryptedInfo = file;
+          const QString encryptedFilename = _item->_encryptedFileName.section(QLatin1Char('/'), -1);
+          for (const EncryptedFile &file : files) {
+              if (encryptedFilename == file.encryptedFilename) {
+                  _encryptedInfo = file;
 
-              qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
-              emit fileMetadataFound();
-              return;
+                  qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
+                  emit fileMetadataFound();
+                  return;
+              }
           }
       }
-  }
 
-  emit failed();
-  qCCritical(lcPropagateDownloadEncrypted) << "Failed to find encrypted metadata information of remote file" << filename;
+      emit failed();
+      qCCritical(lcPropagateDownloadEncrypted) << "Failed to find encrypted metadata information of remote file" << filename;
+  });
 }
 
 // TODO: Fix this. Exported in the wrong place.

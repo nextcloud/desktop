@@ -194,7 +194,9 @@ struct EncryptedFile {
     int metadataKey = 0;
 };
 
-class OWNCLOUDSYNC_EXPORT FolderMetadata {
+class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
+{
+    Q_OBJECT
     struct FolderUser {
         QString userId;
         QByteArray certificatePem;
@@ -202,11 +204,8 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata {
     };
 
 public:
-    FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
+    FolderMetadata(AccountPtr account, const QString &topLevelFolderPath, const QByteArray &metadata = QByteArray(), int statusCode = -1, QObject *parent = nullptr);
     [[nodiscard]] QByteArray encryptedMetadata() const;
-    void addEncryptedFile(const EncryptedFile& f);
-    void removeEncryptedFile(const EncryptedFile& f);
-    void removeAllEncryptedFiles();
     [[nodiscard]] QVector<EncryptedFile> files() const;
     [[nodiscard]] bool isMetadataSetup() const;
 
@@ -219,16 +218,10 @@ public:
     bool addUser(const QString &userId, const QSslCertificate certificate);
     bool removeUser(const QString &userId);
 
-    void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
-
 private:
     /* Use std::string and std::vector internally on this class
      * to ease the port to Nlohmann Json API
      */
-    void setupEmptyMetadata();
-    void setupExistingMetadata(const QByteArray& metadata);
-    void updateUsersEncryptedMetadataKey();
-    void createNewMetadataKey();
     [[nodiscard]] bool verifyMetadataKey() const;
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
@@ -240,6 +233,31 @@ private:
 
     [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
+    [[nodiscard]] QByteArray metadataKey() const;
+
+public slots:
+    void addEncryptedFile(const EncryptedFile &f);
+    void removeEncryptedFile(const EncryptedFile &f);
+    void removeAllEncryptedFiles();
+    void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
+
+private slots:
+    void setupMetadata();
+    void setupEmptyMetadata();
+    void setupExistingMetadata(const QByteArray &metadata);
+    void fetchTopLevelFolderMetadata();
+    void folderEncryptedIdReceived(const QStringList &list);
+    void folderEncryptedIdError(QNetworkReply *r);
+    void folderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
+    void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
+    void updateUsersEncryptedMetadataKey();
+    void createNewMetadataKey();
+    void emitSetupComplete();
+
+signals:
+    void setupComplete();
+
+private:
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
     QSet<QByteArray> _keyChecksums;
@@ -248,6 +266,9 @@ private:
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
+    QString _topLevelFolderPath;
+    QByteArray _initialMetadata;
+    int _initialStatusCode = -1;
 };
 
 } // namespace OCC

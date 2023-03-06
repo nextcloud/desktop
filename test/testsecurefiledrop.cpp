@@ -69,8 +69,8 @@ private slots:
                     QFile fakeJsonReplyFile(QStringLiteral("fakefiledrope2eefoldermetadata.json"));
                     if (fakeJsonReplyFile.open(QFile::ReadOnly)) {
                         const auto jsonDoc = QJsonDocument::fromJson(fakeJsonReplyFile.readAll());
-                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), jsonDoc.toJson()));
-                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), jsonDoc.toJson()));
+                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), {}, jsonDoc.toJson()));
+                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), {}, jsonDoc.toJson()));
                         [[maybe_unused]] const auto result = _parsedMetadataAfterProcessingFileDrop->moveFromFileDropToFiles();
                         reply = new FakePayloadReply(op, req, jsonDoc.toJson(), nullptr);
                         ++_getMetadataCallsCount;
@@ -104,7 +104,7 @@ private slots:
     void testUpdateFileDropMetadata()
     {
         const auto updateFileDropMetadataJob = new UpdateFileDropMetadataJob(_propagator.data(), fakeE2eeFolderPath);
-        connect(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::fileDropMetadataParsedAndAdjusted, this, [this](const FolderMetadata *const metadata) {
+        connect(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::fileDropMetadataParsedAndAdjusted, this, [this, updateFileDropMetadataJob](const FolderMetadata *const metadata) {
             if (!metadata || metadata->files().isEmpty() || metadata->fileDrop().isEmpty()) {
                 return;
             }
@@ -130,34 +130,35 @@ private slots:
             if (!isAnyFileDropFileMissing) {
                 emit fileDropMetadataParsedAndAdjusted();
             }
+
+            QSignalSpy updateFileDropMetadataJobSpy(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::finished);
+            QSignalSpy fileDropMetadataParsedAndAdjustedSpy(this, &TestSecureFileDrop::fileDropMetadataParsedAndAdjusted);
+
+            QVERIFY(updateFileDropMetadataJob->scheduleSelfOrChild());
+
+            QVERIFY(updateFileDropMetadataJobSpy.wait(3000));
+
+            QVERIFY(_parsedMetadataWithFileDrop);
+            QVERIFY(_parsedMetadataWithFileDrop->isFileDropPresent());
+
+            QVERIFY(_parsedMetadataAfterProcessingFileDrop);
+
+            QVERIFY(_parsedMetadataAfterProcessingFileDrop->files().size() != _parsedMetadataWithFileDrop->files().size());
+
+            QVERIFY(!updateFileDropMetadataJobSpy.isEmpty());
+            QVERIFY(!updateFileDropMetadataJobSpy.at(0).isEmpty());
+            QCOMPARE(updateFileDropMetadataJobSpy.at(0).first().toInt(), SyncFileItem::Status::Success);
+
+            QVERIFY(!fileDropMetadataParsedAndAdjustedSpy.isEmpty());
+
+            QCOMPARE(_lockCallsCount, 1);
+            QCOMPARE(_unlockCallsCount, 1);
+            QCOMPARE(_propFindCallsCount, 2);
+            QCOMPARE(_getMetadataCallsCount, 1);
+            QCOMPARE(_putMetadataCallsCount, 1);
+
+            updateFileDropMetadataJob->deleteLater();
         });
-        QSignalSpy updateFileDropMetadataJobSpy(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::finished);
-        QSignalSpy fileDropMetadataParsedAndAdjustedSpy(this, &TestSecureFileDrop::fileDropMetadataParsedAndAdjusted);
-        
-        QVERIFY(updateFileDropMetadataJob->scheduleSelfOrChild());
-
-        QVERIFY(updateFileDropMetadataJobSpy.wait(3000));
-
-        QVERIFY(_parsedMetadataWithFileDrop);
-        QVERIFY(_parsedMetadataWithFileDrop->isFileDropPresent());
-
-        QVERIFY(_parsedMetadataAfterProcessingFileDrop);
-
-        QVERIFY(_parsedMetadataAfterProcessingFileDrop->files().size() != _parsedMetadataWithFileDrop->files().size());
-
-        QVERIFY(!updateFileDropMetadataJobSpy.isEmpty());
-        QVERIFY(!updateFileDropMetadataJobSpy.at(0).isEmpty());
-        QCOMPARE(updateFileDropMetadataJobSpy.at(0).first().toInt(), SyncFileItem::Status::Success);
-
-        QVERIFY(!fileDropMetadataParsedAndAdjustedSpy.isEmpty());
-
-        QCOMPARE(_lockCallsCount, 1);
-        QCOMPARE(_unlockCallsCount, 1);
-        QCOMPARE(_propFindCallsCount, 2);
-        QCOMPARE(_getMetadataCallsCount, 1);
-        QCOMPARE(_putMetadataCallsCount, 1);
-
-        updateFileDropMetadataJob->deleteLater();
     }
 
 signals:
