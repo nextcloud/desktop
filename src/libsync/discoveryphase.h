@@ -128,6 +128,7 @@ private:
 public:
 };
 
+class FolderMetadata;
 
 /**
  * @brief Run a PROPFIND on a directory and process the results for Discovery
@@ -145,11 +146,16 @@ public:
     void abort();
     [[nodiscard]] bool isFileDropDetected() const;
 
+    [[nodiscard]] QSharedPointer<FolderMetadata> e2eeFolderMetadata() const;
+
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
+
+public slots:
+    void setTopLevelE2eeFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelE2eeFolderMetadata);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
@@ -180,6 +186,9 @@ private:
     int64_t _size = 0;
     QString _error;
     QPointer<LsColJob> _lsColJob;
+
+    QSharedPointer<FolderMetadata> _e2EeFolderMetadata;
+    QSharedPointer<FolderMetadata> _topLevelE2eeFolderMetadata;
 
 public:
     QByteArray _dataFingerprint;
@@ -299,6 +308,8 @@ public:
     QVector<QString> _filesUnscheduleSync;
 
     QStringList _listExclusiveFiles;
+
+    QMap <QString, QSharedPointer<FolderMetadata>> _topLevelE2eeFoldersMetadata;
 
 signals:
     void fatalError(const QString &errorString);

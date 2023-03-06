@@ -2006,6 +2006,11 @@ bool FolderMetadata::removeUser(const QString &userId)
     return true;
 }
 
+void FolderMetadata::setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata)
+{
+    _topLevelFolderMetadata = topLevelFolderMetadata;
+}
+
 void FolderMetadata::updateUsersEncryptedMetadataKey()
 {
     Q_ASSERT(!_metadataKey.isEmpty());

@@ -219,6 +219,8 @@ public:
     bool addUser(const QString &userId, const QSslCertificate certificate);
     bool removeUser(const QString &userId);
 
+    void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
+
 private:
     /* Use std::string and std::vector internally on this class
      * to ease the port to Nlohmann Json API
@@ -245,6 +247,7 @@ private:
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
+    QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
 };
 
 } // namespace OCC

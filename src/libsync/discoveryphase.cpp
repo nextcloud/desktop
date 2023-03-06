@@ -410,6 +410,11 @@ bool DiscoverySingleDirectoryJob::isFileDropDetected() const
     return _isFileDropDetected;
 }
 
+QSharedPointer<FolderMetadata> DiscoverySingleDirectoryJob::e2eeFolderMetadata() const
+{
+    return _e2EeFolderMetadata;
+}
+
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
@@ -504,6 +509,11 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
     if (result.isDirectory && map.contains("size")) {
         result.sizeOfFolder = map.value("size").toInt();
     }
+}
+
+void DiscoverySingleDirectoryJob::setTopLevelE2eeFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelE2eeFolderMetadata)
+{
+    _topLevelE2eeFolderMetadata = topLevelE2eeFolderMetadata;
 }
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &file, const QMap<QString, QString> &map)
@@ -621,9 +631,15 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     qCDebug(lcDiscovery) << "Metadata received, applying it to the result list";
     Q_ASSERT(_subPath.startsWith('/'));
 
-    const auto metadata = FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode);
-    _isFileDropDetected = metadata.isFileDropPresent();
-    const auto encryptedFiles = metadata.files();
+    // need to find a way to pass "users" array to children metadata
+
+    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode));
+    if (_subPath.split('/', Qt::SkipEmptyParts).size() > 1) {
+        Q_ASSERT(_topLevelE2eeFolderMetadata);
+        _e2EeFolderMetadata->setTopLevelFolderMetadata(_topLevelE2eeFolderMetadata);
+    }
+    _isFileDropDetected = _e2EeFolderMetadata->isFileDropPresent();
+    const auto encryptedFiles = _e2EeFolderMetadata->files();
 
     const auto findEncryptedFile = [=](const QString &name) {
         const auto it = std::find_if(std::cbegin(encryptedFiles), std::cend(encryptedFiles), [=](const EncryptedFile &file) {
