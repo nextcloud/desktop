@@ -357,14 +357,9 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("About to upload item with identifier: %@ of type: %@ (is folder: %@) and filename: %@ to server url: %@ with contents located at: %@", item.itemIdentifier.rawValue, item.contentType?.identifier ?? "UNKNOWN", itemTemplateIsFolder ? "yes" : "no", item.filename, newServerUrlFileName, fileNameLocalPath)
 
-        if itemTemplateIsFolder {
+        // TODO: Also handle reparenting here
+        if changedFields.contains(.filename) {
             let ocId = item.itemIdentifier.rawValue
-
-            guard changedFields.contains(.filename) else {
-                NSLog("System requested modification for folder with ocID %@ (%@) of something other than folder name.", ocId, newServerUrlFileName)
-                completionHandler(item, [], false, nil)
-                return Progress()
-            }
 
             guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
                 NSLog("Could not acquire metadata of item with identifier: %@", ocId)
@@ -378,12 +373,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                         serverUrlFileNameDestination: newServerUrlFileName,
                                         overwrite: false) { account, error in
                 guard error == .success else {
-                    NSLog("Could not move folder with name: %@, received error: %@", item.filename, error.errorDescription)
+                    NSLog("Could not move file or folder with name: %@, received error: %@", item.filename, error.errorDescription)
                     completionHandler(nil, [], false, NSFileProviderError(.serverUnreachable))
                     return
                 }
 
-                dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
+                if itemTemplateIsFolder {
+                    dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
+                } else {
+                    dbManager.renameItemMetadata(ocId: ocId, newFileName: item.filename)
+                }
 
                 guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
                     NSLog("Could not acquire metadata of item with identifier: %@", ocId)
@@ -391,11 +390,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     return
                 }
 
+                // TODO: Handle several modifications, not just a rename or a content change at once
                 let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
 
                 completionHandler(fpItem, [], false, nil)
             }
 
+            return Progress()
+        } else if itemTemplateIsFolder {
+            NSLog("System requested modification for folder with ocID %@ (%@) of something other than folder name.", item.itemIdentifier.rawValue, newServerUrlFileName)
+            completionHandler(item, [], false, nil)
             return Progress()
         }
 
