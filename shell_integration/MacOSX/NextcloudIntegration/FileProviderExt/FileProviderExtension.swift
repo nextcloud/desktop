@@ -112,6 +112,19 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("Received request to fetch contents of item with identifier: %@", itemIdentifier.rawValue)
 
+        guard requestedVersion == nil else {
+            // TODO: Add proper support for file versioning
+            NSLog("Can't return contents for specific version as this is not supported.")
+            completionHandler(nil, nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+            return Progress()
+        }
+
+        guard ncAccount != nil else {
+            NSLog("Not fetching contents item: %@ as account not set up yet", itemIdentifier.rawValue)
+            completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ocId = itemIdentifier.rawValue
         guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
