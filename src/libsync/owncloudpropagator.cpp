@@ -394,13 +394,12 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
-    QVector<PropagatorJob *> directoriesToRemove;
-    QString removedDirectory;
+    PropagatorJob *currentRemoveDirectoryJob = nullptr;
     QString maybeConflictDirectory;
     for (const auto &item : qAsConst(items)) {
-        if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
+        if (currentRemoveDirectoryJob && FileSystem::isChildPathOf(item->_file, currentRemoveDirectoryJob->path())) {
+            PropagateDirectory *delDirJob = qobject_cast<PropagateDirectory *>(currentRemoveDirectoryJob);
             // this is an item in a directory which is going to be removed.
-            PropagateDirectory *delDirJob = qobject_cast<PropagateDirectory *>(directoriesToRemove.first());
 
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // already taken care of. (by the removal of the parent directory)
@@ -422,9 +421,9 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 continue;
             } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
                 continue;
-            } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+            } else if (item->_instruction != CSYNC_INSTRUCTION_RENAME) {
                 // all is good, the rename will be executed before the directory deletion
-            } else {
+                Q_ASSERT(false);
                 qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
                                         << item->_file << item->_instruction;
             }
@@ -469,27 +468,26 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // We do the removal of directories at the end, because there might be moves from
                 // these directories that will happen later.
-                directoriesToRemove.prepend(dir);
-                removedDirectory = item->_file + QLatin1Char('/');
+                currentRemoveDirectoryJob = dir;
+                _rootJob->addDeleteJob(currentRemoveDirectoryJob);
 
                 // We should not update the etag of parent directories of the removed directory
                 // since it would be done before the actual remove (issue #1845)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
-                for (int i = 0; i < directories.size(); ++i) {
-                    if (directories[i].second->item()->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
-                        directories[i].second->item()->_instruction = CSYNC_INSTRUCTION_NONE;
+                for (auto &dir : directories) {
+                    if (dir.second->item()->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
+                        dir.second->item()->_instruction = CSYNC_INSTRUCTION_NONE;
                 }
             } else {
-                PropagateDirectory *currentDirJob = directories.top().second;
-                currentDirJob->appendJob(dir);
+                directories.top().second->appendJob(dir);
             }
             directories.push(qMakePair(item->destination() + QLatin1Char('/'), dir));
         } else {
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // will delete directories, so defer execution
-                directoriesToRemove.prepend(createJob(item));
-                removedDirectory = item->_file + QLatin1Char('/');
+                currentRemoveDirectoryJob = createJob(item);
+                _rootJob->addDeleteJob(currentRemoveDirectoryJob);
             } else {
                 directories.top().second->appendTask(item);
             }
@@ -500,10 +498,6 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 maybeConflictDirectory = item->_file + QLatin1Char('/');
             }
         }
-    }
-
-    for (auto *it : qAsConst(directoriesToRemove)) {
-        _rootJob->addDeleteJob(it);
     }
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
