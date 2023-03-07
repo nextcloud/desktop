@@ -3,19 +3,16 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v3.2.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v3.2.1...master
 
 Summary
 -------
 
-* Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
 * Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
-* Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
-* Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
@@ -24,12 +21,6 @@ Summary
 
 Details
 -------
-
-* Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
-
-   Due to legacy reasons the branding flag and its fuction differ.
-
-   https://github.com/owncloud/enterprise/issues/5612
 
 * Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 
@@ -56,19 +47,6 @@ Details
 
    https://github.com/owncloud/client/issues/10494
    https://github.com/owncloud/client/issues/10495
-
-* Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
-
-   In between the releases 3.0.0 and 3.1.0, a dependency was updated, causing an ABI
-   incompatibility with another library. We resolved this by rebuilding both libraries.
-
-   https://github.com/owncloud/client/issues/10552
-
-* Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
-
-   In 3.0 we introduced an encoding issue for basic authentication.
-
-   https://github.com/owncloud/client/issues/10564
 
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
@@ -106,7 +84,43 @@ Details
 
    https://github.com/owncloud/client/issues/10557
 
-Changelog for ownCloud Desktop Client [3.2.0] (2024-02-15)
+Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 3.2.1 relevant to
+ownCloud admins and users.
+
+[3.2.1]: https://github.com/owncloud/client/compare/v3.2.0...v3.2.1
+
+Summary
+-------
+
+* Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
+* Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
+* Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
+
+Details
+-------
+
+* Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
+
+   Due to legacy reasons the branding flag and its fuction differ.
+
+   https://github.com/owncloud/enterprise/issues/5612
+
+* Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
+
+   In between the releases 3.0.0 and 3.1.0, a dependency was updated, causing an ABI
+   incompatibility with another library. We resolved this by rebuilding both libraries.
+
+   https://github.com/owncloud/client/issues/10552
+
+* Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
+
+   In 3.0 we introduced an encoding issue for basic authentication.
+
+   https://github.com/owncloud/client/issues/10564
+
+Changelog for ownCloud Desktop Client [3.2.0] (2023-02-15)
 =======================================
 The following sections list the changes in ownCloud Desktop Client 3.2.0 relevant to
 ownCloud admins and users.
