@@ -18,18 +18,28 @@ import NextcloudKit
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
+    private var enumeratedItemMetadata: NextcloudItemMetadataTable?
+    private var enumeratingSystemIdentifier: Bool {
+        return FileProviderEnumerator.isSystemIdentifier(enumeratedItemIdentifier)
+    }
     private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!) // TODO: actually use this in NCKit and server requests
     private static let maxItemsPerFileProviderPage = 100
     let ncAccount: NextcloudAccount
     let ncKit: NextcloudKit
     var serverUrl: String = ""
+
+    private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
+        return identifier == .rootContainer ||
+            identifier == .trashContainer ||
+            identifier == .workingSet
+    }
     
     init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount, ncKit: NextcloudKit) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
         self.ncKit = ncKit
 
-        if enumeratedItemIdentifier == .rootContainer || enumeratedItemIdentifier == .trashContainer || enumeratedItemIdentifier == .workingSet {
+        if FileProviderEnumerator.isSystemIdentifier(enumeratedItemIdentifier) {
             NSLog("Providing enumerator for a system defined container: %@", enumeratedItemIdentifier.rawValue)
             self.serverUrl = ncAccount.davFilesUrl
         } else {
