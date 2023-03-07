@@ -965,17 +965,18 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     // Some options only show for single files
     if (files.size() == 1) {
         const FileData fileData = FileData::get(files.first());
-        if (!fileData.isSyncFolder()) {
-            const auto record = fileData.journalRecord();
-            const bool isOnTheServer = record.isValid();
-            const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+        if (fileData.folder->accountState()->isConnected()) {
+            if (!fileData.isSyncFolder()) {
+                const auto record = fileData.journalRecord();
+                const bool isOnTheServer = record.isValid();
+                const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
 
-            const auto app = fileData.folder->accountState()->account()->appProvider().app(fileData.localPath);
-            if (!app.defaultApplication.isEmpty()) {
-                listener->sendMessage(QStringLiteral("MENU_ITEM:OPEN_APP_LINK") + flagString + tr("Open in %1").arg(app.defaultApplication));
-            }
+                const auto app = fileData.folder->accountState()->account()->appProvider().app(fileData.localPath);
+                if (!app.defaultApplication.isEmpty()) {
+                    listener->sendMessage(QStringLiteral("MENU_ITEM:OPEN_APP_LINK") + flagString + tr("Open in %1").arg(app.defaultApplication));
+                }
 
-            if (fileData.folder->accountState()->isConnected()) {
+
                 sendSharingContextMenuOptions(fileData, listener);
 
                 const auto &capabilities = fileData.folder->accountState()->account()->capabilities();
