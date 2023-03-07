@@ -43,7 +43,7 @@ namespace {
     const char propertyParentIndexC[] = "oc_parentIndex";
     const char propertyPermissionMap[] = "oc_permissionMap";
 
-    uint64_t getQuota(const AccountStatePtr &accountState, const QUrl &davUrl, FolderStatusModel::Columns type)
+    int64_t getQuota(const AccountStatePtr &accountState, const QUrl &davUrl, FolderStatusModel::Columns type)
     {
         if (accountState->supportsSpaces()) {
             if (auto spacesManager = accountState->account()->spacesManager()) {

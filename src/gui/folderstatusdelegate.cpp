@@ -197,10 +197,10 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QStyle::visualRect(option.direction, option.rect, localPathRect), textAlign, subFm.elidedText(syncText, Qt::ElideRight, localPathRect.width()));
 
     if (!showProgess) {
-        const auto totalQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaTotal)).data().value<quint64>();
+        const auto totalQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaTotal)).data().value<int64_t>();
         // only draw a bar if we have a quota set
         if (totalQuota > 0) {
-            const auto usedQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaUsed)).data().value<quint64>();
+            const auto usedQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaUsed)).data().value<int64_t>();
             painter->setFont(subFont);
             painter->drawText(QStyle::visualRect(option.direction, option.rect, quotaTextRect),
                 subFm.elidedText(
