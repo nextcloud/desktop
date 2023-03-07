@@ -65,16 +65,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "gui.account.settings", QtInfoMsg)
 
-static const char progressBarStyleC[] =
-    "QProgressBar {"
-    "border: 1px solid grey;"
-    "border-radius: 5px;"
-    "text-align: center;"
-    "}"
-    "QProgressBar::chunk {"
-    "background-color: %1; width: 1px;"
-    "}";
-
 /**
  * Adjusts the mouse cursor based on the region it is on over the folder tree view.
  *
@@ -199,14 +189,8 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(ui->addButton, &QPushButton::clicked, this, &AccountSettings::slotAddFolder);
 
     if (_accountState->supportsSpaces()) {
-        ui->quotaProgressBar->setVisible(false);
-        ui->quotaInfoLabel->setVisible(false);
         ui->addButton->setText(tr("Add Space"));
     } else {
-        QColor color = palette().highlight().color();
-        ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-
-        connect(_accountState->quotaInfo(), &QuotaInfo::quotaUpdated, this, &AccountSettings::slotUpdateQuota);
         ui->addButton->setText(tr("Add Folder"));
     }
 
@@ -724,36 +708,6 @@ void AccountSettings::slotOpenOC()
 {
     if (_OCUrl.isValid())
         QDesktopServices::openUrl(_OCUrl);
-}
-
-void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
-{
-    if (total > 0) {
-        ui->quotaProgressBar->setVisible(true);
-        ui->quotaProgressBar->setEnabled(true);
-        // workaround the label only accepting ints (which may be only 32 bit wide)
-        const double percent = used / (double)total * 100;
-        const int percentInt = qMin(qRound(percent), 100);
-        ui->quotaProgressBar->setValue(percentInt);
-        QString usedStr = Utility::octetsToString(used);
-        QString totalStr = Utility::octetsToString(total);
-        QString percentStr = Utility::compactFormatDouble(percent, 1);
-        QString toolTip = tr("%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.").arg(usedStr, totalStr, percentStr);
-        ui->quotaInfoLabel->setText(tr("%1 of %2 in use").arg(usedStr, totalStr));
-        ui->quotaInfoLabel->setToolTip(toolTip);
-        ui->quotaProgressBar->setToolTip(toolTip);
-    } else {
-        ui->quotaProgressBar->setVisible(false);
-        ui->quotaInfoLabel->setToolTip(QString());
-
-        /* -1 means not computed; -2 means unknown; -3 means unlimited  (#3940)*/
-        if (total == 0 || total == -1) {
-            ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
-        } else {
-            QString usedStr = Utility::octetsToString(used);
-            ui->quotaInfoLabel->setText(tr("%1 in use").arg(usedStr));
-        }
-    }
 }
 
 void AccountSettings::slotAccountStateChanged()

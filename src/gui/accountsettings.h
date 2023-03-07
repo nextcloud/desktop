@@ -25,7 +25,6 @@
 #include "loginrequireddialog.h"
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
-#include "quotainfo.h"
 
 class QModelIndex;
 class QNetworkReply;
@@ -66,7 +65,6 @@ signals:
 
 public slots:
     void slotOpenOC();
-    void slotUpdateQuota(qint64, qint64);
     void slotAccountStateChanged();
 
 protected slots:
