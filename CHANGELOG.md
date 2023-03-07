@@ -16,6 +16,7 @@ Summary
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
+* Enhancement - Display quota for Spaces: [#10453](https://github.com/owncloud/client/issues/10453)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 * Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
 * Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
@@ -73,6 +74,12 @@ Details
    Qt5 By default rounds up the selected scale for values > .5 We now use the actual scale factor.
 
    https://github.com/owncloud/client/issues/10406
+
+* Enhancement - Display quota for Spaces: [#10453](https://github.com/owncloud/client/issues/10453)
+
+   Quota is now displayed for all folders.
+
+   https://github.com/owncloud/client/issues/10453
 
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 
