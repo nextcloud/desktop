@@ -533,7 +533,17 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    @objc func convertNKFileToItemMetadata(_ file: NKFile, account: String) -> NextcloudItemMetadataTable {
+    private func sortedLocalFileMetadatas(_ metadatas: Results<NextcloudLocalFileMetadataTable>) -> [NextcloudLocalFileMetadataTable] {
+        let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
+        return Array(sortedMetadatas.map { NextcloudLocalFileMetadataTable(value: $0) })
+    }
+
+    func localFileMetadatas(account: String) -> [NextcloudLocalFileMetadataTable] {
+        let results = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("account == %@", account)
+        return sortedLocalFileMetadatas(results)
+    }
+
+    func convertNKFileToItemMetadata(_ file: NKFile, account: String) -> NextcloudItemMetadataTable {
 
         let metadata = NextcloudItemMetadataTable()
 
