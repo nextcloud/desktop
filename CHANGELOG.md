@@ -20,6 +20,7 @@ Summary
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
+* Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
 
 Details
 -------
@@ -97,6 +98,13 @@ Details
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 
    https://github.com/owncloud/client/issues/10537
+
+* Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
+
+   Don't display `No connection configured` when disconnected but `Disconnected from:`.
+   Introduce new state, `Connecting to`.
+
+   https://github.com/owncloud/client/issues/10557
 
 Changelog for ownCloud Desktop Client [3.2.0] (2024-02-15)
 =======================================
