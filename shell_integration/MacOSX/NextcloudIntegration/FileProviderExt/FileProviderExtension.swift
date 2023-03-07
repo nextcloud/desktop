@@ -145,6 +145,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         var progress = Progress()
 
+        // TODO: Handle folders nicely
         do {
             let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
 
@@ -269,7 +270,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     }
 
                     DispatchQueue.global().async {
-                        dbManager.convertNKFilesToItemMetadatas(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
+                        dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                             let newDirectoryMetadata = dbManager.directoryMetadataFromItemMetadata(directoryItemMetadata: directoryMetadata)
                             dbManager.addDirectoryMetadata(newDirectoryMetadata)

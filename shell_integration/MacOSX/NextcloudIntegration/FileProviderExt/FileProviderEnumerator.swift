@@ -185,11 +185,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
-        var directoryEtag: String?
-
-        if let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl) {
-            directoryEtag = directoryMetadata.etag
-        }
 
         NSLog("Starting to read serverUrl: %@ for user: %@ at depth 0. NCKit info: user: %@, userId: %@, password: %@, urlBase: %@, ncVersion: %d", serverUrl, ncKitAccount, ncKit.nkCommonInstance.user, ncKit.nkCommonInstance.userId, ncKit.nkCommonInstance.password, ncKit.nkCommonInstance.urlBase, ncKit.nkCommonInstance.nextcloudVersion)
 
@@ -200,11 +195,30 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
-            // If we have already done a 0 depth scan of this folder then we might get matching etag
-            guard directoryEtag != files.first?.etag else {
-                NSLog("Fetched directory etag is same as that stored locally (serverUrl: %@ user: %@). Not fetching child items.", serverUrl, account)
-                finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, readError: nil, completionHandler: completionHandler)
+            guard let receivedItem = files.first else {
+                NSLog("Received no items from readFileOrFolder, not much we can do...")
+                finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, readError: NSFileProviderError(.noSuchItem), completionHandler: completionHandler)
                 return
+            }
+
+            guard receivedItem.directory else {
+                NSLog("Read item is a file. Converting NKfile for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
+                let itemMetadata = dbManager.convertNKFileToItemMetadata(receivedItem, account: ncKitAccount)
+                dbManager.addItemMetadata(itemMetadata)
+                finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, readError: NSFileProviderError(.noSuchItem), completionHandler: completionHandler)
+                return
+            }
+
+            // If we have already done a full readFileOrFolder scan of this folder then it will be in the database.
+            // We can check for matching etags and stop here if this is the case, as the state is the same.
+            if let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl) {
+                let directoryEtag = directoryMetadata.etag
+
+                guard directoryEtag == "" || directoryEtag != receivedItem.etag else {
+                    NSLog("Fetched directory etag is same as that stored locally (serverUrl: %@ user: %@). Not fetching child items.", serverUrl, account)
+                    finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, readError: nil, completionHandler: completionHandler)
+                    return
+                }
             }
 
             NSLog("Starting to read serverUrl: %@ for user: %@ at depth 1", serverUrl, ncKitAccount)
@@ -218,7 +232,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 NSLog("Starting async conversion of NKFiles for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
                 DispatchQueue.global().async {
-                    dbManager.convertNKFilesToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
+                    dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                         // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
                         dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)

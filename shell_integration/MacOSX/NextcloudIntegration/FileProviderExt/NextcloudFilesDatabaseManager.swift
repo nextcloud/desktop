@@ -633,7 +633,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         return metadata
     }
 
-    func convertNKFilesToItemMetadatas(_ files: [NKFile], account: String, completionHandler: @escaping (_ directoryMetadata: NextcloudItemMetadataTable, _ childDirectoriesMetadatas: [NextcloudItemMetadataTable], _ metadatas: [NextcloudItemMetadataTable]) -> Void) {
+    func convertNKFilesFromDirectoryReadToItemMetadatas(_ files: [NKFile], account: String, completionHandler: @escaping (_ directoryMetadata: NextcloudItemMetadataTable, _ childDirectoriesMetadatas: [NextcloudItemMetadataTable], _ metadatas: [NextcloudItemMetadataTable]) -> Void) {
 
         var directoryMetadataSet = false
         var directoryMetadata = NextcloudItemMetadataTable()
