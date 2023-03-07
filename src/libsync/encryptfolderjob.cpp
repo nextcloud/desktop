@@ -32,12 +32,69 @@ EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, SyncJournalDb *jou
 {
 }
 
-void EncryptFolderJob::start()
+void EncryptFolderJob::slotFetchTopLevelFolderMetadata(const QByteArray &folderId)
+{
+    const auto job = new GetMetadataApiJob(_account, folderId);
+    connect(job, &GetMetadataApiJob::jsonReceived, this, &EncryptFolderJob::slotTopLevelFolderMetadataReceived);
+    connect(job, &GetMetadataApiJob::error, this, &EncryptFolderJob::slotTopLevelFolderMetadataError);
+    job->start();
+}
+
+void EncryptFolderJob::slotFetchTopLevelFolderEncryptedId(const QString &remotePath)
+{
+    auto job = new LsColJob(_account, remotePath, this);
+    job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+    connect(job, &LsColJob::directoryListingSubfolders, this, &EncryptFolderJob::slotTopLevelFolderEncryptedIdReceived);
+    connect(job, &LsColJob::finishedWithError, this, &EncryptFolderJob::slotTopLevelFolderEncryptedIdError);
+    job->start();
+}
+
+void EncryptFolderJob::slotTopLevelFolderEncryptedIdReceived(const QStringList &list)
+{
+    const auto job = qobject_cast<LsColJob *>(sender());
+    if (!job || list.isEmpty()) {
+        emit finished(Error);
+        return;
+    }
+    const auto &folderInfo = job->_folderInfos.value(list.first());
+    slotFetchTopLevelFolderMetadata(folderInfo.fileId);
+}
+
+void EncryptFolderJob::slotTopLevelFolderEncryptedIdError(QNetworkReply *r)
+{
+    if (!r) {
+        qDebug() << "Error retrieving the Id of the encrypted folder" << _path;
+    } else {
+        qDebug() << "Error retrieving the Id of the encrypted folder" << _path << "with httpErrorCode"
+                                             << r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    }
+    emit finished(Error);
+}
+
+void EncryptFolderJob::slotTopLevelFolderMetadataReceived(const QJsonDocument &json, int statusCode)
+{
+    qDebug() << "Metadata received, applying it to the result list";
+    _topLevelE2eeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode));
+    slotSetEncryptionFlag();
+}
+
+void EncryptFolderJob::slotSetEncryptionFlag()
 {
     auto job = new OCC::SetEncryptionFlagApiJob(_account, _fileId, OCC::SetEncryptionFlagApiJob::Set, this);
     connect(job, &OCC::SetEncryptionFlagApiJob::success, this, &EncryptFolderJob::slotEncryptionFlagSuccess);
     connect(job, &OCC::SetEncryptionFlagApiJob::error, this, &EncryptFolderJob::slotEncryptionFlagError);
     job->start();
+}
+
+void EncryptFolderJob::slotTopLevelFolderMetadataError(const QByteArray &folderId, int httpReturnCode)
+{
+    qWarning() << "E2EE Metadata job error. Trying to proceed without it." << folderId << httpReturnCode;
+    emit finished(404);
+}
+
+void EncryptFolderJob::start()
+{
+    slotSetEncryptionFlag();
 }
 
 QString EncryptFolderJob::errorString() const
@@ -83,21 +140,25 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
 {
     _folderToken = token;
 
-    const QSharedPointer<FolderMetadata> emptyMetadata(new FolderMetadata(_account, {}));
-    const auto encryptedMetadata = emptyMetadata->encryptedMetadata();
-    if (encryptedMetadata.isEmpty()) {
-        // TODO: Mark the folder as unencrypted as the metadata generation failed.
-        _errorString =
-            tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
-               "This can be an issue with your OpenSSL libraries.");
-        emit finished(Error);
-        return;
-    }
+    const auto subPathSplit = _path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    const auto topLevelFolderPath = subPathSplit.size() > 1 ? subPathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
+    const QSharedPointer<FolderMetadata> emptyMetadata(new FolderMetadata(_account, {}, -1, {}, topLevelFolderPath));
+    connect(emptyMetadata.data(), &FolderMetadata::setupComplete, this, [this, emptyMetadata, fileId] {
+        const auto encryptedMetadata = emptyMetadata->encryptedMetadata();
+        if (encryptedMetadata.isEmpty()) {
+            // TODO: Mark the folder as unencrypted as the metadata generation failed.
+            _errorString =
+                tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
+                   "This can be an issue with your OpenSSL libraries.");
+            emit finished(Error);
+            return;
+        }
 
-    auto storeMetadataJob = new StoreMetaDataApiJob(_account, fileId, emptyMetadata->encryptedMetadata(), this);
-    connect(storeMetadataJob, &StoreMetaDataApiJob::success, this, &EncryptFolderJob::slotUploadMetadataSuccess);
-    connect(storeMetadataJob, &StoreMetaDataApiJob::error, this, &EncryptFolderJob::slotUpdateMetadataError);
-    storeMetadataJob->start();
+        auto storeMetadataJob = new StoreMetaDataApiJob(_account, fileId, emptyMetadata->encryptedMetadata(), this);
+        connect(storeMetadataJob, &StoreMetaDataApiJob::success, this, &EncryptFolderJob::slotUploadMetadataSuccess);
+        connect(storeMetadataJob, &StoreMetaDataApiJob::error, this, &EncryptFolderJob::slotUpdateMetadataError);
+        storeMetadataJob->start();
+    });
 }
 
 void EncryptFolderJob::slotUploadMetadataSuccess(const QByteArray &folderId)

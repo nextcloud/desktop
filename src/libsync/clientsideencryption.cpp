@@ -1569,14 +1569,75 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
     job->start();
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, const QSharedPointer<FolderMetadata> &topLevelFolderMetadata, const QByteArray &metadata, int statusCode, QObject *parent)
+
+FolderMetadata::FolderMetadata(AccountPtr account,
+                               const QByteArray &metadata,
+                               int statusCode,
+                               const QSharedPointer<FolderMetadata> &topLevelFolderMetadata,
+                               const QString &topLevelFolderPath,
+                               QObject *parent)
     : QObject(parent)
     , _account(account)
-    , _topLevelFolderMetadata(topLevelFolderMetadata)
     , _initialMetadata(metadata)
     , _initialStatusCode(statusCode)
+    , _topLevelFolderMetadata(topLevelFolderMetadata)
+    , _topLevelFolderPath(topLevelFolderPath)
 {
-    setupMetadata();
+    QJsonDocument doc = QJsonDocument::fromJson(metadata);
+    qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
+
+    // The metadata is being retrieved as a string stored in a json.
+    // This *seems* to be broken but the RFC doesn't explicits how it wants.
+    // I'm currently unsure if this is error on my side or in the server implementation.
+    // And because inside of the meta-data there's an object called metadata, without '-'
+    // make it really different.
+
+    QString metaDataStr = doc.object()["ocs"].toObject()["data"].toObject()["meta-data"].toString();
+
+    QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
+    QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
+    QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
+    const auto folderUsers = metaDataDoc[usersKey].toArray();
+
+    if (!_topLevelFolderMetadata && !_topLevelFolderPath.isEmpty() && _topLevelFolderPath != QStringLiteral("/") && folderUsers.isEmpty() && metadataKeys.isEmpty()) {
+        fetchTopLevelFolderMetadata();
+    } else {
+        setupMetadata();
+    }
+}
+
+void FolderMetadata::setupMetadata()
+{
+    if (_initialMetadata.isEmpty() || _initialStatusCode == 404) {
+        qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
+        setupEmptyMetadata();
+    } else {
+        qCInfo(lcCseMetadata()) << "Setting up existing metadata";
+        setupExistingMetadata(_initialMetadata);
+    }
+
+    if (_metadataKey.isEmpty() && _folderUsers.contains(_account->davUser())) {
+        const auto currentFolderUser = _folderUsers.value(_account->davUser());
+        const auto currentFolderUserEncryptedMetadataKey = currentFolderUser.encryptedMetadataKey;
+        _metadataKey = decryptData(currentFolderUserEncryptedMetadataKey.toBase64());
+    }
+
+    if (!_topLevelFolderMetadata && !_folderUsers.contains(_account->davUser()) && !_metadataKey.isEmpty()) {
+        const auto encryptedLatestMetadataKey = encryptData(_metadataKey.toBase64());
+        _folderUsers[_account->davUser()] = {_account->davUser(), _account->e2e()->_certificate.toPem(), encryptedLatestMetadataKey};
+    }
+
+    if (_metadataKey.isEmpty()) {
+        if (_topLevelFolderMetadata) {
+            _metadataKey = _topLevelFolderMetadata->metadataKey();
+        }
+    }
+
+    if (_metadataKey.isEmpty()) {
+        qCWarning(lcCseMetadata()) << "Failed to setup FolderMetadata. Could not parse/create _metadataKey!";
+    }
+
+    emitSetupComplete();
 }
 
 void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
@@ -1597,12 +1658,18 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
     QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
+    const auto version = metadataObj.contains("version") ? metadataObj["version"].toInt() : metaDataDoc.object()["version"].toInt();
     QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
     const auto folderUsers = metaDataDoc[usersKey].toArray();
 
     if (metadataKeys.isEmpty() && folderUsers.isEmpty()) {
-        qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
-        return;
+        if (_topLevelFolderMetadata) {
+            _metadataKey = _topLevelFolderMetadata->metadataKey();
+        }
+        if (_metadataKey.isEmpty()) {
+            qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
+            return;
+        }
     }
 
     _fileDrop = metaDataDoc.object().value("filedrop").toObject();
@@ -1619,13 +1686,13 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
                                 folderUser.value(usersEncryptedMetadataKey).toString().toUtf8()};
     }
 
-    if (!metadataKeys.isEmpty()) {
+    if (version < 2 && !metadataKeys.isEmpty()) {
         const auto currB64Pass = metadataKeys.value(metadataKeys.keys().last()).toString().toLocal8Bit();
         const auto b64DecryptedKey = decryptData(currB64Pass);
         _metadataKey = QByteArray::fromBase64(b64DecryptedKey);
     }
 
-    if (_folderUsers.contains(_account->davUser())) {
+    if (version >= 2 && _folderUsers.contains(_account->davUser())) {
         const auto currentFolderUser = _folderUsers.value(_account->davUser());
         const auto currentFolderUserEncryptedMetadataKey = currentFolderUser.encryptedMetadataKey;
         _metadataKey = QByteArray::fromBase64(decryptData(currentFolderUserEncryptedMetadataKey));
@@ -1636,11 +1703,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         return;
     }
 
-    QByteArray nonce = metadataObj["nonce"].toString().toLocal8Bit();
-    QByteArray authenticationTag = metadataObj["authenticationTag"].toString().toLocal8Bit();
-    QByteArray cipherText = metadataObj["ciphertext"].toString().toLocal8Bit();
-    QByteArray cipherTextDecrypted = decryptJsonObject(cipherText, _metadataKey);
-    QJsonDocument cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
+    const auto nonce = metadataObj["nonce"].toString().toLocal8Bit();
+    const auto authenticationTag = metadataObj["authenticationTag"].toString().toLocal8Bit();
+    const auto cipherText = metadataObj["ciphertext"].toString().toLocal8Bit();
+    const auto cipherTextDecrypted = version > 1 ? decryptJsonObject(cipherText, _metadataKey) : QByteArray{};
+    const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
     const auto keyChecksums = cipherTextDocument[keyChecksumsKey].toArray();
     for (auto it = keyChecksums.constBegin(); it != keyChecksums.constEnd(); ++it) {
         const auto keyChecksum = it->toVariant().toString().toUtf8();
@@ -1649,17 +1716,25 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
         }
     }
 
-    if (!verifyMetadataKey()) {
+    if (keyChecksums.isEmpty()) {
+        if (_topLevelFolderMetadata) {
+            _keyChecksums = _topLevelFolderMetadata->keyChecksums();
+        }
+    }
+
+    if (version > 1 && !verifyMetadataKey()) {
         qCDebug(lcCse()) << "Could not verify metadataKey!";
         return;
     }
 
-    if (cipherTextDecrypted.isEmpty()) {
+    if (version > 1 && cipherTextDecrypted.isEmpty()) {
         qCDebug(lcCse()) << "Could not decrypt metadata key!";
         return;
     }
-    QByteArray sharing = cipherTextDocument["sharing"].toString().toLocal8Bit();
-    QJsonObject files = cipherTextDocument.object()["files"].toObject();
+
+
+    QByteArray sharing = version > 1 ? cipherTextDocument["sharing"].toString().toLocal8Bit() : metadataObj["sharing"].toString().toLocal8Bit();
+    QJsonObject files = version > 1 ? cipherTextDocument.object()["files"].toObject() : metaDataDoc.object()["files"].toObject();
     QJsonObject folders = cipherTextDocument.object()["folders"].toObject();
 
     // Cool, We actually have the key, we can decrypt the rest of the metadata.
@@ -1696,53 +1771,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
     }
 }
 
-void FolderMetadata::fetchTopLevelFolderMetadata()
+void FolderMetadata::emitSetupComplete()
 {
-    /*const auto job = new LsColJob(_account, _topLevelFolderPath, this);
-    job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
-    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderMetadata::folderEncryptedIdReceived);
-    connect(job, &LsColJob::finishedWithError, this, &FolderMetadata::folderEncryptedIdError);
-    job->start();*/
-}
-
-void FolderMetadata::folderEncryptedIdReceived(const QStringList &list)
-{
-    const auto job = qobject_cast<LsColJob *>(sender());
-    Q_ASSERT(job);
-    if (!job) {
-        return;
-    }
-
-    if (job->_folderInfos.isEmpty()) {
-        return;
-    }
-
-    const auto &folderInfo = job->_folderInfos.value(list.first());
-    
-    const auto getMetadataJob = new GetMetadataApiJob(_account, folderInfo.fileId);
-    connect(getMetadataJob, &GetMetadataApiJob::jsonReceived, this, &FolderMetadata::folderEncryptedMetadataReceived);
-    connect(getMetadataJob, &GetMetadataApiJob::error, this, &FolderMetadata::folderEncryptedMetadataError);
-
-    getMetadataJob->start();
-}
-
-void FolderMetadata::folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode)
-{
-    Q_UNUSED(fileId);
-    Q_UNUSED(httpReturnCode);
-}
-
-void FolderMetadata::folderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
-{
-    /*_topLevelFolderMetadata.reset(new FolderMetadata(_account, {}, json.toJson(QJsonDocument::Compact), statusCode));
-    connect(_topLevelFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this]() {
-        setupMetadata();
-    });*/
-}
-
-void FolderMetadata::folderEncryptedIdError(QNetworkReply *r)
-{
-    //emitSetupComplete();
+    QTimer::singleShot(0, this, [this]() {
+        emit setupComplete();
+    });
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
@@ -1842,41 +1875,16 @@ bool FolderMetadata::isMetadataSetup() const
     return !_metadataKey.isEmpty();
 }
 
-void FolderMetadata::setupMetadata()
-{
-    if (_initialMetadata.isEmpty() || _initialStatusCode == 404) {
-        qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
-        setupEmptyMetadata();
-    } else {
-        qCInfo(lcCseMetadata()) << "Setting up existing metadata";
-        setupExistingMetadata(_initialMetadata);
-    }
-
-    if (_metadataKey.isEmpty() && _folderUsers.contains(_account->davUser())) {
-        const auto currentFolderUser = _folderUsers.value(_account->davUser());
-        const auto currentFolderUserEncryptedMetadataKey = currentFolderUser.encryptedMetadataKey;
-        _metadataKey = decryptData(currentFolderUserEncryptedMetadataKey.toBase64());
-    }
-
-    if (!_folderUsers.contains(_account->davUser()) && !_metadataKey.isEmpty()) {
-        const auto encryptedLatestMetadataKey = encryptData(_metadataKey.toBase64());
-        _folderUsers[_account->davUser()] = {_account->davUser(), _account->e2e()->_certificate.toPem(), encryptedLatestMetadataKey};
-    }
-
-    if (_metadataKey.isEmpty()) {
-        if (_topLevelFolderMetadata) {
-            _metadataKey = _topLevelFolderMetadata->metadataKey();
-        }
-    }
-
-    if (_metadataKey.isEmpty()) {
-        qCWarning(lcCseMetadata()) << "Failed to setup FolderMetadata. Could not parse/create _metadataKey!";
-    }
-}
-
 void FolderMetadata::setupEmptyMetadata() {
     qCDebug(lcCse) << "Setting up empty metadata";
-    createNewMetadataKey();
+    if (_topLevelFolderMetadata) {
+        _metadataKey = _topLevelFolderMetadata->metadataKey();
+        _keyChecksums = _topLevelFolderMetadata->keyChecksums();
+    }
+
+    if (_metadataKey.isEmpty()) {
+        createNewMetadataKey();
+    }
 
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
     QString displayName = _account->displayName();
@@ -1943,7 +1951,7 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         {"folders", folders}
     };
 
-    if (!_topLevelFolderMetadata && !keyChecksums.isEmpty()) {
+    if (!keyChecksums.isEmpty()) {
         cipherText.insert(keyChecksumsKey, keyChecksums);
     }
 
@@ -1961,12 +1969,13 @@ QByteArray FolderMetadata::encryptedMetadata() const {
       {"version", 2}
     };
 
-    if (!_topLevelFolderMetadata && !folderUsers.isEmpty()) {
+    if (!folderUsers.isEmpty()) {
         metaObject.insert(usersKey, folderUsers);
     }
 
     QJsonDocument internalMetadata;
     internalMetadata.setObject(metaObject);
+
     return internalMetadata.toJson();
 }
 
@@ -2045,6 +2054,58 @@ bool FolderMetadata::moveFromFileDropToFiles()
 QJsonObject FolderMetadata::fileDrop() const
 {
     return _fileDrop;
+}
+
+void FolderMetadata::fetchTopLevelFolderMetadata()
+{
+    const auto job = new LsColJob(_account, _topLevelFolderPath, this);
+    job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderMetadata::folderEncryptedIdReceived);
+    connect(job, &LsColJob::finishedWithError, this, &FolderMetadata::folderEncryptedIdError);
+    job->start();
+}
+
+void FolderMetadata::folderEncryptedIdReceived(const QStringList &list)
+{
+    const auto job = qobject_cast<LsColJob *>(sender());
+    Q_ASSERT(job);
+    if (!job) {
+        emitSetupComplete();
+        return;
+    }
+
+    if (job->_folderInfos.isEmpty()) {
+        emitSetupComplete();
+        return;
+    }
+
+    const auto &folderInfo = job->_folderInfos.value(list.first());
+
+    const auto getMetadataJob = new GetMetadataApiJob(_account, folderInfo.fileId);
+    connect(getMetadataJob, &GetMetadataApiJob::jsonReceived, this, &FolderMetadata::folderEncryptedMetadataReceived);
+    connect(getMetadataJob, &GetMetadataApiJob::error, this, &FolderMetadata::folderEncryptedMetadataError);
+
+    getMetadataJob->start();
+}
+
+void FolderMetadata::folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode)
+{
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+    emitSetupComplete();
+}
+
+void FolderMetadata::folderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
+{
+    _topLevelFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode));
+    connect(_topLevelFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this]() {
+        setupMetadata();
+    });
+}
+
+void FolderMetadata::folderEncryptedIdError(QNetworkReply *r)
+{
+    emitSetupComplete();
 }
 
 bool FolderMetadata::addUser(const QString &userId, const QSslCertificate certificate)

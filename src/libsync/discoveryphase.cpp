@@ -636,34 +636,36 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     const auto topLevelFolderPath = subPathSplit.size() > 1 ? subPathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
     const auto topLevelFolderMetadata = topLevelFolderPath != QStringLiteral("/") ? _topLevelE2eeFolderMetadata : QSharedPointer<FolderMetadata>{};
 
-    _e2EeFolderMetadata.reset(new FolderMetadata(_account, topLevelFolderMetadata, json.toJson(QJsonDocument::Compact), statusCode));
-    _isFileDropDetected = _e2EeFolderMetadata->isFileDropPresent();
-    const auto encryptedFiles = _e2EeFolderMetadata->files();
+    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode, topLevelFolderMetadata, topLevelFolderPath));
+    connect(_e2EeFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this] {
+        _isFileDropDetected = _e2EeFolderMetadata->isFileDropPresent();
+        const auto encryptedFiles = _e2EeFolderMetadata->files();
 
-    const auto findEncryptedFile = [=](const QString &name) {
-        const auto it = std::find_if(std::cbegin(encryptedFiles), std::cend(encryptedFiles), [=](const EncryptedFile &file) {
-            return file.encryptedFilename == name;
+        const auto findEncryptedFile = [=](const QString &name) {
+            const auto it = std::find_if(std::cbegin(encryptedFiles), std::cend(encryptedFiles), [=](const EncryptedFile &file) {
+                return file.encryptedFilename == name;
+            });
+            if (it == std::cend(encryptedFiles)) {
+                return Optional<EncryptedFile>();
+            } else {
+                return Optional<EncryptedFile>(*it);
+            }
+        };
+
+        std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=](const RemoteInfo &info) {
+            auto result = info;
+            const auto encryptedFileInfo = findEncryptedFile(result.name);
+            if (encryptedFileInfo) {
+                result.isE2eEncrypted = true;
+                result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
+                result.name = encryptedFileInfo->originalFilename;
+            }
+            return result;
         });
-        if (it == std::cend(encryptedFiles)) {
-            return Optional<EncryptedFile>();
-        } else {
-            return Optional<EncryptedFile>(*it);
-        }
-    };
 
-    std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=](const RemoteInfo &info) {
-        auto result = info;
-        const auto encryptedFileInfo = findEncryptedFile(result.name);
-        if (encryptedFileInfo) {
-            result.isE2eEncrypted = true;
-            result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
-            result.name = encryptedFileInfo->originalFilename;
-        }
-        return result;
+        emit finished(_results);
+        deleteLater();
     });
-
-    emit finished(_results);
-    deleteLater();
 }
 
 void DiscoverySingleDirectoryJob::metadataError(const QByteArray &fileId, int httpReturnCode)

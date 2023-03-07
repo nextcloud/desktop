@@ -201,31 +201,33 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
     const QString filename = e2eMangledName();
     const auto pathSplit = filename.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-    const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, json.toJson(QJsonDocument::Compact)));
-    if (metadata->isMetadataSetup()) {
-        const QVector<EncryptedFile> files = metadata->files();
+    const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), -1, {}, topLevelFolderPath));
+    connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata, filename] {
+        if (metadata->isMetadataSetup()) {
+            const QVector<EncryptedFile> files = metadata->files();
 
-        EncryptedFile encryptedInfo = {};
+            EncryptedFile encryptedInfo = {};
 
-        const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
-        for (const EncryptedFile &file : files) {
-            if (encryptedFileExactName == file.encryptedFilename) {
-                EncryptedFile encryptedInfo = file;
-                encryptedInfo = file;
+            const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
+            for (const EncryptedFile &file : files) {
+                if (encryptedFileExactName == file.encryptedFilename) {
+                    EncryptedFile encryptedInfo = file;
+                    encryptedInfo = file;
 
-                qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
-                _transferDataSocket = _transferDataServer->nextPendingConnection();
-                _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
+                    qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
+                    _transferDataSocket = _transferDataServer->nextPendingConnection();
+                    _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
 
-                connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
-                _job->start();
-                return;
+                    connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
+                    _job->start();
+                    return;
+                }
             }
         }
-    }
 
-    qCCritical(lcHydration) << "Failed to find encrypted metadata information of a remote file" << filename;
-    emitFinished(Error);
+        qCCritical(lcHydration) << "Failed to find encrypted metadata information of a remote file" << filename;
+        emitFinished(Error);
+    });
 }
 
 void OCC::HydrationJob::cancel()

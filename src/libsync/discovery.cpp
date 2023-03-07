@@ -1846,8 +1846,8 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
         serverJob->setIsRootPath(); // query the fingerprint on the root
     }
     if (_dirItem && _dirItem->_isEncrypted && !_dirItem->_encryptedFileName.isEmpty()) {
-        const auto dirItemSplit = _dirItem->_file.split('/', Qt::SkipEmptyParts);
-        const auto foundTopLevelE2eeFolderMetadata = _discoveryData->_topLevelE2eeFoldersMetadata.find(dirItemSplit.first());
+        const auto dirItemSplit = _dirItem->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+        const auto foundTopLevelE2eeFolderMetadata = _discoveryData->_topLevelE2eeFoldersMetadata.find(dirItemSplit.first() + QLatin1Char('/'));
         if (foundTopLevelE2eeFolderMetadata != _discoveryData->_topLevelE2eeFoldersMetadata.end()) {
             serverJob->setTopLevelE2eeFolderMetadata(foundTopLevelE2eeFolderMetadata.value());
         }
@@ -1858,7 +1858,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
         if (_dirItem) {
             if (_dirItem->_isEncrypted && _dirItem->_encryptedFileName.isEmpty()) {
-                _discoveryData->_topLevelE2eeFoldersMetadata[_dirItem->_file + QStringLiteral("/")] = serverJob->e2eeFolderMetadata();
+                _discoveryData->_topLevelE2eeFoldersMetadata[_dirItem->_file + QLatin1Char('/')] = serverJob->e2eeFolderMetadata();
             }
             _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
             qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << true;

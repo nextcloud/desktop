@@ -204,7 +204,13 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
     };
 
 public:
-    FolderMetadata(AccountPtr account, const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {}, const QByteArray &metadata = QByteArray(), int statusCode = -1, QObject *parent = nullptr);
+    FolderMetadata(AccountPtr account,
+                   const QByteArray &metadata = {},
+                   int statusCode = -1,
+                   const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {},
+                   const QString &topLevelFolderPath = {},
+                   QObject *parent = nullptr);
+
     [[nodiscard]] QByteArray encryptedMetadata() const;
     [[nodiscard]] QVector<EncryptedFile> files() const;
     [[nodiscard]] bool isMetadataSetup() const;
@@ -253,8 +259,13 @@ private slots:
     void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
+    void emitSetupComplete();
+
+signals:
+    void setupComplete();
 
 private:
+
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
     QSet<QByteArray> _keyChecksums;
@@ -262,9 +273,10 @@ private:
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
-    QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QByteArray _initialMetadata;
     int _initialStatusCode = -1;
+    QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
+    QString _topLevelFolderPath;
 };
 
 } // namespace OCC

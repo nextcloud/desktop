@@ -47,6 +47,13 @@ private slots:
     void slotUnlockFolderError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
     void slotUploadMetadataSuccess(const QByteArray &folderId);
     void slotUpdateMetadataError(const QByteArray &folderId, const int httpReturnCode);
+    void slotFetchTopLevelFolderMetadata(const QByteArray &folderId);
+    void slotTopLevelFolderMetadataReceived(const QJsonDocument &json, int statusCode);
+    void slotTopLevelFolderMetadataError(const QByteArray &folderId, int httpReturnCode);
+    void slotFetchTopLevelFolderEncryptedId(const QString &remotePath);
+    void slotTopLevelFolderEncryptedIdReceived(const QStringList &list);
+    void slotTopLevelFolderEncryptedIdError(QNetworkReply *r);
+    void slotSetEncryptionFlag();
 
 private:
     AccountPtr _account;
@@ -55,5 +62,6 @@ private:
     QByteArray _fileId;
     QByteArray _folderToken;
     QString _errorString;
+    QSharedPointer<FolderMetadata> _topLevelE2eeFolderMetadata;
 };
 }

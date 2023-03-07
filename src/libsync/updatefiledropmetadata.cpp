@@ -124,18 +124,20 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
     // Encrypt File!
     const auto pathSplit = _path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-    _metadata.reset(new FolderMetadata(propagator()->account(), propagator()->findTopLevelFolderMetadata(topLevelFolderPath), json.toJson(QJsonDocument::Compact), statusCode));
-    if (!_metadata->moveFromFileDropToFiles()) {
-        unlockFolder();
-        return;
-    }
+    _metadata.reset(new FolderMetadata(propagator()->account(), json.toJson(QJsonDocument::Compact), statusCode, propagator()->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath));
+    connect(_metadata.data(), &FolderMetadata::setupComplete, this, [this] {
+        if (!_metadata->moveFromFileDropToFiles()) {
+            unlockFolder();
+            return;
+        }
 
-    emit fileDropMetadataParsedAndAdjusted(_metadata.data());
+        emit fileDropMetadataParsedAndAdjusted(_metadata.data());
 
-    const auto updateMetadataJob = new UpdateMetadataApiJob(propagator()->account(), _folderId, _metadata->encryptedMetadata(), _folderToken);
-    connect(updateMetadataJob, &UpdateMetadataApiJob::success, this, &UpdateFileDropMetadataJob::slotUpdateMetadataSuccess);
-    connect(updateMetadataJob, &UpdateMetadataApiJob::error, this, &UpdateFileDropMetadataJob::slotUpdateMetadataError);
-    updateMetadataJob->start();
+        const auto updateMetadataJob = new UpdateMetadataApiJob(propagator()->account(), _folderId, _metadata->encryptedMetadata(), _folderToken);
+        connect(updateMetadataJob, &UpdateMetadataApiJob::success, this, &UpdateFileDropMetadataJob::slotUpdateMetadataSuccess);
+        connect(updateMetadataJob, &UpdateMetadataApiJob::error, this, &UpdateFileDropMetadataJob::slotUpdateMetadataError);
+        updateMetadataJob->start();
+    });
 }
 
 void UpdateFileDropMetadataJob::slotUpdateMetadataSuccess(const QByteArray &fileId)
