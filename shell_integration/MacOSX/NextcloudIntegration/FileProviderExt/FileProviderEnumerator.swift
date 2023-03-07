@@ -29,8 +29,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         self.ncAccount = ncAccount
         self.ncKit = ncKit
 
-        if enumeratedItemIdentifier == .rootContainer {
-            NSLog("Providing enumerator for root container")
+        if enumeratedItemIdentifier == .rootContainer || enumeratedItemIdentifier == .trashContainer || enumeratedItemIdentifier == .workingSet {
+            NSLog("Providing enumerator for a system defined container: %@", enumeratedItemIdentifier.rawValue)
             self.serverUrl = ncAccount.davFilesUrl
         } else {
             NSLog("Providing enumerator for item with identifier: %@", enumeratedItemIdentifier.rawValue)
@@ -69,7 +69,15 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         if enumeratedItemIdentifier == .workingSet {
             NSLog("Enumerating working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-            // TODO
+            // TODO: Enumerate favourites and other special items
+
+            let materialisedFilesMetadatas = NextcloudFilesDatabaseManager.shared.localFileItemMetadatas(account: ncAccount.ncKitAccount)
+            FileProviderEnumerator.completeObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: materialisedFilesMetadatas, error: nil, createLocalFileOrDirectory: false)
+            return
+        } else if enumeratedItemIdentifier == .trashContainer {
+            NSLog("Enumerating trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            // TODO!
+
             observer.finishEnumerating(upTo: nil)
             return
         }
@@ -111,7 +119,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    private static func completeObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?, error: Error?) {
+    private static func completeObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?, error: Error?, createLocalFileOrDirectory: Bool = true) {
         guard error == nil else {
             NSLog("Finishing enumeration with error")
             observer.finishEnumeratingWithError(error!)
@@ -132,7 +140,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 continue
             }
 
-            createFileOrDirectoryLocally(metadata: itemMetadata)
+            if createLocalFileOrDirectory {
+                createFileOrDirectoryLocally(metadata: itemMetadata)
+            }
 
             if let parentItemIdentifier = parentItemIdentifierFromMetadata(itemMetadata) {
                 let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
