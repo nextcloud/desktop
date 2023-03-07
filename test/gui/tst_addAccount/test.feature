@@ -78,3 +78,16 @@ Feature: adding accounts
         And the user cancels the enable experimental vfs option
         Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
         And VFS enabled baseline image should not match the default screenshot
+
+    @skipOnOC10
+    Scenario: Add space manually from sync connection window
+        Given user "Alice" has created folder "simple-folder" on the server
+        And the user has started the client
+        And the user has added the following account information:
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
+        When the user selects manual sync folder option in advanced section
+        And the user syncs the "Personal" space
+        Then the folder "simple-folder" should exist on the file system
+

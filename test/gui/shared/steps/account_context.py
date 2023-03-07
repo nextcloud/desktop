@@ -1,4 +1,5 @@
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
+from pageObjects.SyncConnectionWizard import SyncConnectionWizard
 from pageObjects.EnterPassword import EnterPassword
 from pageObjects.Toolbar import Toolbar
 from pageObjects.AccountSetting import AccountSetting
@@ -250,7 +251,7 @@ def step(context):
 
 @When('the user cancels the sync connection wizard')
 def step(context):
-    AccountConnectionWizard.cancelFolderSyncConnectionWizard()
+    SyncConnectionWizard.cancelFolderSyncConnectionWizard()
 
 
 @Then("the sync folder should not be added")
