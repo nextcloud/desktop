@@ -4324,7 +4324,7 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/shareemodel.cpp" line="248"/>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
         <translation>%1 (%2)</translation>
@@ -5247,123 +5247,123 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="257"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Unsupported Server Version</source>
         <translation>Nepodržana inačica poslužitelja</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Poslužitelj na računu %1 koristi se nepodržanom inačicom %2. Upotreba ovog klijenta s nepodržanim inačicama poslužitelja nije testirana i potencijalno je opasna. Nastavite na vlastitu odgovornost.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Disconnected</source>
         <translation>Odspojen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Disconnected from some accounts</source>
         <translation>Odspojen od nekih računa</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <source>Disconnected from %1</source>
         <translation>Odspojen od %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Disconnected from accounts:</source>
         <translation>Odspojen od računa:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Account %1: %2</source>
         <translation>Račun %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
         <source>Please sign in</source>
         <translation>Prijavite se</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Signed out</source>
         <translation>Odjavljen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Account synchronization is disabled</source>
         <translation>Sinkronizacija računa je onemogućena</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="334"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="387"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="336"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Synchronization is paused</source>
         <translation>Sinkronizacija je pauzirana</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="374"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="376"/>
         <source>Folder %1: %2</source>
         <translation>Mapa %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="382"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Unresolved conflicts</source>
         <translation>Neriješena nepodudaranja</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
         <source>Up to date</source>
         <translation>Ažurno</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Error during synchronization</source>
         <translation>Pogreška tijekom sinkronizacije</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="392"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="394"/>
         <source>There are no sync folders configured.</source>
         <translation>Nema konfiguriranih mapa za sinkronizaciju.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
         <source>No sync folders configured</source>
         <translation>Nije konfigurirana nijedna mapa za sinkronizaciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="458"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Provjera za promjene u udaljenom „%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="461"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="463"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Provjera za promjene u lokalnom „%1”</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="479"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sinkronizacija %1 od %2 (preostalo %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="482"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinkronizacija %1 od %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="491"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="493"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinkronizacija %1 (preostalo %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Syncing %1</source>
         <translation>Sinkronizacija %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -5690,17 +5690,17 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="292"/>
         <source>Sharing is disabled</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="300"/>
         <source>This item cannot be shared.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="309"/>
         <source>Sharing is disabled.</source>
         <translation type="unfinished"/>
     </message>

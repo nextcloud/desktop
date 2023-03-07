@@ -4325,7 +4325,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/shareemodel.cpp" line="248"/>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
         <translation>%1 (%2)</translation>
@@ -5250,123 +5250,123 @@ Serwer odpowiedział błędem: %2</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="257"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Unsupported Server Version</source>
         <translation>Niewspierana wersja serwera</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Serwer na koncie %1 uruchomiony jest na starej i niewspieranej wersji %2. Używanie klienta z niewspieraną wersją serwera nie zostało przetestowane i jest potencjalnie niebezpieczne. Kontynuujesz na własne ryzyko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Disconnected</source>
         <translation>Rozłączony</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Disconnected from some accounts</source>
         <translation>Odłączono kilka kont</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <source>Disconnected from %1</source>
         <translation>Rozłączony z %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Disconnected from accounts:</source>
         <translation>Rozłączony z kontami:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
         <source>Please sign in</source>
         <translation>Proszę się zalogować</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Signed out</source>
         <translation>Odłączony</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Account synchronization is disabled</source>
         <translation>Synchronizacja konta jest wyłączona</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="334"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="387"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="336"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Synchronization is paused</source>
         <translation>Synchronizacja jest wstrzymana</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="374"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="376"/>
         <source>Folder %1: %2</source>
         <translation>Katalog %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="382"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Unresolved conflicts</source>
         <translation>Nierozpoznane konflikty</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
         <source>Up to date</source>
         <translation>Aktualny</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Error during synchronization</source>
         <translation>Błąd podczas synchronizacji</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="392"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="394"/>
         <source>There are no sync folders configured.</source>
         <translation>Nie skonfigurowano żadnych katalogów synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
         <source>No sync folders configured</source>
         <translation>Nie skonfigurowano katalogów do synchronizacji</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="458"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Sprawdzanie zmian w zdalnym &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="461"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="463"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Sprawdzanie zmian w lokalnym &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="479"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synchronizacja %1 z %2 (pozostało %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="482"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Syncing %1 of %2</source>
         <translation>Synchronizacja %1 z %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="491"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="493"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronizacja %1 (%2 pozostało)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Syncing %1</source>
         <translation>Synchronizacja %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -5693,17 +5693,17 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Udostępnij hasło</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="292"/>
         <source>Sharing is disabled</source>
         <translation>Udostępnianie jest wyłączone</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="300"/>
         <source>This item cannot be shared.</source>
         <translation>Nie można udostępnić tego elementu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="309"/>
         <source>Sharing is disabled.</source>
         <translation>Udostępnianie jest wyłączone.</translation>
     </message>
