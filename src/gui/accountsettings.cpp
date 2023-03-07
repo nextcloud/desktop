@@ -704,12 +704,6 @@ void AccountSettings::slotForceSyncCurrentFolder()
     }
 }
 
-void AccountSettings::slotOpenOC()
-{
-    if (_OCUrl.isValid())
-        QDesktopServices::openUrl(_OCUrl);
-}
-
 void AccountSettings::slotAccountStateChanged()
 {
     const AccountState::State state = _accountState->state();

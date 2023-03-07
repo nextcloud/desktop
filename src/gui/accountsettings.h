@@ -64,7 +64,6 @@ signals:
     void showIssuesList();
 
 public slots:
-    void slotOpenOC();
     void slotAccountStateChanged();
 
 protected slots:
@@ -98,7 +97,6 @@ private:
 
     FolderStatusModel *_model;
     QSortFilterProxyModel *_sortModel;
-    QUrl _OCUrl;
     bool _wasDisabledBefore;
     AccountStatePtr _accountState;
     QAction *_toggleSignInOutAction;
