@@ -203,6 +203,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("Received create item request for item with identifier: %@ and filename: %@", itemTemplate.itemIdentifier.rawValue, itemTemplate.filename)
 
+        guard itemTemplate.contentType != .symbolicLink else {
+            NSLog("Cannot create item, symbolic links not supported.")
+            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+            return Progress()
+        }
+
         guard let ncAccount = ncAccount else {
             NSLog("Not creating item: %@ as account not set up yet", itemTemplate.itemIdentifier.rawValue)
             completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.notAuthenticated))
