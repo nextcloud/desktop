@@ -143,6 +143,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("Fetching file with name %@ at URL: %@", metadata.fileName, serverUrlFileName)
 
+        var progress = Progress()
+
         do {
             let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
 
@@ -159,8 +161,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             }, taskHandler: { task in
                 self.outstandingSessionTasks[serverUrlFileName] = task
                 NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
-            }, progressHandler: { _ in
-
+            }, progressHandler: { downloadProgress in
+                downloadProgress.copyCurrentStateToProgress(progress)
             }) { _, etag, date, _, _, _, error in
                 self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
 
@@ -195,7 +197,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             NSLog("Could not find local path for file %@, received error: %@", metadata.fileNameView, error.localizedDescription)
         }
 
-        return Progress()
+        return progress
     }
     
     func createItem(basedOn itemTemplate: NSFileProviderItem, fields: NSFileProviderItemFields, contents url: URL?, options: NSFileProviderCreateItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
@@ -284,14 +286,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
+        var progress = Progress()
+
         self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                           fileNameLocalPath: fileNameLocalPath,
                           requestHandler: { _ in
         }, taskHandler: { task in
             self.outstandingSessionTasks[newServerUrlFileName] = task
             NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemTemplate.itemIdentifier, completionHandler: { _ in })
-        }, progressHandler: { _ in
-
+        }, progressHandler: { uploadProgress in
+            uploadProgress.copyCurrentStateToProgress(progress)
         }) { account, ocId, etag, date, size, _, _, error  in
             self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
@@ -327,7 +331,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             completionHandler(fpItem, [], false, nil)
         }
 
-        return Progress()
+        return progress
     }
     
     func modifyItem(_ item: NSFileProviderItem, baseVersion version: NSFileProviderItemVersion, changedFields: NSFileProviderItemFields, contents newContents: URL?, options: NSFileProviderModifyItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
@@ -447,6 +451,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
+        var progress = Progress()
+
         if changedFields.contains(.contents) {
             guard newContents != nil else {
                 NSLog("WARNING. Could not upload modified contents as was provided nil contents url. ocId: %@", item.itemIdentifier.rawValue)
@@ -462,8 +468,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             }, taskHandler: { task in
                 self.outstandingSessionTasks[newServerUrlFileName] = task
                 NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
-            }, progressHandler: { _ in
-
+            }, progressHandler: { uploadProgress in
+                uploadProgress.copyCurrentStateToProgress(progress)
             }) { account, ocId, etag, date, size, _, _, error  in
                 self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
@@ -500,12 +506,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             guard contentUploadError == nil else {
                 NSLog("Stopping modification of item with ocId %@ due to error.", modifiedItem.itemIdentifier.rawValue)
                 completionHandler(modifiedItem, [], false, nil)
-                return Progress()
+                return progress
             }
         }
 
         completionHandler(modifiedItem, [], false, nil)
-        return Progress()
+        return progress
     }
     
     func deleteItem(identifier: NSFileProviderItemIdentifier, baseVersion version: NSFileProviderItemVersion, options: NSFileProviderDeleteItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (Error?) -> Void) -> Progress {
