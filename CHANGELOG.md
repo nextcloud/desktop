@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
+* Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
@@ -28,6 +29,10 @@ Details
    Due to legacy reasons the branding flag and its fuction differ.
 
    https://github.com/owncloud/enterprise/issues/5612
+
+* Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
+
+   https://github.com/owncloud/client/issues/8953
 
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 
