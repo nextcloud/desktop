@@ -543,6 +543,24 @@ class NextcloudFilesDatabaseManager : NSObject {
         return sortedLocalFileMetadatas(results)
     }
 
+    func localFileItemMetadatas(account: String) -> [NextcloudItemMetadataTable] {
+        let localFileMetadatas = localFileMetadatas(account: account)
+        let localFileMetadatasOcIds = Array(localFileMetadatas.map { $0.ocId })
+
+        var itemMetadatas: [NextcloudItemMetadataTable] = []
+
+        for ocId in localFileMetadatasOcIds {
+            guard let itemMetadata = itemMetadataFromOcId(ocId) else {
+                NSLog("Could not find matching item metadata for local file metadata with ocId: %@ with request from account: %@", ocId, account)
+                continue;
+            }
+
+            itemMetadatas.append(NextcloudItemMetadataTable(value: itemMetadata))
+        }
+
+        return itemMetadatas
+    }
+
     func convertNKFileToItemMetadata(_ file: NKFile, account: String) -> NextcloudItemMetadataTable {
 
         let metadata = NextcloudItemMetadataTable()
