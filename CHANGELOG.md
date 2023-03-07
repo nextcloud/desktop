@@ -18,6 +18,7 @@ Summary
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 * Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
+* Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
 
 Details
 -------
@@ -83,6 +84,10 @@ Details
    Introduce new state, `Connecting to`.
 
    https://github.com/owncloud/client/issues/10557
+
+* Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
+
+   https://github.com/owncloud/client/issues/10572
 
 Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
 =======================================
