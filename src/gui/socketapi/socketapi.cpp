@@ -17,6 +17,8 @@
 #include "socketapi.h"
 #include "socketapi_p.h"
 
+#include "gui/commonstrings.h"
+
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
@@ -624,9 +626,11 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
         return;
     }
 
-    auto record = fileData.journalRecord();
-    if (!record.isValid())
-        return;
+    if (!fileData.isSyncFolder()) {
+        auto record = fileData.journalRecord();
+        if (!record.isValid())
+            return;
+    }
 
     fetchPrivateLinkUrl(
         fileData.folder->accountState()->account(),
@@ -966,6 +970,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     if (files.size() == 1) {
         const FileData fileData = FileData::get(files.first());
         if (fileData.folder->accountState()->isConnected()) {
+            const auto &capabilities = fileData.folder->accountState()->account()->capabilities();
             if (!fileData.isSyncFolder()) {
                 const auto record = fileData.journalRecord();
                 const bool isOnTheServer = record.isValid();
@@ -976,18 +981,13 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                     listener->sendMessage(QStringLiteral("MENU_ITEM:OPEN_APP_LINK") + flagString + tr("Open in %1").arg(app.defaultApplication));
                 }
 
-
                 sendSharingContextMenuOptions(fileData, listener);
 
-                const auto &capabilities = fileData.folder->accountState()->account()->capabilities();
                 if (capabilities.privateLinkPropertyAvailable()) {
-                    listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+                    listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + CommonStrings::showInWebBrowser());
                 }
                 // Add link to versions pane if possible
-                if (capabilities.versioningEnabled()
-                    && capabilities.privateLinkDetailsParamAvailable()
-                    && isOnTheServer
-                    && !record.isDirectory()) {
+                if (capabilities.versioningEnabled() && capabilities.privateLinkDetailsParamAvailable() && isOnTheServer && !record.isDirectory()) {
                     listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
                 }
 
@@ -1001,10 +1001,8 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                     const bool canAddToDir = !parentRecord._remotePerm.isNull()
                         && ((fileInfo.isFile() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
                             || (fileInfo.isDir() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)));
-                    const bool canChangeFile =
-                        !isOnTheServer
-                        || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
-                            && record._remotePerm.hasPermission(RemotePermissions::CanMove)
+                    const bool canChangeFile = !isOnTheServer
+                        || (record._remotePerm.hasPermission(RemotePermissions::CanDelete) && record._remotePerm.hasPermission(RemotePermissions::CanMove)
                             && record._remotePerm.hasPermission(RemotePermissions::CanRename));
 
                     if (isConflict && canChangeFile) {
@@ -1038,6 +1036,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                             listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete"));
                         }
                     }
+                }
+            } else {
+                // we are a sync root
+                if (capabilities.privateLinkPropertyAvailable()) {
+                    listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK::") + CommonStrings::showInWebBrowser());
                 }
             }
         }
