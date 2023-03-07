@@ -4327,7 +4327,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/shareemodel.cpp" line="248"/>
+        <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
         <translation type="unfinished"/>
@@ -5250,123 +5250,123 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="257"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Unsupported Server Version</source>
         <translation>지원되지 않는 서버 버전</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>계정 %1의 서버가 지원되지 않는 이전 버전 %2을 실행합니다. 지원되지 않는 서버 버전으로 이 클라이언트를 사용하는 것은 테스트되지 않았으며 잠재적으로 위험합니다. 자신의 책임하에 진행하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Disconnected</source>
         <translation>연결이 끊어졌습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Disconnected from some accounts</source>
         <translation>일부 계정에서 연결이 끊어졌습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <source>Disconnected from %1</source>
         <translation>%1에서 연결 해제됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Disconnected from accounts:</source>
         <translation>계정에서 연결이 끊어졌습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Account %1: %2</source>
         <translation>계정 %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
         <source>Please sign in</source>
         <translation>로그인 해주십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Signed out</source>
         <translation>로그아웃</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Account synchronization is disabled</source>
         <translation>계정 동기화가 비활성화되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="334"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="387"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="336"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Synchronization is paused</source>
         <translation>동기화가 일시 정지되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="374"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="376"/>
         <source>Folder %1: %2</source>
         <translation>폴더 %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="382"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Unresolved conflicts</source>
         <translation>해결되지 않은 충돌</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
         <source>Up to date</source>
         <translation>최신 상태</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Error during synchronization</source>
         <translation>동기화 중 오류 발생</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="392"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="394"/>
         <source>There are no sync folders configured.</source>
         <translation>설정된 동기화 폴더가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
         <source>No sync folders configured</source>
         <translation>설정된 동기화 폴더가 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="458"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>원격 &quot;%1&quot;의 변경 사항 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="461"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="463"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>로컬 &quot;%1&quot;의 변경 사항 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="479"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%2 중 %1 동기화 중(%3 남음)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="482"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Syncing %1 of %2</source>
         <translation>%2 중 %1 동기화 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="491"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="493"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 동기화 중(%2 남음)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Syncing %1</source>
         <translation>%1 동기화 중</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>%1 (%2, %3)</source>
         <translation>%1(%2, %3)</translation>
     </message>
@@ -5693,17 +5693,17 @@ Server replied with error: %2</source>
         <translation>공유에 대한 암호</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="292"/>
         <source>Sharing is disabled</source>
         <translation>공유가 비활성화됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="300"/>
         <source>This item cannot be shared.</source>
         <translation>이 항목은 공유할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="309"/>
         <source>Sharing is disabled.</source>
         <translation>공유가 비활성화 되었습니다.</translation>
     </message>
