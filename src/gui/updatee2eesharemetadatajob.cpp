@@ -125,10 +125,8 @@ void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json,
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Metadata received, applying it to the result list";
     const auto pathSplit = _sharePath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-    _folderMetadata.reset(new FolderMetadata(_account, topLevelFolderPath, json.toJson(QJsonDocument::Compact), statusCode));
-    connect(_folderMetadata.data(), &FolderMetadata::setupComplete, this, [this]() {
-        slotLockFolder();
-    });
+    _folderMetadata.reset(new FolderMetadata(_account, {}, json.toJson(QJsonDocument::Compact), statusCode));
+    slotLockFolder();
 }
 
 void UpdateE2eeShareMetadataJob::slotMetadataError(const QByteArray &folderId, int httpReturnCode)

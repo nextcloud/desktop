@@ -54,43 +54,41 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
     const auto pathSplit = _item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
 
-    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), topLevelFolderPath, json.toJson(QJsonDocument::Compact), statusCode));
-    connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, &metadata]() {
-        if (!metadata->isMetadataSetup()) {
-            taskFailed();
-            return;
+    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), _propagator->findTopLevelFolderMetadata(topLevelFolderPath), json.toJson(QJsonDocument::Compact), statusCode));
+    if (!metadata->isMetadataSetup()) {
+        taskFailed();
+        return;
+    }
+
+    qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata Received, preparing it for removal of the file";
+
+    const QFileInfo info(_propagator->fullLocalPath(_item->_file));
+    const QString fileName = info.fileName();
+
+    // Find existing metadata for this file
+    bool found = false;
+    const QVector<EncryptedFile> files = metadata->files();
+    for (const EncryptedFile &file : files) {
+        if (file.originalFilename == fileName) {
+            metadata->removeEncryptedFile(file);
+            found = true;
+            break;
         }
+    }
 
-        qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata Received, preparing it for removal of the file";
+    if (!found) {
+        // file is not found in the metadata, but we still need to remove it
+        deleteRemoteItem(_item->_encryptedFileName);
+        return;
+    }
 
-        const QFileInfo info(_propagator->fullLocalPath(_item->_file));
-        const QString fileName = info.fileName();
+    qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata updated, sending to the server.";
 
-        // Find existing metadata for this file
-        bool found = false;
-        const QVector<EncryptedFile> files = metadata->files();
-        for (const EncryptedFile &file : files) {
-            if (file.originalFilename == fileName) {
-                metadata->removeEncryptedFile(file);
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            // file is not found in the metadata, but we still need to remove it
-            deleteRemoteItem(_item->_encryptedFileName);
-            return;
-        }
-
-        qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata updated, sending to the server.";
-
-        auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata->encryptedMetadata(), _folderToken);
-        connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
-            Q_UNUSED(fileId);
-            deleteRemoteItem(_item->_encryptedFileName);
-        });
-        connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
-        job->start();
+    auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata->encryptedMetadata(), _folderToken);
+    connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
+        Q_UNUSED(fileId);
+        deleteRemoteItem(_item->_encryptedFileName);
     });
+    connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
+    job->start();
 }

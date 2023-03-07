@@ -204,7 +204,7 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
     };
 
 public:
-    FolderMetadata(AccountPtr account, const QString &topLevelFolderPath, const QByteArray &metadata = QByteArray(), int statusCode = -1, QObject *parent = nullptr);
+    FolderMetadata(AccountPtr account, const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {}, const QByteArray &metadata = QByteArray(), int statusCode = -1, QObject *parent = nullptr);
     [[nodiscard]] QByteArray encryptedMetadata() const;
     [[nodiscard]] QVector<EncryptedFile> files() const;
     [[nodiscard]] bool isMetadataSetup() const;
@@ -217,6 +217,9 @@ public:
 
     bool addUser(const QString &userId, const QSslCertificate certificate);
     bool removeUser(const QString &userId);
+
+    [[nodiscard]] QByteArray metadataKey() const;
+    [[nodiscard]] QSet<QByteArray> keyChecksums() const;
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -232,8 +235,6 @@ private:
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
     [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
-
-    [[nodiscard]] QByteArray metadataKey() const;
 
 public slots:
     void addEncryptedFile(const EncryptedFile &f);
@@ -252,10 +253,6 @@ private slots:
     void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
-    void emitSetupComplete();
-
-signals:
-    void setupComplete();
 
 private:
     QVector<EncryptedFile> _files;
@@ -266,7 +263,6 @@ private:
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
-    QString _topLevelFolderPath;
     QByteArray _initialMetadata;
     int _initialStatusCode = -1;
 };
