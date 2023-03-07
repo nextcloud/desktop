@@ -18,7 +18,7 @@ import NextcloudKit
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
-    private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
+    private let anchor = NSFileProviderSyncAnchor(Date().description.data(using: .utf8)!) // TODO: actually use this in NCKit and server requests
     private static let maxItemsPerFileProviderPage = 100
     let ncAccount: NextcloudAccount
     let ncKit: NextcloudKit
@@ -74,6 +74,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
+        // TODO: Make better use of pagination
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
