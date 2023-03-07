@@ -491,8 +491,51 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     
     func deleteItem(identifier: NSFileProviderItemIdentifier, baseVersion version: NSFileProviderItemVersion, options: NSFileProviderDeleteItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (Error?) -> Void) -> Progress {
         // TODO: an item was deleted on disk, process the item's deletion
-        
-        completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+
+        NSLog("Received delete item request for item with identifier: %@", identifier.rawValue)
+
+        guard ncAccount != nil else {
+            NSLog("Not deleting item: %@ as account not set up yet", identifier.rawValue)
+            completionHandler(NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        let ocId = identifier.rawValue
+        guard let itemMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+            completionHandler(NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
+        let serverFileNameUrl = itemMetadata.serverUrl + "/" + itemMetadata.fileName
+        guard serverFileNameUrl != "" else {
+            completionHandler(NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
+        self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
+            guard error == .success else {
+                NSLog("Could not delete item with ocId %@ and fileName %@, received error: %@", error.error.localizedDescription)
+                completionHandler(NSFileProviderError(.serverUnreachable))
+                return
+            }
+
+            NSLog("Successfully delete item with identifier: %@ and filename: %@", ocId, serverFileNameUrl)
+
+            let serverUrl = itemMetadata.serverUrl
+            dbManager.deleteItemMetadata(account: account, serverUrl: serverUrl)
+
+            if itemMetadata.directory && dbManager.directoryMetadata(ocId: ocId) != nil {
+                dbManager.deleteDirectoryAndSubdirectoriesMetadata(account: account, serverUrl: serverUrl)
+            }
+
+            if dbManager.localFileMetadataFromOcId(ocId) != nil {
+                dbManager.deleteLocalFileMetadata(ocId: ocId)
+            }
+
+            completionHandler(nil)
+        }
+
         return Progress()
     }
     
