@@ -992,9 +992,11 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
             syncItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
             break;
         case CSYNC_INSTRUCTION_REMOVE:
-            qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << syncItem->_file;
-            syncItem->_instruction = CSYNC_INSTRUCTION_NEW;
-            syncItem->_direction = SyncFileItem::Up;
+            if (syncItem->_type != CSyncEnums::ItemTypeVirtualFile && syncItem->_type != CSyncEnums::ItemTypeVirtualFileDownload) {
+                qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << syncItem->_file;
+                syncItem->_instruction = CSYNC_INSTRUCTION_NEW;
+                syncItem->_direction = SyncFileItem::Up;
+            }
             break;
         case CSYNC_INSTRUCTION_RENAME:
         case CSYNC_INSTRUCTION_NEW:

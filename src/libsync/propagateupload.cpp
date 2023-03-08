@@ -255,6 +255,8 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
 }
 
 void PropagateUploadFileCommon::startUploadFile() {
+    Q_ASSERT(_item->_type != CSyncEnums::ItemTypeVirtualFile);
+
     if (propagator()->_abortRequested) {
         return;
     }
