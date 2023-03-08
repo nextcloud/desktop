@@ -111,10 +111,28 @@ WebView::WebView(QWidget *parent)
 
     connect(_webview, &QWebEngineView::loadProgress, _ui.progressBar, &QProgressBar::setValue);
     connect(_schemeHandler, &WebViewPageUrlSchemeHandler::urlCatched, this, &WebView::urlCatched);
+
+    connect(_page, &QWebEnginePage::contentsSizeChanged, this, &WebView::slotResizeToContents);
 }
 
 void WebView::setUrl(const QUrl &url) {
     _page->setUrl(url);
+}
+
+QSize WebView::minimumSizeHint() const {
+    return _size;
+}
+
+void WebView::slotResizeToContents(const QSizeF &size){
+    //this widget also holds the progressbar
+    const int newHeight = size.toSize().height() + _ui.progressBar->height();
+    const int newWidth = size.toSize().width();
+    _size = QSize(newWidth, newHeight);
+
+    this->updateGeometry();
+
+    //only resize once
+    disconnect(_page, &QWebEnginePage::contentsSizeChanged, this, &WebView::slotResizeToContents);
 }
 
 WebView::~WebView() {
