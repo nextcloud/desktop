@@ -120,6 +120,12 @@ void User::showDesktopNotification(const Activity &activity)
 {
     const auto notificationId = activity._id;
     const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
+
+    // the user needs to interact with this notification
+    if (activity._links.size() > 0) {
+        _activityModel->addNotificationToActivityList(activity);
+    }
+
     showDesktopNotification(activity._subject, message, notificationId);
 }
 
