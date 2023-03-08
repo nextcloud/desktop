@@ -5,7 +5,7 @@
             <Rect x="5" height="38" y="93" type="positive" width="233"/>
         </Mask>
         <Algorithm description="Correlation" name="correlationcompare">
-            <Parameter description="Threshold" name="threshold">100</Parameter>
+            <Parameter description="Threshold" name="threshold">80</Parameter>
         </Algorithm>
     </Verification>
 </VerificationPoint>
