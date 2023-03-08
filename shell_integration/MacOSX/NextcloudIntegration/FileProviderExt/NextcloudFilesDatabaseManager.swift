@@ -139,9 +139,12 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     private func processItemMetadatasToUpdate(databaseToWriteTo: Realm,
                                               existingMetadatas: Results<NextcloudItemMetadataTable>,
-                                              updatedMetadatas: [NextcloudItemMetadataTable]) {
+                                              updatedMetadatas: [NextcloudItemMetadataTable]) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
 
         assert(databaseToWriteTo.isInWriteTransaction)
+
+        var returningNewMetadatas: [NextcloudItemMetadataTable] = []
+        var returningUpdatedMetadatas: [NextcloudItemMetadataTable] = []
 
         for updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
@@ -149,7 +152,9 @@ class NextcloudFilesDatabaseManager : NSObject {
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
                     !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
-                    databaseToWriteTo.add(NextcloudItemMetadataTable(value: updatedMetadata), update: .all)
+                    returningUpdatedMetadatas.append(updatedMetadata)
+                    databaseToWriteTo.add(updatedMetadata, update: .all)
+                    
                     NSLog("""
                             Updated existing metadata.
                             ocID: %@,
@@ -157,11 +162,20 @@ class NextcloudFilesDatabaseManager : NSObject {
                             etag: %@
                           """
                           , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+                } else {
+                    NSLog("""
+                              Skipping metadata update as received metadata status is same as existing:
+                              ocID: %@,
+                              fileName: %@,
+                              etag: %@
+                          """
+                          , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
                 }
-                // Don't update under other circumstances in which the metadata already exists
 
             } else { // This is a new metadata
-                databaseToWriteTo.add(NextcloudItemMetadataTable(value: updatedMetadata), update: .all)
+                returningNewMetadatas.append(updatedMetadata)
+                databaseToWriteTo.add(updatedMetadata, update: .all)
+
                 NSLog("""
                         Created new metadata.
                         ocID: %@,
@@ -171,6 +185,8 @@ class NextcloudFilesDatabaseManager : NSObject {
                       , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
             }
         }
+
+        return (returningNewMetadatas, returningUpdatedMetadatas)
     }
 
     func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable]) {
