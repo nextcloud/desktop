@@ -189,24 +189,28 @@ class NextcloudFilesDatabaseManager : NSObject {
         return (returningNewMetadatas, returningUpdatedMetadatas)
     }
 
-    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable]) {
+    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable]) -> (newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
         let database = ncDatabase()
 
         do {
             try database.write {
                 let existingMetadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl, NextcloudItemMetadataTable.Status.normal.rawValue)
 
-                processItemMetadatasToDelete(databaseToWriteTo: database,
-                                             existingMetadatas: existingMetadatas,
-                                             updatedMetadatas: updatedMetadatas)
+                let deletedMetadatas = processItemMetadatasToDelete(databaseToWriteTo: database,
+                                                                    existingMetadatas: existingMetadatas,
+                                                                    updatedMetadatas: updatedMetadatas)
 
-                processItemMetadatasToUpdate(databaseToWriteTo: database,
-                                             existingMetadatas: existingMetadatas,
-                                             updatedMetadatas: updatedMetadatas)
+                let metadatasFromUpdate = processItemMetadatasToUpdate(databaseToWriteTo: database,
+                                                                       existingMetadatas: existingMetadatas,
+                                                                       updatedMetadatas: updatedMetadatas)
+
+                return (metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
             }
         } catch let error {
             NSLog("Could not update any metadatas, received error: %@", error.localizedDescription)
         }
+
+        return (nil, nil, nil)
     }
 
     func setStatusForItemMetadata(_ metadata: NextcloudItemMetadataTable, status: NextcloudItemMetadataTable.Status) -> NextcloudItemMetadataTable? {
