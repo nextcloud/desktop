@@ -298,10 +298,7 @@ void ShareModel::initShareManager()
     }
 
     bool sharingPossible = true;
-    if (!publicLinkSharesEnabled()) {
-        qCWarning(lcSharing) << "Link shares have been disabled";
-        sharingPossible = false;
-    } else if (!canShare()) {
+    if (!canShare()) {
         qCWarning(lcSharing) << "The file cannot be shared because it does not have sharing permission.";
         sharingPossible = false;
     }
@@ -345,9 +342,11 @@ void ShareModel::handlePlaceholderLinkShare()
 
     if (linkSharePresent && placeholderLinkSharePresent) {
         slotRemoveShareWithId(placeholderLinkShareId);
-    } else if (!linkSharePresent && !placeholderLinkSharePresent) {
+    } else if (!linkSharePresent && !placeholderLinkSharePresent && publicLinkSharesEnabled()) {
         slotAddShare(_placeholderLinkShare);
     }
+
+    Q_EMIT sharesChanged();
 }
 
 void ShareModel::slotPropfindReceived(const QVariantMap &result)
@@ -481,7 +480,6 @@ void ShareModel::slotAddShare(const SharePtr &share)
     }
 
     handlePlaceholderLinkShare();
-    Q_EMIT sharesChanged();
 }
 
 void ShareModel::slotRemoveShareWithId(const QString &shareId)
@@ -508,8 +506,6 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     endRemoveRows();
 
     handlePlaceholderLinkShare();
-
-    Q_EMIT sharesChanged();
 }
 
 void ShareModel::slotServerError(const int code, const QString &message)
