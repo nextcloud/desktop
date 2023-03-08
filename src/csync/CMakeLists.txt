@@ -66,6 +66,12 @@ target_link_libraries(csync
         ZLIB::ZLIB
 )
 
+# For platform_win.cpp
+if (WIN32)
+    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
+    target_link_libraries(csync PUBLIC Qt5::WinExtras)
+endif()
+
 # For src/common/utility_mac.cpp
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)

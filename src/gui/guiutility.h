@@ -59,11 +59,6 @@ namespace Utility {
 
     QString socketApiSocketPath();
 
-#ifdef Q_OS_WIN
-    // utility thread that takes care of proper Windows logout handling
-    void startShutdownWatcher();
-#endif
-
     // applies window flags and modality
     void setModal(QWidget *w);
 

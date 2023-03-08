@@ -26,6 +26,12 @@ public:
     ~WinPlatform() override;
 
     void setApplication(QCoreApplication *application) override;
+
+    void startServices() override;
+
+private:
+    /// Utility thread that takes care of proper Windows logout handling.
+    void startShutdownWatcher();
 };
 
 } // namespace OCC

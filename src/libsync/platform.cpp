@@ -36,6 +36,8 @@ void Platform::setApplication(QCoreApplication *application)
     Q_UNUSED(application);
 }
 
+void Platform::startServices() { }
+
 std::unique_ptr<Platform> Platform::create()
 {
     // we need to make sure the platform class is initialized before a Q(Core)Application has been set up

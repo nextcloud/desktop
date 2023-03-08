@@ -39,6 +39,8 @@ public:
     virtual void migrate();
 
     virtual void setApplication(QCoreApplication *application);
+
+    virtual void startServices();
 };
 
 } // OCC namespace
