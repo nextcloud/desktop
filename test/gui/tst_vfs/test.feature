@@ -9,8 +9,8 @@ Feature: Enable/disable virtual file support
         Given user "Alice" has been created on the server with default attributes and without skeleton files
         And user "Alice" has set up a client with default settings
         When the user enables virtual file support
-        Then the "Disable virtual file support..." button should be available
-        And VFS enabled baseline image should match the default screenshot
+        Then VFS enabled baseline image should match the default screenshot
+        And the "Disable virtual file support..." button should be available
 
 
     Scenario: VFS is disabled by default

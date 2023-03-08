@@ -3,7 +3,6 @@ import squish
 from helpers.WebUIHelper import authorize_via_webui
 from helpers.ConfigHelper import get_config
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
-from pageObjects.AccountSetting import AccountSetting
 
 
 class EnterPassword:
@@ -29,7 +28,9 @@ class EnterPassword:
 
     @staticmethod
     def enterPassword(password):
-        squish.waitForObject(EnterPassword.PASSWORD_BOX)
+        squish.waitForObject(
+            EnterPassword.PASSWORD_BOX, get_config('maxSyncTimeout') * 1000
+        )
         squish.type(squish.waitForObject(EnterPassword.PASSWORD_BOX), password)
         squish.clickButton(squish.waitForObject(EnterPassword.LOGIN_BUTTON))
 
@@ -55,7 +56,4 @@ class EnterPassword:
             AccountConnectionWizard.acceptCertificate()
             EnterPassword.oidcReLogin(username, password)
         else:
-            AccountSetting.waitUntilConnectionIsConfigured(
-                get_config('maxSyncTimeout') * 1000
-            )
             EnterPassword.enterPassword(password)
