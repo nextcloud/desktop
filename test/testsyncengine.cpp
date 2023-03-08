@@ -906,6 +906,42 @@ private slots:
 
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
     }
+
+
+    void testProceedWithIndependentDelets()
+    {
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // during an upload of B/newFile an error occurs that aborts all delete jobs
+        fakeFolder.localModifier().insert(QStringLiteral("B/newFile"));
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                return new FakeErrorReply(op, request, this, 507);
+            }
+            return nullptr;
+        });
+
+        // this will go through
+        fakeFolder.remoteModifier().insert(QStringLiteral("C/newRemoteFile"));
+
+        // those will fail https://github.com/owncloud/client/issues/9311
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.remoteModifier().remove(QStringLiteral("S"));
+
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+
+        // the download succeeded
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("C/newRemoteFile")));
+
+        // the deletes happened as they are independent of the error in B
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("S")));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
