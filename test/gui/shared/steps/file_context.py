@@ -88,6 +88,7 @@ def step(context, username, filename):
 
 @When('user "|any|" creates a folder "|any|" inside the sync folder')
 def step(context, username, foldername):
+    waitForClientToBeReady()
     createFolder(foldername, username)
 
 
@@ -108,8 +109,9 @@ def step(context, sourceFolder, destinationFolder):
     shutil.copytree(source_dir, destination_dir)
 
 
-@When(r'the user renames a (file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
-def step(context, type, source, destination):
+@When(r'the user renames a (?:file|folder) "([^"]*)" to "([^"]*)"', regexp=True)
+def step(context, source, destination):
+    waitForClientToBeReady()
     renameFileFolder(source, destination)
 
 
@@ -268,10 +270,11 @@ def step(context, username, foldername):
 
 
 @When(
-    r'user "([^"]*)" moves (file|folder) "([^"]*)" to "([^"]*)" in the sync folder',
+    r'user "([^"]*)" moves (?:file|folder) "([^"]*)" to "([^"]*)" in the sync folder',
     regexp=True,
 )
-def step(context, username, resourceType, source, destination):
+def step(context, username, source, destination):
+    waitForClientToBeReady()
     source_dir = getResourcePath(source, username)
     if destination == None or destination == "/":
         destination = ""
