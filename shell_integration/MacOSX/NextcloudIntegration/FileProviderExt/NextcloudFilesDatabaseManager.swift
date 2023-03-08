@@ -110,13 +110,17 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     private func processItemMetadatasToDelete(databaseToWriteTo: Realm,
                                               existingMetadatas: Results<NextcloudItemMetadataTable>,
-                                              updatedMetadatas: [NextcloudItemMetadataTable]) {
+                                              updatedMetadatas: [NextcloudItemMetadataTable]) -> [NextcloudItemMetadataTable] {
 
         assert(databaseToWriteTo.isInWriteTransaction)
+
+        var deletedMetadatas: [NextcloudItemMetadataTable] = []
 
         for existingMetadata in existingMetadatas {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
                     let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId) else { continue }
+
+            deletedMetadatas.append(metadataToDelete)
 
             NSLog("""
                     Deleting metadata.
@@ -129,6 +133,8 @@ class NextcloudFilesDatabaseManager : NSObject {
             // Can't pass copies, we need the originals from the database
             databaseToWriteTo.delete(ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadataToDelete.ocId))
         }
+
+        return deletedMetadatas
     }
 
     private func processItemMetadatasToUpdate(databaseToWriteTo: Realm,
