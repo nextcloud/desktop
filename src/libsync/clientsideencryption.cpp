@@ -1575,6 +1575,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
                                int statusCode,
                                const QSharedPointer<FolderMetadata> &topLevelFolderMetadata,
                                const QString &topLevelFolderPath,
+                               SyncJournalDb *journal,
                                QObject *parent)
     : QObject(parent)
     , _account(account)
@@ -1582,7 +1583,9 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     , _initialStatusCode(statusCode)
     , _topLevelFolderMetadata(topLevelFolderMetadata)
     , _topLevelFolderPath(topLevelFolderPath)
+    , _journal(journal)
 {
+    Q_ASSERT((topLevelFolderPath.isEmpty() || topLevelFolderPath == QStringLiteral("/")) || _journal);
     QJsonDocument doc = QJsonDocument::fromJson(metadata);
     qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
 
@@ -1600,10 +1603,15 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     const auto folderUsers = metaDataDoc[usersKey].toArray();
 
     if (!_topLevelFolderMetadata && !_topLevelFolderPath.isEmpty() && _topLevelFolderPath != QStringLiteral("/") && folderUsers.isEmpty() && metadataKeys.isEmpty()) {
-        fetchTopLevelFolderMetadata();
+        fetchTopLevelFolderEncryptedId();
     } else {
         setupMetadata();
     }
+}
+
+FolderMetadata::~FolderMetadata()
+{
+    unlockTopLevelFolder();
 }
 
 void FolderMetadata::setupMetadata()
@@ -2056,16 +2064,24 @@ QJsonObject FolderMetadata::fileDrop() const
     return _fileDrop;
 }
 
-void FolderMetadata::fetchTopLevelFolderMetadata()
+void FolderMetadata::fetchTopLevelFolderEncryptedId()
 {
     const auto job = new LsColJob(_account, _topLevelFolderPath, this);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
-    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderMetadata::folderEncryptedIdReceived);
-    connect(job, &LsColJob::finishedWithError, this, &FolderMetadata::folderEncryptedIdError);
+    connect(job, &LsColJob::directoryListingSubfolders, this, &FolderMetadata::topLevelFolderEncryptedIdReceived);
+    connect(job, &LsColJob::finishedWithError, this, &FolderMetadata::topLevelFolderEncryptedIdError);
     job->start();
 }
 
-void FolderMetadata::folderEncryptedIdReceived(const QStringList &list)
+void FolderMetadata::fetchTopLevelFolderMetadata()
+{
+    const auto getMetadataJob = new GetMetadataApiJob(_account, _topLevelFolderId);
+    connect(getMetadataJob, &GetMetadataApiJob::jsonReceived, this, &FolderMetadata::topLevelFolderEncryptedMetadataReceived);
+    connect(getMetadataJob, &GetMetadataApiJob::error, this, &FolderMetadata::topLevelFolderEncryptedMetadataError);
+    getMetadataJob->start();
+}
+
+void FolderMetadata::topLevelFolderEncryptedIdReceived(const QStringList &list)
 {
     const auto job = qobject_cast<LsColJob *>(sender());
     Q_ASSERT(job);
@@ -2080,22 +2096,19 @@ void FolderMetadata::folderEncryptedIdReceived(const QStringList &list)
     }
 
     const auto &folderInfo = job->_folderInfos.value(list.first());
-
-    const auto getMetadataJob = new GetMetadataApiJob(_account, folderInfo.fileId);
-    connect(getMetadataJob, &GetMetadataApiJob::jsonReceived, this, &FolderMetadata::folderEncryptedMetadataReceived);
-    connect(getMetadataJob, &GetMetadataApiJob::error, this, &FolderMetadata::folderEncryptedMetadataError);
-
-    getMetadataJob->start();
+    _topLevelFolderId = folderInfo.fileId;
+    
+    lockTopLevelFolder();
 }
 
-void FolderMetadata::folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode)
+void FolderMetadata::topLevelFolderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode)
 {
     Q_UNUSED(fileId);
     Q_UNUSED(httpReturnCode);
     emitSetupComplete();
 }
 
-void FolderMetadata::folderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
+void FolderMetadata::topLevelFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
     _topLevelFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode));
     connect(_topLevelFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this]() {
@@ -2103,8 +2116,54 @@ void FolderMetadata::folderEncryptedMetadataReceived(const QJsonDocument &json, 
     });
 }
 
-void FolderMetadata::folderEncryptedIdError(QNetworkReply *r)
+void FolderMetadata::topLevelFolderEncryptedIdError(QNetworkReply *r)
 {
+    emitSetupComplete();
+}
+
+void FolderMetadata::lockTopLevelFolder()
+{
+    Q_ASSERT(_journal);
+    if (!_journal) {
+        emitSetupComplete();
+    }
+    const auto lockJob = new LockEncryptFolderApiJob(_account, _topLevelFolderId, _journal, _account->e2e()->_publicKey, this);
+    connect(lockJob, &LockEncryptFolderApiJob::success, this, &FolderMetadata::topLevelFolderLockedSuccessfully);
+    connect(lockJob, &LockEncryptFolderApiJob::error, this, &FolderMetadata::topLevelFolderLockedError);
+    lockJob->start();
+}
+
+void FolderMetadata::unlockTopLevelFolder()
+{
+    if (_topLevelFolderToken.isEmpty() || _topLevelFolderId.isEmpty()) {
+        return;
+    }
+    Q_ASSERT(_journal);
+    if (!_journal) {
+        emitSetupComplete();
+    }
+    const auto unlockJob = new UnlockEncryptFolderApiJob(_account, _topLevelFolderId, _topLevelFolderToken, _journal, this);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this](const QByteArray &folderId) {
+        _topLevelFolderToken.clear();
+        _topLevelFolderId = "";
+    });
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this](const QByteArray &folderId, int httpStatus) {
+        _topLevelFolderToken.clear();
+    });
+    unlockJob->start();
+}
+
+void FolderMetadata::topLevelFolderLockedSuccessfully(const QByteArray &fileId, const QByteArray &token)
+{
+    Q_UNUSED(fileId);
+    _topLevelFolderToken = token;
+    fetchTopLevelFolderMetadata();
+}
+
+void FolderMetadata::topLevelFolderLockedError(const QByteArray &fileId, int httpErrorCode)
+{
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
     emitSetupComplete();
 }
 

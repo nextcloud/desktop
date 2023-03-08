@@ -123,7 +123,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   // Encrypt File!
   const auto pathSplit = _item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
   const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-  _metadata.reset(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), statusCode, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath));
+  _metadata.reset(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), statusCode, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath, _propagator->_journal));
   connect(_metadata.data(), &FolderMetadata::setupComplete, this, [this, statusCode] {
       if (!_metadata->isMetadataSetup()) {
           if (_isFolderLocked) {

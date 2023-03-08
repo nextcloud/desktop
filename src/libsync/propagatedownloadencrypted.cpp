@@ -75,7 +75,7 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   const QString filename = _info.fileName();
   const auto pathSplit = _item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
   const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), -1, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath));
+  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), -1, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath, _propagator->_journal));
   connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata, filename] {
       if (metadata->isMetadataSetup()) {
           const QVector<EncryptedFile> files = metadata->files();

@@ -54,7 +54,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
     const auto pathSplit = _item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
 
-    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath));
+    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath, _propagator->_journal));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isMetadataSetup()) {
             taskFailed();

@@ -15,6 +15,7 @@
 
 #include "accountfwd.h"
 #include "networkjobs.h"
+#include "common/syncjournaldb.h"
 
 namespace QKeychain {
 class Job;
@@ -193,7 +194,6 @@ struct EncryptedFile {
     int fileVersion = 0;
     int metadataKey = 0;
 };
-
 class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
 {
     Q_OBJECT
@@ -209,7 +209,9 @@ public:
                    int statusCode = -1,
                    const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {},
                    const QString &topLevelFolderPath = {},
+                   SyncJournalDb *journal = nullptr,
                    QObject *parent = nullptr);
+    ~FolderMetadata();
 
     [[nodiscard]] QByteArray encryptedMetadata() const;
     [[nodiscard]] QVector<EncryptedFile> files() const;
@@ -252,11 +254,16 @@ private slots:
     void setupMetadata();
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray &metadata);
+    void fetchTopLevelFolderEncryptedId();
     void fetchTopLevelFolderMetadata();
-    void folderEncryptedIdReceived(const QStringList &list);
-    void folderEncryptedIdError(QNetworkReply *r);
-    void folderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
-    void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
+    void topLevelFolderEncryptedIdReceived(const QStringList &list);
+    void topLevelFolderEncryptedIdError(QNetworkReply *r);
+    void topLevelFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
+    void topLevelFolderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
+    void topLevelFolderLockedSuccessfully(const QByteArray &fileId, const QByteArray &token);
+    void topLevelFolderLockedError(const QByteArray &fileId, int httpErrorCode);
+    void lockTopLevelFolder();
+    void unlockTopLevelFolder();
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
     void emitSetupComplete();
@@ -277,6 +284,9 @@ private:
     int _initialStatusCode = -1;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
+    QPointer<SyncJournalDb> _journal = nullptr;
+    QByteArray _topLevelFolderToken;
+    QByteArray _topLevelFolderId;
 };
 
 } // namespace OCC
