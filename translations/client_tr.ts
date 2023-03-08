@@ -4209,7 +4209,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli dosya bırakma bağlantısı</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="540"/>
@@ -4229,7 +4229,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="599"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli dosya bırakma</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="806"/>
@@ -4311,17 +4311,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Genel arama</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Herhangi bir sonuç bulunamadı</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Genel arama sonuçları</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
@@ -4428,7 +4428,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli dosya bırakma bağlantısını kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1151"/>

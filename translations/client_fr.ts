@@ -4873,7 +4873,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <source>Open main dialog</source>
-        <translation>Ouvrir la fenêtre principale</translation>
+        <translation>Ouvrir la boîte de dialogue principale</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
