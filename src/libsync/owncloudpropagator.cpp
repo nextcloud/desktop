@@ -812,9 +812,10 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetad
 
 // ================================================================================
 
-PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
+PropagatorJob::PropagatorJob(OwncloudPropagator *propagator, const QString &path)
     : QObject(propagator)
     , _state(NotYetStarted)
+    , _path(path)
 {
 }
 
@@ -967,12 +968,17 @@ qint64 PropagatorCompositeJob::committedDiskSpace() const
     return needed;
 }
 
+PropagatorCompositeJob::PropagatorCompositeJob(OwncloudPropagator *propagator, const QString &path)
+    : PropagatorJob(propagator, path)
+{
+}
+
 // ================================================================================
 
 PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
     : PropagateItemJob(propagator, item)
     , _firstJob(propagator->createJob(item))
-    , _subJobs(propagator)
+    , _subJobs(propagator, path())
 {
     if (_firstJob) {
         connect(_firstJob.data(), &PropagatorJob::finished, this, &PropagateDirectory::slotFirstJobFinished);
@@ -1102,8 +1108,12 @@ void PropagateDirectory::slotSubJobsFinished(const SyncFileItem::Status status)
 }
 
 PropagateRootDirectory::PropagateRootDirectory(OwncloudPropagator *propagator)
-    : PropagateDirectory(propagator, SyncFileItemPtr(new SyncFileItem))
-    , _dirDeletionJobs(propagator)
+    : PropagateDirectory(propagator, SyncFileItemPtr([] {
+        auto f = new SyncFileItem;
+        f->_file = QLatin1Char('/');
+        return f;
+    }()))
+    , _dirDeletionJobs(propagator, path())
 {
     connect(&_dirDeletionJobs, &PropagatorJob::finished, this, &PropagateRootDirectory::slotDirDeletionJobsFinished);
 }

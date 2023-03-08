@@ -63,7 +63,7 @@ class PropagatorJob : public QObject
     Q_OBJECT
 
 public:
-    explicit PropagatorJob(OwncloudPropagator *propagator);
+    explicit PropagatorJob(OwncloudPropagator *propagator, const QString &path);
 
     enum AbortType {
         Synchronous,
@@ -114,6 +114,8 @@ public:
      */
     void setAssociatedComposite(PropagatorCompositeJob *job) { _associatedComposite = job; }
 
+    const QString path() { return _path; }
+
 public slots:
     /*
      * Asynchronous abort requires emit of abortFinished() signal,
@@ -150,6 +152,9 @@ protected:
      * becoming composite jobs themselves.
      */
     PropagatorCompositeJob *_associatedComposite = nullptr;
+
+private:
+    QString _path;
 };
 
 /*
@@ -166,7 +171,7 @@ protected:
 
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
-        : PropagatorJob(propagator)
+        : PropagatorJob(propagator, item->destination())
         , _item(item)
     {
     }
@@ -184,17 +189,7 @@ class PropagatorCompositeJob : public PropagatorJob
 {
     Q_OBJECT
 public:
-    QVector<PropagatorJob *> _jobsToDo;
-    SyncFileItemSet _tasksToDo;
-    QVector<PropagatorJob *> _runningJobs;
-    SyncFileItem::Status _hasError; // NoStatus,  or NormalError / SoftError if there was an error
-    quint64 _abortsCount;
-
-    explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
-        : PropagatorJob(propagator)
-        , _hasError(SyncFileItem::NoStatus), _abortsCount(0)
-    {
-    }
+    explicit PropagatorCompositeJob(OwncloudPropagator *propagator, const QString &path);
 
     ~PropagatorCompositeJob() override
     {
@@ -247,6 +242,13 @@ private slots:
 
     void slotSubJobFinished(SyncFileItem::Status status);
     void finalize();
+
+private:
+    QVector<PropagatorJob *> _jobsToDo;
+    SyncFileItemSet _tasksToDo;
+    QVector<PropagatorJob *> _runningJobs;
+    SyncFileItem::Status _hasError = SyncFileItem::NoStatus; // NoStatus,  or NormalError / SoftError if there was an error
+    quint64 _abortsCount = 0;
 };
 
 /**
