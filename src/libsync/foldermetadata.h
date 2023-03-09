@@ -36,7 +36,6 @@ public:
                    const QString &remotePath = {},
                    SyncJournalDb *journal = nullptr,
                    QObject *parent = nullptr);
-    ~FolderMetadata();
     [[nodiscard]] QVector<EncryptedFile> files() const;
 
     [[nodiscard]] bool isMetadataSetup() const;
@@ -52,6 +51,7 @@ public:
 
     const QByteArray &metadataKey() const;
     const QSet<QByteArray> &keyChecksums() const;
+    int versionFromMetadata() const;
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -74,7 +74,6 @@ public slots:
     void removeAllEncryptedFiles();
     void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
     void encryptMetadata();
-    void handleEncryption();
 
 private slots:
     void setupMetadata();
@@ -91,6 +90,8 @@ private slots:
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
     void emitSetupComplete();
+    void handleEncryption();
+    void handleEncryptionV1();
 
 signals:
     void setupComplete();
@@ -99,6 +100,7 @@ signals:
 private:
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
+    QMap<int, QByteArray> _metadataKeys; //legacy, remove after migration is done
     QSet<QByteArray> _keyChecksums;
     QHash<QString, FolderUser> _folderUsers;
     AccountPtr _account;
@@ -109,7 +111,7 @@ private:
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
     QPointer<SyncJournalDb> _journal = nullptr;
-    int _version = -1;
+    int _versionFromMetadata = -1;
     bool _isEncryptionRequested = false;
 };
 
