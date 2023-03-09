@@ -84,7 +84,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             // TODO: Enumerate favourites and other special items
 
             let materialisedFilesMetadatas = NextcloudFilesDatabaseManager.shared.localFileItemMetadatas(account: ncAccount.ncKitAccount)
-            FileProviderEnumerator.completeObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: materialisedFilesMetadatas, createLocalFileOrDirectory: false)
+            FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: materialisedFilesMetadatas, createLocalFileOrDirectory: false)
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             NSLog("Enumerating trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
@@ -127,7 +127,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
                         return
                     }
-                    
+
                     metadatas = [updatedEnumeratedItemMetadata]
                 } else {
                     NSLog("Cannot finish enumeration as we do not have a valid server URL. NOTE: this error should not be possible and indicates something is going wrong before.")
@@ -137,7 +137,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 NSLog("Finished reading serverUrl: %@ for user: %@. Processed %d metadatas", self.serverUrl, ncKitAccount, metadatas.count)
 
-                FileProviderEnumerator.completeObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
+                FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
             }
 
             return;
@@ -170,7 +170,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    private static func completeObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable], createLocalFileOrDirectory: Bool = true) {
+    private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable], createLocalFileOrDirectory: Bool = true) {
 
         var items: [NSFileProviderItem] = []
 
