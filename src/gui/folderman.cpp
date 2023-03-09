@@ -1664,9 +1664,27 @@ static QString checkPathValidityRecursive(const QString &path)
         return FolderMan::tr("The selected path is not a folder!");
     }
 
+    #ifdef Q_OS_WIN
+    if (!selFile.isWritable()) {
+        // isWritable() doesn't cover all NTFS permissions
+        // Try write
+        auto testPath = path.toStdString() + "\\nextcloud-write-test-file.txt";
+        FILE *fp = fopen(testPath.c_str(), "w");
+        if (!fp)
+            return FolderMan::tr("You have no permission to write to the selected folder!");
+        fclose(fp);
+
+        // Try delete
+        auto rc = remove(testPath.c_str());
+        if (rc)
+            return FolderMan::tr("You have no permission to write to the selected folder!");
+    }
+    #else
     if (!selFile.isWritable()) {
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
+    #endif
+
     return QString();
 }
 
