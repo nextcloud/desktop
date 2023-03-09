@@ -178,6 +178,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         NSLog("Enumerating changes for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
 
+        // No matter what happens here we finish enumeration in some way, either from the error
+        // handling below or from the completeChangesObserver
         FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes with error")
@@ -185,43 +187,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
-            guard let newMetadatas = newMetadatas,
-                    let updatedMetadatas = updatedMetadatas,
-                    let deletedMetadatas = deletedMetadatas else {
-                NSLog("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
-                observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
-                return
-            }
+            NSLog("Finished reading serverUrl: %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
 
-            NSLog("Finished reading serverUrl: %@ for user: %@. Processed %d new metadatas, %d updated metadatas, %d deleted metadatas", self.serverUrl, self.ncAccount.ncKitAccount, newMetadatas.count, updatedMetadatas.count, deletedMetadatas.count)
-
-            let allUpdates = newMetadatas + updatedMetadatas
-            var allFpItemUpdates: [FileProviderItem] = []
-            var allFpItemDeletionsIdentifiers = Array(deletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
-
-            for updMetadata in allUpdates {
-                guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
-                    NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
-                    continue
-                }
-
-                guard !updMetadata.e2eEncrypted else {
-                    // Precaution, if all goes well in NKFile conversion then this should not happen
-                    // TODO: Remove when E2EE supported
-                    NSLog("Encrypted metadata in changes enumeration, adding to deletions")
-                    allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
-                    continue
-                }
-
-                let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
-                allFpItemUpdates.append(fpItem)
-            }
-
-            observer.didUpdate(allFpItemUpdates)
-            observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
+            FileProviderEnumerator.completeChangesObserver(observer, ncKit: ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
         }
-
-        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 
     func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
@@ -267,6 +236,44 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         }
          */
         observer.finishEnumerating(upTo: NSFileProviderPage("\(numPage)".data(using: .utf8)!))
+    }
+
+    private static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, ncKit: NextcloudKit, newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
+        guard let newMetadatas = newMetadatas,
+                let updatedMetadatas = updatedMetadatas,
+                let deletedMetadatas = deletedMetadatas else {
+            NSLog("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
+            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+            return
+        }
+        
+
+        let allUpdates = newMetadatas + updatedMetadatas
+        var allFpItemUpdates: [FileProviderItem] = []
+        var allFpItemDeletionsIdentifiers = Array(deletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
+
+        for updMetadata in allUpdates {
+            guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
+                NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
+                continue
+            }
+
+            guard !updMetadata.e2eEncrypted else {
+                // Precaution, if all goes well in NKFile conversion then this should not happen
+                // TODO: Remove when E2EE supported
+                NSLog("Encrypted metadata in changes enumeration, adding to deletions")
+                allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
+                continue
+            }
+
+            NSLog("Processed %d new metadatas, %d updated metadatas, %d deleted metadatas.", newMetadatas.count, updatedMetadatas.count, deletedMetadatas.count)
+
+            let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
+            allFpItemUpdates.append(fpItem)
+        }
+
+        observer.didUpdate(allFpItemUpdates)
+        observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
     }
 
     private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
