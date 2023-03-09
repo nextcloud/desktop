@@ -30,6 +30,7 @@
 #include "common/asserts.h"
 #include "discoveryphase.h"
 #include "syncfileitem.h"
+#include "foldermetadata.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>

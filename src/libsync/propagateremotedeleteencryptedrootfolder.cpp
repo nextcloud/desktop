@@ -29,6 +29,7 @@
 #include "deletejob.h"
 #include "clientsideencryptionjobs.h"
 #include "clientsideencryption.h"
+#include "foldermetadata.h"
 #include "encryptfolderjob.h"
 #include "owncloudpropagator.h"
 #include "propagateremotedeleteencryptedrootfolder.h"

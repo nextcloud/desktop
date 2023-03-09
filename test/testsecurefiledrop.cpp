@@ -12,6 +12,7 @@
 #include "owncloudpropagator_p.h"
 #include "propagatorjobs.h"
 #include "clientsideencryption.h"
+#include "foldermetadata.h"
 
 #include <QtTest>
 

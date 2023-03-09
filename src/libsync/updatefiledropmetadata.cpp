@@ -17,6 +17,7 @@
 #include "account.h"
 #include "clientsideencryptionjobs.h"
 #include "clientsideencryption.h"
+#include "foldermetadata.h"
 #include "syncfileitem.h"
 
 #include <QLoggingCategory>

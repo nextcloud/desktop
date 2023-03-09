@@ -18,6 +18,7 @@
 
 #include "account.h"
 #include "clientsideencryptionjobs.h"
+#include "foldermetadata.h"
 
 #include "common/asserts.h"
 #include "common/checksums.h"

@@ -107,6 +107,8 @@ set(libsync_SRCS
     clientsideencryptionjobs.cpp
     datetimeprovider.h
     datetimeprovider.cpp
+    foldermetadata.h
+    foldermetadata.cpp
     ocsuserstatusconnector.h
     ocsuserstatusconnector.cpp
     userstatusconnector.h

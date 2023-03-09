@@ -2,6 +2,7 @@
 #include "clientsideencryptionjobs.h"
 #include "networkjobs.h"
 #include "clientsideencryption.h"
+#include "foldermetadata.h"
 #include "account.h"
 
 #include <QFileInfo>
@@ -21,7 +22,6 @@ PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagato
     , _propagator(propagator)
     , _remoteParentPath(remoteParentPath)
     , _item(item)
-    , _metadata(nullptr)
 {
 }
 
@@ -123,14 +123,14 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   // Encrypt File!
   const auto pathSplit = _item->_file.split(QLatin1Char('/'), Qt::SkipEmptyParts);
   const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-  _metadata.reset(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), statusCode, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath, _propagator->_journal));
-  connect(_metadata.data(), &FolderMetadata::setupComplete, this, [this, statusCode] {
+  _metadata = new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), statusCode, _propagator->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath, _propagator->_journal);
+  connect(_metadata, &FolderMetadata::setupComplete, this, [this, statusCode] {
       if (!_metadata->isMetadataSetup()) {
           if (_isFolderLocked) {
-              connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+              connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::slotFolderUnlocked);
               unlockFolder();
           } else {
-              emit error();
+              slotFinalize();
           }
           return;
       }
@@ -186,7 +186,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
           if (!encryptionResult) {
               qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
-              connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+              connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::slotFolderUnlocked);
               unlockFolder();
               return;
           }
@@ -224,17 +224,39 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
 
     qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
     qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
-    emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
-                   _remoteParentPath + QLatin1Char('/') + outputInfo.fileName(),
-                   outputInfo.size());
+    slotFinalize(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(), _remoteParentPath + QLatin1Char('/') + outputInfo.fileName(), outputInfo.size());
 }
 
 void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Update metadata error for folder" << fileId << "with error" << httpErrorResponse;
   qCDebug(lcPropagateUploadEncrypted()) << "Unlocking the folder.";
-  connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+  connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::slotFolderUnlocked);
   unlockFolder();
+}
+
+void PropagateUploadEncrypted::slotFinalize(const QString &path, const QString &filename, quint64 size)
+{
+    if (_metadata->unlockTopLevelFolder()) {
+        if (!path.isEmpty() && !filename.isEmpty()) {
+            emit finalized(path, filename, size);
+        } else {
+            emit error();
+        }
+        return;
+    }
+    connect(_metadata, &FolderMetadata::topLevelFolderUnlocked, this, [this, path, filename, size]() {
+        if (!path.isEmpty() && !filename.isEmpty()) {
+            emit finalized(path, filename, size);
+        } else {
+            emit error();
+        }
+    });
+}
+
+void PropagateUploadEncrypted::slotFolderUnlocked(const QByteArray &folderId, int httpStatus)
+{
+    slotFinalize();
 }
 
 void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)

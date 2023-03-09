@@ -15,6 +15,7 @@
 #include "updatee2eesharemetadatajob.h"
 #include "clientsideencryption.h"
 #include "clientsideencryptionjobs.h"
+#include "foldermetadata.h"
 #include "folderman.h"
 
 namespace OCC

@@ -18,6 +18,7 @@
 #include "propagatedownload.h"
 #include "vfs/cfapi/vfs_cfapi.h"
 #include <clientsideencryptionjobs.h>
+#include "foldermetadata.h"
 
 #include "filesystem.h"
 

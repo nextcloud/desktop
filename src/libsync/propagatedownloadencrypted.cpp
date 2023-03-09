@@ -1,5 +1,6 @@
 #include "propagatedownloadencrypted.h"
 #include "clientsideencryptionjobs.h"
+#include "foldermetadata.h"
 
 Q_LOGGING_CATEGORY(lcPropagateDownloadEncrypted, "nextcloud.sync.propagator.download.encrypted", QtInfoMsg)
 

@@ -1,5 +1,4 @@
-#ifndef CLIENTSIDEENCRYPTION_H
-#define CLIENTSIDEENCRYPTION_H
+#pragma once
 
 #include <QString>
 #include <QObject>
@@ -130,6 +129,111 @@ public:
     QString _mnemonic;
     bool _newMnemonicGenerated = false;
 
+    class Bio
+    {
+    public:
+        Bio()
+            : _bio(BIO_new(BIO_s_mem()))
+        {
+        }
+
+        ~Bio()
+        {
+            BIO_free_all(_bio);
+        }
+
+        operator BIO *()
+        {
+            return _bio;
+        }
+
+    private:
+        Q_DISABLE_COPY(Bio)
+
+        BIO *_bio;
+    };
+
+    class PKeyCtx
+    {
+    public:
+        explicit PKeyCtx(int id, ENGINE *e = nullptr)
+            : _ctx(EVP_PKEY_CTX_new_id(id, e))
+        {
+        }
+
+        ~PKeyCtx()
+        {
+            EVP_PKEY_CTX_free(_ctx);
+        }
+
+        // The move constructor is needed for pre-C++17 where
+        // return-value optimization (RVO) is not obligatory
+        // and we have a `forKey` static function that returns
+        // an instance of this class
+        PKeyCtx(PKeyCtx &&other)
+        {
+            std::swap(_ctx, other._ctx);
+        }
+
+        PKeyCtx &operator=(PKeyCtx &&other) = delete;
+
+        static PKeyCtx forKey(EVP_PKEY *pkey, ENGINE *e = nullptr)
+        {
+            PKeyCtx ctx;
+            ctx._ctx = EVP_PKEY_CTX_new(pkey, e);
+            return ctx;
+        }
+
+        operator EVP_PKEY_CTX *()
+        {
+            return _ctx;
+        }
+
+    private:
+        Q_DISABLE_COPY(PKeyCtx)
+
+        PKeyCtx() = default;
+
+        EVP_PKEY_CTX *_ctx = nullptr;
+    };
+
+    class PKey
+    {
+    public:
+        ~PKey();
+
+        // The move constructor is needed for pre-C++17 where
+        // return-value optimization (RVO) is not obligatory
+        // and we have a static functions that return
+        // an instance of this class
+        PKey(PKey &&other);
+
+        PKey &operator=(PKey &&other) = delete;
+
+        static PKey readPublicKey(Bio &bio);
+
+        static PKey readPrivateKey(Bio &bio);
+
+        static PKey generate(PKeyCtx &ctx);
+
+        operator EVP_PKEY *()
+        {
+            return _pkey;
+        }
+
+        operator EVP_PKEY *() const
+        {
+            return _pkey;
+        }
+
+    private:
+        Q_DISABLE_COPY(PKey)
+
+        PKey() = default;
+
+        EVP_PKEY *_pkey = nullptr;
+    };
+
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
     void sensitiveDataForgotten();
@@ -194,100 +298,4 @@ struct EncryptedFile {
     int fileVersion = 0;
     int metadataKey = 0;
 };
-class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
-{
-    Q_OBJECT
-    struct FolderUser {
-        QString userId;
-        QByteArray certificatePem;
-        QByteArray encryptedMetadataKey;
-    };
-
-public:
-    FolderMetadata(AccountPtr account,
-                   const QByteArray &metadata = {},
-                   int statusCode = -1,
-                   const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {},
-                   const QString &topLevelFolderPath = {},
-                   SyncJournalDb *journal = nullptr,
-                   QObject *parent = nullptr);
-    ~FolderMetadata();
-
-    [[nodiscard]] QByteArray encryptedMetadata() const;
-    [[nodiscard]] QVector<EncryptedFile> files() const;
-    [[nodiscard]] bool isMetadataSetup() const;
-
-    [[nodiscard]] bool isFileDropPresent() const;
-
-    [[nodiscard]] bool moveFromFileDropToFiles();
-
-    [[nodiscard]] QJsonObject fileDrop() const;
-
-    bool addUser(const QString &userId, const QSslCertificate certificate);
-    bool removeUser(const QString &userId);
-
-    [[nodiscard]] QByteArray metadataKey() const;
-    [[nodiscard]] QSet<QByteArray> keyChecksums() const;
-
-private:
-    /* Use std::string and std::vector internally on this class
-     * to ease the port to Nlohmann Json API
-     */
-    [[nodiscard]] bool verifyMetadataKey() const;
-
-    [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
-    [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
-    [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
-
-    [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
-    [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
-
-    [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
-
-public slots:
-    void addEncryptedFile(const EncryptedFile &f);
-    void removeEncryptedFile(const EncryptedFile &f);
-    void removeAllEncryptedFiles();
-    void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
-
-private slots:
-    void setupMetadata();
-    void setupEmptyMetadata();
-    void setupExistingMetadata(const QByteArray &metadata);
-    void fetchTopLevelFolderEncryptedId();
-    void fetchTopLevelFolderMetadata();
-    void topLevelFolderEncryptedIdReceived(const QStringList &list);
-    void topLevelFolderEncryptedIdError(QNetworkReply *r);
-    void topLevelFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
-    void topLevelFolderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
-    void topLevelFolderLockedSuccessfully(const QByteArray &fileId, const QByteArray &token);
-    void topLevelFolderLockedError(const QByteArray &fileId, int httpErrorCode);
-    void lockTopLevelFolder();
-    void unlockTopLevelFolder();
-    void updateUsersEncryptedMetadataKey();
-    void createNewMetadataKey();
-    void emitSetupComplete();
-
-signals:
-    void setupComplete();
-
-private:
-
-    QVector<EncryptedFile> _files;
-    QByteArray _metadataKey;
-    QSet<QByteArray> _keyChecksums;
-    QHash<QString, FolderUser> _folderUsers;
-    AccountPtr _account;
-    QVector<QPair<QString, QString>> _sharing;
-    QJsonObject _fileDrop;
-    QByteArray _initialMetadata;
-    int _initialStatusCode = -1;
-    QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
-    QString _topLevelFolderPath;
-    QPointer<SyncJournalDb> _journal = nullptr;
-    QByteArray _topLevelFolderToken;
-    QByteArray _topLevelFolderId;
-};
-
 } // namespace OCC
-#endif

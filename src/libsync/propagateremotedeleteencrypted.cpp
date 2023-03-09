@@ -18,6 +18,7 @@
 #include "encryptfolderjob.h"
 #include <QLoggingCategory>
 #include <QFileInfo>
+#include "foldermetadata.h"
 
 using namespace OCC;
 
