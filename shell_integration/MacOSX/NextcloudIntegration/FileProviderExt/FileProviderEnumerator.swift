@@ -168,14 +168,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             let materialisedFilesMetadatas = NextcloudFilesDatabaseManager.shared.localFileItemMetadatas(account: ncAccount.ncKitAccount)
 
-            var errors = [String : Error]()
             var allNewMetadatas: [NextcloudItemMetadataTable] = []
             var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
             var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
 
             let dispatchGroup = DispatchGroup()
             dispatchGroup.notify(queue: .main) { // Wait for all read tasks to finish
-                FileProviderEnumerator.completeChangesObserver(observer, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
+                FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
             }
 
             for materialMetadata in materialisedFilesMetadatas {
@@ -233,7 +232,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             NSLog("Finished reading serverUrl: %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
 
-            FileProviderEnumerator.completeChangesObserver(observer, ncKit: ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
+            FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
         }
     }
 
@@ -282,21 +281,34 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         observer.finishEnumerating(upTo: NSFileProviderPage("\(numPage)".data(using: .utf8)!))
     }
 
-    private static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, ncKit: NextcloudKit, newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
-        guard let newMetadatas = newMetadatas,
-                let updatedMetadatas = updatedMetadatas,
-                let deletedMetadatas = deletedMetadatas else {
+    private static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, ncKit: NextcloudKit, newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
+
+        guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
             NSLog("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
         }
-        
 
-        let allUpdates = newMetadatas + updatedMetadatas
+        // Observer does not care about new vs updated, so join
+        var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
+        var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
+
+        if let newMetadatas = newMetadatas {
+            allUpdatedMetadatas += newMetadatas
+        }
+
+        if let updatedMetadatas = updatedMetadatas {
+            allUpdatedMetadatas += updatedMetadatas
+        }
+
+        if let deletedMetadatas = deletedMetadatas {
+            allDeletedMetadatas = deletedMetadatas
+        }
+
         var allFpItemUpdates: [FileProviderItem] = []
-        var allFpItemDeletionsIdentifiers = Array(deletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
+        var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
 
-        for updMetadata in allUpdates {
+        for updMetadata in allUpdatedMetadatas {
             guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
                 NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
                 continue
@@ -310,14 +322,20 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 continue
             }
 
-            NSLog("Processed %d new metadatas, %d updated metadatas, %d deleted metadatas.", newMetadatas.count, updatedMetadatas.count, deletedMetadatas.count)
-
             let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
             allFpItemUpdates.append(fpItem)
         }
 
-        observer.didUpdate(allFpItemUpdates)
-        observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
+        if !allFpItemUpdates.isEmpty {
+            observer.didUpdate(allFpItemUpdates)
+        }
+
+        if !allFpItemDeletionsIdentifiers.isEmpty {
+            observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
+        }
+
+        NSLog("Processed %d new or updated metadatas, %d deleted metadatas.", allUpdatedMetadatas.count, allDeletedMetadatas.count)
+        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 
     private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
