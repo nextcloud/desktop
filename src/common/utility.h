@@ -363,6 +363,24 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
         Q_UNREACHABLE();
     }
 
+    template <typename T>
+    class asKeyValueRange
+    {
+        // https://www.kdab.com/qt-range-based-for-loops-and-structured-bindings/
+    public:
+        asKeyValueRange(const T &data)
+            : _data{data}
+        {
+        }
+
+        auto begin() { return _data.constKeyValueBegin(); }
+
+        auto end() { return _data.constKeyValueEnd(); }
+
+    private:
+        const T &_data;
+    };
+
     /**
      * Replace all occurances of @{} values in template with the values from values
      */
