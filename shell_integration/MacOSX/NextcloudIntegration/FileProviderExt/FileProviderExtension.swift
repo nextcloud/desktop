@@ -567,7 +567,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
 
         guard let ncAccount = ncAccount else {
-            NSLog("Not providing enumerator for container with identifier %@ yet as account not set up")
+            NSLog("Not providing enumerator for container with identifier %@ yet as account not set up", containerItemIdentifier.rawValue)
             itemIdsForEnumeratorsNeedingSignalling.add(containerItemIdentifier)
             throw NSFileProviderError(.notAuthenticated)
         }
@@ -591,22 +591,37 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         assert(ncAccount != nil)
 
-        if !NextcloudFilesDatabaseManager.shared.anyItemMetadatasForAccount(ncAccount!.ncKitAccount) {
+        fpManager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
+            if error != nil {
+                NSLog("Error resolving not authenticated, received error: %@", error!.localizedDescription)
+            }
+        }
+
+        guard NextcloudFilesDatabaseManager.shared.anyItemMetadatasForAccount(ncAccount!.ncKitAccount) else {
+            // When we have nothing registered, force full refresh.
             // This refreshes the entire structure of the FileProvider and calls
             // enumerateItems rather than enumerateChanges in the enumerator
             NSLog("Signalling manager for user %@ at server %@ to reimport everything", ncAccount!.username, ncAccount!.serverUrl)
-            fpManager.reimportItems(below: .rootContainer, completionHandler: {_ in })
+            fpManager.reimportItems(below: .rootContainer) { error in
+                if error != nil {
+                    NSLog("Error reimporting everything, received error: %@", error!.localizedDescription)
+                }
+            }
+
+            itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
             return
         }
 
-        NSLog("Signalling enumerator for user %@ at server %@", ncAccount!.username, ncAccount!.serverUrl)
-        // System will only respond to workingSet when using and NSFileProviderReplicatedExtension
-        // https://developer.apple.com/documentation/fileprovider/nonreplicated_file_provider_extension/content_and_change_tracking/tracking_your_file_provider_s_changes/using_push_notifications_to_signal_changes
-        fpManager.signalEnumerator(for: .workingSet) { error in
-            if error != nil {
-                NSLog("Error signalling enumerator for workingSet, received error: %@", error!.localizedDescription)
+        NSLog("Signalling enumerators for user %@ at server %@", ncAccount!.username, ncAccount!.serverUrl)
+        for itemId in itemIdsForEnumeratorsNeedingSignalling {
+            fpManager.signalEnumerator(for: itemId as! NSFileProviderItemIdentifier) { error in
+                if error != nil {
+                    NSLog("Error signalling enumerator for root container, received error: %@", error!.localizedDescription)
+                }
             }
         }
+
+        itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
     }
 
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
@@ -621,9 +636,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("Nextcloud account set up in File Provider extension for user: %@ at server: %@", user, serverUrl)
 
-        if itemIdsForEnumeratorsNeedingSignalling.count > 0 {
-            signalEnumeratorAfterAccountSetup()
-            itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
-        }
+        signalEnumeratorAfterAccountSetup()
     }
 }
