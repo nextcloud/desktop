@@ -1,0 +1,6 @@
+Bugfix: Don't abort local folder deletions on unrelated errors
+
+We fixed a bug where folder deletions where not performed if any sync error
+occured anyhwere in the sync tree.
+
+https://github.com/owncloud/client/issues/9311

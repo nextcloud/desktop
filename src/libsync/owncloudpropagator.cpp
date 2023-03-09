@@ -958,9 +958,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
-    int i = _runningJobs.indexOf(subJob);
-    OC_ENFORCE(i >= 0); // should only happen if this function is called more than once
-    _runningJobs.remove(i);
+    OC_ENFORCE(_runningJobs.removeAll(subJob) == 1); // we removed exactly one item
 
     // Any sub job error will cause the whole composite to fail. This is important
     // for knowing whether to update the etag in PropagateDirectory, for example.
@@ -974,7 +972,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     case SyncFileItem::DetailError:
         [[fallthrough]];
     case SyncFileItem::BlacklistedError:
-        _hasError = status;
+        _errorPaths.insert(subJob->path(), status);
         break;
     default:
         break;
@@ -995,7 +993,7 @@ void PropagatorCompositeJob::finalize()
         return;
 
     _state = Finished;
-    emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+    emit finished(_errorPaths.empty() ? SyncFileItem::Success : _errorPaths.last());
 }
 
 qint64 PropagatorCompositeJob::committedDiskSpace() const
@@ -1228,22 +1226,34 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         break;
     // handle all other cases as errors
     default:
+        _status = status;
         if (_state != Finished) {
-            // Synchronously abort
-            abort(AbortType::Synchronous);
-            _state = Finished;
-            emit finished(status);
+            auto subJob = qobject_cast<PropagatorCompositeJob *>(sender());
+            if (OC_ENSURE(subJob)) {
+                const QMap<QString, SyncFileItem::Status> errorPaths = subJob->errorPaths();
+                auto deleteJobs = _dirDeletionJobs.jobsToDo();
+                deleteJobs.erase(std::remove_if(deleteJobs.begin(), deleteJobs.end(),
+                                     [&](auto *p) {
+                                         for (const auto &[path, error] : Utility::asKeyValueRange(errorPaths)) {
+                                             const QFileInfo info(path);
+                                             if (FileSystem::isChildPathOf(p->path(), info.isDir() ? info.filePath() : info.path())) {
+                                                 return true;
+                                             }
+                                         }
+                                         return false;
+                                     }),
+                    deleteJobs.end());
+                _dirDeletionJobs.setJobsToDo(deleteJobs);
+            }
         }
-        return;
     }
-
     propagator()->scheduleNextJob();
 }
 
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
     _state = Finished;
-    emit finished(status);
+    emit finished(_status != SyncFileItem::NoStatus ? _status : status);
 }
 
 void PropagateRootDirectory::addDeleteJob(PropagatorJob *job)

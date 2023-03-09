@@ -177,6 +177,8 @@ public:
     }
     ~PropagateItemJob() override;
     bool scheduleSelfOrChild() override;
+
+    const SyncFileItem &item() const { return *_item.data(); }
 public slots:
     virtual void start() = 0;
 };
@@ -230,6 +232,11 @@ public:
 
     qint64 committedDiskSpace() const override;
 
+    QMap<QString, SyncFileItem::Status> errorPaths() const { return _errorPaths; }
+
+    const QVector<PropagatorJob *> &jobsToDo() { return _jobsToDo; }
+    void setJobsToDo(const QVector<PropagatorJob *> &todo) { _jobsToDo = todo; }
+
 private slots:
     void slotSubJobAbortFinished();
     bool possiblyRunNextJob(PropagatorJob *next)
@@ -247,7 +254,7 @@ private:
     QVector<PropagatorJob *> _jobsToDo;
     SyncFileItemSet _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
-    SyncFileItem::Status _hasError = SyncFileItem::NoStatus; // NoStatus,  or NormalError / SoftError if there was an error
+    QMap<QString, SyncFileItem::Status> _errorPaths; // NoStatus,  or NormalError / SoftError if there was an error
     quint64 _abortsCount = 0;
 };
 
@@ -339,6 +346,7 @@ private slots:
 
 private:
     PropagatorCompositeJob _dirDeletionJobs;
+    SyncFileItem::Status _status = SyncFileItem::NoStatus;
 };
 
 /**
