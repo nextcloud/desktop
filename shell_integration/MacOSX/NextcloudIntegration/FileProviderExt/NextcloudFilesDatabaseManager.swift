@@ -252,16 +252,16 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func deleteItemMetadata(account: String, serverUrl: String) {
+    func deleteItemMetadata(ocId: String) {
         let database = ncDatabase()
 
         do {
             try database.write {
-                let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl)
+                let results = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId)
                 database.delete(results)
             }
         } catch let error {
-            NSLog("Could not delete item metadata with serverUrl: %@, received error: %@", serverUrl, error.localizedDescription)
+            NSLog("Could not delete item metadata with ocId: %@, received error: %@", ocId, error.localizedDescription)
         }
     }
 
@@ -449,12 +449,13 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    // Deletes all metadatas related to the info of the directory provided
     func deleteDirectoryAndSubdirectoriesMetadata(account: String, serverUrl: String) {
         let database = ncDatabase()
         let results = database.objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
 
         for result in results {
-            deleteItemMetadata(account: result.account, serverUrl: result.serverUrl)
+            deleteItemMetadata(ocId: result.ocId)
             deleteLocalFileMetadata(ocId: result.ocId)
         }
 

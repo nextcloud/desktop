@@ -549,7 +549,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             NSLog("Successfully delete item with identifier: %@ and filename: %@", ocId, serverFileNameUrl)
 
             let serverUrl = itemMetadata.serverUrl
-            dbManager.deleteItemMetadata(account: account, serverUrl: serverUrl)
 
             if itemMetadata.directory && dbManager.directoryMetadata(ocId: ocId) != nil {
                 dbManager.deleteDirectoryAndSubdirectoriesMetadata(account: account, serverUrl: serverUrl)
