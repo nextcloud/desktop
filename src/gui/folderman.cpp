@@ -1701,10 +1701,20 @@ static QString checkPathValidityRecursive(const QString &path)
         return FolderMan::tr("The selected path is not a folder!");
     }
 
+    #ifdef Q_OS_WIN
+    if (!selFile.isWritable()) {
+        // isWritable() doesn't cover all NTFS permissions
+        // try creating and removing a test file, and make sure it is excluded from sync
+        if (!Utility::canCreateFileInPath(path)) {
+            return FolderMan::tr("You have no permission to write to the selected folder!");
+        }
+    }
+    #else
     if (!selFile.isWritable()) {
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
-    return QString();
+    #endif
+    return {};
 }
 
 // QFileInfo::canonicalPath returns an empty string if the file does not exist.
