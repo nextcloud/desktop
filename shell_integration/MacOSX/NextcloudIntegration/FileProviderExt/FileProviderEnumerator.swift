@@ -184,6 +184,20 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 FileProviderEnumerator.readServerUrl(materialMetadataServerUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
                     guard readError == nil else {
                         NSLog("Finishing enumeration of changes at %@ with error %@", serverUrl)
+
+                        if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
+                            NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
+
+                            let dbManager = NextcloudFilesDatabaseManager.shared
+                            if materialMetadata.directory {
+                                dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: materialMetadata.ocId)
+                            } else {
+                                dbManager.deleteItemMetadata(ocId: materialMetadata.ocId)
+                            }
+
+                            allDeletedMetadatas.append(materialMetadata)
+                        }
+
                         dispatchGroup.leave()
                         return
                     }
@@ -226,6 +240,26 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes with error")
+
+                if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
+                    NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", serverUrl)
+
+                    guard let itemMetadata = self.enumeratedItemMetadata else {
+                        NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
+                        observer.finishEnumeratingWithError(readError!)
+                        return
+                    }
+
+                    let dbManager = NextcloudFilesDatabaseManager.shared
+                    if itemMetadata.directory {
+                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId)
+                    } else {
+                        dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
+                    }
+
+                    FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
+                }
+
                 observer.finishEnumeratingWithError(readError!)
                 return
             }
