@@ -245,7 +245,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
                         // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
-                        dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)
+                        // unless it's the root container -- this method deletes metadata for directories under the path that we do not
+                        // provide as the updatedDirectoryItemMetadatas, don't do this with root folder or we will purge metadatas wrongly
+                        if serverUrl != ncAccount.davFilesUrl {
+                            dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)
+                        }
 
                         let receivedMetadataChanges = dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas)
 
