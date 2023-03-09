@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="25"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Отвори %1 локално</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>У %1</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Прикажи још акција</translation>
     </message>
 </context>
 <context>
@@ -26,17 +26,17 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="189"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Одбаци</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Отвори детаље фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Отвори дијалог дељења</translation>
     </message>
 </context>
 <context>
@@ -44,12 +44,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="33"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Листа активности</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="112"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Још увек нема активности</translation>
     </message>
 </context>
 <context>
@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="63"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Обриши мени статусне поруке</translation>
     </message>
 </context>
 <context>
@@ -65,22 +65,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Аватар позиваоца у Talk обевештењу</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Одговор на Talk обевештење о позиву</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Одбиј</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Одбиј Talk обевештење о позиву</translation>
     </message>
 </context>
 <context>
@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Проверавају се измене у „%1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="127"/>
@@ -172,7 +172,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Фајл се отвара за локални уређивање</translation>
     </message>
 </context>
 <context>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="134"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>Нема скорашњих емођија</translation>
     </message>
 </context>
 <context>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="50"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка</translation>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Одбаци</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Активност</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Дељење</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>Детаљи фајла %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>„%1” не може да се премести у „%2</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -238,12 +238,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="157"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом уклањања „%1: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="173"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се уклони фолдер „%1</translation>
     </message>
 </context>
 <context>
@@ -256,12 +256,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Логотип</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation type="unfinished"/>
+        <translation>Пређите на прегледач да бисте се повезали са својим налогом</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
@@ -328,12 +328,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 204, а примљен је „%1 %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>„%1 Није успело откључавање шифрованог фолдера %2”.</translation>
     </message>
 </context>
 <context>
@@ -341,17 +341,17 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="904"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>%2 је већ закључао фајл %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="906"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Операција закључавања %1 није успела услед грешке %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="908"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Операција откључавања %1 није успела услед грешке %2</translation>
     </message>
 </context>
 <context>
@@ -401,37 +401,37 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-End Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Шифровање од-краја-до-краја са Виртуелним фајловима</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Изгледа да вам је за овај фолдер укључена могућност Виртуелних фајлова. Тренутно није могуће имплицитно преузимање виртуелних фајлова који су шифровани од-краја-до-краја. Да бисте имали најбоље искуство са Виртуелним фајловима и шифровањем од-краја-до-краја, обезбедите да се шифровани фолдер означи са „Учини увек доступно ван мреже”</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Шифровање од-краја-до-краја са Виртуелним фајловима</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Изгледа да вам је за овај фолдер укључена могућност Виртуелних фајлова. Тренутно није могуће имплицитно преузимање виртуелних фајлова који су шифровани од-краја-до-краја. Да бисте имали најбоље искуство са Виртуелним фајловима и шифровањем од-краја-до-краја, обезбедите да се шифровани фолдер означи са „Учини увек доступно ван мреже”</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Не шифрирај фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Немој да шифрујеш фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Шифрирај фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -441,17 +441,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Искључи шифровање</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Прикажи подсетник</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>За овај налог је укључено шифровање од-краја-до-краја</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
@@ -467,7 +467,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>На овом уређају није подешено шифровање од-почетка-до-краја. Када се укључи, имаћете могућност да шифрујете овај фолдер.
+Да ли желите да подесите шифровање од-почетка-до-краја?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -480,17 +481,17 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
         <location filename="../src/gui/accountsettings.cpp" line="1458"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Овај налог подржава шифровање од-почетка-до-краја</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Није успело шифровање</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Фолдер није могао да се шифрује јер више не постоји</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="510"/>
@@ -513,13 +514,13 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
         <location filename="../src/gui/accountsettings.cpp" line="608"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Креирај нови фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Доступност</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
@@ -554,17 +555,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="643"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Искључи подршку за виртуелни фајл ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>Enable virtual file support %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Укључи подршкуа за виртуелни фајл %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментално)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
@@ -594,7 +595,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Да искључим подршку за виртуелни фајл?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
@@ -603,42 +604,46 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Ова радња ће искључити подршку за виртуелни фајл. Као последица тога, преузеће се садржаји фолдера који су тренутно обележени као „доступан само на мрежи”.
+
+Једина предност искључивања подршке за виртуелни фајл је што ће поново постати доступна могућност селективне синхронизације.
+
+Ова радња ће да прекине све синхронизације које се тренутно извршавају.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="929"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Искључи подршку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Подсетник шифровања од-краја-до-краја</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Подсетник шифровања од-краја-до-краја</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Да бисмо заштитили ваш Криптографски идентитет, шифровали смо га са подсетником од 12 речи из речника. Молимо вас да их забележите и да их чувате на сигурном. Биће вам потребне да додате остале уређаје на свој налог (као што су ваш мобилни телефон или лаптоп).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Искључи шифровање од-краја-до-краја</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation type="unfinished"/>
+        <translation>Да искључим шифровање од-краја-до-краја за %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Уклањање шифровања од-краја-до-краја ће да обрише локално синхронизоване шифроване фајлове.&lt;br&gt;Шифровани фајлови ће остати на серверу.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -673,12 +678,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1218"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 као %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1225"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Верзија сервера %1 није подржана! Настављате уз сопствени ризик.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1227"/>
@@ -718,7 +723,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1261"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка у конфигурацији сервера: %1 у %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1272"/>
@@ -763,12 +768,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1569"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Подеси шифровање</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Шифровање од-краја-до-краја за овај налог је укључено на другом уређају.&lt;br&gt;Може да се укључи на овом уређају уношењем вашег подсетника.&lt;br&gt;Ово ће укључити синхронизацију постојећих шифрованих фолдера.</translation>
     </message>
 </context>
 <context>
@@ -776,17 +781,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Аутентификовани захтев серверу је преусмерен на „%1”. URL је неисправан, сервер је погрешно конфигурисан.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је забранио приступ. Да бисте проверили имате ли исправан приступ, &lt;a href=&quot;%1&quot;&gt;кликните овде&lt;/a&gt; да приступите сервису из свог прегледача.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Дошло је до неисправног одговора на аутетификовани WebDAV захтев</translation>
     </message>
 </context>
 <context>
@@ -847,17 +852,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Преузимање активности...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="509"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Преузимање активности ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="567"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Фајлови са листе за игнорисање као и симболички линкови се не синхронизују.</translation>
     </message>
 </context>
 <context>
@@ -875,7 +880,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат и кључ (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -890,7 +895,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Снажно се препоручује шифровани pkcs12 пакет јер ће се копија сачувати у конфигурационом фајлу.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -908,54 +913,54 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="150"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Настављање значи &lt;b&gt;брисање ових подешавања&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="152"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Настављање значи &lt;b&gt;игнорисање ових подешавања&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="158"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Нека подешавања су конфигурисана у новијим верзијама овог клијента и користе могућности које нису доступне у овој верзији.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Већ је направљена резервна копија текућег конфигурационог фајла &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Нека подешавања су конфигурисана у %1 верзијама овог клијента и користе могућности које нису доступне у овој верзији.&lt;br&gt;&lt;br&gt;Настављање значи &lt;b&gt;%2 ових подешавања&lt;/b&gt;&lt;br&gt;&lt;br&gt;Већ је направљена резервна копија текућег конфигурационог фајла &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>новија</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>старија</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>игнорише се</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>брише се</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="185"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Напусти</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="186"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Настави</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="377"/>
@@ -970,7 +975,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="378"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Дошло је до грешке приликом приступа конфигурационом фајлу у %1. Молимо вас да обезбедите да ваш системски налог има приступ фајлу.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="381"/>
@@ -988,12 +993,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Унесите корисничко име и лозинку за „%1” у %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Корисничко име:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1011,58 +1016,58 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 не може да се отпреми јер постоји фајл са истим именом али различитом величином слова</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 има неисправно време измене. Не отпремајте га на сервер.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="290"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Фајл је обрисан (почиње отпремање) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="301"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 има неисправно време измене. Не отпремајте га на сервер.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="309"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Локални фајл се изменио током синхронизације. Наставиће се.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="323"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="646"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локални фајл се изменио током синхронизације.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Мрежна грешка: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="468"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="629"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локални фајл је обрисан током синхронизације.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Није успело обнављање: %1</translation>
     </message>
 </context>
 <context>
