@@ -194,10 +194,13 @@ void UpdateE2eeShareMetadataJob::slotFolderLockedSuccessfully(const QByteArray &
         return;
     }
 
-    const auto job = new UpdateMetadataApiJob(_account, _folderId, _folderMetadata->encryptedMetadata(), _folderToken);
-    connect(job, &UpdateMetadataApiJob::success, this, &UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess);
-    connect(job, &UpdateMetadataApiJob::error, this, &UpdateE2eeShareMetadataJob::slotUpdateMetadataError);
-    job->start();
+    _folderMetadata->encryptMetadata();
+    connect(_folderMetadata.data(), &FolderMetadata::encryptionFinished, this, [this](const QByteArray encryptedMetadata) {
+        const auto job = new UpdateMetadataApiJob(_account, _folderId, encryptedMetadata, _folderToken);
+        connect(job, &UpdateMetadataApiJob::success, this, &UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess);
+        connect(job, &UpdateMetadataApiJob::error, this, &UpdateE2eeShareMetadataJob::slotUpdateMetadataError);
+        job->start();
+    });
 }
 
 void UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess(const QByteArray &folderId)

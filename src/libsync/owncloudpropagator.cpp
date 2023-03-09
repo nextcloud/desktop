@@ -1064,6 +1064,11 @@ QSharedPointer<FolderMetadata> OwncloudPropagator::findTopLevelFolderMetadata(co
     return _topLevelFolderMetadata.value(path, QSharedPointer<FolderMetadata>{});
 }
 
+const QMap<QString, QSharedPointer<FolderMetadata>> &OwncloudPropagator::topLevelFolderMetadata() const
+{
+    return _topLevelFolderMetadata;
+}
+
 void OwncloudPropagator::setTopLevelFolderMetadata(const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolderMetadata)
 {
     _topLevelFolderMetadata = topLevelFolderMetadata;

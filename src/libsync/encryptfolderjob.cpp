@@ -88,25 +88,24 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
 void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, const QByteArray &token)
 {
     _folderToken = token;
+    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, -1, {}, _path, _journal));
+    connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, fileId, metadata] {
+        metadata->encryptMetadata();
+        connect(metadata.data(), &FolderMetadata::encryptionFinished, this, [this, fileId, metadata](const QByteArray encryptedMetadata) {
+            if (encryptedMetadata.isEmpty()) {
+                // TODO: Mark the folder as unencrypted as the metadata generation failed.
+                _errorString =
+                    tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
+                       "This can be an issue with your OpenSSL libraries.");
+                emit finished(Error);
+                return;
+            }
 
-    const auto subPathSplit = _path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    const auto topLevelFolderPath = subPathSplit.size() > 1 ? subPathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-    _metadata = new FolderMetadata(_account, {}, -1, {}, topLevelFolderPath, _journal);
-    connect(_metadata, &FolderMetadata::setupComplete, this, [this, fileId] {
-        const auto encryptedMetadata = _metadata->encryptedMetadata();
-        if (encryptedMetadata.isEmpty()) {
-            // TODO: Mark the folder as unencrypted as the metadata generation failed.
-            _errorString =
-                tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
-                   "This can be an issue with your OpenSSL libraries.");
-            emit finished(Error);
-            return;
-        }
-
-        const auto storeMetadataJob = new StoreMetaDataApiJob(_account, fileId, _metadata->encryptedMetadata(), this);
-        connect(storeMetadataJob, &StoreMetaDataApiJob::success, this, &EncryptFolderJob::slotUploadMetadataSuccess);
-        connect(storeMetadataJob, &StoreMetaDataApiJob::error, this, &EncryptFolderJob::slotUpdateMetadataError);
-        storeMetadataJob->start();
+            const auto storeMetadataJob = new StoreMetaDataApiJob(_account, fileId, encryptedMetadata, this);
+            connect(storeMetadataJob, &StoreMetaDataApiJob::success, this, &EncryptFolderJob::slotUploadMetadataSuccess);
+            connect(storeMetadataJob, &StoreMetaDataApiJob::error, this, &EncryptFolderJob::slotUpdateMetadataError);
+            storeMetadataJob->start();
+        });
     });
 }
 
@@ -145,29 +144,15 @@ void EncryptFolderJob::slotUnlockFolderError(const QByteArray &fileId,
                                              const int httpErrorCode,
                                              const QString &errorMessage)
 {
-    if (_metadata->unlockTopLevelFolder()) {
-        qCInfo(lcEncryptFolderJob()) << "Unlocking error for" << fileId << "HTTP code:" << httpErrorCode;
-        _errorString = errorMessage;
-        emit finished(Error);
-        return;
-    }
-    connect(_metadata, &FolderMetadata::topLevelFolderUnlocked, this, [this, errorMessage, fileId, httpErrorCode]() {
-        qCInfo(lcEncryptFolderJob()) << "Unlocking error for" << fileId << "HTTP code:" << httpErrorCode;
-        _errorString = errorMessage;
-        emit finished(Error);
-    });
+    qCInfo(lcEncryptFolderJob()) << "Unlocking error for" << fileId << "HTTP code:" << httpErrorCode;
+    _errorString = errorMessage;
+    emit finished(Error);
 }
 void EncryptFolderJob::slotUnlockFolderSuccess(const QByteArray &fileId)
 {
-    if (_metadata->unlockTopLevelFolder()) {
-        qCInfo(lcEncryptFolderJob()) << "Unlocking success for" << fileId;
-        emit finished(Success);
-        return;
-    }
-    connect(_metadata, &FolderMetadata::topLevelFolderUnlocked, this, [this, fileId]() {
-        qCInfo(lcEncryptFolderJob()) << "Unlocking success for" << fileId;
-        emit finished(Success);
-    });
+    qCInfo(lcEncryptFolderJob()) << "Unlocking success for" << fileId;
+    emit finished(Success);
+    return;
 }
 
 }

@@ -32,13 +32,13 @@ public:
     FolderMetadata(AccountPtr account,
                    const QByteArray &metadata = {},
                    int statusCode = -1,
-                   const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {},
-                   const QString &topLevelFolderPath = {},
+                   const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolders = {},
+                   const QString &remotePath = {},
                    SyncJournalDb *journal = nullptr,
                    QObject *parent = nullptr);
-
-    [[nodiscard]] QByteArray encryptedMetadata() const;
+    ~FolderMetadata();
     [[nodiscard]] QVector<EncryptedFile> files() const;
+
     [[nodiscard]] bool isMetadataSetup() const;
 
     [[nodiscard]] bool isFileDropPresent() const;
@@ -73,7 +73,8 @@ public slots:
     void removeEncryptedFile(const EncryptedFile &f);
     void removeAllEncryptedFiles();
     void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
-    bool unlockTopLevelFolder();
+    void encryptMetadata();
+    void handleEncryption();
 
 private slots:
     void setupMetadata();
@@ -82,21 +83,18 @@ private slots:
     void setupExistingMetadataVersion1(const QByteArray &metadata);
     void setupExistingMetadataVersion2(const QByteArray &metadata);
     void fetchTopLevelFolderEncryptedId();
-    void fetchTopLevelFolderMetadata();
+    void fetchTopLevelFolderMetadata(const QByteArray &folderId);
     void topLevelFolderEncryptedIdReceived(const QStringList &list);
     void topLevelFolderEncryptedIdError(QNetworkReply *r);
     void topLevelFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
     void topLevelFolderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
-    void topLevelFolderLockedSuccessfully(const QByteArray &fileId, const QByteArray &token);
-    void topLevelFolderLockedError(const QByteArray &fileId, int httpErrorCode);
-    void lockTopLevelFolder();
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
     void emitSetupComplete();
 
 signals:
     void setupComplete();
-    void topLevelFolderUnlocked();
+    void encryptionFinished(const QByteArray metadata);
 
 private:
     QVector<EncryptedFile> _files;
@@ -111,9 +109,8 @@ private:
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
     QPointer<SyncJournalDb> _journal = nullptr;
-    QByteArray _topLevelFolderToken;
-    QByteArray _topLevelFolderId;
-    bool _isTopLevelFolderUnlockRunning = false;
+    int _version = -1;
+    bool _isEncryptionRequested = false;
 };
 
 } // namespace OCC

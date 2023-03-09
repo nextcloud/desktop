@@ -635,9 +635,13 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     // need to find a way to pass "users" array to children metadata
     const auto subPathSplit = _subPath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
     const auto topLevelFolderPath = subPathSplit.size() > 1 ? subPathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-    const auto topLevelFolderMetadata = topLevelFolderPath != QStringLiteral("/") ? _topLevelE2eeFolderMetadata : QSharedPointer<FolderMetadata>{};
 
-    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode, topLevelFolderMetadata, topLevelFolderPath));
+    QMap<QString, QSharedPointer<FolderMetadata>> topLevelFolderMetadata;
+    if (topLevelFolderPath != QStringLiteral("/") && _topLevelE2eeFolderMetadata) {
+        topLevelFolderMetadata.insert(topLevelFolderPath, _topLevelE2eeFolderMetadata);
+    }
+
+    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode, topLevelFolderMetadata, _subPath));
     connect(_e2EeFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this] {
         _isFileDropDetected = _e2EeFolderMetadata->isFileDropPresent();
         const auto encryptedFiles = _e2EeFolderMetadata->files();

@@ -15,7 +15,6 @@
 #include "clientsideencryption.h"
 
 namespace OCC {
-class FolderMetadata;
 
   /* This class is used if the server supports end to end encryption.
  * It will fire for *any* folder, encrypted or not, because when the
@@ -54,8 +53,6 @@ private slots:
     void slotFolderEncryptedMetadataError(const QByteArray& fileId, int httpReturnCode);
     void slotUpdateMetadataSuccess(const QByteArray& fileId);
     void slotUpdateMetadataError(const QByteArray& fileId, int httpReturnCode);
-    void slotFinalize(const QString &path = {}, const QString &filename = {}, quint64 size = -1);
-    void slotFolderUnlocked(const QByteArray &folderId, int httpStatus);
 
 signals:
     // Emmited after the file is encrypted and everythign is setup.
@@ -79,7 +76,6 @@ private:
 
   QByteArray _generatedKey;
   QByteArray _generatedIv;
-  FolderMetadata *_metadata = nullptr;
   EncryptedFile _encryptedFile;
   QString _completeFileName;
 };

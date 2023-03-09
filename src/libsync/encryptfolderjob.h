@@ -19,7 +19,6 @@
 
 namespace OCC {
 class SyncJournalDb;
-class FolderMetadata;
 
 class OWNCLOUDSYNC_EXPORT EncryptFolderJob : public QObject
 {
@@ -57,6 +56,5 @@ private:
     QByteArray _fileId;
     QByteArray _folderToken;
     QString _errorString;
-    FolderMetadata *_metadata = nullptr;
 };
 }

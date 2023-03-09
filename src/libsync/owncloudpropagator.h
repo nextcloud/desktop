@@ -621,6 +621,7 @@ public:
     [[nodiscard]] bool isInBulkUploadBlackList(const QString &file) const;
 
     [[nodiscard]] QSharedPointer<FolderMetadata> findTopLevelFolderMetadata(const QString &path) const;
+    [[nodiscard]] const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolderMetadata() const;
 
     void setTopLevelFolderMetadata(const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolderMetadata);
 

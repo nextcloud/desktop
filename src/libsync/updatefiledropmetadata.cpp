@@ -113,9 +113,13 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataError(const QByteArra
     Q_UNUSED(fileId);
     Q_UNUSED(httpReturnCode);
     qCDebug(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata. Pretend we got empty metadata.";
-    const FolderMetadata emptyMetadata(propagator()->account(), {});
-    const auto encryptedMetadataJson = QJsonDocument::fromJson(emptyMetadata.encryptedMetadata());
-    slotFolderEncryptedMetadataReceived(encryptedMetadataJson, httpReturnCode);
+    auto emptyMetadata = new FolderMetadata(propagator()->account(), {});
+    emptyMetadata->encryptMetadata();
+    connect(emptyMetadata, &FolderMetadata::encryptionFinished, this, [this, emptyMetadata, httpReturnCode](const QByteArray encryptedMetadata) {
+        const auto encryptedMetadataJson = QJsonDocument::fromJson(encryptedMetadata);
+        emptyMetadata->deleteLater();
+        slotFolderEncryptedMetadataReceived(encryptedMetadataJson, httpReturnCode);
+    });
 }
 
 void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
@@ -123,9 +127,7 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
     qCDebug(lcUpdateFileDropMetadataJob) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
     // Encrypt File!
-    const auto pathSplit = _path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    const auto topLevelFolderPath = pathSplit.size() > 1 ? pathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-    _metadata.reset(new FolderMetadata(propagator()->account(), json.toJson(QJsonDocument::Compact), statusCode, propagator()->findTopLevelFolderMetadata(topLevelFolderPath), topLevelFolderPath));
+    _metadata.reset(new FolderMetadata(propagator()->account(), json.toJson(QJsonDocument::Compact), statusCode, propagator()->topLevelFolderMetadata(), _path));
     connect(_metadata.data(), &FolderMetadata::setupComplete, this, [this] {
         if (!_metadata->moveFromFileDropToFiles()) {
             unlockFolder();
@@ -134,10 +136,13 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
 
         emit fileDropMetadataParsedAndAdjusted(_metadata.data());
 
-        const auto updateMetadataJob = new UpdateMetadataApiJob(propagator()->account(), _folderId, _metadata->encryptedMetadata(), _folderToken);
-        connect(updateMetadataJob, &UpdateMetadataApiJob::success, this, &UpdateFileDropMetadataJob::slotUpdateMetadataSuccess);
-        connect(updateMetadataJob, &UpdateMetadataApiJob::error, this, &UpdateFileDropMetadataJob::slotUpdateMetadataError);
-        updateMetadataJob->start();
+        _metadata->encryptMetadata();
+        connect(_metadata.data(), &FolderMetadata::encryptionFinished, this, [this](const QByteArray encryptedMetadata) {
+            const auto updateMetadataJob = new UpdateMetadataApiJob(propagator()->account(), _folderId, encryptedMetadata, _folderToken);
+            connect(updateMetadataJob, &UpdateMetadataApiJob::success, this, &UpdateFileDropMetadataJob::slotUpdateMetadataSuccess);
+            connect(updateMetadataJob, &UpdateMetadataApiJob::error, this, &UpdateFileDropMetadataJob::slotUpdateMetadataError);
+            updateMetadataJob->start();
+        });
     });
 }
 

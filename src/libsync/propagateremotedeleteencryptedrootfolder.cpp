@@ -82,9 +82,10 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
         return;
     }
 
-    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode));
-    connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata] {
+    auto metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+    connect(metadata, &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isMetadataSetup()) {
+            metadata->deleteLater();
             taskFailed();
             return;
         }
@@ -95,15 +96,19 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
 
         qCDebug(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Metadata updated, sending to the server.";
 
-        auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata->encryptedMetadata(), _folderToken);
-        connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
-            Q_UNUSED(fileId);
-            for (auto it = _nestedItems.constBegin(); it != _nestedItems.constEnd(); ++it) {
-                deleteNestedRemoteItem(it.key());
-            }
+        metadata->encryptMetadata();
+        connect(metadata, &FolderMetadata::encryptionFinished, this, [this, metadata](const QByteArray encryptedMetadata) {
+            const auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, encryptedMetadata, _folderToken);
+            metadata->deleteLater();
+            connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
+                Q_UNUSED(fileId);
+                for (auto it = _nestedItems.constBegin(); it != _nestedItems.constEnd(); ++it) {
+                    deleteNestedRemoteItem(it.key());
+                }
+            });
+            connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncryptedRootFolder::taskFailed);
+            job->start();
         });
-        connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncryptedRootFolder::taskFailed);
-        job->start();
     });
 }
 
