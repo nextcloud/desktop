@@ -164,9 +164,53 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         if enumeratedItemIdentifier == .workingSet {
             NSLog("Enumerating changes in working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-            // TODO: Enumerate changes in materialised items, favourites and other special items
+            // TODO: Enumerate changes in favourites and other special items
 
-            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+            let materialisedFilesMetadatas = NextcloudFilesDatabaseManager.shared.localFileItemMetadatas(account: ncAccount.ncKitAccount)
+
+            var errors = [String : Error]()
+            var allNewMetadatas: [NextcloudItemMetadataTable] = []
+            var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
+            var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
+
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.notify(queue: .main) { // Wait for all read tasks to finish
+                FileProviderEnumerator.completeChangesObserver(observer, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
+            }
+
+            for materialMetadata in materialisedFilesMetadatas {
+                dispatchGroup.enter()
+
+                let materialMetadataServerUrl = materialMetadata.serverUrl + "/" + materialMetadata.fileName
+                FileProviderEnumerator.readServerUrl(materialMetadataServerUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+                    guard readError == nil else {
+                        NSLog("Finishing enumeration of changes at %@ with error %@", serverUrl)
+                        dispatchGroup.leave()
+                        return
+                    }
+
+                    NSLog("Finished reading serverUrl: %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                    if let newMetadatas = newMetadatas {
+                        allNewMetadatas += newMetadatas
+                    } else {
+                        NSLog("WARNING: Nil new metadatas received for reading of changes at %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                    }
+
+                    if let updatedMetadatas = updatedMetadatas {
+                        allUpdatedMetadatas += updatedMetadatas
+                    } else {
+                        NSLog("WARNING: Nil updated metadatas received for reading of changes at %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                    }
+
+                    if let deletedMetadatas = deletedMetadatas {
+                        allDeletedMetadatas += deletedMetadatas
+                    } else {
+                        NSLog("WARNING: Nil deleted metadatas received for reading of changes at %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                    }
+
+                    dispatchGroup.leave()
+                }
+            }
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             NSLog("Enumerating changes in trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
@@ -298,7 +342,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             guard receivedItem.directory else {
                 NSLog("Read item is a file. Converting NKfile for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
                 let itemMetadata = dbManager.convertNKFileToItemMetadata(receivedItem, account: ncKitAccount)
-                dbManager.addItemMetadata(itemMetadata)
+                dbManager.addItemMetadata(itemMetadata) // TODO: Return some value when it is an update
                 completionHandler([itemMetadata], nil, nil, nil, error.error)
                 return
             }
