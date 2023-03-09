@@ -275,6 +275,8 @@ namespace Utility {
 
     OCSYNC_EXPORT QString formatWinError(long error);
 
+    OCSYNC_EXPORT bool canCreateFileInPath(const QString &path);
+
     class OCSYNC_EXPORT NtfsPermissionLookupRAII
     {
     public:
