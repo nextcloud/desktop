@@ -197,6 +197,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             let allUpdates = newMetadatas + updatedMetadatas
             var allFpItemUpdates: [FileProviderItem] = []
+            var allFpItemDeletionsIdentifiers = Array(deletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
 
             for updMetadata in allUpdates {
                 guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
@@ -204,11 +205,18 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     continue
                 }
 
+                guard !updMetadata.e2eEncrypted else {
+                    // Precaution, if all goes well in NKFile conversion then this should not happen
+                    // TODO: Remove when E2EE supported
+                    NSLog("Encrypted metadata in changes enumeration, adding to deletions")
+                    allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
+                    continue
+                }
+
                 let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
                 allFpItemUpdates.append(fpItem)
             }
 
-            let allFpItemDeletionsIdentifiers = Array(deletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
             observer.didUpdate(allFpItemUpdates)
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
