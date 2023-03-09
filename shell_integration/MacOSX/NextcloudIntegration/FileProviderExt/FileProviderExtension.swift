@@ -550,8 +550,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
             let serverUrl = itemMetadata.serverUrl
 
-            if itemMetadata.directory && dbManager.directoryMetadata(ocId: ocId) != nil {
-                dbManager.deleteDirectoryAndSubdirectoriesMetadata(account: account, serverUrl: serverUrl)
+            if itemMetadata.directory {
+                dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
             }
 
             if dbManager.localFileMetadataFromOcId(ocId) != nil {
