@@ -261,7 +261,7 @@ Application::Application(int &argc, char **argv, Platform *platform)
             reporter.append(QLatin1String(".exe"));
         }
 #endif
-        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, reporter));
+        connect(qApp, &QApplication::aboutToQuit, this, [crashHandler = new CrashReporter::Handler(QDir::tempPath(), true, reporter)] { delete crashHandler; });
     }
 #endif
 

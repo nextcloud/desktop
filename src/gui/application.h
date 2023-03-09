@@ -130,9 +130,6 @@ private:
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
 
-#if defined(WITH_CRASHREPORTER)
-    QScopedPointer<CrashReporter::Handler> _crashHandler;
-#endif
     QScopedPointer<FolderMan> _folderManager;
 };
 
