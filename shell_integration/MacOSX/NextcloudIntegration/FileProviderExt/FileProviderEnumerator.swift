@@ -45,8 +45,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         } else {
             NSLog("Providing enumerator for item with identifier: %@", enumeratedItemIdentifier.rawValue)
             let dbManager = NextcloudFilesDatabaseManager.shared
-            if let itemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier) {
-                self.serverUrl = itemMetadata.serverUrl + "/" + itemMetadata.fileName
+
+            enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier)
+            if enumeratedItemMetadata != nil {
+                self.serverUrl = enumeratedItemMetadata!.serverUrl + "/" + enumeratedItemMetadata!.fileName
             } else {
                 NSLog("Could not find itemMetadata for file with identifier: %@", enumeratedItemIdentifier.rawValue)
             }
@@ -109,13 +111,29 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 guard readError == nil else {
                     NSLog("Finishing enumeration with error")
                     observer.finishEnumeratingWithError(readError!)
-                    return;
+                    return
                 }
 
                 let ncKitAccount = self.ncAccount.ncKitAccount
 
                 // Return all now known metadatas
-                let metadatas = NextcloudFilesDatabaseManager.shared.itemMetadatas(account: ncKitAccount, serverUrl: self.serverUrl)
+                var metadatas: [NextcloudItemMetadataTable]
+
+                if self.enumeratingSystemIdentifier || (self.enumeratedItemMetadata != nil && self.enumeratedItemMetadata!.directory) {
+                    metadatas = NextcloudFilesDatabaseManager.shared.itemMetadatas(account: ncKitAccount, serverUrl: self.serverUrl)
+                } else if (self.enumeratedItemMetadata != nil) {
+                    guard let updatedEnumeratedItemMetadata = NextcloudFilesDatabaseManager.shared.itemMetadataFromOcId(self.enumeratedItemMetadata!.ocId) else {
+                        NSLog("Cannot finish enumeration as the enumerated item could not be fetched from database. %@ %@", self.enumeratedItemIdentifier.rawValue, self.serverUrl)
+                        observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+                        return
+                    }
+                    
+                    metadatas = [updatedEnumeratedItemMetadata]
+                } else {
+                    NSLog("Cannot finish enumeration as we do not have a valid server URL. NOTE: this error should not be possible and indicates something is going wrong before.")
+                    observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+                    return
+                }
 
                 NSLog("Finished reading serverUrl: %@ for user: %@. Processed %d metadatas", self.serverUrl, ncKitAccount, metadatas.count)
 
