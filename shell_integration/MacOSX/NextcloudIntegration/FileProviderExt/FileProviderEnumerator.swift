@@ -152,7 +152,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
         NSLog("Received enumerate changes request for enumerator with user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-        /* TODO:
+        /*
          - query the server for updates since the passed-in sync anchor
          
          If this is an enumerator for the active set:
@@ -161,6 +161,58 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about item deletions and updates (modifications + insertions)
          - inform the observer when you have finished enumerating up to a subsequent sync anchor
          */
+
+        if enumeratedItemIdentifier == .workingSet {
+            NSLog("Enumerating changes in working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            // TODO: Enumerate changes in materialised items, favourites and other special items
+
+            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+            return
+        } else if enumeratedItemIdentifier == .trashContainer {
+            NSLog("Enumerating changes in trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            // TODO!
+
+            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+            return
+        }
+
+        NSLog("Enumerating changes for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+
+        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+            guard readError == nil else {
+                NSLog("Finishing enumeration of changes with error")
+                observer.finishEnumeratingWithError(readError!)
+                return
+            }
+
+            guard let newMetadatas = newMetadatas,
+                    let updatedMetadatas = updatedMetadatas,
+                    let deletedMetadatas = deletedMetadatas else {
+                NSLog("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
+                observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+                return
+            }
+
+            NSLog("Finished reading serverUrl: %@ for user: %@. Processed %d new metadatas, %d updated metadatas, %d deleted metadatas", self.serverUrl, self.ncAccount.ncKitAccount, newMetadatas.count, updatedMetadatas.count, deletedMetadatas.count)
+
+            let allUpdates = newMetadatas + updatedMetadatas
+            var allFpItemUpdates: [FileProviderItem] = []
+
+            for updMetadata in allUpdates {
+                guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
+                    NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
+                    continue
+                }
+
+                let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                allFpItemUpdates.append(fpItem)
+            }
+
+            let allFpItemDeletionsIdentifiers = Array(deletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
+            observer.didUpdate(allFpItemUpdates)
+            observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
+        }
+
         observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 
