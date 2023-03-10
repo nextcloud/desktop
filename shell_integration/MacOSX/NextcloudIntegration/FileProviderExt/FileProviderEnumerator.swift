@@ -332,24 +332,22 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         var allFpItemUpdates: [FileProviderItem] = []
         var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
 
-        DispatchQueue.main.sync { // TODO: Find a way to make this non-blocking
-            for updMetadata in allUpdatedMetadatas {
-                guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
-                    NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
-                    continue
-                }
-
-                guard !updMetadata.e2eEncrypted else {
-                    // Precaution, if all goes well in NKFile conversion then this should not happen
-                    // TODO: Remove when E2EE supported
-                    NSLog("Encrypted metadata in changes enumeration, adding to deletions")
-                    allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
-                    continue
-                }
-
-                let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
-                allFpItemUpdates.append(fpItem)
+        for updMetadata in allUpdatedMetadatas {
+            guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
+                NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
+                continue
             }
+
+            guard !updMetadata.e2eEncrypted else {
+                // Precaution, if all goes well in NKFile conversion then this should not happen
+                // TODO: Remove when E2EE supported
+                NSLog("Encrypted metadata in changes enumeration, adding to deletions")
+                allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
+                continue
+            }
+
+            let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
+            allFpItemUpdates.append(fpItem)
         }
 
         if !allFpItemUpdates.isEmpty {
@@ -510,7 +508,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 NSLog("Starting async conversion of NKFiles for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
-                DispatchQueue.main.async { // TODO: Background thread? But avoid crash with Realm
+                DispatchQueue.global().async {
                     dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
