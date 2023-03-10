@@ -138,13 +138,7 @@ FileProviderDomainManager::FileProviderDomainManager(QObject *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
 
-    d->wipeAllFileProviderDomains(); // TODO: Remove when testing done
     setupFileProviderDomains(); // Initially fetch accounts in manager
-}
-
-FileProviderDomainManager::~FileProviderDomainManager()
-{
-    d->removeAllFileProviderDomains();
 }
 
 FileProviderDomainManager *FileProviderDomainManager::instance()
@@ -154,6 +148,8 @@ FileProviderDomainManager *FileProviderDomainManager::instance()
     }
     return _instance;
 }
+
+FileProviderDomainManager::~FileProviderDomainManager() = default;
 
 void FileProviderDomainManager::setupFileProviderDomains()
 {
