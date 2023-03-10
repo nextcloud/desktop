@@ -383,22 +383,24 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         var allFpItemUpdates: [FileProviderItem] = []
         var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
 
-        for updMetadata in allUpdatedMetadatas {
-            guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
-                NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
-                continue
-            }
+        DispatchQueue.main.sync {
+            for updMetadata in allUpdatedMetadatas {
+                guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
+                    NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
+                    continue
+                }
 
-            guard !updMetadata.e2eEncrypted else {
-                // Precaution, if all goes well in NKFile conversion then this should not happen
-                // TODO: Remove when E2EE supported
-                NSLog("Encrypted metadata in changes enumeration, adding to deletions")
-                allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
-                continue
-            }
+                guard !updMetadata.e2eEncrypted else {
+                    // Precaution, if all goes well in NKFile conversion then this should not happen
+                    // TODO: Remove when E2EE supported
+                    NSLog("Encrypted metadata in changes enumeration, adding to deletions")
+                    allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
+                    continue
+                }
 
-            let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
-            allFpItemUpdates.append(fpItem)
+                let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
+                allFpItemUpdates.append(fpItem)
+            }
         }
 
         if !allFpItemUpdates.isEmpty {
@@ -462,7 +464,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 NSLog("Starting async conversion of NKFiles for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
-                DispatchQueue.global().async {
+                DispatchQueue.main.async {
                     dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
@@ -473,8 +475,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                             dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)
                         }
 
-                        let receivedMetadataChanges = dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas)
-
                         // STORE ETAG-LESS DIRECTORY METADATA FOR CHILD DIRECTORIES
                         // Since we haven't scanned the contents of the child directories, don't record their itemMetadata etags in the directory tables
                         // This will delete database records for directories that we did not get from the readFileOrFolder (indicating they were deleted)
@@ -483,8 +483,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
                         // TODO: Notify working set changed if new folders found
 
-                        DispatchQueue.main.async {
-                            completionHandler(metadatas, receivedMetadataChanges.newMetadatas, receivedMetadataChanges.updatedMetadatas, receivedMetadataChanges.deletedMetadatas, nil)
+                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas) { newMetadatas, updatedMetadatas, deletedMetadatas in
+                            completionHandler(metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nil)
                         }
                     }
                 }
