@@ -40,8 +40,7 @@ private:
     explicit FileProviderDomainManager(QObject *parent = nullptr);
     static FileProviderDomainManager *_instance;
     class Private;
-    QScopedPointer<Private> d;
-
+    std::unique_ptr<Private> d;
 };
 
 } // namespace Mac
