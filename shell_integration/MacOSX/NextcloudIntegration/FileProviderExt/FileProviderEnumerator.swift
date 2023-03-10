@@ -206,65 +206,14 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             NSLog("Enumerating changes in working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
             // TODO: Enumerate changes in favourites and other special items
 
-            let dbManager = NextcloudFilesDatabaseManager.shared
-            let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
+            let scanResults = FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: ncAccount, ncKit: ncKit)
 
-            var allNewMetadatas: [NextcloudItemMetadataTable] = []
-            var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
-            var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
-
-            let dispatchGroup = DispatchGroup() // TODO: Maybe own thread?
-
-            for directoryMetadata in directoryMetadatas {
-                dispatchGroup.enter()
-
-                FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
-                    guard readError == nil else {
-                        NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
-
-                        if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
-                            NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
-
-                            guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
-                                NSLog("Can't delete directory properly as item metadata not found...")
-                                dispatchGroup.leave()
-                                return
-                            }
-
-                            dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
-                            allDeletedMetadatas.append(directoryItemMetadata)
-                        }
-
-                        dispatchGroup.leave()
-                        return
-                    }
-
-                    NSLog("Finished reading serverUrl: %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
-                    if let newMetadatas = newMetadatas {
-                        allNewMetadatas += newMetadatas
-                    } else {
-                        NSLog("WARNING: Nil new metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
-                    }
-
-                    if let updatedMetadatas = updatedMetadatas {
-                        allUpdatedMetadatas += updatedMetadatas
-                    } else {
-                        NSLog("WARNING: Nil updated metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
-                    }
-
-                    if let deletedMetadatas = deletedMetadatas {
-                        allDeletedMetadatas += deletedMetadatas
-                    } else {
-                        NSLog("WARNING: Nil deleted metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
-                    }
-
-                    dispatchGroup.leave()
-                }
-
-                dispatchGroup.wait()
-            }
-
-            FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
+            FileProviderEnumerator.completeChangesObserver(observer,
+                                                           anchor: anchor,
+                                                           ncKit: ncKit,
+                                                           newMetadatas: scanResults.newMetadatas,
+                                                           updatedMetadatas: scanResults.updatedMetadatas,
+                                                           deletedMetadatas: scanResults.deletedMetadatas)
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             NSLog("Enumerating changes in trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
@@ -413,6 +362,103 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         NSLog("Processed %d new or updated metadatas, %d deleted metadatas.", allUpdatedMetadatas.count, allDeletedMetadatas.count)
         observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+    }
+
+    private static func fullRecursiveScanForChanges(ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+
+        let rootContainerDirectoryMetadata = NextcloudDirectoryMetadataTable()
+        rootContainerDirectoryMetadata.serverUrl = ncAccount.davFilesUrl
+        rootContainerDirectoryMetadata.account = ncAccount.ncKitAccount
+        rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
+
+        return scanRecursivelyForChanges(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit)
+    }
+
+    private static func scanRecursivelyForChanges(_ directoryMetadata: NextcloudDirectoryMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+        var allNewMetadatas: [NextcloudItemMetadataTable] = []
+        var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
+        var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        let dispatchGroup = DispatchGroup() // TODO: Maybe own thread?
+
+        dispatchGroup.enter()
+
+        NSLog("About to read: %@", directoryMetadata.serverUrl)
+        FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+            guard readError == nil else {
+                NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
+
+                if let nkReadError = readError as? NKError {
+                    if nkReadError.errorCode == 404 {
+                        NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
+
+                        guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
+                            NSLog("Can't delete directory properly as item metadata not found...")
+                            dispatchGroup.leave()
+                            return
+                        }
+
+                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
+                        allDeletedMetadatas.append(directoryItemMetadata)
+                    } else if nkReadError.errorCode == -200 { // All is well, just no changed etags
+                        NSLog("Error was to say no changed files. No need to check children.")
+                    }
+                }
+
+                dispatchGroup.leave()
+                return
+            }
+
+            NSLog("Finished reading serverUrl: %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+            if let newMetadatas = newMetadatas {
+                allNewMetadatas += newMetadatas
+            } else {
+                NSLog("WARNING: Nil new metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+            }
+
+            if let updatedMetadatas = updatedMetadatas {
+                allUpdatedMetadatas += updatedMetadatas
+            } else {
+                NSLog("WARNING: Nil updated metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+            }
+
+            if let deletedMetadatas = deletedMetadatas {
+                allDeletedMetadatas += deletedMetadatas
+            } else {
+                NSLog("WARNING: Nil deleted metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+            }
+
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.wait()
+
+        var updatedDirectories: [NextcloudDirectoryMetadataTable] = []
+        for updatedMetadata in allUpdatedMetadatas {
+            if updatedMetadata.directory {
+                guard let directoryMetadata = dbManager.directoryMetadata(ocId: updatedMetadata.ocId) else {
+                    NSLog("Could not find matching directory metadata for updated item metadata, cannot scan for updates")
+                    continue
+                }
+
+                updatedDirectories.append(directoryMetadata)
+            }
+        }
+
+        if updatedDirectories.isEmpty {
+            return (newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
+        }
+
+        for childDirectory in updatedDirectories {
+            let childScanResult = scanRecursivelyForChanges(childDirectory, ncAccount: ncAccount, ncKit: ncKit)
+
+            allNewMetadatas += childScanResult.newMetadatas
+            allUpdatedMetadatas += childScanResult.updatedMetadatas
+            allDeletedMetadatas += childScanResult.deletedMetadatas
+        }
+
+        return (newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
     }
 
     private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, fullDepthRead: Bool = false, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
