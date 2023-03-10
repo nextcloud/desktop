@@ -124,6 +124,26 @@ class FileProviderDomainManager::Private {
         }];
     }
 
+    void signalEnumeratorChanged(const Account * const account)
+    {
+        const auto accountId = account->id();
+        qCDebug(lcMacFileProviderDomainManager) << "Signalling enumerator changed in file provider domain for account with id: " << accountId;
+
+        if(!_registeredDomains.contains(accountId)) {
+            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << accountId;
+            return;
+        }
+
+        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
+        NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError *error) {
+            if (error != nil) {
+                qCDebug(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
+                                                        << error.localizedDescription;
+            }
+        }];
+    }
+
 private:
     QHash<QString, NSFileProviderDomain*> _registeredDomains;
 };
