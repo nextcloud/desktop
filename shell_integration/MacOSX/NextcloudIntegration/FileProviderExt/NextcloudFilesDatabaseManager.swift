@@ -312,6 +312,13 @@ class NextcloudFilesDatabaseManager : NSObject {
         return nil
     }
 
+    func childDirectoriesForDirectory(_ directoryMetadata: NextcloudDirectoryMetadataTable) -> [NextcloudDirectoryMetadataTable] {
+        let database = ncDatabase()
+        let metadatas = database.objects(NextcloudDirectoryMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND ocId != %@", directoryMetadata.serverUrl, directoryMetadata.account)
+        let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
+        return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
+    }
+
     func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
         return directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
     }
