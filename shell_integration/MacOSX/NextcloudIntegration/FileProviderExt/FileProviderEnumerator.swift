@@ -79,12 +79,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer that you are finished with this page
          */
 
-        if enumeratedItemIdentifier == .workingSet {
-            NSLog("Enumerating working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-            // TODO: Enumerate favourites and other special items
+        let dbManager = NextcloudFilesDatabaseManager.shared
 
-            let materialisedFilesMetadatas = NextcloudFilesDatabaseManager.shared.localFileItemMetadatas(account: ncAccount.ncKitAccount)
-            FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: materialisedFilesMetadatas, createLocalFileOrDirectory: false)
+        if enumeratedItemIdentifier == .workingSet && dbManager.anyItemMetadatasForAccount(ncAccount.ncKitAccount) {
+            NSLog("Enumerating working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+
+            let itemMetadatas = dbManager.itemMetadatas(account: ncAccount.ncKitAccount)
+            FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: itemMetadatas, createLocalFileOrDirectory: false)
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             NSLog("Enumerating trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
@@ -100,7 +101,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
-        // TODO: Make better use of pagination
+        // TODO: Make better use of pagination and andle paging properly
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
@@ -166,7 +167,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             NSLog("Enumerating changes in working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
             // TODO: Enumerate changes in favourites and other special items
 
-            let materialisedFilesMetadatas = NextcloudFilesDatabaseManager.shared.localFileItemMetadatas(account: ncAccount.ncKitAccount)
+            let dbManager = NextcloudFilesDatabaseManager.shared
+            let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
 
             var allNewMetadatas: [NextcloudItemMetadataTable] = []
             var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
@@ -177,25 +179,24 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
             }
 
-            for materialMetadata in materialisedFilesMetadatas {
+            for directoryMetadata in directoryMetadatas {
                 dispatchGroup.enter()
 
-                let materialMetadataServerUrl = materialMetadata.serverUrl + "/" + materialMetadata.fileName
-                FileProviderEnumerator.readServerUrl(materialMetadataServerUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+                FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
                     guard readError == nil else {
                         NSLog("Finishing enumeration of changes at %@ with error %@", serverUrl)
 
                         if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
                             NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
 
-                            let dbManager = NextcloudFilesDatabaseManager.shared
-                            if materialMetadata.directory {
-                                dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: materialMetadata.ocId)
-                            } else {
-                                dbManager.deleteItemMetadata(ocId: materialMetadata.ocId)
+                            guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
+                                NSLog("Can't delete directory properly as item metadata not found...")
+                                dispatchGroup.leave()
+                                return
                             }
 
-                            allDeletedMetadatas.append(materialMetadata)
+                            dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
+                            allDeletedMetadatas.append(directoryItemMetadata)
                         }
 
                         dispatchGroup.leave()
@@ -237,12 +238,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
-        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { [self] _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes with error")
 
                 if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
-                    NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", serverUrl)
+                    NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
 
                     guard let itemMetadata = self.enumeratedItemMetadata else {
                         NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
@@ -257,7 +258,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
                     }
 
-                    FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
+                    FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
                 }
 
                 observer.finishEnumeratingWithError(readError!)
@@ -266,7 +267,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             NSLog("Finished reading serverUrl: %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
 
-            FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
+            FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
         }
     }
 
@@ -372,7 +373,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 
-    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
+    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, fullDepthRead: Bool = false, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
@@ -413,7 +414,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             NSLog("Starting to read serverUrl: %@ for user: %@ at depth 1", serverUrl, ncKitAccount)
 
-            ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
+            ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: fullDepthRead ? "2" : "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
                     NSLog("1 depth readFileOrFolder of url: %@ did not complete successfully, received error: %@", serverUrl, error.errorDescription)
                     completionHandler(nil, nil, nil, nil, error.error)
@@ -440,6 +441,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         // as well as deleting the records for all the children contained by the directories.
                         // TODO: Find a way to detect if files have been moved rather than deleted and change the metadata server urls, move the materialised files
                         dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
+                        // TODO: Notify working set changed if new folders found
 
                         DispatchQueue.main.async {
                             completionHandler(metadatas, receivedMetadataChanges.newMetadatas, receivedMetadataChanges.updatedMetadatas, receivedMetadataChanges.deletedMetadatas, nil)
