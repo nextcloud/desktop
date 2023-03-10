@@ -194,7 +194,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             try database.write {
-                let existingMetadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl, NextcloudItemMetadataTable.Status.normal.rawValue)
+                let existingMetadatas = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl, NextcloudItemMetadataTable.Status.normal.rawValue)
 
                 let deletedMetadatas = processItemMetadatasToDelete(databaseToWriteTo: database,
                                                                     existingMetadatas: existingMetadatas,
@@ -309,6 +309,12 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
         return directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
+    }
+
+    func directoryMetadatas(account: String) -> [NextcloudDirectoryMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@", account)
+        let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
+        return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
     }
 
     func directoryMetadatas(account: String, parentDirectoryServerUrl: String) -> [NextcloudDirectoryMetadataTable] {
