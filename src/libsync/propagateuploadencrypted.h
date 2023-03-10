@@ -78,6 +78,7 @@ private:
   QByteArray _generatedIv;
   EncryptedFile _encryptedFile;
   QString _completeFileName;
+  QString _remoteParentAbsolutePath;
 };
 
 

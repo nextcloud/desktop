@@ -14,10 +14,6 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
     , _item(item)
     , _info(_item->_file)
 {
-}
-
-void PropagateDownloadEncrypted::start()
-{
     const auto rootPath = [=]() {
         const auto result = _propagator->remotePath();
         if (result.startsWith('/')) {
@@ -30,8 +26,13 @@ void PropagateDownloadEncrypted::start()
     const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
+    _remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+}
+
+void PropagateDownloadEncrypted::start()
+{
     // Is encrypted Now we need the folder-id
-    auto job = new LsColJob(_propagator->account(), remoteParentPath, this);
+    auto job = new LsColJob(_propagator->account(), _remoteParentPath, this);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
     connect(job, &LsColJob::directoryListingSubfolders,
             this, &PropagateDownloadEncrypted::checkFolderId);
@@ -74,7 +75,7 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading"
                                         << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const auto filename = _info.fileName();
-  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), _item->_file, -1, _propagator->topLevelFolderMetadata(), _propagator->_journal));
+  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), _remoteParentPath, -1, _propagator->topLevelFolderMetadata(), _propagator->_journal));
   connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata, filename] {
       if (metadata->isMetadataSetup()) {
           const QVector<EncryptedFile> files = metadata->files();

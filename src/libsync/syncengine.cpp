@@ -478,18 +478,6 @@ void SyncEngine::startSync()
             job->start();
             return;
         }
-
-        const auto e2EeLockedFolders = _journal->e2EeLockedFolders();
-
-        if (!e2EeLockedFolders.isEmpty()) {
-            for (const auto &e2EeLockedFolder : e2EeLockedFolders) {
-                const auto folderId = e2EeLockedFolder.first;
-                qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
-                const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, e2EeLockedFolder.second);
-                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, folderToken, _journal, this);
-                unlockJob->start();
-            }
-        }
     }
 
     if (s_anySyncRunning || _syncRunning) {

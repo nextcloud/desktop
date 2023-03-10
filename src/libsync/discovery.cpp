@@ -1860,9 +1860,6 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
         if (_dirItem) {
             if (_dirItem->_isEncrypted && _dirItem->_encryptedFileName.isEmpty()) {
                 _discoveryData->_topLevelE2eeFoldersMetadata[_dirItem->_file + QLatin1Char('/')] = serverJob->e2eeFolderMetadata();
-                if (serverJob->e2eeFolderMetadata()->keyChecksums().isEmpty()) {
-                    _discoveryData->_statedb->schedulePathForRemoteDiscovery(_dirItem->_file + QLatin1Char('/'));
-                }
             }
             _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
             qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << true;

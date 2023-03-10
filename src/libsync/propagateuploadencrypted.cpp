@@ -23,10 +23,6 @@ PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagato
     , _remoteParentPath(remoteParentPath)
     , _item(item)
 {
-}
-
-void PropagateUploadEncrypted::start()
-{
     const auto rootPath = [=]() {
         const auto result = _propagator->remotePath();
         if (result.startsWith('/')) {
@@ -35,15 +31,17 @@ void PropagateUploadEncrypted::start()
             return result;
         }
     }();
-    const auto absoluteRemoteParentPath = [=]{
+    _remoteParentAbsolutePath = [=] {
         auto path = QString(rootPath + _remoteParentPath);
         if (path.endsWith('/')) {
             path.chop(1);
         }
         return path;
     }();
+}
 
-
+void PropagateUploadEncrypted::start()
+{
     /* If the file is in a encrypted folder, which we know, we wouldn't be here otherwise,
      * we need to do the long road:
      * find the ID of the folder.
@@ -55,7 +53,7 @@ void PropagateUploadEncrypted::start()
      * unlock the folder.
      */
     qCDebug(lcPropagateUploadEncrypted) << "Folder is encrypted, let's get the Id from it.";
-    auto job = new LsColJob(_propagator->account(), absoluteRemoteParentPath, this);
+    auto job = new LsColJob(_propagator->account(), _remoteParentAbsolutePath, this);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
     connect(job, &LsColJob::directoryListingSubfolders, this, &PropagateUploadEncrypted::slotFolderEncryptedIdReceived);
     connect(job, &LsColJob::finishedWithError, this, &PropagateUploadEncrypted::slotFolderEncryptedIdError);
@@ -119,7 +117,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   // Encrypt File!
-  QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), _item->_file, statusCode, _propagator->topLevelFolderMetadata(), _propagator->_journal));
+  QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), _remoteParentAbsolutePath, statusCode, _propagator->topLevelFolderMetadata(), _propagator->_journal));
   connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, statusCode, metadata] {
       if (!metadata->isMetadataSetup()) {
           if (_isFolderLocked) {

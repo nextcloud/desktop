@@ -57,7 +57,7 @@ private:
     /* Use std::string and std::vector internally on this class
      * to ease the port to Nlohmann Json API
      */
-    [[nodiscard]] bool verifyMetadataKey() const;
+    [[nodiscard]] bool verifyMetadataKey(const QByteArray &metadataKey) const;
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
     [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
@@ -68,7 +68,7 @@ private:
 
     [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
-    [[nodiscard]] QJsonObject encryptedFileToJsonObject(const EncryptedFile *encryptedFile) const;
+    [[nodiscard]] QJsonObject encryptedFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const;
 
     [[nodiscard]] bool isTopLevelFolder() const;
 
@@ -78,6 +78,7 @@ public slots:
     void removeAllEncryptedFiles();
     void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
     void encryptMetadata();
+    void setMetadataKeyOverride(const QByteArray &metadataKeyOverride);
 
 private slots:
     void setupMetadata();
@@ -106,6 +107,7 @@ signals:
 private:
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
+    QByteArray _metadataKeyOverride;
     QMap<int, QByteArray> _metadataKeys; //legacy, remove after migration is done
     QSet<QByteArray> _keyChecksums;
     QHash<QString, FolderUser> _folderUsers;

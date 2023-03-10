@@ -16,6 +16,7 @@
 
 
 #include "account.h"
+#include "folder.h"
 #include "sharee.h"
 #include "sharemanager.h"
 
@@ -31,7 +32,7 @@ class UpdateE2eeShareMetadataJob : public QObject
     Q_OBJECT
 
 public:
-    enum Operation { Invalid = -1, Add = 0, Remove };
+    enum Operation { Invalid = -1, Add = 0, Remove, ReEncrypt };
     explicit UpdateE2eeShareMetadataJob(const AccountPtr &account,
                                 const QByteArray &folderId,
                                 const QString &folderAlias,
@@ -50,6 +51,7 @@ public:
 
 public slots:
     void start();
+    void setMetadataKeyOverride(const QByteArray &metadataKeyOverride);
 
 private slots:
     void slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
@@ -65,6 +67,8 @@ private slots:
     void slotUpdateMetadataSuccess(const QByteArray &folderId);
     void slotUpdateMetadataError(const QByteArray &folderId, int httpReturnCode);
     void slotFolderUnlocked(const QByteArray &folderId, int httpStatus);
+    void slotUpdateFolderMetadata();
+    void slotSubJobsFinished();
 
 private: signals:
     void certificateReady(QSslCertificate certificate);
@@ -82,6 +86,9 @@ private:
     QSslCertificate _shareeCertificate;
     QByteArray _folderToken;
     QScopedPointer<FolderMetadata> _folderMetadata;
+    QHash<QString, UpdateE2eeShareMetadataJob *> _subJobs;
+    QByteArray _metadataKeyOverride;
+    QPointer<Folder> _folder;
 };
 
 }

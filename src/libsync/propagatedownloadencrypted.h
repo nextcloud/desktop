@@ -39,6 +39,7 @@ private:
   QFileInfo _info;
   EncryptedFile _encryptedInfo;
   QString _errorString;
+  QString _remoteParentPath;
 };
 
 }

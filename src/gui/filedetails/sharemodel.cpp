@@ -781,7 +781,7 @@ void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
         }
     }
 
-    const auto removeE2eeShareJob = new UpdateE2eeShareMetadataJob(account, _folderId, folderAlias, share->getShareWith(), UpdateE2eeShareMetadataJob::Remove);
+    const auto removeE2eeShareJob = new UpdateE2eeShareMetadataJob(account, _folderId, folderAlias, share->getShareWith(), UpdateE2eeShareMetadataJob::Remove, share->path());
     removeE2eeShareJob->setParent(_manager.data());
     removeE2eeShareJob->start();
     connect(removeE2eeShareJob, &UpdateE2eeShareMetadataJob::finished, this, [share, this](int code, const QString &message) {
