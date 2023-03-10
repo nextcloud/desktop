@@ -194,7 +194,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         return (returningNewMetadatas, returningUpdatedMetadatas)
     }
 
-    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable]) -> (newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
+    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable], completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?) -> Void) {
         let database = ncDatabase()
 
         do {
@@ -209,13 +209,12 @@ class NextcloudFilesDatabaseManager : NSObject {
                                                                        existingMetadatas: existingMetadatas,
                                                                        updatedMetadatas: updatedMetadatas)
 
-                return (metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
+                completionHandler(metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
             }
         } catch let error {
             NSLog("Could not update any metadatas, received error: %@", error.localizedDescription)
+            completionHandler(nil, nil, nil)
         }
-
-        return (nil, nil, nil)
     }
 
     func setStatusForItemMetadata(_ metadata: NextcloudItemMetadataTable, status: NextcloudItemMetadataTable.Status) -> NextcloudItemMetadataTable? {
