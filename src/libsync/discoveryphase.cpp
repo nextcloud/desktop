@@ -345,10 +345,11 @@ void DiscoverySingleLocalDirectoryJob::run() {
     emit finished(results);
 }
 
-DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
+DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, const QSet<QString> &listTopLevelE2eeFolders, QObject *parent)
     : QObject(parent)
     , _subPath(path)
     , _account(account)
+    , _listTopLevelE2eeFolders(listTopLevelE2eeFolders)
 {
 }
 
@@ -632,16 +633,25 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     qCDebug(lcDiscovery) << "Metadata received, applying it to the result list";
     Q_ASSERT(_subPath.startsWith('/'));
 
-    // need to find a way to pass "users" array to children metadata
-    const auto subPathSplit = _subPath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    const auto topLevelFolderPath = subPathSplit.size() > 1 ? subPathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
+    QString topLevelFolderPath;
 
-    QMap<QString, QSharedPointer<FolderMetadata>> topLevelFolderMetadata;
-    if (topLevelFolderPath != QStringLiteral("/") && _topLevelE2eeFolderMetadata) {
-        topLevelFolderMetadata.insert(topLevelFolderPath, _topLevelE2eeFolderMetadata);
+    for (const QString &topLevelPath : _listTopLevelE2eeFolders) {
+        if (_subPath == topLevelPath) {
+            topLevelFolderPath = QStringLiteral("/");
+            break;
+        }
+        if (_subPath.startsWith(topLevelPath)) {
+            const auto topLevelPathSplit = topLevelPath.split(QLatin1Char('/'));
+            topLevelFolderPath = topLevelPathSplit.join(QLatin1Char('/'));
+            break;
+        }
     }
 
-    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), _subPath, statusCode, topLevelFolderMetadata));
+    if (topLevelFolderPath.isEmpty()) {
+        topLevelFolderPath = QStringLiteral("/");
+    }
+
+    _e2EeFolderMetadata.reset(new FolderMetadata(_account, statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), topLevelFolderPath));
     connect(_e2EeFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this] {
         _isFileDropDetected = _e2EeFolderMetadata->isFileDropPresent();
         const auto encryptedFiles = _e2EeFolderMetadata->files();

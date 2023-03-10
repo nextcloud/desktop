@@ -1,7 +1,6 @@
 #pragma once
 
 #include "accountfwd.h"
-#include "common/syncjournaldb.h"
 
 #include <QByteArray>
 #include <QHash>
@@ -32,9 +31,6 @@ public:
     FolderMetadata(AccountPtr account,
                    const QByteArray &metadata,
                    const QString &remotePath,
-                   int statusCode = -1,
-                   const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolders = {},
-                   SyncJournalDb *journal = nullptr,
                    QObject *parent = nullptr);
     [[nodiscard]] QVector<EncryptedFile> files() const;
 
@@ -115,10 +111,8 @@ private:
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
     QByteArray _initialMetadata;
-    int _initialStatusCode = -1;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
-    QPointer<SyncJournalDb> _journal = nullptr;
     int _versionFromMetadata = -1;
     bool _isEncryptionRequested = false;
 };

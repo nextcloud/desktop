@@ -38,6 +38,9 @@ public:
 signals:
     void finished(int status);
 
+public slots:
+    void setPathNonEncrypted(const QString &pathNonEncrypted);
+
 private slots:
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
@@ -53,6 +56,7 @@ private:
     AccountPtr _account;
     SyncJournalDb *_journal;
     QString _path;
+    QString _pathNonEncrypted;
     QByteArray _fileId;
     QByteArray _folderToken;
     QString _errorString;

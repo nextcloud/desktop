@@ -82,7 +82,7 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
         return;
     }
 
-    auto metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), _item->_file, statusCode);
+    auto metadata = new FolderMetadata(_propagator->account(), statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), _item->_file);
     connect(metadata, &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isMetadataSetup()) {
             metadata->deleteLater();

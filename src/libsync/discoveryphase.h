@@ -139,7 +139,7 @@ class DiscoverySingleDirectoryJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
+    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, const QSet<QString> &listTopLevelE2eeFolders, QObject *parent = nullptr);
     // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
     void start();
@@ -189,6 +189,8 @@ private:
 
     QSharedPointer<FolderMetadata> _e2EeFolderMetadata;
     QSharedPointer<FolderMetadata> _topLevelE2eeFolderMetadata;
+
+    QSet<QString> _listTopLevelE2eeFolders;
 
 public:
     QByteArray _dataFingerprint;
@@ -308,6 +310,8 @@ public:
     QVector<QString> _filesUnscheduleSync;
 
     QStringList _listExclusiveFiles;
+
+    QSet<QString> _listTopLevelE2eeFolders;
 
     QMap <QString, QSharedPointer<FolderMetadata>> _topLevelE2eeFoldersMetadata;
 

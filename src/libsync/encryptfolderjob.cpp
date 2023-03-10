@@ -51,6 +51,11 @@ QString EncryptFolderJob::errorString() const
     return _errorString;
 }
 
+void EncryptFolderJob::setPathNonEncrypted(const QString &pathNonEncrypted)
+{
+    _pathNonEncrypted = pathNonEncrypted;
+}
+
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 {
     SyncJournalFileRecord rec;
@@ -88,7 +93,14 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
 void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, const QByteArray &token)
 {
     _folderToken = token;
-    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, _path, - 1, {}, _journal));
+    const auto currentPath = !_pathNonEncrypted.isEmpty() ? _pathNonEncrypted : _path;
+    SyncJournalFileRecord rec;
+    if (!_journal->getTopLevelE2eFolderRecord(currentPath, &rec)) {
+        emit finished(Error);
+        return;
+    }
+    const auto topLevelFolderPath = rec.path() == currentPath ? QStringLiteral("/") : rec.path();
+    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, topLevelFolderPath));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, fileId, metadata] {
         metadata->encryptMetadata();
         connect(metadata.data(), &FolderMetadata::encryptionFinished, this, [this, fileId, metadata](const QByteArray encryptedMetadata) {

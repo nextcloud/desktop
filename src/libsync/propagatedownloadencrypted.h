@@ -40,6 +40,7 @@ private:
   EncryptedFile _encryptedInfo;
   QString _errorString;
   QString _remoteParentPath;
+  QString _parentPathInDb;
 };
 
 }

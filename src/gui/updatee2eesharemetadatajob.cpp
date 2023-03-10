@@ -139,7 +139,7 @@ void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json,
         emit finished(404, tr("Could not find local folder for %1").arg(QString::fromUtf8(_folderId)));
         return;
     }
-    _folderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), _sharePath, statusCode, {}, _folder->journalDb()));
+    _folderMetadata.reset(new FolderMetadata(_account, statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), _sharePath, {}));
     if (_folderMetadata->versionFromMetadata() < 2) {
         emit finished(405, tr("Could not share legacy encrypted folder %1. Migration is required.").arg(_sharePath));
         return;

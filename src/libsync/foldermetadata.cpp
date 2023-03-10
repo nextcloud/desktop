@@ -39,23 +39,13 @@ QString metadataStringFromOCsDocument(const QJsonDocument &ocsDoc)
 FolderMetadata::FolderMetadata(AccountPtr account,
                                const QByteArray &metadata,
                                const QString &remotePath,
-                               int statusCode,
-                               const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolders,
-                               SyncJournalDb *journal,
                                QObject *parent)
     : QObject(parent)
     , _account(account)
     , _initialMetadata(metadata)
-    , _initialStatusCode(statusCode)
-    , _journal(journal)
 {
-    if (remotePath == QStringLiteral("/")) {
-        _topLevelFolderPath = remotePath;
-    } else {
-        const auto remotePathSplit = remotePath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-        _topLevelFolderPath = remotePathSplit.size() > 1 ? remotePathSplit.first() + QStringLiteral("/") : QStringLiteral("/");
-        _topLevelFolderMetadata = topLevelFolders.value(_topLevelFolderPath, {});
-    }
+    _topLevelFolderPath = remotePath;
+
     QJsonDocument doc = QJsonDocument::fromJson(metadata);
     qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
     const auto metaDataStr = metadataStringFromOCsDocument(doc);
@@ -71,7 +61,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
         _versionFromMetadata = metaDataDoc.object()[versionKey].toInt();
     }
 
-    if (!isTopLevelFolder() && (_versionFromMetadata == -1 || _versionFromMetadata >= 2) && !_topLevelFolderMetadata) {
+    if (!isTopLevelFolder() && (_versionFromMetadata == -1 || _versionFromMetadata >= 2)) {
         startFetchTopLevelFolderMetadata();
     } else {
         setupMetadata();
@@ -80,7 +70,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
 
 void FolderMetadata::setupMetadata()
 {
-    if (_initialMetadata.isEmpty() || _initialStatusCode == 404) {
+    if (_initialMetadata.isEmpty()) {
         qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
         if (_topLevelFolderMetadata && _topLevelFolderMetadata->versionFromMetadata() == 1) {
             setupEmptyMetadataV1();
@@ -736,10 +726,12 @@ void FolderMetadata::topLevelFolderEncryptedMetadataError(const QByteArray &file
 
 void FolderMetadata::topLevelFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
-    _topLevelFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), QStringLiteral("/"), statusCode));
-    if (_topLevelFolderMetadata->versionFromMetadata() == -1 || _topLevelFolderMetadata->versionFromMetadata() > 1) {
-        _metadataKey = _topLevelFolderMetadata->metadataKey();
-        _keyChecksums = _topLevelFolderMetadata->keyChecksums();
+    if (!json.isEmpty()) {
+        _topLevelFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), QStringLiteral("/")));
+        if (_topLevelFolderMetadata->versionFromMetadata() == -1 || _topLevelFolderMetadata->versionFromMetadata() > 1) {
+            _metadataKey = _topLevelFolderMetadata->metadataKey();
+            _keyChecksums = _topLevelFolderMetadata->keyChecksums();
+        }
     }
     if (_isEncryptionRequested) {
         handleEncryptionRequest();

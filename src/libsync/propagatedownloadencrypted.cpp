@@ -25,8 +25,12 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
     const auto remoteFilename = _item->_encryptedFileName.isEmpty() ? _item->_file : _item->_encryptedFileName;
     const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
-
     _remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+
+    const auto filenameInDb = _item->_file;
+    const auto pathInDb = QString(rootPath + filenameInDb);
+    const auto parentPathInDb = pathInDb.left(pathInDb.lastIndexOf('/'));
+    _parentPathInDb = pathInDb.left(pathInDb.lastIndexOf('/'));
 }
 
 void PropagateDownloadEncrypted::start()
@@ -75,7 +79,14 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading"
                                         << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const auto filename = _info.fileName();
-  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), _remoteParentPath, -1, _propagator->topLevelFolderMetadata(), _propagator->_journal));
+  SyncJournalFileRecord rec;
+  if (!_propagator->_journal->getTopLevelE2eFolderRecord(_parentPathInDb, &rec) || !rec.isValid()) {
+      emit failed();
+      return;
+  }
+
+  const auto topLevelFolderPath = rec.path() == _parentPathInDb ? QStringLiteral("/") : rec.path();
+  const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), topLevelFolderPath));
   connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata, filename] {
       if (metadata->isMetadataSetup()) {
           const QVector<EncryptedFile> files = metadata->files();

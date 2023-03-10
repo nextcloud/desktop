@@ -1841,8 +1841,11 @@ void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 {
+    if (_dirItem && _dirItem->_isEncrypted && _dirItem->_encryptedFileName.isEmpty()) {
+        _discoveryData->_listTopLevelE2eeFolders.insert(QLatin1Char('/') + _dirItem->_file);
+    }
     auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
-        _discoveryData->_remoteFolder + _currentFolder._server, this);
+        _discoveryData->_remoteFolder + _currentFolder._server, _discoveryData->_listTopLevelE2eeFolders, this);
     if (!_dirItem) {
         serverJob->setIsRootPath(); // query the fingerprint on the root
     }

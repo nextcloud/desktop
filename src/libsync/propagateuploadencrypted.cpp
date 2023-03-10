@@ -117,7 +117,20 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   // Encrypt File!
-  QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), _remoteParentAbsolutePath, statusCode, _propagator->topLevelFolderMetadata(), _propagator->_journal));
+  SyncJournalFileRecord rec;
+  if (!_propagator->_journal->getTopLevelE2eFolderRecord(_remoteParentAbsolutePath, &rec) || !rec.isValid()) {
+      if (_isFolderLocked) {
+          connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+          unlockFolder();
+      } else {
+          emit error();
+      }
+      return;
+  }
+
+  const auto topLevelFolderPath = rec.path() == _remoteParentAbsolutePath ? QStringLiteral("/") : rec.path();
+
+  QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(), statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), topLevelFolderPath));
   connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, statusCode, metadata] {
       if (!metadata->isMetadataSetup()) {
           if (_isFolderLocked) {

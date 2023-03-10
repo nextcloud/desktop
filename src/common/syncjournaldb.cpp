@@ -990,6 +990,42 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     return {};
 }
 
+bool SyncJournalDb::getTopLevelE2eFolderRecord(const QString &remoteFolderPath, SyncJournalFileRecord *rec)
+{
+    Q_ASSERT(rec);
+    rec->_path.clear();
+    Q_ASSERT(!rec->isValid());
+
+    Q_ASSERT(!remoteFolderPath.isEmpty());
+
+    Q_ASSERT(!remoteFolderPath.isEmpty() && remoteFolderPath != QStringLiteral("/"));
+    if (remoteFolderPath.isEmpty() || remoteFolderPath == QStringLiteral("/")) {
+        qCWarning(lcDb) << "Invalid folder path!";
+        return false;
+    }
+
+    auto remoteFolderPathSplit = remoteFolderPath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+
+    if (remoteFolderPathSplit.isEmpty()) {
+        qCWarning(lcDb) << "Invalid folder path!";
+        return false;
+    }
+
+    while (!remoteFolderPathSplit.isEmpty()) {
+        const auto result = getFileRecord(remoteFolderPathSplit.join(QLatin1Char('/')), rec);
+        if (!result) {
+            return false;
+        }
+        if (rec->_isE2eEncrypted && rec->_e2eMangledName.isEmpty()) {
+            // it's a toplevel folder record
+            return true;
+        }
+        remoteFolderPathSplit.removeLast();
+    }
+
+    return true;
+}
+
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
 {
     QMutexLocker locker(&_mutex);
