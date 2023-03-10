@@ -89,7 +89,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
                 var allMetadatas: [NextcloudItemMetadataTable] = []
 
-                let dispatchGroup = DispatchGroup()
+                let dispatchGroup = DispatchGroup()  // TODO: Maybe own thread?
 
                 for directoryMetadata in directoryMetadatas {
                     dispatchGroup.enter()
@@ -213,10 +213,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
             var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
 
-            let dispatchGroup = DispatchGroup()
-            dispatchGroup.notify(queue: .main) { // Wait for all read tasks to finish
-                FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
-            }
+            let dispatchGroup = DispatchGroup() // TODO: Maybe own thread?
 
             for directoryMetadata in directoryMetadatas {
                 dispatchGroup.enter()
@@ -263,7 +260,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                     dispatchGroup.leave()
                 }
+
+                dispatchGroup.wait()
             }
+
+            FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             NSLog("Enumerating changes in trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
