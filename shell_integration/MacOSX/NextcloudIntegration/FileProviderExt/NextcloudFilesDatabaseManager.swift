@@ -157,7 +157,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
                     !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
-                    returningUpdatedMetadatas.append(updatedMetadata)
+                    returningUpdatedMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
                     databaseToWriteTo.add(updatedMetadata, update: .all)
                     
                     NSLog("""
@@ -178,7 +178,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 }
 
             } else { // This is a new metadata
-                returningNewMetadatas.append(updatedMetadata)
+                returningNewMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
                 databaseToWriteTo.add(updatedMetadata, update: .all)
 
                 NSLog("""
