@@ -56,8 +56,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     var outstandingSessionTasks: [String: URLSessionTask] = [:]
     var outstandingOcIdTemp: [String: String] = [:]
 
-    private var itemIdsForEnumeratorsNeedingSignalling: NSMutableSet = NSMutableSet()
-
     required init(domain: NSFileProviderDomain) {
         self.domain = domain
         // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
@@ -68,6 +66,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     
     func invalidate() {
         // TODO: cleanup any resources
+        NSLog("Extension for domain %@ is being torn down", domain.displayName)
     }
 
     // MARK: NSFileProviderReplicatedExtension protocol methods
@@ -98,6 +97,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         let dbManager = NextcloudFilesDatabaseManager.shared
+        
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
               let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
@@ -568,7 +568,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         guard let ncAccount = ncAccount else {
             NSLog("Not providing enumerator for container with identifier %@ yet as account not set up", containerItemIdentifier.rawValue)
-            itemIdsForEnumeratorsNeedingSignalling.add(containerItemIdentifier)
             throw NSFileProviderError(.notAuthenticated)
         }
 
@@ -608,20 +607,15 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
             }
 
-            itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
             return
         }
 
         NSLog("Signalling enumerators for user %@ at server %@", ncAccount!.username, ncAccount!.serverUrl)
-        for itemId in itemIdsForEnumeratorsNeedingSignalling {
-            fpManager.signalEnumerator(for: itemId as! NSFileProviderItemIdentifier) { error in
-                if error != nil {
-                    NSLog("Error signalling enumerator for root container, received error: %@", error!.localizedDescription)
-                }
+        fpManager.signalEnumerator(for: .workingSet) { error in
+            if error != nil {
+                NSLog("Error signalling enumerator for working set, received error: %@", error!.localizedDescription)
             }
         }
-
-        itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
     }
 
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
