@@ -383,7 +383,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         var allFpItemUpdates: [FileProviderItem] = []
         var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
 
-        DispatchQueue.main.sync {
+        DispatchQueue.main.sync { // TODO: Find a way to make this non-blocking
             for updMetadata in allUpdatedMetadatas {
                 guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
                     NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
@@ -464,7 +464,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 NSLog("Starting async conversion of NKFiles for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { // TODO: Background thread? But avoid crash with Realm
                     dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
@@ -472,7 +472,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         // unless it's the root container -- this method deletes metadata for directories under the path that we do not
                         // provide as the updatedDirectoryItemMetadatas, don't do this with root folder or we will purge metadatas wrongly
                         if serverUrl != ncAccount.davFilesUrl {
-                            dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)
+                            // Don't use serverUrl here, get the parent serverUrl from retrieved metadata
+                            dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: directoryMetadata.serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)
                         }
 
                         // STORE ETAG-LESS DIRECTORY METADATA FOR CHILD DIRECTORIES
