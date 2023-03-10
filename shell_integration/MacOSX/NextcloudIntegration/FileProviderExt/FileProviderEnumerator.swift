@@ -82,40 +82,47 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         let dbManager = NextcloudFilesDatabaseManager.shared
 
         if enumeratedItemIdentifier == .workingSet && dbManager.anyItemMetadatasForAccount(ncAccount.ncKitAccount) {
-            NSLog("Enumerating working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
+                page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
-            let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
-            var allMetadatas: [NextcloudItemMetadataTable] = []
 
-            let dispatchGroup = DispatchGroup()
-            dispatchGroup.notify(queue: .main) { // Wait for all read tasks to finish
-                FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: allMetadatas)
-            }
+                let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
+                var allMetadatas: [NextcloudItemMetadataTable] = []
 
-            for directoryMetadata in directoryMetadatas {
-                dispatchGroup.enter()
+                let dispatchGroup = DispatchGroup()
 
-                FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
-                    guard readError == nil else {
-                        NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
+                for directoryMetadata in directoryMetadatas {
+                    dispatchGroup.enter()
 
-                        if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
-                            NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
-                            dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
+                    FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
+                        guard readError == nil else {
+                            NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
+
+                            if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
+                                NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
+                                dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
+                            }
+
+                            dispatchGroup.leave()
+                            return
+                        }
+
+                        if let metadatas = metadatas {
+                            allMetadatas += metadatas
+                        } else {
+                            allMetadatas += dbManager.itemMetadatas(account: self.ncAccount.ncKitAccount, serverUrl: directoryMetadata.serverUrl)
                         }
 
                         dispatchGroup.leave()
-                        return
                     }
 
-                    if let metadatas = metadatas {
-                        allMetadatas += metadatas
-                    } else {
-                        allMetadatas += dbManager.itemMetadatas(account: self.ncAccount.ncKitAccount, serverUrl: directoryMetadata.serverUrl)
-                    }
-
-                    dispatchGroup.leave()
+                    dispatchGroup.wait()
                 }
+
+                FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: allMetadatas)
+            } else {
+                NSLog("Enumerating page of working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+                observer.finishEnumerating(upTo: nil)
             }
 
             return
@@ -216,7 +223,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
                     guard readError == nil else {
-                        NSLog("Finishing enumeration of changes at %@ with error %@", self.serverUrl, readError!.localizedDescription)
+                        NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
 
                         if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
                             NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
@@ -235,23 +242,23 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         return
                     }
 
-                    NSLog("Finished reading serverUrl: %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                    NSLog("Finished reading serverUrl: %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
                     if let newMetadatas = newMetadatas {
                         allNewMetadatas += newMetadatas
                     } else {
-                        NSLog("WARNING: Nil new metadatas received for reading of changes at %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                        NSLog("WARNING: Nil new metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
                     }
 
                     if let updatedMetadatas = updatedMetadatas {
                         allUpdatedMetadatas += updatedMetadatas
                     } else {
-                        NSLog("WARNING: Nil updated metadatas received for reading of changes at %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                        NSLog("WARNING: Nil updated metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
                     }
 
                     if let deletedMetadatas = deletedMetadatas {
                         allDeletedMetadatas += deletedMetadatas
                     } else {
-                        NSLog("WARNING: Nil deleted metadatas received for reading of changes at %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+                        NSLog("WARNING: Nil deleted metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, self.ncAccount.ncKitAccount)
                     }
 
                     dispatchGroup.leave()
