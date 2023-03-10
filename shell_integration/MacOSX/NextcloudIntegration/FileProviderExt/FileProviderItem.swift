@@ -112,8 +112,8 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         }
     }
 
-    init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier, ncKit: NextcloudKit) {
-        self.metadata = metadata
+    required init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier, ncKit: NextcloudKit) {
+        self.metadata = NextcloudItemMetadataTable(value: metadata)
         self.parentItemIdentifier = parentItemIdentifier
         self.ncKit = ncKit
         super.init()
