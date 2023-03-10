@@ -312,11 +312,14 @@ class NextcloudFilesDatabaseManager : NSObject {
         return nil
     }
 
-    func childDirectoriesForDirectory(_ directoryMetadata: NextcloudDirectoryMetadataTable) -> [NextcloudDirectoryMetadataTable] {
-        let database = ncDatabase()
-        let metadatas = database.objects(NextcloudDirectoryMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND ocId != %@", directoryMetadata.serverUrl, directoryMetadata.account)
+    private func sortedDirectoryMetadatas(_ metadatas: Results<NextcloudDirectoryMetadataTable>) -> [NextcloudDirectoryMetadataTable] {
         let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
         return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
+    }
+
+    func childDirectoriesForDirectory(_ directoryMetadata: NextcloudDirectoryMetadataTable) -> [NextcloudDirectoryMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND ocId != %@", directoryMetadata.serverUrl, directoryMetadata.account)
+        return sortedDirectoryMetadatas(metadatas)
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
@@ -325,14 +328,12 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     func directoryMetadatas(account: String) -> [NextcloudDirectoryMetadataTable] {
         let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@", account)
-        let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
-        return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
+        return sortedDirectoryMetadatas(metadatas)
     }
 
     func directoryMetadatas(account: String, parentDirectoryServerUrl: String) -> [NextcloudDirectoryMetadataTable] {
         let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND parentDirectoryServerUrl == %@", account, parentDirectoryServerUrl)
-        let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
-        return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
+        return sortedDirectoryMetadatas(metadatas)
     }
 
     private func processDirectoryMetadatasToDelete(databaseToWriteTo: Realm,
