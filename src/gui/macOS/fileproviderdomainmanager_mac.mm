@@ -31,11 +31,9 @@ namespace Mac {
 FileProviderDomainManager *FileProviderDomainManager::_instance = nullptr;
 
 class FileProviderDomainManager::Private {
-  public:
-    Private()
-    {
-    }
 
+  public:
+    Private() = default;
     ~Private() = default;
 
     void addFileProviderDomain(const AccountState *accountState)
