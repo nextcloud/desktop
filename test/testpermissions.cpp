@@ -449,7 +449,7 @@ private slots:
 
         // if renaming doesn't work, just delete+create
         QVERIFY(itemInstruction(completeSpy, "norename/file", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(completeSpy.findItem("norename/sub").isNull());
+        QVERIFY(itemInstruction(completeSpy, "norename/sub", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(discoveryInstruction(discovery, "norename/sub", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "norename/file_renamed", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "norename/sub_renamed", CSYNC_INSTRUCTION_NEW));
@@ -458,7 +458,7 @@ private slots:
 
         // simiilarly forbidding moves becomes delete+create
         QVERIFY(itemInstruction(completeSpy, "nomove/file", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(completeSpy.findItem("norename/sub").isNull());
+        QVERIFY(itemInstruction(completeSpy, "nomove/sub", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(discoveryInstruction(discovery, "nomove/sub", CSYNC_INSTRUCTION_REMOVE));
         // nomove/sub/file is removed as part of the dir
         QVERIFY(itemInstruction(completeSpy, "allowed/file_moved", CSYNC_INSTRUCTION_NEW));
