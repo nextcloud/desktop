@@ -1123,116 +1123,116 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл не може да се синхронизује јер узрокује конфликт великих и малих слова са постојећим фајлом на овом систему.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
-        <translation type="unfinished"/>
+        <translation>Постојећи фајл</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>фајл А</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>fileA</source>
-        <translation type="unfinished"/>
+        <translation>фајлА</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>данас</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 бајтова</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation type="unfinished"/>
+        <translation>Отвори постојећи фајл</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Фајл са сударањем малих и великих слова</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>фајл Б</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>fileB</source>
-        <translation type="unfinished"/>
+        <translation>фајлБ</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Отвори фајл са сударањем</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесете ново име за фајл са сударањем:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Ново име фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Промени име фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл „%1” не може да се синхронизује због конфликта малих и великих слова са постојећим фајлом на овом систему.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>%1 не подржава иста имена у којима се разликује само величина слова.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на почетку и крају.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на почетку.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на крају.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Користи неисправно име</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи неисправне карактере: %1</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесете своју безбедносну реченицу за шифровање од-краја-до-краја:&lt;br&gt;&lt;br&gt;Корисничко име: %2&lt;br&gt;Налог: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
@@ -1258,7 +1258,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1363"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесете своју безбедносну реченицу за шифровање од-краја-до-краја:&lt;br&gt;&lt;br&gt;Корисничко име: %2&lt;br&gt;Налог: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1371"/>
@@ -1271,29 +1271,29 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт синхронизације</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="96"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Верзије %1 су у конфликту.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Коју верзију фајла желите да задржите?&lt;br/&gt;Ако изаберете обе верзије, на име локалног фајла ће да се дода број.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Локална верзија</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Кликните да отворите фајл</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1305,12 +1305,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 бајтова</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Отвори локалну верзију&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -1320,38 +1320,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Отвори верзију на серверу&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="179"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Задржи изабрану верзију</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Отвори локалну верзију</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="158"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Отвори верзију на серверу</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Задржи обе верзије</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Задржи локалну верзију</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Задржи верзију на серверу</translation>
     </message>
 </context>
 <context>
@@ -1359,17 +1359,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Да ли неповратно желите да обришете директоријум &lt;i&gt;%1&lt;/i&gt; и сав његов садржај?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Да ли неповратно желите да обришете фајл &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Потврди брисање</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -1383,7 +1383,9 @@ This action will abort any currently running synchronization.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Није успело премештање фајла:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1401,7 +1403,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="158"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Тајмаут</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="195"/>
@@ -1424,12 +1426,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом отказивања брисања фајла</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="191"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом отказивања брисња %1</translation>
     </message>
 </context>
 <context>
@@ -1438,7 +1440,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="567"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="597"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Серверска грешка: PROPFIND одговор није XML форматиран!</translation>
     </message>
 </context>
 <context>
@@ -1446,27 +1448,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="278"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом отварања директоријума %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="280"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Директоријуму не може да се приступи на клијенту, нема дозволе</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="284"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Није пронађен директоријум: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="315"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Кодирање имена фајла није исправно</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="334"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом читања директоријума %1</translation>
     </message>
 </context>
 <context>
@@ -1474,7 +1476,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Примљен је неисправан жетон.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
@@ -1484,29 +1486,29 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да покушате поново.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Наведена је неисправна путања фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Није пронађен налог за локално уређивање.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се провери исправност захтева за отварање фајла са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="148"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се пронађе фајл за локално уређивање. Проверите да ли је исправна путања и да ли је фајл синхронизован локално.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="143"/>
@@ -1514,43 +1516,43 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="171"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="178"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се пронађе фајл за локално уређивање. Проверите да није изузет употребом селективне синхронизације.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Срверска грешка: PROPFIND одговор није XML форматиран!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="487"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се пронађе фајл за локално уређивање. Проверите да ли је исправна путања.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се отвори %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="630"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 је већ закључан.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="631"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="642"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Закључавање ће трајати %1 минута. Фајл можете и ручно да откључате када завршите уређивање.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="641"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 је сада закључан.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 није могао да се закључа.</translation>
     </message>
 </context>
 <context>
@@ -1569,43 +1571,43 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 секунде</numerusform><numerusform>пре %1 секунде</numerusform><numerusform>пре %1 секунди</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 минут</numerusform><numerusform>пре %1 минута</numerusform><numerusform>пре %1 минута</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 сат</numerusform><numerusform>пре %1 сата</numerusform><numerusform>пре %1 сати</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 дан</numerusform><numerusform>пре %1 дана</numerusform><numerusform>пре %1 дана</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 месец</numerusform><numerusform>пре %1 месеца</numerusform><numerusform>пре %1 месеци</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>пре %1 године</numerusform><numerusform>пре %1 године</numerusform><numerusform>пре %1 година</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Закључао %1 - Истиче за %2 минут</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1613,7 +1615,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>URL за испитивање не почиње са HTTPS мада је URL за пријаву почео са HTTPS. Пријава неће бити могућа јер можда постоји безбедносни проблем. Молимо вас да се обратите свом администратору.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -1625,7 +1627,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="234"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Дошло је до грешке приликом приступа „token” приступној тачки: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="119"/>
@@ -1642,7 +1644,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Враћени URL сервера не почиње са HTTPS упркос томе што је URL за пријаву почео са HTTPS. Пријава неће бити могућа јер можда постоји безбедносни проблем. Молимо вас да се обратите свом администратору.</translation>
     </message>
 </context>
 <context>
@@ -1675,12 +1677,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Поново отвори прегледач</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Копирај линк</translation>
     </message>
 </context>
 <context>
@@ -1714,13 +1716,13 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="433"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Додат је %1 још %n други фајл.</numerusform><numerusform>Додат је %1 још %n друга фајла.</numerusform><numerusform>Додат је %1 још %n других фајлова.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Додат је %1.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="440"/>
@@ -1842,14 +1844,19 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Сви фајлови у фолдеру за синхронизацију „%1” су обрисани са сервера.
+Ова брисања ће се синхронизовати са вашим локалним фолдером за синхронизацију, па ти фајлови неће бити доступни осим у случају да имате право да их обновите. 
+Ако одлучите да обновите фајлове, они ће се поново синхронизовати са сервером у случају да имате права за то.
+Ако одлучите да обришете фајлове, нећете више моћи да им приступите, осим у случају да сте ви њихов власник.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1315"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Обрисани су сви фајлови у вашем локалном фолдеру за синхронизацију „%1”. Ова брисања ће се синхронизовати са вашим сервером, па ти фајлови више неће бити доступни осим ако се не обнове.
+Да ли сте сигурни да желите да синхронизујете ове акције са сервером?
+Ако је ово било случајно и одлучите да задржите своје фајлове, они ће се поново синхронизовати са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1319"/>
@@ -1872,27 +1879,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Креирај нови фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Унесите назив фолдера</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Фолдер већ постоји</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се креира фолдер! Проверите своје дозволе за упис.</translation>
     </message>
 </context>
 <context>
@@ -1905,7 +1912,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="412"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>Пронађен је стари журнал синхронизације „%1”, али не може да се обрише. Молимо вас да обезбедите да га тренутно не користи ниједна апликација.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1339"/>
@@ -1925,7 +1932,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1606"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Недефинисано стање.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1609"/>
@@ -1945,7 +1952,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизација је завршена уз неразрешене конфликте.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
@@ -1965,17 +1972,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1622"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Последња синхорнизација је била успешна.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1628"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка у подешавањима.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1631"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Захтев за синронизацију је отказан.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1634"/>
@@ -1995,7 +2002,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1660"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Изабрана путања не постоји!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1664"/>
@@ -2051,7 +2058,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source>Could not decrypt!</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се дешифрује!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
@@ -2077,7 +2084,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="245"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Укључена је подршка за виртуелни фајл.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="267"/>
@@ -2087,22 +2094,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="309"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>ВиртуелниФајл се синхронизује са локалним фолдером</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="311"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Сихронизује се са локалним фолдером</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Провера има ли промена у удаљеном „%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Провера има ли промена у локалном „%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
@@ -2159,7 +2166,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Преостало још неколико секунди, %1 од %2, фајл %3 од %4 укупно</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
@@ -2198,7 +2205,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Стражар није примио тест обавештење.</translation>
     </message>
 </context>
 <context>
@@ -2250,7 +2257,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="209"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Унесите име новог фолдера који треба да се креира испод „%1”:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="238"/>
@@ -2290,7 +2297,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="496"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Већ синхронизујете &lt;i&gt;%1&lt;/i&gt;, то је подфолдер фолдера &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2299,23 +2306,23 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Користи виртуелне фајлове уместо тренутног преузимања садржаја %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментално)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="568"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Виртуелни фајлови се не подржавају у случају да је локални фолдер корен Windows партиције. Молимо вас да изаберете исправни подфолдер под словом драјва.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="591"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Виртуелни фајлови нису доступни за изабрани фолдер</translation>
     </message>
 </context>
 <context>
@@ -2346,7 +2353,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Примили смо неочекивани Content-Length преузимања.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="241"/>
@@ -2400,7 +2407,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Прикажи обавештења о позиву</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2415,19 +2422,19 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Канал</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
         <location filename="../src/gui/generalsettings.cpp" line="321"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>стабилан</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
         <location filename="../src/gui/generalsettings.cpp" line="323"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>бета</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -2479,7 +2486,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Креирај дибаг архиву</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -2489,49 +2496,51 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Прикажи дијалоге обавештења о позиву.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Не можете да искључите аутостарт јер је укључен аутостарт на нивоу система.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="355"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Да ли да променим канал ажурирања?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="356"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Канал ажурирања одређује која клијентска ажурирања се нуде за инсталацију. „стабилан” канал садржи само ажурирања које се сматрају поузданим, док верзије у „бета” каналу могу да садрже новије могућности и исправке багова, али још увек нису детаљно тестиране.
+
+Имајте на уму да ово бира само из ког складишта се преузимају ажурирања, као и да нема враћања на раније верзије: тако да враћање са бета канала на стабилни канал обично не може да се изврши тренутно и значи да је потребно чекање на стабилну верзију која је новија од тренутно инсталиране бета верзије.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Промени канал ажурирања</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="370"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Откажи</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip архиве</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="480"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Креирана је дибаг архива</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="480"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Дибаг архива је креирана у %1</translation>
     </message>
 </context>
 <context>
@@ -2566,7 +2575,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесете %1 лозинку:&lt;br&gt;&lt;br&gt;Корисничко име: %2&lt;br&gt;Налог: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
@@ -2576,7 +2585,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Читање из привеска није успело услед грешке: „%1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
@@ -2614,7 +2623,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>Ову ставку обезбеђује систем у „%1” и не може да се промени у овом погледу.</translation>
     </message>
 </context>
 <context>
@@ -2661,7 +2670,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Не могу да се упишу измене „%1.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -2679,102 +2688,102 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Неисправно име фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл не може да се синхронизује јер садржи карактере који нису дозвољени на овом систему.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесете ново име за овај фајл:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Ново име фајла</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Промени име фајлу</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл „%1” не може да се синхронизује јер име садржи карактере који нису дозвољени на овом систему.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>На систему нису довољени следећи карактери: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; размаци на почетку/крају имена</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions...</source>
-        <translation type="unfinished"/>
+        <translation>Провара дозвола за промену имена...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Провара дозвола за промену имена ...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Немате дозволу за промену имена овог фајла. Молимо вас да затражите од аутора да му промени име.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Преузимање довола није успело услед грешке %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на почетку и крају.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="160"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на почетку.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="162"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на крају.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="167"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Употреба неисправног имена</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи неисправне карактере: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се промени име фајла. Молимо вас обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се промени име фајла јер на серверу већ постоји фајл са тим именом. Молимо вас да изаберете неко друго име.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се промени име локалног фајла. %1</translation>
     </message>
 </context>
 <context>
@@ -2793,12 +2802,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ауторска права 2017-2023 Nextcloud GmbH&lt;br /&gt;Ауторска права 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ауторска права 2017-2021 Nextcloud GmbH&lt;br /&gt;Ауторска права 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -2818,23 +2827,26 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Клијент може да уписује дибаг дневнике у привремени фолдер. Ови дневници су од важне помоћи за откривање проблема.
+Пошто дневници могу да постану прилично велики, клијент ће започети нови за свако покретање синхронизације и компресоваће старе. Такође ће да обрише старе фајлове дневника након неколико сати да би се спречило претерано трошење простора на диску.
+Ако је укључено, дневници ће се уписивати у %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Укључи уписивање дневника у привремени фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Ово подешавање се одржава између поновних покретања клијента.
+Имајте на уму да ће било какве опције командне линије у вези за контролом дневника преиначити ово подешавање. </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Отвори фолдер</translation>
     </message>
 </context>
 <context>
