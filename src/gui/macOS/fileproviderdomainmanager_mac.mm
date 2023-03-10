@@ -36,6 +36,42 @@ class FileProviderDomainManager::Private {
     Private() = default;
     ~Private() = default;
 
+    void findExistingFileProviderDomains()
+    {
+        [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *domains, NSError *error) {
+            if(error) {
+                qCDebug(lcMacFileProviderDomainManager) << "Could not get existing file provider domains: "
+                                                        << error.code
+                                                        << error.localizedDescription;
+            }
+
+            for (NSFileProviderDomain *domain in domains) {
+                const auto accountId = QString::fromNSString(domain.identifier);
+
+                if (const auto accountState = AccountManager::instance()->accountFromUserId(accountId);
+                        accountState &&
+                        accountState->account() &&
+                        accountState->account()->displayName() == QString::fromNSString(domain.displayName)) {
+
+                    qCDebug(lcMacFileProviderDomainManager) << "Found existing file provider domain for account:"
+                                                            << accountState->account()->displayName();
+                    _registeredDomains.insert(accountId, domain);
+
+                } else {
+                    qCDebug(lcMacFileProviderDomainManager) << "Found existing file provider domain with no known configured account:"
+                                                            << domain.displayName;
+                    [NSFileProviderManager removeDomain:domain completionHandler:^(NSError *error) {
+                        if(error) {
+                            qCDebug(lcMacFileProviderDomainManager) << "Error removing file provider domain: "
+                                                                    << error.code
+                                                                    << error.localizedDescription;
+                        }
+                    }];
+                }
+            }
+        }];
+    }
+
     void addFileProviderDomain(const AccountState *accountState)
     {
         const QString accountDisplayName = accountState->account()->displayName();
@@ -152,6 +188,8 @@ FileProviderDomainManager::FileProviderDomainManager(QObject *parent)
     : QObject(parent)
 {
     d.reset(new FileProviderDomainManager::Private());
+
+    d->findExistingFileProviderDomains();
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
             this, &FileProviderDomainManager::addFileProviderDomainForAccount);
