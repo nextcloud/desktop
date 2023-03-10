@@ -523,6 +523,16 @@ ApplicationWindow {
                                 font.bold: true
                             }
 
+                            EnforcedPlainTextLabel {
+                                id: currentAccountServer
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                                width: Style.currentAccountLabelWidth
+                                text: UserModel.currentUser.server
+                                elide: Text.ElideRight
+                                color: Style.currentUserHeaderTextColor
+                                visible: UserModel.numUsers() > 1
+                            }
+
                             RowLayout {
                                 id: currentUserStatus
                                 visible: UserModel.currentUser.isConnected &&
