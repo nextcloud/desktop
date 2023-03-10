@@ -93,6 +93,11 @@ class NextcloudFilesDatabaseManager : NSObject {
         return Array(sortedMetadatas.map { NextcloudItemMetadataTable(value: $0) })
     }
 
+    func itemMetadatas(account: String) -> [NextcloudItemMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@", account)
+        return sortedItemMetadatas(metadatas)
+    }
+
     func itemMetadatas(account: String, serverUrl: String) -> [NextcloudItemMetadataTable] {
         let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl)
         return sortedItemMetadatas(metadatas)
