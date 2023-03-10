@@ -124,7 +124,7 @@ void UpdateE2eeShareMetadataJob::slotFetchFolderMetadata()
 void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json, int statusCode)
 {
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Metadata received, applying it to the result list";
-    _folderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode));
+    _folderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), _sharePath, statusCode));
     if (_folderMetadata->versionFromMetadata() < 2) {
         emit finished(405, tr("Could not share legacy encrypted folder %1. Migration is required.").arg(_sharePath));
         return;

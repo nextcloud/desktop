@@ -52,7 +52,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
         return;
     }
 
-    auto metadata = (new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode, _propagator->topLevelFolderMetadata(), _item->_file, _propagator->_journal));
+    auto metadata = (new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), _item->_file, statusCode, _propagator->topLevelFolderMetadata(), _propagator->_journal));
     connect(metadata, &FolderMetadata::setupComplete, this, [this, metadata] {
         if (!metadata->isMetadataSetup()) {
             taskFailed();

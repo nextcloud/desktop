@@ -200,7 +200,7 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (see HydrationJob::onNewConnection() for explanation of next steps)
     qCDebug(lcHydration) << "Metadata Received reading" << e2eMangledName();
     const auto filename = e2eMangledName();
-    const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), -1, {}, filename));
+    const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), filename));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata, filename] {
         if (metadata->isMetadataSetup()) {
             const QVector<EncryptedFile> files = metadata->files();

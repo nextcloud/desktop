@@ -641,7 +641,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         topLevelFolderMetadata.insert(topLevelFolderPath, _topLevelE2eeFolderMetadata);
     }
 
-    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode, topLevelFolderMetadata, _subPath));
+    _e2EeFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), _subPath, statusCode, topLevelFolderMetadata));
     connect(_e2EeFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this] {
         _isFileDropDetected = _e2EeFolderMetadata->isFileDropPresent();
         const auto encryptedFiles = _e2EeFolderMetadata->files();

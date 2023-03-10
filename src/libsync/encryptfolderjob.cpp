@@ -88,7 +88,7 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
 void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, const QByteArray &token)
 {
     _folderToken = token;
-    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, -1, {}, _path, _journal));
+    QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, _path, - 1, {}, _journal));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, fileId, metadata] {
         metadata->encryptMetadata();
         connect(metadata.data(), &FolderMetadata::encryptionFinished, this, [this, fileId, metadata](const QByteArray encryptedMetadata) {

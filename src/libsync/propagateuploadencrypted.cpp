@@ -111,13 +111,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray
     Q_UNUSED(fileId);
     Q_UNUSED(httpReturnCode);
     qCDebug(lcPropagateUploadEncrypted()) << "Error Getting the encrypted metadata. Pretend we got empty metadata.";
-    auto emptyMetadata = new FolderMetadata(_propagator->account(), {});
-    emptyMetadata->encryptMetadata();
-    connect(emptyMetadata, &FolderMetadata::encryptionFinished, this, [this, fileId, emptyMetadata, httpReturnCode](const QByteArray encryptedMetadata) {
-        auto json = QJsonDocument::fromJson(encryptedMetadata);
-        emptyMetadata->deleteLater();
-        slotFolderEncryptedMetadataReceived(json, httpReturnCode);
-    });
+    slotFolderEncryptedMetadataReceived({}, httpReturnCode);
 }
 
 void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
@@ -125,7 +119,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   // Encrypt File!
-  QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), statusCode, _propagator->topLevelFolderMetadata(), _item->_file, _propagator->_journal));
+  QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_propagator->account(),  json.toJson(QJsonDocument::Compact), _item->_file, statusCode, _propagator->topLevelFolderMetadata(), _propagator->_journal));
   connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, statusCode, metadata] {
       if (!metadata->isMetadataSetup()) {
           if (_isFolderLocked) {

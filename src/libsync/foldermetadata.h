@@ -30,10 +30,10 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
 
 public:
     FolderMetadata(AccountPtr account,
-                   const QByteArray &metadata = {},
+                   const QByteArray &metadata,
+                   const QString &remotePath,
                    int statusCode = -1,
                    const QMap<QString, QSharedPointer<FolderMetadata>> &topLevelFolders = {},
-                   const QString &remotePath = {},
                    SyncJournalDb *journal = nullptr,
                    QObject *parent = nullptr);
     [[nodiscard]] QVector<EncryptedFile> files() const;
@@ -68,6 +68,10 @@ private:
 
     [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
+    [[nodiscard]] QJsonObject encryptedFileToJsonObject(const EncryptedFile *encryptedFile) const;
+
+    [[nodiscard]] bool isTopLevelFolder() const;
+
 public slots:
     void addEncryptedFile(const EncryptedFile &f);
     void removeEncryptedFile(const EncryptedFile &f);
@@ -77,21 +81,23 @@ public slots:
 
 private slots:
     void setupMetadata();
-    void setupEmptyMetadata();
+    void setupEmptyMetadataV2();
+    void setupEmptyMetadataV1();
     void setupExistingMetadata(const QByteArray &metadata);
     void setupExistingMetadataVersion1(const QByteArray &metadata);
     void setupExistingMetadataVersion2(const QByteArray &metadata);
-    void fetchTopLevelFolderEncryptedId();
+    void startFetchTopLevelFolderMetadata();
     void fetchTopLevelFolderMetadata(const QByteArray &folderId);
     void topLevelFolderEncryptedIdReceived(const QStringList &list);
-    void topLevelFolderEncryptedIdError(QNetworkReply *r);
+    void topLevelFolderEncryptedIdError(QNetworkReply *reply);
     void topLevelFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
     void topLevelFolderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
     void emitSetupComplete();
-    void handleEncryption();
-    void handleEncryptionV1();
+    void handleEncryptionRequest();
+    void handleEncryptionRequestV2();
+    void handleEncryptionRequestV1();
 
 signals:
     void setupComplete();
