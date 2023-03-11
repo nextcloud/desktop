@@ -250,7 +250,7 @@ class FileProviderDomainManager::Private {
         }];
     }
 
-    void disconnectFileProviderDomainForAccount(const AccountState * const accountState)
+    void disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &message)
     {
         Q_ASSERT(accountState);
         const auto account = accountState->account();
@@ -267,9 +267,7 @@ class FileProviderDomainManager::Private {
         NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
 
-        const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
-
-        [fpManager disconnectWithReason:trReason.toNSString()
+        [fpManager disconnectWithReason:message.toNSString()
                                 options:NSFileProviderManagerDisconnectionOptionsTemporary
                       completionHandler:^(NSError * const error) {
             if (error) {
@@ -328,7 +326,11 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
     connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
-            this, &FileProviderDomainManager::disconnectFileProviderDomainForAccount);
+            this, [this](const AccountState * const accountState) {
+
+        const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
+        disconnectFileProviderDomainForAccount(accountState, trReason);
+    });
 }
 
 FileProviderDomainManager *FileProviderDomainManager::instance()
@@ -422,13 +424,14 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
     }
 }
 
-void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState)
+void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &reason)
 {
     Q_ASSERT(accountState);
     const auto account = accountState->account();
     Q_ASSERT(account);
 
-    d->disconnectFileProviderDomainForAccount(accountState);
+    d->disconnectFileProviderDomainForAccount(accountState, reason);
+}
 }
 
 } // namespace Mac

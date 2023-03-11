@@ -36,7 +36,7 @@ private slots:
 
     void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
-    void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
+    void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
 
     void trySetupPushNotificationsForAccount(const OCC::Account * const account);
     void setupPushNotificationsForAccount(const OCC::Account * const account);
