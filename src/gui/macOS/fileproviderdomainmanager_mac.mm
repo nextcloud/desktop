@@ -75,8 +75,8 @@ class FileProviderDomainManager::Private {
 
     void addFileProviderDomain(const AccountState *accountState)
     {
-        const QString accountDisplayName = accountState->account()->displayName();
-        const QString accountId = accountState->account()->userIdAtHostWithPort();
+        const auto accountDisplayName = accountState->account()->displayName();
+        const auto accountId = accountState->account()->userIdAtHostWithPort();
 
         qCDebug(lcMacFileProviderDomainManager) << "Adding new file provider domain for account with id: " << accountId;
 
@@ -100,7 +100,7 @@ class FileProviderDomainManager::Private {
 
     void removeFileProviderDomain(const AccountState *accountState)
     {
-        const QString accountId = accountState->account()->userIdAtHostWithPort();
+        const auto accountId = accountState->account()->userIdAtHostWithPort();
         qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain for account with id: " << accountId;
 
         if(!_registeredDomains.contains(accountId)) {
