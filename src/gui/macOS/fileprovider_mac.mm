@@ -27,7 +27,7 @@ namespace Mac {
 
 static FileProvider *_instance = nullptr;
 
-FileProvider::FileProvider(QObject *parent)
+FileProvider::FileProvider(QObject * const parent)
     : QObject(parent)
 {
     const auto domainManager = FileProviderDomainManager::instance();

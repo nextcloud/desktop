@@ -24,7 +24,7 @@ namespace Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderSocketController, "nextcloud.gui.macos.fileprovider.socketcontroller", QtInfoMsg)
 
-FileProviderSocketController::FileProviderSocketController(QLocalSocket *socket, QObject *parent)
+FileProviderSocketController::FileProviderSocketController(QLocalSocket * const socket, QObject * const parent)
     : QObject{parent}
     , _socket(socket)
 {
@@ -43,7 +43,7 @@ void FileProviderSocketController::slotOnDisconnected()
     Q_EMIT socketDestroyed(_socket);
 }
 
-void FileProviderSocketController::slotSocketDestroyed(QObject *object)
+void FileProviderSocketController::slotSocketDestroyed(const QObject * const object)
 {
     Q_UNUSED(object)
     qCInfo(lcFileProviderSocketController) << "File provider socket object has been destroyed, destroying controller";
@@ -54,7 +54,7 @@ void FileProviderSocketController::slotReadyRead()
 {
     Q_ASSERT(_socket);
     while(_socket->canReadLine()) {
-        const QString line = QString::fromUtf8(_socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
+        const auto line = QString::fromUtf8(_socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
         qCDebug(lcFileProviderSocketController) << "Received message in file provider socket:" << line;
 
         parseReceivedLine(line);

@@ -32,7 +32,7 @@ public:
     ~FileProvider() = default;
 
 private:
-    explicit FileProvider(QObject *parent = nullptr);
+    explicit FileProvider(QObject * const parent = nullptr);
     FileProviderSocketServer _socketServer;
 };
 

@@ -29,7 +29,7 @@ class FileProviderSocketController : public QObject
     Q_OBJECT
 
 public:
-    explicit FileProviderSocketController(QLocalSocket *socket, QObject *parent = nullptr);
+    explicit FileProviderSocketController(QLocalSocket * const socket, QObject * const parent = nullptr);
 
 signals:
     void socketDestroyed(const QLocalSocket * const socket);
@@ -40,7 +40,7 @@ public slots:
 
 private slots:
     void slotOnDisconnected();
-    void slotSocketDestroyed(QObject *object);
+    void slotSocketDestroyed(const QObject * const object);
     void slotReadyRead();
 
     void parseReceivedLine(const QString &receivedLine);

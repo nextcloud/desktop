@@ -34,15 +34,15 @@ public:
 private slots:
     void setupFileProviderDomains();
 
-    void addFileProviderDomainForAccount(OCC::AccountState *accountState);
-    void removeFileProviderDomainForAccount(OCC::AccountState *accountState);
+    void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
+    void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
-    void trySetupPushNotificationsForAccount(Account *account);
-    void setupPushNotificationsForAccount(OCC::Account *account);
-    void signalEnumeratorChanged(OCC::Account *account);
+    void trySetupPushNotificationsForAccount(const OCC::Account * const account);
+    void setupPushNotificationsForAccount(const OCC::Account * const account);
+    void signalEnumeratorChanged(const OCC::Account * const account);
 
 private:
-    explicit FileProviderDomainManager(QObject *parent = nullptr);
+    explicit FileProviderDomainManager(QObject * const parent = nullptr);
     static FileProviderDomainManager *_instance;
     class Private;
     std::unique_ptr<Private> d;
