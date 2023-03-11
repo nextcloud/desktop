@@ -18,7 +18,7 @@ import NCDesktopClientSocketKit
 class FileProviderSocketLineProcessor: NSObject, LineProcessor {
     var delegate: FileProviderExtension
 
-    init(delegate: FileProviderExtension) {
+    required init(delegate: FileProviderExtension) {
         self.delegate = delegate
     }
 
@@ -35,6 +35,8 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
         NSLog("Received command: %@", command)
         if (command == "SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER") {
             delegate.sendFileProviderDomainIdentifier()
+        } else if (command == "ACCOUNT_NOT_AUTHENTICATED") {
+            delegate.removeAccountConfig()
         } else if (command == "ACCOUNT_DETAILS") {
             guard let accountDetailsSubsequence = splitLine.last else { return }
             let splitAccountDetails = accountDetailsSubsequence.split(separator: "~", maxSplits: 2)

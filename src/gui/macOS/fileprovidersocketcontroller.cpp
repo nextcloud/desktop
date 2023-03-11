@@ -148,12 +148,26 @@ void FileProviderSocketController::slotAccountStateChanged(const AccountState::S
     case AccountState::SignedOut:
     case AccountState::AskingCredentials:
         // Notify File Provider that it should show the not authenticated message
+        sendNotAuthenticated();
         break;
     case AccountState::Connected:
         // Provide credentials
         sendAccountDetails();
         break;
     }
+}
+
+void FileProviderSocketController::sendNotAuthenticated() const
+{
+    Q_ASSERT(_accountState);
+    const auto account = _accountState->account();
+    Q_ASSERT(account);
+
+    qCDebug(lcFileProviderSocketController) << "About to send not authenticated message to file provider extension"
+                                            << account->displayName();
+
+    const auto message = QString(QStringLiteral("ACCOUNT_NOT_AUTHENTICATED"));
+    sendMessage(message);
 }
 
 void FileProviderSocketController::sendAccountDetails() const
@@ -165,7 +179,7 @@ void FileProviderSocketController::sendAccountDetails() const
     qCDebug(lcFileProviderSocketController) << "About to send account details to file provider extension"
                                             << account->displayName();
 
-    connect(_accountState.data(), &AccountState::stateChanged, this, &FileProviderSocketController::slotAccountStateChanged);
+    connect(_accountState.data(), &AccountState::stateChanged, this, &FileProviderSocketController::slotAccountStateChanged, Qt::UniqueConnection);
 
     if (!_accountState->isConnected()) {
         qCDebug(lcFileProviderSocketController) << "Not sending account details yet as account is not connected"

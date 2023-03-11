@@ -628,4 +628,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         signalEnumeratorAfterAccountSetup()
     }
+
+    func removeAccountConfig() {
+        ncAccount = nil
+    }
 }
