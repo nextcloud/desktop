@@ -375,8 +375,6 @@ Application::Application(int &argc, char **argv)
     _folderManager.reset(new FolderMan);
 #if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
-#elif defined(Q_OS_MACOS)
-    _fileProvider.reset(Mac::FileProvider::instance());
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
@@ -403,6 +401,10 @@ Application::Application(int &argc, char **argv)
             return;
         }
     }
+
+#ifdef Q_OS_MACOS
+    _fileProvider.reset(Mac::FileProvider::instance());
+#endif
 
     FolderMan::instance()->setSyncEnabled(true);
 
