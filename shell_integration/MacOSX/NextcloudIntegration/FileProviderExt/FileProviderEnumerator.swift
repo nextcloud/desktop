@@ -92,6 +92,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 let dispatchGroup = DispatchGroup()  // TODO: Maybe own thread?
 
                 for directoryMetadata in directoryMetadatas {
+                    guard directoryMetadata.etag != "" else {
+                        NSLog("Skipping enumeration of unexplored directory for working set: %@", directoryMetadata.serverUrl)
+                        continue;
+                    }
+
                     dispatchGroup.enter()
 
                     FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
@@ -204,13 +209,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         if enumeratedItemIdentifier == .workingSet {
             NSLog("Enumerating changes in working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-            // TODO: Enumerate changes in favourites and other special items
 
-            let scanResults = FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: ncAccount, ncKit: ncKit)
+            let scanResults = FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: self.ncAccount, ncKit: self.ncKit)
 
             FileProviderEnumerator.completeChangesObserver(observer,
                                                            anchor: anchor,
-                                                           ncKit: ncKit,
+                                                           ncKit: self.ncKit,
                                                            newMetadatas: scanResults.newMetadatas,
                                                            updatedMetadatas: scanResults.updatedMetadatas,
                                                            deletedMetadatas: scanResults.deletedMetadatas)
@@ -373,6 +377,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func scanRecursivelyForChanges(_ directoryMetadata: NextcloudDirectoryMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+
+        guard directoryMetadata.etag != "" || directoryMetadata.serverUrl == ncAccount.davFilesUrl else {
+            NSLog("Skipping enumeration of changes in unexplored directory for working set: %@", directoryMetadata.serverUrl)
+            return ([], [], [])
+        }
+
         var allNewMetadatas: [NextcloudItemMetadataTable] = []
         var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
         var allDeletedMetadatas: [NextcloudItemMetadataTable] = []
