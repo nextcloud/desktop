@@ -12,16 +12,15 @@
  * for more details.
  */
 
-#include "config.h"
-#include "fileproviderdomainmanager.h"
-#include "pushnotifications.h"
-
 #import <FileProvider/FileProvider.h>
 
 #include <QLoggingCategory>
 
+#include "config.h"
+#include "fileproviderdomainmanager.h"
+#include "pushnotifications.h"
+
 #include "gui/accountmanager.h"
-#include "gui/accountstate.h"
 #include "libsync/account.h"
 
 namespace {
@@ -283,6 +282,37 @@ class FileProviderDomainManager::Private {
         }];
     }
 
+    void reconnectFileProviderDomainForAccount(const AccountState * const accountState)
+    {
+        Q_ASSERT(accountState);
+        const auto account = accountState->account();
+        Q_ASSERT(account);
+
+        const auto domainId = domainIdentifierForAccount(account);
+        qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain with id: " << domainId;
+
+        if(!_registeredDomains.contains(domainId)) {
+            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << domainId;
+            return;
+        }
+
+        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
+        NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+
+        [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
+            if (error) {
+                qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
+                                                        << fileProviderDomain.displayName
+                                                        << error.code
+                                                        << error.localizedDescription;
+                return;
+            }
+
+            qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
+                                                    << fileProviderDomain.displayName;
+        }];
+    }
+
     void signalEnumeratorChanged(const Account * const account)
     {
         Q_ASSERT(account);
@@ -360,6 +390,12 @@ void FileProviderDomainManager::addFileProviderDomainForAccount(const AccountSta
 
     d->addFileProviderDomain(accountState);
 
+    // Disconnect the domain when something changes regarding authentication
+    connect(accountState, &AccountState::stateChanged, this, [this, accountState] {
+        slotAccountStateChanged(accountState);
+    });
+
+    // Setup push notifications
     const auto accountCapabilities = account->capabilities().isValid();
     if (!accountCapabilities) {
         connect(account.get(), &Account::capabilitiesChanged, this, [this, account] {
@@ -432,6 +468,45 @@ void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const Acc
 
     d->disconnectFileProviderDomainForAccount(accountState, reason);
 }
+
+void FileProviderDomainManager::reconnectFileProviderDomainForAccount(const AccountState * const accountState)
+{
+    Q_ASSERT(accountState);
+    const auto account = accountState->account();
+
+    d->reconnectFileProviderDomainForAccount(accountState);
+}
+
+void FileProviderDomainManager::slotAccountStateChanged(const AccountState * const accountState)
+{
+    Q_ASSERT(accountState);
+    const auto state = accountState->state();
+
+    qCDebug(lcMacFileProviderDomainManager) << "Account state changed for account:"
+                                            << accountState->account()->displayName()
+                                            << "changing connection status of file provider domain.";
+
+    switch(state) {
+    case AccountState::Disconnected:
+    case AccountState::ConfigurationError:
+    case AccountState::NetworkError:
+    case AccountState::ServiceUnavailable:
+    case AccountState::MaintenanceMode:
+        // Do nothing, File Provider will by itself figure out connection issue
+        break;
+    case AccountState::SignedOut:
+    case AccountState::AskingCredentials:
+    {
+        // Disconnect File Provider domain while unauthenticated
+        const auto trReason = tr("This account is not authenticated. Please check your account state in the %1 application.").arg(APPLICATION_NAME);
+        disconnectFileProviderDomainForAccount(accountState, trReason);
+        break;
+    }
+    case AccountState::Connected:
+        // Provide credentials
+        reconnectFileProviderDomainForAccount(accountState);
+        break;
+    }
 }
 
 } // namespace Mac

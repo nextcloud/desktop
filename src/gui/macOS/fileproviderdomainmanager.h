@@ -16,10 +16,11 @@
 
 #include <QObject>
 
+#include "accountstate.h"
+
 namespace OCC {
 
 class Account;
-class AccountState;
 
 namespace Mac {
 
@@ -37,10 +38,13 @@ private slots:
     void addFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void removeFileProviderDomainForAccount(const OCC::AccountState * const accountState);
     void disconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState, const QString &reason);
+    void reconnectFileProviderDomainForAccount(const OCC::AccountState * const accountState);
 
     void trySetupPushNotificationsForAccount(const OCC::Account * const account);
     void setupPushNotificationsForAccount(const OCC::Account * const account);
     void signalEnumeratorChanged(const OCC::Account * const account);
+
+    void slotAccountStateChanged(const AccountState * const accountState);
 
 private:
     explicit FileProviderDomainManager(QObject * const parent = nullptr);
