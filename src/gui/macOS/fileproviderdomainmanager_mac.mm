@@ -123,6 +123,10 @@ class FileProviderDomainManager::Private {
 
     void addFileProviderDomain(const AccountState * const accountState)
     {
+        Q_ASSERT(accountState);
+        const auto account = accountState->account();
+        Q_ASSERT(account);
+
         const auto domainDisplayName = domainDisplayNameForAccount(account);
         const auto domainId = domainIdentifierForAccount(account);
 
@@ -150,6 +154,9 @@ class FileProviderDomainManager::Private {
 
     void removeFileProviderDomain(const AccountState * const accountState)
     {
+        Q_ASSERT(accountState);
+        const auto account = accountState->account();
+        Q_ASSERT(account);
 
         const auto domainId = domainIdentifierForAccount(account);
         qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain with id: " << domainId;
@@ -230,6 +237,7 @@ class FileProviderDomainManager::Private {
 
     void signalEnumeratorChanged(const Account * const account)
     {
+        Q_ASSERT(account);
         const auto domainId = domainIdentifierForAccount(account);
 
         qCDebug(lcMacFileProviderDomainManager) << "Signalling enumerator changed in file provider domain for account with id: " << domainId;
