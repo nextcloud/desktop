@@ -43,6 +43,8 @@ private slots:
     void slotSocketDestroyed(const QObject * const object);
     void slotReadyRead();
 
+    void slotAccountStateChanged(const AccountState::State state);
+
     void parseReceivedLine(const QString &receivedLine);
     void requestFileProviderDomainInfo() const;
     void sendAccountDetails() const;

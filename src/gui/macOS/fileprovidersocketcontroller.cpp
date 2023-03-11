@@ -135,11 +135,44 @@ void FileProviderSocketController::requestFileProviderDomainInfo() const
     sendMessage(requestMessage);
 }
 
+void FileProviderSocketController::slotAccountStateChanged(const AccountState::State state)
+{
+    switch(state) {
+    case AccountState::Disconnected:
+    case AccountState::ConfigurationError:
+    case AccountState::NetworkError:
+    case AccountState::ServiceUnavailable:
+    case AccountState::MaintenanceMode:
+        // Do nothing, File Provider will by itself figure out connection issue
+        break;
+    case AccountState::SignedOut:
+    case AccountState::AskingCredentials:
+        // Notify File Provider that it should show the not authenticated message
+        break;
+    case AccountState::Connected:
+        // Provide credentials
+        sendAccountDetails();
+        break;
+    }
+}
+
 void FileProviderSocketController::sendAccountDetails() const
 {
     Q_ASSERT(_accountState);
     const auto account = _accountState->account();
     Q_ASSERT(account);
+
+    qCDebug(lcFileProviderSocketController) << "About to send account details to file provider extension"
+                                            << account->displayName();
+
+    connect(_accountState.data(), &AccountState::stateChanged, this, &FileProviderSocketController::slotAccountStateChanged);
+
+    if (!_accountState->isConnected()) {
+        qCDebug(lcFileProviderSocketController) << "Not sending account details yet as account is not connected"
+                                                << account->displayName();
+        return;
+    }
+
     const auto credentials = account->credentials();
     Q_ASSERT(credentials);
     const auto accountUser = credentials->user();
