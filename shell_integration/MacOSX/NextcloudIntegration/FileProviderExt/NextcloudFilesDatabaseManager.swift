@@ -665,8 +665,8 @@ class NextcloudFilesDatabaseManager : NSObject {
         metadata.size = file.size
         metadata.classFile = file.classFile
         //FIXME: iOS 12.0,* don't detect UTI text/markdown, text/x-markdown
-        if (metadata.contentType == "text/markdown" || metadata.contentType == "text/x-markdown") && metadata.classFile == NKCommon.typeClassFile.unknow.rawValue {
-            metadata.classFile = NKCommon.typeClassFile.document.rawValue
+        if (metadata.contentType == "text/markdown" || metadata.contentType == "text/x-markdown") && metadata.classFile == NKCommon.TypeClassFile.unknow.rawValue {
+            metadata.classFile = NKCommon.TypeClassFile.document.rawValue
         }
         if let date = file.uploadDate {
             metadata.uploadDate = date as Date

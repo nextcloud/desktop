@@ -149,7 +149,7 @@ class NextcloudItemMetadataTable: Object {
         if isDocumentViewableOnly {
             return false
         }
-        if ["application/pdf", "com.adobe.pdf"].contains(contentType) || contentType.hasPrefix("text/") || classFile == NKCommon.typeClassFile.image.rawValue {
+        if ["application/pdf", "com.adobe.pdf"].contains(contentType) || contentType.hasPrefix("text/") || classFile == NKCommon.TypeClassFile.image.rawValue {
             return true
         }
         return false
@@ -157,7 +157,7 @@ class NextcloudItemMetadataTable: Object {
 
     var isDocumentViewableOnly: Bool {
         return sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue &&
-            classFile == NKCommon.typeClassFile.document.rawValue
+            classFile == NKCommon.TypeClassFile.document.rawValue
     }
 
     var isCopyableInPasteboard: Bool {
@@ -168,7 +168,7 @@ class NextcloudItemMetadataTable: Object {
         if directory || isDocumentViewableOnly {
             return false
         }
-        return contentType == "com.adobe.pdf" || contentType == "application/pdf" || classFile == NKCommon.typeClassFile.image.rawValue
+        return contentType == "com.adobe.pdf" || contentType == "application/pdf" || classFile == NKCommon.TypeClassFile.image.rawValue
     }
 
     var isSettableOnOffline: Bool {

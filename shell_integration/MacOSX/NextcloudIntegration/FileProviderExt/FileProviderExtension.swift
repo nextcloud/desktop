@@ -90,7 +90,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             metadata.fileName = "root"
             metadata.fileNameView = "root"
             metadata.serverUrl = ncAccount.serverUrl
-            metadata.classFile = NKCommon.typeClassFile.directory.rawValue
+            metadata.classFile = NKCommon.TypeClassFile.directory.rawValue
 
             completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer, ncKit: ncKit), nil)
             return Progress()
