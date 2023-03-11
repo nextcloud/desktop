@@ -99,7 +99,7 @@ class FileProviderDomainManager::Private {
 
     void removeFileProviderDomain(const AccountState *accountState)
     {
-        const QString accountId = accountState->account()->id();
+        const QString accountId = accountState->account()->userIdAtHostWithPort();
         qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain for account with id: " << accountId;
 
         if(!_registeredDomains.contains(accountId)) {
@@ -162,7 +162,7 @@ class FileProviderDomainManager::Private {
 
     void signalEnumeratorChanged(const Account * const account)
     {
-        const auto accountId = account->id();
+        const auto accountId = account->userIdAtHostWithPort();
         qCDebug(lcMacFileProviderDomainManager) << "Signalling enumerator changed in file provider domain for account with id: " << accountId;
 
         if(!_registeredDomains.contains(accountId)) {
