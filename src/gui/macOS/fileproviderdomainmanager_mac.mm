@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "fileproviderdomainmanager.h"
 #include "pushnotifications.h"
 
@@ -266,7 +267,9 @@ class FileProviderDomainManager::Private {
         NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
 
-        [fpManager disconnectWithReason:@"Nextcloud application has been closed. Reopen to reconnect."
+        const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
+
+        [fpManager disconnectWithReason:trReason.toNSString()
                                 options:NSFileProviderManagerDisconnectionOptionsTemporary
                       completionHandler:^(NSError * const error) {
             if (error) {
