@@ -54,7 +54,7 @@ class NextcloudItemMetadataTable: Object {
         return false
     }
 
-    func isInSameRemoteState(_ comparingMetadata: NextcloudItemMetadataTable) -> Bool {
+    func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: NextcloudItemMetadataTable) -> Bool {
         return comparingMetadata.etag == self.etag &&
             comparingMetadata.fileNameView == self.fileNameView &&
             comparingMetadata.date == self.date &&
@@ -62,8 +62,6 @@ class NextcloudItemMetadataTable: Object {
             comparingMetadata.hasPreview == self.hasPreview &&
             comparingMetadata.note == self.note &&
             comparingMetadata.lock == self.lock &&
-            comparingMetadata.shareType == self.shareType &&
-            comparingMetadata.sharePermissionsCloudMesh == self.sharePermissionsCloudMesh &&
             comparingMetadata.sharePermissionsCollaborationServices == self.sharePermissionsCollaborationServices &&
             comparingMetadata.favorite == self.favorite
     }
@@ -119,7 +117,7 @@ class NextcloudItemMetadataTable: Object {
     @Persisted var sessionSelector = ""
     @Persisted var sessionTaskIdentifier: Int = 0
     @Persisted var sharePermissionsCollaborationServices: Int = 0
-    let sharePermissionsCloudMesh = List<String>()
+    let sharePermissionsCloudMesh = List<String>() // TODO: Find a way to compare these in remote state check
     let shareType = List<Int>()
     @Persisted var size: Int64 = 0
     @Persisted var status: Int = 0

@@ -155,7 +155,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
 
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
-                    !existingMetadata.isInSameRemoteState(updatedMetadata) {
+                    !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
 
                     returningUpdatedMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
                     databaseToWriteTo.add(updatedMetadata, update: .all)
@@ -169,7 +169,9 @@ class NextcloudFilesDatabaseManager : NSObject {
                           , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
                 } else {
                     NSLog("""
-                              Skipping metadata update as received metadata status is same as existing:
+                              Skipping metadata update as received metadata status is same as existing,
+                              or metadata is currently being downloaded/uploaded:
+
                               ocID: %@,
                               fileName: %@,
                               etag: %@
