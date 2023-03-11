@@ -385,6 +385,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         var modifiedItem = item
 
         if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
+            NSLog("Changed fields for item with filename %@ includes filename or parentitemidentifier...", item.filename)
             let ocId = item.itemIdentifier.rawValue
 
             guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
@@ -435,7 +436,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
             guard renameError == nil else {
                 NSLog("Stopping rename of item with ocId %@ due to error.", ocId)
-                completionHandler(modifiedItem, [], false, nil)
+                completionHandler(modifiedItem, [], false, renameError)
                 return Progress()
             }
 
@@ -455,13 +456,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         var progress = Progress()
 
         if changedFields.contains(.contents) {
+            NSLog("Item modification for %@ includes contents", item.filename)
+
             guard newContents != nil else {
                 NSLog("WARNING. Could not upload modified contents as was provided nil contents url. ocId: %@", item.itemIdentifier.rawValue)
                 completionHandler(modifiedItem, [], false, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
-
-            var contentUploadError: NSFileProviderError?
 
             self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                               fileNameLocalPath: fileNameLocalPath,
@@ -476,7 +477,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                 guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
                     NSLog("Could not upload item with filename: %@, received error: %@", item.filename, error.errorDescription)
-                    contentUploadError = NSFileProviderError(.cannotSynchronize)
+                    completionHandler(modifiedItem, [], false, NSFileProviderError(.cannotSynchronize))
                     return
                 }
 
@@ -502,16 +503,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 dbManager.addItemMetadata(newMetadata)
 
                 modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
-            }
-
-            guard contentUploadError == nil else {
-                NSLog("Stopping modification of item with ocId %@ due to error.", modifiedItem.itemIdentifier.rawValue)
                 completionHandler(modifiedItem, [], false, nil)
-                return progress
             }
+        } else {
+            NSLog("Nothing more to do with %@, modifications complete", item.filename)
+            completionHandler(modifiedItem, [], false, nil)
         }
 
-        completionHandler(modifiedItem, [], false, nil)
         return progress
     }
     
