@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation>Проверавају се измене у „%1</translation>
+        <translation>Проверавају се измене у „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="127"/>
@@ -228,7 +228,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation>„%1” не може да се премести у „%2</translation>
+        <translation>„%1” не може да се премести у „%2”</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -238,12 +238,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="157"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation>Грешка приликом уклањања „%1: %2</translation>
+        <translation>Грешка приликом уклањања „%1”: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="173"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation>Не може да се уклони фолдер „%1</translation>
+        <translation>Не може да се уклони фолдер „%1”</translation>
     </message>
 </context>
 <context>
@@ -320,7 +320,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>Сервер је одговорио „%1 %2“ на „%3 %4“</translation>
+        <translation>Сервер је одговорио „%1 %2” на „%3 %4”</translation>
     </message>
 </context>
 <context>
@@ -328,7 +328,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 204, а примљен је „%1 %2.</translation>
+        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 204, а примљен је „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
@@ -2104,12 +2104,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Провера има ли промена у удаљеном „%1</translation>
+        <translation>Провера има ли промена у удаљеном „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Провера има ли промена у локалном „%1</translation>
+        <translation>Провера има ли промена у локалном „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
@@ -2358,7 +2358,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="241"/>
         <source>Server returned wrong content-range</source>
-        <translation>Сервер је вратио погрешан опсег садржаја</translation>
+        <translation>Сервер је вратио погрешан content-range</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
@@ -2585,7 +2585,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation>Читање из привеска није успело услед грешке: „%1</translation>
+        <translation>Читање из привеска није успело услед грешке: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
@@ -2670,7 +2670,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation>Не могу да се упишу измене „%1.</translation>
+        <translation>Не могу да се упишу измене „%1”.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -2859,7 +2859,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/logger.cpp" line="175"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Фајл „%1”&lt;br/&gt;не може да се отвори за упис.&lt;br/&gt;&lt;br/&gt;Излаз дневника &lt;b&gt;не може&lt;/b&gt; да се сачува!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2893,27 +2893,27 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Није успело ажурирање</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Доступна је нова верзија %1 клијента али није успео процес ажурирања.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; је преузет. Инсталирана верзија је %3. Ако потврдите поновно покретање и ажурирање, ваш компјутер ће се можда поново покренути како би се довршила инсталација.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Питај поново касније</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Поново покрени и ажурирај</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Ажурирај ручно</translation>
     </message>
 </context>
 <context>
@@ -2951,7 +2951,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Напомена: прокси подешавања немају ефекат за налоге на локалном хосту</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -3029,12 +3029,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Дошло је до грешке приликом обраде „token” приступне тачке: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>Примљен је празан JSON као OAuth2 преусмеравање</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
@@ -3054,7 +3054,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Погрешан налог&lt;/h1&gt;&lt;p&gt;Пријавили сте се користећи налог &lt;em&gt;%1&lt;/em&gt;, али морате да се пријавите користећи налог &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Молимо вас да се одјавите са налога  %3 у другој картици, па да затим &lt;a href=&apos;%4&apos;&gt;кликнете овде&lt;/a&gt; и пријавите се користећи налог %2.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
@@ -3067,32 +3067,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Спремно је ново ажурирање за %1 </translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Управо ће се инсталирати ново ажурирање за %1. Током процеса модул за ажурирање ће од вас можда да затражи додатне привилиегије. Можда ће се ваш компјутер поново покренути како би се довршила инсталација.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Преузима се %1. Молимо вас сачекајте ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Доступно је %1. Поново покрените апликацију да започнете ажурирање.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Није могло да се преузме ажурирање. Молимо вас да отворите &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; и ручно преузмете ажурирање.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Није могло да се преузме ажурирање. Молимо вас да отворите %1 и ручно преузмете ажурирање.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
@@ -3102,12 +3102,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Нова верзија %1 је доступна. Молимо вас да отворите &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; и преузмете ажурирање.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Нова верзија %1 је доступна. Молимо вас да отворите %2 и преузмете ажурирање.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
@@ -3135,50 +3135,50 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="70"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Повежи се</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="255"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation type="unfinished"/>
+        <translation>Користи &amp;виртуелне фајлове уместо тренутног преузимања садржаја %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="255"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментално)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="251"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation type="unfinished"/>
+        <translation>Виртуелни фајлови се не подржавају у случају да је локални фолдер корен Windows партиције. Молимо вас да изаберете исправни подфолдер под словом драјва.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation type="unfinished"/>
+        <translation>%1 фолдер „%2” се синхронизује са локалним фолдером „%3</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="291"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизуј фолдер „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="296"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation type="unfinished"/>
+        <translation>Упозорење: локални фолдер није празан. Изаберите разрешење!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="306"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 слободног простора</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="391"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Виртуелни фајлови нису доступни за изабрани фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="451"/>
@@ -3267,7 +3267,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/owncloudpropagator.cpp" line="851"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="928"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>Немогуће је добити време измене за фајл у конфликту %1</translation>
     </message>
 </context>
 <context>
@@ -3276,7 +3276,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation type="unfinished"/>
+        <translation>Линк на ваш %1 веб интерфејс када га отворите у прегледачу.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="201"/>
@@ -3286,7 +3286,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="239"/>
         <source>Server address does not seem to be valid</source>
-        <translation type="unfinished"/>
+        <translation>Изгледа да је адреса сервера неисправна</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="350"/>
@@ -3324,7 +3324,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Аутентификовани захтев серверу је преусмерен на „%1”. URL је неисправан, сервер је погрешно конфигурисан.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="422"/>
@@ -3349,7 +3349,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="484"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
@@ -3431,7 +3431,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="643"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Не могу да уклоним и направим резервну копију фолдера јер су фолдер или неки фајл у њему отворени у другом програму. Молимо вас да затворите фолдер или фајл и притиснете пробај поново или одустаните од подешавања.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="696"/>
@@ -3444,7 +3444,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Додај %1 налог</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="97"/>
@@ -3454,12 +3454,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Откажи</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="430"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Да укључим експерименталну могућност?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="431"/>
@@ -3470,17 +3470,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Када је укључен режим „виртуелни фајлови” у почетку се неће преузети ниједан фајл. Уместо тога се за сваки фајл који постоји на серверу креира мали фајл „%1”. Садржај може да се преузме покретањем ових фајлова или употребом њиховог контектсног менија.
+
+Режим виртуелних фајлова је узајамно искључив са селективном синхронизацијом. Фолдери који тренутно нису изабрани ће се превести у фолдере доступне само на мрежи и ресетоваће се сва ваша подешавања селективне синхронизације.
+
+Прелазак на овај режим ће прекинути све синхронизације које се тренутно извршавају.
+
+Ово је нови, експериментални режим. Ако одлучите да га користите, молимо вас да пријавите евентуалне проблеме који би могли да се појаве.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="445"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Укључи експериментални режим чувара места</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="446"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Будите безбедни</translation>
     </message>
 </context>
 <context>
@@ -3488,12 +3494,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Потребна је лозинка за дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесете лозинку за ваше дељење:</translation>
     </message>
 </context>
 <context>
@@ -3509,167 +3515,167 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="320"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Симболички линкови не могу да се синхронизују.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="328"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл се налази на листи за игнорисање.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="332"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Имена фајлова која се завршавају са тачком нису подржана на овом фајл систему.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="342"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Имена фајлова која садрже карактер „%1” нису подржана на овом фајл систему.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи бар један неисправан карактер</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="346"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла је резервисано име на овом фајл систему.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="352"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на крају.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="356"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на почетку.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="360"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла садржи размаке на почетку и крају.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="364"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла је сувише дугачко.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="368"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл/фолдер се игнорише јер је скривен.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="371"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Ставка је прескочена јер је искључена или је дошло до грешке.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="374"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт: преузета је серверска верзија, локалној копији је промењено име и није отпремљена.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="378"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт величине слова: Серверски фајл је преузет и промењено му је име да би се спречило сударање слова.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла не може да се кодира на вашем фајл систему.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="385"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла је на црној листи сервера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл има екстензију која је резервисана за виртуелне фајлове.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="561"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>величина</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="563"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>дозвола</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="567"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>фајл id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="571"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је пријавио да нема %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се синхронизује због неисправног времена измене</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="967"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом брисања фајл записа %1 из базе података</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1217"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт приликом отпремања фолдера. Обрисаће се садржај!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1220"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт приликом отпремања фајла. Обрисаће се!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1589"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Игнорисано јер се не налази на листи за синхронизацију</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1623"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Није дозвољено пошто немате дозволу да додате подфолдере у овај фолдер</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1628"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Није дозвољено пошто немате дозволу да додате фајлове у овај фолдер</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1641"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Није дозвољено да отпремите овај фајл јер је на серверу означен као само-за-читање. Враћа се</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1663"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Премештено на неисправан циљ, враћа се</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1677"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Није дозвољено брисање, враћа се</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1816"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом читања базе података</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1877"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је одговорио са грешком током читања директоријума „%1” : %2</translation>
     </message>
 </context>
 <context>
@@ -3677,22 +3683,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1283"/>
         <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>фајл %1 не може да се обрише из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1297"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака услед неисправног времена измене</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1313"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1317"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл се тренутно користи</translation>
     </message>
 </context>
 <context>
@@ -3700,12 +3706,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>фајл %1 не може да се преузме из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 не може да се преузме јер недостају подаци о шифровању.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
@@ -3717,13 +3723,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се обрише фајл запис %1 из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="626"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 не може да се преузме јер се судара са називом локалног фајла!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
@@ -3753,7 +3759,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Преузети фајл је празан, а сервер је рекао да треба да буде %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1119"/>
@@ -3764,22 +3770,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1171"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је пријавио неисправно време измене фајла %1. Немојте да га чувате.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 је преузет, али је изазвао судар са називом локалног фајла!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
 </context>
 <context>
@@ -3810,22 +3816,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Фолдер %1 не може да се креира због судара са називом локалног фајла или фолдера!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се креира фолдер %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
 </context>
 <context>
@@ -3838,7 +3844,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се обрише фајл запис %1 из локалне базе</translation>
     </message>
 </context>
 <context>
@@ -3846,51 +3852,51 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Име фајла %1 не може да се прромени у %2 јер се судара са називом локалног фајла!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 је преузет, али је изазвао судар са називом локалног фајла!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="352"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>фајл %1 не може да се преузме из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом постављања стања прикачености</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="295"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="298"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се обрише фајл запис %1 из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>Није успело пропагирање промене имена директоријума у хијерархији</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="338"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Није успела промена имена фајла</translation>
     </message>
 </context>
 <context>
@@ -3898,12 +3904,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="110"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер је вратио лош ХТТП код. Очекивано је 204 али је примљено „%1 %2“.</translation>
+        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 204, а примљен је „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се обрише фајл запис %1 из локалне базе</translation>
     </message>
 </context>
 <context>
@@ -3911,7 +3917,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="150"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 204, а примљен је „%1 %2.</translation>
     </message>
 </context>
 <context>
@@ -3919,17 +3925,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="133"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер је вратио лош ХТТП код. Очекивано је 201 али је примљено „%1 %2“.</translation>
+        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 201, а примљен је „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом уписа метаподатака у базу података: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="263"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
 </context>
 <context>
@@ -3937,37 +3943,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="169"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Име %1 не може да се промени у %2, грешка: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="229"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер је вратио лош ХТТП код. Очекивано је 201 али је примљено „%1 %2“.</translation>
+        <translation>Сервер је вратио погрешан HTTP кôд. Очекивао се 201, а примљен је „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>фајл %1 не може да се преузме из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се обрише фајл запис %1 из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="288"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="296"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом постављања стања прикачености</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="303"/>
@@ -3980,7 +3986,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="233"/>
         <source>Failed to upload encrypted file.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело отпремање шифрованог фајла.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="266"/>
@@ -3998,7 +4004,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
         <location filename="../src/libsync/propagateupload.cpp" line="402"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 има неисправно време измене. Не отпремајте га на сервер.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="386"/>
@@ -4018,17 +4024,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело откључавање шифрованог фолдера.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="791"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="794"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се тренутно користи</translation>
     </message>
 </context>
 <context>
@@ -4046,7 +4052,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="484"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Недостаје URL адреса упита</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
@@ -4162,7 +4168,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="116"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Одговори</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
@@ -4181,7 +4187,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 подешавања</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
@@ -4204,32 +4210,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Сигурно место за упуштање фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="536"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Дели линк</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="544"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Дељење линком</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="546"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Интерни линк</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="599"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Сигурно место за упуштање фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="802"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Унесите напомену примаоцу дељења</translation>
     </message>
 </context>
 <context>
@@ -4242,22 +4248,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Може да уређује</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Напомена:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Лозинка</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Истиче:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
@@ -4267,12 +4273,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Напомена примаоцу</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Постави датум истека</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="529"/>
@@ -4297,7 +4303,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Заштићено лозинком</translation>
     </message>
 </context>
 <context>
@@ -4306,23 +4312,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Претражите глобално</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Нема пронађених резултата</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Резултати глобалне претраге</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4330,34 +4336,36 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Није успело шифровање фолдера у „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>За налог %1 није подешено шифровање од-краја-до-краја. Ако желите да укључите шифровање фолдера, молимо вас да то укључите у свом налогу.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Није успело шифровање фолдера</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Следећи фолдер не може да се шифрује: &quot;%1&quot;.
+
+Сервер је вратио грешку: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>Фолдер је успешно шифрован</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Следећи фолдер је успешно шифрован: &quot;%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="758"/>
@@ -4367,7 +4375,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Изаберите нову локацију ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1090"/>
@@ -4384,7 +4392,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1104"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1321"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Активност</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1106"/>
@@ -4400,12 +4408,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Истиче за %1 минут</numerusform><numerusform>Истиче за %1 минута</numerusform><numerusform>Истиче за %1 минута</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1131"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Напусти ово дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
@@ -4415,13 +4423,13 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Поновно дељење овог фолдера није дозвољено</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Копирај линк сигурног места за упуштање фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1151"/>
@@ -4437,28 +4445,28 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1193"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Шифруј</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1204"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Закључај фајл</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Откључај фајл</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1222"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Закључао је %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1226"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Истиче за %1 минут</numerusform><numerusform>Истиче за %1 минута</numerusform><numerusform>Истиче за %1 минута</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1327"/>
@@ -4473,27 +4481,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1354"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Разреши конфликт ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Премести и промени име ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1361"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Премести, промени име и отпреми ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1363"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Обриши локалне измене</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Премести и отпреми ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
@@ -4648,7 +4656,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Додатне грешке</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
@@ -4721,22 +4729,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="375"/>
         <source>Could not update file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Фајл не може да се ажурира: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="387"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не могу да се ажурирају метаподаци виртуелног фајла: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="394"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не могу да се ажурирају метаподаци фајла: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="404"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се постави фајл запис у локалну базу: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="434"/>
@@ -4757,7 +4765,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="575"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Користе се вируелни фајлови са суфиксом, али он није постављен</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="587"/>
@@ -4777,7 +4785,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1067"/>
         <source>Synchronization will resume shortly.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизација ће се ускоро наставити.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1209"/>
@@ -4796,59 +4804,59 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Ван мреже</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Све је синхронизовано!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Неки фајлови нису могли да се синхронизују!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Погледајте грешке испод</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизујем</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизација је паузирана</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Неки фајлови нису могли да се синхронизују!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Погледајте упозорења испод</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 од %2 · %3 преостало</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 од %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизује се фајл %1 од %2 укупно</translation>
     </message>
 </context>
 <context>
@@ -4856,7 +4864,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="80"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Преузимање</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="180"/>
@@ -4872,13 +4880,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај синхронизацију</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Настави синхронизацију</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
@@ -4888,7 +4896,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="188"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Помоћ</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>
@@ -4898,12 +4906,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај синхронизацију за све</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Настави синхронизацију за све</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="515"/>
@@ -4928,7 +4936,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="556"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Користи се додатак виртуелних фајлова: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="571"/>
@@ -4938,7 +4946,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="571"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ово издање је обезбедио %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4946,22 +4954,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при добављању пружаоца услуге претраге.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Није успело добављање пружаоца услуге претраге за ’%1’. Грешка: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Није успела претрага ’%2’.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Није успела претрага ’%1’. Грешка: ’%2’</translation>
     </message>
 </context>
 <context>
@@ -4975,7 +4983,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="605"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="729"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Разреши конфликт</translation>
     </message>
 </context>
 <context>
@@ -5006,121 +5014,121 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело добављање предефинисаних статуса. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело добављање статуса корисника. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>Могућност корисничких статуса није подржана. Нећете моћи да поставите свој кориснички статус.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Емођи могућност није подржана. Могуће је да неће функционисати неке функционалности корисничког статуса.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело постављање статуса корисника. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело добављање статуса. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело брисање статусне поруке. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Могућност статуса није подржана. Нећете моћи да поставите свој статус.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Емођи нису подржани. Могуће је да неће функционисати неке функционалности статуса.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело постављање статуса. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело брисање статусне поруке. Обезбедите везу са сервером.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Не бриши</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 минута</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 сат</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 сата</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Данас</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Ове седмице</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Мање од минута</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 минут</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 минута</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 сати</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 дан</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 дана</translation>
     </message>
 </context>
 <context>
@@ -5128,7 +5136,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Могућност Виртуелног фајл система захтева NTFS фајл систем, %1 користи %2</translation>
     </message>
 </context>
 <context>
@@ -5137,7 +5145,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="90"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака услед неисправног времена измене</translation>
     </message>
 </context>
 <context>
@@ -5146,7 +5154,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом ажурирања метаподатака услед неисправног времена измене</translation>
     </message>
 </context>
 <context>
@@ -5159,7 +5167,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="232"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>Сервер „%1“ је понудио неисправан сертификат. Наставити?</translation>
+        <translation>Сервер „%1” је понудио неисправан сертификат. Да наставим?</translation>
     </message>
 </context>
 <context>
@@ -5167,17 +5175,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Одјављени сте са свог налога %1 на %2. Молимо вас да се поново пријавите.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Одјављени сте са %1 као корисник %2. Молимо вас да се поново пријавите.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да се пријавите са налогом: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
@@ -5190,53 +5198,53 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Формулар</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Пријава</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Пријавите се на свој %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Пријавите се преко пружаоца услуге</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Create account with Provider</source>
-        <translation type="unfinished"/>
+        <translation>Креирајте налог пружаоцем услуге</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Чувајте своје податке безбедним и под својом контролом</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Безбедна сарадња и размена фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Веб пошта лака за коришћење, календари и контакти</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Дељење екрана, састанци на мрежи и веб конференције</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation type="unfinished"/>
+        <translation>Хостујте свој сервер</translation>
     </message>
 </context>
 <context>
@@ -5249,7 +5257,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="260"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер на налогу %1 извршава неподржану верзију %2. Коришћење овог клијента са неподржаном верзијом сервера није тестирано и потенцијално може бити опасно. Настављате на сопствену одговорност.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="301"/>
@@ -5330,12 +5338,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Провера има ли промена у удаљеном „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="463"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Провера има ли промена у локалном „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="479"/>
@@ -5373,42 +5381,42 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Корисничко име</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Локални фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Име корисника</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Изаберите неки други фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Адреса сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Логотип синхронизације</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизуј све са сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Питај за потврду пре синхронизације фолдера већих од</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
@@ -5419,7 +5427,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Питај за потврду пре синхронизације спољашњих складишта</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
@@ -5429,7 +5437,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>Задржи локалне податке</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
@@ -5439,7 +5447,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation type="unfinished"/>
+        <translation>Обриши локални фолдер и почни чисту синхронизацију</translation>
     </message>
 </context>
 <context>
@@ -5489,17 +5497,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Логотип</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Адреса сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Ово је линк на ваш %1 веб интерфејс када га отворите у прегледачу.</translation>
     </message>
 </context>
 <context>
@@ -5507,32 +5515,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
-        <translation type="unfinished"/>
+        <translation>Нови фолдер</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="654"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Променили сте име %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="656"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Обрисали сте %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="658"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Креирали сте %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="660"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Изменили сте %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="684"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизовано %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -5593,7 +5601,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Означи као прочитано</translation>
     </message>
 </context>
 <context>
@@ -5601,17 +5609,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Направи нови линк дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Копирај локацију линка дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Опције дељења</translation>
     </message>
 </context>
 <context>
@@ -5619,57 +5627,57 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Дошло је до грешке током постављања лозинке дељења.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Уреди дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Одбаци</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Ознака дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Дозволи уређивање</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Заштићено лозинком</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Постави датум истека</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Напомена примаоцу</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Укини дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Додај још један линк</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Копирај линк дељења</translation>
     </message>
 </context>
 <context>
@@ -5677,27 +5685,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Потребна је лозинка за ново дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Лозинка дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="292"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Дељење је искључено</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="300"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Ова ставка не може да се дели.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="309"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Дељење је искључено.</translation>
     </message>
 </context>
 <context>
@@ -5705,7 +5713,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Претражи кориснике или групе…</translation>
     </message>
 </context>
 <context>
@@ -5713,7 +5721,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="926"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Није успело повезивање са базом података.</translation>
     </message>
 </context>
 <context>
@@ -5721,7 +5729,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="116"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизуј сада</translation>
     </message>
 </context>
 <context>
@@ -5729,12 +5737,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="17"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Одговори на ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="53"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Пошаљи одговор на чет поруку</translation>
     </message>
 </context>
 <context>
@@ -5742,7 +5750,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="27"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Претрага фајлова, порука, догађаја ...</translation>
     </message>
 </context>
 <context>
@@ -5750,7 +5758,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="31"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Учитај још резултата</translation>
     </message>
 </context>
 <context>
@@ -5758,7 +5766,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="15"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Костур резултата претраге.</translation>
     </message>
 </context>
 <context>
@@ -5766,7 +5774,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="29"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Учитај још резултата</translation>
     </message>
 </context>
 <context>
@@ -5774,7 +5782,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Нема резултата за</translation>
     </message>
 </context>
 <context>
@@ -5782,7 +5790,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Резултати претраге одељак %1</translation>
     </message>
 </context>
 <context>
@@ -5790,7 +5798,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Ставка налога</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="19"/>
@@ -5800,22 +5808,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текући налог је на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Статус текућег налога је не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текући кориснички статус је на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текући кориснички статус је не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
@@ -5825,7 +5833,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Постави статус</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="176"/>
@@ -5850,67 +5858,67 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Мрежни статус</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>На мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Одсутан</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Искључи сва обавештења</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Невидљив</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Прикажи ван мреже</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Статусна порука</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="214"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Који је ваш статус?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="287"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Обриши статусну поруку након</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="325"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Откажи</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="332"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Обриши статусну поруку</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="340"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Постављање статусне поруке</translation>
     </message>
 </context>
 <context>
@@ -5981,12 +5989,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="380"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Заглавље контролне суме садржи непознати тип контролне суме %1”</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="385"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Преузети фајл се не поклапа с контролном сумом. Биће настављено. %1” != „%2”</translation>
     </message>
 </context>
 <context>
@@ -5994,7 +6002,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="221"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud desktop главни дијалог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="248"/>
@@ -6005,18 +6013,18 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="254"/>
         <location filename="../src/gui/tray/Window.qml" line="389"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Настави синхронизацију за све</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="254"/>
         <location filename="../src/gui/tray/Window.qml" line="389"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај синхронизацију за све</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="219"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Постави корисников статус</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="347"/>
@@ -6026,7 +6034,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="360"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Додај нови налог</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="395"/>
@@ -6041,47 +6049,47 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="373"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Текући аватар корисника</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текући кориснички статус је на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текући кориснички статус је не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Текући аватар налога</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текући стаус налога је на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текући статус налога је не узнемиравај</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="851"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Фајл активност</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="568"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Пребацивач налога и мени подешавања</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="587"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Отвори локални фолдер текућег налога</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="610"/>
@@ -6096,7 +6104,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="646"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори Nextcloud Talk у прегледачу</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="666"/>
@@ -6111,7 +6119,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="827"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>Обједињена листа резултата претраге</translation>
     </message>
 </context>
 <context>
@@ -6124,7 +6132,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/main.cpp" line="46"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 захтева функионалну системску тацну. Ако покрећете XFCE, молимо вас да следите ова упутства. У супротном, молимо вас да инсталирате апликацију системске тацне као што је „trayer” и покушате поново.</translation>
     </message>
 </context>
 <context>
@@ -6140,12 +6148,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Креиран је виртуелни фајл</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Замењено са виртуалним фајлом</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -6165,7 +6173,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Преузета је серверска верзија, измењени локани фајл је копиран у фајл конфликта величине слова </translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -6317,32 +6325,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Увек доступно локално</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Тренутно је доступно локално</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Нешто је доступно само на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Само доступно на мрежи</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Учини увек доступно локално</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Ослободи локални простор</translation>
     </message>
 </context>
 <context>
@@ -6363,12 +6371,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Интерни линк</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
         <source>Only works for users with access to this folder</source>
-        <translation type="unfinished"/>
+        <translation>Функионише само са кориснике са приступом овом фолдеру</translation>
     </message>
 </context>
 <context>
@@ -6397,13 +6405,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Закључао %1 - Истиче за %2 минут</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="106"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Закључао %1 - Истиче за %2 минут</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform><numerusform>Закључао %1 - Истиче за %2 минута</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="127"/>
@@ -6418,7 +6426,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="332"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл не може да се дели јер нема дозволу за дељење.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="417"/>
@@ -6441,7 +6449,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
         <source>Note</source>
-        <translation type="unfinished"/>
+        <translation>Напомена</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
@@ -6451,7 +6459,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
         <source>Expires</source>
-        <translation type="unfinished"/>
+        <translation>Истиче</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
@@ -6461,7 +6469,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Само преглед</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
@@ -6476,7 +6484,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Име линка</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
@@ -6496,7 +6504,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Обриши линк</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
@@ -6539,7 +6547,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Претражи глобално</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
@@ -6549,17 +6557,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
         <source>No results for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Нема резултата за „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Потребна је лозинка за дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>Молимо вас да унесите лозинку за дељење и-поштом:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>

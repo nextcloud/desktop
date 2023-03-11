@@ -4209,7 +4209,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Odkaz na bezpečný příjem souboru</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="536"/>
@@ -4229,7 +4229,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="599"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Bezpečný příjem souboru</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="802"/>
