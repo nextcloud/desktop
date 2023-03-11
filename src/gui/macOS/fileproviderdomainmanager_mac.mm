@@ -102,6 +102,20 @@ class FileProviderDomainManager::Private {
                     [domain retain];
                     _registeredDomains.insert(accountId, domain);
 
+                    NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:domain];
+                    [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
+                        if (error) {
+                            qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
+                                                                    << domain.displayName
+                                                                    << error.code
+                                                                    << error.localizedDescription;
+                            return;
+                        }
+
+                        qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
+                                                                << domain.displayName;
+                    }];
+
                 } else {
                     qCDebug(lcMacFileProviderDomainManager) << "Found existing file provider domain with no known configured account:"
                                                             << domain.displayName;
@@ -235,6 +249,39 @@ class FileProviderDomainManager::Private {
         }];
     }
 
+    void disconnectFileProviderDomainForAccount(const AccountState * const accountState)
+    {
+        Q_ASSERT(accountState);
+        const auto account = accountState->account();
+        Q_ASSERT(account);
+
+        const auto domainId = domainIdentifierForAccount(account);
+        qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain with id: " << domainId;
+
+        if(!_registeredDomains.contains(domainId)) {
+            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << domainId;
+            return;
+        }
+
+        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
+        NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+
+        [fpManager disconnectWithReason:@"Nextcloud application has been closed. Reopen to reconnect."
+                                options:NSFileProviderManagerDisconnectionOptionsTemporary
+                      completionHandler:^(NSError * const error) {
+            if (error) {
+                qCDebug(lcMacFileProviderDomainManager) << "Error disconnecting file provider domain: "
+                                                        << fileProviderDomain.displayName
+                                                        << error.code
+                                                        << error.localizedDescription;
+                return;
+            }
+
+            qCDebug(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
+                                                    << fileProviderDomain.displayName;
+        }];
+    }
+
     void signalEnumeratorChanged(const Account * const account)
     {
         Q_ASSERT(account);
@@ -272,8 +319,13 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
             this, &FileProviderDomainManager::addFileProviderDomainForAccount);
+    // If an account is deleted from the client, accountSyncConnectionRemoved will be
+    // emitted first. So we treat accountRemoved as only being relevant to client
+    // shutdowns.
     connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+            this, &FileProviderDomainManager::disconnectFileProviderDomainForAccount);
 }
 
 FileProviderDomainManager *FileProviderDomainManager::instance()
@@ -349,7 +401,7 @@ void FileProviderDomainManager::signalEnumeratorChanged(const Account * const ac
     d->signalEnumeratorChanged(account);
 }
 
-void FileProviderDomainManager::removeFileProviderDomainForAccount(const AccountState *  const accountState)
+void FileProviderDomainManager::removeFileProviderDomainForAccount(const AccountState * const accountState)
 {
     Q_ASSERT(accountState);
     const auto account = accountState->account();
@@ -365,6 +417,15 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
     } else if (pushNotificationsCapability) {
         disconnect(account.get(), &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
     }
+}
+
+void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState)
+{
+    Q_ASSERT(accountState);
+    const auto account = accountState->account();
+    Q_ASSERT(account);
+
+    d->disconnectFileProviderDomainForAccount(accountState);
 }
 
 } // namespace Mac
