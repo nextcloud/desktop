@@ -46,6 +46,11 @@ class FileProviderDomainManager::Private {
                                                         << error.localizedDescription;
             }
 
+            if (domains.count == 0) {
+                qCDebug(lcMacFileProviderDomainManager) << "Found no existing file provider domains";
+                return;
+            }
+
             for (NSFileProviderDomain * const domain in domains) {
                 const auto accountId = QString::fromNSString(domain.identifier);
 
@@ -56,6 +61,7 @@ class FileProviderDomainManager::Private {
 
                     qCDebug(lcMacFileProviderDomainManager) << "Found existing file provider domain for account:"
                                                             << accountState->account()->displayName();
+                    [domain retain];
                     _registeredDomains.insert(accountId, domain);
 
                 } else {
@@ -87,6 +93,8 @@ class FileProviderDomainManager::Private {
 
         NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:accountId.toNSString()
                                                                                                displayName:accountDisplayName.toNSString()];
+        [fileProviderDomain retain];
+
         [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
             if(error) {
                 qCDebug(lcMacFileProviderDomainManager) << "Error adding file provider domain: "
@@ -131,7 +139,13 @@ class FileProviderDomainManager::Private {
                 qCDebug(lcMacFileProviderDomainManager) << "Error removing all file provider domains: "
                                                         << error.code
                                                         << error.localizedDescription;
+                return;
             }
+
+            for (NSFileProviderDomain * const domain : _registeredDomains.values()) {
+                [domain release];
+            }
+            _registeredDomains.clear();
         }];
     }
 
@@ -158,6 +172,11 @@ class FileProviderDomainManager::Private {
                                                                 << error.localizedDescription;
                         return;
                     }
+
+                    NSFileProviderDomain * const registeredDomainPtr = _registeredDomains.take(QString::fromNSString(domain.identifier));
+                    if (registeredDomainPtr != nil) {
+                        [domain release];
+                    }
                 }];
             }
         }];
@@ -174,6 +193,8 @@ class FileProviderDomainManager::Private {
         }
 
         NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
+        Q_ASSERT(fileProviderDomain != nil);
+
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
         [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
             if (error != nil) {
