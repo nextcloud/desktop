@@ -23,6 +23,37 @@
 #include "gui/accountstate.h"
 #include "libsync/account.h"
 
+namespace {
+
+QString domainIdentifierForAccount(const OCC::Account * const account)
+{
+    Q_ASSERT(account);
+    return account->userIdAtHostWithPort();
+}
+
+QString domainIdentifierForAccount(const OCC::AccountPtr account)
+{
+    return domainIdentifierForAccount(account.get());
+}
+
+QString domainDisplayNameForAccount(const OCC::Account * const account)
+{
+    Q_ASSERT(account);
+    return account->displayName();
+}
+
+QString domainDisplayNameForAccount(const OCC::AccountPtr account)
+{
+    return domainDisplayNameForAccount(account.get());
+}
+
+QString accountIdFromDomain(NSFileProviderDomain * const domain)
+{
+    return QString::fromNSString(domain.identifier);
+}
+
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileproviderdomainmanager", QtInfoMsg)
@@ -59,12 +90,12 @@ class FileProviderDomainManager::Private {
             }
 
             for (NSFileProviderDomain * const domain in domains) {
-                const auto accountId = QString::fromNSString(domain.identifier);
+                const auto accountId = accountIdFromDomain(domain);
 
                 if (const auto accountState = AccountManager::instance()->accountFromUserId(accountId);
                         accountState &&
                         accountState->account() &&
-                        accountState->account()->displayName() == QString::fromNSString(domain.displayName)) {
+                        domainDisplayNameForAccount(accountState->account()) == QString::fromNSString(domain.displayName)) {
 
                     qCDebug(lcMacFileProviderDomainManager) << "Found existing file provider domain for account:"
                                                             << accountState->account()->displayName();
@@ -92,18 +123,18 @@ class FileProviderDomainManager::Private {
 
     void addFileProviderDomain(const AccountState * const accountState)
     {
-        const auto accountDisplayName = accountState->account()->displayName();
-        const auto accountId = accountState->account()->userIdAtHostWithPort();
+        const auto domainDisplayName = domainDisplayNameForAccount(account);
+        const auto domainId = domainIdentifierForAccount(account);
 
-        qCDebug(lcMacFileProviderDomainManager) << "Adding new file provider domain for account with id: " << accountId;
+        qCDebug(lcMacFileProviderDomainManager) << "Adding new file provider domain with id: " << domainId;
 
-        if(_registeredDomains.contains(accountId) && _registeredDomains.value(accountId) != nil) {
-            qCDebug(lcMacFileProviderDomainManager) << "File provider domain for account with id already exists: " << accountId;
+        if(_registeredDomains.contains(domainId) && _registeredDomains.value(domainId) != nil) {
+            qCDebug(lcMacFileProviderDomainManager) << "File provider domain with id already exists: " << domainId;
             return;
         }
 
-        NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:accountId.toNSString()
-                                                                                               displayName:accountDisplayName.toNSString()];
+        NSFileProviderDomain * const fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString()
+                                                                                               displayName:domainDisplayName.toNSString()];
         [fileProviderDomain retain];
 
         [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
@@ -114,20 +145,21 @@ class FileProviderDomainManager::Private {
             }
         }];
 
-        _registeredDomains.insert(accountId, fileProviderDomain);
+        _registeredDomains.insert(domainId, fileProviderDomain);
     }
 
     void removeFileProviderDomain(const AccountState * const accountState)
     {
-        const auto accountId = accountState->account()->userIdAtHostWithPort();
-        qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain for account with id: " << accountId;
 
-        if(!_registeredDomains.contains(accountId)) {
-            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << accountId;
+        const auto domainId = domainIdentifierForAccount(account);
+        qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain with id: " << domainId;
+
+        if(!_registeredDomains.contains(domainId)) {
+            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << domainId;
             return;
         }
 
-        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
+        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
 
         [NSFileProviderManager removeDomain:fileProviderDomain completionHandler:^(NSError *error) {
             if(error) {
@@ -137,7 +169,7 @@ class FileProviderDomainManager::Private {
             }
         }];
 
-        NSFileProviderDomain * const domain = _registeredDomains.take(accountId);
+        NSFileProviderDomain * const domain = _registeredDomains.take(domainId);
         [domain release];
     }
 
@@ -153,8 +185,11 @@ class FileProviderDomainManager::Private {
                 return;
             }
 
-            for (NSFileProviderDomain * const domain : _registeredDomains.values()) {
-                [domain release];
+            const auto registeredDomainPtrs = _registeredDomains.values();
+            for (NSFileProviderDomain * const domain : registeredDomainPtrs) {
+                if (domain != nil) {
+                    [domain release];
+                }
             }
             _registeredDomains.clear();
         }];
@@ -195,15 +230,16 @@ class FileProviderDomainManager::Private {
 
     void signalEnumeratorChanged(const Account * const account)
     {
-        const auto accountId = account->userIdAtHostWithPort();
-        qCDebug(lcMacFileProviderDomainManager) << "Signalling enumerator changed in file provider domain for account with id: " << accountId;
+        const auto domainId = domainIdentifierForAccount(account);
 
-        if(!_registeredDomains.contains(accountId)) {
-            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << accountId;
+        qCDebug(lcMacFileProviderDomainManager) << "Signalling enumerator changed in file provider domain for account with id: " << domainId;
+
+        if(!_registeredDomains.contains(domainId)) {
+            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << domainId;
             return;
         }
 
-        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[accountId];
+        NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
         Q_ASSERT(fileProviderDomain != nil);
 
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
