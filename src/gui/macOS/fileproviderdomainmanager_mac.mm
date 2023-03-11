@@ -39,15 +39,22 @@ class FileProviderDomainManager::Private {
 
     void findExistingFileProviderDomains()
     {
+        // Wait for this to finish
+        dispatch_group_t dispatchGroup = dispatch_group_create();
+        dispatch_group_enter(dispatchGroup);
+
         [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
             if(error) {
                 qCDebug(lcMacFileProviderDomainManager) << "Could not get existing file provider domains: "
                                                         << error.code
                                                         << error.localizedDescription;
+                dispatch_group_leave(dispatchGroup);
+                return;
             }
 
             if (domains.count == 0) {
                 qCDebug(lcMacFileProviderDomainManager) << "Found no existing file provider domains";
+                dispatch_group_leave(dispatchGroup);
                 return;
             }
 
@@ -76,7 +83,11 @@ class FileProviderDomainManager::Private {
                     }];
                 }
             }
+
+            dispatch_group_leave(dispatchGroup);
         }];
+
+        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
     }
 
     void addFileProviderDomain(const AccountState * const accountState)
@@ -213,14 +224,12 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
 {
     d.reset(new FileProviderDomainManager::Private());
 
-    d->findExistingFileProviderDomains();
+    setupFileProviderDomains();
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
             this, &FileProviderDomainManager::addFileProviderDomainForAccount);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
-
-    setupFileProviderDomains(); // Initially fetch accounts in manager
 }
 
 FileProviderDomainManager *FileProviderDomainManager::instance()
@@ -235,6 +244,8 @@ FileProviderDomainManager::~FileProviderDomainManager() = default;
 
 void FileProviderDomainManager::setupFileProviderDomains()
 {
+    d->findExistingFileProviderDomains();
+
     for(auto &accountState : AccountManager::instance()->accounts()) {
         addFileProviderDomainForAccount(accountState.data());
     }
