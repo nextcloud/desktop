@@ -90,8 +90,8 @@ class FileProviderDomainManager::Private {
         [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError * const error) {
             if(error) {
                 qCDebug(lcMacFileProviderDomainManager) << "Error adding file provider domain: "
-                                                        << [error code]
-                                                        << [error localizedDescription];
+                                                        << error.code
+                                                        << error.localizedDescription;
             }
         }];
 
@@ -113,8 +113,8 @@ class FileProviderDomainManager::Private {
         [NSFileProviderManager removeDomain:fileProviderDomain completionHandler:^(NSError *error) {
             if(error) {
                 qCDebug(lcMacFileProviderDomainManager) << "Error removing file provider domain: "
-                                                        << [error code]
-                                                        << [error localizedDescription];
+                                                        << error.code
+                                                        << error.localizedDescription;
             }
         }];
 
@@ -129,8 +129,8 @@ class FileProviderDomainManager::Private {
         [NSFileProviderManager removeAllDomainsWithCompletionHandler:^(NSError * const error) {
             if(error) {
                 qCDebug(lcMacFileProviderDomainManager) << "Error removing all file provider domains: "
-                                                        << [error code]
-                                                        << [error localizedDescription];
+                                                        << error.code
+                                                        << error.localizedDescription;
             }
         }];
     }
@@ -142,8 +142,8 @@ class FileProviderDomainManager::Private {
         [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
             if (error) {
                 qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
-                                                        << [error code]
-                                                        << [error localizedDescription];
+                                                        << error.code
+                                                        << error.localizedDescription;
                 return;
             }
 
@@ -153,9 +153,9 @@ class FileProviderDomainManager::Private {
 
                     if (error) {
                         qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domain: "
-                                                                << [domain displayName]
-                                                                << [error code]
-                                                                << [error localizedDescription];
+                                                                << domain.displayName
+                                                                << error.code
+                                                                << error.localizedDescription;
                         return;
                     }
                 }];
