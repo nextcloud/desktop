@@ -18,6 +18,7 @@
 
 namespace OCC {
 
+class Account;
 class AccountState;
 
 namespace Mac {
@@ -35,6 +36,10 @@ private slots:
 
     void addFileProviderDomainForAccount(OCC::AccountState *accountState);
     void removeFileProviderDomainForAccount(OCC::AccountState *accountState);
+
+    void trySetupPushNotificationsForAccount(Account *account);
+    void setupPushNotificationsForAccount(OCC::Account *account);
+    void signalEnumeratorChanged(OCC::Account *account);
 
 private:
     explicit FileProviderDomainManager(QObject *parent = nullptr);
