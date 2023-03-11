@@ -59,7 +59,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         Realm.Configuration.defaultConfiguration = config
 
         do {
-            let realm = try Realm()
+            _ = try Realm()
             NSLog("Successfully started Realm db for FileProviderExt")
         } catch let error as NSError {
             NSLog("Error opening Realm db: %@", error.localizedDescription)

@@ -143,7 +143,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("Fetching file with name %@ at URL: %@", metadata.fileName, serverUrlFileName)
 
-        var progress = Progress()
+        let progress = Progress()
 
         // TODO: Handle folders nicely
         do {
@@ -287,7 +287,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
-        var progress = Progress()
+        let progress = Progress()
 
         self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                           fileNameLocalPath: fileNameLocalPath,
@@ -453,7 +453,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
-        var progress = Progress()
+        let progress = Progress()
 
         if changedFields.contains(.contents) {
             NSLog("Item modification for %@ includes contents", item.filename)
@@ -545,8 +545,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             }
 
             NSLog("Successfully delete item with identifier: %@ and filename: %@", ocId, serverFileNameUrl)
-
-            let serverUrl = itemMetadata.serverUrl
 
             if itemMetadata.directory {
                 dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
