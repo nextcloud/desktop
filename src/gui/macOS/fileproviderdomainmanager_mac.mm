@@ -228,7 +228,7 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
             this, &FileProviderDomainManager::addFileProviderDomainForAccount);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+    connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
 }
 
