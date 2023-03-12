@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 930e5a9e7..bb4b274d3 100644
+index 9d38cb3e2..1c3af9fed 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -72,29 +72,12 @@ include(GNUInstallDirs)
+@@ -95,29 +95,12 @@ include(GNUInstallDirs)
  include(DefineInstallationPaths)
  include(GenerateExportHeader)
  
@@ -32,7 +32,7 @@ index 930e5a9e7..bb4b274d3 100644
  set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
  set(SHAREDIR ${CMAKE_INSTALL_FULL_DATADIR})
  
-@@ -192,7 +175,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
+@@ -220,7 +203,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
      set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
  endif()
  
@@ -151,12 +151,12 @@ index 0682090c0..000000000
 -set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_BINARY_DIR}/CPackOptions.cmake") # File included at cpack time, once per generator after setting CPACK_GENERATOR to the actual generator being used; allows per-generator setting of CPACK_* variables at cpack time.  ${PROJECT_BINARY_DIR}/CPackOptions.cmake
 -include(CPack)
 diff --git a/VERSION.cmake b/VERSION.cmake
-index 5b3542e41..e0e909890 100644
+index 2910a0668..c1ec7b912 100644
 --- a/VERSION.cmake
 +++ b/VERSION.cmake
-@@ -9,22 +9,40 @@ set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR 16)
- set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR 0)
- set(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH 0)
+@@ -13,22 +13,40 @@ set(NEXTCLOUD_SERVER_VERSION_SECURE_FILEDROP_MIN_SUPPORTED_MAJOR 26)
+ set(NEXTCLOUD_SERVER_VERSION_SECURE_FILEDROP_MIN_SUPPORTED_MINOR 0)
+ set(NEXTCLOUD_SERVER_VERSION_SECURE_FILEDROP_MIN_SUPPORTED_PATCH 0)
  
 -if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
 -    set( MIRALL_VERSION_SUFFIX "git") #e.g. beta1, beta2, rc1
