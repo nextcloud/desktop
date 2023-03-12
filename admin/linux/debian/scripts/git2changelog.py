@@ -106,7 +106,9 @@ def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion, finalRevDate
                 result = processVersionTag(tag)
                 if result:
                     lastVersionTag = tag
-                    (baseVersion, kind) = result
+                    (baseVersion, kind1) = result
+                    if kind1!=kind and kind!="release":
+                        kind = kind1
 
 
         entries.append((commit, name, email, date, revdate, subject,
