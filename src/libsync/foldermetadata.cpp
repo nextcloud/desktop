@@ -364,10 +364,9 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
     return FolderMetadata::gZipEncryptAndBase64Encode(pass, cipherText, initializationVector, returnTag);
 }
 
-[[nodiscard]] QByteArray FolderMetadata::decryptCipherText(const QByteArray &encryptedCipherText, const QByteArray &initializationVector, const QByteArray &pass) const
+[[nodiscard]] QByteArray FolderMetadata::decryptCipherText(const QByteArray &encryptedCipherText, const QByteArray &pass, const QByteArray &initializationVector) const
 {
-    QByteArray decryptedCipherText;
-    return FolderMetadata::base64DecodeDecryptAndGzipUnZip(encryptedCipherText, initializationVector, pass);
+    return FolderMetadata::base64DecodeDecryptAndGzipUnZip(pass, encryptedCipherText, initializationVector);
 }
 
 bool FolderMetadata::isMetadataSetup() const
@@ -588,7 +587,6 @@ void FolderMetadata::handleEncryptionRequestV2()
     }
 
     QJsonObject cipherText = {
-        // {sharingKey, sharingEncrypted},
         {filesKey, files},
         {foldersKey, folders}
     };
@@ -602,6 +600,7 @@ void FolderMetadata::handleEncryptionRequestV2()
     QByteArray authenticationTag;
     const auto initializationVector = EncryptionHelper::generateRandom(16);
     const auto encryptedCipherText = encryptCipherText(cipherTextDoc.toJson(QJsonDocument::Compact), _metadataKey, initializationVector, authenticationTag);
+    const auto decryptedCipherText = decryptCipherText(encryptedCipherText, _metadataKey, initializationVector);
     const QJsonObject metadata{
         {cipherTextKey, QJsonValue::fromVariant(encryptedCipherText)},
         {"nonce", QJsonValue::fromVariant(initializationVector)},
