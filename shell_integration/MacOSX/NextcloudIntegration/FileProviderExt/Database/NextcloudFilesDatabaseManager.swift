@@ -297,6 +297,26 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    func parentItemIdentifierFromMetadata(_ metadata: NextcloudItemMetadataTable) -> NSFileProviderItemIdentifier? {
+        let homeServerFilesUrl = metadata.urlBase + "/remote.php/dav/files/" + metadata.userId
+
+        if metadata.serverUrl == homeServerFilesUrl {
+            return .rootContainer
+        }
+
+        guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
+            NSLog("Could not get item parent directory metadata for metadata with ocId: %@ and fileName: %@, returning nil", metadata.ocId, metadata.fileName)
+            return nil
+        }
+
+        if let parentDirectoryMetadata = itemMetadataFromOcId(itemParentDirectory.ocId) {
+            return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
+        }
+
+        NSLog("Could not get item parent directory item metadata for metadata with ocId: %@ and fileName: %@, returning nil", metadata.ocId, metadata.fileName)
+        return nil
+    }
+
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
             return NextcloudDirectoryMetadataTable(value: metadata)

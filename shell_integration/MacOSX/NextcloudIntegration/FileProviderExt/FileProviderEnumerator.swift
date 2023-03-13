@@ -284,7 +284,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 createFileOrDirectoryLocally(metadata: itemMetadata)
             }
 
-            if let parentItemIdentifier = parentItemIdentifierFromMetadata(itemMetadata) {
+            if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {
                 let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
                 NSLog("Will enumerate item with ocId: %@ and name: %@", itemMetadata.ocId, itemMetadata.fileName)
                 items.append(item)
@@ -337,7 +337,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
 
         for updMetadata in allUpdatedMetadatas {
-            guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updMetadata) else {
+            guard let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(updMetadata) else {
                 NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
                 continue
             }

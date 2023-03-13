@@ -99,7 +99,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let dbManager = NextcloudFilesDatabaseManager.shared
         
         guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
-              let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) else {
+              let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(metadata) else {
             completionHandler(nil, NSFileProviderError(.noSuchItem))
             return Progress()
         }
@@ -176,7 +176,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
                     dbManager.addItemMetadata(updatedMetadata)
 
-                    guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updatedMetadata) else {
+                    guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(updatedMetadata) else {
                         completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
                         return
                     }
