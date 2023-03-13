@@ -17,17 +17,50 @@ import FileProvider
 import NextcloudKit
 
 extension NKError {
-    func toFileProviderError() -> NSFileProviderError {
-        let nkErrorCode = self.errorCode
+    var isCouldntConnectError: Bool {
+        get {
+            let nkErrorCode = self.errorCode
+            return nkErrorCode == -9999 ||
+                nkErrorCode == -1001 ||
+                nkErrorCode == -1004 ||
+                nkErrorCode == -1005 ||
+                nkErrorCode == -1009 ||
+                nkErrorCode == -1012 ||
+                nkErrorCode == -1200 ||
+                nkErrorCode == -1202 ||
+                nkErrorCode == 500 ||
+                nkErrorCode == 503 ||
+                nkErrorCode == 200
+        }
+    }
 
-        if nkErrorCode == 404 {
+    var isUnauthenticatedError: Bool {
+        get {
+            return self.errorCode == -1013
+        }
+    }
+
+    var isGoingOverQuotaError: Bool {
+        get {
+            return self.errorCode == 507
+        }
+    }
+
+    var isNotFoundError: Bool {
+        get {
+            return self.errorCode == 404
+        }
+    }
+
+    func toFileProviderError() -> NSFileProviderError {
+        if self.isNotFoundError {
             return NSFileProviderError(.noSuchItem)
-        } else if nkErrorCode == -9999 || nkErrorCode == -1001 || nkErrorCode == -1004 || nkErrorCode == -1005 || nkErrorCode == -1009 || nkErrorCode == -1012 || nkErrorCode == -1200 || nkErrorCode == -1202 || nkErrorCode == 500 || nkErrorCode == 503 || nkErrorCode == 200 {
+        } else if self.isCouldntConnectError {
             // Provide something the file provider can do something with
             return NSFileProviderError(.serverUnreachable)
-        } else if nkErrorCode == -1013  {
+        } else if self.isUnauthenticatedError {
             return NSFileProviderError(.notAuthenticated)
-        } else if nkErrorCode == 507 {
+        } else if self.isGoingOverQuotaError {
             return NSFileProviderError(.insufficientQuota)
         } else {
             return NSFileProviderError(.cannotSynchronize)
