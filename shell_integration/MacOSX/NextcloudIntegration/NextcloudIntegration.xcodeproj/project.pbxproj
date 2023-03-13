@@ -15,6 +15,7 @@
 		5318AD9329BF432B00CBB71C /* NextcloudDirectoryMetadataTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9229BF432B00CBB71C /* NextcloudDirectoryMetadataTable.swift */; };
 		5318AD9529BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9429BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift */; };
 		5318AD9729BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9629BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift */; };
+		5318AD9929BF58D000CBB71C /* NKError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318AD9829BF58D000CBB71C /* NKError+Extensions.swift */; };
 		5352E85B29B7BFE6002CE85C /* Progress+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5352E85A29B7BFE6002CE85C /* Progress+Extensions.swift */; };
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		536EFC36295E3C1100F4CB13 /* NextcloudAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */; };
@@ -138,6 +139,7 @@
 		5318AD9229BF432B00CBB71C /* NextcloudDirectoryMetadataTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudDirectoryMetadataTable.swift; sourceTree = "<group>"; };
 		5318AD9429BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudLocalFileMetadataTable.swift; sourceTree = "<group>"; };
 		5318AD9629BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderMaterialisedEnumerationObserver.swift; sourceTree = "<group>"; };
+		5318AD9829BF58D000CBB71C /* NKError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKError+Extensions.swift"; sourceTree = "<group>"; };
 		5352E85A29B7BFE6002CE85C /* Progress+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Progress+Extensions.swift"; sourceTree = "<group>"; };
 		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
 		536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudAccount.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				5352E85A29B7BFE6002CE85C /* Progress+Extensions.swift */,
+				5318AD9829BF58D000CBB71C /* NKError+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -561,6 +564,7 @@
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				5318AD9329BF432B00CBB71C /* NextcloudDirectoryMetadataTable.swift in Sources */,
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
+				5318AD9929BF58D000CBB71C /* NKError+Extensions.swift in Sources */,
 				5318AD9529BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift in Sources */,
 				5307A6F229675346001E0C6A /* NextcloudFilesDatabaseManager.swift in Sources */,
 				53D056312970594F00988392 /* LocalFilesUtils.swift in Sources */,
