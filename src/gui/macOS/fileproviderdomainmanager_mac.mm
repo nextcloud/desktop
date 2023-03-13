@@ -64,6 +64,14 @@ QString accountIdFromDomain(NSFileProviderDomain * const domain)
     return accountIdFromDomainId(domain.identifier);
 }
 
+bool accountFilesPushNotificationsReady(const OCC::AccountPtr &account)
+{
+    const auto pushNotifications = account->pushNotifications();
+    const auto pushNotificationsCapability = account->capabilities().availablePushNotifications() & OCC::PushNotificationType::Files;
+
+    return pushNotificationsCapability && pushNotifications && pushNotifications->isReady();
+}
+
 }
 
 namespace OCC {
@@ -531,12 +539,10 @@ void FileProviderDomainManager::removeFileProviderDomainForAccount(const Account
 
     d->removeFileProviderDomain(accountState);
 
-    const auto pushNotifications = account->pushNotifications();
-    const auto pushNotificationsCapability = account->capabilities().availablePushNotifications() & PushNotificationType::Files;
-
-    if (pushNotificationsCapability && pushNotifications && pushNotifications->isReady()) {
+    if (accountFilesPushNotificationsReady(account)) {
+        const auto pushNotifications = account->pushNotifications();
         disconnect(pushNotifications, &PushNotifications::filesChanged, this, &FileProviderDomainManager::signalEnumeratorChanged);
-    } else if (pushNotificationsCapability) {
+    } else if (const auto hasFilesPushNotificationsCapability = account->capabilities().availablePushNotifications() & PushNotificationType::Files) {
         disconnect(account.get(), &Account::pushNotificationsReady, this, &FileProviderDomainManager::setupPushNotificationsForAccount);
     }
 }
