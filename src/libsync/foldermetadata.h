@@ -62,11 +62,17 @@ private:
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
+    [[nodiscard]] QByteArray encryptCipherText(const QByteArray &cipherText, const QByteArray &pass, const QByteArray &initiaizationVector, QByteArray &returnTag) const;
+    [[nodiscard]] QByteArray decryptCipherText(const QByteArray &encryptedCipherText, const QByteArray &initiaizationVector, const QByteArray &pass) const;
+
     [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
     [[nodiscard]] QJsonObject encryptedFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const;
 
     [[nodiscard]] bool isTopLevelFolder() const;
+
+    static QByteArray gZipEncryptAndBase64Encode(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag);
+    static QByteArray base64DecodeDecryptAndGzipUnZip(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv);
 
 public slots:
     void addEncryptedFile(const EncryptedFile &f);

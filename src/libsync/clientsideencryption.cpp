@@ -1640,13 +1640,15 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     return true;
 }
 
-bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &iv, QByteArray &input, QByteArray &output, QByteArray &returnTag)
+bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output, QByteArray &returnTag)
 {
     if (input.isEmpty()) {
         qCDebug(lcCse) << "Could not use empty input data";
     }
 
-    QBuffer inputBuffer(&input);
+    QByteArray inputCopy = input;
+
+    QBuffer inputBuffer(&inputCopy);
     if (!inputBuffer.open(QIODevice::ReadOnly)) {
         qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
     }
@@ -1728,13 +1730,15 @@ bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &i
     return true;
 }
 
-bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &iv, QByteArray &input, QByteArray &output)
+bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output)
 {
     if (input.isEmpty()) {
         qCDebug(lcCse) << "Could not use empty input data";
     }
 
-    QBuffer inputBuffer(&input);
+    QByteArray inputCopy = input;
+
+    QBuffer inputBuffer(&inputCopy);
     if (!inputBuffer.open(QIODevice::ReadOnly)) {
         qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
     }

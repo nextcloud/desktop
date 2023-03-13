@@ -69,8 +69,8 @@ namespace EncryptionHelper {
     OWNCLOUDSYNC_EXPORT bool fileDecryption(const QByteArray &key, const QByteArray &iv,
                                QFile *input, QFile *output);
 
-    OWNCLOUDSYNC_EXPORT bool dataEncryption(const QByteArray &key, const QByteArray &iv, QByteArray &input, QByteArray &output, QByteArray &returnTag);
-    OWNCLOUDSYNC_EXPORT bool dataDecryption(const QByteArray &key, const QByteArray &iv, QByteArray &input, QByteArray &output);
+    OWNCLOUDSYNC_EXPORT bool dataEncryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output, QByteArray &returnTag);
+    OWNCLOUDSYNC_EXPORT bool dataDecryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output);
 
 //
 // Simple classes for safe (RAII) handling of OpenSSL

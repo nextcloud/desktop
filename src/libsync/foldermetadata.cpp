@@ -235,7 +235,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
     const auto nonce = metadataObj["nonce"].toString().toLocal8Bit();
     const auto authenticationTag = metadataObj[authenticationTagKey].toString().toLocal8Bit();
     const auto cipherText = metadataObj[cipherTextKey].toString().toLocal8Bit();
-    const auto cipherTextDecrypted = decryptJsonObject(cipherText, _metadataKey);
+    const auto cipherTextDecrypted = base64DecodeDecryptAndGzipUnZip(_metadataKey, cipherText, nonce);
     const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
     const auto keyChecksums = cipherTextDocument[keyChecksumsKey].toArray();
     for (auto it = keyChecksums.constBegin(); it != keyChecksums.constEnd(); ++it) {
@@ -325,6 +325,7 @@ QByteArray FolderMetadata::decryptData(const QByteArray &data) const
 {
     ClientSideEncryption::Bio privateKeyBio;
     QByteArray privateKeyPem = _account->e2e()->_privateKey;
+    
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     auto key = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
 
@@ -348,6 +349,17 @@ QByteArray FolderMetadata::encryptJsonObject(const QByteArray& obj, const QByteA
 QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata, const QByteArray& pass) const
 {
     return EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata);
+}
+
+[[nodiscard]] QByteArray FolderMetadata::encryptCipherText(const QByteArray &cipherText, const QByteArray &pass, const QByteArray &initializationVector, QByteArray &returnTag) const
+{
+    return FolderMetadata::gZipEncryptAndBase64Encode(pass, cipherText, initializationVector, returnTag);
+}
+
+[[nodiscard]] QByteArray FolderMetadata::decryptCipherText(const QByteArray &encryptedCipherText, const QByteArray &initializationVector, const QByteArray &pass) const
+{
+    QByteArray decryptedCipherText;
+    return FolderMetadata::base64DecodeDecryptAndGzipUnZip(encryptedCipherText, initializationVector, pass);
 }
 
 bool FolderMetadata::isMetadataSetup() const
@@ -417,6 +429,21 @@ QJsonObject FolderMetadata::encryptedFileToJsonObject(const EncryptedFile *encry
 bool FolderMetadata::isTopLevelFolder() const
 {
     return _topLevelFolderPath == QStringLiteral("/");
+}
+
+QByteArray FolderMetadata::gZipEncryptAndBase64Encode(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
+{
+    QByteArray outputData;
+    returnTag.clear();
+    EncryptionHelper::dataEncryption(key, iv, qCompress(inputData), outputData, returnTag);
+    return outputData.toBase64();
+}
+
+QByteArray FolderMetadata::base64DecodeDecryptAndGzipUnZip(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv)
+{
+    QByteArray outputData;
+    const auto result = EncryptionHelper::dataDecryption(key, iv, QByteArray::fromBase64(inputData), outputData);
+    return qUncompress(outputData);
 }
 
 const QByteArray &FolderMetadata::metadataKey() const
@@ -559,14 +586,17 @@ void FolderMetadata::handleEncryptionRequestV2()
         cipherText.insert(keyChecksumsKey, keyChecksums);
     }
 
-    QJsonDocument cipherTextDoc = QJsonDocument(cipherText);
+    const QJsonDocument cipherTextDoc(cipherText);
 
-    QJsonObject metadata = {
-        {cipherTextKey, QJsonValue::fromVariant(encryptJsonObject(cipherTextDoc.toJson(QJsonDocument::Compact), _metadataKey))},
-        // {sharingKey, sharingEncrypted},
-        {"nonce", "123"},
-        {authenticationTagKey, "123"},
+    QByteArray authenticationTag;
+    const auto initializationVector = EncryptionHelper::generateRandom(16);
+    const auto encryptedCipherText = encryptCipherText(cipherTextDoc.toJson(QJsonDocument::Compact), _metadataKey, initializationVector, authenticationTag);
+    const QJsonObject metadata{
+        {cipherTextKey, QJsonValue::fromVariant(encryptedCipherText)},
+        {"nonce", QJsonValue::fromVariant(initializationVector)},
+        {authenticationTagKey, QJsonValue::fromVariant(authenticationTag)}
     };
+
     QJsonObject metaObject = {{metadataJsonKey, metadata}, {versionKey, 2}};
 
     if (!folderUsers.isEmpty()) {
@@ -760,7 +790,7 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate certif
     }
 
     createNewMetadataKey();
-    const auto encryptedMetadataKey = encryptData(_metadataKey.toBase64(), certificatePublicKey);
+    const auto encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey).toBase64();
     _folderUsers[userId] = {userId, certificate.toPem(), encryptedMetadataKey};
     updateUsersEncryptedMetadataKey();
 
@@ -814,7 +844,7 @@ void FolderMetadata::updateUsersEncryptedMetadataKey()
             continue;
         }
 
-        const auto encryptedMetadataKey = encryptData(_metadataKey.toBase64(), certificatePublicKey);
+        const auto encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey).toBase64();
         if (encryptedMetadataKey.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could not update folder users with empty encryptedMetadataKey!";
             continue;
