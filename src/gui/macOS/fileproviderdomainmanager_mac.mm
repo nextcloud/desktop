@@ -253,7 +253,7 @@ class FileProviderDomainManager::Private {
         }
     }
 
-    void readdFileProviderDomain(NSFileProviderDomain * const domain)
+    void readdFileProviderDomain(NSFileProviderDomain * const domain, void (^completionHandler)())
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             // Wait for this to finish
@@ -265,6 +265,8 @@ class FileProviderDomainManager::Private {
                                                                 << error.code
                                                                 << error.localizedDescription;
                     }
+
+                    completionHandler();
                 }];
             });
 
