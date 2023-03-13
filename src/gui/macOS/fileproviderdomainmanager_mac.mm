@@ -356,6 +356,8 @@ class FileProviderDomainManager::Private {
 
                 qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
                                                         << fileProviderDomain.displayName;
+
+                signalEnumeratorChanged(account.get());
             }];
         };
 
