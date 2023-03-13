@@ -290,7 +290,7 @@ class FileProviderDomainManager::Private {
         Q_ASSERT(account);
 
         const auto domainId = domainIdentifierForAccount(account);
-        qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain with id: " << domainId;
+        qCDebug(lcMacFileProviderDomainManager) << "Disconnecting file provider domain with id: " << domainId;
 
         if(!_registeredDomains.contains(domainId)) {
             qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << domainId;
@@ -301,25 +301,29 @@ class FileProviderDomainManager::Private {
         Q_ASSERT(fileProviderDomain != nil);
 
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        void (^disconnectBlock)(void) = ^{
+            [fpManager disconnectWithReason:message.toNSString()
+                                    options:NSFileProviderManagerDisconnectionOptionsTemporary
+                          completionHandler:^(NSError * const error) {
+                if (error) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error disconnecting file provider domain: "
+                                                            << fileProviderDomain.displayName
+                                                            << error.code
+                                                            << error.localizedDescription;
+                    return;
+                }
+
+                qCDebug(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
+                                                        << fileProviderDomain.displayName;
+            }];
+        };
+
         if (fpManager == nil) {
-            readdFileProviderDomain(fileProviderDomain);
+            readdFileProviderDomain(fileProviderDomain, disconnectBlock);
             return;
         }
 
-        [fpManager disconnectWithReason:message.toNSString()
-                                options:NSFileProviderManagerDisconnectionOptionsTemporary
-                      completionHandler:^(NSError * const error) {
-            if (error) {
-                qCDebug(lcMacFileProviderDomainManager) << "Error disconnecting file provider domain: "
-                                                        << fileProviderDomain.displayName
-                                                        << error.code
-                                                        << error.localizedDescription;
-                return;
-            }
-
-            qCDebug(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
-                                                    << fileProviderDomain.displayName;
-        }];
+        disconnectBlock();
     }
 
     void reconnectFileProviderDomainForAccount(const AccountState * const accountState)
@@ -329,7 +333,7 @@ class FileProviderDomainManager::Private {
         Q_ASSERT(account);
 
         const auto domainId = domainIdentifierForAccount(account);
-        qCDebug(lcMacFileProviderDomainManager) << "Removing file provider domain with id: " << domainId;
+        qCDebug(lcMacFileProviderDomainManager) << "Reconnecting file provider domain with id: " << domainId;
 
         if(!_registeredDomains.contains(domainId)) {
             qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << domainId;
@@ -340,23 +344,27 @@ class FileProviderDomainManager::Private {
         Q_ASSERT(fileProviderDomain != nil);
 
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        void (^reconnectBlock)(void) = ^{
+            [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
+                if (error) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
+                                                            << fileProviderDomain.displayName
+                                                            << error.code
+                                                            << error.localizedDescription;
+                    return;
+                }
+
+                qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
+                                                        << fileProviderDomain.displayName;
+            }];
+        };
+
         if (fpManager == nil) {
-            readdFileProviderDomain(fileProviderDomain);
+            readdFileProviderDomain(fileProviderDomain, reconnectBlock);
             return;
         }
 
-        [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
-            if (error) {
-                qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
-                                                        << fileProviderDomain.displayName
-                                                        << error.code
-                                                        << error.localizedDescription;
-                return;
-            }
-
-            qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
-                                                    << fileProviderDomain.displayName;
-        }];
+        reconnectBlock();
     }
 
     void signalEnumeratorChanged(const Account * const account)
@@ -375,17 +383,21 @@ class FileProviderDomainManager::Private {
         Q_ASSERT(fileProviderDomain != nil);
 
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        void (^signalEnumeratorBlock)(void) = ^{
+            [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
+                if (error != nil) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
+                                                            << error.localizedDescription;
+                }
+            }];
+        };
+
         if (fpManager == nil) {
-            readdFileProviderDomain(fileProviderDomain);
+            readdFileProviderDomain(fileProviderDomain, signalEnumeratorBlock);
             return;
         }
 
-        [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
-            if (error != nil) {
-                qCDebug(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
-                                                        << error.localizedDescription;
-            }
-        }];
+        signalEnumeratorBlock();
     }
 
 private:
