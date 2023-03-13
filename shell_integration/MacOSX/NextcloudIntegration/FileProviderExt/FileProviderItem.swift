@@ -82,7 +82,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
     }
 
     var isDownloaded: Bool {
-        return metadata.directory || isFileSynced(metadata: metadata)
+        return metadata.directory || NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
 
     var isDownloading: Bool {

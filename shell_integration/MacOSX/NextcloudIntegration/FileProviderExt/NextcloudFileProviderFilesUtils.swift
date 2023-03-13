@@ -88,18 +88,3 @@ func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
         NSLog("Could not create NC file or directory locally, received error: %@", error.localizedDescription)
     }
 }
-
-func isFileSynced(metadata: NextcloudItemMetadataTable) -> Bool {
-    guard metadata.directory else { return false }
-    do {
-        let localPathForFile = try localPathForNCFile(itemMetadata: metadata)
-        let localFileAttributes = try FileManager.default.attributesOfItem(atPath: localPathForFile.path)
-        let localFileSize = localFileAttributes[.size] as? Int64
-
-        return localFileSize == metadata.size
-    } catch let error {
-        NSLog("Could not check if file %@ is synced, received error: %@", metadata.fileNameView, error.localizedDescription)
-    }
-
-    return false
-}
