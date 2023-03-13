@@ -103,7 +103,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         guard readError == nil else {
                             NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
 
-                            if let nkReadError = readError as? NKError, nkReadError.isNotFoundError {
+                            let nkReadError = NKError(error: readError!)
+                            if nkReadError.isNotFoundError {
                                 NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
                                 dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
                             }
@@ -156,12 +157,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 guard readError == nil else {
                     NSLog("Finishing enumeration with error")
 
-                    if let nkReadError = readError as? NKError {
-                        observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
-                    } else {
-                        observer.finishEnumeratingWithError(readError!)
-                    }
-
+                    let nkReadError = NKError(error: readError!)
+                    observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
                     return
                 }
 
@@ -241,38 +238,34 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes with error")
 
-                if let nkReadError = readError as? NKError {
-                    let fpError = nkReadError.toFileProviderError()
+                let nkReadError = NKError(error: readError!)
+                let fpError = nkReadError.toFileProviderError()
 
-                    if nkReadError.isNotFoundError {
-                        NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
+                if nkReadError.isNotFoundError {
+                    NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
 
-                        guard let itemMetadata = self.enumeratedItemMetadata else {
-                            NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
-                            observer.finishEnumeratingWithError(fpError)
-                            return
-                        }
-
-                        let dbManager = NextcloudFilesDatabaseManager.shared
-                        if itemMetadata.directory {
-                            dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId)
-                        } else {
-                            dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
-                        }
-
-                        FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
+                    guard let itemMetadata = self.enumeratedItemMetadata else {
+                        NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
+                        observer.finishEnumeratingWithError(fpError)
                         return
-                    } else if nkReadError.isNoChangesError { // All is well, just no changed etags
-                        NSLog("Error was to say no changed files -- not bad error. Finishing change enumeration.")
-                        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
-                        return;
                     }
 
-                    observer.finishEnumeratingWithError(fpError)
+                    let dbManager = NextcloudFilesDatabaseManager.shared
+                    if itemMetadata.directory {
+                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId)
+                    } else {
+                        dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
+                    }
+
+                    FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
                     return
+                } else if nkReadError.isNoChangesError { // All is well, just no changed etags
+                    NSLog("Error was to say no changed files -- not bad error. Finishing change enumeration.")
+                    observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                    return;
                 }
 
-                observer.finishEnumeratingWithError(readError!)
+                observer.finishEnumeratingWithError(fpError)
                 return
             }
 
@@ -415,21 +408,20 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
 
-                if let nkReadError = readError as? NKError {
-                    if nkReadError.isNotFoundError {
-                        NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
+                let nkReadError = NKError(error: readError!)
+                if nkReadError.isNotFoundError {
+                    NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
 
-                        guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
-                            NSLog("Can't delete directory properly as item metadata not found...")
-                            dispatchGroup.leave()
-                            return
-                        }
-
-                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
-                        allDeletedMetadatas.append(directoryItemMetadata)
-                    } else if nkReadError.isNoChangesError { // All is well, just no changed etags
-                        NSLog("Error was to say no changed files -- not bad error. No need to check children.")
+                    guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
+                        NSLog("Can't delete directory properly as item metadata not found...")
+                        dispatchGroup.leave()
+                        return
                     }
+
+                    dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
+                    allDeletedMetadatas.append(directoryItemMetadata)
+                } else if nkReadError.isNoChangesError { // All is well, just no changed etags
+                    NSLog("Error was to say no changed files -- not bad error. No need to check children.")
                 }
 
                 dispatchGroup.leave()
