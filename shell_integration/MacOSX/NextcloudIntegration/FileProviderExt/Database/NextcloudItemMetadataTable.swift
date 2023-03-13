@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 by Claudio Cambra <claudio.cambra@nextcloud.com>
+ * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,39 +196,4 @@ class NextcloudItemMetadataTable: Object {
     func canUnlock(as user: String) -> Bool {
         return !lock || (lockOwner == user && lockOwnerType == 0)
     }
-}
-
-class NextcloudDirectoryMetadataTable: Object {
-    func isInSameRemoteState(_ comparingMetadata: NextcloudDirectoryMetadataTable) -> Bool {
-        return comparingMetadata.etag == self.etag &&
-            comparingMetadata.e2eEncrypted == self.e2eEncrypted &&
-            comparingMetadata.favorite == self.favorite &&
-            comparingMetadata.permissions == self.permissions
-    }
-
-    @Persisted(primaryKey: true) var ocId: String
-    @Persisted var account = ""
-    @Persisted var colorFolder: String?
-    @Persisted var e2eEncrypted: Bool = false
-    @Persisted var etag = ""
-    @Persisted var favorite: Bool = false
-    @Persisted var fileId = ""
-    @Persisted var offline: Bool = false
-    @Persisted var permissions = ""
-    @Persisted var richWorkspace: String?
-    @Persisted var serverUrl = ""
-    @Persisted var parentDirectoryServerUrl = ""
-}
-
-class NextcloudLocalFileMetadataTable: Object {
-    @Persisted(primaryKey: true) var ocId: String
-    @Persisted var account = ""
-    @Persisted var etag = ""
-    @Persisted var exifDate: Date?
-    @Persisted var exifLatitude = ""
-    @Persisted var exifLongitude = ""
-    @Persisted var exifLensModel: String?
-    @Persisted var favorite: Bool = false
-    @Persisted var fileName = ""
-    @Persisted var offline: Bool = false
 }
