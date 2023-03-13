@@ -17,6 +17,12 @@ import FileProvider
 import NextcloudKit
 
 extension NKError {
+    static var noChangesErrorCode: Int {
+        get {
+            return -200
+        }
+    }
+
     var isCouldntConnectError: Bool {
         get {
             let nkErrorCode = self.errorCode
@@ -49,6 +55,12 @@ extension NKError {
     var isNotFoundError: Bool {
         get {
             return self.errorCode == 404
+        }
+    }
+
+    var isNoChangesError: Bool {
+        get {
+            return self.errorCode == NKError.noChangesErrorCode
         }
     }
 
