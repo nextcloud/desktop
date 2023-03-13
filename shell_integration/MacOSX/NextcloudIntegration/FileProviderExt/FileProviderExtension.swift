@@ -191,7 +191,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                     dbManager.addItemMetadata(updatedMetadata)
 
-                    completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+                    completionHandler(nil, nil, error.toFileProviderError())
                 }
             }
         } catch let error {
@@ -259,7 +259,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
                 guard error == .success else {
                     NSLog("Could not create new folder with name: %@, received error: %@", itemTemplate.filename, error.errorDescription)
-                    completionHandler(itemTemplate, [], false, NSFileProviderError(.serverUnreachable))
+                    completionHandler(itemTemplate, [], false, error.toFileProviderError())
                     return
                 }
 
@@ -302,7 +302,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
             guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
                 NSLog("Could not upload item with filename: %@, received error: %@", itemTemplate.filename, error.errorDescription)
-                completionHandler(itemTemplate, [], false, NSFileProviderError(.cannotSynchronize))
+                completionHandler(itemTemplate, [], false, error.toFileProviderError())
                 return
             }
 
@@ -408,7 +408,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                         overwrite: false) { account, error in
                 guard error == .success else {
                     NSLog("Could not move file or folder with name: %@, received error: %@", item.filename, error.errorDescription)
-                    renameError = NSFileProviderError(.serverUnreachable)
+                    renameError = error.toFileProviderError()
                     dispatchGroup.leave()
                     return
                 }
@@ -477,7 +477,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                 guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
                     NSLog("Could not upload item with filename: %@, received error: %@", item.filename, error.errorDescription)
-                    completionHandler(modifiedItem, [], false, NSFileProviderError(.cannotSynchronize))
+                    completionHandler(modifiedItem, [], false, error.toFileProviderError())
                     return
                 }
 
@@ -540,7 +540,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
             guard error == .success else {
                 NSLog("Could not delete item with ocId %@ and fileName %@, received error: %@", error.error.localizedDescription)
-                completionHandler(NSFileProviderError(.serverUnreachable))
+                completionHandler(error.toFileProviderError())
                 return
             }
 
