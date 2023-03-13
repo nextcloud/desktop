@@ -414,6 +414,10 @@ class FileProviderDomainManager::Private {
         signalEnumeratorBlock();
     }
 
+    QStringList configuredDomainIds() const {
+        return _registeredDomains.keys();
+    }
+
 private:
     QHash<QString, NSFileProviderDomain*> _registeredDomains;
 };
