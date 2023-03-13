@@ -237,7 +237,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
-        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes with error")
 
@@ -262,6 +262,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                         FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
                         return
+                    } else if nkReadError.isNoChangesError { // All is well, just no changed etags
+                        NSLog("Error was to say no changed files -- not bad error. Finishing change enumeration.")
+                        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                        return;
                     }
 
                     observer.finishEnumeratingWithError(fpError)
@@ -407,7 +411,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         dispatchGroup.enter()
 
         NSLog("About to read: %@", directoryMetadata.serverUrl)
-        FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
 
@@ -423,8 +427,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                         dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
                         allDeletedMetadatas.append(directoryItemMetadata)
-                    } else if nkReadError.errorCode == -200 { // All is well, just no changed etags
-                        NSLog("Error was to say no changed files. No need to check children.")
+                    } else if nkReadError.isNoChangesError { // All is well, just no changed etags
+                        NSLog("Error was to say no changed files -- not bad error. No need to check children.")
                     }
                 }
 
