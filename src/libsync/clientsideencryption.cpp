@@ -1640,6 +1640,184 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     return true;
 }
 
+bool EncryptionHelper::dataEncryption(const QByteArray &key, const QByteArray &iv, QByteArray &input, QByteArray &output, QByteArray &returnTag)
+{
+    if (input.isEmpty()) {
+        qCDebug(lcCse) << "Could not use empty input data";
+    }
+
+    QBuffer inputBuffer(&input);
+    if (!inputBuffer.open(QIODevice::ReadOnly)) {
+        qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
+    }
+
+    QBuffer outputBuffer(&output);
+    if (!outputBuffer.open(QIODevice::WriteOnly)) {
+        qCDebug(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
+    }
+
+    // Init
+    CipherCtx ctx;
+
+    /* Create and initialise the context */
+    if (!ctx) {
+        qCInfo(lcCse()) << "Could not create context";
+        return false;
+    }
+
+    /* Initialise the decryption operation. */
+    if (!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
+        qCInfo(lcCse()) << "Could not init cipher";
+        return false;
+    }
+
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    /* Set IV length. */
+    if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
+        qCInfo(lcCse()) << "Could not set iv length";
+        return false;
+    }
+
+    /* Initialise key and IV */
+    if (!EVP_EncryptInit_ex(ctx, nullptr, nullptr, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
+        qCInfo(lcCse()) << "Could not set key and iv";
+        return false;
+    }
+
+    QByteArray out(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
+    int len = 0;
+
+    qCDebug(lcCse) << "Starting to encrypt a buffer";
+
+    while (!inputBuffer.atEnd()) {
+        const auto data = inputBuffer.read(blockSize);
+
+        if (data.size() == 0) {
+            qCInfo(lcCse()) << "Could not read data from file";
+            return false;
+        }
+
+        if (!EVP_EncryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
+            qCInfo(lcCse()) << "Could not encrypt";
+            return false;
+        }
+
+        outputBuffer.write(out, len);
+    }
+
+    if (1 != EVP_EncryptFinal_ex(ctx, unsignedData(out), &len)) {
+        qCInfo(lcCse()) << "Could finalize encryption";
+        return false;
+    }
+    outputBuffer.write(out, len);
+
+    /* Get the e2EeTag */
+    QByteArray e2EeTag(OCC::Constants::e2EeTagSize, '\0');
+    if (1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, OCC::Constants::e2EeTagSize, unsignedData(e2EeTag))) {
+        qCInfo(lcCse()) << "Could not get e2EeTag";
+        return false;
+    }
+
+    returnTag = e2EeTag;
+    outputBuffer.write(e2EeTag, OCC::Constants::e2EeTagSize);
+
+    inputBuffer.close();
+    outputBuffer.close();
+    qCDebug(lcCse) << "Buffer Encrypted Successfully";
+    return true;
+}
+
+bool EncryptionHelper::dataDecryption(const QByteArray &key, const QByteArray &iv, QByteArray &input, QByteArray &output)
+{
+    if (input.isEmpty()) {
+        qCDebug(lcCse) << "Could not use empty input data";
+    }
+
+    QBuffer inputBuffer(&input);
+    if (!inputBuffer.open(QIODevice::ReadOnly)) {
+        qCDebug(lcCse) << "Could not open input buffer for reading" << inputBuffer.errorString();
+    }
+
+    QBuffer outputBuffer(&output);
+    if (!outputBuffer.open(QIODevice::WriteOnly)) {
+        qCDebug(lcCse) << "Could not oppen output buffer for writing" << outputBuffer.errorString();
+    }
+
+    // Init
+    CipherCtx ctx;
+
+    /* Create and initialise the context */
+    if (!ctx) {
+        qCInfo(lcCse()) << "Could not create context";
+        return false;
+    }
+
+    /* Initialise the decryption operation. */
+    if (!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
+        qCInfo(lcCse()) << "Could not init cipher";
+        return false;
+    }
+
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    /* Set IV length. */
+    if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
+        qCInfo(lcCse()) << "Could not set iv length";
+        return false;
+    }
+
+    /* Initialise key and IV */
+    if (!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
+        qCInfo(lcCse()) << "Could not set key and iv";
+        return false;
+    }
+
+    qint64 size = inputBuffer.size() - OCC::Constants::e2EeTagSize;
+
+    QByteArray out(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
+    int len = 0;
+
+    while (inputBuffer.pos() < size) {
+        auto toRead = size - inputBuffer.pos();
+        if (toRead > blockSize) {
+            toRead = blockSize;
+        }
+
+        QByteArray data = inputBuffer.read(toRead);
+
+        if (data.size() == 0) {
+            qCInfo(lcCse()) << "Could not read data from file";
+            return false;
+        }
+
+        if (!EVP_DecryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
+            qCInfo(lcCse()) << "Could not decrypt";
+            return false;
+        }
+
+        outputBuffer.write(out, len);
+    }
+
+    const QByteArray e2EeTag = inputBuffer.read(OCC::Constants::e2EeTagSize);
+
+    /* Set expected e2EeTag value. Works in OpenSSL 1.0.1d and later */
+    if (!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, e2EeTag.size(), (unsigned char *)e2EeTag.constData())) {
+        qCInfo(lcCse()) << "Could not set expected e2EeTag";
+        return false;
+    }
+
+    if (1 != EVP_DecryptFinal_ex(ctx, unsignedData(out), &len)) {
+        qCInfo(lcCse()) << "Could finalize decryption";
+        return false;
+    }
+    outputBuffer.write(out, len);
+
+    inputBuffer.close();
+    outputBuffer.close();
+    return true;
+}
+
 EncryptionHelper::StreamingDecryptor::StreamingDecryptor(const QByteArray &key, const QByteArray &iv, quint64 totalSize) : _totalSize(totalSize)
 {
     if (_ctx && !key.isEmpty() && !iv.isEmpty() && totalSize > 0) {
