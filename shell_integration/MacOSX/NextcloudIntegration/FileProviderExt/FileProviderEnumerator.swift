@@ -155,7 +155,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 guard readError == nil else {
                     NSLog("Finishing enumeration with error")
-                    observer.finishEnumeratingWithError(readError!)
+
+                    if let nkReadError = readError as? NKError {
+                        observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
+                    } else {
+                        observer.finishEnumeratingWithError(readError!)
+                    }
+
                     return
                 }
 
@@ -236,14 +242,14 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 NSLog("Finishing enumeration of changes with error")
 
                 if let nkReadError = readError as? NKError {
-                    let nkErrorCode = nkReadError.errorCode
+                    let fpError = nkReadError.toFileProviderError()
 
-                    if nkErrorCode == 404 {
+                    if nkReadError.errorCode == 404 {
                         NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
 
                         guard let itemMetadata = self.enumeratedItemMetadata else {
                             NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
-                            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+                            observer.finishEnumeratingWithError(fpError)
                             return
                         }
 
@@ -255,19 +261,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         }
 
                         FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
-                    } else if nkErrorCode == -9999 || nkErrorCode == -1001 || nkErrorCode == -1004 || nkErrorCode == -1005 || nkErrorCode == -1009 || nkErrorCode == -1012 || nkErrorCode == -1200 || nkErrorCode == -1202 || nkErrorCode == 500 || nkErrorCode == 503 || nkErrorCode == 200 {
-                        // Provide something the file provider can do something with
-                        observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                         return
-                    } else if nkErrorCode == -1013  {
-                        observer.finishEnumeratingWithError(NSFileProviderError(.notAuthenticated))
-                        return
-                    } else if nkErrorCode == 507 {
-                        observer.finishEnumeratingWithError(NSFileProviderError(.insufficientQuota))
-                        return
-                    } else {
-                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     }
+
+                    observer.finishEnumeratingWithError(fpError)
+                    return
                 }
 
                 observer.finishEnumeratingWithError(readError!)
