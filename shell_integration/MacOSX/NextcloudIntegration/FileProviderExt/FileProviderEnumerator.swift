@@ -235,23 +235,39 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             guard readError == nil else {
                 NSLog("Finishing enumeration of changes with error")
 
-                if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
-                    NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
+                if let nkReadError = readError as? NKError {
+                    let nkErrorCode = nkReadError.errorCode
 
-                    guard let itemMetadata = self.enumeratedItemMetadata else {
-                        NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
-                        observer.finishEnumeratingWithError(readError!)
+                    if nkErrorCode == 404 {
+                        NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
+
+                        guard let itemMetadata = self.enumeratedItemMetadata else {
+                            NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
+                            observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+                            return
+                        }
+
+                        let dbManager = NextcloudFilesDatabaseManager.shared
+                        if itemMetadata.directory {
+                            dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId)
+                        } else {
+                            dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
+                        }
+
+                        FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
+                    } else if nkErrorCode == -9999 || nkErrorCode == -1001 || nkErrorCode == -1004 || nkErrorCode == -1005 || nkErrorCode == -1009 || nkErrorCode == -1012 || nkErrorCode == -1200 || nkErrorCode == -1202 || nkErrorCode == 500 || nkErrorCode == 503 || nkErrorCode == 200 {
+                        // Provide something the file provider can do something with
+                        observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
                         return
-                    }
-
-                    let dbManager = NextcloudFilesDatabaseManager.shared
-                    if itemMetadata.directory {
-                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId)
+                    } else if nkErrorCode == -1013  {
+                        observer.finishEnumeratingWithError(NSFileProviderError(.notAuthenticated))
+                        return
+                    } else if nkErrorCode == 507 {
+                        observer.finishEnumeratingWithError(NSFileProviderError(.insufficientQuota))
+                        return
                     } else {
-                        dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
+                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     }
-
-                    FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
                 }
 
                 observer.finishEnumeratingWithError(readError!)
