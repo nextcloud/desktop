@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "configfile.h"
 #import <FileProvider/FileProvider.h>
 
 #include <QLoggingCategory>
@@ -435,6 +436,13 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
 {
     d.reset(new FileProviderDomainManager::Private());
 
+    ConfigFile cfg;
+    std::chrono::milliseconds polltime = cfg.remotePollInterval();
+    _enumeratorSignallingTimer.setInterval(polltime.count());
+    connect(&_enumeratorSignallingTimer, &QTimer::timeout,
+            this, &FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout);
+    _enumeratorSignallingTimer.start();
+
     setupFileProviderDomains();
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
@@ -593,6 +601,23 @@ void FileProviderDomainManager::slotAccountStateChanged(const AccountState * con
         // Provide credentials
         reconnectFileProviderDomainForAccount(accountState);
         break;
+    }
+}
+
+void FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout()
+{
+    qCDebug(lcMacFileProviderDomainManager) << "Enumerator signalling timer timed out, notifying domains for accounts without push notifications";
+
+    const auto registeredDomainIds = d->configuredDomainIds();
+    for (const auto &domainId : registeredDomainIds) {
+        const auto accountUserId = accountIdFromDomainId(domainId);
+        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserId);
+        const auto account = accountState->account();
+
+        if (!accountFilesPushNotificationsReady(account)) {
+            qCDebug(lcMacFileProviderDomainManager) << "Notifying domain for account:" << account->userIdAtHostWithPort();
+            d->signalEnumeratorChanged(account.get());
+        }
     }
 }
 

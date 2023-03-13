@@ -44,9 +44,13 @@ private slots:
     void setupPushNotificationsForAccount(const OCC::Account * const account);
     void signalEnumeratorChanged(const OCC::Account * const account);
 
-    void slotAccountStateChanged(const AccountState * const accountState);
+    void slotAccountStateChanged(const OCC::AccountState * const accountState);
+    void slotEnumeratorSignallingTimerTimeout();
 
 private:
+    // Starts regular enumerator signalling if no push notifications available
+    QTimer _enumeratorSignallingTimer;
+
     explicit FileProviderDomainManager(QObject * const parent = nullptr);
     static FileProviderDomainManager *_instance;
     class Private;
