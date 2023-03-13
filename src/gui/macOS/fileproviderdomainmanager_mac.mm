@@ -23,6 +23,8 @@
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
 
+// Ensure that conversion to/from domain identifiers and display names
+// are consistent throughout these classes
 namespace {
 
 QString domainIdentifierForAccount(const OCC::Account * const account)
@@ -47,9 +49,19 @@ QString domainDisplayNameForAccount(const OCC::AccountPtr account)
     return domainDisplayNameForAccount(account.get());
 }
 
+QString accountIdFromDomainId(const QString &domainId)
+{
+    return domainId;
+}
+
+QString accountIdFromDomainId(NSString * const domainId)
+{
+    return accountIdFromDomainId(QString::fromNSString(domainId));
+}
+
 QString accountIdFromDomain(NSFileProviderDomain * const domain)
 {
-    return QString::fromNSString(domain.identifier);
+    return accountIdFromDomainId(domain.identifier);
 }
 
 }
