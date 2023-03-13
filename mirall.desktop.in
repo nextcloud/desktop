@@ -11,7 +11,17 @@ X-GNOME-Autostart-Delay=3
 MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_URI_HANDLER_SCHEME@;
 Actions=Quit;
 
+# Translations
+
+
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit
 Name=Quit @APPLICATION_NAME@
 Icon=@APPLICATION_EXECUTABLE@
+
+
+# Translations
+Icon[zh_TW]=@APPLICATION_ICON_NAME@
+Name[zh_TW]=@APPLICATION_NAME@ 桌面版
+Comment[zh_TW]=@APPLICATION_NAME@ 桌面同步客戶端
+GenericName[zh_TW]=資料夾同步
