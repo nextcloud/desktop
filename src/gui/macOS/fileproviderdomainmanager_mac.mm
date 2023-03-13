@@ -220,33 +220,37 @@ class FileProviderDomainManager::Private {
     {
         qCDebug(lcMacFileProviderDomainManager) << "Removing and wiping all file provider domains";
 
-        [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
-            if (error) {
-                qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
-                                                        << error.code
-                                                        << error.localizedDescription;
-                return;
-            }
+        if (@available(macOS 12.0, *)) {
+            [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
+                if (error) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
+                                                            << error.code
+                                                            << error.localizedDescription;
+                    return;
+                }
 
-            for (NSFileProviderDomain * const domain in domains) {
-                [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModeRemoveAll completionHandler:^(NSURL * const preservedLocation, NSError * const error) {
-                    Q_UNUSED(preservedLocation)
+                for (NSFileProviderDomain * const domain in domains) {
+                    [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModeRemoveAll completionHandler:^(NSURL * const preservedLocation, NSError * const error) {
+                        Q_UNUSED(preservedLocation)
 
-                    if (error) {
-                        qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domain: "
-                                                                << domain.displayName
-                                                                << error.code
-                                                                << error.localizedDescription;
-                        return;
-                    }
+                        if (error) {
+                            qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domain: "
+                                                                    << domain.displayName
+                                                                    << error.code
+                                                                    << error.localizedDescription;
+                            return;
+                        }
 
-                    NSFileProviderDomain * const registeredDomainPtr = _registeredDomains.take(QString::fromNSString(domain.identifier));
-                    if (registeredDomainPtr != nil) {
-                        [domain release];
-                    }
-                }];
-            }
-        }];
+                        NSFileProviderDomain * const registeredDomainPtr = _registeredDomains.take(QString::fromNSString(domain.identifier));
+                        if (registeredDomainPtr != nil) {
+                            [domain release];
+                        }
+                    }];
+                }
+            }];
+        } else {
+            removeAllFileProviderDomains();
+        }
     }
 
     void disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &message)
