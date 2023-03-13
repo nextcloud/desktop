@@ -1,4 +1,5 @@
 project(libsync)
+find_package(KF5Archive REQUIRED)
 include(DefinePlatformDefaults)
 
 set(CMAKE_AUTOMOC TRUE)
@@ -187,6 +188,7 @@ target_link_libraries(nextcloudsync
   Qt5::Core
   Qt5::Network
   Qt5::WebSockets
+  KF5::Archive
 )
 
 if (NOT TOKEN_AUTH_ONLY)

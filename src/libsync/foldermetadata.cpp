@@ -3,6 +3,8 @@
 #include "clientsideencryption.h"
 #include "clientsideencryptionjobs.h"
 #include <common/checksums.h>
+#include <KCompressionDevice>
+#include <KFilterBase>
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -444,6 +446,23 @@ bool FolderMetadata::isTopLevelFolder() const
 
 QByteArray FolderMetadata::gZipEncryptAndBase64Encode(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
 {
+    QByteArray toEncrypt("this is a test.");
+    QBuffer buffer;
+    KCompressionDevice dev(&buffer, false, KCompressionDevice::CompressionType::GZip);
+
+
+
+    if (dev.open(QIODevice::WriteOnly)) {
+        auto byteswritten = dev.write(toEncrypt);
+        dev.close();
+    }
+    if (dev.open(QIODevice::ReadOnly)) {
+        auto compressionResult = buffer.readAll();
+        auto compressionResultBase64 = compressionResult.toBase64();
+        compressionResultBase64 = "";
+    }
+    QList<QByteArray> listCompressed;
+
     QByteArray outputData;
     returnTag.clear();
     EncryptionHelper::dataEncryption(key, iv, qCompress(inputData), outputData, returnTag);
