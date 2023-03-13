@@ -570,6 +570,29 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount, ncKit: ncKit)
     }
 
+    func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
+        guard let ncAccount = self.ncAccount else {
+            NSLog("Not purging stale local file metadatas, account not set up")
+            completionHandler()
+            return
+        }
+
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            NSLog("Could not get file provider manager for domain: %@", domain.displayName)
+            completionHandler()
+            return
+        }
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        let materialisedEnumerator = fpManager.enumeratorForMaterializedItems()
+        let materialisedObserver = FileProviderMaterialisedEnumerationObserver(ncKitAccount: ncAccount.ncKitAccount) { _ in
+            completionHandler()
+        }
+        let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
+
+        materialisedEnumerator.enumerateItems(for: materialisedObserver, startingAt: startingPage)
+    }
+
     // MARK: Nextcloud desktop client communication
     func sendFileProviderDomainIdentifier() {
         let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
