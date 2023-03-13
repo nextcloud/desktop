@@ -253,6 +253,34 @@ class FileProviderDomainManager::Private {
         }
     }
 
+    void readdFileProviderDomain(NSFileProviderDomain * const domain)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Wait for this to finish
+            dispatch_group_t dispatchGroup = dispatch_group_create();
+            dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                [NSFileProviderManager addDomain:domain completionHandler:^(NSError * const error) {
+                    if(error) {
+                        qCDebug(lcMacFileProviderDomainManager) << "Error adding file provider domain: "
+                                                                << error.code
+                                                                << error.localizedDescription;
+                    }
+                }];
+            });
+
+            dispatch_group_enter(dispatchGroup);
+            [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
+                if(error) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error removing file provider domain: "
+                                                            << error.code
+                                                            << error.localizedDescription;
+                }
+
+                dispatch_group_leave(dispatchGroup);
+            }];
+        });
+    }
+
     void disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &message)
     {
         Q_ASSERT(accountState);
