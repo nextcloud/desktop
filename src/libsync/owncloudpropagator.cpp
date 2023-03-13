@@ -384,38 +384,71 @@ qint64 OwncloudPropagator::smallFileSize()
     return smallFileSize;
 }
 
+/**
+ * This builds all the jobs needed for the propagation.
+ * Each directory is a PropagateDirectory job, which contains the files in it.
+ */
 void OwncloudPropagator::start(SyncFileItemSet &&items)
 {
-    /* This builds all the jobs needed for the propagation.
-     * Each directory is a PropagateDirectory job, which contains the files in it.
-     * In order to do that we loop over the items. (which are sorted by destination)
-     * When we enter a directory, we can create the directory job and push it on the stack. */
+    // The items list is sorted in such a way that an item for a directory come before any items
+    // inside that directory. For example:
+    //  - A/      <--- directory
+    //  - A/B/    <--- directory
+    //  - A/B/1   <--- file
+    //  - A/2     <--- file
+    // This is important, because we rely on the fact that all actions for items inside a directory
+    // are grouped together, and that an action on the directory itself preceeds the actions for
+    // its child items.
 
     _rootJob.reset(new PropagateRootDirectory(this));
-    QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
-    directories.push(qMakePair(QString(), _rootJob.data()));
-    PropagatorJob *currentRemoveDirectoryJob = nullptr;
-    QString maybeConflictDirectory;
-    for (const auto &item : qAsConst(items)) {
-        if (currentRemoveDirectoryJob && FileSystem::isChildPathOf(item->_file, currentRemoveDirectoryJob->path())) {
-            PropagateDirectory *delDirJob = qobject_cast<PropagateDirectory *>(currentRemoveDirectoryJob);
-            // this is an item in a directory which is going to be removed.
 
+    // The algorithm could be done recursively, but the implementation is done iteratively in order
+    // to prevent us running out of stack space. So the next 3 variables are used to maintain the
+    // state.
+
+    // The directories stack below has the current directory on top of the stack. So if we're
+    // processing directory `/A/B/C/`, then the stack looks like this:
+    //  - PropagateDirectory job for C     <--- top-of-stack
+    //  - PropagateDirectory job for B
+    //  - PropagateDirectory job for A
+    //  - PropagateDirectory job for /     <--- bottom-of-stack
+    QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
+    directories.push({QString(), _rootJob.data()});
+
+    // Due to the ordering of the items, it can happen that we have the following list:
+    //  - remove directory A
+    //  - remove file A/a
+    //  - etc
+    // So when we find a have a sync instruction to remove a directory, we remember it in the
+    // `currentRemoveDirectoryJob` variable, so we know/see it when processing the next item
+    // in the list.
+    PropagatorJob *currentRemoveDirectoryJob = nullptr;
+
+    // We skip items inside conflict directories. So, when we see an item that's marked as such,
+    // remember its name to see if in the next iteration, we will hit an item for that directory.
+    // See the `else` statment in the second step.
+    QString maybeConflictDirectory;
+
+    for (const auto &item : qAsConst(items)) {
+        // First check if this is an item in a directory which is going to be removed.
+        if (currentRemoveDirectoryJob && FileSystem::isChildPathOf(item->_file, currentRemoveDirectoryJob->path())) {
+            // Check the sync instruction for the item:
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // already taken care of. (by the removal of the parent directory)
 
-                // increase the number of subjobs that would be there.
-                if (delDirJob) {
+                if (auto delDirJob = qobject_cast<PropagateDirectory *>(currentRemoveDirectoryJob)) {
+                    // increase the number of subjobs that would be there.
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
             } else if (item->isDirectory()
                 && (item->_instruction == CSYNC_INSTRUCTION_NEW
                        || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)) {
-                // create a new directory within a deleted directory? That can happen if the directory
+                // Create a new directory within a deleted directory? That can happen if the directory
                 // etag was not fetched properly on the previous sync because the sync was aborted
                 // while uploading this directory (which is now removed).  We can ignore it.
-                if (delDirJob) {
+                if (auto delDirJob = qobject_cast<PropagateDirectory *>(currentRemoveDirectoryJob)) {
+                    // increase the number of subjobs that would be there.
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
@@ -423,30 +456,40 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 continue;
             } else if (item->_instruction != CSYNC_INSTRUCTION_RENAME) {
                 // all is good, the rename will be executed before the directory deletion
-                Q_ASSERT(false);
+                Q_ASSERT(false); // we shouldn't land here, but assert for debug purposes
                 qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
                                         << item->_file << item->_instruction;
             }
         }
 
-        // If a CONFLICT item contains files these can't be processed because
+        // Second step: if a CONFLICT item contains files, these files can't be processed because
         // the conflict handling is likely to rename the directory. This can happen
         // when there's a new local directory at the same time as a remote file.
         if (!maybeConflictDirectory.isEmpty()) {
             if (item->destination().startsWith(maybeConflictDirectory)) {
+                // We're processing an item in a CONFLICT directory.
                 qCInfo(lcPropagator) << "Skipping job inside CONFLICT directory"
                                      << item->_file << item->_instruction;
                 item->_instruction = CSYNC_INSTRUCTION_NONE;
                 continue;
             } else {
+                // This is not an item inside the conflict directory, which means we're done
+                // processing the conflict directory in the previous iteration, so clear the string.
                 maybeConflictDirectory.clear();
             }
         }
 
+        // Thirth step: pop the directory stack when we're finished there.
+        // For example, we were processing directory `A/B/`, which means that the
+        // `PropagateDirectory` job for `B` is on top of the stack. If we now have
+        // an item `A/c`, then we're back to processing directory `A/`, so we have
+        // to pop the `B` job off of the stack.
         while (!item->destination().startsWith(directories.top().first)) {
             directories.pop();
         }
 
+        // The last step is to add a subtask for the item. There are 4 cases covered here:
+        // a type change vs. a removal, and a file vs. a directory.
         if (item->isDirectory()) {
             PropagateDirectory *dir = new PropagateDirectory(this, item);
 
@@ -482,8 +525,10 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
             } else {
                 directories.top().second->appendJob(dir);
             }
+
             directories.push(qMakePair(item->destination() + QLatin1Char('/'), dir));
         } else {
+            // The item is not a directory, but a file.
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // will delete directories, so defer execution
                 currentRemoveDirectoryJob = createJob(item);
