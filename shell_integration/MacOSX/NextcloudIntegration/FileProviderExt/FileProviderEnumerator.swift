@@ -483,7 +483,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         return (newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
     }
 
-    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, fullDepthRead: Bool = false, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
+    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, stopAtMatchingEtags: Bool = false, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
@@ -510,21 +510,22 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
-            // If we have already done a full readFileOrFolder scan of this folder then it will be in the database.
-            // We can check for matching etags and stop here if this is the case, as the state is the same.
-            if let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl) {
+            if stopAtMatchingEtags,
+               let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl) {
+                
                 let directoryEtag = directoryMetadata.etag
 
                 guard directoryEtag == "" || directoryEtag != receivedItem.etag else {
-                    NSLog("Fetched directory etag is same as that stored locally (serverUrl: %@ user: %@). Not fetching child items.", serverUrl, account)
-                    completionHandler(nil, nil, nil, nil, nil)
+                    let description = String(format: "Fetched directory etag is same as that stored locally (serverUrl: %@ user: %@). Not fetching child items.", serverUrl, account)
+                    let nkError = NKError(errorCode: NKError.noChangesErrorCode, errorDescription: description)
+                    completionHandler(nil, nil, nil, nil, nkError.error)
                     return
                 }
             }
 
             NSLog("Starting to read serverUrl: %@ for user: %@ at depth 1", serverUrl, ncKitAccount)
 
-            ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: fullDepthRead ? "2" : "1", showHiddenFiles: true) { account, files, _, error in
+            ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
                     NSLog("1 depth readFileOrFolder of url: %@ did not complete successfully, received error: %@", serverUrl, error.errorDescription)
                     completionHandler(nil, nil, nil, nil, error.error)
