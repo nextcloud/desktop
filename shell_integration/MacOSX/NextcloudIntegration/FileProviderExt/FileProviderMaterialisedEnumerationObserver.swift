@@ -17,10 +17,12 @@ import FileProvider
 
 class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnumerationObserver {
     let ncKitAccount: String
+    let completionHandler: (_ deletedOcIds: Set<String>) -> Void
     var allEnumeratedItemIds: Set<String> = Set<String>()
 
-    required init(ncKitAccount: String) {
+    required init(ncKitAccount: String, completionHandler: @escaping(_ deletedOcIds: Set<String>) -> Void) {
         self.ncKitAccount = ncKitAccount
+        self.completionHandler = completionHandler
         super.init()
     }
 
@@ -35,16 +37,18 @@ class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnum
     func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
         NSLog("Handling enumerated materialised items.")
         FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
-                                                                          account: self.ncKitAccount)
+                                                                          account: self.ncKitAccount,
+                                                                          completionHandler: self.completionHandler)
     }
 
     func finishEnumeratingWithError(_ error: Error) {
         NSLog("Ran into error when enumerating materialised items. Handling items enumerated so far")
         FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
-                                                                          account: self.ncKitAccount)
+                                                                          account: self.ncKitAccount,
+                                                                          completionHandler: self.completionHandler)
     }
 
-    static func handleEnumeratedItems(_ itemIds: Set<String>, account: String) {
+    static func handleEnumeratedItems(_ itemIds: Set<String>, account: String, completionHandler: @escaping(_ deletedOcIds: Set<String>) -> Void) {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let databaseLocalFileMetadatas = dbManager.localFileMetadatas(account: account)
         var noLongerMaterialisedIds = Set<String>()
@@ -64,6 +68,8 @@ class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnum
                 for itemId in noLongerMaterialisedIds {
                     dbManager.deleteLocalFileMetadata(ocId: itemId)
                 }
+
+                completionHandler(noLongerMaterialisedIds)
             }
         }
     }
