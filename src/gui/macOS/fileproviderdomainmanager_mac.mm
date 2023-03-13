@@ -161,9 +161,9 @@ class FileProviderDomainManager::Private {
                                                         << error.code
                                                         << error.localizedDescription;
             }
-        }];
 
-        _registeredDomains.insert(domainId, fileProviderDomain);
+            _registeredDomains.insert(domainId, fileProviderDomain);
+        }];
     }
 
     void removeFileProviderDomain(const AccountState * const accountState)
@@ -188,10 +188,10 @@ class FileProviderDomainManager::Private {
                                                         << error.code
                                                         << error.localizedDescription;
             }
-        }];
 
-        NSFileProviderDomain * const domain = _registeredDomains.take(domainId);
-        [domain release];
+            NSFileProviderDomain * const domain = _registeredDomains.take(domainId);
+            [domain release];
+        }];
     }
 
     void removeAllFileProviderDomains()
