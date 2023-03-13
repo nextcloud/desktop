@@ -25,6 +25,7 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
         QString userId;
         QByteArray certificatePem;
         QByteArray encryptedMetadataKey;
+        QByteArray encryptedFiledropKey;
     };
 
 public:
@@ -40,7 +41,7 @@ public:
 
     [[nodiscard]] bool moveFromFileDropToFiles();
 
-    const QJsonObject &fileDrop() const;
+    const QByteArray &fileDrop() const;
 
     bool addUser(const QString &userId, const QSslCertificate certificate);
     bool removeUser(const QString &userId);
@@ -109,13 +110,15 @@ signals:
 private:
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
+    QByteArray _metadataNonce;
+    QByteArray _fileDropKey;
     QByteArray _metadataKeyOverride;
     QMap<int, QByteArray> _metadataKeys; //legacy, remove after migration is done
     QSet<QByteArray> _keyChecksums;
     QHash<QString, FolderUser> _folderUsers;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
-    QJsonObject _fileDrop;
+    QByteArray _fileDropEncrypted;
     QByteArray _initialMetadata;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
