@@ -9,7 +9,7 @@ source_lang = en
 type        = QT
 
 [o:nextcloud:p:nextcloud:r:client-desktop]
-file_filter = nextcloud.client-desktop/<lang>_translation
+file_filter = nextcloud.client-desktop/<lang>_translation.desktop
 source_file = mirall.desktop.in
 source_lang = en
 type        = DESKTOP
