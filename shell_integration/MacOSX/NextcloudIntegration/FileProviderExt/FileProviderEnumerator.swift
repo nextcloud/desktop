@@ -103,7 +103,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         guard readError == nil else {
                             NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
 
-                            if let nkReadError = readError as? NKError, nkReadError.errorCode == 404 {
+                            if let nkReadError = readError as? NKError, nkReadError.isNotFoundError {
                                 NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
                                 dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
                             }
@@ -244,7 +244,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 if let nkReadError = readError as? NKError {
                     let fpError = nkReadError.toFileProviderError()
 
-                    if nkReadError.errorCode == 404 {
+                    if nkReadError.isNotFoundError {
                         NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
 
                         guard let itemMetadata = self.enumeratedItemMetadata else {
@@ -416,7 +416,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
 
                 if let nkReadError = readError as? NKError {
-                    if nkReadError.errorCode == 404 {
+                    if nkReadError.isNotFoundError {
                         NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
 
                         guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
