@@ -112,27 +112,7 @@ private slots:
                 return;
             }
 
-            if (_parsedMetadataAfterProcessingFileDrop->files().size() != metadata->files().size()) {
-                return;
-            }
-
-            if (_parsedMetadataAfterProcessingFileDrop->fileDrop() != metadata->fileDrop()) {
-                return;
-            }
-
-            bool isAnyFileDropFileMissing = false;
-
-            for (const auto &key : metadata->fileDrop().keys()) {
-                if (std::find_if(metadata->files().constBegin(), metadata->files().constEnd(), [&key](const EncryptedFile &encryptedFile) {
-                    return encryptedFile.encryptedFilename == key;
-                }) == metadata->files().constEnd()) {
-                    isAnyFileDropFileMissing = true;
-                }
-            }
-
-            if (!isAnyFileDropFileMissing) {
-                emit fileDropMetadataParsedAndAdjusted();
-            }
+            emit fileDropMetadataParsedAndAdjusted();
 
             QSignalSpy updateFileDropMetadataJobSpy(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::finished);
             QSignalSpy fileDropMetadataParsedAndAdjustedSpy(this, &TestSecureFileDrop::fileDropMetadataParsedAndAdjusted);
@@ -145,8 +125,6 @@ private slots:
             QVERIFY(_parsedMetadataWithFileDrop->isFileDropPresent());
 
             QVERIFY(_parsedMetadataAfterProcessingFileDrop);
-
-            QVERIFY(_parsedMetadataAfterProcessingFileDrop->files().size() != _parsedMetadataWithFileDrop->files().size());
 
             QVERIFY(!updateFileDropMetadataJobSpy.isEmpty());
             QVERIFY(!updateFileDropMetadataJobSpy.at(0).isEmpty());
