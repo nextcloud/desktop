@@ -296,7 +296,13 @@ class FileProviderDomainManager::Private {
         }
 
         NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
+        Q_ASSERT(fileProviderDomain != nil);
+
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        if (fpManager == nil) {
+            readdFileProviderDomain(fileProviderDomain);
+            return;
+        }
 
         [fpManager disconnectWithReason:message.toNSString()
                                 options:NSFileProviderManagerDisconnectionOptionsTemporary
@@ -329,7 +335,13 @@ class FileProviderDomainManager::Private {
         }
 
         NSFileProviderDomain * const fileProviderDomain = _registeredDomains[domainId];
+        Q_ASSERT(fileProviderDomain != nil);
+
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        if (fpManager == nil) {
+            readdFileProviderDomain(fileProviderDomain);
+            return;
+        }
 
         [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
             if (error) {
@@ -361,6 +373,11 @@ class FileProviderDomainManager::Private {
         Q_ASSERT(fileProviderDomain != nil);
 
         NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
+        if (fpManager == nil) {
+            readdFileProviderDomain(fileProviderDomain);
+            return;
+        }
+
         [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
             if (error != nil) {
                 qCDebug(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
