@@ -469,46 +469,60 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 return Progress()
             }
 
-            self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
-                              fileNameLocalPath: fileNameLocalPath,
-                              requestHandler: { _ in
-            }, taskHandler: { task in
-                self.outstandingSessionTasks[newServerUrlFileName] = task
-                NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
-            }, progressHandler: { uploadProgress in
-                uploadProgress.copyCurrentStateToProgress(progress)
-            }) { account, ocId, etag, date, size, _, _, error  in
-                self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
+            let ocId = item.itemIdentifier.rawValue
+            guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
+                Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(ocId, privacy: .public)")
+                completionHandler(item, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
 
-                guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
-                    Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
-                    completionHandler(modifiedItem, [], false, error.toFileProviderError())
-                    return
+            dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.uploading) { updatedMetadata in
+
+                if updatedMetadata == nil {
+                    Logger.fileProviderExtension.warning("Could not acquire updated metadata of item with identifier: \(ocId, privacy: .public), unable to update item status to uploading")
                 }
 
-                Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+                self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
+                                  fileNameLocalPath: fileNameLocalPath,
+                                  requestHandler: { _ in
+                }, taskHandler: { task in
+                    self.outstandingSessionTasks[newServerUrlFileName] = task
+                    NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
+                }, progressHandler: { uploadProgress in
+                    uploadProgress.copyCurrentStateToProgress(progress)
+                }) { account, ocId, etag, date, size, _, _, error  in
+                    self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
-                let newMetadata = NextcloudItemMetadataTable()
-                newMetadata.date = (date ?? NSDate()) as Date
-                newMetadata.etag = etag ?? ""
-                newMetadata.account = account
-                newMetadata.fileName = item.filename
-                newMetadata.fileNameView = item.filename
-                newMetadata.ocId = ocId
-                newMetadata.size = size
-                newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
-                newMetadata.directory = itemTemplateIsFolder
-                newMetadata.serverUrl = parentItemMetadata.serverUrl
-                newMetadata.session = ""
-                newMetadata.sessionError = ""
-                newMetadata.sessionTaskIdentifier = 0
-                newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+                    guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
+                        Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
+                        completionHandler(modifiedItem, [], false, error.toFileProviderError())
+                        return
+                    }
 
-                dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
-                dbManager.addItemMetadata(newMetadata)
+                    Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-                modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
-                completionHandler(modifiedItem, [], false, nil)
+                    let newMetadata = NextcloudItemMetadataTable()
+                    newMetadata.date = (date ?? NSDate()) as Date
+                    newMetadata.etag = etag ?? ""
+                    newMetadata.account = account
+                    newMetadata.fileName = item.filename
+                    newMetadata.fileNameView = item.filename
+                    newMetadata.ocId = ocId
+                    newMetadata.size = size
+                    newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
+                    newMetadata.directory = itemTemplateIsFolder
+                    newMetadata.serverUrl = parentItemMetadata.serverUrl
+                    newMetadata.session = ""
+                    newMetadata.sessionError = ""
+                    newMetadata.sessionTaskIdentifier = 0
+                    newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+
+                    dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
+                    dbManager.addItemMetadata(newMetadata)
+
+                    modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                    completionHandler(modifiedItem, [], false, nil)
+                }
             }
         } else {
             Logger.fileProviderExtension.debug("Nothing more to do with \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), modifications complete")
