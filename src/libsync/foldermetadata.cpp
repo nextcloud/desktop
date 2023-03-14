@@ -962,7 +962,7 @@ void FolderMetadata::updateUsersEncryptedMetadataKey()
             continue;
         }
 
-        const auto encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey);
+        const auto encryptedMetadataKey = encryptDataNonBase64(_metadataKey, certificatePublicKey);
         if (encryptedMetadataKey.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could not update folder users with empty encryptedMetadataKey!";
             continue;
