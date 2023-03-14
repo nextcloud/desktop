@@ -14,6 +14,7 @@
 
 import Foundation
 import FileProvider
+import OSLog
 
 class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnumerationObserver {
     let ncKitAccount: String
@@ -35,14 +36,14 @@ class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnum
     }
 
     func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
-        NSLog("Handling enumerated materialised items.")
+        Logger.materialisedFileHandling.debug("Handling enumerated materialised items.")
         FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
                                                                           account: self.ncKitAccount,
                                                                           completionHandler: self.completionHandler)
     }
 
     func finishEnumeratingWithError(_ error: Error) {
-        NSLog("Ran into error when enumerating materialised items. Handling items enumerated so far")
+        Logger.materialisedFileHandling.error("Ran into error when enumerating materialised items: \(error). Handling items enumerated so far")
         FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
                                                                           account: self.ncKitAccount,
                                                                           completionHandler: self.completionHandler)
@@ -64,7 +65,7 @@ class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnum
             }
 
             DispatchQueue.main.async {
-                NSLog("Cleaning up local file metadatas for unmaterialised items")
+                Logger.materialisedFileHandling.info("Cleaning up local file metadatas for unmaterialised items")
                 for itemId in noLongerMaterialisedIds {
                     dbManager.deleteLocalFileMetadata(ocId: itemId)
                 }
