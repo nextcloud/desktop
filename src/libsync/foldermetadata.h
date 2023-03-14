@@ -60,6 +60,10 @@ private:
     [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
     [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
 
+    [[nodiscard]] QByteArray encryptDataNonBase64(const QByteArray &data) const;
+    [[nodiscard]] QByteArray encryptDataNonBase64(const QByteArray &data, const QSslKey key) const;
+    [[nodiscard]] QByteArray decryptDataNonBase64(const QByteArray &data) const;
+
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 

@@ -133,7 +133,7 @@ void FolderMetadata::setupExistingMetadataVersion1(const QByteArray &metadata)
 
     {
         const auto currB64Pass = metadataKeys.value(metadataKeys.keys().last()).toString().toLocal8Bit();
-        const auto b64DecryptedKey = decryptData(currB64Pass);
+        const auto b64DecryptedKey = decryptDataNonBase64(currB64Pass);
         _metadataKey = QByteArray::fromBase64(b64DecryptedKey);
     }
 
@@ -228,10 +228,10 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         const auto currentFolderUser = _folderUsers.value(_account->davUser());
 
         const auto currentFolderUserEncryptedMetadataKey = currentFolderUser.encryptedMetadataKey;
-        _metadataKey = decryptData(currentFolderUserEncryptedMetadataKey);
+        _metadataKey = decryptDataNonBase64(QByteArray::fromBase64(currentFolderUserEncryptedMetadataKey));
 
         const auto currentFolderUserEncryptedFiledropKey = currentFolderUser.encryptedFiledropKey;
-        _fileDropKey = decryptData(currentFolderUserEncryptedFiledropKey);
+        _fileDropKey = decryptDataNonBase64(QByteArray::fromBase64(currentFolderUserEncryptedFiledropKey));
     }
 
     if (_metadataKey.isEmpty()) {
@@ -345,6 +345,39 @@ QByteArray FolderMetadata::decryptData(const QByteArray &data) const
     {
       qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
       return {};
+    }
+    return QByteArray::fromBase64(decryptResult);
+}
+
+QByteArray FolderMetadata::encryptDataNonBase64(const QByteArray &data) const
+{
+    return encryptDataNonBase64(data, _account->e2e()->_publicKey);
+}
+
+QByteArray FolderMetadata::encryptDataNonBase64(const QByteArray &data, const QSslKey key) const
+{
+    ClientSideEncryption::Bio publicKeyBio;
+    const auto publicKeyPem = key.toPem();
+    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+    const auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
+
+    // The metadata key is binary so base64 encode it first
+    return EncryptionHelper::encryptStringAsymmetric(publicKey, data);
+}
+QByteArray FolderMetadata::decryptDataNonBase64(const QByteArray &data) const
+{
+    ClientSideEncryption::Bio privateKeyBio;
+    QByteArray privateKeyPem = _account->e2e()->_privateKey;
+
+    BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
+    auto key = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
+
+    // Also base64 decode the result
+    QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(key, data);
+
+    if (decryptResult.isEmpty()) {
+        qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
+        return {};
     }
     return QByteArray::fromBase64(decryptResult);
 }
@@ -526,7 +559,7 @@ void FolderMetadata::setupEmptyMetadataV2()
         FolderUser folderUser;
         folderUser.userId = _account->davUser();
         folderUser.certificatePem = _account->e2e()->_certificate.toPem();
-        folderUser.encryptedMetadataKey = encryptData(_metadataKey);
+        folderUser.encryptedMetadataKey = encryptDataNonBase64(_metadataKey);
 
         _folderUsers[_account->davUser()] = folderUser;
     }
@@ -875,7 +908,7 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate certif
     FolderUser newFolderUser;
     newFolderUser.userId = userId;
     newFolderUser.certificatePem = certificate.toPem();
-    newFolderUser.encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey);
+    newFolderUser.encryptedMetadataKey = encryptDataNonBase64(_metadataKey, certificatePublicKey);
     _folderUsers[userId] = newFolderUser;
     updateUsersEncryptedMetadataKey();
 
