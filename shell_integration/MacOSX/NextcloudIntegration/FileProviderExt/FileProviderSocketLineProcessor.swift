@@ -14,6 +14,7 @@
 
 import Foundation
 import NCDesktopClientSocketKit
+import OSLog
 
 class FileProviderSocketLineProcessor: NSObject, LineProcessor {
     var delegate: FileProviderExtension
@@ -23,16 +24,20 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
     }
 
     func process(_ line: String) {
-        NSLog("Processing file provider line: %@", line)
+        if (line.contains("~")) { // We use this as the separator specifically in ACCOUNT_DETAILS
+            Logger.desktopClientConnection.debug("Processing file provider line with potentially sensitive user data")
+        } else {
+            Logger.desktopClientConnection.debug("Processing file provider line: \(line)")
+        }
 
         let splitLine = line.split(separator: ":", maxSplits: 1)
         guard let commandSubsequence = splitLine.first else {
-            NSLog("Input line did not have a first element")
+            Logger.desktopClientConnection.error("Input line did not have a first element")
             return;
         }
         let command = String(commandSubsequence);
 
-        NSLog("Received command: %@", command)
+        Logger.desktopClientConnection.debug("Received command: \(command)")
         if (command == "SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER") {
             delegate.sendFileProviderDomainIdentifier()
         } else if (command == "ACCOUNT_NOT_AUTHENTICATED") {
