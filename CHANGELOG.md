@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.4] - 2023-03-09
+
+### Changed
+* Clean up account creation and deletion code by @claucambra in https://github.com/nextcloud/desktop/pull/5416
+* CI/clang tidy checks init variables by @mgallien in https://github.com/nextcloud/desktop/pull/5436
+
+### Fixed
+* Check German translation for wrong wording by @tobiasKaminsky in https://github.com/nextcloud/desktop/pull/5351
+* Fix "Create new folder" menu entries in settings not working correctly on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5435
+* Fix share dialog infinite loading by @claucambra in https://github.com/nextcloud/desktop/pull/5442
+* Fix edit loc ally job not finding the user account: wrong user id by @mgallien in https://github.com/nextcloud/desktop/pull/5444
+* Skip e2e encrypted files with empty filename in metadata by @mgallien in https://github.com/nextcloud/desktop/pull/5448
+* Always discover blacklisted folders to avoid data loss when modifying selectivesync list by @allexzander in https://github.com/nextcloud/desktop/pull/5459
+* Use new connect syntax by @mgallien in https://github.com/nextcloud/desktop/pull/5451
+* Add missing flag when dehydrating files with CFAPI by @mgallien in https://github.com/nextcloud/desktop/pull/5474
+* Fix avatars not showing up in settings dialog account actions until clicked on by @claucambra in https://github.com/nextcloud/desktop/pull/5453
+* Fix text labels in Sync Status component by @claucambra in https://github.com/nextcloud/desktop/pull/5478
+* Fix infinite loading in the share dialog when public link shares are disabled on the server by @claucambra in https://github.com/nextcloud/desktop/pull/5472
+* Display 'Search globally' as the last sharees list element  by @allexzander in https://github.com/nextcloud/desktop/pull/5485
+* Resize WebView widget once the loginpage rendered by @xllndr in https://github.com/nextcloud/desktop/pull/5161
+* Fix: do not restore virtual files by @mgallien in https://github.com/nextcloud/desktop/pull/5498
+* Fix display of 2FA notification @camilasan in https://github.com/nextcloud/desktop/pull/5486
+
 ## [3.7.1] - 2023-02-07
 
 ### Fixed
@@ -554,6 +577,7 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.7.4]: https://github.com/nextcloud/desktop/compare/v3.7.1...v3.7.4
 [3.7.1]: https://github.com/nextcloud/desktop/compare/v3.7.0...v3.7.1
 [3.7.0]: https://github.com/nextcloud/desktop/compare/v3.6.6...v3.7.0
 [3.6.6]: https://github.com/nextcloud/desktop/compare/v3.6.5...v3.6.6
