@@ -21,7 +21,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[de]=@APPLICATION_ICON_NAME@
-Name[de]=@APPLICATION_NAME@ Desktop
-Comment[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de]=Ordner-Synchronisation
+Icon[sw]=@APPLICATION_ICON_NAME@
+Comment[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa 
+GenericName[sw]=Fanana Kabrasha

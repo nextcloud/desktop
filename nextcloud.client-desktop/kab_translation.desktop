@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[de]=@APPLICATION_ICON_NAME@
-Name[de]=@APPLICATION_NAME@ Desktop
-Comment[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de]=Ordner-Synchronisation
+Icon[kab]=@APPLICATION_ICON_NAME@
+Name[kab]=@APPLICATION_NAME@ Desktop
+Comment[kab]=@APPLICATION_NAME@ amsaɣ n umtawi n tnarit
+GenericName[kab]=Akaram n umtawi
