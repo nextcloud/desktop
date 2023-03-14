@@ -149,49 +149,52 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         do {
             let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
 
-            guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading) else {
-                Logger.fileProviderExtension.error("Could not acquire updated metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public)")
-                completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
-                return Progress()
-            }
+            dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading) { updatedMetadata in
 
-            self.ncKit.download(serverUrlFileName: serverUrlFileName,
-                                fileNameLocalPath: fileNameLocalPath.path,
-                                requestHandler: { _ in
+                guard let updatedMetadata = updatedMetadata else {
+                    Logger.fileProviderExtension.error("Could not acquire updated metadata of item with identifier: \(itemIdentifier.rawValue, privacy: .public), unable to update item status to downloading")
+                    completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+                    return
+                }
 
-            }, taskHandler: { task in
-                self.outstandingSessionTasks[serverUrlFileName] = task
-                NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
-            }, progressHandler: { downloadProgress in
-                downloadProgress.copyCurrentStateToProgress(progress)
-            }) { _, etag, date, _, _, _, error in
-                self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
+                self.ncKit.download(serverUrlFileName: serverUrlFileName,
+                                    fileNameLocalPath: fileNameLocalPath.path,
+                                    requestHandler: { _ in
 
-                if error == .success {
-                    Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-                    updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
-                    updatedMetadata.date = (date ?? NSDate()) as Date
-                    updatedMetadata.etag = etag ?? ""
+                }, taskHandler: { task in
+                    self.outstandingSessionTasks[serverUrlFileName] = task
+                    NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
+                }, progressHandler: { downloadProgress in
+                    downloadProgress.copyCurrentStateToProgress(progress)
+                }) { _, etag, date, _, _, _, error in
+                    self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
 
-                    dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
-                    dbManager.addItemMetadata(updatedMetadata)
+                    if error == .success {
+                        Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                        updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+                        updatedMetadata.date = (date ?? NSDate()) as Date
+                        updatedMetadata.etag = etag ?? ""
 
-                    guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(updatedMetadata) else {
-                        completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
-                        return
+                        dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
+                        dbManager.addItemMetadata(updatedMetadata)
+
+                        guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(updatedMetadata) else {
+                            completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+                            return
+                        }
+                        let fpItem = FileProviderItem(metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+
+                        completionHandler(fileNameLocalPath, fpItem, nil)
+                    } else {
+                        Logger.fileTransfer.error("Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+                        updatedMetadata.status = NextcloudItemMetadataTable.Status.downloadError.rawValue
+                        updatedMetadata.sessionError = error.errorDescription
+
+                        dbManager.addItemMetadata(updatedMetadata)
+
+                        completionHandler(nil, nil, error.toFileProviderError())
                     }
-                    let fpItem = FileProviderItem(metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
-
-                    completionHandler(fileNameLocalPath, fpItem, nil)
-                } else {
-                    Logger.fileTransfer.error("Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-
-                    updatedMetadata.status = NextcloudItemMetadataTable.Status.downloadError.rawValue
-                    updatedMetadata.sessionError = error.errorDescription
-
-                    dbManager.addItemMetadata(updatedMetadata)
-
-                    completionHandler(nil, nil, error.toFileProviderError())
                 }
             }
         } catch let error {

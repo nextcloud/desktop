@@ -194,29 +194,26 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func setStatusForItemMetadata(_ metadata: NextcloudItemMetadataTable, status: NextcloudItemMetadataTable.Status) -> NextcloudItemMetadataTable? {
+    func setStatusForItemMetadata(_ metadata: NextcloudItemMetadataTable, status: NextcloudItemMetadataTable.Status, completionHandler: @escaping(_ updatedMetadata: NextcloudItemMetadataTable?) -> Void) {
         let database = ncDatabase()
-        var result: NextcloudItemMetadataTable?
 
         do {
             try database.write {
                 guard let result = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadata.ocId).first else {
+                    Logger.ncFilesDatabase.debug("Did not update status for item metadata as it was not found. ocID: \(metadata.ocId, privacy: .public)")
                     return
                 }
 
                 result.status = status.rawValue
                 database.add(result, update: .all)
                 Logger.ncFilesDatabase.debug("Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+                completionHandler(NextcloudItemMetadataTable(value: result))
             }
         } catch let error {
             Logger.ncFilesDatabase.error("Could not update status for item metadata with ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
+            completionHandler(nil)
         }
-
-        if result != nil {
-            return NextcloudItemMetadataTable(value: result!)
-        }
-
-        return nil
     }
 
     func addItemMetadata(_ metadata: NextcloudItemMetadataTable) {
