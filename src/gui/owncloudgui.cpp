@@ -1217,7 +1217,8 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     }
     if (folder->accountState()->account()->capabilities().filesSharing().sharing_roles) {
         fetchPrivateLinkUrl(folder->accountState()->account(), folder->webDavUrl(), sharePath, this, [](const QUrl &url) {
-            Utility::openBrowser(url, nullptr);
+            const auto queryUrl = Utility::concatUrlPath(url, QString(), {{QStringLiteral("details"), QStringLiteral("sharing")}});
+            Utility::openBrowser(queryUrl, nullptr);
         });
     } else {
         const auto accountState = folder->accountState();

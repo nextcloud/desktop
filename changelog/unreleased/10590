@@ -1,0 +1,6 @@
+Enhancement: Open sharing options in Web
+
+When selecting "Share..." in the file browser context menu, we now
+not only display that file in the web view but also directly show the sharing options.
+
+https://github.com/owncloud/client/pull/10590
