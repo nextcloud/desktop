@@ -58,6 +58,7 @@ namespace EncryptionHelper {
             EVP_PKEY *publicKey,
             const QByteArray& data
     );
+    QByteArray encryptStringAsymmetricNonBase64(EVP_PKEY *publicKey, const QByteArray &data);
     QByteArray decryptStringAsymmetric(
             EVP_PKEY *privateKey,
             const QByteArray& data

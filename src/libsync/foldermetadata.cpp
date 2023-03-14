@@ -362,7 +362,7 @@ QByteArray FolderMetadata::encryptDataNonBase64(const QByteArray &data, const QS
     const auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
 
     // The metadata key is binary so base64 encode it first
-    return EncryptionHelper::encryptStringAsymmetric(publicKey, data);
+    return EncryptionHelper::encryptStringAsymmetricNonBase64(publicKey, data);
 }
 QByteArray FolderMetadata::decryptDataNonBase64(const QByteArray &data) const
 {
