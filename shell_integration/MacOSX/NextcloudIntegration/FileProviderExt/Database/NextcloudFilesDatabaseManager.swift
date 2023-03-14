@@ -225,8 +225,12 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             try database.write {
-                result = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadata.ocId).first
-                result?.status = status.rawValue
+                guard let result = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadata.ocId).first else {
+                    return
+                }
+                
+                result.status = status.rawValue
+                database.add(result, update: .all)
             }
         } catch let error {
             NSLog("Could not update status for item metadata with ocID: %@ and filename: %@, received error: %@", metadata.ocId, metadata.fileNameView, error.localizedDescription)
