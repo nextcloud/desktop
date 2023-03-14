@@ -843,12 +843,15 @@ void AccountSettings::slotAccountStateChanged()
     if (state == AccountState::Connected) {
         ui->_folderList->setItemsExpandable(true);
         if (_accountState->supportsSpaces()) {
+            ui->addButton->setText(tr("Add Space"));
             ui->addButton->setToolTip(tr("Click this button to add a Space."));
         } else {
+            ui->addButton->setText(tr("Add Folder"));
             ui->addButton->setToolTip(tr("Click this button to add a folder to synchronize."));
         }
     } else {
         ui->_folderList->setItemsExpandable(false);
+        ui->addButton->setText(tr("Add Folder"));
         ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
 
         /* check if there are expanded root items, if so, close them */
