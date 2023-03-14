@@ -14,6 +14,7 @@
 
 import FileProvider
 import NextcloudKit
+import OSLog
 
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
@@ -40,21 +41,21 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         self.ncKit = ncKit
 
         if FileProviderEnumerator.isSystemIdentifier(enumeratedItemIdentifier) {
-            NSLog("Providing enumerator for a system defined container: %@", enumeratedItemIdentifier.rawValue)
+            Logger.enumeration.debug("Providing enumerator for a system defined container: \(enumeratedItemIdentifier.rawValue)")
             self.serverUrl = ncAccount.davFilesUrl
         } else {
-            NSLog("Providing enumerator for item with identifier: %@", enumeratedItemIdentifier.rawValue)
+            Logger.enumeration.debug("Providing enumerator for item with identifier: \(enumeratedItemIdentifier.rawValue)")
             let dbManager = NextcloudFilesDatabaseManager.shared
 
             enumeratedItemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier)
             if enumeratedItemMetadata != nil {
                 self.serverUrl = enumeratedItemMetadata!.serverUrl + "/" + enumeratedItemMetadata!.fileName
             } else {
-                NSLog("Could not find itemMetadata for file with identifier: %@", enumeratedItemIdentifier.rawValue)
+                Logger.enumeration.error("Could not find itemMetadata for file with identifier: \(enumeratedItemIdentifier.rawValue)")
             }
         }
 
-        NSLog("Set up enumerator for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+        Logger.enumeration.info("Set up enumerator for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
         super.init()
     }
 
@@ -65,15 +66,15 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     // MARK: - Protocol methods
 
     func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
-        NSLog("Received enumerate items request for enumerator with user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-        /* TODO:
-         - inspect the page to determine whether this is an initial or a follow-up request
+        Logger.enumeration.debug("Received enumerate items request for enumerator with user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
+        /*
+         - inspect the page to determine whether this is an initial or a follow-up request (TODO)
          
          If this is an enumerator for a directory, the root container or all directories:
          - perform a server request to fetch directory contents
-         If this is an enumerator for the active set:
+         If this is an enumerator for the working set:
          - perform a server request to update your local database
-         - fetch the active set from your local database
+         - fetch the working set from your local database
          
          - inform the observer about the items returned by the server (possibly multiple times)
          - inform the observer that you are finished with this page
@@ -98,7 +99,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 for directoryMetadata in directoryMetadatas {
                     guard directoryMetadata.etag != "" else {
-                        NSLog("Skipping enumeration of unexplored directory for working set: %@", directoryMetadata.serverUrl)
+                        Logger.enumeration.info("Skipping enumeration of unexplored directory for working set: \(directoryMetadata.serverUrl)")
                         continue;
                     }
 
@@ -106,7 +107,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                     FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
                         guard readError == nil else {
-                            NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
+                            Logger.enumeration.error("Finishing enumeration of working set directory \(directoryMetadata.serverUrl) with error \(readError!)")
 
                             let nkError = NKError(error: readError!)
                             if nkError.isUnauthenticatedError || nkError.isCouldntConnectError {
@@ -128,7 +129,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     }
 
                     dispatchGroup.wait()
-                    
+
                     guard serverError == nil else {
                         observer.finishEnumeratingWithError(serverError!.error)
                         return
@@ -137,13 +138,15 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: allMetadatas)
             } else {
-                NSLog("Enumerating page of working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+                Logger.enumeration.debug("Enumerating page \(page.rawValue) of working set for user: \(self.ncAccount.ncKitAccount)")
+                // TODO!
+
                 observer.finishEnumerating(upTo: nil)
             }
 
             return
         } else if enumeratedItemIdentifier == .trashContainer {
-            NSLog("Enumerating trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            Logger.enumeration.debug("Enumerating trash set for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
             // TODO!
 
             observer.finishEnumerating(upTo: nil)
@@ -151,7 +154,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         }
 
         guard serverUrl != "" else {
-            NSLog("Enumerator has empty serverUrl -- can't enumerate that! For identifier: %@", enumeratedItemIdentifier.rawValue)
+            Logger.enumeration.error("Enumerator has empty serverUrl -- can't enumerate that! For identifier: \(self.enumeratedItemIdentifier.rawValue)")
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
         }
@@ -160,12 +163,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
-            NSLog("Enumerating initial page for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            Logger.enumeration.debug("Enumerating initial page for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
 
             FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, _, _, _, readError in
 
                 guard readError == nil else {
-                    NSLog("Finishing enumeration with error")
+                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl) with error \(readError!)")
 
                     let nkReadError = NKError(error: readError!)
                     observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
@@ -181,19 +184,19 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     metadatas = NextcloudFilesDatabaseManager.shared.itemMetadatas(account: ncKitAccount, serverUrl: self.serverUrl)
                 } else if (self.enumeratedItemMetadata != nil) {
                     guard let updatedEnumeratedItemMetadata = NextcloudFilesDatabaseManager.shared.itemMetadataFromOcId(self.enumeratedItemMetadata!.ocId) else {
-                        NSLog("Cannot finish enumeration as the enumerated item could not be fetched from database. %@ %@", self.enumeratedItemIdentifier.rawValue, self.serverUrl)
+                        Logger.enumeration.error("Could not finish enumeration for user: \(ncKitAccount) with serverUrl: \(self.serverUrl) as the enumerated item could not be fetched from database. \(self.enumeratedItemIdentifier.rawValue)")
                         observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
                         return
                     }
 
                     metadatas = [updatedEnumeratedItemMetadata]
-                } else {
-                    NSLog("Cannot finish enumeration as we do not have a valid server URL. NOTE: this error should not be possible and indicates something is going wrong before.")
+                } else { // We need to have an enumeratedItemMetadata to have a non empty serverUrl
+                    Logger.enumeration.error("Cannot finish enumeration for user: \(ncKitAccount) as we do not have a valid server URL. NOTE: this error should not be possible and indicates something is going wrong before.")
                     observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
                     return
                 }
 
-                NSLog("Finished reading serverUrl: %@ for user: %@. Processed %d metadatas", self.serverUrl, ncKitAccount, metadatas.count)
+                Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl) for user: \(ncKitAccount). Processed \(metadatas.count) metadatas")
 
                 FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
             }
@@ -202,18 +205,18 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         }
 
         let numPage = Int(String(data: page.rawValue, encoding: .utf8)!)!
-        NSLog("Enumerating page %d for user: %@ with serverUrl: %@", numPage, ncAccount.username, serverUrl)
+        Logger.enumeration.debug("Enumerating page \(numPage) for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
         // TODO: Handle paging properly
         // FileProviderEnumerator.completeObserver(observer, ncKit: ncKit, numPage: numPage, itemMetadatas: nil)
         observer.finishEnumerating(upTo: nil)
     }
     
     func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
-        NSLog("Received enumerate changes request for enumerator with user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+        Logger.enumeration.debug("Received enumerate changes request for enumerator for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
         /*
-         - query the server for updates since the passed-in sync anchor
+         - query the server for updates since the passed-in sync anchor (TODO)
          
-         If this is an enumerator for the active set:
+         If this is an enumerator for the working set:
          - note the changes in your local database
          
          - inform the observer about item deletions and updates (modifications + insertions)
@@ -221,7 +224,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          */
 
         if enumeratedItemIdentifier == .workingSet {
-            NSLog("Enumerating changes in working set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            Logger.enumeration.debug("Enumerating changes in working set for user: \(self.ncAccount.ncKitAccount)")
 
             let scanResults = FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: self.ncAccount, ncKit: self.ncKit)
 
@@ -233,29 +236,29 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                                                            deletedMetadatas: scanResults.deletedMetadatas)
             return
         } else if enumeratedItemIdentifier == .trashContainer {
-            NSLog("Enumerating changes in trash set for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+            Logger.enumeration.debug("Enumerating changes in trash set for user: \(self.ncAccount.ncKitAccount)")
             // TODO!
 
             observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
             return
         }
 
-        NSLog("Enumerating changes for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
+        Logger.enumeration.info("Enumerating changes for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl)")
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
         FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
-                NSLog("Finishing enumeration of changes with error")
+                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl) with error: \(readError!)")
 
                 let nkReadError = NKError(error: readError!)
                 let fpError = nkReadError.toFileProviderError()
 
                 if nkReadError.isNotFoundError {
-                    NSLog("404 error means item no longer exists. Deleting metadata and reporting %@ as deletion without error", self.serverUrl)
+                    Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl) as deletion without error")
 
                     guard let itemMetadata = self.enumeratedItemMetadata else {
-                        NSLog("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
+                        Logger.enumeration.error("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
                         observer.finishEnumeratingWithError(fpError)
                         return
                     }
@@ -270,7 +273,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: nil, updatedMetadatas: nil, deletedMetadatas: [itemMetadata])
                     return
                 } else if nkReadError.isNoChangesError { // All is well, just no changed etags
-                    NSLog("Error was to say no changed files -- not bad error. Finishing change enumeration.")
+                    Logger.enumeration.info("Error was to say no changed files -- not bad error. Finishing change enumeration.")
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                     return;
                 }
@@ -279,7 +282,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
-            NSLog("Finished reading serverUrl: %@ for user: %@", self.serverUrl, self.ncAccount.ncKitAccount)
+            Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl) for user: \(self.ncAccount.ncKitAccount)")
 
             FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
         }
@@ -297,7 +300,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         for itemMetadata in itemMetadatas {
             if itemMetadata.e2eEncrypted {
-                NSLog("Skipping encrypted metadata in enumeration")
+                Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId) \(itemMetadata.fileName)")
                 continue
             }
 
@@ -307,15 +310,15 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {
                 let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
-                NSLog("Will enumerate item with ocId: %@ and name: %@", itemMetadata.ocId, itemMetadata.fileName)
+                Logger.enumeration.debug("Will enumerate item with ocId: \(itemMetadata.ocId) and name: \(itemMetadata.fileName)")
                 items.append(item)
             } else {
-                NSLog("Could not get valid parentItemIdentifier for item with ocId: %@ and name: %@, skipping enumeration", itemMetadata.ocId, itemMetadata.fileName)
+                Logger.enumeration.error("Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId) and name: \(itemMetadata.fileName), skipping enumeration")
             }
         }
 
         observer.didEnumerate(items)
-        NSLog("Did enumerate %d items", items.count)
+        Logger.enumeration.info("Did enumerate \(items.count) items")
 
         // TODO: Handle paging properly
         /*
@@ -333,7 +336,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, ncKit: NextcloudKit, newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
 
         guard newMetadatas != nil || updatedMetadatas != nil || deletedMetadatas != nil else {
-            NSLog("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
+            Logger.enumeration.error("Received invalid newMetadatas, updatedMetadatas or deletedMetadatas. Finished enumeration of changes with error.")
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
         }
@@ -359,14 +362,14 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         for updMetadata in allUpdatedMetadatas {
             guard let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(updMetadata) else {
-                NSLog("Not enumerating change for metadata: %@ %@ as could not get parent item metadata.", updMetadata.ocId, updMetadata.fileName)
+                Logger.enumeration.warning("Not enumerating change for metadata: \(updMetadata.ocId) \(updMetadata.fileName) as could not get parent item metadata.")
                 continue
             }
 
             guard !updMetadata.e2eEncrypted else {
                 // Precaution, if all goes well in NKFile conversion then this should not happen
                 // TODO: Remove when E2EE supported
-                NSLog("Encrypted metadata in changes enumeration, adding to deletions")
+                Logger.enumeration.info("Encrypted metadata in changes enumeration \(updMetadata.ocId) \(updMetadata.fileName), adding to deletions")
                 allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
                 continue
             }
@@ -383,7 +386,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        NSLog("Processed %d new or updated metadatas, %d deleted metadatas.", allUpdatedMetadatas.count, allDeletedMetadatas.count)
+        Logger.enumeration.info("Processed \(allUpdatedMetadatas.count) new or updated metadatas, \(allDeletedMetadatas.count) deleted metadatas.")
         observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 
@@ -400,7 +403,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private static func scanRecursivelyForChanges(_ directoryMetadata: NextcloudDirectoryMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
 
         guard directoryMetadata.etag != "" || directoryMetadata.serverUrl == ncAccount.davFilesUrl else {
-            NSLog("Skipping enumeration of changes in unexplored directory for working set: %@", directoryMetadata.serverUrl)
+            Logger.enumeration.info("Skipping enumeration of changes in unexplored directory for working \(directoryMetadata.serverUrl)")
             return ([], [], [])
         }
 
@@ -413,17 +416,17 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         dispatchGroup.enter()
 
-        NSLog("About to read: %@", directoryMetadata.serverUrl)
+        Logger.enumeration.debug("About to read: \(directoryMetadata.serverUrl)")
         FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
-                NSLog("Finishing enumeration of changes at %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
+                Logger.enumeration.error("Finishing enumeration of changes at \(directoryMetadata.serverUrl) with \(readError!)")
 
                 let nkReadError = NKError(error: readError!)
                 if nkReadError.isNotFoundError {
-                    NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
+                    Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
 
                     guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
-                        NSLog("Can't delete directory properly as item metadata not found...")
+                        Logger.enumeration.error("Can't delete directory properly as item metadata not found...")
                         dispatchGroup.leave()
                         return
                     }
@@ -431,30 +434,30 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
                     allDeletedMetadatas.append(directoryItemMetadata)
                 } else if nkReadError.isNoChangesError { // All is well, just no changed etags
-                    NSLog("Error was to say no changed files -- not bad error. No need to check children.")
+                    Logger.enumeration.info("Error was to say no changed files -- not bad error. No need to check children.")
                 }
 
                 dispatchGroup.leave()
                 return
             }
 
-            NSLog("Finished reading serverUrl: %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+            Logger.enumeration.info("Finished reading serverUrl: \(directoryMetadata.serverUrl) for user: \(ncAccount.ncKitAccount)")
             if let newMetadatas = newMetadatas {
                 allNewMetadatas += newMetadatas
             } else {
-                NSLog("WARNING: Nil new metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+                Logger.enumeration.warning("WARNING: Nil new metadatas received for reading of changes at \(directoryMetadata.serverUrl) for user: \(ncAccount.ncKitAccount)")
             }
 
             if let updatedMetadatas = updatedMetadatas {
                 allUpdatedMetadatas += updatedMetadatas
             } else {
-                NSLog("WARNING: Nil updated metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+                Logger.enumeration.warning("WARNING: Nil updated metadatas received for reading of changes at \(directoryMetadata.serverUrl) for user: \(ncAccount.ncKitAccount)")
             }
 
             if let deletedMetadatas = deletedMetadatas {
                 allDeletedMetadatas += deletedMetadatas
             } else {
-                NSLog("WARNING: Nil deleted metadatas received for reading of changes at %@ for user: %@", directoryMetadata.serverUrl, ncAccount.ncKitAccount)
+                Logger.enumeration.warning("WARNING: Nil deleted metadatas received for reading of changes at \(directoryMetadata.serverUrl) for user: \(ncAccount.ncKitAccount)")
             }
 
             dispatchGroup.leave()
@@ -466,7 +469,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         for updatedMetadata in allUpdatedMetadatas {
             if updatedMetadata.directory {
                 guard let directoryMetadata = dbManager.directoryMetadata(ocId: updatedMetadata.ocId) else {
-                    NSLog("Could not find matching directory metadata for updated item metadata, cannot scan for updates")
+                    Logger.enumeration.error("Could not find matching directory metadata for updated item metadata, cannot scan for updates")
                     continue
                 }
 
@@ -493,23 +496,23 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
-        NSLog("Starting to read serverUrl: %@ for user: %@ at depth 0. NCKit info: user: %@, userId: %@, password: %@, urlBase: %@, ncVersion: %d", serverUrl, ncKitAccount, ncKit.nkCommonInstance.user, ncKit.nkCommonInstance.userId, ncKit.nkCommonInstance.password, ncKit.nkCommonInstance.urlBase, ncKit.nkCommonInstance.nextcloudVersion)
+        Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl) for user: \(ncAccount.ncKitAccount) at depth 0. NCKit info: userId: \(ncKit.nkCommonInstance.user), password: \(ncKit.nkCommonInstance.password == "" ? "EMPTY PASSWORD" : "NOT EMPTY PASSWORD"), urlBase: \(ncKit.nkCommonInstance.urlBase), ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion)")
 
         ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
             guard error == .success else {
-                NSLog("0 depth readFileOrFolder of url: %@ did not complete successfully, received error: %@", serverUrl, error.errorDescription)
+                Logger.enumeration.error("0 depth readFileOrFolder of url: \(serverUrl) did not complete successfully, received error: \(error)")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
 
             guard let receivedItem = files.first else {
-                NSLog("Received no items from readFileOrFolder, not much we can do...")
+                Logger.enumeration.error("Received no items from readFileOrFolder of \(serverUrl), not much we can do...")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
 
             guard receivedItem.directory else {
-                NSLog("Read item is a file. Converting NKfile for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
+                Logger.enumeration.debug("Read item is a file. Converting NKfile for serverUrl: \(serverUrl) for user: \(ncAccount.ncKitAccount)")
                 let itemMetadata = dbManager.convertNKFileToItemMetadata(receivedItem, account: ncKitAccount)
                 dbManager.addItemMetadata(itemMetadata) // TODO: Return some value when it is an update
                 completionHandler([itemMetadata], nil, nil, nil, error.error)
@@ -522,23 +525,25 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 let directoryEtag = directoryMetadata.etag
 
                 guard directoryEtag == "" || directoryEtag != receivedItem.etag else {
-                    let description = String(format: "Fetched directory etag is same as that stored locally (serverUrl: %@ user: %@). Not fetching child items.", serverUrl, account)
+                    Logger.enumeration.debug("Read server url called with flag to stop enumerating at matching etags. Returning and providing soft error.")
+
+                    let description = String("Fetched directory etag is same as that stored locally (serverUrl: \(serverUrl) for user: \(account)). Not fetching child items.")
                     let nkError = NKError(errorCode: NKError.noChangesErrorCode, errorDescription: description)
                     completionHandler(nil, nil, nil, nil, nkError.error)
                     return
                 }
             }
 
-            NSLog("Starting to read serverUrl: %@ for user: %@ at depth 1", serverUrl, ncKitAccount)
+            Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl) for user: \(ncAccount.ncKitAccount) at depth 1")
 
             ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
-                    NSLog("1 depth readFileOrFolder of url: %@ did not complete successfully, received error: %@", serverUrl, error.errorDescription)
+                    Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl) did not complete successfully, received error: \(error)")
                     completionHandler(nil, nil, nil, nil, error.error)
                     return
                 }
 
-                NSLog("Starting async conversion of NKFiles for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
+                Logger.enumeration.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(ncAccount.ncKitAccount)")
                 DispatchQueue.global().async {
                     dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
