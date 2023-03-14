@@ -16,6 +16,7 @@ import Foundation
 import RealmSwift
 import FileProvider
 import NextcloudKit
+import OSLog
 
 class NextcloudFilesDatabaseManager : NSObject {
     static let shared = {
@@ -60,9 +61,9 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             _ = try Realm()
-            NSLog("Successfully started Realm db for FileProviderExt")
+            Logger.ncFilesDatabase.info("Successfully started Realm db for FileProviderExt")
         } catch let error as NSError {
-            NSLog("Error opening Realm db: %@", error.localizedDescription)
+            Logger.ncFilesDatabase.error("Error opening Realm db: \(error)")
         }
 
         super.init()
@@ -135,13 +136,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
             deletedMetadatas.append(metadataToDelete)
 
-            NSLog("""
-                    Deleting metadata.
-                    ocID: %@,
-                    fileName: %@,
-                    etag: %@
-                  """
-                  , metadataToDelete.ocId, metadataToDelete.fileName, metadataToDelete.etag)
+            Logger.ncFilesDatabase.debug("Deleting item metadata during update. \(NextcloudFilesDatabaseManager.itemMetadataLogString(metadataToDelete))")
 
             // Can't pass copies, we need the originals from the database
             databaseToWriteTo.delete(ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadataToDelete.ocId))
@@ -160,6 +155,8 @@ class NextcloudFilesDatabaseManager : NSObject {
         var returningUpdatedMetadatas: [NextcloudItemMetadataTable] = []
 
         for updatedMetadata in updatedMetadatas {
+            let itemMetadataLogString = NextcloudFilesDatabaseManager.itemMetadataLogString(updatedMetadata)
+
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
 
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
@@ -167,37 +164,17 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                     returningUpdatedMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
                     databaseToWriteTo.add(updatedMetadata, update: .all)
-                    
-                    NSLog("""
-                            Updated existing metadata.
-                            ocID: %@,
-                            fileName: %@,
-                            etag: %@
-                          """
-                          , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
-                } else {
-                    NSLog("""
-                              Skipping metadata update as received metadata status is same as existing,
-                              or metadata is currently being downloaded/uploaded:
 
-                              ocID: %@,
-                              fileName: %@,
-                              etag: %@
-                          """
-                          , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+                    Logger.ncFilesDatabase.debug("Updated existing item metadata. \(itemMetadataLogString)")
+                } else {
+                    Logger.ncFilesDatabase.debug("Skipping item metadata update; same as existing, or still downloading/uploading. \(itemMetadataLogString)")
                 }
 
             } else { // This is a new metadata
                 returningNewMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
                 databaseToWriteTo.add(updatedMetadata, update: .all)
 
-                NSLog("""
-                        Created new metadata.
-                        ocID: %@,
-                        fileName: %@,
-                        etag: %@
-                      """
-                      , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+                Logger.ncFilesDatabase.debug("Created new item metadata during update. \(itemMetadataLogString)")
             }
         }
 
@@ -222,7 +199,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 completionHandler(metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
             }
         } catch let error {
-            NSLog("Could not update any metadatas, received error: %@", error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not update any item metadatas, received error: \(error)")
             completionHandler(nil, nil, nil)
         }
     }
@@ -231,17 +208,20 @@ class NextcloudFilesDatabaseManager : NSObject {
         let database = ncDatabase()
         var result: NextcloudItemMetadataTable?
 
+        let itemMetadataLogString = NextcloudFilesDatabaseManager.itemMetadataLogString(metadata)
+
         do {
             try database.write {
                 guard let result = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadata.ocId).first else {
                     return
                 }
-                
+
                 result.status = status.rawValue
                 database.add(result, update: .all)
+                Logger.ncFilesDatabase.debug("Updated status for item metadata. \(itemMetadataLogString)")
             }
         } catch let error {
-            NSLog("Could not update status for item metadata with ocID: %@ and filename: %@, received error: %@", metadata.ocId, metadata.fileNameView, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not update status for item metadata with \(itemMetadataLogString), received error: \(error)")
         }
 
         if result != nil {
@@ -253,20 +233,15 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     func addItemMetadata(_ metadata: NextcloudItemMetadataTable) {
         let database = ncDatabase()
+        let itemMetadataLogString = NextcloudFilesDatabaseManager.itemMetadataLogString(metadata)
 
         do {
             try database.write {
                 database.add(metadata, update: .all)
-                NSLog("""
-                        Created new metadata (addItemMetadata).
-                        ocID: %@,
-                        fileName: %@,
-                        etag: %@
-                      """
-                      , metadata.ocId, metadata.fileName, metadata.etag)
+                Logger.ncFilesDatabase.debug("Added item metadata. \(itemMetadataLogString)")
             }
         } catch let error {
-            NSLog("Could not add item metadata with ocID: %@ and filename: %@, received error: %@", metadata.ocId, metadata.fileNameView, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not add item metadata. \(itemMetadataLogString), received error: \(error)")
         }
     }
 
@@ -276,10 +251,12 @@ class NextcloudFilesDatabaseManager : NSObject {
         do {
             try database.write {
                 let results = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId)
+
+                Logger.ncFilesDatabase.debug("Deleting item metadata. \(ocId)")
                 database.delete(results)
             }
         } catch let error {
-            NSLog("Could not delete item metadata with ocId: %@, received error: %@", ocId, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not delete item metadata with ocId: \(ocId), received error: \(error)")
         }
     }
 
@@ -289,7 +266,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         do {
             try database.write {
                 guard let itemMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first else {
-                    NSLog("Could not find an item with ocID %@ to rename to %@", ocId, newFileName)
+                    Logger.ncFilesDatabase.debug("Could not find an item with ocID \(ocId) to rename to \(newFileName)")
                     return
                 }
 
@@ -302,22 +279,23 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                 database.add(itemMetadata, update: .all)
 
-                NSLog("Renamed item %@ to %@, moved from serverUrl: %@ to serverUrl: %@", oldFileName, newFileName, oldServerUrl, newServerUrl)
+                Logger.ncFilesDatabase.debug("Renamed item \(oldFileName) to \(newFileName), moved from serverUrl: \(oldServerUrl) to serverUrl: \(newServerUrl)")
             }
         } catch let error {
-            NSLog("Could not rename filename of item metadata with ocID: %@ to proposed name %@, received error: %@", ocId, newFileName, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not rename filename of item metadata with ocID: \(ocId) to proposed name \(newFileName) at proposed serverUrl \(newServerUrl), received error: \(error)")
         }
     }
 
     func parentItemIdentifierFromMetadata(_ metadata: NextcloudItemMetadataTable) -> NSFileProviderItemIdentifier? {
         let homeServerFilesUrl = metadata.urlBase + "/remote.php/dav/files/" + metadata.userId
+        let itemMetadataLogString = NextcloudFilesDatabaseManager.itemMetadataLogString(metadata)
 
         if metadata.serverUrl == homeServerFilesUrl {
             return .rootContainer
         }
 
         guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
-            NSLog("Could not get item parent directory metadata for metadata with ocId: %@ and fileName: %@, returning nil", metadata.ocId, metadata.fileName)
+            Logger.ncFilesDatabase.error("Could not get item parent directory metadata for metadata. \(itemMetadataLogString)")
             return nil
         }
 
@@ -325,7 +303,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
         }
 
-        NSLog("Could not get item parent directory item metadata for metadata with ocId: %@ and fileName: %@, returning nil", metadata.ocId, metadata.fileName)
+        Logger.ncFilesDatabase.error("Could not get item parent directory item metadata for metadata. \(itemMetadataLogString)")
         return nil
     }
 
@@ -377,13 +355,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             guard !updatedDirectoryMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
                   let metadataToDelete = directoryMetadata(ocId: existingMetadata.ocId) else { continue }
 
-            NSLog("""
-                    Deleting directory metadata.
-                    ocID: %@,
-                    serverUrl: %@,
-                    etag: %@
-                  """
-                  , metadataToDelete.ocId, metadataToDelete.serverUrl, metadataToDelete.etag)
+            Logger.ncFilesDatabase.debug("Deleting directory metadata during update. \(NextcloudFilesDatabaseManager.directoryMetadataLogString(existingMetadata))")
 
             self.deleteDirectoryAndSubdirectoriesMetadata(ocId: metadataToDelete.ocId)
         }
@@ -396,30 +368,20 @@ class NextcloudFilesDatabaseManager : NSObject {
         assert(databaseToWriteTo.isInWriteTransaction)
 
         for updatedMetadata in updatedDirectoryMetadatas {
+            let directoryMetadataLogString = NextcloudFilesDatabaseManager.directoryMetadataLogString(updatedMetadata)
+
             if let existingMetadata = existingDirectoryMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
 
                 if !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
                     databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
-                    NSLog("""
-                            Updated existing directory metadata.
-                            ocID: %@,
-                            serverUrl: %@,
-                            etag: %@
-                          """
-                          , updatedMetadata.ocId, updatedMetadata.serverUrl, updatedMetadata.etag)
+                    Logger.ncFilesDatabase.debug("Updated existing directory metadata. \(directoryMetadataLogString)")
                 }
                 // Don't update under other circumstances in which the metadata already exists
 
             } else { // This is a new metadata
                 databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
-                NSLog("""
-                        Created new metadata.
-                        ocID: %@,
-                        serverUrl: %@,
-                        etag: %@
-                      """
-                      , updatedMetadata.ocId, updatedMetadata.serverUrl, updatedMetadata.etag)
+                Logger.ncFilesDatabase.debug("Created new directory metadata during update. \(directoryMetadataLogString)")
             }
         }
     }
@@ -442,7 +404,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                                                   updatedDirectoryMetadatas: updatedDirectoryMetadatas)
             }
         } catch let error {
-            NSLog("Could not update directory metadatas, received error: %@", error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not update directory metadatas, received error: \(error.localizedDescription)")
         }
     }
 
@@ -485,19 +447,15 @@ class NextcloudFilesDatabaseManager : NSObject {
     func addDirectoryMetadata(_ metadata: NextcloudDirectoryMetadataTable) {
         let database = ncDatabase()
 
+        let directoryMetadataLogString = NextcloudFilesDatabaseManager.directoryMetadataLogString(metadata)
+
         do {
             try database.write {
                 database.add(metadata, update: .all)
-                NSLog("""
-                        Created new metadata (addDirectoryMetadata).
-                        ocID: %@,
-                        serverUrl: %@,
-                        etag: %@
-                      """
-                      , metadata.ocId, metadata.serverUrl, metadata.etag)
+                Logger.ncFilesDatabase.debug("Added new directory metadata. \(directoryMetadataLogString)")
             }
         } catch let error {
-            NSLog("Could not add item metadata with ocID: %@ and serverUrl: %@, received error: %@", metadata.ocId, metadata.serverUrl, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not add new directory metadata. \(directoryMetadataLogString), received error: \(error)")
         }
     }
 
@@ -505,7 +463,7 @@ class NextcloudFilesDatabaseManager : NSObject {
     func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) {
         let database = ncDatabase()
         guard let directoryMetadata = database.objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first else {
-            NSLog("Could not find directory metadata for ocId %@. Not proceeding with deletion", ocId)
+            Logger.ncFilesDatabase.error("Could not find directory metadata for ocId \(ocId). Not proceeding with deletion")
             return
         }
 
@@ -516,12 +474,15 @@ class NextcloudFilesDatabaseManager : NSObject {
             deleteLocalFileMetadata(ocId: result.ocId)
         }
 
+        let directoryMetadataLogString = NextcloudFilesDatabaseManager.directoryMetadataLogString(directoryMetadata)
+
         do {
             try database.write {
+                Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. \(directoryMetadataLogString)")
                 database.delete(results)
             }
         } catch let error {
-            NSLog("Could not delete directory metadata with ocId: %@ and serverUrl: %@, received error: %@", directoryMetadata.ocId, directoryMetadata.serverUrl, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. \(directoryMetadataLogString), received error: \(error)")
         }
     }
 
@@ -533,7 +494,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             try database.write {
                 guard let directoryTableResult = database.objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first,
                       let directoryItemResult = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first else {
-                    NSLog("Could not find a directory with ocID %@", ocId)
+                    Logger.ncFilesDatabase.error("Could not find a directory with ocID \(ocId), cannot proceed with recursive renaming")
                     return
                 }
 
@@ -547,14 +508,14 @@ class NextcloudFilesDatabaseManager : NSObject {
                 directoryItemResult.fileName = newFileName
                 directoryItemResult.fileNameView = newFileName
                 database.add(directoryItemResult, update: .all)
-                NSLog("Renamed directory at %@ to %@", oldServerUrl, newServerUrl)
+                Logger.ncFilesDatabase.debug("Renamed root renaming directory at \(oldServerUrl) to \(newServerUrl)")
 
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
                     let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldServerUrl, with: newServerUrl)
                     childItem.serverUrl = movedServerUrl
                     database.add(childItem, update: .all)
-                    NSLog("Moved childItem at %@ to %@", oldServerUrl, movedServerUrl)
+                    Logger.ncFilesDatabase.debug("Moved childItem at \(oldServerUrl) to \(movedServerUrl)")
                 }
 
                 for childDirectory in childDirectoryResults {
@@ -565,11 +526,11 @@ class NextcloudFilesDatabaseManager : NSObject {
                     childDirectory.serverUrl = movedServerUrl
                     childDirectory.parentDirectoryServerUrl = movedParentServerUrl
                     database.add(childDirectory, update: .all)
-                    NSLog("Moved childDirectory at %@ to %@", oldServerUrl, movedServerUrl)
+                    Logger.ncFilesDatabase.debug("Moved childDirectory at \(oldServerUrl) to \(movedServerUrl)")
                 }
             }
         } catch let error {
-            NSLog("Could not rename directory metadata with ocId: %@ serverUrl: %@, received error: %@", ocId, newServerUrl, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not rename directory metadata with ocId: \(ocId) to new serverUrl: \(newServerUrl), received error: \(error)")
         }
     }
 
@@ -584,6 +545,8 @@ class NextcloudFilesDatabaseManager : NSObject {
     func addLocalFileMetadataFromItemMetadata(_ itemMetadata: NextcloudItemMetadataTable) {
         let database = ncDatabase()
 
+        let itemMetadataLogString = NextcloudFilesDatabaseManager.itemMetadataLogString(itemMetadata)
+
         do {
             try database.write {
                 let newLocalFileMetadata = NextcloudLocalFileMetadataTable()
@@ -597,9 +560,10 @@ class NextcloudFilesDatabaseManager : NSObject {
                 newLocalFileMetadata.exifLongitude = "-1"
 
                 database.add(newLocalFileMetadata, update: .all)
+                Logger.ncFilesDatabase.debug("Added local file metadata from item metadata. \(itemMetadataLogString)")
             }
         } catch let error {
-            NSLog("Could not add local file metadata from item metadata with ocID: %@ and filename: %@, received error: %@", itemMetadata.ocId, itemMetadata.fileNameView, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not add local file metadata from item metadata. \(itemMetadataLogString), received error: \(error)")
         }
     }
 
@@ -612,7 +576,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 database.delete(results)
             }
         } catch let error {
-            NSLog("Could not delete local file metadata with ocId: %@, received error: %@", ocId, error.localizedDescription)
+            Logger.ncFilesDatabase.error("Could not delete local file metadata with ocId: \(ocId), received error: \(error)")
         }
     }
 
@@ -634,7 +598,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         for ocId in localFileMetadatasOcIds {
             guard let itemMetadata = itemMetadataFromOcId(ocId) else {
-                NSLog("Could not find matching item metadata for local file metadata with ocId: %@ with request from account: %@", ocId, account)
+                Logger.ncFilesDatabase.error("Could not find matching item metadata for local file metadata with ocId: \(ocId) with request from account: \(account)")
                 continue;
             }
 
