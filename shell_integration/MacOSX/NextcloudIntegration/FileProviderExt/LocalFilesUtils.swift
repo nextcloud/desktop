@@ -14,10 +14,11 @@
 
 import Foundation
 import FileProvider
+import OSLog
 
 func pathForAppGroupContainer() -> URL? {
     guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
-        NSLog("Could not get container url as missing SocketApiPrefix info in app Info.plist")
+        Logger.localFileOps.critical("Could not get container url as missing SocketApiPrefix info in app Info.plist")
         return nil
     }
 
@@ -85,6 +86,6 @@ func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
             try localPathForNCFile(itemMetadata: metadata)
         }
     } catch let error {
-        NSLog("Could not create NC file or directory locally, received error: %@", error.localizedDescription)
+        Logger.enumeration.error("Could not create NC file or directory locally, received error: \(error)")
     }
 }
