@@ -608,6 +608,11 @@ void FolderMetadata::handleEncryptionRequestV2()
         }
     }
 
+    
+    if (isTopLevelFolder() && folderUsers.isEmpty()) {
+        qCDebug(lcCseMetadata) << "Empty folderUsers while shouldn't be empty!";
+    }
+
     QJsonObject files;
     QJsonObject folders;
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; it++) {
