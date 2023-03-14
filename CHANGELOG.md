@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.1] - 2023-02-07
+
+### Fixed
+* Init value for pointers by @mgallien in https://github.com/nextcloud/desktop/pull/5393
+
 ## [3.7.0] - 2023-02-02
 
 ### Added
@@ -549,6 +554,7 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.7.1]: https://github.com/nextcloud/desktop/compare/v3.7.0...v3.7.1
 [3.7.0]: https://github.com/nextcloud/desktop/compare/v3.6.6...v3.7.0
 [3.6.6]: https://github.com/nextcloud/desktop/compare/v3.6.5...v3.6.6
 [3.6.5]: https://github.com/nextcloud/desktop/compare/v3.6.4...v3.6.5
