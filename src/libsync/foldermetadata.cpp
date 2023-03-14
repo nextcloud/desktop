@@ -219,8 +219,8 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         FolderUser folderUser;
         folderUser.userId = userId;
         folderUser.certificatePem = folderUserObject.value(usersCertificateKey).toString().toUtf8();
-        folderUser.encryptedMetadataKey = folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8();
-        folderUser.encryptedFiledropKey = folderUserObject.value(usersEncryptedFiledropKey).toString().toUtf8();
+        folderUser.encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8());
+        folderUser.encryptedFiledropKey = QByteArray::fromBase64(folderUserObject.value(usersEncryptedFiledropKey).toString().toUtf8());
         _folderUsers[userId] = folderUser;
     }
 
@@ -228,10 +228,10 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         const auto currentFolderUser = _folderUsers.value(_account->davUser());
 
         const auto currentFolderUserEncryptedMetadataKey = currentFolderUser.encryptedMetadataKey;
-        _metadataKey = QByteArray::fromBase64(decryptData(currentFolderUserEncryptedMetadataKey));
+        _metadataKey = decryptData(currentFolderUserEncryptedMetadataKey);
 
         const auto currentFolderUserEncryptedFiledropKey = currentFolderUser.encryptedFiledropKey;
-        _fileDropKey = QByteArray::fromBase64(decryptData(currentFolderUserEncryptedFiledropKey));
+        _fileDropKey = decryptData(currentFolderUserEncryptedFiledropKey);
     }
 
     if (_metadataKey.isEmpty()) {
@@ -526,7 +526,7 @@ void FolderMetadata::setupEmptyMetadataV2()
         FolderUser folderUser;
         folderUser.userId = _account->davUser();
         folderUser.certificatePem = _account->e2e()->_certificate.toPem();
-        folderUser.encryptedMetadataKey = encryptData(_metadataKey.toBase64());
+        folderUser.encryptedMetadataKey = encryptData(_metadataKey);
 
         _folderUsers[_account->davUser()] = folderUser;
     }
@@ -601,8 +601,8 @@ void FolderMetadata::handleEncryptionRequestV2()
             const QJsonObject folderUserJson{
                 {usersUserIdKey, folderUser.userId},
                 {usersCertificateKey, QJsonValue::fromVariant(folderUser.certificatePem)},
-                {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey)},
-                {usersEncryptedFiledropKey, QJsonValue::fromVariant(folderUser.encryptedFiledropKey)}
+                {usersEncryptedMetadataKey, QJsonValue::fromVariant(folderUser.encryptedMetadataKey.toBase64())},
+                {usersEncryptedFiledropKey, QJsonValue::fromVariant(folderUser.encryptedFiledropKey.toBase64())}
             };
             folderUsers.push_back(folderUserJson);
         }
@@ -875,7 +875,7 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate certif
     FolderUser newFolderUser;
     newFolderUser.userId = userId;
     newFolderUser.certificatePem = certificate.toPem();
-    newFolderUser.encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey).toBase64();
+    newFolderUser.encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey);
     _folderUsers[userId] = newFolderUser;
     updateUsersEncryptedMetadataKey();
 
@@ -929,7 +929,7 @@ void FolderMetadata::updateUsersEncryptedMetadataKey()
             continue;
         }
 
-        const auto encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey).toBase64();
+        const auto encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey);
         if (encryptedMetadataKey.isEmpty()) {
             qCWarning(lcCseMetadata()) << "Could not update folder users with empty encryptedMetadataKey!";
             continue;
