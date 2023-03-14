@@ -63,7 +63,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             _ = try Realm()
             Logger.ncFilesDatabase.info("Successfully started Realm db for FileProviderExt")
         } catch let error as NSError {
-            Logger.ncFilesDatabase.error("Error opening Realm db: \(error)")
+            Logger.ncFilesDatabase.error("Error opening Realm db: \(error, privacy: .public)")
         }
 
         super.init()
@@ -199,7 +199,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 completionHandler(metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not update any item metadatas, received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not update any item metadatas, received error: \(error, privacy: .public)")
             completionHandler(nil, nil, nil)
         }
     }
@@ -221,7 +221,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 Logger.ncFilesDatabase.debug("Updated status for item metadata. \(itemMetadataLogString)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not update status for item metadata with \(itemMetadataLogString), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not update status for item metadata with \(itemMetadataLogString), received error: \(error, privacy: .public)")
         }
 
         if result != nil {
@@ -241,7 +241,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 Logger.ncFilesDatabase.debug("Added item metadata. \(itemMetadataLogString)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not add item metadata. \(itemMetadataLogString), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not add item metadata. \(itemMetadataLogString), received error: \(error, privacy: .public)")
         }
     }
 
@@ -256,7 +256,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 database.delete(results)
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not delete item metadata with ocId: \(ocId), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not delete item metadata with ocId: \(ocId), received error: \(error, privacy: .public)")
         }
     }
 
@@ -282,7 +282,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 Logger.ncFilesDatabase.debug("Renamed item \(oldFileName) to \(newFileName), moved from serverUrl: \(oldServerUrl) to serverUrl: \(newServerUrl)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not rename filename of item metadata with ocID: \(ocId) to proposed name \(newFileName) at proposed serverUrl \(newServerUrl), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not rename filename of item metadata with ocID: \(ocId) to proposed name \(newFileName) at proposed serverUrl \(newServerUrl), received error: \(error, privacy: .public)")
         }
     }
 
@@ -455,7 +455,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 Logger.ncFilesDatabase.debug("Added new directory metadata. \(directoryMetadataLogString)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not add new directory metadata. \(directoryMetadataLogString), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not add new directory metadata. \(directoryMetadataLogString), received error: \(error, privacy: .public)")
         }
     }
 
@@ -482,7 +482,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 database.delete(results)
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. \(directoryMetadataLogString), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. \(directoryMetadataLogString), received error: \(error, privacy: .public)")
         }
     }
 
@@ -530,7 +530,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 }
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not rename directory metadata with ocId: \(ocId) to new serverUrl: \(newServerUrl), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not rename directory metadata with ocId: \(ocId) to new serverUrl: \(newServerUrl), received error: \(error, privacy: .public)")
         }
     }
 
@@ -563,7 +563,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 Logger.ncFilesDatabase.debug("Added local file metadata from item metadata. \(itemMetadataLogString)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not add local file metadata from item metadata. \(itemMetadataLogString), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not add local file metadata from item metadata. \(itemMetadataLogString), received error: \(error, privacy: .public)")
         }
     }
 
@@ -576,7 +576,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 database.delete(results)
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not delete local file metadata with ocId: \(ocId), received error: \(error)")
+            Logger.ncFilesDatabase.error("Could not delete local file metadata with ocId: \(ocId), received error: \(error, privacy: .public)")
         }
     }
 

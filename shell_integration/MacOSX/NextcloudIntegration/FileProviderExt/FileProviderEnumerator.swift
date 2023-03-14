@@ -107,7 +107,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                     FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
                         guard readError == nil else {
-                            Logger.enumeration.error("Finishing enumeration of working set directory \(directoryMetadata.serverUrl) with error \(readError!)")
+                            Logger.enumeration.error("Finishing enumeration of working set directory \(directoryMetadata.serverUrl) with error \(readError!, privacy: .public)")
 
                             let nkError = NKError(error: readError!)
                             if nkError.isUnauthenticatedError || nkError.isCouldntConnectError {
@@ -168,7 +168,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, _, _, _, readError in
 
                 guard readError == nil else {
-                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl) with error \(readError!)")
+                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl) with error \(readError!, privacy: .public)")
 
                     let nkReadError = NKError(error: readError!)
                     observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
@@ -249,7 +249,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         // handling below or from the completeChangesObserver
         FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
-                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl) with error: \(readError!)")
+                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount) with serverUrl: \(self.serverUrl) with error: \(readError!, privacy: .public)")
 
                 let nkReadError = NKError(error: readError!)
                 let fpError = nkReadError.toFileProviderError()
@@ -419,7 +419,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         Logger.enumeration.debug("About to read: \(directoryMetadata.serverUrl)")
         FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
-                Logger.enumeration.error("Finishing enumeration of changes at \(directoryMetadata.serverUrl) with \(readError!)")
+                Logger.enumeration.error("Finishing enumeration of changes at \(directoryMetadata.serverUrl) with \(readError!, privacy: .public)")
 
                 let nkReadError = NKError(error: readError!)
                 if nkReadError.isNotFoundError {
@@ -500,7 +500,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
             guard error == .success else {
-                Logger.enumeration.error("0 depth readFileOrFolder of url: \(serverUrl) did not complete successfully, received error: \(error)")
+                Logger.enumeration.error("0 depth readFileOrFolder of url: \(serverUrl) did not complete successfully, received error: \(error, privacy: .public)")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
@@ -538,7 +538,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
-                    Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl) did not complete successfully, received error: \(error)")
+                    Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl) did not complete successfully, received error: \(error, privacy: .public)")
                     completionHandler(nil, nil, nil, nil, error.error)
                     return
                 }

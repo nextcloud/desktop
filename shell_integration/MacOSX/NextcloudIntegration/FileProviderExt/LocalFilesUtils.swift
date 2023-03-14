@@ -86,6 +86,6 @@ func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
             try localPathForNCFile(itemMetadata: metadata)
         }
     } catch let error {
-        Logger.enumeration.error("Could not create NC file or directory locally, received error: \(error)")
+        Logger.enumeration.error("Could not create NC file or directory locally, received error: \(error, privacy: .public)")
     }
 }

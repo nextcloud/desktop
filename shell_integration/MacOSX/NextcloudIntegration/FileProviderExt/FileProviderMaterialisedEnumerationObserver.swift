@@ -43,7 +43,7 @@ class FileProviderMaterialisedEnumerationObserver : NSObject, NSFileProviderEnum
     }
 
     func finishEnumeratingWithError(_ error: Error) {
-        Logger.materialisedFileHandling.error("Ran into error when enumerating materialised items: \(error). Handling items enumerated so far")
+        Logger.materialisedFileHandling.error("Ran into error when enumerating materialised items: \(error, privacy: .public). Handling items enumerated so far")
         FileProviderMaterialisedEnumerationObserver.handleEnumeratedItems(self.allEnumeratedItemIds,
                                                                           account: self.ncKitAccount,
                                                                           completionHandler: self.completionHandler)

@@ -195,7 +195,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
             }
         } catch let error {
-            Logger.fileProviderExtension.error("Could not find local path for file \(metadata.fileName), received error: \(error)")
+            Logger.fileProviderExtension.error("Could not find local path for file \(metadata.fileName), received error: \(error, privacy: .public)")
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
@@ -259,7 +259,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         if itemTemplateIsFolder {
             self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
                 guard error == .success else {
-                    Logger.fileTransfer.error("Could not create new folder with name: \(itemTemplate.filename), received error: \(error)")
+                    Logger.fileTransfer.error("Could not create new folder with name: \(itemTemplate.filename), received error: \(error, privacy: .public)")
                     completionHandler(itemTemplate, [], false, error.toFileProviderError())
                     return
                 }
@@ -267,7 +267,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 // Read contents after creation
                 self.ncKit.readFileOrFolder(serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true) { account, files, _, error in
                     guard error == .success else {
-                        Logger.fileTransfer.error("Could not read new folder with name: \(itemTemplate.filename), received error: \(error)")
+                        Logger.fileTransfer.error("Could not read new folder with name: \(itemTemplate.filename), received error: \(error, privacy: .public)")
                         return
                     }
 
@@ -303,7 +303,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
             guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
-                Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename), received error: \(error)")
+                Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename), received error: \(error, privacy: .public)")
                 completionHandler(itemTemplate, [], false, error.toFileProviderError())
                 return
             }
@@ -409,7 +409,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                         serverUrlFileNameDestination: newServerUrlFileName,
                                         overwrite: false) { account, error in
                 guard error == .success else {
-                    Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName) to \(newServerUrlFileName), received error: \(error)")
+                    Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName) to \(newServerUrlFileName), received error: \(error, privacy: .public)")
                     renameError = error.toFileProviderError()
                     dispatchGroup.leave()
                     return
@@ -478,7 +478,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
                 guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
-                    Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue) with filename: \(item.filename), received error: \(error)")
+                    Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue) with filename: \(item.filename), received error: \(error, privacy: .public)")
                     completionHandler(modifiedItem, [], false, error.toFileProviderError())
                     return
                 }
@@ -540,7 +540,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
             guard error == .success else {
-                Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue) at \(serverFileNameUrl), received error: \(error)")
+                Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue) at \(serverFileNameUrl), received error: \(error, privacy: .public)")
                 completionHandler(error.toFileProviderError())
                 return
             }
