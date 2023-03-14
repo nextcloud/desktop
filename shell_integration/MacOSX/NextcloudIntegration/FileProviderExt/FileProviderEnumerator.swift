@@ -93,6 +93,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
                 var allMetadatas: [NextcloudItemMetadataTable] = []
 
+                var serverError: NKError?
                 let dispatchGroup = DispatchGroup()  // TODO: Maybe own thread?
 
                 for directoryMetadata in directoryMetadatas {
@@ -106,6 +107,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
                         guard readError == nil else {
                             NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
+
+                            let nkError = NKError(error: readError!)
+                            if nkError.isUnauthenticatedError || nkError.isCouldntConnectError {
+                                // If it is a critical error then stop, if not then continue
+                                serverError = nkError
+                            }
+
                             dispatchGroup.leave()
                             return
                         }
@@ -120,6 +128,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     }
 
                     dispatchGroup.wait()
+                    
+                    guard serverError == nil else {
+                        observer.finishEnumeratingWithError(serverError!.error)
+                        return
+                    }
                 }
 
                 FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: allMetadatas)
