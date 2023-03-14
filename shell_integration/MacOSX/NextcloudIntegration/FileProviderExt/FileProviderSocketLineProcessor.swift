@@ -27,7 +27,7 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
         if (line.contains("~")) { // We use this as the separator specifically in ACCOUNT_DETAILS
             Logger.desktopClientConnection.debug("Processing file provider line with potentially sensitive user data")
         } else {
-            Logger.desktopClientConnection.debug("Processing file provider line: \(line)")
+            Logger.desktopClientConnection.debug("Processing file provider line: \(line, privacy: .public)")
         }
 
         let splitLine = line.split(separator: ":", maxSplits: 1)
@@ -37,7 +37,7 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
         }
         let command = String(commandSubsequence);
 
-        Logger.desktopClientConnection.debug("Received command: \(command)")
+        Logger.desktopClientConnection.debug("Received command: \(command, privacy: .public)")
         if (command == "SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER") {
             delegate.sendFileProviderDomainIdentifier()
         } else if (command == "ACCOUNT_NOT_AUTHENTICATED") {
