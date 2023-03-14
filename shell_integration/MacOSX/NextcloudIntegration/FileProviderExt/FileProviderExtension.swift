@@ -196,6 +196,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             }
         } catch let error {
             NSLog("Could not find local path for file %@, received error: %@", metadata.fileNameView, error.localizedDescription)
+            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
         return progress
