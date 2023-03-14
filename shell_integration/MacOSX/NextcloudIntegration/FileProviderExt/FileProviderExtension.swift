@@ -616,20 +616,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             }
         }
 
-        guard NextcloudFilesDatabaseManager.shared.anyItemMetadatasForAccount(ncAccount!.ncKitAccount) else {
-            // When we have nothing registered, force full refresh.
-            // This refreshes the entire structure of the FileProvider and calls
-            // enumerateItems rather than enumerateChanges in the enumerator
-            NSLog("Signalling manager for user %@ at server %@ to reimport everything", ncAccount!.username, ncAccount!.serverUrl)
-            fpManager.reimportItems(below: .rootContainer) { error in
-                if error != nil {
-                    NSLog("Error reimporting everything, received error: %@", error!.localizedDescription)
-                }
-            }
-
-            return
-        }
-
         NSLog("Signalling enumerators for user %@ at server %@", ncAccount!.username, ncAccount!.serverUrl)
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
