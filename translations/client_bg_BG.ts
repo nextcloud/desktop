@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Повторно свързване</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="377"/>
@@ -2128,7 +2128,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>Клиентът може да записва дневници за отстраняване на грешки във временна папка. Тези дневници са много полезни за диагностициране на проблеми.
+Тъй като файловете с дневници могат да станат големи, клиентът ще стартира нов за всяко изпълнение на синхронизация и ще компресира по-старите.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -4184,7 +4185,7 @@ Are you sure you want to proceed?</source>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Моля, въведете вашия %1:</translation>
     </message>
 </context>
 <context>
@@ -4733,7 +4734,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Библиотеки Qt %3, %4%7%9Използване на приставка за виртуални файлове: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4741,7 +4742,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="420"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Директория на приставката: %1%2</translation>
     </message>
 </context>
 <context>
