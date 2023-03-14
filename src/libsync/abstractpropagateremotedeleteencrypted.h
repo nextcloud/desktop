@@ -67,6 +67,7 @@ protected:
     bool _isTaskFailed = false;
     QNetworkReply::NetworkError _networkError = QNetworkReply::NoError;
     QString _errorString;
+    QString _fullFolderRemotePath;
 };
 
 }

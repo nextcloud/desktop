@@ -57,8 +57,9 @@ void AbstractPropagateRemoteDeleteEncrypted::storeFirstErrorString(const QString
 
 void AbstractPropagateRemoteDeleteEncrypted::startLsColJob(const QString &path)
 {
+    _fullFolderRemotePath = _propagator->fullRemotePath(path);
     qCDebug(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Folder is encrypted, let's get the Id from it.";
-    auto job = new LsColJob(_propagator->account(), _propagator->fullRemotePath(path), this);
+    auto job = new LsColJob(_propagator->account(), _fullFolderRemotePath, this);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
     connect(job, &LsColJob::directoryListingSubfolders, this, &AbstractPropagateRemoteDeleteEncrypted::slotFolderEncryptedIdReceived);
     connect(job, &LsColJob::finishedWithError, this, &AbstractPropagateRemoteDeleteEncrypted::taskFailed);
