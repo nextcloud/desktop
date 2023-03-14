@@ -495,6 +495,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                     guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
                         Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
+
+                        metadata.status = NextcloudItemMetadataTable.Status.uploadError.rawValue
+                        metadata.sessionError = error.errorDescription
+
+                        dbManager.addItemMetadata(metadata)
+
                         completionHandler(modifiedItem, [], false, error.toFileProviderError())
                         return
                     }
