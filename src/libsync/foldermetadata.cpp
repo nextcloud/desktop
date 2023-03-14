@@ -4,8 +4,6 @@
 #include "clientsideencryptionjobs.h"
 #include <common/checksums.h>
 #include <KCompressionDevice>
-#include <KFilterBase>
-
 #include <QJsonArray>
 #include <QJsonDocument>
 
@@ -364,6 +362,8 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
 
 [[nodiscard]] QByteArray FolderMetadata::encryptCipherText(const QByteArray &cipherText, const QByteArray &pass, const QByteArray &initializationVector, QByteArray &returnTag) const
 {
+    auto encrypted = FolderMetadata::gZipEncryptAndBase64Encode(pass, cipherText, initializationVector, returnTag);
+    auto decrypted = FolderMetadata::base64DecodeDecryptAndGzipUnZip(pass, encrypted, initializationVector);
     return FolderMetadata::gZipEncryptAndBase64Encode(pass, cipherText, initializationVector, returnTag);
 }
 
@@ -446,34 +446,53 @@ bool FolderMetadata::isTopLevelFolder() const
 
 QByteArray FolderMetadata::gZipEncryptAndBase64Encode(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag)
 {
-    QByteArray toEncrypt("this is a test.");
-    QBuffer buffer;
-    KCompressionDevice dev(&buffer, false, KCompressionDevice::CompressionType::GZip);
-
-
-
-    if (dev.open(QIODevice::WriteOnly)) {
-        auto byteswritten = dev.write(toEncrypt);
-        dev.close();
+    QBuffer gZipBuffer;
+    auto gZipCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
+    if (!gZipCompressionDevice.open(QIODevice::WriteOnly)) {
+        return {};
     }
-    if (dev.open(QIODevice::ReadOnly)) {
-        auto compressionResult = buffer.readAll();
-        auto compressionResultBase64 = compressionResult.toBase64();
-        compressionResultBase64 = "";
+    const auto bytesWritten = gZipCompressionDevice.write(inputData);
+    gZipCompressionDevice.close();
+    if (bytesWritten < 0) {
+        return {};
     }
-    QList<QByteArray> listCompressed;
+
+    if (!gZipBuffer.open(QIODevice::ReadOnly)) {
+        return {};
+    }
 
     QByteArray outputData;
     returnTag.clear();
-    EncryptionHelper::dataEncryption(key, iv, qCompress(inputData), outputData, returnTag);
+    const auto gZippedAndNotEncrypted = gZipBuffer.readAll();
+    EncryptionHelper::dataEncryption(key, iv, gZippedAndNotEncrypted, outputData, returnTag);
+    gZipBuffer.close();
     return outputData.toBase64();
 }
 
 QByteArray FolderMetadata::base64DecodeDecryptAndGzipUnZip(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv)
 {
-    QByteArray outputData;
-    EncryptionHelper::dataDecryption(key, iv, QByteArray::fromBase64(inputData), outputData);
-    return qUncompress(outputData);
+    QByteArray decryptedAndGzipped;
+    EncryptionHelper::dataDecryption(key, iv, QByteArray::fromBase64(inputData), decryptedAndGzipped);
+
+    QBuffer gZipBuffer;
+    if (!gZipBuffer.open(QIODevice::WriteOnly)) {
+        return {};
+    }
+    const auto bytesWritten = gZipBuffer.write(decryptedAndGzipped);
+    gZipBuffer.close();
+    if (bytesWritten < 0) {
+        return {};
+    }
+
+    auto gZipUnCompressionDevice = KCompressionDevice(&gZipBuffer, false, KCompressionDevice::GZip);
+    if (!gZipUnCompressionDevice.open(QIODevice::ReadOnly)) {
+        return {};
+    }
+
+    const auto decryptedAndUnGzipped = gZipUnCompressionDevice.readAll();
+    gZipUnCompressionDevice.close();
+
+    return decryptedAndUnGzipped;
 }
 
 const QByteArray &FolderMetadata::metadataKey() const
