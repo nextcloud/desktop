@@ -667,7 +667,16 @@ void FolderMetadata::handleEncryptionRequestV2()
     internalMetadata.setObject(metaObject);
 
     auto jsonString = internalMetadata.toJson();
-    jsonString = "";
+
+    auto newdoc = QJsonDocument::fromJson(jsonString);
+    auto jsonObj = newdoc.object();
+
+    auto usersFromDoc = jsonObj.value(usersKey).toArray();
+
+    if (usersFromDoc.isEmpty()) {
+        int a = 5;
+        a = 6;
+    }
 
     QTimer::singleShot(0, this, [this, internalMetadata]() {
         emit encryptionFinished(internalMetadata.toJson());
