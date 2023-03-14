@@ -29,7 +29,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     var ncAccount: NextcloudAccount?
     lazy var socketClient: LocalSocketClient? = {
         guard let containerUrl = pathForAppGroupContainer() else {
-            NSLog("Could not start file provider socket client properly as could not get container url")
+            Logger.fileProviderExtension.critical("Could not start file provider socket client properly as could not get container url")
             return nil;
         }
 
@@ -66,7 +66,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     
     func invalidate() {
         // TODO: cleanup any resources
-        NSLog("Extension for domain %@ is being torn down", domain.displayName)
+        Logger.fileProviderExtension.debug("Extension for domain \(self.domain.displayName) is being torn down")
     }
 
     // MARK: NSFileProviderReplicatedExtension protocol methods
@@ -74,10 +74,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
         // resolve the given identifier to a record in the model
 
-        NSLog("Received item request for item with identifier: %@", identifier.rawValue)
+        Logger.fileProviderExtension.debug("Received item request for item with identifier: \(identifier.rawValue)")
         if identifier == .rootContainer {
             guard let ncAccount = ncAccount else {
-                NSLog("Not providing item: %@ as account not set up yet", identifier.rawValue)
+                Logger.fileProviderExtension.error("Not providing item: \(identifier.rawValue) as account not set up yet")
                 completionHandler(nil, NSFileProviderError(.notAuthenticated))
                 return Progress()
             }
@@ -110,17 +110,17 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     
     func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?, request: NSFileProviderRequest, completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
 
-        NSLog("Received request to fetch contents of item with identifier: %@", itemIdentifier.rawValue)
+        Logger.fileProviderExtension.debug("Received request to fetch contents of item with identifier: \(itemIdentifier.rawValue)")
 
         guard requestedVersion == nil else {
             // TODO: Add proper support for file versioning
-            NSLog("Can't return contents for specific version as this is not supported.")
+            Logger.fileProviderExtension.error("Can't return contents for specific version as this is not supported.")
             completionHandler(nil, nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
             return Progress()
         }
 
         guard ncAccount != nil else {
-            NSLog("Not fetching contents item: %@ as account not set up yet", itemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Not fetching contents item: \(itemIdentifier.rawValue) as account not set up yet")
             completionHandler(nil, nil, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -128,20 +128,20 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ocId = itemIdentifier.rawValue
         guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-            NSLog("Could not acquire metadata of item with identifier: %@", itemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(itemIdentifier.rawValue)")
             completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
             return Progress()
         }
 
         guard !metadata.isDocumentViewableOnly else {
-            NSLog("Could not get contents of item as is readonly: %@ %@", itemIdentifier.rawValue, metadata.fileName)
+            Logger.fileProviderExtension.error("Could not get contents of item as is readonly: \(itemIdentifier.rawValue) \(metadata.fileName)")
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
 
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
-        NSLog("Fetching file with name %@ at URL: %@", metadata.fileName, serverUrlFileName)
+        Logger.fileProviderExtension.debug("Fetching file with name \(metadata.fileName) at URL: \(serverUrlFileName)")
 
         let progress = Progress()
 
@@ -150,7 +150,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
 
             guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading) else {
-                NSLog("Could not acquire updated metadata of item with identifier: %@", itemIdentifier.rawValue)
+                Logger.fileProviderExtension.error("Could not acquire updated metadata of item with identifier: \(itemIdentifier.rawValue)")
                 completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
@@ -168,7 +168,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
 
                 if error == .success {
-                    NSLog("Acquired contents of item with identifier: %@ and filename: %@", itemIdentifier.rawValue, updatedMetadata.fileName)
+                    Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue) and filename: \(updatedMetadata.fileName)")
                     updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
                     updatedMetadata.date = (date ?? NSDate()) as Date
                     updatedMetadata.etag = etag ?? ""
@@ -184,7 +184,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                     completionHandler(fileNameLocalPath, fpItem, nil)
                 } else {
-                    NSLog("Could not acquire contents of item with identifier: %@ and fileName: %@", itemIdentifier.rawValue, updatedMetadata.fileName)
+                    Logger.fileTransfer.error("Could not acquire contents of item with identifier: \(itemIdentifier.rawValue) and fileName: \(updatedMetadata.fileName)")
 
                     updatedMetadata.status = NextcloudItemMetadataTable.Status.downloadError.rawValue
                     updatedMetadata.sessionError = error.errorDescription
@@ -195,7 +195,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
             }
         } catch let error {
-            NSLog("Could not find local path for file %@, received error: %@", metadata.fileNameView, error.localizedDescription)
+            Logger.fileProviderExtension.error("Could not find local path for file \(metadata.fileName), received error: \(error)")
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
@@ -205,16 +205,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     func createItem(basedOn itemTemplate: NSFileProviderItem, fields: NSFileProviderItemFields, contents url: URL?, options: NSFileProviderCreateItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
         // TODO: a new item was created on disk, process the item's creation
 
-        NSLog("Received create item request for item with identifier: %@ and filename: %@", itemTemplate.itemIdentifier.rawValue, itemTemplate.filename)
+        Logger.fileProviderExtension.debug("Received create item request for item with identifier: \(itemTemplate.itemIdentifier.rawValue) and filename: \(itemTemplate.filename)")
 
         guard itemTemplate.contentType != .symbolicLink else {
-            NSLog("Cannot create item, symbolic links not supported.")
+            Logger.fileProviderExtension.error("Cannot create item, symbolic links not supported.")
             completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
             return Progress()
         }
 
         guard let ncAccount = ncAccount else {
-            NSLog("Not creating item: %@ as account not set up yet", itemTemplate.itemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Not creating item: \(itemTemplate.itemIdentifier.rawValue) as account not set up yet")
             completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -226,7 +226,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
-            NSLog("Not creating item: %@ as it may already exist", itemTemplate.itemIdentifier.rawValue)
+            Logger.fileProviderExtension.info("Not creating item: \(itemTemplate.itemIdentifier.rawValue) as it may already exist")
             completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
@@ -246,7 +246,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         guard let parentItemMetadata = parentItemMetadata else {
-            NSLog("Not creating item: %@, could not find metadata for parentItemIdentifier %@", itemTemplate.itemIdentifier.rawValue, parentItemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Not creating item: \(itemTemplate.itemIdentifier.rawValue), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue)")
             completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
@@ -254,19 +254,20 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemMetadata.serverUrl + "/" + itemTemplate.filename
 
-        NSLog("About to upload item with identifier: %@ of type: %@ (is folder: %@) and filename: %@ to server url: %@ with contents located at: %@", itemTemplate.itemIdentifier.rawValue, itemTemplate.contentType?.identifier ?? "UNKNOWN", itemTemplateIsFolder ? "yes" : "no", itemTemplate.filename, newServerUrlFileName, fileNameLocalPath)
+        Logger.fileProviderExtension.debug("About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName) with contents located at: \(fileNameLocalPath)")
 
         if itemTemplateIsFolder {
             self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
                 guard error == .success else {
-                    NSLog("Could not create new folder with name: %@, received error: %@", itemTemplate.filename, error.errorDescription)
+                    Logger.fileTransfer.error("Could not create new folder with name: \(itemTemplate.filename), received error: \(error)")
                     completionHandler(itemTemplate, [], false, error.toFileProviderError())
                     return
                 }
 
+                // Read contents after creation
                 self.ncKit.readFileOrFolder(serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true) { account, files, _, error in
                     guard error == .success else {
-                        NSLog("Could not read new folder with name: %@, received error: %@", itemTemplate.filename, error.errorDescription)
+                        Logger.fileTransfer.error("Could not read new folder with name: \(itemTemplate.filename), received error: \(error)")
                         return
                     }
 
@@ -302,12 +303,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
             guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
-                NSLog("Could not upload item with filename: %@, received error: %@", itemTemplate.filename, error.errorDescription)
+                Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename), received error: \(error)")
                 completionHandler(itemTemplate, [], false, error.toFileProviderError())
                 return
             }
 
-            NSLog("Successfully uploaded item with identifier: %@ and filename: %@", ocId, itemTemplate.filename)
+            Logger.fileTransfer.info("Successfully uploaded item with identifier: \(ocId) and filename: \(itemTemplate.filename)")
 
             let newMetadata = NextcloudItemMetadataTable()
             newMetadata.date = (date ?? NSDate()) as Date
@@ -340,10 +341,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
 
-        NSLog("Received modify item request for item with identifier: %@ and filename: %@", item.itemIdentifier.rawValue, item.filename)
+        Logger.fileProviderExtension.debug("Received modify item request for item with identifier: \(item.itemIdentifier.rawValue) and filename: \(item.filename)")
 
         guard let ncAccount = ncAccount else {
-            NSLog("Not modifying item: %@ as account not set up yet", item.itemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue) as account not set up yet")
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -355,7 +356,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         if options.contains(.mayAlreadyExist) {
             // TODO: This needs to be properly handled with a check in the db
-            NSLog("Modification for item: %@ may already exist", item.itemIdentifier.rawValue)
+            Logger.fileProviderExtension.warning("Modification for item: \(item.itemIdentifier.rawValue) may already exist")
         }
 
         var parentItemMetadata: NextcloudDirectoryMetadataTable?
@@ -373,7 +374,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         guard let parentItemMetadata = parentItemMetadata else {
-            NSLog("Not modifying item: %@, could not find metadata for parentItemIdentifier %@", item.itemIdentifier.rawValue, parentItemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue)")
             completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
             return Progress()
         }
@@ -381,16 +382,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let fileNameLocalPath = newContents?.path ?? ""
         let newServerUrlFileName = parentItemMetadata.serverUrl + "/" + item.filename
 
-        NSLog("About to upload item with identifier: %@ of type: %@ (is folder: %@) and filename: %@ to server url: %@ with contents located at: %@", item.itemIdentifier.rawValue, item.contentType?.identifier ?? "UNKNOWN", itemTemplateIsFolder ? "yes" : "no", item.filename, newServerUrlFileName, fileNameLocalPath)
+        Logger.fileProviderExtension.debug("About to upload modified item with identifier: \(item.itemIdentifier.rawValue) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename) to server url: \(newServerUrlFileName) with contents located at: \(fileNameLocalPath)")
 
         var modifiedItem = item
 
         if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
-            NSLog("Changed fields for item with filename %@ includes filename or parentitemidentifier...", item.filename)
             let ocId = item.itemIdentifier.rawValue
+            Logger.fileProviderExtension.debug("Changed fields for item \(ocId) with filename \(item.filename) includes filename or parentitemidentifier...")
 
             guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
-                NSLog("Could not acquire metadata of item with identifier: %@", ocId)
+                Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(item.itemIdentifier.rawValue)")
                 completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
@@ -408,7 +409,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                         serverUrlFileNameDestination: newServerUrlFileName,
                                         overwrite: false) { account, error in
                 guard error == .success else {
-                    NSLog("Could not move file or folder with name: %@, received error: %@", item.filename, error.errorDescription)
+                    Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName) to \(newServerUrlFileName), received error: \(error)")
                     renameError = error.toFileProviderError()
                     dispatchGroup.leave()
                     return
@@ -423,7 +424,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
 
                 guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
-                    NSLog("Could not acquire metadata of item with identifier: %@", ocId)
+                    Logger.fileTransfer.error("Could not acquire metadata of item with identifier: \(ocId), cannot correctly inform of modification")
                     renameError = NSFileProviderError(.noSuchItem)
                     dispatchGroup.leave()
                     return
@@ -436,20 +437,20 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             dispatchGroup.wait()
 
             guard renameError == nil else {
-                NSLog("Stopping rename of item with ocId %@ due to error.", ocId)
+                Logger.fileTransfer.error("Stopping rename of item with ocId \(ocId) due to error: \(renameError)")
                 completionHandler(modifiedItem, [], false, renameError)
                 return Progress()
             }
 
             guard !itemTemplateIsFolder else {
-                NSLog("Only handling renaming for folders. ocId: %@", modifiedItem.itemIdentifier.rawValue)
+                Logger.fileTransfer.debug("Only handling renaming for folders. ocId: \(ocId)")
                 completionHandler(modifiedItem, [], false, nil)
                 return Progress()
             }
         }
 
         guard !itemTemplateIsFolder else {
-            NSLog("System requested modification for folder with ocID %@ (%@) of something other than folder name.", item.itemIdentifier.rawValue, newServerUrlFileName)
+            Logger.fileTransfer.debug("System requested modification for folder with ocID \(item.itemIdentifier.rawValue) (\(newServerUrlFileName)) of something other than folder name.")
             completionHandler(modifiedItem, [], false, nil)
             return Progress()
         }
@@ -457,10 +458,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let progress = Progress()
 
         if changedFields.contains(.contents) {
-            NSLog("Item modification for %@ includes contents", item.filename)
+            Logger.fileProviderExtension.debug("Item modification for \(item.itemIdentifier.rawValue) \(item.filename) includes contents")
 
             guard newContents != nil else {
-                NSLog("WARNING. Could not upload modified contents as was provided nil contents url. ocId: %@", item.itemIdentifier.rawValue)
+                Logger.fileProviderExtension.warning("WARNING. Could not upload modified contents as was provided nil contents url. ocId: \(item.itemIdentifier.rawValue)")
                 completionHandler(modifiedItem, [], false, NSFileProviderError(.noSuchItem))
                 return Progress()
             }
@@ -477,12 +478,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
                 guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
-                    NSLog("Could not upload item with filename: %@, received error: %@", item.filename, error.errorDescription)
+                    Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue) with filename: \(item.filename), received error: \(error)")
                     completionHandler(modifiedItem, [], false, error.toFileProviderError())
                     return
                 }
 
-                NSLog("Successfully uploaded item with identifier: %@ and filename: %@", ocId, item.filename)
+                Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId) and filename: \(item.filename)")
 
                 let newMetadata = NextcloudItemMetadataTable()
                 newMetadata.date = (date ?? NSDate()) as Date
@@ -507,7 +508,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 completionHandler(modifiedItem, [], false, nil)
             }
         } else {
-            NSLog("Nothing more to do with %@, modifications complete", item.filename)
+            Logger.fileProviderExtension.debug("Nothing more to do with \(item.itemIdentifier.rawValue) \(item.filename), modifications complete")
             completionHandler(modifiedItem, [], false, nil)
         }
 
@@ -515,12 +516,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     }
     
     func deleteItem(identifier: NSFileProviderItemIdentifier, baseVersion version: NSFileProviderItemVersion, options: NSFileProviderDeleteItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (Error?) -> Void) -> Progress {
-        // TODO: an item was deleted on disk, process the item's deletion
 
-        NSLog("Received delete item request for item with identifier: %@", identifier.rawValue)
+        Logger.fileProviderExtension.debug("Received delete item request for item with identifier: \(identifier.rawValue)")
 
         guard ncAccount != nil else {
-            NSLog("Not deleting item: %@ as account not set up yet", identifier.rawValue)
+            Logger.fileProviderExtension.error("Not deleting item: \(identifier.rawValue) as account not set up yet")
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
@@ -540,12 +540,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
             guard error == .success else {
-                NSLog("Could not delete item with ocId %@ and fileName %@, received error: %@", error.error.localizedDescription)
+                Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue) at \(serverFileNameUrl), received error: \(error)")
                 completionHandler(error.toFileProviderError())
                 return
             }
 
-            NSLog("Successfully delete item with identifier: %@ and filename: %@", ocId, serverFileNameUrl)
+            Logger.fileTransfer.info("Successfully deleted item with identifier: \(identifier.rawValue) at: \(serverFileNameUrl)")
 
             if itemMetadata.directory {
                 dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
@@ -564,7 +564,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
 
         guard let ncAccount = ncAccount else {
-            NSLog("Not providing enumerator for container with identifier %@ yet as account not set up", containerItemIdentifier.rawValue)
+            Logger.fileProviderExtension.error("Not providing enumerator for container with identifier \(containerItemIdentifier.rawValue) yet as account not set up")
             throw NSFileProviderError(.notAuthenticated)
         }
 
@@ -573,13 +573,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
     func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
         guard let ncAccount = self.ncAccount else {
-            NSLog("Not purging stale local file metadatas, account not set up")
+            Logger.fileProviderExtension.error("Not purging stale local file metadatas, account not set up")
             completionHandler()
             return
         }
 
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            NSLog("Could not get file provider manager for domain: %@", domain.displayName)
+            Logger.fileProviderExtension.error("Could not get file provider manager for domain: \(self.domain.displayName)")
             completionHandler()
             return
         }
@@ -604,7 +604,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
     private func signalEnumeratorAfterAccountSetup() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            NSLog("Could not get file provider manager for domain %@, cannot notify after account setup", domain)
+            Logger.fileProviderExtension.error("Could not get file provider manager for domain \(self.domain.displayName), cannot notify after account setup")
             return
         }
 
@@ -612,14 +612,14 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         fpManager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
-                NSLog("Error resolving not authenticated, received error: %@", error!.localizedDescription)
+                Logger.fileProviderExtension.error("Error resolving not authenticated, received error: \(error!)")
             }
         }
 
-        NSLog("Signalling enumerators for user %@ at server %@", ncAccount!.username, ncAccount!.serverUrl)
+        Logger.fileProviderExtension.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
-                NSLog("Error signalling enumerator for working set, received error: %@", error!.localizedDescription)
+                Logger.fileProviderExtension.error("Error signalling enumerator for working set, received error: \(error!.localizedDescription)")
             }
         }
     }
@@ -634,12 +634,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                      nextcloudVersion: 25,
                      delegate: nil) // TODO: add delegate methods for self
 
-        NSLog("Nextcloud account set up in File Provider extension for user: %@ at server: %@", user, serverUrl)
+        Logger.fileProviderExtension.info("Nextcloud account set up in File Provider extension for user: \(user) at server: \(serverUrl)")
 
         signalEnumeratorAfterAccountSetup()
     }
 
     func removeAccountConfig() {
+        Logger.fileProviderExtension.info("Received instruction to remove account data for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl)")
         ncAccount = nil
     }
 }
