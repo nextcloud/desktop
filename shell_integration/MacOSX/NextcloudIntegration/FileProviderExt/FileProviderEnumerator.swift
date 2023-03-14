@@ -81,6 +81,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         let dbManager = NextcloudFilesDatabaseManager.shared
 
+        // If we don't have any items in the database, ignore this and go for a normal serverUrl read.
+        // By default we set the serverUrl to be the webdav files root when we are provided a system container id.
+        // However, if we do have items, we want to do a recursive scan of all the folders in the server that
+        // ** we have already explored ** . This is to not kill the server.
         if enumeratedItemIdentifier == .workingSet && dbManager.anyItemMetadatasForAccount(ncAccount.ncKitAccount) {
             if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
                 page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
@@ -102,13 +106,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
                         guard readError == nil else {
                             NSLog("Finishing enumeration of working set directory %@ with error %@", directoryMetadata.serverUrl, readError!.localizedDescription)
-
-                            let nkReadError = NKError(error: readError!)
-                            if nkReadError.isNotFoundError {
-                                NSLog("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
-                                dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
-                            }
-
                             dispatchGroup.leave()
                             return
                         }
