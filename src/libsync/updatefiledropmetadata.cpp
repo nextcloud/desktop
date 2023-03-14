@@ -121,7 +121,14 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
     qCDebug(lcUpdateFileDropMetadataJob) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
     // Encrypt File!
-    _metadata.reset(new FolderMetadata(propagator()->account(), statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), _path));
+    SyncJournalFileRecord rec;
+    if (!propagator()->_journal->getTopLevelE2eFolderRecord(_path, &rec) || !rec.isValid()) {
+        unlockFolder();
+        return;
+    }
+
+    const auto topLevelFolderPath = rec.path() == _path ? QStringLiteral("/") : rec.path();
+    _metadata.reset(new FolderMetadata(propagator()->account(), statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), topLevelFolderPath));
     connect(_metadata.data(), &FolderMetadata::setupComplete, this, [this] {
         if (!_metadata->moveFromFileDropToFiles()) {
             unlockFolder();

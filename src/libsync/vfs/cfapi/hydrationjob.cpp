@@ -200,7 +200,13 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (see HydrationJob::onNewConnection() for explanation of next steps)
     qCDebug(lcHydration) << "Metadata Received reading" << e2eMangledName();
     const auto filename = e2eMangledName();
-    const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), filename));
+    SyncJournalFileRecord rec;
+    if (!_journal->getTopLevelE2eFolderRecord(_remoteParentPath, &rec) || !rec.isValid()) {
+        emitFinished(Error);
+        return;
+    }
+    const auto topLevelFolderPath = rec.path() == _remoteParentPath ? QStringLiteral("/") : rec.path();
+    const QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), topLevelFolderPath));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, metadata, filename] {
         if (metadata->isMetadataSetup()) {
             const QVector<EncryptedFile> files = metadata->files();
@@ -376,9 +382,9 @@ void OCC::HydrationJob::handleNewConnectionForEncryptedFile()
 
     const auto remoteFilename = e2eMangledName();
     const auto remotePath = QString(rootPath + remoteFilename);
-    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+    const auto _remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
-    auto job = new LsColJob(_account, remoteParentPath, this);
+    auto job = new LsColJob(_account, _remoteParentPath, this);
     job->setProperties({ "resourcetype", "http://owncloud.org/ns:fileid" });
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &HydrationJob::slotCheckFolderId);

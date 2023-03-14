@@ -40,13 +40,13 @@ QString metadataStringFromOCsDocument(const QJsonDocument &ocsDoc)
 
 FolderMetadata::FolderMetadata(AccountPtr account,
                                const QByteArray &metadata,
-                               const QString &remotePath,
+                               const QString &topLevelFolderPath,
                                QObject *parent)
     : QObject(parent)
     , _account(account)
     , _initialMetadata(metadata)
 {
-    _topLevelFolderPath = remotePath;
+    _topLevelFolderPath = topLevelFolderPath;
 
     QJsonDocument doc = QJsonDocument::fromJson(metadata);
     qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
@@ -214,14 +214,14 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
     qCDebug(lcCseMetadata()) << "users: " << debugHelper.toJson(QJsonDocument::Compact);
 
     for (auto it = folderUsers.constBegin(); it != folderUsers.constEnd(); ++it) {
-        const auto folderUser = it->toObject();
-        const auto userId = folderUser.value(usersUserIdKey).toString();
-        _folderUsers[userId] = {
-            userId,
-            folderUser.value(usersCertificateKey).toString().toUtf8(),
-            folderUser.value(usersEncryptedMetadataKey).toString().toUtf8(),
-            folderUser.value(usersEncryptedFiledropKey).toString().toUtf8()
-        };
+        const auto folderUserObject = it->toObject();
+        const auto userId = folderUserObject.value(usersUserIdKey).toString();
+        FolderUser folderUser;
+        folderUser.userId = userId;
+        folderUser.certificatePem = folderUserObject.value(usersCertificateKey).toString().toUtf8();
+        folderUser.encryptedMetadataKey = folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8();
+        folderUser.encryptedFiledropKey = folderUserObject.value(usersEncryptedFiledropKey).toString().toUtf8();
+        _folderUsers[userId] = folderUser;
     }
 
     if (_folderUsers.contains(_account->davUser())) {
@@ -523,8 +523,12 @@ void FolderMetadata::setupEmptyMetadataV2()
     }
     
     if (!_topLevelFolderMetadata && _topLevelFolderPath.isEmpty() || isTopLevelFolder()) {
-        const auto encryptedLatestMetadataKey = encryptData(_metadataKey.toBase64());
-        _folderUsers[_account->davUser()] = {_account->davUser(), _account->e2e()->_certificate.toPem(), encryptedLatestMetadataKey};
+        FolderUser folderUser;
+        folderUser.userId = _account->davUser();
+        folderUser.certificatePem = _account->e2e()->_certificate.toPem();
+        folderUser.encryptedMetadataKey = encryptData(_metadataKey.toBase64());
+
+        _folderUsers[_account->davUser()] = folderUser;
     }
 
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
@@ -854,8 +858,11 @@ bool FolderMetadata::addUser(const QString &userId, const QSslCertificate certif
     }
 
     createNewMetadataKey();
-    const auto encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey).toBase64();
-    _folderUsers[userId] = {userId, certificate.toPem(), encryptedMetadataKey};
+    FolderUser newFolderUser;
+    newFolderUser.userId = userId;
+    newFolderUser.certificatePem = certificate.toPem();
+    newFolderUser.encryptedMetadataKey = encryptData(_metadataKey, certificatePublicKey).toBase64();
+    _folderUsers[userId] = newFolderUser;
     updateUsersEncryptedMetadataKey();
 
     return true;
@@ -899,7 +906,7 @@ void FolderMetadata::updateUsersEncryptedMetadataKey()
         return;
     }
     for (auto it = _folderUsers.constBegin(); it != _folderUsers.constEnd(); ++it) {
-        const auto folderUser = it.value();
+        auto folderUser = it.value();
 
         const QSslCertificate certificate(folderUser.certificatePem);
         const auto certificatePublicKey = certificate.publicKey();
@@ -913,21 +920,10 @@ void FolderMetadata::updateUsersEncryptedMetadataKey()
             qCWarning(lcCseMetadata()) << "Could not update folder users with empty encryptedMetadataKey!";
             continue;
         }
-        const auto existingFolderUser = _folderUsers.find(it.key());
-        if (existingFolderUser != _folderUsers.end()) {
-            _folderUsers[it.key()] = {
-                folderUser.userId,
-                folderUser.certificatePem,
-                encryptedMetadataKey, {}
-            };
-        } else {
-            _folderUsers[it.key()] = {
-                folderUser.userId,
-                folderUser.certificatePem,
-                encryptedMetadataKey,
-                existingFolderUser.value().encryptedFiledropKey
-            };
-        }
+
+        folderUser.encryptedMetadataKey = encryptedMetadataKey;
+
+        _folderUsers[it.key()] = folderUser;
     }
 }
 

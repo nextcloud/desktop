@@ -114,6 +114,7 @@ private:
     QLocalSocket *_signalSocket = nullptr;
     GETFileJob *_job = nullptr;
     Status _status = Success;
+    QString _remoteParentPath;
 };
 
 } // namespace OCC

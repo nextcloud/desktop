@@ -31,7 +31,7 @@ class OWNCLOUDSYNC_EXPORT FolderMetadata : public QObject
 public:
     FolderMetadata(AccountPtr account,
                    const QByteArray &metadata,
-                   const QString &remotePath,
+                   const QString &topLevelFolderPath,
                    QObject *parent = nullptr);
     [[nodiscard]] QVector<EncryptedFile> files() const;
 
