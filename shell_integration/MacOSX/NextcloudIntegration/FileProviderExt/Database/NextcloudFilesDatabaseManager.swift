@@ -74,6 +74,10 @@ class NextcloudFilesDatabaseManager : NSObject {
         return realm
     }
 
+    private static func itemMetadataLogString(_ metadata: NextcloudItemMetadataTable) -> String {
+        return "ocID: \(metadata.ocId), etag: \(metadata.etag), fileName: \(metadata.fileName)"
+    }
+
     func anyItemMetadatasForAccount(_ account: String) -> Bool {
         return !ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@", account).isEmpty
     }
