@@ -305,6 +305,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
             EncryptedFile file;
             file.encryptedFilename = it.key();
             file.originalFilename = folderName;
+            _files.push_back(file);
         }
     }
 }
