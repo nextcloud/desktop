@@ -109,10 +109,8 @@ void SelectiveSyncWidget::refreshFolders()
 
     auto *job = new LsColJob(_account, _folderPath, this);
     auto props = QList<QByteArray>() << "resourcetype"
-                                     << "http://owncloud.org/ns:size";
-    if (_account->capabilities().clientSideEncryptionAvailable()) {
-        props << "http://nextcloud.org/ns:is-encrypted";
-    }
+                                     << "http://owncloud.org/ns:size"
+                                     << "http://nextcloud.org/ns:is-encrypted";
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &SelectiveSyncWidget::slotUpdateDirectories);

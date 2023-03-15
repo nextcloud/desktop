@@ -310,10 +310,6 @@ void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
 
 bool PropagateItemJob::hasEncryptedAncestor() const
 {
-    if (!propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
-        return false;
-    }
-
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
@@ -1019,8 +1015,7 @@ bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 
         const auto accountPtr = account();
 
-        if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
-            !parentRec.isValid() ||
+        if (!parentRec.isValid() ||
             !parentRec._isE2eEncrypted) {
             return false;
         }

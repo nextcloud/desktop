@@ -618,10 +618,8 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     auto props = QList<QByteArray>() << "resourcetype"
                                      << "http://owncloud.org/ns:size"
                                      << "http://owncloud.org/ns:permissions"
-                                     << "http://owncloud.org/ns:fileid";
-    if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
-        props << "http://nextcloud.org/ns:is-encrypted";
-    }
+                                     << "http://owncloud.org/ns:fileid"
+                                     << "http://nextcloud.org/ns:is-encrypted";
     job->setProperties(props);
 
     job->setTimeout(60 * 1000);
