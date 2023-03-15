@@ -21,6 +21,7 @@ Summary
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 * Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
 * Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
+* Enhancement - Display space subtitle if available: [#10577](https://github.com/owncloud/client/issues/10577)
 * Enhancement - Open sharing options in Web: [#10590](https://github.com/owncloud/client/pull/10590)
 
 Details
@@ -101,6 +102,12 @@ Details
 * Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
 
    https://github.com/owncloud/client/issues/10572
+
+* Enhancement - Display space subtitle if available: [#10577](https://github.com/owncloud/client/issues/10577)
+
+   If a subtitle is set on a spaced we now display it instead of the local path.
+
+   https://github.com/owncloud/client/issues/10577
 
 * Enhancement - Open sharing options in Web: [#10590](https://github.com/owncloud/client/pull/10590)
 
