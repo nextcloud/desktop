@@ -41,7 +41,6 @@ void FileProviderSocketController::slotOnDisconnected()
 {
     qCInfo(lcFileProviderSocketController) << "File provider socket disconnected";
     _socket->deleteLater();
-    Q_EMIT socketDestroyed(_socket);
 }
 
 void FileProviderSocketController::slotSocketDestroyed(const QObject * const object)
