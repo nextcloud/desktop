@@ -129,7 +129,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                         FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: self.ncAccount, ncKit: self.ncKit) { metadatas, _, _, _, readError in
                             guard readError == nil else {
-                                Logger.enumeration.error("Finishing enumeration of working set directory \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!, privacy: .public)")
+                                Logger.enumeration.error("Finishing enumeration of working set directory \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
 
                                 let nkError = NKError(error: readError!)
                                 if nkError.isUnauthenticatedError || nkError.isCouldntConnectError {
@@ -188,7 +188,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, _, _, _, readError in
 
                 guard readError == nil else {
-                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!, privacy: .public)")
+                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
 
                     let nkReadError = NKError(error: readError!)
                     observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
@@ -271,7 +271,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         // handling below or from the completeChangesObserver
         FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
-                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(readError!, privacy: .public)")
+                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(readError!.localizedDescription, privacy: .public)")
 
                 let nkReadError = NKError(error: readError!)
                 let fpError = nkReadError.toFileProviderError()
@@ -446,7 +446,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         Logger.enumeration.debug("About to read: \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
         FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
             guard readError == nil else {
-                Logger.enumeration.error("Finishing enumeration of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with \(readError!, privacy: .public)")
+                Logger.enumeration.error("Finishing enumeration of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with \(readError!.localizedDescription, privacy: .public)")
 
                 let nkReadError = NKError(error: readError!)
                 if nkReadError.isNotFoundError {
@@ -527,7 +527,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
             guard error == .success else {
-                Logger.enumeration.error("0 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error, privacy: .public)")
+                Logger.enumeration.error("0 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
@@ -565,7 +565,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
-                    Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error, privacy: .public)")
+                    Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
                     completionHandler(nil, nil, nil, nil, error.error)
                     return
                 }
