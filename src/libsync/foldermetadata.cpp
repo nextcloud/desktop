@@ -28,7 +28,7 @@ constexpr auto sharingKey = "sharing";
 constexpr auto usersKey = "users";
 constexpr auto usersUserIdKey = "userId";
 constexpr auto usersCertificateKey = "certificate";
-constexpr auto usersEncryptedMetadataKey = "encryptedMetadataKey";
+constexpr auto usersEncryptedMetadataKey = "encryptedKey";
 constexpr auto usersEncryptedFiledropKey = "encryptedFiledropKey";
 constexpr auto versionKey = "version";
 
@@ -226,6 +226,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         FolderUser folderUser;
         folderUser.userId = userId;
         folderUser.certificatePem = folderUserObject.value(usersCertificateKey).toString().toUtf8();
+        auto metadataKey = folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8();
         folderUser.encryptedMetadataKey = QByteArray::fromBase64(folderUserObject.value(usersEncryptedMetadataKey).toString().toUtf8());
         folderUser.encryptedFiledropKey = QByteArray::fromBase64(folderUserObject.value(usersEncryptedFiledropKey).toString().toUtf8());
         _folderUsers[userId] = folderUser;

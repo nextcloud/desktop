@@ -542,13 +542,13 @@ QByteArray decryptStringAsymmetric(const QByteArray &privateKeyPem, const QByteA
     const auto key = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
 
     // Also base64 decode the result
-    const auto decryptResult = EncryptionHelper::decryptStringAsymmetric(key, QByteArray::fromBase64(data));
+    const auto decryptResult = EncryptionHelper::decryptStringAsymmetric(key, data);
 
     if (decryptResult.isEmpty()) {
         qCDebug(lcCse()) << "ERROR. Could not decrypt data";
         return {};
     }
-    return QByteArray::fromBase64(decryptResult);
+    return decryptResult;
 }
 
 QByteArray encryptStringSymmetric(const QByteArray &key, const QByteArray &data)
@@ -839,9 +839,9 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     auto key = PKey::readPrivateKey(privateKeyBio);
 
-    QByteArray decryptResult = QByteArray::fromBase64(EncryptionHelper::decryptStringAsymmetric(key, encryptedData));
+    QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(key, encryptedData);
 
-    if (data != decryptResult) {
+    if (data.toBase64() != decryptResult.toBase64()) {
         qCInfo(lcCse()) << "invalid private key";
         return false;
     }
