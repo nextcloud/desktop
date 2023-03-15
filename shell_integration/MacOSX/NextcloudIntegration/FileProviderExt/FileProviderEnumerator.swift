@@ -246,14 +246,16 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         if enumeratedItemIdentifier == .workingSet {
             Logger.enumeration.debug("Enumerating changes in working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-            let scanResults = FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: self.ncAccount, ncKit: self.ncKit)
+            FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: self.ncAccount, ncKit: self.ncKit) { newMetadatas, updatedMetadatas, deletedMetadatas in
 
-            FileProviderEnumerator.completeChangesObserver(observer,
-                                                           anchor: anchor,
-                                                           ncKit: self.ncKit,
-                                                           newMetadatas: scanResults.newMetadatas,
-                                                           updatedMetadatas: scanResults.updatedMetadatas,
-                                                           deletedMetadatas: scanResults.deletedMetadatas)
+                Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
+                FileProviderEnumerator.completeChangesObserver(observer,
+                                                               anchor: anchor,
+                                                               ncKit: self.ncKit,
+                                                               newMetadatas: newMetadatas,
+                                                               updatedMetadatas: updatedMetadatas,
+                                                               deletedMetadatas: deletedMetadatas)
+            }
             return
         } else if enumeratedItemIdentifier == .trashContainer {
             Logger.enumeration.debug("Enumerating changes in trash set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
@@ -406,14 +408,23 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
     }
 
-    private static func fullRecursiveScanForChanges(ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+    private static func fullRecursiveScanForChanges(ncAccount: NextcloudAccount, ncKit: NextcloudKit, completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable]) -> Void) {
 
         let rootContainerDirectoryMetadata = NextcloudDirectoryMetadataTable()
         rootContainerDirectoryMetadata.serverUrl = ncAccount.davFilesUrl
         rootContainerDirectoryMetadata.account = ncAccount.ncKitAccount
         rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
-        return scanRecursivelyForChanges(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit)
+        // Create a serial dispatch queue
+        let dispatchQueue = DispatchQueue(label: "recursiveChangeEnumerationQueue", qos: .background)
+
+        dispatchQueue.async {
+            let results = scanRecursivelyForChanges(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit)
+
+            DispatchQueue.main.async {
+                completionHandler(results.newMetadatas, results.updatedMetadatas, results.deletedMetadatas)
+            }
+        }
     }
 
     private static func scanRecursivelyForChanges(_ directoryMetadata: NextcloudDirectoryMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
