@@ -15,9 +15,13 @@
 import Foundation
 
 extension Progress {
-    func copyCurrentStateToProgress(_ otherProgress: Progress) {
-        otherProgress.cancellationHandler = self.cancellationHandler
-        otherProgress.pausingHandler = self.pausingHandler
+    func copyCurrentStateToProgress(_ otherProgress: Progress, includeHandlers: Bool = false) {
+        if includeHandlers {
+            otherProgress.cancellationHandler = self.cancellationHandler
+            otherProgress.pausingHandler = self.pausingHandler
+            otherProgress.resumingHandler = self.resumingHandler
+        }
+        
         otherProgress.totalUnitCount = self.totalUnitCount
         otherProgress.completedUnitCount = self.completedUnitCount
         otherProgress.estimatedTimeRemaining = self.estimatedTimeRemaining
@@ -38,9 +42,9 @@ extension Progress {
         }
     }
 
-    func copyOfCurrentState() -> Progress {
+    func copyOfCurrentState(includeHandlers: Bool = false) -> Progress {
         let newProgress = Progress()
-        copyCurrentStateToProgress(newProgress)
+        copyCurrentStateToProgress(newProgress, includeHandlers: includeHandlers)
         return newProgress
     }
 }
