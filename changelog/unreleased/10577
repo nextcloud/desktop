@@ -1,0 +1,5 @@
+Enhancement: Display space subtitle if available
+
+If a subtitle is set on a spaced we now display it instead of the local path.
+
+https://github.com/owncloud/client/issues/10577

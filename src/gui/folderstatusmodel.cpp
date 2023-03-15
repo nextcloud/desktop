@@ -285,6 +285,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Columns::SyncProgressOverallString:
             return progress._overallSyncString;
         case Columns::FolderSyncText:
+            if (_accountState->supportsSpaces()) {
+                const auto drive = _accountState->account()->spacesManager()->driveByUrl(f->webDavUrl());
+                if (!drive.getDescription().isEmpty()) {
+                    return drive.getDescription();
+                }
+            }
             return tr("Local folder: %1").arg(f->shortGuiLocalPath());
         case Columns::IsReady:
             return f->isReady();

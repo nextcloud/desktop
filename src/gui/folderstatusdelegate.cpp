@@ -28,7 +28,7 @@
 #include <QApplication>
 
 namespace {
-const int barHeightC = 7; // same height as quota bar
+const int barHeightC = 7;
 
 QFont makeAliasFont(const QFont &normalFont)
 {
