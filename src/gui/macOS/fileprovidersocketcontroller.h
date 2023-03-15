@@ -51,8 +51,6 @@ private slots:
     void sendNotAuthenticated() const;
 
 private:
-    static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);
-
     QPointer<QLocalSocket> _socket;
     AccountStatePtr _accountState;
 };

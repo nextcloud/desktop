@@ -673,6 +673,23 @@ void FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout()
     }
 }
 
+AccountStatePtr FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier)
+{
+    if (domainIdentifier.isEmpty()) {
+        qCWarning(lcMacFileProviderDomainManager) << "Cannot return accountstateptr for empty domain identifier";
+        return AccountStatePtr();
+    }
+
+    const auto accountUserId = accountIdFromDomainId(domainIdentifier);
+    const auto accountForReceivedDomainIdentifier = AccountManager::instance()->accountFromUserId(accountUserId);
+    if (!accountForReceivedDomainIdentifier) {
+        qCWarning(lcMacFileProviderDomainManager) << "Could not find account matching user id matching file provider domain identifier:"
+                                                  << domainIdentifier;
+    }
+
+    return accountForReceivedDomainIdentifier;
+}
+
 } // namespace Mac
 
 } // namespace OCC

@@ -18,6 +18,7 @@
 #include <QLoggingCategory>
 
 #include "accountmanager.h"
+#include "fileproviderdomainmanager.h"
 
 namespace OCC {
 
@@ -85,27 +86,12 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
     const auto argument = receivedLine.mid(argPos + 1);
 
     if (command == QStringLiteral("FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY")) {
-        _accountState = accountStateFromFileProviderDomainIdentifier(argument);
+        _accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(argument);
         sendAccountDetails();
         return;
     }
 
     qCWarning(lcFileProviderSocketController) << "Unknown command or reply:" << receivedLine;
-}
-
-AccountStatePtr FileProviderSocketController::accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier)
-{
-    Q_ASSERT(!domainIdentifier.isEmpty());
-
-    // We use Account's userIdAtHostWithPort() as the file provider domain's identifier in FileProviderDomainManager.
-    // We can use this string to get a matching account here.
-    const auto accountForReceivedDomainIdentifier = AccountManager::instance()->accountFromUserId(domainIdentifier);
-    if (!accountForReceivedDomainIdentifier) {
-        qCWarning(lcFileProviderSocketController) << "Could not find account matching user id matching file provider domain identifier:"
-                                                  << domainIdentifier;
-    }
-
-    return accountForReceivedDomainIdentifier;
 }
 
 void FileProviderSocketController::sendMessage(const QString &message) const

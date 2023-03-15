@@ -32,6 +32,8 @@ public:
     explicit FileProviderDomainManager(QObject * const parent = nullptr);
     ~FileProviderDomainManager() override;
 
+    static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);
+
 private slots:
     void setupFileProviderDomains();
 
