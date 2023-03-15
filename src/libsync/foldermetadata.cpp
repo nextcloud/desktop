@@ -384,13 +384,7 @@ bool FolderMetadata::isMetadataSetup() const
 EncryptedFile FolderMetadata::parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const
 {
     const auto fileObj = fileJSON.toObject();
-    // Decrypt encrypted part
-    const auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-    const auto decryptedFile = !_metadataKey.isEmpty() ? decryptJsonObject(encryptedFile, _metadataKey) : QByteArray{};
-    const auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
-    const auto decryptedFileObj = decryptedFileDoc.object();
-    if (decryptedFileObj["filename"].toString().isEmpty()) {
-        qCDebug(lcCseMetadata()) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Indented);
+    if (fileObj["filename"].toString().isEmpty()) {
         qCWarning(lcCseMetadata()) << "skipping encrypted file" << encryptedFilename << "metadata has an empty file name";
         return {};
     }
@@ -400,10 +394,10 @@ EncryptedFile FolderMetadata::parseFileAndFolderFromJson(const QString &encrypte
     file.metadataKey = fileObj[metadataKeyKey].toInt();
     file.authenticationTag = QByteArray::fromBase64(fileObj[authenticationTagKey].toString().toLocal8Bit());
     file.initializationVector = QByteArray::fromBase64(fileObj[initializationVectorKey].toString().toLocal8Bit());
-    file.originalFilename = decryptedFileObj["filename"].toString();
-    file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
-    file.mimetype = decryptedFileObj["mimetype"].toString().toLocal8Bit();
-    file.fileVersion = decryptedFileObj[versionKey].toInt();
+    file.originalFilename = fileObj["filename"].toString();
+    file.encryptionKey = QByteArray::fromBase64(fileObj["key"].toString().toLocal8Bit());
+    file.mimetype = fileObj["mimetype"].toString().toLocal8Bit();
+    file.fileVersion = fileObj[versionKey].toInt();
 
     // In case we wrongly stored "inode/directory" we try to recover from it
     if (file.mimetype == QByteArrayLiteral("inode/directory")) {
@@ -413,25 +407,13 @@ EncryptedFile FolderMetadata::parseFileAndFolderFromJson(const QString &encrypte
     return file;
 }
 
-QJsonObject FolderMetadata::encryptedFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const
+QJsonObject FolderMetadata::convertFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const
 {
-    QJsonObject encrypted;
-    encrypted.insert("key", QString(encryptedFile->encryptionKey.toBase64()));
-    encrypted.insert("filename", encryptedFile->originalFilename);
-    encrypted.insert("mimetype", QString(encryptedFile->mimetype));
-    encrypted.insert(versionKey, encryptedFile->fileVersion);
-
-    QJsonDocument encryptedDoc;
-    encryptedDoc.setObject(encrypted);
-
-    const QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), metadataKey);
-    if (encryptedEncrypted.isEmpty()) {
-        qCDebug(lcCseMetadata()) << "Metadata generation failed!";
-        return {};
-    }
-
     QJsonObject file;
-    file.insert("encrypted", encryptedEncrypted);
+    file.insert("key", QString(encryptedFile->encryptionKey.toBase64()));
+    file.insert("filename", encryptedFile->originalFilename);
+    file.insert("mimetype", QString(encryptedFile->mimetype));
+    file.insert(versionKey, encryptedFile->fileVersion);
     file.insert(initializationVectorKey, QString(encryptedFile->initializationVector.toBase64()));
     file.insert(authenticationTagKey, QString(encryptedFile->authenticationTag.toBase64()));
 
@@ -609,7 +591,7 @@ void FolderMetadata::handleEncryptionRequestV2()
     QJsonObject files;
     QJsonObject folders;
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; it++) {
-        const auto file = encryptedFileToJsonObject(it, _metadataKey);
+        const auto file = convertFileToJsonObject(it, _metadataKey);
         if (file.isEmpty()) {
             QTimer::singleShot(0, this, [this]() {
                 emit encryptionFinished({});
@@ -701,7 +683,7 @@ void FolderMetadata::handleEncryptionRequestV1()
 
     QJsonObject files;
     for (auto it = _files.constBegin(); it != _files.constEnd(); ++it) {
-        const auto file = encryptedFileToJsonObject(it, _metadataKey);
+        const auto file = convertFileToJsonObject(it, _metadataKey);
         if (file.isEmpty()) {
             QTimer::singleShot(0, this, [this]() {
                 emit encryptionFinished({});

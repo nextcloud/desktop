@@ -68,7 +68,7 @@ private:
 
     [[nodiscard]] EncryptedFile parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const;
 
-    [[nodiscard]] QJsonObject encryptedFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const;
+    [[nodiscard]] QJsonObject convertFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const;
 
     [[nodiscard]] bool isTopLevelFolder() const;
 
