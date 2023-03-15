@@ -944,18 +944,18 @@ void FolderMetadata::createNewMetadataKey()
         return;
     }
     if (!_metadataKey.isEmpty()) {
-        const auto existingMd5 = calcMd5(_metadataKey);
-        _keyChecksums.remove(existingMd5);
+        const auto existingHash = calcSha256(_metadataKey);
+        _keyChecksums.remove(existingHash);
     }
     _metadataKey = EncryptionHelper::generateRandom(16);
-    const auto newMd5 = calcMd5(_metadataKey);
-    _keyChecksums.insert(newMd5);
+    const auto newHash = calcSha256(_metadataKey);
+    _keyChecksums.insert(newHash);
 }
 
 bool FolderMetadata::verifyMetadataKey(const QByteArray &metadataKey) const
 {
-    const auto md5MetadataKey = calcMd5(metadataKey);
-    //return _keyChecksums.contains(md5MetadataKey);
+    const auto metadataKeyHash = calcSha256(metadataKey);
+    //return _keyChecksums.contains(metadataKeyHash);
     return true;
 }
 }
