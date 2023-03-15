@@ -19,6 +19,7 @@ Summary
 * Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Display quota for Spaces: [#10453](https://github.com/owncloud/client/issues/10453)
+* Enhancement - Branding: Allow the addition of buttons to open a url: [#10518](https://github.com/owncloud/client/issues/10518)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 * Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
 * Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
@@ -95,6 +96,13 @@ Details
    Quota is now displayed for all folders.
 
    https://github.com/owncloud/client/issues/10453
+
+* Enhancement - Branding: Allow the addition of buttons to open a url: [#10518](https://github.com/owncloud/client/issues/10518)
+
+   We added a branding option that allows to add buttons to the toolbar. Those buttons will then
+   open a hardcoded web page.
+
+   https://github.com/owncloud/client/issues/10518
 
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 
