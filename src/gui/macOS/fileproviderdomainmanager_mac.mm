@@ -89,6 +89,7 @@ class FileProviderDomainManager::Private {
 
     void findExistingFileProviderDomains()
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         // Wait for this to finish
         dispatch_group_t dispatchGroup = dispatch_group_create();
         dispatch_group_enter(dispatchGroup);
@@ -152,10 +153,12 @@ class FileProviderDomainManager::Private {
         }];
 
         dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+#endif
     }
 
     void addFileProviderDomain(const AccountState * const accountState)
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         Q_ASSERT(accountState);
         const auto account = accountState->account();
         Q_ASSERT(account);
@@ -183,10 +186,12 @@ class FileProviderDomainManager::Private {
 
             _registeredDomains.insert(domainId, fileProviderDomain);
         }];
+#endif
     }
 
     void removeFileProviderDomain(const AccountState * const accountState)
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         Q_ASSERT(accountState);
         const auto account = accountState->account();
         Q_ASSERT(account);
@@ -211,10 +216,12 @@ class FileProviderDomainManager::Private {
             NSFileProviderDomain * const domain = _registeredDomains.take(domainId);
             [domain release];
         }];
+#endif
     }
 
     void removeAllFileProviderDomains()
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         qCDebug(lcMacFileProviderDomainManager) << "Removing all file provider domains.";
 
         [NSFileProviderManager removeAllDomainsWithCompletionHandler:^(NSError * const error) {
@@ -233,10 +240,12 @@ class FileProviderDomainManager::Private {
             }
             _registeredDomains.clear();
         }];
+#endif
     }
 
     void wipeAllFileProviderDomains()
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         qCDebug(lcMacFileProviderDomainManager) << "Removing and wiping all file provider domains";
 
         if (@available(macOS 12.0, *)) {
@@ -270,10 +279,12 @@ class FileProviderDomainManager::Private {
         } else {
             removeAllFileProviderDomains();
         }
+#endif
     }
 
     void readdFileProviderDomain(NSFileProviderDomain * const domain, void (^completionHandler)())
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         dispatch_async(dispatch_get_main_queue(), ^{
             // Wait for this to finish
             dispatch_group_t dispatchGroup = dispatch_group_create();
@@ -300,10 +311,12 @@ class FileProviderDomainManager::Private {
                 dispatch_group_leave(dispatchGroup);
             }];
         });
+#endif
     }
 
     void disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &message)
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         Q_ASSERT(accountState);
         const auto account = accountState->account();
         Q_ASSERT(account);
@@ -343,10 +356,12 @@ class FileProviderDomainManager::Private {
         }
 
         disconnectBlock();
+#endif
     }
 
     void reconnectFileProviderDomainForAccount(const AccountState * const accountState)
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         Q_ASSERT(accountState);
         const auto account = accountState->account();
         Q_ASSERT(account);
@@ -386,10 +401,12 @@ class FileProviderDomainManager::Private {
         }
 
         reconnectBlock();
+#endif
     }
 
     void signalEnumeratorChanged(const Account * const account)
     {
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
         Q_ASSERT(account);
         const auto domainId = domainIdentifierForAccount(account);
 
@@ -419,6 +436,7 @@ class FileProviderDomainManager::Private {
         }
 
         signalEnumeratorBlock();
+#endif
     }
 
     QStringList configuredDomainIds() const {
