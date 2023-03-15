@@ -299,10 +299,12 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         }
     }
 
-    for (auto it = folders.constBegin(), end = folders.constEnd(); it != end; it++) {
-        const auto parsedEncryptedFolder = parseFileAndFolderFromJson(it.key(), it.value());
-        if (!parsedEncryptedFolder.originalFilename.isEmpty()) {
-            _files.push_back(parsedEncryptedFolder);
+    for (auto it = folders.constBegin(); it != folders.constEnd(); ++it) {
+        const auto folderName = it.value().toString();
+        if (!folderName.isEmpty()) {
+            EncryptedFile file;
+            file.encryptedFilename = it.key();
+            file.originalFilename = folderName;
         }
     }
 }
@@ -598,8 +600,8 @@ void FolderMetadata::handleEncryptionRequestV2()
             });
             return;
         }
-        if (it->mimetype == QByteArrayLiteral("httpd/unix-directory") || it->mimetype == QByteArrayLiteral("inode/directory")) {
-            folders.insert(it->encryptedFilename, file);
+        if (it->mimetype.isEmpty()) {
+            folders.insert(it->encryptedFilename, it->originalFilename);
         } else {
             files.insert(it->encryptedFilename, file);
         }
@@ -761,9 +763,11 @@ bool FolderMetadata::moveFromFileDropToFiles()
     }
 
     for (auto it = folders.constBegin(); it != folders.constEnd(); ++it) {
-        const auto parsedEncryptedFile = parseFileAndFolderFromJson(it.key(), it.value());
-        if (!parsedEncryptedFile.originalFilename.isEmpty()) {
-            _files.push_back(parsedEncryptedFile);
+        const auto folderName = it.value().toString();
+        if (!folderName.isEmpty()) {
+            EncryptedFile file;
+            file.encryptedFilename = it.key();
+            file.originalFilename = folderName;
         }
     }
 

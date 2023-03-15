@@ -173,6 +173,10 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
           if (encryptedFile.mimetype == QByteArrayLiteral("inode/directory")) {
               encryptedFile.mimetype = QByteArrayLiteral("httpd/unix-directory");
           }
+
+          if (encryptedFile.mimetype == QByteArrayLiteral("inode/directory") || encryptedFile.mimetype == QByteArrayLiteral("httpd/unix-directory")) {
+              encryptedFile.mimetype.clear();
+          }
       }
 
       encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
