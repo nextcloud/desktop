@@ -526,7 +526,7 @@ QByteArray encryptStringAsymmetric(const QSslKey key, const QByteArray &data)
     const auto publicKeyPem = key.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     const auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
-    return EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
+    return EncryptionHelper::encryptStringAsymmetric(publicKey, data);
 }
 
 QByteArray decryptStringAsymmetric(const QByteArray &privateKeyPem, const QByteArray &data)
@@ -740,57 +740,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray &data)
         exit(1);
     }
 
-    // Transform the encrypted data into base64.
     qCInfo(lcCse()) << out.toBase64();
-    return out.toBase64();
-}
-
-QByteArray encryptStringAsymmetricNonBase64(EVP_PKEY *publicKey, const QByteArray &data)
-{
-    int err = -1;
-
-    auto ctx = ClientSideEncryption::PKeyCtx::forKey(publicKey, ENGINE_get_default_RSA());
-    if (!ctx) {
-        qCInfo(lcCse()) << "Could not initialize the pkey context.";
-        exit(1);
-    }
-
-    if (EVP_PKEY_encrypt_init(ctx) != 1) {
-        qCInfo(lcCse()) << "Error initilaizing the encryption.";
-        exit(1);
-    }
-
-    if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
-        qCInfo(lcCse()) << "Error setting the encryption padding.";
-        exit(1);
-    }
-
-    if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
-        qCInfo(lcCse()) << "Error setting OAEP SHA 256";
-        exit(1);
-    }
-
-    if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
-        qCInfo(lcCse()) << "Error setting MGF1 padding";
-        exit(1);
-    }
-
-    size_t outLen = 0;
-    if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
-        qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
-        exit(1);
-    } else {
-        qCInfo(lcCse()) << "Encryption Length:" << outLen;
-    }
-
-    QByteArray out(static_cast<int>(outLen), '\0');
-    if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
-        qCInfo(lcCse()) << "Could not encrypt key." << err;
-        exit(1);
-    }
-
-    // Transform the encrypted data into base64.
-    qCInfo(lcCse()) << out;
     return out;
 }
 
@@ -875,21 +825,21 @@ void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account, const QS
 
 bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) const
 {
-    QByteArray data = EncryptionHelper::generateRandom(64);
+    const auto data = EncryptionHelper::generateRandom(64);
 
     Bio publicKeyBio;
     QByteArray publicKeyPem = account->e2e()->_publicKey.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
-    auto encryptedData = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
+    const auto encryptedData = EncryptionHelper::encryptStringAsymmetric(publicKey, data);
 
     Bio privateKeyBio;
     QByteArray privateKeyPem = account->e2e()->_privateKey;
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     auto key = PKey::readPrivateKey(privateKeyBio);
 
-    QByteArray decryptResult = QByteArray::fromBase64(EncryptionHelper::decryptStringAsymmetric( key, QByteArray::fromBase64(encryptedData)));
+    QByteArray decryptResult = QByteArray::fromBase64(EncryptionHelper::decryptStringAsymmetric(key, encryptedData));
 
     if (data != decryptResult) {
         qCInfo(lcCse()) << "invalid private key";

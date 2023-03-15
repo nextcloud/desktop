@@ -60,10 +60,6 @@ private:
     [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
     [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
 
-    [[nodiscard]] QByteArray encryptDataNonBase64(const QByteArray &data) const;
-    [[nodiscard]] QByteArray encryptDataNonBase64(const QByteArray &data, const QSslKey key) const;
-    [[nodiscard]] QByteArray decryptDataNonBase64(const QByteArray &data) const;
-
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
@@ -115,6 +111,8 @@ private:
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
     QByteArray _metadataNonce;
+    QByteArray _fileDropMetadataNonce;
+    QByteArray _fileDropMetadataAuthenticationTag;
     QByteArray _fileDropKey;
     QByteArray _metadataKeyOverride;
     QMap<int, QByteArray> _metadataKeys; //legacy, remove after migration is done
@@ -122,7 +120,7 @@ private:
     QHash<QString, FolderUser> _folderUsers;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
-    QByteArray _fileDropEncrypted;
+    QByteArray _fileDropCipherTextEncryptedAndBase64;
     QByteArray _initialMetadata;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
