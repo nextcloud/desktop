@@ -171,7 +171,9 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                     if error == .success {
                         Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+
                         updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+                        updatedMetadata.sessionError = ""
                         updatedMetadata.date = (date ?? NSDate()) as Date
                         updatedMetadata.etag = etag ?? ""
 
@@ -182,6 +184,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                             completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
                             return
                         }
+
                         let fpItem = FileProviderItem(metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
 
                         completionHandler(fileNameLocalPath, fpItem, nil)
@@ -493,7 +496,31 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }) { account, ocId, etag, date, size, _, _, error  in
                     self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
-                    guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
+                    if error == .success, let ocId = ocId {
+                        Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+                        let newMetadata = NextcloudItemMetadataTable()
+                        newMetadata.date = (date ?? NSDate()) as Date
+                        newMetadata.etag = etag ?? ""
+                        newMetadata.account = account
+                        newMetadata.fileName = item.filename
+                        newMetadata.fileNameView = item.filename
+                        newMetadata.ocId = ocId
+                        newMetadata.size = size
+                        newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
+                        newMetadata.directory = itemTemplateIsFolder
+                        newMetadata.serverUrl = parentItemMetadata.serverUrl
+                        newMetadata.session = ""
+                        newMetadata.sessionError = ""
+                        newMetadata.sessionTaskIdentifier = 0
+                        newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+
+                        dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
+                        dbManager.addItemMetadata(newMetadata)
+
+                        modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+                        completionHandler(modifiedItem, [], false, nil)
+                    } else {
                         Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
 
                         metadata.status = NextcloudItemMetadataTable.Status.uploadError.rawValue
@@ -504,30 +531,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                         completionHandler(modifiedItem, [], false, error.toFileProviderError())
                         return
                     }
-
-                    Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
-
-                    let newMetadata = NextcloudItemMetadataTable()
-                    newMetadata.date = (date ?? NSDate()) as Date
-                    newMetadata.etag = etag ?? ""
-                    newMetadata.account = account
-                    newMetadata.fileName = item.filename
-                    newMetadata.fileNameView = item.filename
-                    newMetadata.ocId = ocId
-                    newMetadata.size = size
-                    newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
-                    newMetadata.directory = itemTemplateIsFolder
-                    newMetadata.serverUrl = parentItemMetadata.serverUrl
-                    newMetadata.session = ""
-                    newMetadata.sessionError = ""
-                    newMetadata.sessionTaskIdentifier = 0
-                    newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
-
-                    dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
-                    dbManager.addItemMetadata(newMetadata)
-
-                    modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
-                    completionHandler(modifiedItem, [], false, nil)
                 }
             }
         } else {
