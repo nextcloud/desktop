@@ -466,10 +466,8 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
     auto *job = new LsColJob(_account, path);
-    auto props = QList<QByteArray>() << "resourcetype";
-    if (_account->capabilities().clientSideEncryptionAvailable()) {
-        props << "http://nextcloud.org/ns:is-encrypted";
-    }
+    const auto props = QList<QByteArray>() << "resourcetype"
+                                           << "http://nextcloud.org/ns:is-encrypted";
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
