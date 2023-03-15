@@ -560,7 +560,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 Logger.enumeration.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
-                DispatchQueue.global().async {
+                DispatchQueue.main.async {
                     dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
