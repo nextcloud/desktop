@@ -71,7 +71,12 @@ void FileProviderSocketServer::slotNewConnection()
 
 void FileProviderSocketServer::slotSocketDestroyed(const QLocalSocket * const socket)
 {
-    _socketControllers.remove(socket);
+    const auto socketController = _socketControllers.take(socket);
+
+    if (socketController) {
+        const auto rawSocketControllerPtr = socketController.data();
+        delete rawSocketControllerPtr;
+    }
 }
 
 } // namespace Mac

@@ -22,7 +22,7 @@ namespace OCC {
 namespace Mac {
 
 class FileProviderSocketController;
-using FileProviderSocketControllerPtr = QSharedPointer<FileProviderSocketController>;
+using FileProviderSocketControllerPtr = QPointer<FileProviderSocketController>;
 
 QString fileProviderSocketPath();
 
