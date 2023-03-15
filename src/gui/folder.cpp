@@ -295,10 +295,16 @@ void Folder::prepareFolder(const QString &path)
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     const QFileInfo desktopIniPath = QStringLiteral("%1/Desktop.ini").arg(path);
     {
+        const QString updateIconKey = QStringLiteral("%1/UpdateIcon").arg(Theme::instance()->appName());
         QSettings desktopIni(desktopIniPath.absoluteFilePath(), QSettings::IniFormat);
-        qCInfo(lcFolder) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
-        desktopIni.beginGroup(QStringLiteral(".ShellClassInfo"));
-        desktopIni.setValue(QStringLiteral("IconResource"), QDir::toNativeSeparators(qApp->applicationFilePath()));
+        if (desktopIni.value(updateIconKey, true).toBool()) {
+            qCInfo(lcFolder) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+            desktopIni.setValue(QStringLiteral(".ShellClassInfo/IconResource"), QDir::toNativeSeparators(qApp->applicationFilePath()));
+            desktopIni.setValue(updateIconKey, true);
+        } else {
+            qCInfo(lcFolder) << "Skip icon update for" << desktopIni.fileName() << "," << updateIconKey << "is disabled";
+        }
+
         desktopIni.sync();
     }
 

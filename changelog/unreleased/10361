@@ -1,0 +1,6 @@
+Enhancement: Implement a possibility to Desktop.ini icon updates on Windows
+
+We implemented an option wich allows to disable the automatic update of the folder icon for
+sync folders on Windows.
+
+https://github.com/owncloud/client/issues/10361
