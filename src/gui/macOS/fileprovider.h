@@ -21,6 +21,8 @@
 
 namespace OCC {
 
+class Application;
+
 namespace Mac {
 
 // NOTE: For the file provider extension to work, the app bundle will
@@ -32,14 +34,18 @@ class FileProvider : public QObject
 
 public:
     static FileProvider *instance();
-    ~FileProvider() = default;
+    ~FileProvider() override;
 
     static bool fileProviderAvailable();
 
 private:
-    explicit FileProvider(QObject * const parent = nullptr);
     std::unique_ptr<FileProviderDomainManager> _domainManager;
     std::unique_ptr<FileProviderSocketServer> _socketServer;
+
+    static FileProvider *_instance;
+    explicit FileProvider(QObject * const parent = nullptr);
+
+    friend class OCC::Application;
 };
 
 } // namespace Mac

@@ -403,7 +403,7 @@ Application::Application(int &argc, char **argv)
     }
 
 #ifdef Q_OS_MACOS
-    _fileProvider.reset(Mac::FileProvider::instance());
+    _fileProvider.reset(new Mac::FileProvider);
 #endif
 
     FolderMan::instance()->setSyncEnabled(true);

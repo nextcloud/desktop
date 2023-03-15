@@ -24,11 +24,13 @@ Q_LOGGING_CATEGORY(lcMacFileProvider, "nextcloud.gui.macfileprovider", QtInfoMsg
 
 namespace Mac {
 
-static FileProvider *_instance = nullptr;
+FileProvider* FileProvider::_instance = nullptr;
 
 FileProvider::FileProvider(QObject * const parent)
     : QObject(parent)
 {
+    Q_ASSERT(!_instance);
+
     if (!fileProviderAvailable()) {
         qCDebug(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
         return;
@@ -59,6 +61,11 @@ FileProvider *FileProvider::instance()
         _instance = new FileProvider();
     }
     return _instance;
+}
+
+FileProvider::~FileProvider()
+{
+    _instance = nullptr;
 }
 
 bool FileProvider::fileProviderAvailable()
