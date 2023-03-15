@@ -157,8 +157,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                 self.ncKit.download(serverUrlFileName: serverUrlFileName,
                                     fileNameLocalPath: fileNameLocalPath.path,
-                                    requestHandler: { _ in
-
+                                    requestHandler: { request in
+                    progress.setHandlersFromAfRequest(request)
                 }, taskHandler: { task in
                     NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
                 }, progressHandler: { downloadProgress in
@@ -294,7 +294,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                           fileNameLocalPath: fileNameLocalPath,
-                          requestHandler: { _ in
+                          requestHandler: { request in
+            progress.setHandlersFromAfRequest(request)
         }, taskHandler: { task in
             NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemTemplate.itemIdentifier, completionHandler: { _ in })
         }, progressHandler: { uploadProgress in
@@ -483,7 +484,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                 self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                                   fileNameLocalPath: fileNameLocalPath,
-                                  requestHandler: { _ in
+                                  requestHandler: { request in
+                    progress.setHandlersFromAfRequest(request)
                 }, taskHandler: { task in
                     NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
                 }, progressHandler: { uploadProgress in
