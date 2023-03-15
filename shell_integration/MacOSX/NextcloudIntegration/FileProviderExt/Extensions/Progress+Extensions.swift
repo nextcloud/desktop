@@ -13,8 +13,15 @@
  */
 
 import Foundation
+import Alamofire
 
 extension Progress {
+    func setHandlersFromAfRequest(_ request: Request) {
+        self.cancellationHandler = { request.cancel() }
+        self.pausingHandler = { request.suspend() }
+        self.resumingHandler = { request.resume() }
+    }
+
     func copyCurrentStateToProgress(_ otherProgress: Progress, includeHandlers: Bool = false) {
         if includeHandlers {
             otherProgress.cancellationHandler = self.cancellationHandler
