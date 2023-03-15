@@ -16,6 +16,7 @@ Summary
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
+* Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Display quota for Spaces: [#10453](https://github.com/owncloud/client/issues/10453)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
@@ -75,6 +76,13 @@ Details
 
    https://github.com/owncloud/client/issues/10231
    https://github.com/owncloud/client/issues/10529
+
+* Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
+
+   We implemented an option wich allows to disable the automatic update of the folder icon for sync
+   folders on Windows.
+
+   https://github.com/owncloud/client/issues/10361
 
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 
