@@ -30,29 +30,21 @@ func pathForFileProviderExtData() -> URL? {
     return containerUrl?.appendingPathComponent("FileProviderExt/")
 }
 
-func pathForFileProviderExtFiles() -> URL? {
-    let fileProviderDataUrl = pathForFileProviderExtData()
-    return fileProviderDataUrl?.appendingPathComponent("Files/")
+func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
+    guard let fpManager = NSFileProviderManager(for: domain) else {
+        throw NSFileProviderError(.providerNotFound)
+    }
+
+    let fileProviderDataUrl = try fpManager.temporaryDirectoryURL()
+    return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles/")
 }
 
-@discardableResult func localPathForNCDirectory(ocId: String) throws -> URL {
-    guard let fileProviderFilesPathUrl = pathForFileProviderExtFiles() else {
+func localPathForNCFile(ocId: String, fileNameView: String, domain: NSFileProviderDomain) throws -> URL {
+    guard let fileProviderFilesPathUrl = try pathForFileProviderTempFilesForDomain(domain) else {
         throw URLError(.badURL)
     }
 
-    let folderPathUrl = fileProviderFilesPathUrl.appendingPathComponent(ocId)
-    let folderPath = folderPathUrl.path
-
-    if !FileManager.default.fileExists(atPath: folderPath) {
-        try FileManager.default.createDirectory(at: folderPathUrl, withIntermediateDirectories: true)
-    }
-
-    return folderPathUrl
-}
-
-@discardableResult func localPathForNCFile(ocId: String, fileNameView: String) throws -> URL {
-    let fileFolderPathUrl = try localPathForNCDirectory(ocId: ocId)
-    let filePathUrl = fileFolderPathUrl.appendingPathComponent(fileNameView)
+    let filePathUrl = fileProviderFilesPathUrl.appendingPathComponent(fileNameView)
     let filePath = filePathUrl.path
 
     if !FileManager.default.fileExists(atPath: filePath) {

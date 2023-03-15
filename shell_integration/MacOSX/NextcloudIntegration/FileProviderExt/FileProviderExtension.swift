@@ -145,7 +145,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         // TODO: Handle folders nicely
         do {
-            let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
+            let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView, domain: self.domain)
 
             dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading) { updatedMetadata in
 
