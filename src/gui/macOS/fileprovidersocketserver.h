@@ -16,7 +16,6 @@
 
 #include <QObject>
 #include <QLocalServer>
-#include <QLoggingCategory>
 
 namespace OCC {
 
@@ -25,9 +24,7 @@ namespace Mac {
 class FileProviderSocketController;
 using FileProviderSocketControllerPtr = QSharedPointer<FileProviderSocketController>;
 
-#ifdef Q_OS_MACOS
 QString fileProviderSocketPath();
-#endif
 
 class FileProviderSocketServer : public QObject
 {

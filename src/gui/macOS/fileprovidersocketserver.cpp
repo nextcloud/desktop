@@ -15,6 +15,7 @@
 #include "fileprovidersocketserver.h"
 
 #include <QLocalSocket>
+#include <QLoggingCategory>
 
 #include "fileprovidersocketcontroller.h"
 
@@ -27,9 +28,7 @@ Q_LOGGING_CATEGORY(lcFileProviderSocketServer, "nextcloud.gui.macos.fileprovider
 FileProviderSocketServer::FileProviderSocketServer(QObject *parent)
     : QObject{parent}
 {
-#ifdef Q_OS_MACOS
     _socketPath = fileProviderSocketPath();
-#endif
     startListening();
 }
 
