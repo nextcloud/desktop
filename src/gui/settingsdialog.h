@@ -77,8 +77,6 @@ private slots:
 private:
     void customizeStyle();
 
-    QAction *createActionWithIcon(const QString &iconName, const QString &text);
-
     Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;

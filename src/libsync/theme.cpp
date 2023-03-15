@@ -691,6 +691,11 @@ bool Theme::wizardEnableWebfinger() const
     return false;
 }
 
+QVector<QPair<QString, QUrl>> Theme::urlButtons() const
+{
+    return {};
+}
+
 template <>
 OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(Theme::UserIDType userIdType)
 {

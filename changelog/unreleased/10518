@@ -1,0 +1,6 @@
+Enhancement: Branding: Allow the addition of buttons to open a url
+
+We added a branding option that allows to add buttons to the toolbar.
+Those buttons will then open a hardcoded web page.
+
+https://github.com/owncloud/client/issues/10518

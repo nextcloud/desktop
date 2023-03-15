@@ -29,6 +29,7 @@
 #include "accountmanager.h"
 #include "protocolwidget.h"
 
+#include <QDesktopServices>
 #include <QImage>
 #include <QLabel>
 #include <QLayout>
@@ -52,6 +53,8 @@
 
 void setActivationPolicy(ActivationPolicy policy);
 #endif
+
+Q_LOGGING_CATEGORY(lcSettingsDialog, "gui.settingsdialog", QtInfoMsg);
 
 namespace {
 auto minimumSizeHint(const QWidget *w)
@@ -194,7 +197,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
 
     if (Theme::instance()->multiAccount()) {
-        _addAccountAction = createActionWithIcon(QStringLiteral("plus-solid"), tr("Add account"));
+        _addAccountAction = new ToolButtonAction(QStringLiteral("plus-solid"), tr("Add account"), this);
         _addAccountAction->setCheckable(false);
         connect(_addAccountAction, &QAction::triggered, this, []{
             // don't directly connect here, ocApp might not be defined yet
@@ -205,7 +208,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    _activityAction = createActionWithIcon(QStringLiteral("activity"), tr("Activity"));
+    _activityAction = new ToolButtonAction(QStringLiteral("activity"), tr("Activity"), this);
     _actionGroup->addAction(_activityAction);
     _ui->toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
@@ -216,7 +219,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         });
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
-    QAction *generalAction = createActionWithIcon(QStringLiteral("settings"), tr("Settings"));
+    QAction *generalAction = new ToolButtonAction(QStringLiteral("settings"), tr("Settings"), this);
     _actionGroup->addAction(generalAction);
     _ui->toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -229,7 +232,17 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     const auto appNameGui = Theme::instance()->appNameGUI();
 
-    QAction *quitAction = createActionWithIcon(QStringLiteral("quit"), tr("Quit %1").arg(appNameGui));
+    for (const auto &[name, url] : Theme::instance()->urlButtons()) {
+        auto urlAction = new ToolButtonAction(Theme::instance()->themeUniversalIcon(QStringLiteral("urlIcons/%1").arg(name)), name, this);
+        connect(urlAction, &QAction::triggered, this, [url = url] {
+            if (!QDesktopServices::openUrl(url)) {
+                qWarning(lcSettingsDialog) << "Failed to open" << url;
+            }
+        });
+        _ui->toolBar->addAction(urlAction);
+    }
+
+    QAction *quitAction = new ToolButtonAction(QStringLiteral("quit"), tr("Quit %1").arg(appNameGui), this);
     quitAction->setCheckable(false);
     connect(quitAction, &QAction::triggered, this, [this, appNameGui] {
         auto box = new QMessageBox(QMessageBox::Question, tr("Quit %1").arg(appNameGui),
@@ -363,8 +376,7 @@ void SettingsDialog::accountAdded(AccountStatePtr s)
     const QPixmap avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
-        accountAction = createActionWithIcon(QStringLiteral("account"),
-            actionText);
+        accountAction = new ToolButtonAction(QStringLiteral("account"), actionText, this);
     } else {
         const QIcon icon(AvatarJob::makeCircularAvatar(avatar));
         accountAction = new ToolButtonAction(icon, actionText, this);
@@ -463,13 +475,6 @@ void SettingsDialog::customizeStyle()
     for (auto *a : toolButtonActions) {
         a->updateIcon();
     }
-}
-
-
-QAction *SettingsDialog::createActionWithIcon(const QString &icon, const QString &text)
-{
-    QAction *action = new ToolButtonAction(icon, text, this);
-    return action;
 }
 
 void SettingsDialog::slotRefreshActivityAccountStateSender()

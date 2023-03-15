@@ -106,6 +106,11 @@ public:
     QIcon syncStateIcon(const SyncResult &status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
     QIcon syncStateIcon(SyncResult::Status result, bool sysTray = false, bool sysTrayMenuVisible = false) const;
 
+    /**
+     * Returns a universal (non color schema aware) icon.
+     */
+    QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
+
 
     virtual QIcon folderDisabledIcon() const;
     virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
@@ -461,8 +466,13 @@ public:
      */
     virtual bool wizardEnableWebfinger() const;
 
+    /**
+     * Returns a list of Name, Url pairs that will be displayed as buttons on AccountSettings.
+     * For each url there must be an icon provided in the form of #Name.svg or multiple #Name-#resolution.png like for the other theme icons.
+     * */
+    virtual QVector<QPair<QString, QUrl>> urlButtons() const;
+
 protected:
-    QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
     QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
     QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
 
