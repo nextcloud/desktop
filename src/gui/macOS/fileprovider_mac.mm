@@ -17,7 +17,6 @@
 #include <QLoggingCategory>
 
 #include "fileprovider.h"
-#include "fileproviderdomainmanager.h"
 
 namespace OCC {
 
@@ -30,14 +29,32 @@ static FileProvider *_instance = nullptr;
 FileProvider::FileProvider(QObject * const parent)
     : QObject(parent)
 {
-    const auto domainManager = FileProviderDomainManager::instance();
-    if (domainManager) {
+    if (!fileProviderAvailable()) {
+        qCDebug(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
+        return;
+    }
+
+    qCDebug(lcMacFileProvider) << "Initialising file provider domain manager.";
+    _domainManager = std::make_unique<FileProviderDomainManager>(new FileProviderDomainManager(this));
+
+    if (_domainManager) {
         qCDebug(lcMacFileProvider()) << "Initialized file provider domain manager";
+    }
+
+    qCDebug(lcMacFileProvider) << "Initialising file provider socket server.";
+    _socketServer = std::make_unique<FileProviderSocketServer>(new FileProviderSocketServer(this));
+
+    if (_socketServer) {
+        qCDebug(lcMacFileProvider) << "Initialised file provider socket server.";
     }
 }
 
 FileProvider *FileProvider::instance()
 {
+    if (!fileProviderAvailable()) {
+        return nullptr;
+    }
+
     if (!_instance) {
         _instance = new FileProvider();
     }

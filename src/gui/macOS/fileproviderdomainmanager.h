@@ -29,7 +29,7 @@ class FileProviderDomainManager : public QObject
     Q_OBJECT
 
 public:
-    static FileProviderDomainManager *instance();
+    explicit FileProviderDomainManager(QObject * const parent = nullptr);
     ~FileProviderDomainManager() override;
 
 private slots:
@@ -51,8 +51,6 @@ private:
     // Starts regular enumerator signalling if no push notifications available
     QTimer _enumeratorSignallingTimer;
 
-    explicit FileProviderDomainManager(QObject * const parent = nullptr);
-    static FileProviderDomainManager *_instance;
     class Private;
     std::unique_ptr<Private> d;
 };

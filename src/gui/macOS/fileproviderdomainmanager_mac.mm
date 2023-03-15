@@ -81,8 +81,6 @@ Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileprovide
 
 namespace Mac {
 
-FileProviderDomainManager *FileProviderDomainManager::_instance = nullptr;
-
 class FileProviderDomainManager::Private {
 
   public:
@@ -458,14 +456,6 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
         const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
         disconnectFileProviderDomainForAccount(accountState, trReason);
     });
-}
-
-FileProviderDomainManager *FileProviderDomainManager::instance()
-{
-    if (!_instance) {
-        _instance = new FileProviderDomainManager();
-    }
-    return _instance;
 }
 
 FileProviderDomainManager::~FileProviderDomainManager() = default;
