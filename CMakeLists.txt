@@ -187,8 +187,10 @@ else()
     unset(CMAKE_CXX_CLANG_TIDY)
 endif()
 
-# build macOS File Provider module
-option(BUILD_FILE_PROVIDER_MODULE "BUILD_FILE_PROVIDER_MODULE" ON)
+if (APPLE)
+    # build macOS File Provider module
+    option(BUILD_FILE_PROVIDER_MODULE "BUILD_FILE_PROVIDER_MODULE" ON)
+endif()
 
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file
