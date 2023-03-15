@@ -93,13 +93,20 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
     beginResetModel();
     _dirty = false;
     _folders.clear();
-    _accountState = accountState;
+    if (_accountState != accountState) {
+        Q_ASSERT(!_accountState);
+        _accountState = accountState;
 
-    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange,
-        this, &FolderStatusModel::slotFolderSyncStateChange, Qt::UniqueConnection);
-    connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged,
-        this, &FolderStatusModel::slotFolderScheduleQueueChanged, Qt::UniqueConnection);
+        connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &FolderStatusModel::slotFolderSyncStateChange);
+        connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged, this, &FolderStatusModel::slotFolderScheduleQueueChanged);
 
+        if (accountState->supportsSpaces()) {
+            connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::refreshed, this, [this] {
+                beginResetModel();
+                endResetModel();
+            });
+        }
+    }
     for (const auto &f : FolderMan::instance()->folders()) {
         if (!accountState)
             break;

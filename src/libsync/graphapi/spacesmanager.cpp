@@ -57,6 +57,7 @@ void SpacesManager::refresh()
             }
             _drivesMap = std::move(drivesMap);
         }
+        Q_EMIT refreshed();
         _refreshTimer->start();
     });
     _refreshTimer->stop();

@@ -42,6 +42,9 @@ namespace GraphApi {
 
         void refresh();
 
+    Q_SIGNALS:
+        void refreshed();
+
     private:
         Account *_account;
         QTimer *_refreshTimer;
