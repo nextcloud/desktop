@@ -14,6 +14,7 @@
 
 #include "fileprovidersocketcontroller.h"
 
+#include <QLocalSocket>
 #include <QLoggingCategory>
 
 #include "accountmanager.h"

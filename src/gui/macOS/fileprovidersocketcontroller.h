@@ -14,11 +14,11 @@
 
 #pragma once
 
-#include <QObject>
 #include <QPointer>
-#include <QLocalSocket>
 
 #include "accountstate.h"
+
+class QLocalSocket;
 
 namespace OCC {
 
@@ -43,7 +43,7 @@ private slots:
     void slotSocketDestroyed(const QObject * const object);
     void slotReadyRead();
 
-    void slotAccountStateChanged(const AccountState::State state);
+    void slotAccountStateChanged(const OCC::AccountState::State state);
 
     void parseReceivedLine(const QString &receivedLine);
     void requestFileProviderDomainInfo() const;
