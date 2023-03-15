@@ -53,6 +53,11 @@ void FileProviderSocketController::slotSocketDestroyed(const QObject * const obj
 void FileProviderSocketController::slotReadyRead()
 {
     Q_ASSERT(_socket);
+    if (!_socket) {
+        qCWarning(lcFileProviderSocketController) << "Cannot read data on dead socket";
+        return;
+    }
+
     while(_socket->canReadLine()) {
         const auto line = QString::fromUtf8(_socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
         qCDebug(lcFileProviderSocketController) << "Received message in file provider socket:" << line;
@@ -125,12 +130,22 @@ void FileProviderSocketController::sendMessage(const QString &message) const
 void FileProviderSocketController::start()
 {
     Q_ASSERT(_socket);
+    if (!_socket) {
+        qCWarning(lcFileProviderSocketController) << "Cannot start communication on dead socket";
+        return;
+    }
+
     requestFileProviderDomainInfo();
 }
 
 void FileProviderSocketController::requestFileProviderDomainInfo() const
 {
     Q_ASSERT(_socket);
+    if (!_socket) {
+        qCWarning(lcFileProviderSocketController) << "Cannot request file provider domain data on dead socket";
+        return;
+    }
+
     const auto requestMessage = QStringLiteral("SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER");
     sendMessage(requestMessage);
 }
