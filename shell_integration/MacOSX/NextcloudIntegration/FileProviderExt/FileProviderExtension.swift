@@ -308,13 +308,17 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }) { account, ocId, etag, date, size, _, _, error  in
             self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
 
-            guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
+            guard error == .success, let ocId = ocId else {
                 Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
                 completionHandler(itemTemplate, [], false, error.toFileProviderError())
                 return
             }
 
             Logger.fileTransfer.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+            if size != itemTemplate.documentSize as? Int64 {
+                Logger.fileTransfer.warning("Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(itemTemplate.documentSize ?? 0))")
+            }
 
             let newMetadata = NextcloudItemMetadataTable()
             newMetadata.date = (date ?? NSDate()) as Date
@@ -498,6 +502,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                     if error == .success, let ocId = ocId {
                         Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+                        if size != item.documentSize as? Int64 {
+                            Logger.fileTransfer.warning("Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(item.documentSize ?? 0))")
+                        }
 
                         let newMetadata = NextcloudItemMetadataTable()
                         newMetadata.date = (date ?? NSDate()) as Date
