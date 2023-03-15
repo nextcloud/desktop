@@ -52,6 +52,7 @@ public:
 public slots:
     void start();
     void setMetadataKeyOverride(const QByteArray &metadataKeyOverride);
+    void setFolderToken(const QByteArray &folderToken);
 
 private slots:
     void slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
