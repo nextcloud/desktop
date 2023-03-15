@@ -1,0 +1,5 @@
+Enhancement: Display the space name provided by the server
+
+If a space is renamed on the server, this change is now displayed in the client.
+
+https://github.com/owncloud/client/pull/10602

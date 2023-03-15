@@ -19,6 +19,7 @@
 #include "folderman.h"
 #include "folderstatusdelegate.h"
 #include "gui/quotainfo.h"
+#include "libsync/graphapi/drives.h"
 #include "libsync/graphapi/spacesmanager.h"
 #include "theme.h"
 
@@ -241,6 +242,13 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     const SubFolderInfo::Progress &progress = folderInfo._progress;
     const bool accountConnected = _accountState->isConnected();
 
+    const auto getDrive = [&] {
+        if (_accountState->supportsSpaces()) {
+            return _accountState->account()->spacesManager()->driveByUrl(f->webDavUrl());
+        }
+        return OpenAPI::OAIDrive{};
+    };
+
     switch (role) {
     case Qt::DisplayRole:
         switch (column) {
@@ -266,8 +274,13 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                                                                                                           : QStringList();
         case Columns::SyncRunning:
             return f->syncResult().status() == SyncResult::SyncRunning;
-        case Columns::HeaderRole:
+        case Columns::HeaderRole: {
+            const auto drive = getDrive();
+            if (drive.isValid()) {
+                return GraphApi::Drives::getDriveDisplayName(drive);
+            }
             return f->displayName();
+        }
         case Columns::FolderSyncPaused:
             return f->syncPaused();
         case Columns::FolderAccountConnected:
@@ -291,14 +304,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return progress._overallPercent;
         case Columns::SyncProgressOverallString:
             return progress._overallSyncString;
-        case Columns::FolderSyncText:
-            if (_accountState->supportsSpaces()) {
-                const auto drive = _accountState->account()->spacesManager()->driveByUrl(f->webDavUrl());
+        case Columns::FolderSyncText: {
+            const auto drive = getDrive();
+            if (drive.isValid()) {
                 if (!drive.getDescription().isEmpty()) {
                     return drive.getDescription();
                 }
             }
             return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+        }
         case Columns::IsReady:
             return f->isReady();
         case Columns::IsDeployed:
