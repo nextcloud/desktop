@@ -117,7 +117,7 @@ QString FolderWizardPrivate::remotePath() const
 uint32_t FolderWizardPrivate::priority() const
 {
     if (_account->supportsSpaces()) {
-        _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Priority).toInt();
+        return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Priority).toInt();
     };
     return 0;
 }
