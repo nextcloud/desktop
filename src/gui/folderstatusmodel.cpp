@@ -126,6 +126,9 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
         return Qt::ItemIsEnabled;
     case SubFolder:
         if (supportsSelectiveSync) {
+            if (info && info->_isEncrypted && !_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
+                return Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
+            }
             return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
         } else {
             return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
