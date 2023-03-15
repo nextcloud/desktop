@@ -294,7 +294,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable], createLocalFileOrDirectory: Bool = true) {
+    private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]) {
 
         var items: [NSFileProviderItem] = []
 
@@ -302,10 +302,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             if itemMetadata.e2eEncrypted {
                 Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId) \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
                 continue
-            }
-
-            if createLocalFileOrDirectory {
-                createFileOrDirectoryLocally(metadata: itemMetadata)
             }
 
             if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {

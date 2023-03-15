@@ -50,16 +50,6 @@ func pathForFileProviderExtFiles() -> URL? {
     return folderPathUrl
 }
 
-@discardableResult func localPathForNCDirectory(directoryMetadata: NextcloudDirectoryMetadataTable) throws -> URL {
-    let ocId = directoryMetadata.ocId
-    return try localPathForNCDirectory(ocId: ocId)
-}
-
-@discardableResult func localPathForNCDirectory(itemMetadata: NextcloudItemMetadataTable) throws -> URL {
-    let ocId = itemMetadata.ocId
-    return try localPathForNCDirectory(ocId: ocId)
-}
-
 @discardableResult func localPathForNCFile(ocId: String, fileNameView: String) throws -> URL {
     let fileFolderPathUrl = try localPathForNCDirectory(ocId: ocId)
     let filePathUrl = fileFolderPathUrl.appendingPathComponent(fileNameView)
@@ -70,22 +60,4 @@ func pathForFileProviderExtFiles() -> URL? {
     }
 
     return filePathUrl
-}
-
-@discardableResult func localPathForNCFile(itemMetadata: NextcloudItemMetadataTable) throws -> URL {
-    let ocId = itemMetadata.ocId
-    let fileNameView = itemMetadata.fileNameView
-    return try localPathForNCFile(ocId: ocId, fileNameView: fileNameView)
-}
-
-func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
-    do {
-        if metadata.directory {
-            try localPathForNCDirectory(ocId: metadata.ocId)
-        } else {
-            try localPathForNCFile(itemMetadata: metadata)
-        }
-    } catch let error {
-        Logger.enumeration.error("Could not create NC file or directory locally, received error: \(error, privacy: .public)")
-    }
 }
