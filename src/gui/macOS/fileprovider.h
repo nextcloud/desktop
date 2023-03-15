@@ -27,9 +27,13 @@ namespace Mac {
 
 class FileProvider : public QObject
 {
+    Q_OBJECT
+
 public:
     static FileProvider *instance();
     ~FileProvider() = default;
+
+    static bool fileProviderAvailable();
 
 private:
     explicit FileProvider(QObject * const parent = nullptr);

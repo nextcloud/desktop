@@ -44,5 +44,14 @@ FileProvider *FileProvider::instance()
     return _instance;
 }
 
+bool FileProvider::fileProviderAvailable()
+{
+    if (@available(macOS 11.0, *)) {
+        return true;
+    }
+
+    return false;
+}
+
 } // namespace Mac
 } // namespace OCC
