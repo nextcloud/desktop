@@ -53,8 +53,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let session = URLSession(configuration: configuration, delegate: ncKitBackground, delegateQueue: OperationQueue.main)
         return session
     }()
-    var outstandingSessionTasks: [String: URLSessionTask] = [:]
-    var outstandingOcIdTemp: [String: String] = [:]
 
     required init(domain: NSFileProviderDomain) {
         self.domain = domain
@@ -162,13 +160,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                     requestHandler: { _ in
 
                 }, taskHandler: { task in
-                    self.outstandingSessionTasks[serverUrlFileName] = task
                     NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
                 }, progressHandler: { downloadProgress in
                     downloadProgress.copyCurrentStateToProgress(progress)
                 }) { _, etag, date, _, _, _, error in
-                    self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
-
                     if error == .success {
                         Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
 
@@ -301,13 +296,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                           fileNameLocalPath: fileNameLocalPath,
                           requestHandler: { _ in
         }, taskHandler: { task in
-            self.outstandingSessionTasks[newServerUrlFileName] = task
             NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemTemplate.itemIdentifier, completionHandler: { _ in })
         }, progressHandler: { uploadProgress in
             uploadProgress.copyCurrentStateToProgress(progress)
         }) { account, ocId, etag, date, size, _, _, error  in
-            self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
-
             guard error == .success, let ocId = ocId else {
                 Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error, privacy: .public)")
                 completionHandler(itemTemplate, [], false, error.toFileProviderError())
@@ -493,13 +485,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                   fileNameLocalPath: fileNameLocalPath,
                                   requestHandler: { _ in
                 }, taskHandler: { task in
-                    self.outstandingSessionTasks[newServerUrlFileName] = task
                     NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: item.itemIdentifier, completionHandler: { _ in })
                 }, progressHandler: { uploadProgress in
                     uploadProgress.copyCurrentStateToProgress(progress)
                 }) { account, ocId, etag, date, size, _, _, error  in
-                    self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
-
                     if error == .success, let ocId = ocId {
                         Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
 
