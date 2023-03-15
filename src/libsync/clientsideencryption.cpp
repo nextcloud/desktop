@@ -832,16 +832,16 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
-    const auto encryptedData = EncryptionHelper::encryptStringAsymmetric(publicKey, data);
+    const auto encryptedData = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
 
     Bio privateKeyBio;
     QByteArray privateKeyPem = account->e2e()->_privateKey;
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     auto key = PKey::readPrivateKey(privateKeyBio);
 
-    QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(key, encryptedData);
+    QByteArray decryptResult = QByteArray::fromBase64(EncryptionHelper::decryptStringAsymmetric(key, encryptedData));
 
-    if (data.toBase64() != decryptResult.toBase64()) {
+    if (data != decryptResult) {
         qCInfo(lcCse()) << "invalid private key";
         return false;
     }

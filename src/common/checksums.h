@@ -68,6 +68,7 @@ OCSYNC_EXPORT bool uploadChecksumEnabled();
 // Exported functions for the tests.
 QByteArray OCSYNC_EXPORT calcMd5(QIODevice *device);
 QByteArray OCSYNC_EXPORT calcMd5(const QByteArray &data);
+QByteArray OCSYNC_EXPORT calcSha256(const QByteArray &data);
 QByteArray OCSYNC_EXPORT calcSha1(QIODevice *device);
 #ifdef ZLIB_FOUND
 QByteArray OCSYNC_EXPORT calcAdler32(QIODevice *device);

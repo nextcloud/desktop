@@ -28,7 +28,7 @@ constexpr auto sharingKey = "sharing";
 constexpr auto usersKey = "users";
 constexpr auto usersUserIdKey = "userId";
 constexpr auto usersCertificateKey = "certificate";
-constexpr auto usersEncryptedMetadataKey = "encryptedKey";
+constexpr auto usersEncryptedMetadataKey = "encryptedMetadataKey";
 constexpr auto usersEncryptedFiledropKey = "encryptedFiledropKey";
 constexpr auto versionKey = "version";
 

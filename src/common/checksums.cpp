@@ -121,6 +121,11 @@ QByteArray calcMd5(const QByteArray &data)
     return calcCryptoHash(data, QCryptographicHash::Md5);
 }
 
+QByteArray calcSha256(const QByteArray &data)
+{
+    return calcCryptoHash(data, QCryptographicHash::Sha256);
+}
+
 QByteArray calcSha1(QIODevice *device)
 {
     return calcCryptoHash(device, QCryptographicHash::Sha1);
