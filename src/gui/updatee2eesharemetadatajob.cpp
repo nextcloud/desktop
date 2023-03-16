@@ -169,12 +169,19 @@ void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json,
             return;
         }
         if (_operation == Operation::Add || _operation == Operation::Remove) {
-            slotScheduleSubJobs();
-            if (_subJobs.isEmpty()) {
-                slotUpdateFolderMetadata();
+            bool result = false;
+            if (_operation == Operation::Add) {
+                result = _folderMetadata->addUser(_sharee->shareWith(), _shareeCertificate);
+            } else if (_operation == Operation::Remove) {
+                result = _folderMetadata->removeUser(_sharee->shareWith());
+            }
+
+            if (!result) {
+                emit finished(403, tr("Could not add or remove a folder user %1, for folder %2").arg(_sharee->shareWith()).arg(_sharePath));
                 return;
             }
-            _subJobs.values().last()->start();
+
+            slotUpdateFolderMetadata();
             return;
         }
         emit finished(-1, tr("Wrong operation for folder %1").arg(QString::fromUtf8(_folderId)));
@@ -191,7 +198,7 @@ void UpdateE2eeShareMetadataJob::slotScheduleSubJobs()
 {
     const auto shareDbPath = _sharePath.mid(_folder->remotePath().size());
 
-    _folder->journalDb()->getFilesBelowPath(shareDbPath.toUtf8(), [this](const SyncJournalFileRecord &record) -> void {
+    [[maybeunused]] const auto result = _folder->journalDb()->getFilesBelowPath(shareDbPath.toUtf8(), [this](const SyncJournalFileRecord &record) -> void {
         if (record.isDirectory()) {
             const auto reEncryptE2EeFolderMetatadaJob = new UpdateE2eeShareMetadataJob(_account,
                                                                                        record._fileId,
@@ -203,21 +210,8 @@ void UpdateE2eeShareMetadataJob::slotScheduleSubJobs()
             reEncryptE2EeFolderMetatadaJob->setParent(this);
             reEncryptE2EeFolderMetatadaJob->setFolderToken(_folderToken);
             const auto fileId = record._fileId;
-            _subJobs.insert(fileId, reEncryptE2EeFolderMetatadaJob);
-            connect(reEncryptE2EeFolderMetatadaJob, &UpdateE2eeShareMetadataJob::finished, [this, fileId](int code, const QString &message) {
-                Q_UNUSED(message);
-                if (code != 200) {
-                    slotUnlockFolder();
-                    return;
-                }
-                const auto job = _subJobs.take(fileId);
-                job->deleteLater();
-                if (_subJobs.isEmpty()) {
-                    slotSubJobsFinished();
-                } else {
-                    _subJobs.values().last()->start();
-                }
-            });
+            _subJobs.insert(reEncryptE2EeFolderMetatadaJob);
+            connect(reEncryptE2EeFolderMetatadaJob, &UpdateE2eeShareMetadataJob::finished, this, &UpdateE2eeShareMetadataJob::slotSubJobFinished);
         }
     });
 }
@@ -248,7 +242,6 @@ void UpdateE2eeShareMetadataJob::slotUnlockFolder()
 
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Calling Unlock";
     const auto unlockJob = new UnlockEncryptFolderApiJob(_account, _folderId, _folderToken, _folder->journalDb(), this);
-
     connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this](const QByteArray &folderId) {
         qCDebug(lcUpdateE2eeShareMetadataJob) << "Successfully Unlocked";
         _folderToken = "";
@@ -258,7 +251,6 @@ void UpdateE2eeShareMetadataJob::slotUnlockFolder()
     });
     connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this](const QByteArray &folderId, int httpStatus) {
         qCDebug(lcUpdateE2eeShareMetadataJob) << "Unlock Error";
-
         slotFolderUnlocked(folderId, httpStatus);
     });
     unlockJob->start();
@@ -269,18 +261,6 @@ void UpdateE2eeShareMetadataJob::slotFolderLockedSuccessfully(const QByteArray &
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Folder" << folderId << "Locked Successfully for Upload, Fetching Metadata";
     _folderToken = token;
     Q_ASSERT(_operation == Operation::Add || _operation == Operation::Remove);
-    bool result = false;
-    if (_operation == Operation::Add) {
-        result = _folderMetadata->addUser(_sharee->shareWith(), _shareeCertificate);
-    } else if (_operation == Operation::Remove) {
-        result = _folderMetadata->removeUser(_sharee->shareWith());
-    }
-
-    if (!result) {
-        emit finished(403, tr("Could not add or remove a folder user %1, for folder %2").arg(_sharee->shareWith()).arg(_sharePath));
-        return;
-    }
-
     slotFetchFolderMetadata();
 }
 
@@ -289,7 +269,12 @@ void UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess(const QByteArray &fol
     Q_UNUSED(folderId);
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Uploading of the metadata success, Encrypting the file";
     if (_operation == Operation::Add || _operation == Operation::Remove) {
-        slotUnlockFolder();
+        slotScheduleSubJobs();
+        if (_subJobs.isEmpty()) {
+            slotUnlockFolder();
+        } else {
+            _subJobs.values().last()->start();
+        }
     } else {
         emit finished(200);
     }
@@ -322,7 +307,30 @@ void UpdateE2eeShareMetadataJob::slotUpdateFolderMetadata()
 
 void UpdateE2eeShareMetadataJob::slotSubJobsFinished()
 {
-    slotUpdateFolderMetadata();
+    slotUnlockFolder();
+}
+
+void UpdateE2eeShareMetadataJob::slotSubJobFinished(int code, const QString &message)
+{
+    Q_UNUSED(message);
+    if (code != 200) {
+        slotUnlockFolder();
+        return;
+    }
+    const auto job = qobject_cast<UpdateE2eeShareMetadataJob *>(sender());
+    Q_ASSERT(job);
+    if (!job) {
+        slotUnlockFolder();
+        return;
+    }
+    _subJobs.remove(job);
+    job->deleteLater();
+
+    if (_subJobs.isEmpty()) {
+        slotSubJobsFinished();
+    } else {
+        _subJobs.values().last()->start();
+    }
 }
 
 void UpdateE2eeShareMetadataJob::slotFolderLockedError(const QByteArray &folderId, int httpErrorCode)

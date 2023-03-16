@@ -71,6 +71,7 @@ private slots:
     void slotFolderUnlocked(const QByteArray &folderId, int httpStatus);
     void slotUpdateFolderMetadata();
     void slotSubJobsFinished();
+    void slotSubJobFinished(int code, const QString &message = {});
 
 private: signals:
     void certificateReady(QSslCertificate certificate);
@@ -88,7 +89,7 @@ private:
     QSslCertificate _shareeCertificate;
     QByteArray _folderToken;
     QSharedPointer<FolderMetadata> _folderMetadata;
-    QHash<QString, UpdateE2eeShareMetadataJob *> _subJobs;
+    QSet<UpdateE2eeShareMetadataJob *> _subJobs;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QPointer<Folder> _folder;
 };
