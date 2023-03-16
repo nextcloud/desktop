@@ -193,6 +193,10 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity already notified, skip";
             return false;
         }
+        if (!activity._shouldNotify) {
+            qCDebug(lcActivity) << "Activity should not be notified";
+            return false;
+        }
 
         return true;
     });
@@ -226,6 +230,11 @@ void User::slotBuildIncomingCallDialogs(const ActivityList &list)
 
     if(systray) {
         for(const auto &activity : list) {
+            if (!activity._shouldNotify) {
+                qCDebug(lcActivity) << "Activity should not be notified";
+                continue;
+            }
+
             systray->createCallDialog(activity, _account);
         }
     }

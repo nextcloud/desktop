@@ -157,6 +157,7 @@ public:
      * @return
      */
 
+    bool _shouldNotify = true;
 
     [[nodiscard]] Identifier ident() const;
 };

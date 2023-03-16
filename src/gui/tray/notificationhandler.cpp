@@ -105,6 +105,10 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             }
         }
 
+        if (json.contains("shouldNotify")) {
+            a._shouldNotify = json.value("shouldNotify").toBool(true);
+        }
+
         // 2 cases to consider:
         // 1. server == 24 & has Talk: object_type is chat/call/room & object_id contains conversationToken/messageId
         // 2. server < 24 & has Talk: object_type is chat/call/room & object_id contains _only_ conversationToken
