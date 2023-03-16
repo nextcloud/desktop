@@ -89,7 +89,7 @@ private:
         // Relative path of the file locally, without any vfs suffix
         QString folderRelativePathNoVfsSuffix() const;
 
-        Folder *folder;
+        Folder *folder = nullptr;
         // Absolute path of the file locally. (May be a virtual file)
         QString localPath;
         // Relative path of the file locally, as in the DB. (May be a virtual file)
@@ -98,6 +98,8 @@ private:
         QString serverRelativePath;
 
         bool isSyncFolder() const;
+
+        bool isValid() const;
     };
 
     void broadcastMessage(const QString &msg, bool doWait = false);

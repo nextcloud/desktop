@@ -961,6 +961,11 @@ SocketApi::FileData SocketApi::FileData::parentFolder() const
     return FileData::get(QFileInfo(localPath).dir().path());
 }
 
+bool SocketApi::FileData::isValid() const
+{
+    return folder;
+}
+
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
     listener->sendMessage(QStringLiteral("GET_MENU_ITEMS:BEGIN"));
@@ -969,7 +974,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     // Some options only show for single files
     if (files.size() == 1) {
         const FileData fileData = FileData::get(files.first());
-        if (fileData.folder->accountState()->isConnected()) {
+        if (fileData.isValid() && fileData.folder->accountState()->isConnected()) {
             const auto &capabilities = fileData.folder->accountState()->account()->capabilities();
             if (!fileData.isSyncFolder()) {
                 const auto record = fileData.journalRecord();
