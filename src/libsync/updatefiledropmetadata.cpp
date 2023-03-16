@@ -137,13 +137,10 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
 
         emit fileDropMetadataParsedAndAdjusted(_metadata.data());
 
-        _metadata->encryptMetadata();
-        connect(_metadata.data(), &FolderMetadata::encryptionFinished, this, [this](const QByteArray encryptedMetadata) {
-            const auto updateMetadataJob = new UpdateMetadataApiJob(propagator()->account(), _folderId, encryptedMetadata, _folderToken);
-            connect(updateMetadataJob, &UpdateMetadataApiJob::success, this, &UpdateFileDropMetadataJob::slotUpdateMetadataSuccess);
-            connect(updateMetadataJob, &UpdateMetadataApiJob::error, this, &UpdateFileDropMetadataJob::slotUpdateMetadataError);
-            updateMetadataJob->start();
-        });
+        const auto updateMetadataJob = new UpdateMetadataApiJob(propagator()->account(), _folderId, _metadata->encryptedMetadata(), _folderToken);
+        connect(updateMetadataJob, &UpdateMetadataApiJob::success, this, &UpdateFileDropMetadataJob::slotUpdateMetadataSuccess);
+        connect(updateMetadataJob, &UpdateMetadataApiJob::error, this, &UpdateFileDropMetadataJob::slotUpdateMetadataError);
+        updateMetadataJob->start();
     });
 }
 

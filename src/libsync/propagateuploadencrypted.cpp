@@ -173,10 +173,6 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
           if (encryptedFile.mimetype == QByteArrayLiteral("inode/directory")) {
               encryptedFile.mimetype = QByteArrayLiteral("httpd/unix-directory");
           }
-
-          if (encryptedFile.mimetype == QByteArrayLiteral("inode/directory") || encryptedFile.mimetype == QByteArrayLiteral("httpd/unix-directory")) {
-              encryptedFile.mimetype.clear();
-          }
       }
 
       encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
@@ -213,20 +209,18 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
       qCDebug(lcPropagateUploadEncrypted) << "Metadata created, sending to the server.";
 
-      metadata->encryptMetadata();
-      connect(metadata.data(), &FolderMetadata::encryptionFinished, this, [this, metadata, statusCode](const QByteArray encryptedMetadata) {
-          if (statusCode == 404) {
-              const auto job = new StoreMetaDataApiJob(_propagator->account(), _folderId, encryptedMetadata);
-              connect(job, &StoreMetaDataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
-              connect(job, &StoreMetaDataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
-              job->start();
-          } else {
-              const auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, encryptedMetadata, _folderToken);
-              connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
-              connect(job, &UpdateMetadataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
-              job->start();
-          }
-      });
+      const auto encryptedMetadata = metadata->encryptedMetadata();
+      if (statusCode == 404) {
+          const auto job = new StoreMetaDataApiJob(_propagator->account(), _folderId, encryptedMetadata);
+          connect(job, &StoreMetaDataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
+          connect(job, &StoreMetaDataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
+          job->start();
+      } else {
+          const auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, encryptedMetadata, _folderToken);
+          connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
+          connect(job, &UpdateMetadataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
+          job->start();
+      }
   });
 }
 

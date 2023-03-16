@@ -32,6 +32,7 @@ public:
     FolderMetadata(AccountPtr account,
                    const QByteArray &metadata,
                    const QString &topLevelFolderPath,
+                   const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {},
                    QObject *parent = nullptr);
     [[nodiscard]] QVector<EncryptedFile> files() const;
 
@@ -49,6 +50,8 @@ public:
     const QByteArray &metadataKey() const;
     const QSet<QByteArray> &keyChecksums() const;
     int versionFromMetadata() const;
+
+    QByteArray encryptedMetadata();
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -71,6 +74,9 @@ private:
     [[nodiscard]] QJsonObject convertFileToJsonObject(const EncryptedFile *encryptedFile, const QByteArray &metadataKey) const;
 
     [[nodiscard]] bool isTopLevelFolder() const;
+    
+    QByteArray handleEncryptionRequestV2();
+    QByteArray handleEncryptionRequestV1();
 
     static QByteArray gZipEncryptAndBase64Encode(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag);
     static QByteArray base64DecodeDecryptAndGzipUnZip(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv);
@@ -80,8 +86,6 @@ public slots:
     void removeEncryptedFile(const EncryptedFile &f);
     void removeAllEncryptedFiles();
     void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
-    void encryptMetadata();
-    void setMetadataKeyOverride(const QByteArray &metadataKeyOverride);
 
 private slots:
     void setupMetadata();
@@ -99,13 +103,9 @@ private slots:
     void updateUsersEncryptedMetadataKey();
     void createNewMetadataKey();
     void emitSetupComplete();
-    void handleEncryptionRequest();
-    void handleEncryptionRequestV2();
-    void handleEncryptionRequestV1();
 
 signals:
     void setupComplete();
-    void encryptionFinished(const QByteArray metadata);
 
 private:
     QVector<EncryptedFile> _files;
@@ -114,7 +114,6 @@ private:
     QByteArray _fileDropMetadataNonce;
     QByteArray _fileDropMetadataAuthenticationTag;
     QByteArray _fileDropKey;
-    QByteArray _metadataKeyOverride;
     QMap<int, QByteArray> _metadataKeys; //legacy, remove after migration is done
     QSet<QByteArray> _keyChecksums;
     QHash<QString, FolderUser> _folderUsers;
@@ -125,7 +124,6 @@ private:
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QString _topLevelFolderPath;
     int _versionFromMetadata = -1;
-    bool _isEncryptionRequested = false;
 };
 
 } // namespace OCC

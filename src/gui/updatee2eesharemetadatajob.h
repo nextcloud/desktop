@@ -51,7 +51,7 @@ public:
 
 public slots:
     void start();
-    void setMetadataKeyOverride(const QByteArray &metadataKeyOverride);
+    void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
     void setFolderToken(const QByteArray &folderToken);
 
 private slots:
@@ -61,6 +61,7 @@ private slots:
     void slotFetchFolderMetadata();
     void slotMetadataReceived(const QJsonDocument &json, int statusCode);
     void slotMetadataError(const QByteArray &folderId, int httpReturnCode);
+    void slotScheduleSubJobs();
     void slotFolderLockedSuccessfully(const QByteArray &folderId, const QByteArray &token);
     void slotFolderLockedError(const QByteArray &folderId, int httpErrorCode);
     void slotLockFolder();
@@ -86,9 +87,9 @@ private:
     QString _password;
     QSslCertificate _shareeCertificate;
     QByteArray _folderToken;
-    QScopedPointer<FolderMetadata> _folderMetadata;
+    QSharedPointer<FolderMetadata> _folderMetadata;
     QHash<QString, UpdateE2eeShareMetadataJob *> _subJobs;
-    QByteArray _metadataKeyOverride;
+    QSharedPointer<FolderMetadata> _topLevelFolderMetadata;
     QPointer<Folder> _folder;
 };
 

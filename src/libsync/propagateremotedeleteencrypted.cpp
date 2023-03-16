@@ -91,16 +91,13 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
 
         qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata updated, sending to the server.";
 
-        metadata->encryptMetadata();
-        connect(metadata, &FolderMetadata::encryptionFinished, this, [this, metadata](const QByteArray encryptedMetadata) {
-            metadata->deleteLater();
-            const auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, encryptedMetadata, _folderToken);
-            connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
-                Q_UNUSED(fileId);
-                deleteRemoteItem(_item->_encryptedFileName);
-            });
-            connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
-            job->start();
+        metadata->deleteLater();
+        const auto job = new UpdateMetadataApiJob(_propagator->account(), _folderId, metadata->encryptedMetadata(), _folderToken);
+        connect(job, &UpdateMetadataApiJob::success, this, [this](const QByteArray &fileId) {
+            Q_UNUSED(fileId);
+            deleteRemoteItem(_item->_encryptedFileName);
         });
+        connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
+        job->start();
     });
 }

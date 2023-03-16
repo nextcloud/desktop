@@ -102,22 +102,20 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
     const auto topLevelFolderPath = rec.path() == currentPath ? QStringLiteral("/") : rec.path();
     QSharedPointer<FolderMetadata> metadata(new FolderMetadata(_account, {}, topLevelFolderPath));
     connect(metadata.data(), &FolderMetadata::setupComplete, this, [this, fileId, metadata] {
-        metadata->encryptMetadata();
-        connect(metadata.data(), &FolderMetadata::encryptionFinished, this, [this, fileId, metadata](const QByteArray encryptedMetadata) {
-            if (encryptedMetadata.isEmpty()) {
-                // TODO: Mark the folder as unencrypted as the metadata generation failed.
-                _errorString =
-                    tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
-                       "This can be an issue with your OpenSSL libraries.");
-                emit finished(Error);
-                return;
-            }
+        const auto encryptedMetadata = metadata->encryptedMetadata();
+        if (encryptedMetadata.isEmpty()) {
+            // TODO: Mark the folder as unencrypted as the metadata generation failed.
+            _errorString =
+                tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
+                   "This can be an issue with your OpenSSL libraries.");
+            emit finished(Error);
+            return;
+        }
 
-            const auto storeMetadataJob = new StoreMetaDataApiJob(_account, fileId, encryptedMetadata, this);
-            connect(storeMetadataJob, &StoreMetaDataApiJob::success, this, &EncryptFolderJob::slotUploadMetadataSuccess);
-            connect(storeMetadataJob, &StoreMetaDataApiJob::error, this, &EncryptFolderJob::slotUpdateMetadataError);
-            storeMetadataJob->start();
-        });
+        const auto storeMetadataJob = new StoreMetaDataApiJob(_account, fileId, encryptedMetadata, this);
+        connect(storeMetadataJob, &StoreMetaDataApiJob::success, this, &EncryptFolderJob::slotUploadMetadataSuccess);
+        connect(storeMetadataJob, &StoreMetaDataApiJob::error, this, &EncryptFolderJob::slotUpdateMetadataError);
+        storeMetadataJob->start();
     });
 }
 
