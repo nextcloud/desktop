@@ -53,6 +53,7 @@ public slots:
     void start();
     void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
     void setFolderToken(const QByteArray &folderToken);
+    void setMetadataKeyForDecryption(const QByteArray &metadataKey);
 
 private slots:
     void slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
@@ -88,6 +89,7 @@ private:
     QString _password;
     QSslCertificate _shareeCertificate;
     QByteArray _folderToken;
+    QByteArray _metadataKeyForDecryption;
     QSharedPointer<FolderMetadata> _folderMetadata;
     QSet<UpdateE2eeShareMetadataJob *> _subJobs;
     QSharedPointer<FolderMetadata> _topLevelFolderMetadata;

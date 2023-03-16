@@ -42,11 +42,13 @@ FolderMetadata::FolderMetadata(AccountPtr account,
                                const QByteArray &metadata,
                                const QString &topLevelFolderPath,
                                const QSharedPointer<FolderMetadata> &topLevelFolderMetadata,
+                               const QByteArray &metadataKeyForDecryption,
                                QObject *parent)
     : QObject(parent)
     , _account(account)
     , _initialMetadata(metadata)
     , _topLevelFolderPath(topLevelFolderPath)
+    , _metadataKeyForDecryption(metadataKeyForDecryption)
     , _topLevelFolderMetadata(topLevelFolderMetadata)
 {
 
@@ -212,12 +214,6 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
     const auto metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
     const auto folderUsers = metaDataDoc[usersKey].toArray();
 
-    if (folderUsers.isEmpty()) {
-        if (_topLevelFolderMetadata) {
-            _metadataKey = _topLevelFolderMetadata->metadataKey();
-        }
-    }
-
     QJsonDocument debugHelper;
     debugHelper.setArray(folderUsers);
     qCDebug(lcCseMetadata()) << "users: " << debugHelper.toJson(QJsonDocument::Compact);
@@ -239,7 +235,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         _fileDropKey = decryptData(currentFolderUser.encryptedFiledropKey);
     }
 
-    if (_metadataKey.isEmpty()) {
+    if (metadataKeyForDecryption().isEmpty()) {
         qCDebug(lcCseMetadata()) << "Could not decrypt metadata key!";
         return;
     }
@@ -247,7 +243,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
     _metadataNonce = QByteArray::fromBase64(metadataObj[nonceKey].toString().toLocal8Bit());
     const auto authenticationTag = QByteArray::fromBase64(metadataObj[authenticationTagKey].toString().toLocal8Bit());
     const auto cipherTextEncryptedAndBase64 = metadataObj[cipherTextKey].toString().toLocal8Bit();
-    const auto cipherTextDecrypted = decryptCipherText(cipherTextEncryptedAndBase64, _metadataKey, _metadataNonce);
+    const auto cipherTextDecrypted = decryptCipherText(cipherTextEncryptedAndBase64, metadataKeyForDecryption(), _metadataNonce);
     const auto cipherTextDocument = QJsonDocument::fromJson(cipherTextDecrypted);
     const auto keyChecksums = cipherTextDocument[keyChecksumsKey].toArray();
     for (auto it = keyChecksums.constBegin(); it != keyChecksums.constEnd(); ++it) {
@@ -274,7 +270,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
     // Cool, We actually have the key, we can decrypt the rest of the metadata.
     qCDebug(lcCseMetadata()) << "Sharing: " << sharing;
     if (sharing.size()) {
-        auto sharingDecrypted = decryptJsonObject(sharing, _metadataKey);
+        auto sharingDecrypted = decryptJsonObject(sharing, metadataKeyForDecryption());
         qCDebug(lcCseMetadata()) << "Sharing Decrypted" << sharingDecrypted;
 
         // Sharing is also a JSON object, so extract it and populate.
@@ -685,6 +681,11 @@ void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
     _files.append(f);
 }
 
+QByteArray FolderMetadata::metadataKeyForDecryption() const
+{
+    return !_metadataKeyForDecryption.isEmpty() ? _metadataKeyForDecryption : _metadataKey;
+}
+
 void FolderMetadata::removeEncryptedFile(const EncryptedFile &f)
 {
     for (int i = 0; i < _files.size(); i++) {
@@ -786,12 +787,17 @@ void FolderMetadata::topLevelFolderEncryptedMetadataReceived(const QJsonDocument
 {
     if (!json.isEmpty()) {
         _topLevelFolderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), QStringLiteral("/")));
-        if (_topLevelFolderMetadata->versionFromMetadata() == -1 || _topLevelFolderMetadata->versionFromMetadata() > 1) {
-            _metadataKey = _topLevelFolderMetadata->metadataKey();
-            _keyChecksums = _topLevelFolderMetadata->keyChecksums();
-        }
+        connect(_topLevelFolderMetadata.data(), &FolderMetadata::setupComplete, this, [this]() {
+            if (_topLevelFolderMetadata->versionFromMetadata() == -1 || _topLevelFolderMetadata->versionFromMetadata() > 1) {
+                _metadataKey = _topLevelFolderMetadata->metadataKey();
+                _keyChecksums = _topLevelFolderMetadata->keyChecksums();
+            }
+
+            setupMetadata();
+        });
+    } else {
+        setupMetadata();
     }
-    setupMetadata();
 }
 
 void FolderMetadata::topLevelFolderEncryptedIdError(QNetworkReply *reply)
@@ -852,6 +858,11 @@ void FolderMetadata::setTopLevelFolderMetadata(const QSharedPointer<FolderMetada
     }
     _metadataKey = _topLevelFolderMetadata->metadataKey();
     _keyChecksums = _topLevelFolderMetadata->keyChecksums();
+}
+
+void FolderMetadata::setMetadataKeyForDecryption(const QByteArray &metadataKeyForDecryption)
+{
+    _metadataKeyForDecryption = metadataKeyForDecryption;
 }
 
 void FolderMetadata::updateUsersEncryptedMetadataKey()

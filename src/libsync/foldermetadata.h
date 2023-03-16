@@ -33,6 +33,7 @@ public:
                    const QByteArray &metadata,
                    const QString &topLevelFolderPath,
                    const QSharedPointer<FolderMetadata> &topLevelFolderMetadata = {},
+                   const QByteArray &metadataKeyForDecryption = {},
                    QObject *parent = nullptr);
     [[nodiscard]] QVector<EncryptedFile> files() const;
 
@@ -78,6 +79,8 @@ private:
     QByteArray handleEncryptionRequestV2();
     QByteArray handleEncryptionRequestV1();
 
+    [[nodiscard]] QByteArray metadataKeyForDecryption() const;
+
     static QByteArray gZipEncryptAndBase64Encode(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag);
     static QByteArray base64DecodeDecryptAndGzipUnZip(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv);
 
@@ -86,6 +89,7 @@ public slots:
     void removeEncryptedFile(const EncryptedFile &f);
     void removeAllEncryptedFiles();
     void setTopLevelFolderMetadata(const QSharedPointer<FolderMetadata> &topLevelFolderMetadata);
+    void setMetadataKeyForDecryption(const QByteArray &metadataKeyForDecryption);
 
 private slots:
     void setupMetadata();
@@ -110,6 +114,7 @@ signals:
 private:
     QVector<EncryptedFile> _files;
     QByteArray _metadataKey;
+    QByteArray _metadataKeyForDecryption;
     QByteArray _metadataNonce;
     QByteArray _fileDropMetadataNonce;
     QByteArray _fileDropMetadataAuthenticationTag;

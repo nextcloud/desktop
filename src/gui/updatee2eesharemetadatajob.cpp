@@ -101,6 +101,11 @@ void UpdateE2eeShareMetadataJob::setFolderToken(const QByteArray &folderToken)
     _folderToken = folderToken;
 }
 
+void UpdateE2eeShareMetadataJob::setMetadataKeyForDecryption(const QByteArray &metadataKey)
+{
+    _metadataKeyForDecryption = metadataKey;
+}
+
 void UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain(const QSslCertificate certificate)
 {
     disconnect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain);
@@ -157,19 +162,19 @@ void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json,
     }
     const auto sharePathSanitized = _sharePath.startsWith(QLatin1Char('/')) ? _sharePath.mid(1) : _sharePath;
     const auto topLevelFolderPath = rec.path() == sharePathSanitized ? QStringLiteral("/") : rec.path();
-    _folderMetadata.reset(new FolderMetadata(_account, statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), topLevelFolderPath, _topLevelFolderMetadata));
+    _folderMetadata.reset(new FolderMetadata(_account, statusCode == 404 ? QByteArray{} : json.toJson(QJsonDocument::Compact), topLevelFolderPath, _topLevelFolderMetadata, _metadataKeyForDecryption));
     connect(_folderMetadata.data(), &FolderMetadata::setupComplete, this, [this] {
         if (_folderMetadata->versionFromMetadata() < 2) {
             emit finished(405, tr("Could not share legacy encrypted folder %1. Migration is required.").arg(_sharePath));
             return;
         }
         if (_operation == Operation::ReEncrypt) {
-            _folderMetadata->setTopLevelFolderMetadata(_topLevelFolderMetadata);
             slotUpdateFolderMetadata();
             return;
         }
         if (_operation == Operation::Add || _operation == Operation::Remove) {
             bool result = false;
+            _metadataKeyForDecryption = _folderMetadata->metadataKey();
             if (_operation == Operation::Add) {
                 result = _folderMetadata->addUser(_sharee->shareWith(), _shareeCertificate);
             } else if (_operation == Operation::Remove) {
@@ -207,6 +212,7 @@ void UpdateE2eeShareMetadataJob::slotScheduleSubJobs()
                                                                                        UpdateE2eeShareMetadataJob::ReEncrypt,
                                                                                        QString::fromUtf8(record._path));
             reEncryptE2EeFolderMetatadaJob->setTopLevelFolderMetadata(_folderMetadata);
+            reEncryptE2EeFolderMetatadaJob->setMetadataKeyForDecryption(_metadataKeyForDecryption);
             reEncryptE2EeFolderMetatadaJob->setParent(this);
             reEncryptE2EeFolderMetatadaJob->setFolderToken(_folderToken);
             const auto fileId = record._fileId;
