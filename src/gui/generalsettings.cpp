@@ -210,6 +210,8 @@ void GeneralSettings::slotUpdateInfo()
 void GeneralSettings::slotUpdateChannelChanged(int index)
 {
 #ifdef WITH_AUTO_UPDATER
+    const auto oldChannelIndex = _ui->updateChannel->currentIndex();
+
     QString channel = index == 0 ? QStringLiteral("stable") : QStringLiteral("beta");
     if (channel == ConfigFile().updateChannel())
         return;
@@ -232,7 +234,7 @@ void GeneralSettings::slotUpdateChannelChanged(int index)
         this);
     auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, oldChannelIndex] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
             ConfigFile().setUpdateChannel(channel);
@@ -247,7 +249,7 @@ void GeneralSettings::slotUpdateChannelChanged(int index)
             }
 #endif
         } else {
-            _ui->updateChannel->setCurrentText(ConfigFile().updateChannel());
+            _ui->updateChannel->setCurrentIndex(oldChannelIndex);
         }
     });
     msgBox->open();
