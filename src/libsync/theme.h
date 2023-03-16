@@ -57,6 +57,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString conflictHelpUrl READ conflictHelpUrl CONSTANT)
     Q_PROPERTY(QString overrideServerUrl READ overrideServerUrl WRITE setOverrideServerUrl NOTIFY overrideServerUrlChanged)
     Q_PROPERTY(bool forceOverrideServerUrl READ forceOverrideServerUrl WRITE setForceOverrideServerUrl NOTIFY forceOverrideServerUrlChanged)
+    Q_PROPERTY(bool isVfsEnabled READ isVfsEnabled WRITE setVfsEnabled NOTIFY vfsEnabledChanged)
     Q_PROPERTY(bool startLoginFlowAutomatically READ startLoginFlowAutomatically WRITE setStartLoginFlowAutomatically NOTIFY startLoginFlowAutomaticallyChanged)
 #ifndef TOKEN_AUTH_ONLY
     Q_PROPERTY(QColor wizardHeaderTitleColor READ wizardHeaderTitleColor CONSTANT)
@@ -242,6 +243,8 @@ public:
      * When true, the respective UI controls will be disabled
      */
     virtual bool forceOverrideServerUrl() const;
+
+    virtual bool isVfsEnabled() const;
 
     /**
      * Automatically start login flow
@@ -595,6 +598,7 @@ public:
 public slots:
     virtual void setOverrideServerUrl(const QString &overrideServerUrl);
     virtual void setForceOverrideServerUrl(bool forceOverride);
+    virtual void setVfsEnabled(bool enabled);
     virtual void setStartLoginFlowAutomatically(bool startLoginFlowAuto);
 
 protected:
@@ -617,6 +621,7 @@ signals:
     void darkModeChanged();
     void overrideServerUrlChanged();
     void forceOverrideServerUrlChanged();
+    void vfsEnabledChanged();
     void startLoginFlowAutomaticallyChanged();
 
 private:
@@ -634,6 +639,7 @@ private:
 
     QString _overrideServerUrl;
     bool _forceOverrideServerUrl = false;
+    bool _isVfsEnabled = false;
     bool _startLoginFlowAutomatically = false;
 
 #ifndef TOKEN_AUTH_ONLY

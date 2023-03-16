@@ -196,6 +196,9 @@ public:
     [[nodiscard]] QString overrideLocalDir() const;
     void setOverrideLocalDir(const QString &localDir);
 
+    [[nodiscard]] bool isVfsEnabled() const;
+    void setVfsEnabled(bool enabled);
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 

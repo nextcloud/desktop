@@ -32,6 +32,8 @@ public:
 
     [[nodiscard]] bool isCommandLineParsed() const;
 
+    [[nodiscard]] bool isVfsEnabled() const;
+
 public slots:
     void setupAccountFromCommandLine();
 
