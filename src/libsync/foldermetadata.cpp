@@ -367,12 +367,7 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
 
 bool FolderMetadata::isMetadataSetup() const
 {
-    const auto result = !_metadataKey.isEmpty() || !_metadataKeys.isEmpty();
-    if (!result) {
-        int a = 5;
-        a = 6;
-    }
-    return result;
+    return !metadataKeyForDecryption().isEmpty() || !_metadataKeys.isEmpty();
 }
 
 EncryptedFile FolderMetadata::parseFileAndFolderFromJson(const QString &encryptedFilename, const QJsonValue &fileJSON) const
