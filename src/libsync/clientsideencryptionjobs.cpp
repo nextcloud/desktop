@@ -144,6 +144,7 @@ bool UpdateMetadataApiJob::finished()
 		if (retCode != 200) {
 			qCInfo(lcCseJob()) << "error updating the metadata" << path() << errorString() << retCode;
 			emit error(_fileId, retCode);
+            return false;
 		}
 
 		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";

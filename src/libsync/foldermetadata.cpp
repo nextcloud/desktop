@@ -564,7 +564,7 @@ QByteArray FolderMetadata::handleEncryptionRequestV2()
             qCDebug(lcCseMetadata) << "Metadata generation failed for file" << it->encryptedFilename;
             return {};
         }
-        const auto isDirectory = it->mimetype == QByteArrayLiteral("inode/directory") || it->mimetype == QByteArrayLiteral("httpd/unix-directory");
+        const auto isDirectory = it->mimetype.isEmpty() || it->mimetype == QByteArrayLiteral("inode/directory") || it->mimetype == QByteArrayLiteral("httpd/unix-directory");
         if (isDirectory) {
             folders.insert(it->encryptedFilename, it->originalFilename);
         } else {
@@ -593,6 +593,7 @@ QByteArray FolderMetadata::handleEncryptionRequestV2()
     QByteArray authenticationTag;
     const auto initializationVector = EncryptionHelper::generateRandom(16);
     const auto encryptedCipherTextBase64 = encryptCipherText(cipherTextDoc.toJson(QJsonDocument::Compact), _metadataKey, initializationVector, authenticationTag);
+    const auto decryptedCipherTextBase64 = decryptCipherText(encryptedCipherTextBase64, _metadataKey, initializationVector);
     const QJsonObject metadata{
         {cipherTextKey, QJsonValue::fromVariant(encryptedCipherTextBase64)},
         {nonceKey, QJsonValue::fromVariant(initializationVector.toBase64())},
@@ -618,6 +619,11 @@ QByteArray FolderMetadata::handleEncryptionRequestV2()
     internalMetadata.setObject(metaObject);
 
     auto jsonString = internalMetadata.toJson();
+
+    if (_topLevelFolderMetadata) {
+        int a = 5;
+        a = 6;
+    }
 
     return internalMetadata.toJson();
 }
