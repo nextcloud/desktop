@@ -25,6 +25,7 @@ Summary
 * Enhancement - Display open in web in file browser context menu, on sync roots: [#10572](https://github.com/owncloud/client/issues/10572)
 * Enhancement - Display space subtitle if available: [#10577](https://github.com/owncloud/client/issues/10577)
 * Enhancement - Open sharing options in Web: [#10590](https://github.com/owncloud/client/pull/10590)
+* Enhancement - Display the space name provided by the server: [#10602](https://github.com/owncloud/client/pull/10602)
 
 Details
 -------
@@ -131,6 +132,12 @@ Details
    the web view but also directly show the sharing options.
 
    https://github.com/owncloud/client/pull/10590
+
+* Enhancement - Display the space name provided by the server: [#10602](https://github.com/owncloud/client/pull/10602)
+
+   If a space is renamed on the server, this change is now displayed in the client.
+
+   https://github.com/owncloud/client/pull/10602
 
 Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
 =======================================
