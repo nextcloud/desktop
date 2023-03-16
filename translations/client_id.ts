@@ -302,7 +302,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>Folder-folder</translation>
+        <translation>Folder</translation>
     </message>
 </context>
 <context>
@@ -702,7 +702,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1247"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Mendapatkan autorisasi dari browser. &lt;a href=&apos;%1&apos;&gt;Klik disini&lt;/a&gt; untuk membuka ulang browser.</translation>
+        <translation>Mendapatkan autorisasi dari browser. &lt;a href=&apos;%1&apos;&gt;Klik di sini&lt;/a&gt; untuk membuka ulang browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1251"/>
@@ -2579,7 +2579,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Klik disini&lt;/a&gt; untuk meminta kata sandi aplikasi dari antarmuka situs.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klik di sini&lt;/a&gt; untuk meminta kata sandi aplikasi dari antarmuka situs.</translation>
     </message>
 </context>
 <context>
@@ -3038,7 +3038,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Pengguna salah&lt;/h1&gt;&lt;p&gt;Anda telah masuk dengan pengguna&lt;em&gt;%1&lt;/em&gt;, namun harus masuk dengan pengguna &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Mohon untuk keluar dari %3 di tab lainnya, kemudian &lt;a href=&apos;%4&apos;&gt;klik disini&lt;/a&gt; dan masuk kembali sebagai pengguna %2&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Pengguna salah&lt;/h1&gt;&lt;p&gt;Anda telah masuk dengan pengguna&lt;em&gt;%1&lt;/em&gt;, namun harus masuk dengan pengguna &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Mohon untuk keluar dari %3 di tab lainnya, kemudian &lt;a href=&apos;%4&apos;&gt;klik di sini&lt;/a&gt; dan masuk kembali sebagai pengguna %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3214,7 +3214,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="48"/>
         <source>&amp;Email</source>
-        <translation>&amp;Email</translation>
+        <translation>&amp;Surel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="58"/>
@@ -3308,7 +3308,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="422"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Akses ditolak dari server. Untuk memverifikasi bahwa Anda memiliki akses yang benar, &lt;a href=&quot;%1&quot;&gt;klik disini&lt;/a&gt; untuk akses ke layanan dengan peramban Anda.</translation>
+        <translation>Akses ditolak dari server. Untuk memverifikasi bahwa Anda memiliki akses yang benar, &lt;a href=&quot;%1&quot;&gt;klik di sini&lt;/a&gt; untuk akses ke layanan dengan peramban Anda.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
@@ -6332,7 +6332,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Untuk melindungi Identitas Kriptografi Anda, kami mengenkripsinya dengan sebuah mnemonic dari 12 kamus kata. Mohon untuk dicatat dan amankan. Enkripsi ini akan dibutuhkan untuk menambah perangkat lainnya ke akun Anda (seperti ponsel Anda atau laptop).</translation>
+        <translation>Untuk melindungi Identitas Kriptografi Anda, kami mengenkripsinya dengan sebuah mnemonic dari 12 kamus kata. Mohon untuk dicatat dan amankan. Enkripsi ini akan dibutuhkan untuk menambah perangkat lainnya ke akun Anda  (seperti ponsel atau laptop Anda).</translation>
     </message>
 </context>
 <context>
