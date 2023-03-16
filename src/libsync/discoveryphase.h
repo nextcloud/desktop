@@ -117,6 +117,7 @@ public:
     explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QUrl &baseUrl, const QString &path, QObject *parent = nullptr);
     // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
+    bool isRootPath() const { return _isRootPath; }
     void start();
     void abort();
 
@@ -266,6 +267,11 @@ public:
     // output
     QByteArray _dataFingerprint;
     bool _anotherSyncNeeded = false;
+
+    /**
+     * @return whether we are syncing to a ocis space or not
+     */
+    bool isSpace() const;
 
 signals:
     void fatalError(const QString &errorString);

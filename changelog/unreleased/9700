@@ -1,0 +1,5 @@
+Enhancement: Display `This space is either disabled or deleted` for gone spaces
+
+We now provide a less technical error when a space was disabled or deleted.
+
+https://github.com/owncloud/client/issues/9700
