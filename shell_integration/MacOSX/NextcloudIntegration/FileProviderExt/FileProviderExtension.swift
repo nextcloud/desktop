@@ -455,6 +455,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     return
                 }
             }
+
+            // Return the progress if item is folder here while the async block runs
+            guard !itemTemplateIsFolder else {
+                return Progress()
+            }
         }
 
         guard !itemTemplateIsFolder else {
