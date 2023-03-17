@@ -32,6 +32,8 @@ constexpr auto usersEncryptedMetadataKey = "encryptedMetadataKey";
 constexpr auto usersEncryptedFiledropKey = "encryptedFiledropKey";
 constexpr auto versionKey = "version";
 
+const auto metadataKeyLength = 16;
+
 QString metadataStringFromOCsDocument(const QJsonDocument &ocsDoc)
 {
     return ocsDoc.object()["ocs"].toObject()["data"].toObject()["meta-data"].toString();
@@ -253,7 +255,7 @@ void FolderMetadata::setupExistingMetadataVersion2(const QByteArray &metadata)
         }
     }
 
-    if (!verifyMetadataKey(_metadataKey)) {
+    if (!verifyMetadataKey(metadataKeyForDecryption())) {
         qCDebug(lcCseMetadata()) << "Could not verify metadataKey!";
         return;
     }
@@ -511,7 +513,7 @@ void FolderMetadata::setupEmptyMetadataV2()
 void FolderMetadata::setupEmptyMetadataV1()
 {
     qCDebug(lcCseMetadata) << "Settint up empty metadata v1";
-    QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
+    QByteArray newMetadataPass = EncryptionHelper::generateRandom(metadataKeyLength);
     _metadataKeys.insert(0, newMetadataPass);
 
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
@@ -591,7 +593,7 @@ QByteArray FolderMetadata::handleEncryptionRequestV2()
     const QJsonDocument cipherTextDoc(cipherText);
 
     QByteArray authenticationTag;
-    const auto initializationVector = EncryptionHelper::generateRandom(16);
+    const auto initializationVector = EncryptionHelper::generateRandom(metadataKeyLength);
     const auto encryptedCipherTextBase64 = encryptCipherText(cipherTextDoc.toJson(QJsonDocument::Compact), _metadataKey, initializationVector, authenticationTag);
     const auto decryptedCipherTextBase64 = decryptCipherText(encryptedCipherTextBase64, _metadataKey, initializationVector);
     const QJsonObject metadata{
@@ -905,13 +907,15 @@ void FolderMetadata::createNewMetadataKey()
     if (!isTopLevelFolder()) {
         return;
     }
-    if (!_metadataKey.isEmpty()) {
-        const auto existingHash = calcSha256(_metadataKey);
-        _keyChecksums.remove(existingHash);
+    if (!_metadataKey.isEmpty() && _metadataKey.size() >= metadataKeyLength) {
+        const QByteArray metadataKeyOldLimitedLength(_metadataKey.data(), metadataKeyLength);
+        _keyChecksums.remove(calcSha256(metadataKeyOldLimitedLength));
     }
-    _metadataKey = EncryptionHelper::generateRandom(16);
-    const auto newHash = calcSha256(_metadataKey);
-    _keyChecksums.insert(newHash);
+    _metadataKey = EncryptionHelper::generateRandom(metadataKeyLength);
+    if (!_metadataKey.isEmpty() && _metadataKey.size() >= metadataKeyLength) {
+        const QByteArray metadataKeyLimitedLength(_metadataKey.data(), metadataKeyLength);
+        _keyChecksums.insert(calcSha256(metadataKeyLimitedLength));
+    }
 }
 
 bool FolderMetadata::verifyMetadataKey(const QByteArray &metadataKey) const
@@ -919,8 +923,11 @@ bool FolderMetadata::verifyMetadataKey(const QByteArray &metadataKey) const
     if (_versionFromMetadata < 2) {
         return true;
     }
-    const auto metadataKeyHash = calcSha256(metadataKey);
-    //return _keyChecksums.contains(metadataKeyHash);
-    return true;
+    if (metadataKey.isEmpty() || metadataKey.size() < metadataKeyLength) {
+        return false;
+    }
+    const QByteArray metadataKeyLimitedLength(metadataKey.data(), metadataKeyLength);
+    // _keyChecksums should not be empty, fix this by taking a proper _keyChecksums from the topLevelFolder
+    return _keyChecksums.contains(calcSha256(metadataKeyLimitedLength)) || _keyChecksums.isEmpty();
 }
 }
