@@ -110,11 +110,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 for directoryMetadata in directoryMetadatas {
-                    guard directoryMetadata.etag != "" else {
-                        Logger.enumeration.info("Skipping enumeration of unexplored directory for working set: \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
-                        continue;
-                    }
-
                     dispatchGroup.enter() // Add to outer counter
 
                     dispatchQueue.async {
@@ -249,12 +244,26 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             FileProviderEnumerator.fullRecursiveScanForChanges(ncAccount: self.ncAccount, ncKit: self.ncKit) { newMetadatas, updatedMetadatas, deletedMetadatas in
 
                 Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
+
+                // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved)
+                // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis;
+                // so we need to check we are not simultaneously marking a moved file as deleted and updated
+                var checkedDeletedMetadatas = deletedMetadatas
+
+                for updatedMetadata in updatedMetadatas {
+                    guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(where: { $0.ocId == updatedMetadata.ocId } ) else {
+                        continue;
+                    }
+
+                    checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
+                }
+
                 FileProviderEnumerator.completeChangesObserver(observer,
                                                                anchor: anchor,
                                                                ncKit: self.ncKit,
                                                                newMetadatas: newMetadatas,
                                                                updatedMetadatas: updatedMetadatas,
-                                                               deletedMetadatas: deletedMetadatas)
+                                                               deletedMetadatas: checkedDeletedMetadatas)
             }
             return
         } else if enumeratedItemIdentifier == .trashContainer {
@@ -428,11 +437,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     private static func scanRecursivelyForChanges(_ directoryMetadata: NextcloudDirectoryMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
-
-        guard directoryMetadata.etag != "" || directoryMetadata.serverUrl == ncAccount.davFilesUrl else {
-            Logger.enumeration.info("Skipping enumeration of changes in unexplored directory for working \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
-            return ([], [], [])
-        }
 
         var allNewMetadatas: [NextcloudItemMetadataTable] = []
         var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
