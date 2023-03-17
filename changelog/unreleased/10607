@@ -1,0 +1,3 @@
+Bugfix: Set the expected download content length in the job properly.
+
+https://github.com/owncloud/client/pull/10607

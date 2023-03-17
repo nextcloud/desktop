@@ -560,6 +560,8 @@ void PropagateDownloadFile::startFullDownload()
             &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(propagator()->_bandwidthManager);
+    _job->setExpectedContentLength(_item->_size - _resumeStart);
+
     connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
     connect(qobject_cast<GETFileJob *>(_job.data()), &GETFileJob::downloadProgress,
         this, &PropagateDownloadFile::slotDownloadProgress);
