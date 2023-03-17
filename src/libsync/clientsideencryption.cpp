@@ -885,14 +885,14 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
         return {};
     }
 
-    ClientSideEncryption::Bio privateKeyBio;
-    BIO_write(privateKeyBio, _privateKey.constData(), _privateKey.size());
-    const auto privateKey = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
+    Bio privateKeyBio;
+    BIO_write(privateKeyBio, _privateKeyRsa.constData(), _privateKeyRsa.size());
+    const auto privateKey = PKey::readPrivateKey(privateKeyBio);
 
     ClientSideEncryption::Bio dataBio;
     BIO_write(dataBio, data.constData(), data.size());
 
-    const auto contentInfo = CMS_sign(x509Certificate, privateKey, nullptr, dataBio, 0);
+    const auto contentInfo = CMS_sign(x509Certificate, privateKey, nullptr, dataBio, CMS_DETACHED);
 
     if (!contentInfo) {
         return {};
@@ -901,15 +901,14 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
     ClientSideEncryption::Bio cmsOut;
     CMS_ContentInfo_print_ctx(cmsOut, contentInfo, 0, nullptr);
 
+
     ClientSideEncryption::Bio cmsOut2;
-    const auto result = CMS_data(contentInfo, cmsOut2, 0);
+    const auto result = PEM_write_bio_CMS(cmsOut2, contentInfo);
 
     const auto out = BIO2ByteArray(cmsOut);
     const auto out2 = BIO2ByteArray(cmsOut2);
 
-    ClientSideEncryption::Bio verifyOut;
-    const auto verifyOutBa = BIO2ByteArray(verifyOut);
-    auto verifyRes1 = CMS_verify(contentInfo, nullptr, nullptr, nullptr, verifyOut, 0);
+    auto verifyRes1 = CMS_verify(contentInfo, nullptr, nullptr, dataBio, nullptr, CMS_DETACHED);
 
     const auto error = ERR_get_error();
 
@@ -1001,6 +1000,10 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
         getPublicKeyFromServer(account);
         return;
     }
+
+    auto sslKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+
+    _privateKeyRsa = sslKey.toPem();
 
     //_privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
     _privateKey = readJob->binaryData();
