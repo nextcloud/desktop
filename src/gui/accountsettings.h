@@ -43,6 +43,7 @@ class FolderMan;
 class Account;
 class AccountState;
 class FolderStatusModel;
+class FolderStatusDelegate;
 
 /**
  * @brief The AccountSettings class
@@ -96,6 +97,7 @@ private:
     Ui::AccountSettings *ui;
 
     FolderStatusModel *_model;
+    FolderStatusDelegate *_delegate;
     QSortFilterProxyModel *_sortModel;
     bool _wasDisabledBefore;
     AccountStatePtr _accountState;

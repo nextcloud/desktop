@@ -35,12 +35,23 @@ public:
     /**
      * return the position of the option button within the item
      */
-    static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
-    static QRect errorsListRect(QRect within, const QModelIndex &);
-    static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
+    QRectF optionsButtonRect(QRectF within, Qt::LayoutDirection direction) const;
+    QRectF errorsListRect(QRectF within, const QModelIndex &) const;
+    qreal rootFolderHeightWithoutErrors() const;
 
 private:
     static QString addFolderText(bool useSapces);
+
+    // a workaround for a design flaw of the class
+    // we need to know the actual font for most computations
+    // the font is only set in paint and sizeHint
+    void updateFont(const QFont &font);
+
+    QFont _aliasFont;
+    QFont _font;
+    qreal _margin = 0;
+    qreal _aliasMargin = 0;
+    bool _ready = false;
 };
 
 } // namespace OCC

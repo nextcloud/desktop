@@ -29,14 +29,6 @@
 
 namespace {
 const int barHeightC = 7;
-
-QFont makeAliasFont(const QFont &normalFont)
-{
-    QFont aliasFont = normalFont;
-    aliasFont.setBold(true);
-    aliasFont.setPointSize(normalFont.pointSize() + 2);
-    return aliasFont;
-}
 }
 
 namespace OCC {
@@ -50,11 +42,8 @@ FolderStatusDelegate::FolderStatusDelegate(QObject *parent)
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
-    QFont aliasFont = makeAliasFont(option.font);
-    QFont font = option.font;
-
-    QFontMetrics fm(font);
-    QFontMetrics aliasFm(aliasFont);
+    const_cast<FolderStatusDelegate *>(this)->updateFont(option.font);
+    QFontMetricsF fm(_font);
 
     const auto classif = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
     if (classif != FolderStatusModel::RootFolder) {
@@ -62,35 +51,36 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     }
 
     // calc height
-    int h = rootFolderHeightWithoutErrors(fm, aliasFm);
+    qreal h = rootFolderHeightWithoutErrors() + _margin;
     // this already includes the bottom margin
 
     // add some space for the message boxes.
-    int margin = fm.height() / 4;
     for (auto column : { FolderStatusModel::Columns::FolderConflictMsg, FolderStatusModel::Columns::FolderErrorMsg, FolderStatusModel::Columns::FolderInfoMsg }) {
         auto msgs = index.siblingAtColumn(static_cast<int>(column)).data().toStringList();
         if (!msgs.isEmpty()) {
-            h += margin + 2 * margin + msgs.count() * fm.height();
+            h += _margin + 2 * _margin + msgs.count() * fm.height();
         }
     }
 
     return QSize(0, h);
 }
 
-int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm)
+qreal FolderStatusDelegate::rootFolderHeightWithoutErrors() const
 {
-    const int aliasMargin = aliasFm.height() / 2;
-    const int margin = fm.height() / 4;
-
-    int h = aliasMargin; // margin to top
+    if (!_ready) {
+        return {};
+    }
+    const QFontMetricsF fm(_font);
+    const QFontMetricsF aliasFm(_aliasFont);
+    qreal h = _aliasMargin; // margin to top
     h += aliasFm.height(); // alias
-    h += margin; // between alias and local path
+    h += _margin; // between alias and local path
     h += fm.height(); // sync text
 
     // quota or progress bar
-    h += margin;
+    h += _margin;
     h += fm.height(); // quota or progress bar
-    h += margin;
+    h += _margin;
     h += fm.height(); // possible progress string
     return h;
 }
@@ -106,22 +96,17 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         != FolderStatusModel::RootFolder) {
         return QStyledItemDelegate::paint(painter, option, index);
     }
+    const_cast<FolderStatusDelegate *>(this)->updateFont(option.font);
     const auto textAlign = Qt::AlignLeft;
 
-    // TODO: Port to float
-    const QFont aliasFont = makeAliasFont(option.font);
-    const QFont subFont = option.font;
-    const QFont errorFont = subFont;
-    const QFont progressFont = [progressFont = subFont]() mutable {
+    const QFont errorFont = _font;
+    const QFont progressFont = [progressFont = _font]() mutable {
         progressFont.setPointSize(progressFont.pointSize() - 2);
         return progressFont;
     }();
 
-    const QFontMetrics subFm(subFont);
-    const QFontMetrics aliasFm(aliasFont);
-
-    const int aliasMargin = aliasFm.height() / 2;
-    const int margin = subFm.height() / 4;
+    const QFontMetricsF subFm(_font);
+    const QFontMetricsF aliasFm(_aliasFont);
 
     painter->save();
 
@@ -140,30 +125,30 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString syncText = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderSyncText)).data());
     const bool showProgess = !overallString.isEmpty() || !itemString.isEmpty();
 
-    const auto statusRect = option.rect.adjusted(0, 0, 0, rootFolderHeightWithoutErrors(subFm, aliasFm) - option.rect.height());
+    const auto statusRect = QRectF{option.rect}.adjusted(0, 0, 0, rootFolderHeightWithoutErrors() - option.rect.height());
     const auto iconRect =
-        QRect{statusRect.topLeft(), QSize{statusRect.height(), statusRect.height()}}.marginsRemoved({aliasMargin, aliasMargin, aliasMargin, 0});
+        QRectF{statusRect.topLeft(), QSizeF{statusRect.height(), statusRect.height()}}.marginsRemoved({_aliasMargin, _aliasMargin, _aliasMargin, 0});
 
     // the rectangle next to the icon which will contain the strings
-    const auto infoRect = QRect{iconRect.topRight(), QSize{statusRect.width() - iconRect.width(), iconRect.height()}}.marginsRemoved({aliasMargin, 0, 0, 0});
-    const auto aliasRect = QRect{infoRect.topLeft(), QSize{infoRect.width(), aliasFm.height()}};
+    const auto infoRect = QRectF{iconRect.topRight(), QSizeF{statusRect.width() - iconRect.width(), iconRect.height()}}.marginsRemoved({_aliasMargin, 0, 0, 0});
+    const auto aliasRect = QRectF{infoRect.topLeft(), QSizeF{infoRect.width(), aliasFm.height()}};
 
-    const auto marginOffset = QPoint{0, margin};
-    const auto localPathRect = QRect{aliasRect.bottomLeft() + marginOffset, QSize{aliasRect.width(), subFm.height()}};
-    const auto quotaTextRect = QRect{localPathRect.bottomLeft() + marginOffset, QSize{aliasRect.width(), subFm.height()}};
+    const auto marginOffset = QPointF{0, _margin};
+    const auto localPathRect = QRectF{aliasRect.bottomLeft() + marginOffset, QSizeF{aliasRect.width(), subFm.height()}};
+    const auto quotaTextRect = QRectF{localPathRect.bottomLeft() + marginOffset, QSizeF{aliasRect.width(), subFm.height()}};
 
     const auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
 
-    painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect).left(), iconRect.top(),
+    painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect.toRect()).left(), iconRect.top(),
         statusIcon.pixmap(iconRect.width(), iconRect.width(), syncEnabled ? QIcon::Normal : QIcon::Disabled));
 
     // only show the warning icon if the sync is running. Otherwise its
     // encoded in the status icon.
     if (warningCount > 0 && syncOngoing) {
-        const auto warnRect = QRect{iconRect.bottomLeft() - QPoint(0, 17), QSize{16, 16}};
+        const auto warnRect = QRectF{iconRect.bottomLeft() - QPointF(0, 17), QSizeF{16, 16}};
         const auto warnIcon = Utility::getCoreIcon(QStringLiteral("warning"));
-        const QPixmap pm = warnIcon.pixmap(warnRect.size(), syncEnabled ? QIcon::Normal : QIcon::Disabled);
-        painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, warnRect), pm);
+        const QPixmap pm = warnIcon.pixmap(warnRect.size().toSize(), syncEnabled ? QIcon::Normal : QIcon::Disabled);
+        painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, warnRect.toRect()), pm);
     }
 
     auto palette = option.palette;
@@ -188,30 +173,30 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else {
         painter->setPen(palette.color(cg, QPalette::Text));
     }
-    painter->setFont(aliasFont);
+    painter->setFont(_aliasFont);
     painter->drawText(
-        QStyle::visualRect(option.direction, option.rect, aliasRect), textAlign, aliasFm.elidedText(aliasText, Qt::ElideRight, aliasRect.width()));
+        QStyle::visualRect(option.direction, option.rect, aliasRect.toRect()), textAlign, aliasFm.elidedText(aliasText, Qt::ElideRight, aliasRect.width()));
 
-    painter->setFont(subFont);
-    painter->drawText(
-        QStyle::visualRect(option.direction, option.rect, localPathRect), textAlign, subFm.elidedText(syncText, Qt::ElideRight, localPathRect.width()));
+    painter->setFont(_font);
+    painter->drawText(QStyle::visualRect(option.direction, option.rect, localPathRect.toRect()), textAlign,
+        subFm.elidedText(syncText, Qt::ElideRight, localPathRect.width()));
 
     if (!showProgess) {
         const auto totalQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaTotal)).data().value<int64_t>();
         // only draw a bar if we have a quota set
         if (totalQuota > 0) {
             const auto usedQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaUsed)).data().value<int64_t>();
-            painter->setFont(subFont);
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, quotaTextRect),
+            painter->setFont(_font);
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, quotaTextRect.toRect()),
                 subFm.elidedText(
                     tr("%1 of %2 in use").arg(Utility::octetsToString(usedQuota), Utility::octetsToString(totalQuota)), Qt::ElideRight, quotaTextRect.width()));
         }
     } else {
         painter->save();
 
-        const auto pogressRect = quotaTextRect.marginsAdded({0, 0, 0, barHeightC + margin + subFm.height()});
+        const auto pogressRect = quotaTextRect.marginsAdded({0, 0, 0, barHeightC + _margin + subFm.height()});
         // Overall Progress Bar.
-        const QRect pBRect = {pogressRect.topLeft(), QSize{pogressRect.width() - 2 * margin, barHeightC}};
+        const auto pBRect = QRectF{pogressRect.topLeft(), QSizeF{pogressRect.width() - 2 * _margin, barHeightC}};
 
         QStyleOptionProgressBar pBarOpt;
 
@@ -220,37 +205,33 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         pBarOpt.maximum = 100;
         pBarOpt.progress = overallPercent;
         pBarOpt.orientation = Qt::Horizontal;
-        pBarOpt.rect = QStyle::visualRect(option.direction, option.rect, pBRect);
+        pBarOpt.rect = QStyle::visualRect(option.direction, option.rect, pBRect.toRect());
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &pBarOpt, painter, option.widget);
 
         // Overall Progress Text
-        const QRect overallProgressRect = {pBRect.bottomLeft() + marginOffset, QSize{pogressRect.width(), subFm.height()}};
+        const QRectF overallProgressRect = {pBRect.bottomLeft() + marginOffset, QSizeF{pogressRect.width(), subFm.height()}};
         painter->setFont(progressFont);
 
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect), Qt::AlignLeft | Qt::AlignVCenter, overallString);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect.toRect()), Qt::AlignLeft | Qt::AlignVCenter, overallString);
 
         painter->restore();
     }
 
     // paint an error overlay if there is an error string or conflict string
-    auto drawTextBox = [&, pos = option.rect.top() + rootFolderHeightWithoutErrors(subFm, aliasFm) + margin](const QStringList &texts, QColor color) mutable {
-        QRect rect = quotaTextRect;
+    auto drawTextBox = [&, pos = option.rect.top() + rootFolderHeightWithoutErrors() + _margin](const QStringList &texts, QColor color) mutable {
+        QRectF rect = quotaTextRect;
         rect.setLeft(iconRect.left());
         rect.setTop(pos);
-        rect.setHeight(texts.count() * subFm.height() + 2 * margin);
-        rect.setRight(option.rect.right() - margin);
+        rect.setHeight(texts.count() * subFm.height() + 2 * _margin);
+        rect.setRight(option.rect.right() - _margin);
 
         painter->save();
         painter->setBrush(color);
         painter->setPen(QColor(0xaa, 0xaa, 0xaa));
-        painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
-            4, 4);
+        painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect.toRect()), 4, 4);
         painter->setPen(Qt::white);
         painter->setFont(errorFont);
-        QRect textRect(rect.left() + margin,
-            rect.top() + margin,
-            rect.width() - 2 * margin,
-            subFm.height());
+        QRect textRect(rect.left() + _margin, rect.top() + _margin, rect.width() - 2 * _margin, subFm.height());
 
         for (const auto &eText : texts) {
             painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign, subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
@@ -258,7 +239,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         }
         painter->restore();
 
-        pos = rect.bottom() + margin;
+        pos = rect.bottom() + _margin;
     };
 
     if (!conflictTexts.isEmpty())
@@ -278,7 +259,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonVisualRect;
+        btnOpt.rect = optionsButtonVisualRect.toRect();
         btnOpt.icon = Utility::getCoreIcon(QStringLiteral("more"));
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
@@ -286,43 +267,55 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 }
 
-QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection direction)
+QRectF FolderStatusDelegate::optionsButtonRect(QRectF within, Qt::LayoutDirection direction) const
 {
-    QFont font = QFont();
-    QFont aliasFont = makeAliasFont(font);
-    QFontMetrics fm(font);
-    QFontMetrics aliasFm(aliasFont);
-    within.setHeight(FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
+    if (!_ready) {
+        return {};
+    }
+    within.setHeight(FolderStatusDelegate::rootFolderHeightWithoutErrors());
 
     QStyleOptionToolButton opt;
     int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
     opt.rect.setSize(QSize(e,e));
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
 
-    int margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
-    QRect r(QPoint(within.right() - size.width() - margin,
-                within.top() + within.height() / 2 - size.height() / 2),
-        size);
-    return QStyle::visualRect(direction, within, r);
+    qreal margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
+    QRectF r(QPoint(within.right() - size.width() - margin, within.top() + within.height() / 2 - size.height() / 2), size);
+    return QStyle::visualRect(direction, within.toRect(), r.toRect());
 }
 
-QRect FolderStatusDelegate::errorsListRect(QRect within, const QModelIndex &index)
+QRectF FolderStatusDelegate::errorsListRect(QRectF within, const QModelIndex &index) const
 {
-    QFont font = QFont();
-    QFont aliasFont = makeAliasFont(font);
-    QFontMetrics fm(font);
-    QFontMetrics aliasFm(aliasFont);
-    within.setTop(within.top() + FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
-    int margin = fm.height() / 4;
-    int h = 0;
+    if (!_ready) {
+        return {};
+    }
+    const QFontMetrics fm(_font);
+    within.setTop(within.top() + FolderStatusDelegate::rootFolderHeightWithoutErrors() + _margin);
+    qreal h = 0;
     for (auto column : { FolderStatusModel::Columns::FolderConflictMsg, FolderStatusModel::Columns::FolderErrorMsg }) {
         const auto msgs = index.siblingAtColumn(static_cast<int>(column)).data().toStringList();
         if (!msgs.isEmpty()) {
-            h += margin + 2 * margin + msgs.count() * fm.height();
+            h += _margin + 2 * _margin + msgs.count() * fm.height() + _margin;
         }
     }
     within.setHeight(h);
     return within;
+}
+
+void FolderStatusDelegate::updateFont(const QFont &font)
+{
+    if (!_ready || _font != font) {
+        _ready = true;
+        _aliasFont = [&]() {
+            auto aliasFont = font;
+            aliasFont.setBold(true);
+            aliasFont.setPointSizeF(font.pointSizeF() + 2);
+            return aliasFont;
+        }();
+
+        _margin = QFontMetricsF(_font).height() / 4.0;
+        _aliasMargin = QFontMetricsF(_aliasFont).height() / 2.0;
+    }
 }
 
 

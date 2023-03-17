@@ -81,6 +81,7 @@ public:
     }
 
     QTreeView *folderList;
+    FolderStatusDelegate *delegate;
     QAbstractItemModel *model;
 
 protected:
@@ -90,9 +91,10 @@ protected:
             Qt::CursorShape shape = Qt::ArrowCursor;
             auto pos = folderList->mapFromGlobal(QCursor::pos());
             auto index = folderList->indexAt(pos);
-            if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>() == FolderStatusModel::RootFolder
-                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index), index).contains(pos)
-                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index), folderList->layoutDirection()).contains(pos))) {
+            if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>()
+                    == FolderStatusModel::RootFolder
+                && (delegate->errorsListRect(folderList->visualRect(index), index).contains(pos)
+                    || delegate->optionsButtonRect(folderList->visualRect(index), folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
             folderList->setCursor(shape);
@@ -106,6 +108,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     , ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)
     , _accountState(accountState)
+    , _delegate(new FolderStatusDelegate(this))
 {
     ui->setupUi(this);
 
@@ -120,7 +123,8 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     _sortModel = weightedModel;
 
     ui->_folderList->setModel(_sortModel);
-    ui->_folderList->setItemDelegate(new FolderStatusDelegate(this));
+
+    ui->_folderList->setItemDelegate(_delegate);
 
     for (int i = 1; i <= _sortModel->columnCount(); ++i) {
         ui->_folderList->header()->hideSection(i);
@@ -139,6 +143,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = ui->_folderList;
+    mouseCursorChanger->delegate = _delegate;
     mouseCursorChanger->model = _sortModel;
     ui->_folderList->setMouseTracking(true);
     ui->_folderList->setAttribute(Qt::WA_Hover, true);
@@ -390,11 +395,11 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
         // tries to find if we clicked on the '...' button.
         QTreeView *tv = ui->_folderList;
         auto pos = tv->mapFromGlobal(QCursor::pos());
-        if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx), layoutDirection()).contains(pos)) {
+        if (_delegate->optionsButtonRect(tv->visualRect(indx), layoutDirection()).contains(pos)) {
             slotCustomContextMenuRequested(pos);
             return;
         }
-        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
+        if (_delegate->errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
             emit showIssuesList();
             return;
         }
