@@ -10,11 +10,13 @@ Summary
 
 * Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
+* Bugfix - Don't abort local folder deletions on unrelated errors: [#9311](https://github.com/owncloud/client/issues/9311)
 * Bugfix - Fix update channel dropdown: [#10251](https://github.com/owncloud/client/issues/10251)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
+* Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
 * Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
@@ -38,6 +40,13 @@ Details
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 
    https://github.com/owncloud/client/issues/9270
+
+* Bugfix - Don't abort local folder deletions on unrelated errors: [#9311](https://github.com/owncloud/client/issues/9311)
+
+   We fixed a bug where folder deletions where not performed if any sync error occured anyhwere in
+   the sync tree.
+
+   https://github.com/owncloud/client/issues/9311
 
 * Bugfix - Fix update channel dropdown: [#10251](https://github.com/owncloud/client/issues/10251)
 
@@ -70,6 +79,12 @@ Details
 
    https://github.com/owncloud/client/issues/10494
    https://github.com/owncloud/client/issues/10495
+
+* Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
+
+   We now provide a less technical error when a space was disabled or deleted.
+
+   https://github.com/owncloud/client/issues/9700
 
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
