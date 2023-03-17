@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
+* Bugfix - Fix update channel dropdown: [#10251](https://github.com/owncloud/client/issues/10251)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
@@ -37,6 +38,16 @@ Details
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 
    https://github.com/owncloud/client/issues/9270
+
+* Bugfix - Fix update channel dropdown: [#10251](https://github.com/owncloud/client/issues/10251)
+
+   When switching to the beta update channel in testpilotcloud, a warning will pop up. When
+   canceled, the selection should reset. This did not work reliably in localized clients due to
+   the use of string comparisons. Using a numeric index to keep track of the old value fixes the
+   problem.
+
+   https://github.com/owncloud/client/issues/10251
+   https://github.com/owncloud/client/pull/10609
 
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 
