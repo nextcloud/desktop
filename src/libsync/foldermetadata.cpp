@@ -58,6 +58,8 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
     const auto metaDataStr = metadataStringFromOCsDocument(doc);
 
+    const auto metadataSignature = _account->e2e()->generateSignatureCMS(metadata);
+
     QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
     QJsonObject metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
     QJsonObject metadataKeys = metadataObj[metadataKeysKey].toObject();

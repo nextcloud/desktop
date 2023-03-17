@@ -885,14 +885,14 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
         return {};
     }
 
-    Bio privateKeyBio;
+    ClientSideEncryption::Bio privateKeyBio;
     BIO_write(privateKeyBio, _privateKey.constData(), _privateKey.size());
-    const auto key = PKey::readPrivateKey(privateKeyBio);
-    
+    const auto privateKey = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
+
     ClientSideEncryption::Bio dataBio;
     BIO_write(dataBio, data.constData(), data.size());
 
-    const auto contentInfo = CMS_sign(x509Certificate, key, nullptr, dataBio, CMS_DETACHED);
+    const auto contentInfo = CMS_sign(x509Certificate, privateKey, nullptr, dataBio, 0);
 
     if (!contentInfo) {
         return {};
@@ -901,21 +901,42 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
     ClientSideEncryption::Bio cmsOut;
     CMS_ContentInfo_print_ctx(cmsOut, contentInfo, 0, nullptr);
 
-    return BIO2ByteArray(cmsOut);
+    ClientSideEncryption::Bio cmsOut2;
+    const auto result = CMS_data(contentInfo, cmsOut2, 0);
+
+    const auto out = BIO2ByteArray(cmsOut);
+    const auto out2 = BIO2ByteArray(cmsOut2);
+
+    ClientSideEncryption::Bio verifyOut;
+    const auto verifyOutBa = BIO2ByteArray(verifyOut);
+    auto verifyRes1 = CMS_verify(contentInfo, nullptr, nullptr, nullptr, verifyOut, 0);
+
+    const auto error = ERR_get_error();
+
+    char buf[256] = {};
+
+    ERR_error_string(error, buf);
+
+
+    auto verifyResult = verifySignatureCMS(out, data);
+
+    auto verifyResult2 = verifySignatureCMS(out2, data);
+
+    return out;
 }
 
 bool ClientSideEncryption::verifySignatureCMS(const QByteArray &cmsContent, const QByteArray &data) const
 {
     ClientSideEncryption::Bio cmsContentBio;
     BIO_write(cmsContentBio, cmsContent.constData(), cmsContent.size());
-    const auto cmsDataFromBio = CMS_data_create(cmsContentBio, CMS_DETACHED);
+    const auto cmsDataFromBio = CMS_data_create(cmsContentBio, 0);
 
     ClientSideEncryption::Bio dataBio;
     BIO_write(dataBio, data.constData(), data.size());
 
     ClientSideEncryption::Bio verifyOut;
 
-    return CMS_verify(cmsDataFromBio, nullptr, nullptr, dataBio, verifyOut, CMS_DETACHED) == 1;
+    return CMS_verify(cmsDataFromBio, nullptr, nullptr, nullptr, nullptr, 0) == 1;
 }
 
 void ClientSideEncryption::publicKeyFetched(Job *incoming)

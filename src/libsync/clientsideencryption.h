@@ -237,9 +237,6 @@ public:
         EVP_PKEY *_pkey = nullptr;
     };
 
-    [[nodiscard]] QByteArray generateSignatureCMS(const QByteArray &data) const;
-    [[nodiscard]] bool verifySignatureCMS(const QByteArray &cmsContent, const QByteArray &data) const;
-
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
     void sensitiveDataForgotten();
@@ -250,6 +247,10 @@ signals:
     void certificateFetchedFromKeychain(QSslCertificate certificate);
     void certificateFetchedFromServer(QSslCertificate certificate);
     void certificateWriteComplete(QSslCertificate certificate);
+
+public:
+    [[nodiscard]] QByteArray generateSignatureCMS(const QByteArray &data) const;
+    [[nodiscard]] bool verifySignatureCMS(const QByteArray &cmsContent, const QByteArray &data) const;
 
 public slots:
     void initialize(const AccountPtr &account);
