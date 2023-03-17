@@ -1,0 +1,3 @@
+Bugfix: Clear conflict errors after they where resolved
+
+https://github.com/owncloud/client/issues/10569

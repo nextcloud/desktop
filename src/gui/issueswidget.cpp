@@ -273,7 +273,7 @@ void IssuesWidget::slotProgressInfo(Folder *folder, const ProgressInfo &progress
             if (item.folder() != folder) {
                 return false;
             }
-            if (item.direction() == SyncFileItem::None && item.status() != SyncFileItem::Excluded) {
+            if (item.direction() == SyncFileItem::None && item.status() != SyncFileItem::Excluded && item.status() != SyncFileItem::Conflict) {
                 // TODO: don't clear syncErrors and excludes for now.
                 // make them either unique or remove them on the next sync?
                 return false;
