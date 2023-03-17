@@ -237,6 +237,9 @@ public:
         EVP_PKEY *_pkey = nullptr;
     };
 
+    [[nodiscard]] QByteArray generateSignatureCMS(const QByteArray &data) const;
+    [[nodiscard]] bool verifySignatureCMS(const QByteArray &cmsContent, const QByteArray &data) const;
+
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
     void sensitiveDataForgotten();

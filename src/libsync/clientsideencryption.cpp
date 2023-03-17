@@ -1,6 +1,7 @@
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
 #include <openssl/pem.h>
+#include <openssl/cms.h>
 #include <openssl/err.h>
 #include <openssl/engine.h>
 #include <openssl/rand.h>
@@ -871,6 +872,50 @@ bool ClientSideEncryption::checkServerPublicKeyValidity(const QByteArray &server
 
     qCDebug(lcCse()) << "Client certificate is valid against server public key";
     return true;
+}
+
+QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) const
+{
+    Bio certificateBio;
+    const auto certificatePem = _certificate.toPem();
+    BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
+    const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
+    if (!x509Certificate) {
+        qCInfo(lcCse()) << "Client certificate is invalid. Could not check it against the server public key";
+        return {};
+    }
+
+    Bio privateKeyBio;
+    BIO_write(privateKeyBio, _privateKey.constData(), _privateKey.size());
+    const auto key = PKey::readPrivateKey(privateKeyBio);
+    
+    ClientSideEncryption::Bio dataBio;
+    BIO_write(dataBio, data.constData(), data.size());
+
+    const auto contentInfo = CMS_sign(x509Certificate, key, nullptr, dataBio, CMS_DETACHED);
+
+    if (!contentInfo) {
+        return {};
+    }
+
+    ClientSideEncryption::Bio cmsOut;
+    CMS_ContentInfo_print_ctx(cmsOut, contentInfo, 0, nullptr);
+
+    return BIO2ByteArray(cmsOut);
+}
+
+bool ClientSideEncryption::verifySignatureCMS(const QByteArray &cmsContent, const QByteArray &data) const
+{
+    ClientSideEncryption::Bio cmsContentBio;
+    BIO_write(cmsContentBio, cmsContent.constData(), cmsContent.size());
+    const auto cmsDataFromBio = CMS_data_create(cmsContentBio, CMS_DETACHED);
+
+    ClientSideEncryption::Bio dataBio;
+    BIO_write(dataBio, data.constData(), data.size());
+
+    ClientSideEncryption::Bio verifyOut;
+
+    return CMS_verify(cmsDataFromBio, nullptr, nullptr, dataBio, verifyOut, CMS_DETACHED) == 1;
 }
 
 void ClientSideEncryption::publicKeyFetched(Job *incoming)
