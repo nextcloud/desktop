@@ -438,6 +438,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
+            item->_size = serverEntry.size;
         } else if (dbEntry._etag != serverEntry.etag.toUtf8()) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
