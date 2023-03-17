@@ -1,8 +1,9 @@
 Bugfix: Fix update channel dropdown
 
 When switching to the beta update channel in testpilotcloud, a warning will
-pop up. When canceled, the selection should reset. This did not work reliably,
-especially on Linux.
+pop up. When canceled, the selection should reset. This did not work reliably
+in localized clients due to the use of string comparisons. Using a numeric
+index to keep track of the old value fixes the problem.
 
 https://github.com/owncloud/client/issues/10251
 https://github.com/owncloud/client/pull/10609
