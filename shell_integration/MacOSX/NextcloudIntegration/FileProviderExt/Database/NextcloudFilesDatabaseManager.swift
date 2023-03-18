@@ -54,7 +54,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         let config = Realm.Configuration(
             fileURL: self.databasePath,
             schemaVersion: self.schemaVersion,
-            objectTypes: [NextcloudItemMetadataTable.self, NextcloudDirectoryMetadataTable.self, NextcloudLocalFileMetadataTable.self]
+            objectTypes: [NextcloudItemMetadataTable.self, NextcloudLocalFileMetadataTable.self]
         )
 
         Realm.Configuration.defaultConfiguration = config
@@ -290,163 +290,60 @@ class NextcloudFilesDatabaseManager : NSObject {
         return nil
     }
 
-    func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
-        if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
-            return NextcloudDirectoryMetadataTable(value: metadata)
+    func directoryMetadata(account: String, serverUrl: String) -> NextcloudItemMetadataTable? {
+        // We want to split by "/" (e.g. cloud.nc.com/files/a/b) but we need to be mindful of "https://c.nc.com"
+        let problematicSeparator = "://"
+        let placeholderSeparator = "__TEMP_REPLACE__"
+        let serverUrlWithoutPrefix = serverUrl.replacingOccurrences(of: problematicSeparator, with: placeholderSeparator)
+        var splitServerUrl = serverUrlWithoutPrefix.split(separator: "/")
+        let directoryItemFileName = String(splitServerUrl.removeLast())
+        let directoryItemServerUrl = splitServerUrl.joined(separator: "/").replacingOccurrences(of: placeholderSeparator, with: problematicSeparator)
+
+        if let metadata = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND fileName == %@ AND directory == true", account, directoryItemServerUrl, directoryItemFileName).first {
+            return NextcloudItemMetadataTable(value: metadata)
         }
 
         return nil
     }
 
-    func directoryMetadata(ocId: String) -> NextcloudDirectoryMetadataTable? {
-        if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first {
-            return NextcloudDirectoryMetadataTable(value: metadata)
-        }
-
-        return nil
+    func childDirectoriesForDirectory(_ directoryMetadata: NextcloudItemMetadataTable) -> [NextcloudItemMetadataTable] {
+        let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND ocId != %@ AND directory == true", directoryServerUrl, directoryMetadata.account)
+        return sortedItemMetadatas(metadatas)
     }
 
-    private func sortedDirectoryMetadatas(_ metadatas: Results<NextcloudDirectoryMetadataTable>) -> [NextcloudDirectoryMetadataTable] {
-        let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
-        return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
-    }
-
-    func childDirectoriesForDirectory(_ directoryMetadata: NextcloudDirectoryMetadataTable) -> [NextcloudDirectoryMetadataTable] {
-        let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND ocId != %@", directoryMetadata.serverUrl, directoryMetadata.account)
-        return sortedDirectoryMetadatas(metadatas)
-    }
-
-    func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
+    func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudItemMetadataTable? {
         return directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
     }
 
-    func directoryMetadatas(account: String) -> [NextcloudDirectoryMetadataTable] {
-        let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@", account)
-        return sortedDirectoryMetadatas(metadatas)
-    }
-
-    func directoryMetadatas(account: String, parentDirectoryServerUrl: String) -> [NextcloudDirectoryMetadataTable] {
-        let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND parentDirectoryServerUrl == %@", account, parentDirectoryServerUrl)
-        return sortedDirectoryMetadatas(metadatas)
-    }
-
-    private func processDirectoryMetadatasToDelete(databaseToWriteTo: Realm,
-                                           existingDirectoryMetadatas: Results<NextcloudDirectoryMetadataTable>,
-                                           updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
-
-        for existingMetadata in existingDirectoryMetadatas {
-            guard !updatedDirectoryMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                  let metadataToDelete = directoryMetadata(ocId: existingMetadata.ocId) else { continue }
-
-            Logger.ncFilesDatabase.debug("Deleting directory metadata during update. ocID: \(existingMetadata.ocId, privacy: .public), etag: \(existingMetadata.etag, privacy: .public), serverUrl: \(existingMetadata.serverUrl)")
-
-            self.deleteDirectoryAndSubdirectoriesMetadata(ocId: metadataToDelete.ocId)
-        }
-    }
-
-    private func processDirectoryMetadatasToUpdate(databaseToWriteTo: Realm,
-                                           existingDirectoryMetadatas: Results<NextcloudDirectoryMetadataTable>,
-                                           updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
-
-        assert(databaseToWriteTo.isInWriteTransaction)
-
-        for updatedMetadata in updatedDirectoryMetadatas {
-            if let existingMetadata = existingDirectoryMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
-
-                if !existingMetadata.isInSameRemoteState(updatedMetadata) {
-
-                    databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
-                    Logger.ncFilesDatabase.debug("Updated existing directory metadata. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), serverUrl: \(updatedMetadata.serverUrl)")
-                }
-                // Don't update under other circumstances in which the metadata already exists
-
-            } else { // This is a new metadata
-                databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
-                Logger.ncFilesDatabase.debug("Created new directory metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), serverUrl: \(updatedMetadata.serverUrl)")
-            }
-        }
-    }
-
-    func updateDirectoryMetadatas(account: String, parentDirectoryServerUrl: String, updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
-        let database = ncDatabase()
-
-        let existingDirectoryMetadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND parentDirectoryServerUrl == %@", account, parentDirectoryServerUrl)
-
-        // Actual db writing handled internally
-        processDirectoryMetadatasToDelete(databaseToWriteTo: database,
-                                          existingDirectoryMetadatas: existingDirectoryMetadatas,
-                                          updatedDirectoryMetadatas: updatedDirectoryMetadatas)
-
-        do {
-            try database.write {
-
-                processDirectoryMetadatasToUpdate(databaseToWriteTo: database,
-                                                  existingDirectoryMetadatas: existingDirectoryMetadatas,
-                                                  updatedDirectoryMetadatas: updatedDirectoryMetadatas)
-            }
-        } catch let error {
-            Logger.ncFilesDatabase.error("Could not update directory metadatas, received error: \(error.localizedDescription)")
-        }
-    }
-
-    func directoryMetadataFromItemMetadata(directoryItemMetadata: NextcloudItemMetadataTable, recordEtag: Bool = false) -> NextcloudDirectoryMetadataTable {
-        var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
-        let directoryOcId = directoryItemMetadata.ocId
-
-        if let existingDirectoryMetadata = directoryMetadata(ocId: directoryOcId) {
-            newDirectoryMetadata = existingDirectoryMetadata
+    func directoryMetadata(ocId: String) -> NextcloudItemMetadataTable? {
+        if let metadata = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@ AND directory == true", ocId).first {
+            return NextcloudItemMetadataTable(value: metadata)
         }
 
-        if recordEtag {
-            newDirectoryMetadata.etag = directoryItemMetadata.etag
-        }
-
-        newDirectoryMetadata.ocId = directoryOcId
-        newDirectoryMetadata.fileId = directoryItemMetadata.fileId
-        newDirectoryMetadata.parentDirectoryServerUrl = directoryItemMetadata.serverUrl
-        newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
-        newDirectoryMetadata.account = directoryItemMetadata.account
-        newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted
-        newDirectoryMetadata.favorite = directoryItemMetadata.favorite
-        newDirectoryMetadata.permissions = directoryItemMetadata.permissions
-
-        return newDirectoryMetadata
+        return nil
     }
 
-    func updateDirectoryMetadatasFromItemMetadatas(account: String, parentDirectoryServerUrl: String, updatedDirectoryItemMetadatas: [NextcloudItemMetadataTable], recordEtag: Bool = false) {
-
-        var updatedDirMetadatas: [NextcloudDirectoryMetadataTable] = []
-
-        for directoryItemMetadata in updatedDirectoryItemMetadatas {
-            let newDirectoryMetadata = directoryMetadataFromItemMetadata(directoryItemMetadata: directoryItemMetadata, recordEtag: recordEtag)
-            updatedDirMetadatas.append(newDirectoryMetadata)
-        }
-
-        updateDirectoryMetadatas(account: account, parentDirectoryServerUrl: parentDirectoryServerUrl, updatedDirectoryMetadatas: updatedDirMetadatas)
+    func directoryMetadatas(account: String) -> [NextcloudItemMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND directory == true", account)
+        return sortedItemMetadatas(metadatas)
     }
 
-    func addDirectoryMetadata(_ metadata: NextcloudDirectoryMetadataTable) {
-        let database = ncDatabase()
-
-        do {
-            try database.write {
-                database.add(metadata, update: .all)
-                Logger.ncFilesDatabase.debug("Added new directory metadata. ocId: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), serverUrl: \(metadata.serverUrl)")
-            }
-        } catch let error {
-            Logger.ncFilesDatabase.error("Could not add new directory metadata. ocId: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), serverUrl: \(metadata.serverUrl), received error: \(error.localizedDescription, privacy: .public)")
-        }
+    func directoryMetadatas(account: String, parentDirectoryServerUrl: String) -> [NextcloudItemMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND parentDirectoryServerUrl == %@ AND directory == true", account, parentDirectoryServerUrl)
+        return sortedItemMetadatas(metadatas)
     }
 
     // Deletes all metadatas related to the info of the directory provided
     func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) {
         let database = ncDatabase()
-        guard let directoryMetadata = database.objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first else {
+        guard let directoryMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@ AND directory == true", ocId).first else {
             Logger.ncFilesDatabase.error("Could not find directory metadata for ocId \(ocId, privacy: .public). Not proceeding with deletion")
             return
         }
 
-        let results = database.objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, directoryMetadata.serverUrl)
+        let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, directoryUrlPath)
 
         for result in results {
             deleteItemMetadata(ocId: result.ocId)
@@ -455,11 +352,11 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             try database.write {
-                Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryMetadata.serverUrl)")
+                Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryUrlPath)")
                 database.delete(results)
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryMetadata.serverUrl), received error: \(error.localizedDescription, privacy: .public)")
+            Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryUrlPath), received error: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -468,42 +365,25 @@ class NextcloudFilesDatabaseManager : NSObject {
         let database = ncDatabase()
 
         do {
+            guard let directoryMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@ AND directory == true", ocId).first else {
+                Logger.ncFilesDatabase.error("Could not find a directory with ocID \(ocId, privacy: .public), cannot proceed with recursive renaming")
+                return
+            }
+
+            let oldServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+
+            let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, oldServerUrl)
+
+            renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
+            Logger.ncFilesDatabase.debug("Renamed root renaming directory")
+
             try database.write {
-                guard let directoryTableResult = database.objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first,
-                      let directoryItemResult = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first else {
-                    Logger.ncFilesDatabase.error("Could not find a directory with ocID \(ocId, privacy: .public), cannot proceed with recursive renaming")
-                    return
-                }
-
-                let oldServerUrl = directoryTableResult.serverUrl
-
-                let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryTableResult.account, oldServerUrl)
-                let childDirectoryResults = database.objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryTableResult.account, oldServerUrl)
-
-                directoryTableResult.serverUrl = newServerUrl
-                database.add(directoryTableResult, update: .all)
-                directoryItemResult.fileName = newFileName
-                directoryItemResult.fileNameView = newFileName
-                database.add(directoryItemResult, update: .all)
-                Logger.ncFilesDatabase.debug("Renamed root renaming directory at \(oldServerUrl) to \(newServerUrl)")
-
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
                     let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldServerUrl, with: newServerUrl)
                     childItem.serverUrl = movedServerUrl
                     database.add(childItem, update: .all)
                     Logger.ncFilesDatabase.debug("Moved childItem at \(oldServerUrl) to \(movedServerUrl)")
-                }
-
-                for childDirectory in childDirectoryResults {
-                    let oldServerUrl = childDirectory.serverUrl
-                    let oldParentServerUrl = childDirectory.parentDirectoryServerUrl
-                    let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldServerUrl, with: newServerUrl)
-                    let movedParentServerUrl = oldServerUrl.replacingOccurrences(of: oldParentServerUrl, with: newServerUrl)
-                    childDirectory.serverUrl = movedServerUrl
-                    childDirectory.parentDirectoryServerUrl = movedParentServerUrl
-                    database.add(childDirectory, update: .all)
-                    Logger.ncFilesDatabase.debug("Moved childDirectory at \(oldServerUrl) to \(movedServerUrl)")
                 }
             }
         } catch let error {

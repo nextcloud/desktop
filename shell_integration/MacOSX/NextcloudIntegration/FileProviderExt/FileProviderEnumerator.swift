@@ -113,8 +113,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     dispatchGroup.enter() // Add to outer counter
 
                     dispatchQueue.async {
+                        let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+
                         guard serverError == nil else {
-                            Logger.enumeration.info("Skipping enumeration of directory for working set: \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) as we have an error.")
+                            Logger.enumeration.info("Skipping enumeration of directory for working set: \(directoryServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) as we have an error.")
                             dispatchGroup.leave()
                             return;
                         }
@@ -122,9 +124,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         let currentNetworkTaskDispatchGroup = DispatchGroup() // To make this serial queue wait until this task is done
                         currentNetworkTaskDispatchGroup.enter()
 
-                        FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: self.ncAccount, ncKit: self.ncKit) { metadatas, _, _, _, readError in
+                        FileProviderEnumerator.readServerUrl(directoryServerUrl, ncAccount: self.ncAccount, ncKit: self.ncKit) { metadatas, _, _, _, readError in
                             guard readError == nil else {
-                                Logger.enumeration.error("Finishing enumeration of working set directory \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
+                                Logger.enumeration.error("Finishing enumeration of working set directory \(directoryServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
 
                                 let nkError = NKError(error: readError!)
                                 if nkError.isUnauthenticatedError || nkError.isCouldntConnectError {
@@ -140,7 +142,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                             if let metadatas = metadatas {
                                 allMetadatas += metadatas
                             } else {
-                                allMetadatas += dbManager.itemMetadatas(account: self.ncAccount.ncKitAccount, serverUrl: directoryMetadata.serverUrl)
+                                allMetadatas += dbManager.itemMetadatas(account: self.ncAccount.ncKitAccount, serverUrl: directoryServerUrl)
                             }
 
                             currentNetworkTaskDispatchGroup.leave()
@@ -419,9 +421,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     private static func fullRecursiveScan(ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool, completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable]) -> Void) {
 
-        let rootContainerDirectoryMetadata = NextcloudDirectoryMetadataTable()
-        rootContainerDirectoryMetadata.serverUrl = ncAccount.davFilesUrl
-        rootContainerDirectoryMetadata.account = ncAccount.ncKitAccount
+        let rootContainerDirectoryMetadata = NextcloudItemMetadataTable()
+        rootContainerDirectoryMetadata.directory = true
         rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
         // Create a serial dispatch queue
@@ -436,7 +437,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         }
     }
 
-    private static func scanRecursively(_ directoryMetadata: NextcloudDirectoryMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+    private static func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+
+        assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
         var allMetadatas: [NextcloudItemMetadataTable] = []
         var allNewMetadatas: [NextcloudItemMetadataTable] = []
@@ -448,8 +451,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         dispatchGroup.enter()
 
-        Logger.enumeration.debug("About to read: \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
-        FileProviderEnumerator.readServerUrl(directoryMetadata.serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        let itemServerUrl = directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue ?
+            ncAccount.davFilesUrl : directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+
+        Logger.enumeration.debug("About to read: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+        FileProviderEnumerator.readServerUrl(itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             if readError != nil {
                 let nkReadError = NKError(error: readError!)
@@ -457,7 +464,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 // Is the error is that we have found matching etags on this item, then ignore it
                 // if we are doing a full rescan
                 guard nkReadError.isNoChangesError && scanChangesOnly else {
-                    Logger.enumeration.error("Finishing enumeration of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with \(readError!.localizedDescription, privacy: .public)")
+                    Logger.enumeration.error("Finishing enumeration of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with \(readError!.localizedDescription, privacy: .public)")
 
                     if nkReadError.isNotFoundError {
                         Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
@@ -479,30 +486,30 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
             }
 
-            Logger.enumeration.info("Finished reading serverUrl: \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.info("Finished reading serverUrl: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
 
             if let metadatas = metadatas {
                 allMetadatas += metadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil metadatas received for reading of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
             }
 
             if let newMetadatas = newMetadatas {
                 allNewMetadatas += newMetadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil new metadatas received for reading of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil new metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
             }
 
             if let updatedMetadatas = updatedMetadatas {
                 allUpdatedMetadatas += updatedMetadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil updated metadatas received for reading of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil updated metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
             }
 
             if let deletedMetadatas = deletedMetadatas {
                 allDeletedMetadatas += deletedMetadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil deleted metadatas received for reading of changes at \(directoryMetadata.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil deleted metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
             }
 
             dispatchGroup.leave()
@@ -510,7 +517,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         dispatchGroup.wait()
 
-        var updatedDirectories: [NextcloudDirectoryMetadataTable] = []
+        var updatedDirectories: [NextcloudItemMetadataTable] = []
         for updatedMetadata in allUpdatedMetadatas {
             if updatedMetadata.directory {
                 guard let directoryMetadata = dbManager.directoryMetadata(ocId: updatedMetadata.ocId) else {
@@ -600,17 +607,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
                         // unless it's the root container
                         if serverUrl != ncAccount.davFilesUrl {
-                            let directoryItemMetadata = dbManager.directoryMetadataFromItemMetadata(directoryItemMetadata: directoryMetadata, recordEtag: true)
-                            dbManager.addDirectoryMetadata(directoryItemMetadata)
+                            dbManager.addItemMetadata(directoryMetadata)
                         }
-
-                        // STORE ETAG-LESS DIRECTORY METADATA FOR CHILD DIRECTORIES
-                        // Since we haven't scanned the contents of the child directories, don't record their itemMetadata etags in the directory tables
-                        // This will delete database records for directories that we did not get from the readFileOrFolder (indicating they were deleted)
-                        // as well as deleting the records for all the children contained by the directories.
-                        // TODO: Find a way to detect if files have been moved rather than deleted and change the metadata server urls, move the materialised files
-                        dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
-                        // TODO: Notify working set changed if new folders found
 
                         dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas) { newMetadatas, updatedMetadatas, deletedMetadatas in
                             completionHandler(metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nil)

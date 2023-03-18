@@ -232,28 +232,22 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
-        var parentItemMetadata: NextcloudDirectoryMetadataTable?
+        var parentItemServerUrl: String
 
         if parentItemIdentifier == .rootContainer {
-            let rootMetadata = NextcloudDirectoryMetadataTable()
-
-            rootMetadata.account = ncAccount.ncKitAccount
-            rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-            rootMetadata.serverUrl = ncAccount.davFilesUrl
-
-            parentItemMetadata = rootMetadata
+            parentItemServerUrl = ncAccount.davFilesUrl
         } else {
-            parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue)
-        }
+            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue) else {
+                Logger.fileProviderExtension.error("Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)")
+                completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
 
-        guard let parentItemMetadata = parentItemMetadata else {
-            Logger.fileProviderExtension.error("Not creating item: \(itemTemplate.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)")
-            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
-            return Progress()
+            parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
         let fileNameLocalPath = url?.path ?? ""
-        let newServerUrlFileName = parentItemMetadata.serverUrl + "/" + itemTemplate.filename
+        let newServerUrlFileName = parentItemServerUrl + "/" + itemTemplate.filename
 
         Logger.fileProviderExtension.debug("About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)) with contents located at: \(fileNameLocalPath, privacy: OSLogPrivacy.auto(mask: .hash))")
 
@@ -275,8 +269,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     DispatchQueue.global().async {
                         dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
-                            let newDirectoryMetadata = dbManager.directoryMetadataFromItemMetadata(directoryItemMetadata: directoryMetadata)
-                            dbManager.addDirectoryMetadata(newDirectoryMetadata)
                             dbManager.addItemMetadata(directoryMetadata)
 
                             let fpItem = FileProviderItem(metadata: directoryMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
@@ -323,7 +315,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             newMetadata.size = size
             newMetadata.contentType = itemTemplate.contentType?.preferredMIMEType ?? ""
             newMetadata.directory = itemTemplateIsFolder
-            newMetadata.serverUrl = parentItemMetadata.serverUrl
+            newMetadata.serverUrl = parentItemServerUrl
             newMetadata.session = ""
             newMetadata.sessionError = ""
             newMetadata.sessionTaskIdentifier = 0
@@ -362,28 +354,22 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             Logger.fileProviderExtension.warning("Modification for item: \(item.itemIdentifier.rawValue, privacy: .public) may already exist")
         }
 
-        var parentItemMetadata: NextcloudDirectoryMetadataTable?
+        var parentItemServerUrl: String
 
         if parentItemIdentifier == .rootContainer {
-            let rootMetadata = NextcloudDirectoryMetadataTable()
-
-            rootMetadata.account = ncAccount.ncKitAccount
-            rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
-            rootMetadata.serverUrl = ncAccount.davFilesUrl
-
-            parentItemMetadata = rootMetadata
+            parentItemServerUrl = ncAccount.davFilesUrl
         } else {
-            parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue)
-        }
+            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue) else {
+                Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)")
+                completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
 
-        guard let parentItemMetadata = parentItemMetadata else {
-            Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public), could not find metadata for parentItemIdentifier \(parentItemIdentifier.rawValue, privacy: .public)")
-            completionHandler(item, [], false, NSFileProviderError(.noSuchItem))
-            return Progress()
+            parentItemServerUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
         let fileNameLocalPath = newContents?.path ?? ""
-        let newServerUrlFileName = parentItemMetadata.serverUrl + "/" + item.filename
+        let newServerUrlFileName = parentItemServerUrl + "/" + item.filename
 
         Logger.fileProviderExtension.debug("About to upload modified item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)) to server url: \(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)) with contents located at: \(fileNameLocalPath, privacy: OSLogPrivacy.auto(mask: .hash))")
 
@@ -427,7 +413,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     if itemTemplateIsFolder {
                         dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
                     } else {
-                        dbManager.renameItemMetadata(ocId: ocId, newServerUrl: parentItemMetadata.serverUrl, newFileName: item.filename)
+                        dbManager.renameItemMetadata(ocId: ocId, newServerUrl: parentItemServerUrl, newFileName: item.filename)
                     }
 
                     guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
@@ -519,7 +505,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                             newMetadata.size = size
                             newMetadata.contentType = item.contentType?.preferredMIMEType ?? ""
                             newMetadata.directory = itemTemplateIsFolder
-                            newMetadata.serverUrl = parentItemMetadata.serverUrl
+                            newMetadata.serverUrl = parentItemServerUrl
                             newMetadata.session = ""
                             newMetadata.sessionError = ""
                             newMetadata.sessionTaskIdentifier = 0
@@ -629,6 +615,15 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
 
         materialisedEnumerator.enumerateItems(for: materialisedObserver, startingAt: startingPage)
+    }
+
+    func signalEnumerator(completionHandler: @escaping(_ error: Error?) -> Void) {
+        guard let fpManager = NSFileProviderManager(for: self.domain) else {
+            Logger.fileProviderExtension.error("Could not get file provider manager for domain, could not signal enumerator. This might lead to future conflicts.")
+            return
+        }
+
+        fpManager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
     }
 
     // MARK: Nextcloud desktop client communication

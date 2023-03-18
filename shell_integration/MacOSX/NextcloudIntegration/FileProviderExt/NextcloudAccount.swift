@@ -16,7 +16,7 @@ import Foundation
 import FileProvider
 
 class NextcloudAccount: NSObject {
-    let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
+    private let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
     let username, password, ncKitAccount, serverUrl, davFilesUrl: String
 
     init(user: String, serverUrl: String, password: String) {
