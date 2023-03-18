@@ -28,6 +28,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     let ncAccount: NextcloudAccount
     let ncKit: NextcloudKit
     var serverUrl: String = ""
+    var isInvalidated = false
 
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         return identifier == .rootContainer ||
@@ -60,7 +61,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     func invalidate() {
-        // TODO: perform invalidation of server connection if necessary
+        self.isInvalidated = true
     }
 
     // MARK: - Protocol methods
@@ -243,12 +244,18 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         if enumeratedItemIdentifier == .workingSet {
             Logger.enumeration.debug("Enumerating changes in working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-            FileProviderEnumerator.fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
+            fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
+
+                if self.isInvalidated {
+                    Logger.enumeration.info("Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                    return
+                }
 
                 guard error == nil else {
                     Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
                     observer.finishEnumeratingWithError(error!.toFileProviderError())
-                    return;
+                    return
                 }
 
                 Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")

@@ -17,7 +17,7 @@ import NextcloudKit
 import OSLog
 
 extension FileProviderEnumerator {
-    static func fullRecursiveScan(ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool, completionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable], _ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable], _ error: NKError?) -> Void) {
+    func fullRecursiveScan(ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool, completionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable], _ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable], _ error: NKError?) -> Void) {
 
         let rootContainerDirectoryMetadata = NextcloudItemMetadataTable()
         rootContainerDirectoryMetadata.directory = true
@@ -27,7 +27,7 @@ extension FileProviderEnumerator {
         let dispatchQueue = DispatchQueue(label: "recursiveChangeEnumerationQueue", qos: .background)
 
         dispatchQueue.async {
-            let results = scanRecursively(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
+            let results = self.scanRecursively(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
 
             // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved)
             // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis;
@@ -48,7 +48,11 @@ extension FileProviderEnumerator {
         }
     }
 
-    private static func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable], error: NKError?) {
+    private func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable], error: NKError?) {
+
+        if self.isInvalidated {
+            return ([], [], [], [], nil)
+        }
 
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
