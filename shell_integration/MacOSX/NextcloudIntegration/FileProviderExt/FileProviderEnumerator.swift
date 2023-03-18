@@ -114,7 +114,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             Logger.enumeration.debug("Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-            NextcloudSyncEngine.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, _, _, _, readError in
+            NextcloudSyncEngine.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
 
                 guard readError == nil else {
                     Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
@@ -124,28 +124,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     return
                 }
 
-                let ncKitAccount = self.ncAccount.ncKitAccount
-
-                // Return all now known metadatas
-                var metadatas: [NextcloudItemMetadataTable]
-
-                if self.enumeratingSystemIdentifier || (self.enumeratedItemMetadata != nil && self.enumeratedItemMetadata!.directory) {
-                    metadatas = NextcloudFilesDatabaseManager.shared.itemMetadatas(account: ncKitAccount, serverUrl: self.serverUrl)
-                } else if (self.enumeratedItemMetadata != nil) {
-                    guard let updatedEnumeratedItemMetadata = NextcloudFilesDatabaseManager.shared.itemMetadataFromOcId(self.enumeratedItemMetadata!.ocId) else {
-                        Logger.enumeration.error("Could not finish enumeration for user: \(ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) as the enumerated item could not be fetched from database. \(self.enumeratedItemIdentifier.rawValue, privacy: .public)")
-                        observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
-                        return
-                    }
-
-                    metadatas = [updatedEnumeratedItemMetadata]
-                } else { // We need to have an enumeratedItemMetadata to have a non empty serverUrl
-                    Logger.enumeration.error("Cannot finish enumeration for user: \(ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) as we do not have a valid server URL. NOTE: this error should not be possible and indicates something is going wrong before.")
-                    observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
+                guard let metadatas = metadatas else {
+                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with invalid metadatas.")
+                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
                 }
 
-                Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Processed \(metadatas.count) metadatas")
+                Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Processed \(metadatas.count) metadatas")
 
                 FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
             }
