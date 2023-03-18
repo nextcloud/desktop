@@ -292,8 +292,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]) {
-
+    private static func metadatasToFileProviderItems(_ itemMetadatas: [NextcloudItemMetadataTable], ncKit: NextcloudKit) -> [NSFileProviderItem] {
         var items: [NSFileProviderItem] = []
 
         for itemMetadata in itemMetadatas {
@@ -311,6 +310,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             }
         }
 
+        return items
+    }
+
+    private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]) {
+
+        let items = FileProviderEnumerator.metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit)
         observer.didEnumerate(items)
         Logger.enumeration.info("Did enumerate \(items.count) items")
 
