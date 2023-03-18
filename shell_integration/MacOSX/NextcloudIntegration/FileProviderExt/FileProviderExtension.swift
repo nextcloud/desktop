@@ -411,7 +411,16 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     // Remember that a folder metadata's serverUrl is its direct server URL, while for
                     // an item metadata the server URL is the parent folder's URL
                     if itemTemplateIsFolder {
-                        dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
+                        _ = dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
+                        if let fpManager = NSFileProviderManager(for: self.domain) {
+                            fpManager.signalEnumerator(for: .workingSet) { error in
+                                if error != nil {
+                                    Logger.fileTransfer.error("Error notifying change in moved directory: \(error)")
+                                }
+                            }
+                        } else {
+                            Logger.fileTransfer.warning("Unable to get file provider for domain, will not be able to notify of change in moved directory")
+                        }
                     } else {
                         dbManager.renameItemMetadata(ocId: ocId, newServerUrl: parentItemServerUrl, newFileName: item.filename)
                     }
