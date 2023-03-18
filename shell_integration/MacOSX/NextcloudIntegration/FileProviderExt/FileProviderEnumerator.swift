@@ -89,7 +89,26 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
                 page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
-                fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: false) { metadatas, _, _, _, error in
+                // We enumerate items as we get the server data for two reasons:
+                // A) we avoid having a gigantic chunk of files to enumerate to the observer at the end
+                // B) we don't need to worry about resolving which files are truly deleted vs moved at the end
+                fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: false, singleFolderScanCompleteCompletionHandler: { metadatas, error in
+
+                    guard error == nil else {
+                        Logger.enumeration.error("There was an error during recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
+                        observer.finishEnumeratingWithError(error!.toFileProviderError())
+                        return;
+                    }
+
+                    guard let metadatas = metadatas else {
+                        Logger.enumeration.warning("Received nil metadatas during recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
+                        return
+                    }
+
+                    let items = FileProviderEnumerator.metadatasToFileProviderItems(metadatas, ncKit: self.ncKit)
+                    observer.didEnumerate(items)
+
+                }) { metadatas, _, _, _, error in
 
                     if self.isInvalidated {
                         Logger.enumeration.info("Enumerator invalidated during working set item enumeration. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
@@ -105,7 +124,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                     Logger.enumeration.info("Finished recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
 
-                    FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
+                    observer.finishEnumerating(upTo: FileProviderEnumerator.fileProviderPageforNumPage(1))
                 }
 
                 return
@@ -198,7 +217,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         if enumeratedItemIdentifier == .workingSet {
             Logger.enumeration.debug("Enumerating changes in working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-            fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
+            // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
+            // have just been moved elsewhere.
+            fullRecursiveScan(ncAccount: self.ncAccount,
+                              ncKit: self.ncKit,
+                              scanChangesOnly: true,
+                              singleFolderScanCompleteCompletionHandler: { _, _ in }) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
 
                 if self.isInvalidated {
                     Logger.enumeration.info("Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")

@@ -17,7 +17,16 @@ import NextcloudKit
 import OSLog
 
 extension FileProviderEnumerator {
-    func fullRecursiveScan(ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool, completionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable], _ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable], _ error: NKError?) -> Void) {
+    func fullRecursiveScan(ncAccount: NextcloudAccount,
+                           ncKit: NextcloudKit,
+                           scanChangesOnly: Bool,
+                           singleFolderScanCompleteCompletionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable]?,
+                                                                                _ error: NKError?) -> Void,
+                           completionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable],
+                                                        _ newMetadatas: [NextcloudItemMetadataTable],
+                                                        _ updatedMetadatas: [NextcloudItemMetadataTable],
+                                                        _ deletedMetadatas: [NextcloudItemMetadataTable],
+                                                        _ error: NKError?) -> Void) {
 
         let rootContainerDirectoryMetadata = NextcloudItemMetadataTable()
         rootContainerDirectoryMetadata.directory = true
@@ -27,7 +36,11 @@ extension FileProviderEnumerator {
         let dispatchQueue = DispatchQueue(label: "recursiveChangeEnumerationQueue", qos: .background)
 
         dispatchQueue.async {
-            let results = self.scanRecursively(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
+            let results = self.scanRecursively(rootContainerDirectoryMetadata,
+                                               ncAccount: ncAccount,
+                                               ncKit: ncKit,
+                                               scanChangesOnly: scanChangesOnly,
+                                               singleFolderScanCompleteCompletionHandler: singleFolderScanCompleteCompletionHandler)
 
             // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved)
             // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis;
@@ -48,14 +61,30 @@ extension FileProviderEnumerator {
         }
     }
 
-    private func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable], error: NKError?) {
+    private func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable,
+                                 ncAccount: NextcloudAccount,
+                                 ncKit: NextcloudKit,
+                                 scanChangesOnly: Bool,
+                                 singleFolderScanCompleteCompletionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable]?,
+                                                                                      _ error: NKError?) -> Void) -> (metadatas: [NextcloudItemMetadataTable],
+                                                                                                                                               newMetadatas: [NextcloudItemMetadataTable],
+                                                                                                                                               updatedMetadatas: [NextcloudItemMetadataTable],
+                                                                                                                                               deletedMetadatas: [NextcloudItemMetadataTable],
+                                                                                                                                               error: NKError?) {
 
         if self.isInvalidated {
+            DispatchQueue.main.async {
+                singleFolderScanCompleteCompletionHandler(nil, nil)
+            }
             return ([], [], [], [], nil)
         }
 
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
+        // Scanned in this directory
+        var currentMetadatas: [NextcloudItemMetadataTable] = []
+
+        // Will include results of recursive calls
         var allMetadatas: [NextcloudItemMetadataTable] = []
         var allNewMetadatas: [NextcloudItemMetadataTable] = []
         var allUpdatedMetadatas: [NextcloudItemMetadataTable] = []
@@ -109,6 +138,7 @@ extension FileProviderEnumerator {
             Logger.enumeration.info("Finished reading serverUrl: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
 
             if let metadatas = metadatas {
+                currentMetadatas = metadatas
                 allMetadatas += metadatas
             } else {
                 Logger.enumeration.warning("WARNING: Nil metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
@@ -137,8 +167,15 @@ extension FileProviderEnumerator {
 
         dispatchGroup.wait()
 
-        if criticalError != nil {
+        guard criticalError == nil else {
+            DispatchQueue.main.async {
+                singleFolderScanCompleteCompletionHandler(nil, criticalError)
+            }
             return ([], [], [], [], error: criticalError)
+        }
+
+        DispatchQueue.main.async {
+            singleFolderScanCompleteCompletionHandler(currentMetadatas, nil)
         }
 
         var childDirectoriesToScan: [NextcloudItemMetadataTable] = []
@@ -161,7 +198,11 @@ extension FileProviderEnumerator {
         }
 
         for childDirectory in childDirectoriesToScan {
-            let childScanResult = scanRecursively(childDirectory, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
+            let childScanResult = scanRecursively(childDirectory,
+                                                  ncAccount: ncAccount,
+                                                  ncKit: ncKit,
+                                                  scanChangesOnly: scanChangesOnly,
+                                                  singleFolderScanCompleteCompletionHandler: singleFolderScanCompleteCompletionHandler)
 
             allMetadatas += childScanResult.metadatas
             allNewMetadatas += childScanResult.newMetadatas
