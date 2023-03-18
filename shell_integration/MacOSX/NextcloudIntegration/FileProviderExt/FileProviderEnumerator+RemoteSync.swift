@@ -17,7 +17,7 @@ import NextcloudKit
 import OSLog
 
 extension FileProviderEnumerator {
-    static func fullRecursiveScan(ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool, completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable]) -> Void) {
+    static func fullRecursiveScan(ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool, completionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable], _ newMetadatas: [NextcloudItemMetadataTable], _ updatedMetadatas: [NextcloudItemMetadataTable], _ deletedMetadatas: [NextcloudItemMetadataTable], _ error: NKError?) -> Void) {
 
         let rootContainerDirectoryMetadata = NextcloudItemMetadataTable()
         rootContainerDirectoryMetadata.directory = true
@@ -30,12 +30,12 @@ extension FileProviderEnumerator {
             let results = scanRecursively(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
 
             DispatchQueue.main.async {
-                completionHandler(results.newMetadatas, results.updatedMetadatas, results.deletedMetadatas)
+                completionHandler(results.metadatas, results.newMetadatas, results.updatedMetadatas, results.deletedMetadatas, results.error)
             }
         }
     }
 
-    static func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable]) {
+    static func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable], error: NKError?) {
 
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
@@ -49,6 +49,7 @@ extension FileProviderEnumerator {
 
         dispatchGroup.enter()
 
+        var criticalError: NKError?
         let itemServerUrl = directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue ?
             ncAccount.davFilesUrl : directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
 
@@ -72,8 +73,15 @@ extension FileProviderEnumerator {
                         } else {
                             Logger.enumeration.error("An error occurred while trying to delete directory and children not found in recursive scan")
                         }
+
                     } else if nkReadError.isNoChangesError { // All is well, just no changed etags
                         Logger.enumeration.info("Error was to say no changed files -- not bad error. No need to check children.")
+
+                    } else if nkReadError.isUnauthenticatedError || nkReadError.isCouldntConnectError {
+                        // If it is a critical error then stop, if not then continue
+                        Logger.enumeration.error("Error will affect next enumerated items, so stopping enumeration.")
+                        criticalError = nkReadError
+
                     }
 
                     dispatchGroup.leave()
@@ -112,6 +120,10 @@ extension FileProviderEnumerator {
 
         dispatchGroup.wait()
 
+        if criticalError != nil {
+            return ([], [], [], [], error: criticalError)
+        }
+
         var updatedDirectories: [NextcloudItemMetadataTable] = []
         for updatedMetadata in allUpdatedMetadatas {
             if updatedMetadata.directory {
@@ -120,7 +132,7 @@ extension FileProviderEnumerator {
         }
 
         if updatedDirectories.isEmpty {
-            return (metadatas: allMetadatas, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
+            return (metadatas: allMetadatas, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas, nil)
         }
 
         for childDirectory in updatedDirectories {
@@ -132,7 +144,7 @@ extension FileProviderEnumerator {
             allDeletedMetadatas += childScanResult.deletedMetadatas
         }
 
-        return (metadatas: allMetadatas, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas)
+        return (metadatas: allMetadatas, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas, nil)
     }
 
     static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, stopAtMatchingEtags: Bool = false, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
