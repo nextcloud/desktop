@@ -83,75 +83,29 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         let dbManager = NextcloudFilesDatabaseManager.shared
 
-        // If we don't have any items in the database, ignore this and go for a normal serverUrl read.
-        // By default we set the serverUrl to be the webdav files root when we are provided a system container id.
-        // However, if we do have items, we want to do a recursive scan of all the folders in the server that
-        // ** we have already explored ** . This is to not kill the server.
-        if enumeratedItemIdentifier == .workingSet && dbManager.anyItemMetadatasForAccount(ncAccount.ncKitAccount) {
+        // When enumerating items in the working set, we are expected to provide an account of the
+        // whole server and all its files.
+        if enumeratedItemIdentifier == .workingSet {
             if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
                 page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
+                fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: false) { metadatas, _, _, _, error in
 
-                let directoryMetadatas = dbManager.directoryMetadatas(account: ncAccount.ncKitAccount)
-                var allMetadatas: [NextcloudItemMetadataTable] = []
-
-                var serverError: NKError?
-
-                // Create a serial dispatch queue
-                let dispatchQueue = DispatchQueue(label: "workingSetItemEnumerationQueue", qos: .userInitiated)
-                let dispatchGroup = DispatchGroup() // To notify when all network tasks are done
-
-                dispatchGroup.notify(queue: DispatchQueue.main) {
-                    guard serverError == nil else {
-                        observer.finishEnumeratingWithError(serverError!.error)
+                    if self.isInvalidated {
+                        Logger.enumeration.info("Enumerator invalidated during working set item enumeration. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                         return
                     }
 
-                    FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: allMetadatas)
-                }
-
-                for directoryMetadata in directoryMetadatas {
-                    dispatchGroup.enter() // Add to outer counter
-
-                    dispatchQueue.async {
-                        let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-
-                        guard serverError == nil else {
-                            Logger.enumeration.info("Skipping enumeration of directory for working set: \(directoryServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) as we have an error.")
-                            dispatchGroup.leave()
-                            return;
-                        }
-
-                        let currentNetworkTaskDispatchGroup = DispatchGroup() // To make this serial queue wait until this task is done
-                        currentNetworkTaskDispatchGroup.enter()
-
-                        FileProviderEnumerator.readServerUrl(directoryServerUrl, ncAccount: self.ncAccount, ncKit: self.ncKit) { metadatas, _, _, _, readError in
-                            guard readError == nil else {
-                                Logger.enumeration.error("Finishing enumeration of working set directory \(directoryServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
-
-                                let nkError = NKError(error: readError!)
-                                if nkError.isUnauthenticatedError || nkError.isCouldntConnectError {
-                                    // If it is a critical error then stop, if not then continue
-                                    Logger.enumeration.error("Error will affect next enumerated items, so stopping enumeration.")
-                                    serverError = nkError
-                                }
-
-                                currentNetworkTaskDispatchGroup.leave()
-                                return
-                            }
-
-                            if let metadatas = metadatas {
-                                allMetadatas += metadatas
-                            } else {
-                                allMetadatas += dbManager.itemMetadatas(account: self.ncAccount.ncKitAccount, serverUrl: directoryServerUrl)
-                            }
-
-                            currentNetworkTaskDispatchGroup.leave()
-                        }
-
-                        currentNetworkTaskDispatchGroup.wait()
-                        dispatchGroup.leave() // Now lower outer counter
+                    guard error == nil else {
+                        Logger.enumeration.info("Finished recursive iteme enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
+                        observer.finishEnumeratingWithError(error!.toFileProviderError())
+                        return;
                     }
+
+                    Logger.enumeration.info("Finished recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
+
+                    FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
                 }
 
                 return
