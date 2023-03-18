@@ -361,12 +361,14 @@ class NextcloudFilesDatabaseManager : NSObject {
     }
 
     // Deletes all metadatas related to the info of the directory provided
-    func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) {
+    func deleteDirectoryAndSubdirectoriesMetadata(ocId: String) -> [NextcloudItemMetadataTable]? {
         let database = ncDatabase()
         guard let directoryMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@ AND directory == true", ocId).first else {
             Logger.ncFilesDatabase.error("Could not find directory metadata for ocId \(ocId, privacy: .public). Not proceeding with deletion")
-            return
+            return nil
         }
+
+        var deletedMetadatas: [NextcloudItemMetadataTable] = []
 
         let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
         let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, directoryUrlPath)
@@ -374,16 +376,23 @@ class NextcloudFilesDatabaseManager : NSObject {
         for result in results {
             deleteItemMetadata(ocId: result.ocId)
             deleteLocalFileMetadata(ocId: result.ocId)
+
+            deletedMetadatas.append(NextcloudItemMetadataTable(value: result))
         }
 
         do {
             try database.write {
                 Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryUrlPath)")
+
                 database.delete(results)
+
+                return deletedMetadatas
             }
         } catch let error {
             Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryUrlPath), received error: \(error.localizedDescription, privacy: .public)")
         }
+
+        return nil
     }
 
     func renameDirectoryAndPropagateToChildren(ocId: String, newServerUrl: String, newFileName: String) -> [NextcloudItemMetadataTable]? {

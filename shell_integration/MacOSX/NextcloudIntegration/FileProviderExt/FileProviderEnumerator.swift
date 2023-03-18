@@ -281,6 +281,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
         FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+
+            // If we get a 404 we might add more deleted metadatas
+            var currentDeletedMetadatas: [NextcloudItemMetadataTable] = []
+            if let notNilDeletedMetadatas = deletedMetadatas {
+                currentDeletedMetadatas = notNilDeletedMetadatas
+            }
+
             guard readError == nil else {
                 Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(readError!.localizedDescription, privacy: .public)")
 
@@ -298,7 +305,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                     let dbManager = NextcloudFilesDatabaseManager.shared
                     if itemMetadata.directory {
-                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId)
+                        if let deletedDirectoryMetadatas = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) {
+                            currentDeletedMetadatas += deletedDirectoryMetadatas
+                        } else {
+                            Logger.enumeration.error("Something went wrong when recursively deleting directory not found.")
+                        }
                     } else {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
                     }
@@ -469,14 +480,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     if nkReadError.isNotFoundError {
                         Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
 
-                        guard let directoryItemMetadata = dbManager.itemMetadataFromOcId(directoryMetadata.ocId) else {
-                            Logger.enumeration.error("Can't delete directory properly as item metadata not found...")
-                            dispatchGroup.leave()
-                            return
+                        if let deletedMetadatas = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId) {
+                            allDeletedMetadatas += deletedMetadatas
+                        } else {
+                            Logger.enumeration.error("An error occurred while trying to delete directory and children not found in recursive scan")
                         }
-
-                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: directoryMetadata.ocId)
-                        allDeletedMetadatas.append(directoryItemMetadata)
                     } else if nkReadError.isNoChangesError { // All is well, just no changed etags
                         Logger.enumeration.info("Error was to say no changed files -- not bad error. No need to check children.")
                     }
