@@ -16,14 +16,7 @@ import FileProvider
 import NextcloudKit
 import OSLog
 
-class NextcloudSyncEngine : NSObject {
-
-    var isInvalidated = false
-
-    func invalidate() {
-        self.isInvalidated = true
-    }
-
+extension FileProviderEnumerator {
     func fullRecursiveScan(ncAccount: NextcloudAccount,
                            ncKit: NextcloudKit,
                            scanChangesOnly: Bool,
@@ -97,7 +90,7 @@ class NextcloudSyncEngine : NSObject {
 
         Logger.enumeration.debug("About to read: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-        NextcloudSyncEngine.readServerUrl(itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        FileProviderEnumerator.readServerUrl(itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             if readError != nil {
                 let nkReadError = NKError(error: readError!)
@@ -307,7 +300,10 @@ class NextcloudSyncEngine : NSObject {
                     let newMetadatas = isNew ? [metadata] : []
 
                     dbManager.addItemMetadata(metadata)
-                    completionHandler([metadata], newMetadatas, updatedMetadatas, nil, nil)
+
+                    DispatchQueue.main.async {
+                        completionHandler([metadata], newMetadatas, updatedMetadatas, nil, nil)
+                    }
                 }
             } else {
                 handleDepth1ReadFileOrFolder(serverUrl: serverUrl, ncAccount: ncAccount, files: files, error: error, completionHandler: completionHandler)

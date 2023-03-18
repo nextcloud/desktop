@@ -30,8 +30,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     var serverUrl: String = ""
     var isInvalidated = false
 
-    let syncEngine = NextcloudSyncEngine()
-
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         return identifier == .rootContainer ||
             identifier == .trashContainer ||
@@ -64,7 +62,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     func invalidate() {
         Logger.enumeration.debug("Enumerator is being invalidated for item with identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)")
-        syncEngine.invalidate()
         self.isInvalidated = true
     }
 
@@ -114,7 +111,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             Logger.enumeration.debug("Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-            NextcloudSyncEngine.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
+            FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
 
                 guard readError == nil else {
                     Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
@@ -162,7 +159,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
             // have just been moved elsewhere.
-            syncEngine.fullRecursiveScan(ncAccount: self.ncAccount,
+            fullRecursiveScan(ncAccount: self.ncAccount,
                               ncKit: self.ncKit,
                               scanChangesOnly: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
 
@@ -200,7 +197,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
-        NextcloudSyncEngine.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        // TODO: Move to the sync engine extension
+        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             // If we get a 404 we might add more deleted metadatas
             var currentDeletedMetadatas: [NextcloudItemMetadataTable] = []
