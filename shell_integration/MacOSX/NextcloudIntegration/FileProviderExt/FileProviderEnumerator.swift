@@ -520,12 +520,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         var updatedDirectories: [NextcloudItemMetadataTable] = []
         for updatedMetadata in allUpdatedMetadatas {
             if updatedMetadata.directory {
-                guard let directoryMetadata = dbManager.directoryMetadata(ocId: updatedMetadata.ocId) else {
-                    Logger.enumeration.error("Could not find matching directory metadata for updated item metadata, cannot scan for updates")
-                    continue
-                }
-
-                updatedDirectories.append(directoryMetadata)
+                updatedDirectories.append(updatedMetadata)
             }
         }
 
@@ -610,6 +605,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                             dbManager.addItemMetadata(directoryMetadata)
                         }
 
+                        // Don't update the etags for folders as we haven't checked their contents.
+                        // When we do a recursive check, if we update the etags now, we will think
+                        // that our local copies are up to date -- instead, leave them as the old.
+                        // They will get updated when they are the subject of a readServerUrl call.
+                        // (See above)
                         dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas, updateDirectoryEtags: false) { newMetadatas, updatedMetadatas, deletedMetadatas in
                             completionHandler(metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nil)
                         }

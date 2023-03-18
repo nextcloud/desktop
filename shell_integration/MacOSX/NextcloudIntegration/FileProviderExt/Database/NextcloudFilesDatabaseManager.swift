@@ -114,11 +114,8 @@ class NextcloudFilesDatabaseManager : NSObject {
         return itemMetadataFromOcId(ocId)
     }
 
-    private func processItemMetadatasToDelete(databaseToWriteTo: Realm,
-                                              existingMetadatas: Results<NextcloudItemMetadataTable>,
+    private func processItemMetadatasToDelete(existingMetadatas: Results<NextcloudItemMetadataTable>,
                                               updatedMetadatas: [NextcloudItemMetadataTable]) -> [NextcloudItemMetadataTable] {
-
-        assert(databaseToWriteTo.isInWriteTransaction)
 
         var deletedMetadatas: [NextcloudItemMetadataTable] = []
 
@@ -129,23 +126,18 @@ class NextcloudFilesDatabaseManager : NSObject {
             deletedMetadatas.append(metadataToDelete)
 
             Logger.ncFilesDatabase.debug("Deleting item metadata during update. ocID: \(existingMetadata.ocId, privacy: .public), etag: \(existingMetadata.etag, privacy: .public), fileName: \(existingMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-
-            // Can't pass copies, we need the originals from the database
-            databaseToWriteTo.delete(ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadataToDelete.ocId))
         }
 
         return deletedMetadatas
     }
 
-    private func processItemMetadatasToUpdate(databaseToWriteTo: Realm,
-                                              existingMetadatas: Results<NextcloudItemMetadataTable>,
+    private func processItemMetadatasToUpdate(existingMetadatas: Results<NextcloudItemMetadataTable>,
                                               updatedMetadatas: [NextcloudItemMetadataTable],
-                                              updateDirectoryEtags: Bool) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
-
-        assert(databaseToWriteTo.isInWriteTransaction)
+                                              updateDirectoryEtags: Bool) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], directoriesNeedingRename: [NextcloudItemMetadataTable]) {
 
         var returningNewMetadatas: [NextcloudItemMetadataTable] = []
         var returningUpdatedMetadatas: [NextcloudItemMetadataTable] = []
+        var directoriesNeedingRename: [NextcloudItemMetadataTable] = []
 
         for updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
@@ -153,12 +145,20 @@ class NextcloudFilesDatabaseManager : NSObject {
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
                     !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
 
-                    if !updateDirectoryEtags {
-                        updatedMetadata.etag = existingMetadata.etag
+                    if updatedMetadata.directory {
+
+                        if updatedMetadata.serverUrl != existingMetadata.serverUrl || updatedMetadata.fileName != existingMetadata.fileName {
+
+                            directoriesNeedingRename.append(NextcloudItemMetadataTable(value: updatedMetadata))
+                            updatedMetadata.etag = "" // Renaming doesn't change the etag so reset manually
+
+                        } else if !updateDirectoryEtags {
+                            updatedMetadata.etag = existingMetadata.etag
+                        }
                     }
 
-                    returningUpdatedMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
-                    databaseToWriteTo.add(updatedMetadata, update: .all)
+                    returningUpdatedMetadatas.append(updatedMetadata)
+
 
                     Logger.ncFilesDatabase.debug("Updated existing item metadata. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
                 } else {
@@ -166,34 +166,54 @@ class NextcloudFilesDatabaseManager : NSObject {
                 }
 
             } else { // This is a new metadata
-                returningNewMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
-                databaseToWriteTo.add(updatedMetadata, update: .all)
+                returningNewMetadatas.append(updatedMetadata)
 
                 Logger.ncFilesDatabase.debug("Created new item metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
             }
         }
 
-        return (returningNewMetadatas, returningUpdatedMetadatas)
+        return (returningNewMetadatas, returningUpdatedMetadatas, directoriesNeedingRename)
     }
 
     func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable], updateDirectoryEtags: Bool, completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?) -> Void) {
         let database = ncDatabase()
 
         do {
+            let existingMetadatas = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl, NextcloudItemMetadataTable.Status.normal.rawValue)
+
+            let metadatasToDelete = processItemMetadatasToDelete(existingMetadatas: existingMetadatas,
+                                                                 updatedMetadatas: updatedMetadatas)
+
+            let metadatasToChange = processItemMetadatasToUpdate(existingMetadatas: existingMetadatas,
+                                                                 updatedMetadatas: updatedMetadatas,
+                                                                 updateDirectoryEtags: updateDirectoryEtags)
+
+            var metadatasToUpdate = metadatasToChange.updatedMetadatas
+            let metadatasToCreate = metadatasToChange.newMetadatas
+            let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
+
+            let metadatasToAdd = Array(metadatasToUpdate.map { NextcloudItemMetadataTable(value: $0) }) +
+                                 Array(metadatasToCreate.map { NextcloudItemMetadataTable(value: $0) })
+
             try database.write {
-                let existingMetadatas = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl, NextcloudItemMetadataTable.Status.normal.rawValue)
+                for metadata in metadatasToDelete {
+                    // Can't pass copies, we need the originals from the database
+                    database.delete(ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadata.ocId))
+                }
 
-                let deletedMetadatas = processItemMetadatasToDelete(databaseToWriteTo: database,
-                                                                    existingMetadatas: existingMetadatas,
-                                                                    updatedMetadatas: updatedMetadatas)
+                for metadata in metadatasToAdd {
+                    database.add(metadata, update: .all)
+                }
 
-                let metadatasFromUpdate = processItemMetadatasToUpdate(databaseToWriteTo: database,
-                                                                       existingMetadatas: existingMetadatas,
-                                                                       updatedMetadatas: updatedMetadatas,
-                                                                       updateDirectoryEtags: updateDirectoryEtags)
-
-                completionHandler(metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
             }
+
+            for metadata in directoriesNeedingRename {
+                if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(ocId: metadata.ocId, newServerUrl: metadata.serverUrl, newFileName: metadata.fileName) {
+                    metadatasToUpdate += updatedDirectoryChildren
+                }
+            }
+
+            completionHandler(metadatasToCreate, metadatasToUpdate, metadatasToDelete)
         } catch let error {
             Logger.ncFilesDatabase.error("Could not update any item metadatas, received error: \(error.localizedDescription, privacy: .public)")
             completionHandler(nil, nil, nil)
@@ -366,23 +386,22 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func renameDirectoryAndPropagateToChildren(ocId: String, newServerUrl: String, newFileName: String) {
+    func renameDirectoryAndPropagateToChildren(ocId: String, newServerUrl: String, newFileName: String) -> [NextcloudItemMetadataTable]? {
 
         let database = ncDatabase()
 
+        guard let directoryMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@ AND directory == true", ocId).first else {
+            Logger.ncFilesDatabase.error("Could not find a directory with ocID \(ocId, privacy: .public), cannot proceed with recursive renaming")
+            return nil
+        }
+
+        let oldServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, oldServerUrl)
+
+        renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
+        Logger.ncFilesDatabase.debug("Renamed root renaming directory")
+
         do {
-            guard let directoryMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@ AND directory == true", ocId).first else {
-                Logger.ncFilesDatabase.error("Could not find a directory with ocID \(ocId, privacy: .public), cannot proceed with recursive renaming")
-                return
-            }
-
-            let oldServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-
-            let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, oldServerUrl)
-
-            renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
-            Logger.ncFilesDatabase.debug("Renamed root renaming directory")
-
             try database.write {
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
@@ -394,7 +413,12 @@ class NextcloudFilesDatabaseManager : NSObject {
             }
         } catch let error {
             Logger.ncFilesDatabase.error("Could not rename directory metadata with ocId: \(ocId, privacy: .public) to new serverUrl: \(newServerUrl), received error: \(error.localizedDescription, privacy: .public)")
+
+            return nil
         }
+
+        let updatedChildItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, newServerUrl)
+        return sortedItemMetadatas(updatedChildItemResults)
     }
 
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
