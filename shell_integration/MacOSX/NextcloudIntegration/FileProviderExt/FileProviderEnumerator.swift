@@ -273,25 +273,36 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    private static func metadatasToFileProviderItems(_ itemMetadatas: [NextcloudItemMetadataTable], ncKit: NextcloudKit) -> [NSFileProviderItem] {
+    private static func metadatasToFileProviderItems(_ itemMetadatas: [NextcloudItemMetadataTable], ncKit: NextcloudKit, completionHandler: @escaping(_ items: [NSFileProviderItem]) -> Void) {
         var items: [NSFileProviderItem] = []
 
-        for itemMetadata in itemMetadatas {
-            if itemMetadata.e2eEncrypted {
-                Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId) \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-                continue
-            }
+        let dispatchGroup = DispatchGroup()
 
-            if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {
-                let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
-                Logger.enumeration.debug("Will enumerate item with ocId: \(itemMetadata.ocId) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-                items.append(item)
-            } else {
-                Logger.enumeration.error("Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), skipping enumeration")
+        for itemMetadata in itemMetadatas {
+            dispatchGroup.enter()
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                if itemMetadata.e2eEncrypted {
+                    Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId, privacy: .public) \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    dispatchGroup.leave()
+                    return
+                }
+
+                if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {
+                    let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
+                    Logger.enumeration.debug("Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    items.append(item)
+                } else {
+                    Logger.enumeration.error("Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), skipping enumeration")
+                }
+
+                dispatchGroup.leave()
             }
         }
 
-        return items
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            completionHandler(items)
+        }
     }
 
     private static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage {
@@ -300,21 +311,22 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]) {
 
-        let items = FileProviderEnumerator.metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit)
-        observer.didEnumerate(items)
-        Logger.enumeration.info("Did enumerate \(items.count) items")
+        metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit) { items in
+            observer.didEnumerate(items)
+            Logger.enumeration.info("Did enumerate \(items.count) items")
 
-        // TODO: Handle paging properly
-        /*
-        if items.count == maxItemsPerFileProviderPage {
-            let nextPage = numPage + 1
-            let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
-            observer.finishEnumerating(upTo: providerPage)
-        } else {
-            observer.finishEnumerating(upTo: nil)
+            // TODO: Handle paging properly
+            /*
+             if items.count == maxItemsPerFileProviderPage {
+             let nextPage = numPage + 1
+             let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+             observer.finishEnumerating(upTo: providerPage)
+             } else {
+             observer.finishEnumerating(upTo: nil)
+             }
+             */
+            observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
         }
-         */
-        observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
     }
 
     private static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, ncKit: NextcloudKit, newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
@@ -341,36 +353,19 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             allDeletedMetadatas = deletedMetadatas
         }
 
-        var allFpItemUpdates: [FileProviderItem] = []
         var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
-
-        for updMetadata in allUpdatedMetadatas {
-            guard let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(updMetadata) else {
-                Logger.enumeration.warning("Not enumerating change for metadata: \(updMetadata.ocId) \(updMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)) as could not get parent item metadata.")
-                continue
-            }
-
-            guard !updMetadata.e2eEncrypted else {
-                // Precaution, if all goes well in NKFile conversion then this should not happen
-                // TODO: Remove when E2EE supported
-                Logger.enumeration.info("Encrypted metadata in changes enumeration \(updMetadata.ocId) \(updMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), adding to deletions")
-                allFpItemDeletionsIdentifiers.append(NSFileProviderItemIdentifier(updMetadata.ocId))
-                continue
-            }
-
-            let fpItem = FileProviderItem(metadata: updMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
-            allFpItemUpdates.append(fpItem)
-        }
-
-        if !allFpItemUpdates.isEmpty {
-            observer.didUpdate(allFpItemUpdates)
-        }
-
         if !allFpItemDeletionsIdentifiers.isEmpty {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
 
-        Logger.enumeration.info("Processed \(allUpdatedMetadatas.count) new or updated metadatas, \(allDeletedMetadatas.count) deleted metadatas.")
-        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+        metadatasToFileProviderItems(allUpdatedMetadatas, ncKit: ncKit) { updatedItems in
+
+            if !updatedItems.isEmpty {
+                observer.didUpdate(updatedItems)
+            }
+
+            Logger.enumeration.info("Processed \(updatedItems.count) new or updated metadatas, \(allDeletedMetadatas.count) deleted metadatas.")
+            observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+        }
     }
 }
