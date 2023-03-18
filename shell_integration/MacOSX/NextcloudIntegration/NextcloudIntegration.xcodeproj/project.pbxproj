@@ -36,7 +36,7 @@
 		53903D37295618A400D0B308 /* LineProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53903D36295618A400D0B308 /* LineProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53D056312970594F00988392 /* LocalFilesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D056302970594F00988392 /* LocalFilesUtils.swift */; };
-		53ED472029C5E64200795DB1 /* FileProviderEnumerator+RemoteSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED471F29C5E64200795DB1 /* FileProviderEnumerator+RemoteSync.swift */; };
+		53ED472029C5E64200795DB1 /* NextcloudSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED471F29C5E64200795DB1 /* NextcloudSyncEngine.swift */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573D21B1CD94B00303B36 /* main.m in Resources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
@@ -160,7 +160,7 @@
 		539158B127BE891500816F56 /* LocalSocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalSocketClient.h; sourceTree = "<group>"; };
 		539158B227BEC98A00816F56 /* LocalSocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalSocketClient.m; sourceTree = "<group>"; };
 		53D056302970594F00988392 /* LocalFilesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFilesUtils.swift; sourceTree = "<group>"; };
-		53ED471F29C5E64200795DB1 /* FileProviderEnumerator+RemoteSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderEnumerator+RemoteSync.swift"; sourceTree = "<group>"; };
+		53ED471F29C5E64200795DB1 /* NextcloudSyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextcloudSyncEngine.swift; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573B51B1CD91E00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -249,13 +249,13 @@
 				5318AD8F29BF406500CBB71C /* Database */,
 				5352E85929B7BFB4002CE85C /* Extensions */,
 				538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */,
-				53ED471F29C5E64200795DB1 /* FileProviderEnumerator+RemoteSync.swift */,
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
 				538E396E27F4765000FA63D5 /* FileProviderItem.swift */,
 				5318AD9629BF493600CBB71C /* FileProviderMaterialisedEnumerationObserver.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				53D056302970594F00988392 /* LocalFilesUtils.swift */,
 				536EFC35295E3C1100F4CB13 /* NextcloudAccount.swift */,
+				53ED471F29C5E64200795DB1 /* NextcloudSyncEngine.swift */,
 				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
 				538E397227F4765000FA63D5 /* Info.plist */,
 			);
@@ -564,7 +564,7 @@
 				536EFC36295E3C1100F4CB13 /* NextcloudAccount.swift in Sources */,
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
-				53ED472029C5E64200795DB1 /* FileProviderEnumerator+RemoteSync.swift in Sources */,
+				53ED472029C5E64200795DB1 /* NextcloudSyncEngine.swift in Sources */,
 				5318AD9929BF58D000CBB71C /* NKError+Extensions.swift in Sources */,
 				5318AD9529BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift in Sources */,
 				535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */,

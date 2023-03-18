@@ -16,7 +16,14 @@ import FileProvider
 import NextcloudKit
 import OSLog
 
-extension FileProviderEnumerator {
+class NextcloudSyncEngine : NSObject {
+
+    var isInvalidated = false
+
+    func invalidate() {
+        self.isInvalidated = true
+    }
+
     func fullRecursiveScan(ncAccount: NextcloudAccount,
                            ncKit: NextcloudKit,
                            scanChangesOnly: Bool,
@@ -33,7 +40,7 @@ extension FileProviderEnumerator {
         rootContainerDirectoryMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
         // Create a serial dispatch queue
-        let dispatchQueue = DispatchQueue(label: "recursiveChangeEnumerationQueue", qos: .background)
+        let dispatchQueue = DispatchQueue(label: "recursiveChangeEnumerationQueue", qos: .userInitiated)
 
         dispatchQueue.async {
             let results = self.scanRecursively(rootContainerDirectoryMetadata,
@@ -101,7 +108,7 @@ extension FileProviderEnumerator {
 
         Logger.enumeration.debug("About to read: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-        FileProviderEnumerator.readServerUrl(itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        NextcloudSyncEngine.readServerUrl(itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             if readError != nil {
                 let nkReadError = NKError(error: readError!)

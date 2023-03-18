@@ -30,6 +30,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     var serverUrl: String = ""
     var isInvalidated = false
 
+    let syncEngine = NextcloudSyncEngine()
+
     private static func isSystemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> Bool {
         return identifier == .rootContainer ||
             identifier == .trashContainer ||
@@ -61,6 +63,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     }
 
     func invalidate() {
+        Logger.enumeration.debug("Enumerator is being invalidated for item with identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)")
+        syncEngine.invalidate()
         self.isInvalidated = true
     }
 
@@ -92,7 +96,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 // We enumerate items as we get the server data for two reasons:
                 // A) we avoid having a gigantic chunk of files to enumerate to the observer at the end
                 // B) we don't need to worry about resolving which files are truly deleted vs moved at the end
-                fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: false, singleFolderScanCompleteCompletionHandler: { metadatas, error in
+                syncEngine.fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: false, singleFolderScanCompleteCompletionHandler: { metadatas, error in
 
                     guard error == nil else {
                         Logger.enumeration.error("There was an error during recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
@@ -156,7 +160,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             Logger.enumeration.debug("Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
 
-            FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, _, _, _, readError in
+            NextcloudSyncEngine.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { _, _, _, _, readError in
 
                 guard readError == nil else {
                     Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
@@ -219,7 +223,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
             // have just been moved elsewhere.
-            fullRecursiveScan(ncAccount: self.ncAccount,
+            syncEngine.fullRecursiveScan(ncAccount: self.ncAccount,
                               ncKit: self.ncKit,
                               scanChangesOnly: true,
                               singleFolderScanCompleteCompletionHandler: { _, _ in }) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
@@ -258,7 +262,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
-        FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
+        NextcloudSyncEngine.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
             // If we get a 404 we might add more deleted metadatas
             var currentDeletedMetadatas: [NextcloudItemMetadataTable] = []
