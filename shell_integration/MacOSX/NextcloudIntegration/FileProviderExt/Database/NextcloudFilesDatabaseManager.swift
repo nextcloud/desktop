@@ -175,7 +175,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         return (returningNewMetadatas, returningUpdatedMetadatas, directoriesNeedingRename)
     }
 
-    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable], updateDirectoryEtags: Bool, completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?) -> Void) {
+    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable], updateDirectoryEtags: Bool) -> (newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
         let database = ncDatabase()
 
         do {
@@ -213,10 +213,10 @@ class NextcloudFilesDatabaseManager : NSObject {
                 }
             }
 
-            completionHandler(metadatasToCreate, metadatasToUpdate, metadatasToDelete)
+            return (newMetadatas: metadatasToCreate, updatedMetadatas: metadatasToUpdate, deletedMetadatas: metadatasToDelete)
         } catch let error {
             Logger.ncFilesDatabase.error("Could not update any item metadatas, received error: \(error.localizedDescription, privacy: .public)")
-            completionHandler(nil, nil, nil)
+            return (nil, nil, nil)
         }
     }
 

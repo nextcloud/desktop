@@ -610,9 +610,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                         // that our local copies are up to date -- instead, leave them as the old.
                         // They will get updated when they are the subject of a readServerUrl call.
                         // (See above)
-                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas, updateDirectoryEtags: false) { newMetadatas, updatedMetadatas, deletedMetadatas in
-                            completionHandler(metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nil)
-                        }
+                        let changedMetadatas = dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas, updateDirectoryEtags: false)
+
+                        completionHandler(metadatas, changedMetadatas.newMetadatas, changedMetadatas.updatedMetadatas, changedMetadatas.deletedMetadatas, nil)
                     }
                 }
             }
