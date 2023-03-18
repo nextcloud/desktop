@@ -80,9 +80,6 @@ class NextcloudSyncEngine : NSObject {
 
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
-        // Scanned in this directory
-        var currentMetadatas: [NextcloudItemMetadataTable] = []
-
         // Will include results of recursive calls
         var allMetadatas: [NextcloudItemMetadataTable] = []
         var allNewMetadatas: [NextcloudItemMetadataTable] = []
@@ -137,7 +134,6 @@ class NextcloudSyncEngine : NSObject {
             Logger.enumeration.info("Finished reading serverUrl: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
 
             if let metadatas = metadatas {
-                currentMetadatas = metadatas
                 allMetadatas += metadatas
             } else {
                 Logger.enumeration.warning("WARNING: Nil metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
@@ -204,15 +200,69 @@ class NextcloudSyncEngine : NSObject {
         return (metadatas: allMetadatas, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas, nil)
     }
 
-    static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, stopAtMatchingEtags: Bool = false, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
+    static func handleDepth1ReadFileOrFolder(serverUrl: String,
+                                             ncAccount: NextcloudAccount,
+                                             files: [NKFile],
+                                             error: NKError,
+                                             completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?,
+                                                                           _ newMetadatas: [NextcloudItemMetadataTable]?,
+                                                                           _ updatedMetadatas: [NextcloudItemMetadataTable]?,
+                                                                           _ deletedMetadatas: [NextcloudItemMetadataTable]?,
+                                                                           _ readError: Error?) -> Void) {
+
+        guard error == .success else {
+            Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
+            completionHandler(nil, nil, nil, nil, error.error)
+            return
+        }
+
+        Logger.enumeration.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: .public)")
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncAccount.ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
+
+                // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
+                // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
+                // unless it's the root container
+                if serverUrl != ncAccount.davFilesUrl {
+                    dbManager.addItemMetadata(directoryMetadata)
+                }
+
+                // Don't update the etags for folders as we haven't checked their contents.
+                // When we do a recursive check, if we update the etags now, we will think
+                // that our local copies are up to date -- instead, leave them as the old.
+                // They will get updated when they are the subject of a readServerUrl call.
+                // (See above)
+                let changedMetadatas = dbManager.updateItemMetadatas(account: ncAccount.ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas, updateDirectoryEtags: false)
+
+                DispatchQueue.main.async {
+                    completionHandler(metadatas, changedMetadatas.newMetadatas, changedMetadatas.updatedMetadatas, changedMetadatas.deletedMetadatas, nil)
+                }
+            }
+        }
+    }
+
+    static func readServerUrl(_ serverUrl: String,
+                              ncAccount: NextcloudAccount,
+                              ncKit: NextcloudKit,
+                              stopAtMatchingEtags: Bool = false,
+                              depth: String = "1",
+                              completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?,
+                                                            _ newMetadatas: [NextcloudItemMetadataTable]?,
+                                                            _ updatedMetadatas: [NextcloudItemMetadataTable]?,
+                                                            _ deletedMetadatas: [NextcloudItemMetadataTable]?,
+                                                            _ readError: Error?) -> Void) {
+
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
-        Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) at depth 0. NCKit info: userId: \(ncKit.nkCommonInstance.user), password: \(ncKit.nkCommonInstance.password == "" ? "EMPTY PASSWORD" : "NOT EMPTY PASSWORD"), urlBase: \(ncKit.nkCommonInstance.urlBase), ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion)")
+        Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) at depth \(depth, privacy: .public). NCKit info: userId: \(ncKit.nkCommonInstance.user), password: \(ncKit.nkCommonInstance.password == "" ? "EMPTY PASSWORD" : "NOT EMPTY PASSWORD"), urlBase: \(ncKit.nkCommonInstance.urlBase), ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion)")
 
-        ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
+        ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: depth, showHiddenFiles: true) { _, files, _, error in
             guard error == .success else {
-                Logger.enumeration.error("0 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
+                Logger.enumeration.error("\(depth, privacy: .public) depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
@@ -242,43 +292,25 @@ class NextcloudSyncEngine : NSObject {
                     let description = "Fetched directory etag is same as that stored locally. Not fetching child items."
                     let nkError = NKError(errorCode: NKError.noChangesErrorCode, errorDescription: description)
 
-                    let metadatas = dbManager.itemMetadatas(account: account, serverUrl: serverUrl)
+                    let metadatas = dbManager.itemMetadatas(account: ncKitAccount, serverUrl: serverUrl)
 
                     completionHandler(metadatas, nil, nil, nil, nkError.error)
                     return
                 }
             }
 
-            Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) at depth 1")
+            if depth == "0" {
+                if serverUrl != ncAccount.davFilesUrl {
+                    let metadata = dbManager.convertNKFileToItemMetadata(receivedItem, account: ncKitAccount)
+                    let isNew = dbManager.itemMetadataFromOcId(metadata.ocId) == nil
+                    let updatedMetadatas = isNew ? [] : [metadata]
+                    let newMetadatas = isNew ? [metadata] : []
 
-            ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
-                guard error == .success else {
-                    Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
-                    completionHandler(nil, nil, nil, nil, error.error)
-                    return
+                    dbManager.addItemMetadata(metadata)
+                    completionHandler([metadata], newMetadatas, updatedMetadatas, nil, nil)
                 }
-
-                Logger.enumeration.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
-                DispatchQueue.main.async {
-                    dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
-
-                        // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
-                        // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
-                        // unless it's the root container
-                        if serverUrl != ncAccount.davFilesUrl {
-                            dbManager.addItemMetadata(directoryMetadata)
-                        }
-
-                        // Don't update the etags for folders as we haven't checked their contents.
-                        // When we do a recursive check, if we update the etags now, we will think
-                        // that our local copies are up to date -- instead, leave them as the old.
-                        // They will get updated when they are the subject of a readServerUrl call.
-                        // (See above)
-                        let changedMetadatas = dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas, updateDirectoryEtags: false)
-
-                        completionHandler(metadatas, changedMetadatas.newMetadatas, changedMetadatas.updatedMetadatas, changedMetadatas.deletedMetadatas, nil)
-                    }
-                }
+            } else {
+                handleDepth1ReadFileOrFolder(serverUrl: serverUrl, ncAccount: ncAccount, files: files, error: error, completionHandler: completionHandler)
             }
         }
     }
