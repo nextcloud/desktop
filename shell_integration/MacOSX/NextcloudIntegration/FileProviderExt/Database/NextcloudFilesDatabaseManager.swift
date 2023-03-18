@@ -166,7 +166,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 }
 
             } else { // This is a new metadata
-                if !updateDirectoryEtags {
+                if !updateDirectoryEtags && updatedMetadata.directory {
                     updatedMetadata.etag = ""
                 }
                 
