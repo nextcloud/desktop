@@ -409,8 +409,10 @@ class NextcloudFilesDatabaseManager : NSObject {
             return nil
         }
 
-        let oldServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, oldServerUrl)
+        let oldItemServerUrl = directoryMetadata.serverUrl
+        let oldDirectoryServerUrl = oldItemServerUrl + "/" + directoryMetadata.fileName
+        let newDirectoryServerUrl = newServerUrl + "/" + newFileName
+        let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, oldDirectoryServerUrl)
 
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
         Logger.ncFilesDatabase.debug("Renamed root renaming directory")
@@ -419,7 +421,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             try database.write {
                 for childItem in childItemResults {
                     let oldServerUrl = childItem.serverUrl
-                    let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldServerUrl, with: newServerUrl)
+                    let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldDirectoryServerUrl, with: newDirectoryServerUrl)
                     childItem.serverUrl = movedServerUrl
                     database.add(childItem, update: .all)
                     Logger.ncFilesDatabase.debug("Moved childItem at \(oldServerUrl) to \(movedServerUrl)")
@@ -431,7 +433,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             return nil
         }
 
-        let updatedChildItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, newServerUrl)
+        let updatedChildItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, newDirectoryServerUrl)
         return sortedItemMetadatas(updatedChildItemResults)
     }
 
