@@ -313,6 +313,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         return items
     }
 
+    private static func fileProviderPageforNumPage(_ numPage: Int) -> NSFileProviderPage {
+        return NSFileProviderPage("\(numPage)".data(using: .utf8)!)
+    }
+
     private static func completeEnumerationObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]) {
 
         let items = FileProviderEnumerator.metadatasToFileProviderItems(itemMetadatas, ncKit: ncKit)
@@ -329,7 +333,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             observer.finishEnumerating(upTo: nil)
         }
          */
-        observer.finishEnumerating(upTo: NSFileProviderPage("\(numPage)".data(using: .utf8)!))
+        observer.finishEnumerating(upTo: fileProviderPageforNumPage(numPage))
     }
 
     private static func completeChangesObserver(_ observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, ncKit: NextcloudKit, newMetadatas: [NextcloudItemMetadataTable]?, updatedMetadatas: [NextcloudItemMetadataTable]?, deletedMetadatas: [NextcloudItemMetadataTable]?) {
