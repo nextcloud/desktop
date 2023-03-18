@@ -6469,7 +6469,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
-        <translation>Só visualización</translation>
+        <translation>Só ver</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
