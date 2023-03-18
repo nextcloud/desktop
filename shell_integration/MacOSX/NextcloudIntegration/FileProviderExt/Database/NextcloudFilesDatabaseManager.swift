@@ -199,6 +199,13 @@ class NextcloudFilesDatabaseManager : NSObject {
             let metadatasToAdd = Array(metadatasToUpdate.map { NextcloudItemMetadataTable(value: $0) }) +
                                  Array(metadatasToCreate.map { NextcloudItemMetadataTable(value: $0) })
 
+            for metadata in directoriesNeedingRename {
+
+                if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(ocId: metadata.ocId, newServerUrl: metadata.serverUrl, newFileName: metadata.fileName) {
+                    metadatasToUpdate += updatedDirectoryChildren
+                }
+            }
+
             try database.write {
                 for metadata in metadatasToDelete {
                     // Can't pass copies, we need the originals from the database
@@ -209,12 +216,6 @@ class NextcloudFilesDatabaseManager : NSObject {
                     database.add(metadata, update: .all)
                 }
 
-            }
-
-            for metadata in directoriesNeedingRename {
-                if let updatedDirectoryChildren = renameDirectoryAndPropagateToChildren(ocId: metadata.ocId, newServerUrl: metadata.serverUrl, newFileName: metadata.fileName) {
-                    metadatasToUpdate += updatedDirectoryChildren
-                }
             }
 
             return (newMetadatas: metadatasToCreate, updatedMetadatas: metadatasToUpdate, deletedMetadatas: metadatasToDelete)
