@@ -139,7 +139,8 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     private func processItemMetadatasToUpdate(databaseToWriteTo: Realm,
                                               existingMetadatas: Results<NextcloudItemMetadataTable>,
-                                              updatedMetadatas: [NextcloudItemMetadataTable]) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
+                                              updatedMetadatas: [NextcloudItemMetadataTable],
+                                              updateDirectoryEtags: Bool) -> (newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
 
         assert(databaseToWriteTo.isInWriteTransaction)
 
@@ -151,6 +152,10 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
                     !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+
+                    if !updateDirectoryEtags {
+                        updatedMetadata.etag = existingMetadata.etag
+                    }
 
                     returningUpdatedMetadatas.append(NextcloudItemMetadataTable(value: updatedMetadata))
                     databaseToWriteTo.add(updatedMetadata, update: .all)
@@ -171,7 +176,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         return (returningNewMetadatas, returningUpdatedMetadatas)
     }
 
-    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable], completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?) -> Void) {
+    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable], updateDirectoryEtags: Bool, completionHandler: @escaping(_ newMetadatas: [NextcloudItemMetadataTable]?, _ updatedMetadatas: [NextcloudItemMetadataTable]?, _ deletedMetadatas: [NextcloudItemMetadataTable]?) -> Void) {
         let database = ncDatabase()
 
         do {
@@ -184,7 +189,8 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                 let metadatasFromUpdate = processItemMetadatasToUpdate(databaseToWriteTo: database,
                                                                        existingMetadatas: existingMetadatas,
-                                                                       updatedMetadatas: updatedMetadatas)
+                                                                       updatedMetadatas: updatedMetadatas,
+                                                                       updateDirectoryEtags: updateDirectoryEtags)
 
                 completionHandler(metadatasFromUpdate.newMetadatas, metadatasFromUpdate.updatedMetadatas, deletedMetadatas)
             }

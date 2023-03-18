@@ -610,7 +610,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                             dbManager.addItemMetadata(directoryMetadata)
                         }
 
-                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas) { newMetadatas, updatedMetadatas, deletedMetadatas in
+                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas, updateDirectoryEtags: false) { newMetadatas, updatedMetadatas, deletedMetadatas in
                             completionHandler(metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, nil)
                         }
                     }
