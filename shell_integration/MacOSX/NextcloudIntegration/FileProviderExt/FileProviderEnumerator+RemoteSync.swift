@@ -137,18 +137,26 @@ extension FileProviderEnumerator {
             return ([], [], [], [], error: criticalError)
         }
 
-        var updatedDirectories: [NextcloudItemMetadataTable] = []
-        for updatedMetadata in allUpdatedMetadatas {
-            if updatedMetadata.directory {
-                updatedDirectories.append(updatedMetadata)
+        var childDirectoriesToScan: [NextcloudItemMetadataTable] = []
+        var candidateMetadatas: [NextcloudItemMetadataTable]
+
+        if scanChangesOnly {
+            candidateMetadatas = allUpdatedMetadatas
+        } else {
+            candidateMetadatas = allMetadatas
+        }
+
+        for candidateMetadata in candidateMetadatas {
+            if candidateMetadata.directory {
+                childDirectoriesToScan.append(candidateMetadata)
             }
         }
 
-        if updatedDirectories.isEmpty {
+        if childDirectoriesToScan.isEmpty {
             return (metadatas: allMetadatas, newMetadatas: allNewMetadatas, updatedMetadatas: allUpdatedMetadatas, deletedMetadatas: allDeletedMetadatas, nil)
         }
 
-        for childDirectory in updatedDirectories {
+        for childDirectory in childDirectoriesToScan {
             let childScanResult = scanRecursively(childDirectory, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
 
             allMetadatas += childScanResult.metadatas
