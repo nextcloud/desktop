@@ -87,60 +87,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         let dbManager = NextcloudFilesDatabaseManager.shared
 
-        // When enumerating items in the working set, we are expected to provide an account of the
-        // whole server and all its files.
-        if enumeratedItemIdentifier == .workingSet {
-            if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
-                page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
-
-                // We enumerate items as we get the server data for two reasons:
-                // A) we avoid having a gigantic chunk of files to enumerate to the observer at the end
-                // B) we don't need to worry about resolving which files are truly deleted vs moved at the end
-                syncEngine.fullRecursiveScan(ncAccount: self.ncAccount, ncKit: self.ncKit, scanChangesOnly: false, singleFolderScanCompleteCompletionHandler: { metadatas, error in
-
-                    guard error == nil else {
-                        Logger.enumeration.error("There was an error during recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
-                        observer.finishEnumeratingWithError(error!.toFileProviderError())
-                        return;
-                    }
-
-                    guard let metadatas = metadatas else {
-                        Logger.enumeration.warning("Received nil metadatas during recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
-                        return
-                    }
-
-                    let items = FileProviderEnumerator.metadatasToFileProviderItems(metadatas, ncKit: self.ncKit)
-                    observer.didEnumerate(items)
-
-                }) { metadatas, _, _, _, error in
-
-                    if self.isInvalidated {
-                        Logger.enumeration.info("Enumerator invalidated during working set item enumeration. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
-                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
-                        return
-                    }
-
-                    guard error == nil else {
-                        Logger.enumeration.info("Finished recursive iteme enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
-                        observer.finishEnumeratingWithError(error!.toFileProviderError())
-                        return;
-                    }
-
-                    Logger.enumeration.info("Finished recursive item enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
-
-                    observer.finishEnumerating(upTo: FileProviderEnumerator.fileProviderPageforNumPage(1))
-                }
-
-                return
-            } else {
-                Logger.enumeration.debug("Enumerating page \(page.rawValue) of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
-                // TODO!
-
-                observer.finishEnumerating(upTo: nil)
-            }
-
-            return
-        } else if enumeratedItemIdentifier == .trashContainer {
+        if enumeratedItemIdentifier == .trashContainer {
             Logger.enumeration.debug("Enumerating trash set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
             // TODO!
 
@@ -148,13 +95,20 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             return
         }
 
+        // Handle the working set as if it were the root container
+        // If we do a full server scan per the recommendations of the File Provider documentation,
+        // we will be stuck for a huge period of time without being able to access files as the
+        // entire server gets scanned. Instead, treat the working set as the root container here.
+        // Then, when we enumerate changes, we'll go through everything -- while we can still
+        // navigate a little bit in Finder, file picker, etc
+
         guard serverUrl != "" else {
             Logger.enumeration.error("Enumerator has empty serverUrl -- can't enumerate that! For identifier: \(self.enumeratedItemIdentifier.rawValue, privacy: .public)")
             observer.finishEnumeratingWithError(NSFileProviderError(.noSuchItem))
             return
         }
 
-        // TODO: Make better use of pagination and andle paging properly
+        // TODO: Make better use of pagination and handle paging properly
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
@@ -225,8 +179,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             // have just been moved elsewhere.
             syncEngine.fullRecursiveScan(ncAccount: self.ncAccount,
                               ncKit: self.ncKit,
-                              scanChangesOnly: true,
-                              singleFolderScanCompleteCompletionHandler: { _, _ in }) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
+                              scanChangesOnly: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
 
                 if self.isInvalidated {
                     Logger.enumeration.info("Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")

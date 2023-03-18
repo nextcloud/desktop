@@ -27,8 +27,6 @@ class NextcloudSyncEngine : NSObject {
     func fullRecursiveScan(ncAccount: NextcloudAccount,
                            ncKit: NextcloudKit,
                            scanChangesOnly: Bool,
-                           singleFolderScanCompleteCompletionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable]?,
-                                                                                _ error: NKError?) -> Void,
                            completionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable],
                                                         _ newMetadatas: [NextcloudItemMetadataTable],
                                                         _ updatedMetadatas: [NextcloudItemMetadataTable],
@@ -46,8 +44,7 @@ class NextcloudSyncEngine : NSObject {
             let results = self.scanRecursively(rootContainerDirectoryMetadata,
                                                ncAccount: ncAccount,
                                                ncKit: ncKit,
-                                               scanChangesOnly: scanChangesOnly,
-                                               singleFolderScanCompleteCompletionHandler: singleFolderScanCompleteCompletionHandler)
+                                               scanChangesOnly: scanChangesOnly)
 
             // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved)
             // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis;
@@ -71,18 +68,13 @@ class NextcloudSyncEngine : NSObject {
     private func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable,
                                  ncAccount: NextcloudAccount,
                                  ncKit: NextcloudKit,
-                                 scanChangesOnly: Bool,
-                                 singleFolderScanCompleteCompletionHandler: @escaping(_ metadatas: [NextcloudItemMetadataTable]?,
-                                                                                      _ error: NKError?) -> Void) -> (metadatas: [NextcloudItemMetadataTable],
-                                                                                                                                               newMetadatas: [NextcloudItemMetadataTable],
-                                                                                                                                               updatedMetadatas: [NextcloudItemMetadataTable],
-                                                                                                                                               deletedMetadatas: [NextcloudItemMetadataTable],
-                                                                                                                                               error: NKError?) {
+                                 scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable],
+                                                            newMetadatas: [NextcloudItemMetadataTable],
+                                                            updatedMetadatas: [NextcloudItemMetadataTable],
+                                                            deletedMetadatas: [NextcloudItemMetadataTable],
+                                                            error: NKError?) {
 
         if self.isInvalidated {
-            DispatchQueue.main.async {
-                singleFolderScanCompleteCompletionHandler(nil, nil)
-            }
             return ([], [], [], [], nil)
         }
 
@@ -175,14 +167,7 @@ class NextcloudSyncEngine : NSObject {
         dispatchGroup.wait()
 
         guard criticalError == nil else {
-            DispatchQueue.main.async {
-                singleFolderScanCompleteCompletionHandler(nil, criticalError)
-            }
             return ([], [], [], [], error: criticalError)
-        }
-
-        DispatchQueue.main.async {
-            singleFolderScanCompleteCompletionHandler(currentMetadatas, nil)
         }
 
         var childDirectoriesToScan: [NextcloudItemMetadataTable] = []
@@ -208,8 +193,7 @@ class NextcloudSyncEngine : NSObject {
             let childScanResult = scanRecursively(childDirectory,
                                                   ncAccount: ncAccount,
                                                   ncKit: ncKit,
-                                                  scanChangesOnly: scanChangesOnly,
-                                                  singleFolderScanCompleteCompletionHandler: singleFolderScanCompleteCompletionHandler)
+                                                  scanChangesOnly: scanChangesOnly)
 
             allMetadatas += childScanResult.metadatas
             allNewMetadatas += childScanResult.newMetadatas
