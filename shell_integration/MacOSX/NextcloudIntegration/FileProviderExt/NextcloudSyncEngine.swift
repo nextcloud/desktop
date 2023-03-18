@@ -174,7 +174,7 @@ class NextcloudSyncEngine : NSObject {
         var candidateMetadatas: [NextcloudItemMetadataTable]
 
         if scanChangesOnly {
-            candidateMetadatas = allUpdatedMetadatas
+            candidateMetadatas = allUpdatedMetadatas + allNewMetadatas
         } else {
             candidateMetadatas = allMetadatas
         }
