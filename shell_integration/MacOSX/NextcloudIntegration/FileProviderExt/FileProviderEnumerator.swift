@@ -253,25 +253,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
 
-                // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved)
-                // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis;
-                // so we need to check we are not simultaneously marking a moved file as deleted and updated
-                var checkedDeletedMetadatas = deletedMetadatas
-
-                for updatedMetadata in updatedMetadatas {
-                    guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(where: { $0.ocId == updatedMetadata.ocId } ) else {
-                        continue;
-                    }
-
-                    checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
-                }
-
                 FileProviderEnumerator.completeChangesObserver(observer,
                                                                anchor: anchor,
                                                                ncKit: self.ncKit,
                                                                newMetadatas: newMetadatas,
                                                                updatedMetadatas: updatedMetadatas,
-                                                               deletedMetadatas: checkedDeletedMetadatas)
+                                                               deletedMetadatas: deletedMetadatas)
             }
             return
         } else if enumeratedItemIdentifier == .trashContainer {

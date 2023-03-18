@@ -29,13 +29,26 @@ extension FileProviderEnumerator {
         dispatchQueue.async {
             let results = scanRecursively(rootContainerDirectoryMetadata, ncAccount: ncAccount, ncKit: ncKit, scanChangesOnly: scanChangesOnly)
 
+            // Run a check to ensure files deleted in one location are not updated in another (e.g. when moved)
+            // The recursive scan provides us with updated/deleted metadatas only on a folder by folder basis;
+            // so we need to check we are not simultaneously marking a moved file as deleted and updated
+            var checkedDeletedMetadatas = results.deletedMetadatas
+
+            for updatedMetadata in results.updatedMetadatas {
+                guard let matchingDeletedMetadataIdx = checkedDeletedMetadatas.firstIndex(where: { $0.ocId == updatedMetadata.ocId } ) else {
+                    continue;
+                }
+
+                checkedDeletedMetadatas.remove(at: matchingDeletedMetadataIdx)
+            }
+
             DispatchQueue.main.async {
-                completionHandler(results.metadatas, results.newMetadatas, results.updatedMetadatas, results.deletedMetadatas, results.error)
+                completionHandler(results.metadatas, results.newMetadatas, results.updatedMetadatas, checkedDeletedMetadatas, results.error)
             }
         }
     }
 
-    static func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable], error: NKError?) {
+    private static func scanRecursively(_ directoryMetadata: NextcloudItemMetadataTable, ncAccount: NextcloudAccount, ncKit: NextcloudKit, scanChangesOnly: Bool) -> (metadatas: [NextcloudItemMetadataTable], newMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable], deletedMetadatas: [NextcloudItemMetadataTable], error: NKError?) {
 
         assert(directoryMetadata.directory, "Can only recursively scan a directory.")
 
