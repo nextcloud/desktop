@@ -166,6 +166,10 @@ class NextcloudFilesDatabaseManager : NSObject {
                 }
 
             } else { // This is a new metadata
+                if !updateDirectoryEtags {
+                    updatedMetadata.etag = ""
+                }
+                
                 returningNewMetadatas.append(updatedMetadata)
 
                 Logger.ncFilesDatabase.debug("Created new item metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
