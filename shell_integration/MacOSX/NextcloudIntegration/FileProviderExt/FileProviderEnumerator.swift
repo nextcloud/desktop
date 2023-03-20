@@ -259,27 +259,27 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private static func metadatasToFileProviderItems(_ itemMetadatas: [NextcloudItemMetadataTable], ncKit: NextcloudKit, completionHandler: @escaping(_ items: [NSFileProviderItem]) -> Void) {
         var items: [NSFileProviderItem] = []
 
+        let conversionQueue = DispatchQueue(label: "metadataToItemConversionQueue", qos: .userInitiated, attributes: .concurrent)
+        let appendQueue = DispatchQueue(label: "enumeratorItemAppendQueue", qos: .userInitiated) // Serial queue
         let dispatchGroup = DispatchGroup()
 
         for itemMetadata in itemMetadatas {
-            dispatchGroup.enter()
-
-            DispatchQueue.global(qos: .userInitiated).async {
+            conversionQueue.async(group: dispatchGroup) {
                 if itemMetadata.e2eEncrypted {
                     Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId, privacy: .public) \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-                    dispatchGroup.leave()
                     return
                 }
 
                 if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {
                     let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
                     Logger.enumeration.debug("Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
-                    items.append(item)
+
+                    appendQueue.async(group: dispatchGroup) {
+                        items.append(item)
+                    }
                 } else {
                     Logger.enumeration.error("Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), skipping enumeration")
                 }
-
-                dispatchGroup.leave()
             }
         }
 
