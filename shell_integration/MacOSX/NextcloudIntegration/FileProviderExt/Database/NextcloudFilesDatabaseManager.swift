@@ -388,7 +388,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             return nil
         }
 
-        var deletedMetadatas: [NextcloudItemMetadataTable] = [directoryMetadata]
+        var deletedMetadatas: [NextcloudItemMetadataTable] = [directoryMetadataCopy]
 
         let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath)
 
