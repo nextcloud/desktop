@@ -67,7 +67,11 @@ const char e2e_cert[] = "_e2e-certificate";
 const char e2e_private[] = "_e2e-private";
 const char e2e_mnemonic[] = "_e2e-mnemonic";
 
+constexpr auto metadataKeyJsonKey = "metadataKey";
+
 constexpr qint64 blockSize = 1024;
+
+constexpr auto metadataKeySize = 16;
 
 QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
 {
@@ -1528,7 +1532,30 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
     QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
 
-    if (metadataKeys.isEmpty()) {
+    const auto metadataKeyFromJson = metadataObj[metadataKeyJsonKey].toString().toLocal8Bit();
+    if (!metadataKeyFromJson.isEmpty()) {
+        const auto decryptedMetadataKeyBase64 = decryptData(metadataKeyFromJson);
+        if (!decryptedMetadataKeyBase64.isEmpty()) {
+            _metadataKey = QByteArray::fromBase64(decryptedMetadataKeyBase64);
+        }
+    }
+
+    if (_metadataKey.isEmpty()) {
+        qCDebug(lcCse()) << "Migrating from v1.1 to v1.2";
+
+        if (metadataKeys.isEmpty()) {
+            qCDebug(lcCse()) << "Could not migrate. No metadata keys found!";
+            return;
+        }
+
+        const auto lastMetadataKey = metadataKeys.keys().last();
+        const auto decryptedMetadataKeyBase64 = decryptData(metadataKeys.value(lastMetadataKey).toString().toLocal8Bit());
+        if (!decryptedMetadataKeyBase64.isEmpty()) {
+            _metadataKey = QByteArray::fromBase64(decryptedMetadataKeyBase64);
+        }
+    }
+
+    if (_metadataKey.isEmpty()) {
         qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
         return;
     }
@@ -1538,65 +1565,39 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
     _fileDrop = metaDataDoc.object().value("filedrop").toObject();
 
-    QJsonDocument debugHelper;
-    debugHelper.setObject(metadataKeys);
-    qCDebug(lcCse) << "Keys: " << debugHelper.toJson(QJsonDocument::Compact);
-
     // Iterate over the document to store the keys. I'm unsure that the keys are in order,
     // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
-    for(auto it = metadataKeys.constBegin(), end = metadataKeys.constEnd(); it != end; it++) {
-        QByteArray currB64Pass = it.value().toString().toLocal8Bit();
-        /*
-         * We have to base64 decode the metadatakey here. This was a misunderstanding in the RFC
-         * Now we should be compatible with Android and IOS. Maybe we can fix it later.
-         */
-        QByteArray b64DecryptedKey = decryptData(currB64Pass);
-        if (b64DecryptedKey.isEmpty()) {
-            qCDebug(lcCse()) << "Could not decrypt metadata for key" << it.key();
-            continue;
-        }
-
-        QByteArray decryptedKey = QByteArray::fromBase64(b64DecryptedKey);
-        _metadataKeys.insert(it.key().toInt(), decryptedKey);
-    }
 
     // Cool, We actually have the key, we can decrypt the rest of the metadata.
     qCDebug(lcCse) << "Sharing: " << sharing;
     if (sharing.size()) {
-        const auto metaDataKey = !_metadataKeys.isEmpty() ? _metadataKeys.last() : QByteArray{};
-        if (metaDataKey.isEmpty()) {
-            qCDebug(lcCse) << "Failed to decrypt sharing! Empty metadata key!";
-        } else {
-            auto sharingDecrypted = decryptJsonObject(sharing, metaDataKey);
-            qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
+        auto sharingDecrypted = decryptJsonObject(sharing, _metadataKey);
+        qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
 
-            // Sharing is also a JSON object, so extract it and populate.
-            auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
-            auto sharingObj = sharingDoc.object();
-            for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
-                _sharing.push_back({it.key(), it.value().toString()});
-            }
+        // Sharing is also a JSON object, so extract it and populate.
+        auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
+        auto sharingObj = sharingDoc.object();
+        for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
+            _sharing.push_back({it.key(), it.value().toString()});
         }
     } else {
         qCDebug(lcCse) << "Skipping sharing section since it is empty";
     }
 
-    for (auto it = files.constBegin(), end = files.constEnd(); it != end; it++) {
+    for (auto it = files.constBegin(); it != files.constEnd(); ++it) {
         EncryptedFile file;
         file.encryptedFilename = it.key();
 
-        auto fileObj = it.value().toObject();
-        file.metadataKey = fileObj["metadataKey"].toInt();
+        const auto fileObj = it.value().toObject();
         file.authenticationTag = QByteArray::fromBase64(fileObj["authenticationTag"].toString().toLocal8Bit());
         file.initializationVector = QByteArray::fromBase64(fileObj["initializationVector"].toString().toLocal8Bit());
 
-        //Decrypt encrypted part
-        const auto key = _metadataKeys.value(file.metadataKey, {});
-        auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = !key.isEmpty() ? decryptJsonObject(encryptedFile, key) : QByteArray{};
-        auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
+        // Decrypt encrypted part
+        const auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
+        const auto decryptedFile = decryptJsonObject(encryptedFile, _metadataKey);
+        const auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
 
-        auto decryptedFileObj = decryptedFileDoc.object();
+        const auto decryptedFileObj = decryptedFileDoc.object();
 
         if (decryptedFileObj["filename"].toString().isEmpty()) {
             qCDebug(lcCse) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Indented);
@@ -1607,7 +1608,6 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         file.originalFilename = decryptedFileObj["filename"].toString();
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
         file.mimetype = decryptedFileObj["mimetype"].toString().toLocal8Bit();
-        file.fileVersion = decryptedFileObj["version"].toInt();
 
         // In case we wrongly stored "inode/directory" we try to recover from it
         if (file.mimetype == QByteArrayLiteral("inode/directory")) {
@@ -1616,6 +1616,10 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
         _files.push_back(file);
     }
+
+    // decryption finished, create new metadata key to be used for encryption
+    _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
+    _isMetadataSetup = true;
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
@@ -1661,42 +1665,31 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
 
 bool FolderMetadata::isMetadataSetup() const
 {
-    return !_metadataKeys.isEmpty();
+    return _isMetadataSetup;
 }
 
 void FolderMetadata::setupEmptyMetadata() {
     qCDebug(lcCse) << "Settint up empty metadata";
-    QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
-    _metadataKeys.insert(0, newMetadataPass);
-
+    _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
     QString displayName = _account->displayName();
 
     _sharing.append({displayName, publicKey});
+
+    _isMetadataSetup = true;
 }
 
 QByteArray FolderMetadata::encryptedMetadata() const {
     qCDebug(lcCse) << "Generating metadata";
 
-    if (_metadataKeys.isEmpty()) {
+    if (_metadataKey.isEmpty()) {
         qCDebug(lcCse) << "Metadata generation failed! Empty metadata key!";
         return {};
     }
-
-    QJsonObject metadataKeys;
-    for (auto it = _metadataKeys.constBegin(), end = _metadataKeys.constEnd(); it != end; it++) {
-        /*
-         * We have to already base64 encode the metadatakey here. This was a misunderstanding in the RFC
-         * Now we should be compatible with Android and IOS. Maybe we can fix it later.
-         */
-        const QByteArray encryptedKey = encryptData(it.value().toBase64());
-        metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
-    }
-
-    QJsonObject metadata = {
-        {"metadataKeys", metadataKeys},
-        // {"sharing", sharingEncrypted},
-        {"version", 1}
+    const auto version = _account->capabilities().clientSideEncryptionVersion();
+    QJsonObject metadata{
+        {"version", version},
+        {metadataKeyJsonKey, QJsonValue::fromVariant(encryptData(_metadataKey.toBase64()))}
     };
 
     QJsonObject files;
@@ -1705,20 +1698,17 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         encrypted.insert("key", QString(it->encryptionKey.toBase64()));
         encrypted.insert("filename", it->originalFilename);
         encrypted.insert("mimetype", QString(it->mimetype));
-        encrypted.insert("version", it->fileVersion);
         QJsonDocument encryptedDoc;
         encryptedDoc.setObject(encrypted);
 
-        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
+        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKey);
         if (encryptedEncrypted.isEmpty()) {
             qCDebug(lcCse) << "Metadata generation failed!";
         }
-
         QJsonObject file;
         file.insert("encrypted", encryptedEncrypted);
         file.insert("initializationVector", QString(it->initializationVector.toBase64()));
         file.insert("authenticationTag", QString(it->authenticationTag.toBase64()));
-        file.insert("metadataKey", _metadataKeys.lastKey());
 
         files.insert(it->encryptedFilename, file);
     }
@@ -1741,7 +1731,6 @@ void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
             break;
         }
     }
-
     _files.append(f);
 }
 
@@ -1785,14 +1774,12 @@ bool FolderMetadata::moveFromFileDropToFiles()
 
         EncryptedFile file;
         file.encryptedFilename = it.key();
-        file.metadataKey = fileObject["metadataKey"].toInt();
         file.authenticationTag = QByteArray::fromBase64(fileObject["authenticationTag"].toString().toLocal8Bit());
         file.initializationVector = QByteArray::fromBase64(fileObject["initializationVector"].toString().toLocal8Bit());
 
         file.originalFilename = decryptedFileObject["filename"].toString();
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObject["key"].toString().toLocal8Bit());
         file.mimetype = decryptedFileObject["mimetype"].toString().toLocal8Bit();
-        file.fileVersion = decryptedFileObject["version"].toInt();
 
         // In case we wrongly stored "inode/directory" we try to recover from it
         if (file.mimetype == QByteArrayLiteral("inode/directory")) {

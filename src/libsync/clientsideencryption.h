@@ -182,8 +182,6 @@ struct EncryptedFile {
     QByteArray authenticationTag;
     QString encryptedFilename;
     QString originalFilename;
-    int fileVersion = 0;
-    int metadataKey = 0;
 };
 
 class OWNCLOUDSYNC_EXPORT FolderMetadata {
@@ -215,11 +213,13 @@ private:
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
+    QByteArray _metadataKey;
+
     QVector<EncryptedFile> _files;
-    QMap<int, QByteArray> _metadataKeys;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
+    bool _isMetadataSetup = false;
 };
 
 } // namespace OCC

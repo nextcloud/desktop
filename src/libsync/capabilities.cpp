@@ -166,6 +166,22 @@ bool Capabilities::clientSideEncryptionAvailable() const
     return capabilityAvailable;
 }
 
+double Capabilities::clientSideEncryptionVersion() const
+{
+    const auto foundEndToEndEncryptionInCaps = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
+    if (foundEndToEndEncryptionInCaps == _capabilities.constEnd()) {
+        return 1.0;
+    }
+
+    const auto properties = (*foundEndToEndEncryptionInCaps).toMap();
+    const auto enabled = properties.value(QStringLiteral("enabled"), false).toBool();
+    if (!enabled) {
+        return false;
+    }
+
+    return properties.value(QStringLiteral("api-version"), 1.0).toDouble();
+}
+
 bool Capabilities::notificationsAvailable() const
 {
     // We require the OCS style API in 9.x, can't deal with the REST one only found in 8.2

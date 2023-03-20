@@ -154,8 +154,6 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   if (!found) {
       encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
       encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
-      encryptedFile.fileVersion = 1;
-      encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = fileName;
 
       QMimeDatabase mdb;
