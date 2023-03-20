@@ -267,7 +267,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     }
 
                     DispatchQueue.global().async {
-                        dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
+                        NextcloudItemMetadataTable.metadatasFromDirectoryReadNKFiles(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                             dbManager.addItemMetadata(directoryMetadata)
 

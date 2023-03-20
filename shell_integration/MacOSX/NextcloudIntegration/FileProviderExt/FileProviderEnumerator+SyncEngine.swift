@@ -214,7 +214,7 @@ extension FileProviderEnumerator {
         let dbManager = NextcloudFilesDatabaseManager.shared
 
         DispatchQueue.global(qos: .userInitiated).async {
-            dbManager.convertNKFilesFromDirectoryReadToItemMetadatas(files, account: ncAccount.ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
+            NextcloudItemMetadataTable.metadatasFromDirectoryReadNKFiles(files, account: ncAccount.ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
 
                 // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
                 // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
@@ -260,15 +260,15 @@ extension FileProviderEnumerator {
                 return
             }
 
-            guard let receivedItem = files.first else {
+            guard let receivedFile = files.first else {
                 Logger.enumeration.error("Received no items from readFileOrFolder of \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)), not much we can do...")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
 
-            guard receivedItem.directory else {
+            guard receivedFile.directory else {
                 Logger.enumeration.debug("Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
-                let itemMetadata = dbManager.convertNKFileToItemMetadata(receivedItem, account: ncKitAccount)
+                let itemMetadata = NextcloudItemMetadataTable.fromNKFile(receivedFile, account: ncKitAccount)
                 dbManager.addItemMetadata(itemMetadata) // TODO: Return some value when it is an update
                 completionHandler([itemMetadata], nil, nil, nil, error.error)
                 return
@@ -279,7 +279,7 @@ extension FileProviderEnumerator {
 
                 let directoryEtag = directoryMetadata.etag
 
-                guard directoryEtag == "" || directoryEtag != receivedItem.etag else {
+                guard directoryEtag == "" || directoryEtag != receivedFile.etag else {
                     Logger.enumeration.debug("Read server url called with flag to stop enumerating at matching etags. Returning and providing soft error.")
 
                     let description = "Fetched directory etag is same as that stored locally. Not fetching child items."
@@ -294,7 +294,7 @@ extension FileProviderEnumerator {
 
             if depth == "0" {
                 if serverUrl != ncAccount.davFilesUrl {
-                    let metadata = dbManager.convertNKFileToItemMetadata(receivedItem, account: ncKitAccount)
+                    let metadata = NextcloudItemMetadataTable.fromNKFile(receivedFile, account: ncKitAccount)
                     let isNew = dbManager.itemMetadataFromOcId(metadata.ocId) == nil
                     let updatedMetadatas = isNew ? [] : [metadata]
                     let newMetadatas = isNew ? [metadata] : []

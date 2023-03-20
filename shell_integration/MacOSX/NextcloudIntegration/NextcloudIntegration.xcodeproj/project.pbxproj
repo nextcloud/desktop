@@ -37,6 +37,7 @@
 		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		53D056312970594F00988392 /* LocalFilesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D056302970594F00988392 /* LocalFilesUtils.swift */; };
 		53ED472029C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED471F29C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift */; };
+		53ED472829C88E7000795DB1 /* NextcloudItemMetadataTable+NKFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ED472729C88E7000795DB1 /* NextcloudItemMetadataTable+NKFile.swift */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573D21B1CD94B00303B36 /* main.m in Resources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
@@ -161,6 +162,7 @@
 		539158B227BEC98A00816F56 /* LocalSocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalSocketClient.m; sourceTree = "<group>"; };
 		53D056302970594F00988392 /* LocalFilesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFilesUtils.swift; sourceTree = "<group>"; };
 		53ED471F29C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderEnumerator+SyncEngine.swift"; sourceTree = "<group>"; };
+		53ED472729C88E7000795DB1 /* NextcloudItemMetadataTable+NKFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudItemMetadataTable+NKFile.swift"; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2B573B51B1CD91E00303B36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2B573B91B1CD91E00303B36 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			children = (
 				5307A6F129675346001E0C6A /* NextcloudFilesDatabaseManager.swift */,
 				5318AD9029BF42FB00CBB71C /* NextcloudItemMetadataTable.swift */,
+				53ED472729C88E7000795DB1 /* NextcloudItemMetadataTable+NKFile.swift */,
 				5318AD9429BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift */,
 			);
 			path = Database;
@@ -566,6 +569,7 @@
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				53ED472029C5E64200795DB1 /* FileProviderEnumerator+SyncEngine.swift in Sources */,
 				5318AD9929BF58D000CBB71C /* NKError+Extensions.swift in Sources */,
+				53ED472829C88E7000795DB1 /* NextcloudItemMetadataTable+NKFile.swift in Sources */,
 				5318AD9529BF438F00CBB71C /* NextcloudLocalFileMetadataTable.swift in Sources */,
 				535AE30E29C0A2CC0042A9BA /* Logger+Extensions.swift in Sources */,
 				5307A6F229675346001E0C6A /* NextcloudFilesDatabaseManager.swift in Sources */,

@@ -43,29 +43,6 @@ class NextcloudItemMetadataTable: Object {
         case maxFolderShare = 31
     }
 
-    override func isEqual(_ object: Any?) -> Bool {
-        if let object = object as? NextcloudItemMetadataTable {
-            return self.fileId == object.fileId &&
-                   self.account == object.account &&
-                   self.path == object.path &&
-                   self.fileName == object.fileName
-        }
-
-        return false
-    }
-
-    func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: NextcloudItemMetadataTable) -> Bool {
-        return comparingMetadata.etag == self.etag &&
-            comparingMetadata.fileNameView == self.fileNameView &&
-            comparingMetadata.date == self.date &&
-            comparingMetadata.permissions == self.permissions &&
-            comparingMetadata.hasPreview == self.hasPreview &&
-            comparingMetadata.note == self.note &&
-            comparingMetadata.lock == self.lock &&
-            comparingMetadata.sharePermissionsCollaborationServices == self.sharePermissionsCollaborationServices &&
-            comparingMetadata.favorite == self.favorite
-    }
-
     @Persisted(primaryKey: true) var ocId: String
     @Persisted var account = ""
     @Persisted var assetLocalIdentifier = ""
@@ -190,6 +167,29 @@ class NextcloudItemMetadataTable: Object {
 
     var isUpload: Bool {
         status == Status.inUpload.rawValue || status == Status.uploading.rawValue
+    }
+
+    override func isEqual(_ object: Any?) -> Bool {
+        if let object = object as? NextcloudItemMetadataTable {
+            return self.fileId == object.fileId &&
+                   self.account == object.account &&
+                   self.path == object.path &&
+                   self.fileName == object.fileName
+        }
+
+        return false
+    }
+
+    func isInSameDatabaseStoreableRemoteState(_ comparingMetadata: NextcloudItemMetadataTable) -> Bool {
+        return comparingMetadata.etag == self.etag &&
+            comparingMetadata.fileNameView == self.fileNameView &&
+            comparingMetadata.date == self.date &&
+            comparingMetadata.permissions == self.permissions &&
+            comparingMetadata.hasPreview == self.hasPreview &&
+            comparingMetadata.note == self.note &&
+            comparingMetadata.lock == self.lock &&
+            comparingMetadata.sharePermissionsCollaborationServices == self.sharePermissionsCollaborationServices &&
+            comparingMetadata.favorite == self.favorite
     }
 
     /// Returns false if the user is lokced out of the file. I.e. The file is locked but by somone else
