@@ -806,6 +806,9 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
         qCInfo(lcCseDecryption()) << "data decrypted successfully";
     }
 
+    // we don't need extra zeroes in out, so let's only return meaningful data
+    out = QByteArray(out.constData(), outlen);
+
     qCInfo(lcCse()) << out;
     return out;
 }
