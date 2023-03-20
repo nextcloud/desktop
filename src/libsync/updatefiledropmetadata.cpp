@@ -112,7 +112,7 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataError(const QByteArra
     Q_UNUSED(fileId);
     Q_UNUSED(httpReturnCode);
     qCDebug(lcUpdateFileDropMetadataJob()) << "Error Getting the encrypted metadata. Pretend we got empty metadata.";
-    const FolderMetadata emptyMetadata(propagator()->account());
+    FolderMetadata emptyMetadata(propagator()->account());
     const auto encryptedMetadataJson = QJsonDocument::fromJson(emptyMetadata.encryptedMetadata());
     slotFolderEncryptedMetadataReceived(encryptedMetadataJson, httpReturnCode);
 }
