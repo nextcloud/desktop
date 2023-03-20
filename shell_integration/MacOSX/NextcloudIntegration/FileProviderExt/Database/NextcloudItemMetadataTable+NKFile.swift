@@ -98,21 +98,31 @@ extension NextcloudItemMetadataTable {
         var childDirectoriesMetadatas: [NextcloudItemMetadataTable] = []
         var metadatas: [NextcloudItemMetadataTable] = []
 
-        for file in files {
-            let metadata = NextcloudItemMetadataTable.fromNKFile(file, account: account)
+        let conversionQueue = DispatchQueue(label: "nkFileToMetadataConversionQueue", qos: .userInitiated, attributes: .concurrent)
+        let appendQueue = DispatchQueue(label: "metadataAppendQueue", qos: .userInitiated) // Serial queue
+        let dispatchGroup = DispatchGroup()
 
+        for file in files {
             if metadatas.isEmpty && !directoryMetadataSet {
-                assert(metadata.directory) // In directory read first metadata will always be a dir
+                let metadata = NextcloudItemMetadataTable.fromNKFile(file, account: account)
                 directoryMetadata = metadata;
                 directoryMetadataSet = true;
             } else {
-                metadatas.append(metadata)
-                if metadata.directory {
-                    childDirectoriesMetadatas.append(metadata)
+                conversionQueue.async(group: dispatchGroup) {
+                    let metadata = NextcloudItemMetadataTable.fromNKFile(file, account: account)
+
+                    appendQueue.async(group: dispatchGroup) {
+                        metadatas.append(metadata)
+                        if metadata.directory {
+                            childDirectoriesMetadatas.append(metadata)
+                        }
+                    }
                 }
             }
         }
 
-        completionHandler(directoryMetadata, childDirectoriesMetadatas, metadatas)
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            completionHandler(directoryMetadata, childDirectoriesMetadatas, metadatas)
+        }
     }
 }
