@@ -580,11 +580,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             Logger.fileTransfer.info("Successfully deleted item with identifier: \(identifier.rawValue, privacy: .public) at: \(serverFileNameUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
 
             if itemMetadata.directory {
-                dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
-            }
-
-            if dbManager.localFileMetadataFromOcId(ocId) != nil {
-                dbManager.deleteLocalFileMetadata(ocId: ocId)
+                _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
+            } else {
+                dbManager.deleteItemMetadata(ocId: ocId)
+                if dbManager.localFileMetadataFromOcId(ocId) != nil {
+                    dbManager.deleteLocalFileMetadata(ocId: ocId)
+                }
             }
 
             completionHandler(nil)
