@@ -282,38 +282,6 @@ class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::Private {
         }
     }
 
-    void readdFileProviderDomain(NSFileProviderDomain * const domain, void (^completionHandler)())
-    {
-        if (@available(macOS 11.0, *)) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Wait for this to finish
-                dispatch_group_t dispatchGroup = dispatch_group_create();
-                dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-                    [NSFileProviderManager addDomain:domain completionHandler:^(NSError * const error) {
-                        if(error) {
-                            qCDebug(lcMacFileProviderDomainManager) << "Error adding file provider domain: "
-                                                                    << error.code
-                                                                    << error.localizedDescription;
-                        }
-
-                        completionHandler();
-                    }];
-                });
-
-                dispatch_group_enter(dispatchGroup);
-                [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
-                    if(error) {
-                        qCDebug(lcMacFileProviderDomainManager) << "Error removing file provider domain: "
-                                                                << error.code
-                                                                << error.localizedDescription;
-                    }
-
-                    dispatch_group_leave(dispatchGroup);
-                }];
-            });
-        }
-    }
-
     void disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &message)
     {
         if (@available(macOS 11.0, *)) {
@@ -333,29 +301,20 @@ class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::Private {
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
-            void (^disconnectBlock)(void) = ^{
-                [fpManager disconnectWithReason:message.toNSString()
-                                        options:NSFileProviderManagerDisconnectionOptionsTemporary
-                              completionHandler:^(NSError * const error) {
-                    if (error) {
-                        qCDebug(lcMacFileProviderDomainManager) << "Error disconnecting file provider domain: "
-                                                                << fileProviderDomain.displayName
-                                                                << error.code
-                                                                << error.localizedDescription;
-                        return;
-                    }
+            [fpManager disconnectWithReason:message.toNSString()
+                                    options:NSFileProviderManagerDisconnectionOptionsTemporary
+                          completionHandler:^(NSError * const error) {
+                if (error) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error disconnecting file provider domain: "
+                                                            << fileProviderDomain.displayName
+                                                            << error.code
+                                                            << error.localizedDescription;
+                    return;
+                }
 
-                    qCDebug(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
-                                                            << fileProviderDomain.displayName;
-                }];
-            };
-
-            if (fpManager == nil) {
-                readdFileProviderDomain(fileProviderDomain, disconnectBlock);
-                return;
-            }
-
-            disconnectBlock();
+                qCDebug(lcMacFileProviderDomainManager) << "Successfully disconnected file provider domain: "
+                                                        << fileProviderDomain.displayName;
+            }];
         }
     }
 
@@ -378,29 +337,20 @@ class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::Private {
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
-            void (^reconnectBlock)(void) = ^{
-                [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
-                    if (error) {
-                        qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
-                                                                << fileProviderDomain.displayName
-                                                                << error.code
-                                                                << error.localizedDescription;
-                        return;
-                    }
+            [fpManager reconnectWithCompletionHandler:^(NSError * const error) {
+                if (error) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
+                                                            << fileProviderDomain.displayName
+                                                            << error.code
+                                                            << error.localizedDescription;
+                    return;
+                }
 
-                    qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
-                                                            << fileProviderDomain.displayName;
+                qCDebug(lcMacFileProviderDomainManager) << "Successfully reconnected file provider domain: "
+                                                        << fileProviderDomain.displayName;
 
-                    signalEnumeratorChanged(account.get());
-                }];
-            };
-
-            if (fpManager == nil) {
-                readdFileProviderDomain(fileProviderDomain, reconnectBlock);
-                return;
-            }
-
-            reconnectBlock();
+                signalEnumeratorChanged(account.get());
+            }];
         }
     }
 
@@ -421,21 +371,12 @@ class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::Private {
             Q_ASSERT(fileProviderDomain != nil);
 
             NSFileProviderManager * const fpManager = [NSFileProviderManager managerForDomain:fileProviderDomain];
-            void (^signalEnumeratorBlock)(void) = ^{
-                [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
-                    if (error != nil) {
-                        qCDebug(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
-                                                                << error.localizedDescription;
-                    }
-                }];
-            };
-
-            if (fpManager == nil) {
-                readdFileProviderDomain(fileProviderDomain, signalEnumeratorBlock);
-                return;
-            }
-
-            signalEnumeratorBlock();
+            [fpManager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
+                if (error != nil) {
+                    qCDebug(lcMacFileProviderDomainManager) << "Error signalling enumerator changed for working set:"
+                                                            << error.localizedDescription;
+                }
+            }];
         }
     }
 
