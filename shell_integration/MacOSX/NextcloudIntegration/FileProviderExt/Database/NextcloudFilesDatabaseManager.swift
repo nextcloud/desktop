@@ -260,7 +260,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func deleteItemMetadata(ocId: String) {
+    @discardableResult func deleteItemMetadata(ocId: String) -> Bool {
         let database = ncDatabase()
 
         do {
@@ -270,8 +270,11 @@ class NextcloudFilesDatabaseManager : NSObject {
                 Logger.ncFilesDatabase.debug("Deleting item metadata. \(ocId, privacy: .public)")
                 database.delete(results)
             }
+
+            return true
         } catch let error {
             Logger.ncFilesDatabase.error("Could not delete item metadata with ocId: \(ocId, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
+            return false
         }
     }
 
@@ -373,31 +376,36 @@ class NextcloudFilesDatabaseManager : NSObject {
             return nil
         }
 
-        var deletedMetadatas: [NextcloudItemMetadataTable] = []
-
+        let directoryMetadataCopy = NextcloudItemMetadataTable(value: directoryMetadata)
         let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryMetadata.account, directoryUrlPath)
+        let directoryAccount = directoryMetadata.account
+        let directoryEtag = directoryMetadata.etag
+
+        Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+        guard deleteItemMetadata(ocId: directoryMetadata.ocId) else {
+            Logger.ncFilesDatabase.debug("Failure to delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+            return nil
+        }
+
+        var deletedMetadatas: [NextcloudItemMetadataTable] = [directoryMetadata]
+
+        let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryAccount, directoryUrlPath)
 
         for result in results {
-            deleteItemMetadata(ocId: result.ocId)
-            deleteLocalFileMetadata(ocId: result.ocId)
-
-            deletedMetadatas.append(NextcloudItemMetadataTable(value: result))
-        }
-
-        do {
-            try database.write {
-                Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryUrlPath)")
-
-                database.delete(results)
-
-                return deletedMetadatas
+            let successfulItemMetadataDelete = deleteItemMetadata(ocId: result.ocId)
+            if (successfulItemMetadataDelete) {
+                deletedMetadatas.append(NextcloudItemMetadataTable(value: result))
             }
-        } catch let error {
-            Logger.ncFilesDatabase.error("Could not delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryMetadata.etag, privacy: .public), serverUrl: \(directoryUrlPath), received error: \(error.localizedDescription, privacy: .public)")
+
+            if localFileMetadataFromOcId(result.ocId) != nil {
+                deleteLocalFileMetadata(ocId: result.ocId)
+            }
         }
 
-        return nil
+        Logger.ncFilesDatabase.debug("Completed deletions in directory recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+
+        return deletedMetadatas
     }
 
     func renameDirectoryAndPropagateToChildren(ocId: String, newServerUrl: String, newFileName: String) -> [NextcloudItemMetadataTable]? {
