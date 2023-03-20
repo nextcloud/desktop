@@ -82,8 +82,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer that you are finished with this page
          */
 
-        let dbManager = NextcloudFilesDatabaseManager.shared
-
         if enumeratedItemIdentifier == .trashContainer {
             Logger.enumeration.debug("Enumerating trash set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
             // TODO!
@@ -336,7 +334,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             allDeletedMetadatas = deletedMetadatas
         }
 
-        var allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
+        let allFpItemDeletionsIdentifiers = Array(allDeletedMetadatas.map { NSFileProviderItemIdentifier($0.ocId) })
         if !allFpItemDeletionsIdentifiers.isEmpty {
             observer.didDeleteItems(withIdentifiers: allFpItemDeletionsIdentifiers)
         }
