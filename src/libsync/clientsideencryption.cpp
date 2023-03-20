@@ -102,6 +102,16 @@ QList<QByteArray> splitCipherParts(const QByteArray &data)
     qCInfo(lcCse()) << "found parts:" << parts << "old format?" << isOldFormat;
     return parts;
 }
+
+static int passphrase_cb(char *buf, int size, int rwflag, void *u)
+{
+    Q_UNUSED(buf);
+    Q_UNUSED(size);
+    Q_UNUSED(rwflag);
+    Q_UNUSED(u);
+    return 0;
+}
+
 } // ns
 
 namespace
@@ -889,14 +899,24 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
     BIO_write(privateKeyBio, _privateKeyRsa.constData(), _privateKeyRsa.size());
     const auto privateKey = PKey::readPrivateKey(privateKeyBio);
 
-    ClientSideEncryption::Bio dataBio;
-    BIO_write(dataBio, data.constData(), data.size());
+    // READ PKEY OPENSSL
+    BIO *bi = BIO_new(BIO_s_mem());
+    BIO_write(bi, _privateKeyRsa.constData(), _privateKeyRsa.size());
+    EVP_PKEY *pkey = PEM_read_bio_PrivateKey(bi, nullptr, passphrase_cb, nullptr);
+    BIO_free(bi);
+    //
 
-    const auto contentInfo = CMS_sign(x509Certificate, privateKey, nullptr, dataBio, CMS_DETACHED);
+    const QByteArray dataCopy = data;
+
+    ClientSideEncryption::Bio dataBio;
+    BIO_write(dataBio, dataCopy.constData(), dataCopy.size());
+
+    const auto contentInfo = CMS_sign(x509Certificate, privateKey, nullptr, dataBio, 0);
 
     if (!contentInfo) {
         return {};
     }
+
 
     ClientSideEncryption::Bio cmsOut;
     CMS_ContentInfo_print_ctx(cmsOut, contentInfo, 0, nullptr);
@@ -905,10 +925,48 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
     ClientSideEncryption::Bio cmsOut2;
     const auto result = PEM_write_bio_CMS(cmsOut2, contentInfo);
 
+    ClientSideEncryption::Bio cmsOut3;
+    auto rc = i2d_CMS_bio(cmsOut3, contentInfo);
+    const auto out3 = BIO2ByteArray(cmsOut3);
+
     const auto out = BIO2ByteArray(cmsOut);
     const auto out2 = BIO2ByteArray(cmsOut2);
 
-    auto verifyRes1 = CMS_verify(contentInfo, nullptr, nullptr, dataBio, nullptr, CMS_DETACHED);
+    auto verifyRes1 = CMS_verify(contentInfo, nullptr, nullptr, nullptr, nullptr, CMS_NO_SIGNER_CERT_VERIFY);
+
+    if (verifyRes1) {
+        auto signers = CMS_get0_signers(contentInfo);
+
+        ClientSideEncryption::Bio publicKeyBio;
+        const auto publicKeyPem = _publicKey.toPem();
+        BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+        const auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
+
+        int numSigners = sk_X509_num(signers);
+        char signerFile_buffer[128];
+        for (int i = 0; i < numSigners; ++i) {
+            X509 *signer = sk_X509_value(signers, i);
+            auto verifKeyRes = X509_verify(signer, publicKey);
+
+            auto subjectName = X509_get_subject_name(signer);
+            char subjectNameLine[256] = {};
+            X509_NAME_oneline(subjectName, subjectNameLine, 256);
+
+            auto subjectNameString = QString::fromAscii(subjectNameLine, 256);
+
+            auto subjectNameStringSplit = subjectNameString.split('/');
+
+            QString userId;
+
+            for (const auto &subjectNameStringPart : subjectNameStringSplit) {
+                if (subjectNameStringPart.startsWith("CN=")) {
+                    userId = subjectNameStringPart.split("=").last();
+                }
+            }
+
+            verifKeyRes = -1;
+        }
+    }
 
     const auto error = ERR_get_error();
 
@@ -917,7 +975,7 @@ QByteArray ClientSideEncryption::generateSignatureCMS(const QByteArray &data) co
     ERR_error_string(error, buf);
 
 
-    auto verifyResult = verifySignatureCMS(out, data);
+    auto verifyResult = verifySignatureCMS(out3, data);
 
     auto verifyResult2 = verifySignatureCMS(out2, data);
 
@@ -935,7 +993,7 @@ bool ClientSideEncryption::verifySignatureCMS(const QByteArray &cmsContent, cons
 
     ClientSideEncryption::Bio verifyOut;
 
-    return CMS_verify(cmsDataFromBio, nullptr, nullptr, nullptr, nullptr, 0) == 1;
+    return CMS_verify(cmsDataFromBio, nullptr, nullptr, nullptr, nullptr, CMS_NO_SIGNER_CERT_VERIFY) == 1;
 }
 
 void ClientSideEncryption::publicKeyFetched(Job *incoming)

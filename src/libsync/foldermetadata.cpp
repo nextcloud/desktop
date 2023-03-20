@@ -57,8 +57,18 @@ FolderMetadata::FolderMetadata(AccountPtr account,
     QJsonDocument doc = QJsonDocument::fromJson(metadata);
     qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
     const auto metaDataStr = metadataStringFromOCsDocument(doc);
-
-    const auto metadataSignature = _account->e2e()->generateSignatureCMS(metadata);
+    const auto metadataBase64 = metadata.toBase64();
+    QByteArray metadatBase64WithBreaks;
+    int j = 0;
+    for (int i = 0; i < metadataBase64.size(); ++i) {
+        metadatBase64WithBreaks += metadataBase64[i];
+        ++j;
+        if (j > 64) {
+            j = 0;
+            metadatBase64WithBreaks += '\n';
+        }
+    }
+    const auto metadataSignature = _account->e2e()->generateSignatureCMS(metadatBase64WithBreaks);
 
     QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
     QJsonObject metadataObj = metaDataDoc.object()[metadataJsonKey].toObject();
