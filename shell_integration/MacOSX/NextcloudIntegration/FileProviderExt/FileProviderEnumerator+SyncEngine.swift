@@ -88,7 +88,7 @@ extension FileProviderEnumerator {
         let itemServerUrl = directoryMetadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue ?
             ncAccount.davFilesUrl : directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
 
-        Logger.enumeration.debug("About to read: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.enumeration.debug("About to read: \(itemServerUrl, privacy: .public)")
 
         FileProviderEnumerator.readServerUrl(itemServerUrl, ncAccount: ncAccount, ncKit: ncKit, stopAtMatchingEtags: scanChangesOnly) { metadatas, newMetadatas, updatedMetadatas, deletedMetadatas, readError in
 
@@ -98,7 +98,7 @@ extension FileProviderEnumerator {
                 // Is the error is that we have found matching etags on this item, then ignore it
                 // if we are doing a full rescan
                 guard nkReadError.isNoChangesError && scanChangesOnly else {
-                    Logger.enumeration.error("Finishing enumeration of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with \(readError!.localizedDescription, privacy: .public)")
+                    Logger.enumeration.error("Finishing enumeration of changes at \(itemServerUrl, privacy: .public) with \(readError!.localizedDescription, privacy: .public)")
 
                     if nkReadError.isNotFoundError {
                         Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting as deletion without error")
@@ -124,30 +124,30 @@ extension FileProviderEnumerator {
                 }
             }
 
-            Logger.enumeration.info("Finished reading serverUrl: \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.info("Finished reading serverUrl: \(itemServerUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
 
             if let metadatas = metadatas {
                 allMetadatas += metadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil metadatas received for reading of changes at \(itemServerUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
             }
 
             if let newMetadatas = newMetadatas {
                 allNewMetadatas += newMetadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil new metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil new metadatas received for reading of changes at \(itemServerUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
             }
 
             if let updatedMetadatas = updatedMetadatas {
                 allUpdatedMetadatas += updatedMetadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil updated metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil updated metadatas received for reading of changes at \(itemServerUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
             }
 
             if let deletedMetadatas = deletedMetadatas {
                 allDeletedMetadatas += deletedMetadatas
             } else {
-                Logger.enumeration.warning("WARNING: Nil deleted metadatas received for reading of changes at \(itemServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.warning("WARNING: Nil deleted metadatas received for reading of changes at \(itemServerUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
             }
 
             dispatchGroup.leave()
@@ -204,12 +204,12 @@ extension FileProviderEnumerator {
                                                                            _ readError: Error?) -> Void) {
 
         guard error == .success else {
-            Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
+            Logger.enumeration.error("1 depth readFileOrFolder of url: \(serverUrl, privacy: .public) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
             completionHandler(nil, nil, nil, nil, error.error)
             return
         }
 
-        Logger.enumeration.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: .public)")
+        Logger.enumeration.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
 
         let dbManager = NextcloudFilesDatabaseManager.shared
 
@@ -251,23 +251,23 @@ extension FileProviderEnumerator {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
 
-        Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) at depth \(depth, privacy: .public). NCKit info: userId: \(ncKit.nkCommonInstance.user), password: \(ncKit.nkCommonInstance.password == "" ? "EMPTY PASSWORD" : "NOT EMPTY PASSWORD"), urlBase: \(ncKit.nkCommonInstance.urlBase), ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion)")
+        Logger.enumeration.debug("Starting to read serverUrl: \(serverUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public) at depth \(depth, privacy: .public). NCKit info: userId: \(ncKit.nkCommonInstance.user, privacy: .public), password is empty: \(ncKit.nkCommonInstance.password == "" ? "EMPTY PASSWORD" : "NOT EMPTY PASSWORD"), urlBase: \(ncKit.nkCommonInstance.urlBase, privacy: .public), ncVersion: \(ncKit.nkCommonInstance.nextcloudVersion, privacy: .public)")
 
         ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: depth, showHiddenFiles: true) { _, files, _, error in
             guard error == .success else {
-                Logger.enumeration.error("\(depth, privacy: .public) depth readFileOrFolder of url: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
+                Logger.enumeration.error("\(depth, privacy: .public) depth readFileOrFolder of url: \(serverUrl, privacy: .public) did not complete successfully, received error: \(error.errorDescription, privacy: .public)")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
 
             guard let receivedFile = files.first else {
-                Logger.enumeration.error("Received no items from readFileOrFolder of \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)), not much we can do...")
+                Logger.enumeration.error("Received no items from readFileOrFolder of \(serverUrl, privacy: .public), not much we can do...")
                 completionHandler(nil, nil, nil, nil, error.error)
                 return
             }
 
             guard receivedFile.directory else {
-                Logger.enumeration.debug("Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.enumeration.debug("Read item is a file. Converting NKfile for serverUrl: \(serverUrl, privacy: .public) for user: \(ncAccount.ncKitAccount, privacy: .public)")
                 let itemMetadata = NextcloudItemMetadataTable.fromNKFile(receivedFile, account: ncKitAccount)
                 dbManager.addItemMetadata(itemMetadata) // TODO: Return some value when it is an update
                 completionHandler([itemMetadata], nil, nil, nil, error.error)

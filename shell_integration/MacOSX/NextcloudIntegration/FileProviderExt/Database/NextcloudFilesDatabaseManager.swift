@@ -125,7 +125,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
             deletedMetadatas.append(metadataToDelete)
 
-            Logger.ncFilesDatabase.debug("Deleting item metadata during update. ocID: \(existingMetadata.ocId, privacy: .public), etag: \(existingMetadata.etag, privacy: .public), fileName: \(existingMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.ncFilesDatabase.debug("Deleting item metadata during update. ocID: \(existingMetadata.ocId, privacy: .public), etag: \(existingMetadata.etag, privacy: .public), fileName: \(existingMetadata.fileName, privacy: .public)")
         }
 
         return deletedMetadatas
@@ -160,9 +160,9 @@ class NextcloudFilesDatabaseManager : NSObject {
                     returningUpdatedMetadatas.append(updatedMetadata)
 
 
-                    Logger.ncFilesDatabase.debug("Updated existing item metadata. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    Logger.ncFilesDatabase.debug("Updated existing item metadata. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)")
                 } else {
-                    Logger.ncFilesDatabase.debug("Skipping item metadata update; same as existing, or still downloading/uploading. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    Logger.ncFilesDatabase.debug("Skipping item metadata update; same as existing, or still downloading/uploading. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)")
                 }
 
             } else { // This is a new metadata
@@ -172,7 +172,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 
                 returningNewMetadatas.append(updatedMetadata)
 
-                Logger.ncFilesDatabase.debug("Created new item metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.ncFilesDatabase.debug("Created new item metadata during update. ocID: \(updatedMetadata.ocId, privacy: .public), etag: \(updatedMetadata.etag, privacy: .public), fileName: \(updatedMetadata.fileName, privacy: .public)")
             }
         }
 
@@ -237,12 +237,12 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                 result.status = status.rawValue
                 database.add(result, update: .all)
-                Logger.ncFilesDatabase.debug("Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.ncFilesDatabase.debug("Updated status for item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)")
 
                 completionHandler(NextcloudItemMetadataTable(value: result))
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not update status for item metadata with ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.localizedDescription, privacy: .public)")
+            Logger.ncFilesDatabase.error("Could not update status for item metadata with ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
             completionHandler(nil)
         }
     }
@@ -253,10 +253,10 @@ class NextcloudFilesDatabaseManager : NSObject {
         do {
             try database.write {
                 database.add(metadata, update: .all)
-                Logger.ncFilesDatabase.debug("Added item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.ncFilesDatabase.debug("Added item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not add item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.localizedDescription, privacy: .public)")
+            Logger.ncFilesDatabase.error("Could not add item metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -284,7 +284,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         do {
             try database.write {
                 guard let itemMetadata = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first else {
-                    Logger.ncFilesDatabase.debug("Could not find an item with ocID \(ocId, privacy: .public) to rename to \(newFileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    Logger.ncFilesDatabase.debug("Could not find an item with ocID \(ocId, privacy: .public) to rename to \(newFileName, privacy: .public)")
                     return
                 }
 
@@ -297,10 +297,10 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                 database.add(itemMetadata, update: .all)
 
-                Logger.ncFilesDatabase.debug("Renamed item \(oldFileName, privacy: OSLogPrivacy.auto(mask: .hash)) to \(newFileName, privacy: OSLogPrivacy.auto(mask: .hash)), moved from serverUrl: \(oldServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)) to serverUrl: \(newServerUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.ncFilesDatabase.debug("Renamed item \(oldFileName, privacy: .public) to \(newFileName, privacy: .public), moved from serverUrl: \(oldServerUrl, privacy: .public) to serverUrl: \(newServerUrl, privacy: .public)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not rename filename of item metadata with ocID: \(ocId, privacy: .public) to proposed name \(newFileName, privacy: OSLogPrivacy.auto(mask: .hash)) at proposed serverUrl \(newServerUrl, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.localizedDescription, privacy: .public)")
+            Logger.ncFilesDatabase.error("Could not rename filename of item metadata with ocID: \(ocId, privacy: .public) to proposed name \(newFileName, privacy: .public) at proposed serverUrl \(newServerUrl, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -312,7 +312,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
 
         guard let itemParentDirectory = parentDirectoryMetadataForItem(metadata) else {
-            Logger.ncFilesDatabase.error("Could not get item parent directory metadata for metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.ncFilesDatabase.error("Could not get item parent directory metadata for metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)")
             return nil
         }
 
@@ -320,7 +320,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
         }
 
-        Logger.ncFilesDatabase.error("Could not get item parent directory item metadata for metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.ncFilesDatabase.error("Could not get item parent directory item metadata for metadata. ocID: \(metadata.ocId, privacy: .public), etag: \(metadata.etag, privacy: .public), fileName: \(metadata.fileName, privacy: .public)")
         return nil
     }
 
@@ -381,10 +381,10 @@ class NextcloudFilesDatabaseManager : NSObject {
         let directoryAccount = directoryMetadata.account
         let directoryEtag = directoryMetadata.etag
 
-        Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.ncFilesDatabase.debug("Deleting root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)")
 
         guard deleteItemMetadata(ocId: directoryMetadata.ocId) else {
-            Logger.ncFilesDatabase.debug("Failure to delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.ncFilesDatabase.debug("Failure to delete root directory metadata in recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)")
             return nil
         }
 
@@ -403,7 +403,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             }
         }
 
-        Logger.ncFilesDatabase.debug("Completed deletions in directory recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.ncFilesDatabase.debug("Completed deletions in directory recursive delete. ocID: \(directoryMetadata.ocId, privacy: .public), etag: \(directoryEtag, privacy: .public), serverUrl: \(directoryUrlPath, privacy: .public)")
 
         return deletedMetadatas
     }
@@ -469,10 +469,10 @@ class NextcloudFilesDatabaseManager : NSObject {
                 newLocalFileMetadata.exifLongitude = "-1"
 
                 database.add(newLocalFileMetadata, update: .all)
-                Logger.ncFilesDatabase.debug("Added local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                Logger.ncFilesDatabase.debug("Added local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: .public)")
             }
         } catch let error {
-            Logger.ncFilesDatabase.error("Could not add local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.localizedDescription, privacy: .public)")
+            Logger.ncFilesDatabase.error("Could not add local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
         }
     }
 

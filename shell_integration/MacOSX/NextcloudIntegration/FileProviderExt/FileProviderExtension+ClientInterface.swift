@@ -28,7 +28,7 @@ extension FileProviderExtension {
 
     private func signalEnumeratorAfterAccountSetup() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            Logger.fileProviderExtension.error("Could not get file provider manager for domain \(self.domain.displayName, privacy: OSLogPrivacy.auto(mask: .hash)), cannot notify after account setup")
+            Logger.fileProviderExtension.error("Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify after account setup")
             return
         }
 
@@ -40,7 +40,7 @@ extension FileProviderExtension {
             }
         }
 
-        Logger.fileProviderExtension.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: .public)")
 
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
@@ -59,13 +59,13 @@ extension FileProviderExtension {
                     nextcloudVersion: 25,
                     delegate: nil) // TODO: add delegate methods for self
 
-        Logger.fileProviderExtension.info("Nextcloud account set up in File Provider extension for user: \(user, privacy: OSLogPrivacy.auto(mask: .hash)) at server: \(serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.info("Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)")
 
         signalEnumeratorAfterAccountSetup()
     }
 
     func removeAccountConfig() {
-        Logger.fileProviderExtension.info("Received instruction to remove account data for user \(self.ncAccount!.username, privacy: OSLogPrivacy.auto(mask: .hash)) at server \(self.ncAccount!.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.info("Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)")
         ncAccount = nil
     }
 }

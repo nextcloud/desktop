@@ -64,7 +64,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     
     func invalidate() {
         // TODO: cleanup any resources
-        Logger.fileProviderExtension.debug("Extension for domain \(self.domain.displayName, privacy: OSLogPrivacy.auto(mask: .hash)) is being torn down")
+        Logger.fileProviderExtension.debug("Extension for domain \(self.domain.displayName, privacy: .public) is being torn down")
     }
 
     // MARK: NSFileProviderReplicatedExtension protocol methods
@@ -132,14 +132,14 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         guard !metadata.isDocumentViewableOnly else {
-            Logger.fileProviderExtension.error("Could not get contents of item as is readonly: \(itemIdentifier.rawValue, privacy: .public) \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.fileProviderExtension.error("Could not get contents of item as is readonly: \(itemIdentifier.rawValue, privacy: .public) \(metadata.fileName, privacy: .public)")
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
 
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
 
-        Logger.fileProviderExtension.debug("Fetching file with name \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)) at URL: \(serverUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.debug("Fetching file with name \(metadata.fileName, privacy: .public) at URL: \(serverUrlFileName, privacy: .public)")
 
         let progress = Progress()
 
@@ -165,7 +165,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                     downloadProgress.copyCurrentStateToProgress(progress)
                 }) { _, etag, date, _, _, _, error in
                     if error == .success {
-                        Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                        Logger.fileTransfer.debug("Acquired contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and filename: \(updatedMetadata.fileName, privacy: .public)")
 
                         updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
                         updatedMetadata.sessionError = ""
@@ -184,7 +184,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                         completionHandler(fileNameLocalPath, fpItem, nil)
                     } else {
-                        Logger.fileTransfer.error("Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                        Logger.fileTransfer.error("Could not acquire contents of item with identifier: \(itemIdentifier.rawValue, privacy: .public) and fileName: \(updatedMetadata.fileName, privacy: .public)")
 
                         updatedMetadata.status = NextcloudItemMetadataTable.Status.downloadError.rawValue
                         updatedMetadata.sessionError = error.errorDescription
@@ -196,7 +196,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
             }
         } catch let error {
-            Logger.fileProviderExtension.error("Could not find local path for file \(metadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.localizedDescription, privacy: .public)")
+            Logger.fileProviderExtension.error("Could not find local path for file \(metadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
             completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
@@ -206,7 +206,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     func createItem(basedOn itemTemplate: NSFileProviderItem, fields: NSFileProviderItemFields, contents url: URL?, options: NSFileProviderCreateItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
         // TODO: a new item was created on disk, process the item's creation
 
-        Logger.fileProviderExtension.debug("Received create item request for item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) and filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.debug("Received create item request for item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)")
 
         guard itemTemplate.contentType != .symbolicLink else {
             Logger.fileProviderExtension.error("Cannot create item, symbolic links not supported.")
@@ -249,7 +249,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let fileNameLocalPath = url?.path ?? ""
         let newServerUrlFileName = parentItemServerUrl + "/" + itemTemplate.filename
 
-        Logger.fileProviderExtension.debug("About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)) with contents located at: \(fileNameLocalPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.debug("About to upload item with identifier: \(itemTemplate.itemIdentifier.rawValue, privacy: .public) of type: \(itemTemplate.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(itemTemplate.filename) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)")
 
         if itemTemplateIsFolder {
             self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
@@ -262,7 +262,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 // Read contents after creation
                 self.ncKit.readFileOrFolder(serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true) { account, files, _, error in
                     guard error == .success else {
-                        Logger.fileTransfer.error("Could not read new folder with name: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
+                        Logger.fileTransfer.error("Could not read new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
                         return
                     }
 
@@ -294,12 +294,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             uploadProgress.copyCurrentStateToProgress(progress)
         }) { account, ocId, etag, date, size, _, _, error  in
             guard error == .success, let ocId = ocId else {
-                Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
+                Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
                 completionHandler(itemTemplate, [], false, error.fileProviderError)
                 return
             }
 
-            Logger.fileTransfer.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.fileTransfer.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(itemTemplate.filename, privacy: .public)")
 
             if size != itemTemplate.documentSize as? Int64 {
                 Logger.fileTransfer.warning("Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(itemTemplate.documentSize??.int64Value ?? 0))")
@@ -336,7 +336,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         // An item was modified on disk, process the item's modification
         // TODO: Handle finder things like tags, other possible item changed fields
 
-        Logger.fileProviderExtension.debug("Received modify item request for item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.debug("Received modify item request for item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) and filename: \(item.filename, privacy: .public)")
 
         guard let ncAccount = ncAccount else {
             Logger.fileProviderExtension.error("Not modifying item: \(item.itemIdentifier.rawValue, privacy: .public) as account not set up yet")
@@ -371,7 +371,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let fileNameLocalPath = newContents?.path ?? ""
         let newServerUrlFileName = parentItemServerUrl + "/" + item.filename
 
-        Logger.fileProviderExtension.debug("About to upload modified item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)) to server url: \(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)) with contents located at: \(fileNameLocalPath, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.fileProviderExtension.debug("About to upload modified item with identifier: \(item.itemIdentifier.rawValue, privacy: .public) of type: \(item.contentType?.identifier ?? "UNKNOWN") (is folder: \(itemTemplateIsFolder ? "yes" : "no") and filename: \(item.filename, privacy: .public) to server url: \(newServerUrlFileName, privacy: .public) with contents located at: \(fileNameLocalPath, privacy: .public)")
 
         var modifiedItem = item
 
@@ -384,7 +384,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
             dispatchQueue.async {
                 let ocId = item.itemIdentifier.rawValue
-                Logger.fileProviderExtension.debug("Changed fields for item \(ocId, privacy: .public) with filename \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)) includes filename or parentitemidentifier...")
+                Logger.fileProviderExtension.debug("Changed fields for item \(ocId, privacy: .public) with filename \(item.filename, privacy: .public) includes filename or parentitemidentifier...")
 
                 guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
                     Logger.fileProviderExtension.error("Could not acquire metadata of item with identifier: \(item.itemIdentifier.rawValue, privacy: .public)")
@@ -402,7 +402,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                             serverUrlFileNameDestination: newServerUrlFileName,
                                             overwrite: false) { account, error in
                     guard error == .success else {
-                        Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)) to \(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
+                        Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName, privacy: .public) to \(newServerUrlFileName, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
                         renameError = error.fileProviderError
                         moveFileOrFolderDispatchGroup.leave()
                         return
@@ -454,7 +454,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         guard !itemTemplateIsFolder else {
-            Logger.fileTransfer.debug("System requested modification for folder with ocID \(item.itemIdentifier.rawValue, privacy: .public) (\(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash))) of something other than folder name.")
+            Logger.fileTransfer.debug("System requested modification for folder with ocID \(item.itemIdentifier.rawValue, privacy: .public) (\(newServerUrlFileName, privacy: .public)) of something other than folder name.")
             completionHandler(modifiedItem, [], false, nil)
             return Progress()
         }
@@ -463,7 +463,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         if changedFields.contains(.contents) {
             dispatchQueue.async {
-                Logger.fileProviderExtension.debug("Item modification for \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)) includes contents")
+                Logger.fileProviderExtension.debug("Item modification for \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public) includes contents")
 
                 guard newContents != nil else {
                     Logger.fileProviderExtension.warning("WARNING. Could not upload modified contents as was provided nil contents url. ocId: \(item.itemIdentifier.rawValue, privacy: .public)")
@@ -494,7 +494,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                         uploadProgress.copyCurrentStateToProgress(progress)
                     }) { account, ocId, etag, date, size, _, _, error  in
                         if error == .success, let ocId = ocId {
-                            Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash))")
+                            Logger.fileProviderExtension.info("Successfully uploaded item with identifier: \(ocId, privacy: .public) and filename: \(item.filename, privacy: .public)")
 
                             if size != item.documentSize as? Int64 {
                                 Logger.fileTransfer.warning("Created item upload reported as successful, but there are differences between the received file size (\(size, privacy: .public)) and the original file size (\(item.documentSize??.int64Value ?? 0))")
@@ -522,7 +522,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                             modifiedItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
                             completionHandler(modifiedItem, [], false, nil)
                         } else {
-                            Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
+                            Logger.fileTransfer.error("Could not upload item \(item.itemIdentifier.rawValue, privacy: .public) with filename: \(item.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
 
                             metadata.status = NextcloudItemMetadataTable.Status.uploadError.rawValue
                             metadata.sessionError = error.errorDescription
@@ -536,7 +536,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                 }
             }
         } else {
-            Logger.fileProviderExtension.debug("Nothing more to do with \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: OSLogPrivacy.auto(mask: .hash)), modifications complete")
+            Logger.fileProviderExtension.debug("Nothing more to do with \(item.itemIdentifier.rawValue, privacy: .public) \(item.filename, privacy: .public), modifications complete")
             completionHandler(modifiedItem, [], false, nil)
         }
 
@@ -568,12 +568,12 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
             guard error == .success else {
-                Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue, privacy: .public) at \(serverFileNameUrl, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
+                Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue, privacy: .public) at \(serverFileNameUrl, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
                 completionHandler(error.fileProviderError)
                 return
             }
 
-            Logger.fileTransfer.info("Successfully deleted item with identifier: \(identifier.rawValue, privacy: .public) at: \(serverFileNameUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.fileTransfer.info("Successfully deleted item with identifier: \(identifier.rawValue, privacy: .public) at: \(serverFileNameUrl, privacy: .public)")
 
             if itemMetadata.directory {
                 _ = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId)
@@ -608,7 +608,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }
 
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            Logger.fileProviderExtension.error("Could not get file provider manager for domain: \(self.domain.displayName, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.fileProviderExtension.error("Could not get file provider manager for domain: \(self.domain.displayName, privacy: .public)")
             completionHandler()
             return
         }

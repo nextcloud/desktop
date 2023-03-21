@@ -56,7 +56,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             }
         }
 
-        Logger.enumeration.info("Set up enumerator for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.enumeration.info("Set up enumerator for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
         super.init()
     }
 
@@ -68,7 +68,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     // MARK: - Protocol methods
 
     func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
-        Logger.enumeration.debug("Received enumerate items request for enumerator with user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.enumeration.debug("Received enumerate items request for enumerator with user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
         /*
          - inspect the page to determine whether this is an initial or a follow-up request (TODO)
          
@@ -83,7 +83,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          */
 
         if enumeratedItemIdentifier == .trashContainer {
-            Logger.enumeration.debug("Enumerating trash set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.debug("Enumerating trash set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
             // TODO!
 
             observer.finishEnumerating(upTo: nil)
@@ -107,12 +107,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
-            Logger.enumeration.debug("Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.debug("Enumerating initial page for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
 
             FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, _, _, _, readError in
 
                 guard readError == nil else {
-                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
+                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error \(readError!.localizedDescription, privacy: .public)")
 
                     let nkReadError = NKError(error: readError!)
                     observer.finishEnumeratingWithError(nkReadError.fileProviderError)
@@ -120,12 +120,12 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 }
 
                 guard let metadatas = metadatas else {
-                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with invalid metadatas.")
+                    Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with invalid metadatas.")
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
                 }
 
-                Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Processed \(metadatas.count) metadatas")
+                Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl, privacy: .public) for user: \(self.ncAccount.ncKitAccount, privacy: .public). Processed \(metadatas.count) metadatas")
 
                 FileProviderEnumerator.completeEnumerationObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas)
             }
@@ -134,14 +134,14 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         }
 
         let numPage = Int(String(data: page.rawValue, encoding: .utf8)!)!
-        Logger.enumeration.debug("Enumerating page \(numPage, privacy: .public) for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.enumeration.debug("Enumerating page \(numPage, privacy: .public) for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
         // TODO: Handle paging properly
         // FileProviderEnumerator.completeObserver(observer, ncKit: ncKit, numPage: numPage, itemMetadatas: nil)
         observer.finishEnumerating(upTo: nil)
     }
     
     func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
-        Logger.enumeration.debug("Received enumerate changes request for enumerator for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.enumeration.debug("Received enumerate changes request for enumerator for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
         /*
          - query the server for updates since the passed-in sync anchor (TODO)
          
@@ -153,7 +153,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          */
 
         if enumeratedItemIdentifier == .workingSet {
-            Logger.enumeration.debug("Enumerating changes in working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.debug("Enumerating changes in working set for user: \(self.ncAccount.ncKitAccount, privacy: .public)")
 
             // Unlike when enumerating items we can't progressively enumerate items as we need to wait to resolve which items are truly deleted and which
             // have just been moved elsewhere.
@@ -162,18 +162,18 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                               scanChangesOnly: true) { _, newMetadatas, updatedMetadatas, deletedMetadatas, error in
 
                 if self.isInvalidated {
-                    Logger.enumeration.info("Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    Logger.enumeration.info("Enumerator invalidated during working set change scan. For user: \(self.ncAccount.ncKitAccount, privacy: .public)")
                     observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                     return
                 }
 
                 guard error == nil else {
-                    Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
+                    Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public) with error: \(error!.errorDescription, privacy: .public)")
                     observer.finishEnumeratingWithError(error!.fileProviderError)
                     return
                 }
 
-                Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)). Enumerating items.")
+                Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: .public). Enumerating items.")
 
                 FileProviderEnumerator.completeChangesObserver(observer,
                                                                anchor: anchor,
@@ -184,14 +184,14 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             }
             return
         } else if enumeratedItemIdentifier == .trashContainer {
-            Logger.enumeration.debug("Enumerating changes in trash set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.debug("Enumerating changes in trash set for user: \(self.ncAccount.ncKitAccount, privacy: .public)")
             // TODO!
 
             observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
             return
         }
 
-        Logger.enumeration.info("Enumerating changes for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.enumeration.info("Enumerating changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public)")
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from the completeChangesObserver
@@ -205,13 +205,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             }
 
             guard readError == nil else {
-                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(readError!.localizedDescription, privacy: .public)")
+                Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: .public) with serverUrl: \(self.serverUrl, privacy: .public) with error: \(readError!.localizedDescription, privacy: .public)")
 
                 let nkReadError = NKError(error: readError!)
                 let fpError = nkReadError.fileProviderError
 
                 if nkReadError.isNotFoundError {
-                    Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) as deletion without error")
+                    Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl, privacy: .public) as deletion without error")
 
                     guard let itemMetadata = self.enumeratedItemMetadata else {
                         Logger.enumeration.error("Invalid enumeratedItemMetadata, could not delete metadata nor report deletion")
@@ -242,7 +242,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
-            Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash))")
+            Logger.enumeration.info("Finished reading serverUrl: \(self.serverUrl, privacy: .public) for user: \(self.ncAccount.ncKitAccount, privacy: .public)")
 
             FileProviderEnumerator.completeChangesObserver(observer, anchor: anchor, ncKit: self.ncKit, newMetadatas: newMetadatas, updatedMetadatas: updatedMetadatas, deletedMetadatas: deletedMetadatas)
         }
@@ -264,19 +264,19 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         for itemMetadata in itemMetadatas {
             conversionQueue.async(group: dispatchGroup) {
                 if itemMetadata.e2eEncrypted {
-                    Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId, privacy: .public) \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    Logger.enumeration.info("Skipping encrypted metadata in enumeration: \(itemMetadata.ocId, privacy: .public) \(itemMetadata.fileName, privacy: .public)")
                     return
                 }
 
                 if let parentItemIdentifier = NextcloudFilesDatabaseManager.shared.parentItemIdentifierFromMetadata(itemMetadata) {
                     let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
-                    Logger.enumeration.debug("Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash))")
+                    Logger.enumeration.debug("Will enumerate item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public)")
 
                     appendQueue.async(group: dispatchGroup) {
                         items.append(item)
                     }
                 } else {
-                    Logger.enumeration.error("Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: OSLogPrivacy.auto(mask: .hash)), skipping enumeration")
+                    Logger.enumeration.error("Could not get valid parentItemIdentifier for item with ocId: \(itemMetadata.ocId, privacy: .public) and name: \(itemMetadata.fileName, privacy: .public), skipping enumeration")
                 }
             }
         }

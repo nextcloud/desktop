@@ -32,7 +32,7 @@ func pathForFileProviderExtData() -> URL? {
 
 func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
     guard let fpManager = NSFileProviderManager(for: domain) else {
-        Logger.localFileOps.error("Unable to get file provider manager for domain: \(domain.displayName, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.localFileOps.error("Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)")
         throw NSFileProviderError(.providerNotFound)
     }
 
@@ -42,7 +42,7 @@ func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throw
 
 func localPathForNCFile(ocId: String, fileNameView: String, domain: NSFileProviderDomain) throws -> URL {
     guard let fileProviderFilesPathUrl = try pathForFileProviderTempFilesForDomain(domain) else {
-        Logger.localFileOps.error("Unable to get path for file provider temp files for domain: \(domain.displayName, privacy: OSLogPrivacy.auto(mask: .hash))")
+        Logger.localFileOps.error("Unable to get path for file provider temp files for domain: \(domain.displayName, privacy: .public)")
         throw URLError(.badURL)
     }
 
