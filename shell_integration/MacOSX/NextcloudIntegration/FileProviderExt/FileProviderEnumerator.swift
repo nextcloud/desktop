@@ -115,7 +115,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                     Logger.enumeration.error("Finishing enumeration for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error \(readError!.localizedDescription, privacy: .public)")
 
                     let nkReadError = NKError(error: readError!)
-                    observer.finishEnumeratingWithError(nkReadError.toFileProviderError())
+                    observer.finishEnumeratingWithError(nkReadError.fileProviderError)
                     return
                 }
 
@@ -169,7 +169,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 guard error == nil else {
                     Logger.enumeration.info("Finished recursive change enumeration of working set for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(error!.errorDescription, privacy: .public)")
-                    observer.finishEnumeratingWithError(error!.toFileProviderError())
+                    observer.finishEnumeratingWithError(error!.fileProviderError)
                     return
                 }
 
@@ -208,7 +208,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 Logger.enumeration.error("Finishing enumeration of changes for user: \(self.ncAccount.ncKitAccount, privacy: OSLogPrivacy.auto(mask: .hash)) with serverUrl: \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) with error: \(readError!.localizedDescription, privacy: .public)")
 
                 let nkReadError = NKError(error: readError!)
-                let fpError = nkReadError.toFileProviderError()
+                let fpError = nkReadError.fileProviderError
 
                 if nkReadError.isNotFoundError {
                     Logger.enumeration.info("404 error means item no longer exists. Deleting metadata and reporting \(self.serverUrl, privacy: OSLogPrivacy.auto(mask: .hash)) as deletion without error")

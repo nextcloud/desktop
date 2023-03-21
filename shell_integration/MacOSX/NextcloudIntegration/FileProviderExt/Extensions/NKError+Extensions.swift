@@ -18,61 +18,48 @@ import NextcloudKit
 
 extension NKError {
     static var noChangesErrorCode: Int {
-        get {
-            return -200
-        }
+        return -200
     }
 
     var isCouldntConnectError: Bool {
-        get {
-            let nkErrorCode = self.errorCode
-            return nkErrorCode == -9999 ||
-                nkErrorCode == -1001 ||
-                nkErrorCode == -1004 ||
-                nkErrorCode == -1005 ||
-                nkErrorCode == -1009 ||
-                nkErrorCode == -1012 ||
-                nkErrorCode == -1200 ||
-                nkErrorCode == -1202 ||
-                nkErrorCode == 500 ||
-                nkErrorCode == 503 ||
-                nkErrorCode == 200
-        }
+        return errorCode == -9999 ||
+            errorCode == -1001 ||
+            errorCode == -1004 ||
+            errorCode == -1005 ||
+            errorCode == -1009 ||
+            errorCode == -1012 ||
+            errorCode == -1200 ||
+            errorCode == -1202 ||
+            errorCode == 500 ||
+            errorCode == 503 ||
+            errorCode == 200
     }
 
     var isUnauthenticatedError: Bool {
-        get {
-            return self.errorCode == -1013
-        }
+        return errorCode == -1013
     }
 
     var isGoingOverQuotaError: Bool {
-        get {
-            return self.errorCode == 507
-        }
+        return errorCode == 507
     }
 
     var isNotFoundError: Bool {
-        get {
-            return self.errorCode == 404
-        }
+        return errorCode == 404
     }
 
     var isNoChangesError: Bool {
-        get {
-            return self.errorCode == NKError.noChangesErrorCode
-        }
+        return errorCode == NKError.noChangesErrorCode
     }
 
-    func toFileProviderError() -> NSFileProviderError {
-        if self.isNotFoundError {
+    var fileProviderError: NSFileProviderError {
+        if isNotFoundError {
             return NSFileProviderError(.noSuchItem)
-        } else if self.isCouldntConnectError {
+        } else if isCouldntConnectError {
             // Provide something the file provider can do something with
             return NSFileProviderError(.serverUnreachable)
-        } else if self.isUnauthenticatedError {
+        } else if isUnauthenticatedError {
             return NSFileProviderError(.notAuthenticated)
-        } else if self.isGoingOverQuotaError {
+        } else if isGoingOverQuotaError {
             return NSFileProviderError(.insufficientQuota)
         } else {
             return NSFileProviderError(.cannotSynchronize)

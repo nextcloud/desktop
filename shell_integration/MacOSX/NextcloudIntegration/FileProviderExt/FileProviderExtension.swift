@@ -191,7 +191,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                         dbManager.addItemMetadata(updatedMetadata)
 
-                        completionHandler(nil, nil, error.toFileProviderError())
+                        completionHandler(nil, nil, error.fileProviderError)
                     }
                 }
             }
@@ -255,7 +255,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
                 guard error == .success else {
                     Logger.fileTransfer.error("Could not create new folder with name: \(itemTemplate.filename, privacy: .public), received error: \(error.errorDescription, privacy: .public)")
-                    completionHandler(itemTemplate, [], false, error.toFileProviderError())
+                    completionHandler(itemTemplate, [], false, error.fileProviderError)
                     return
                 }
 
@@ -295,7 +295,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         }) { account, ocId, etag, date, size, _, _, error  in
             guard error == .success, let ocId = ocId else {
                 Logger.fileTransfer.error("Could not upload item with filename: \(itemTemplate.filename, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
-                completionHandler(itemTemplate, [], false, error.toFileProviderError())
+                completionHandler(itemTemplate, [], false, error.fileProviderError)
                 return
             }
 
@@ -403,7 +403,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                             overwrite: false) { account, error in
                     guard error == .success else {
                         Logger.fileTransfer.error("Could not move file or folder: \(oldServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)) to \(newServerUrlFileName, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
-                        renameError = error.toFileProviderError()
+                        renameError = error.fileProviderError
                         moveFileOrFolderDispatchGroup.leave()
                         return
                     }
@@ -529,7 +529,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
                             dbManager.addItemMetadata(metadata)
 
-                            completionHandler(modifiedItem, [], false, error.toFileProviderError())
+                            completionHandler(modifiedItem, [], false, error.fileProviderError)
                             return
                         }
                     }
@@ -569,7 +569,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         self.ncKit.deleteFileOrFolder(serverUrlFileName: serverFileNameUrl) { account, error in
             guard error == .success else {
                 Logger.fileTransfer.error("Could not delete item with ocId \(identifier.rawValue, privacy: .public) at \(serverFileNameUrl, privacy: OSLogPrivacy.auto(mask: .hash)), received error: \(error.errorDescription, privacy: .public)")
-                completionHandler(error.toFileProviderError())
+                completionHandler(error.fileProviderError)
                 return
             }
 
