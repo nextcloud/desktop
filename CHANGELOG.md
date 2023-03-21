@@ -17,6 +17,7 @@ Summary
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
 * Bugfix - Clear conflict errors after they where resolved: [#10569](https://github.com/owncloud/client/issues/10569)
+* Bugfix - Set the expected download content length in the job properly: [#10607](https://github.com/owncloud/client/pull/10607)
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
@@ -84,6 +85,10 @@ Details
 * Bugfix - Clear conflict errors after they where resolved: [#10569](https://github.com/owncloud/client/issues/10569)
 
    https://github.com/owncloud/client/issues/10569
+
+* Bugfix - Set the expected download content length in the job properly: [#10607](https://github.com/owncloud/client/pull/10607)
+
+   https://github.com/owncloud/client/pull/10607
 
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 
