@@ -53,8 +53,8 @@ private:
     // Starts regular enumerator signalling if no push notifications available
     QTimer _enumeratorSignallingTimer;
 
-    class Private;
-    std::unique_ptr<Private> d;
+    class MacImplementation;
+    std::unique_ptr<MacImplementation> d;
 };
 
 } // namespace Mac

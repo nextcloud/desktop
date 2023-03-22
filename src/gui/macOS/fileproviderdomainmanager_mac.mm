@@ -82,11 +82,11 @@ Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileprovide
 
 namespace Mac {
 
-class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::Private {
+class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::MacImplementation {
 
   public:
-    Private() = default;
-    ~Private() = default;
+    MacImplementation() = default;
+    ~MacImplementation() = default;
 
     void findExistingFileProviderDomains()
     {
@@ -392,7 +392,7 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
     : QObject(parent)
 {
     if (@available(macOS 11.0, *)) {
-        d.reset(new FileProviderDomainManager::Private());
+        d.reset(new FileProviderDomainManager::MacImplementation());
 
         ConfigFile cfg;
         std::chrono::milliseconds polltime = cfg.remotePollInterval();
