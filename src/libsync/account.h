@@ -460,7 +460,7 @@ signals:
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
 
-    void pushNotificationsReady(OCC::Account *account);
+    void pushNotificationsReady(const OCC::AccountPtr &account);
     void pushNotificationsDisabled(OCC::Account *account);
 
     void userStatusChanged();
