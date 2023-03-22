@@ -23,7 +23,6 @@
 #include "creds/abstractcredentials.h"
 #include "folderman.h"
 #include "folderwizard/folderwizard.h"
-#include "graphapi/drives.h"
 #include "gui/accountsettings.h"
 #include "guiutility.h"
 #include "logbrowser.h"
@@ -34,6 +33,9 @@
 #include "setupwizardcontroller.h"
 #include "sharedialog.h"
 #include "theme.h"
+
+#include "libsync/graphapi/space.h"
+#include "libsync/graphapi/spacesmanager.h"
 
 #include "resources/resources.h"
 
@@ -71,36 +73,32 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
     };
 
     if (accountStatePtr->supportsSpaces()) {
-        auto *drive = new GraphApi::Drives(accountStatePtr->account());
-
-        QObject::connect(drive, &GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
-            if (drive->parseError().error == QJsonParseError::NoError) {
-                auto drives = drive->drives();
-
+        // Qt6: Qt::SingleShotConnection
+        auto *singleShotConnection = new QObject();
+        QObject::connect(accountStatePtr->account()->spacesManager(), &GraphApi::SpacesManager::ready, singleShotConnection,
+            [accountStatePtr, addFolder, finalize, singleShotConnection] {
+                delete singleShotConnection;
+                auto spaces = accountStatePtr->account()->spacesManager()->spaces();
                 // we do not want to set up folder sync connections for disabled spaces (#10173)
-                drives.erase(std::remove_if(drives.begin(), drives.end(), &GraphApi::isDriveDisabled), drives.end());
+                spaces.erase(std::remove_if(spaces.begin(), spaces.end(), [](auto *space) { return space->disabled(); }), spaces.end());
 
-                if (!drives.isEmpty()) {
+                if (!spaces.isEmpty()) {
                     const QString localDir(accountStatePtr->account()->defaultSyncRoot());
                     FileSystem::setFolderMinimumPermissions(localDir);
                     Folder::prepareFolder(localDir);
                     Utility::setupFavLink(localDir);
-                    for (const auto &d : drives) {
-                        const QString name = GraphApi::Drives::getDriveDisplayName(d);
+                    for (const auto *space : spaces) {
+                        const QString name = space->displayName();
                         const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, name);
-                        auto folder = addFolder(folderName, {}, QUrl(d.getRoot().getWebDavUrl()), name);
-                        folder->setPriority(GraphApi::Drives::getDrivePriority(d));
+                        auto folder = addFolder(folderName, {}, QUrl(space->drive().getRoot().getWebDavUrl()), name);
+                        folder->setPriority(space->priority());
                         // save the new priority
                         folder->saveToSettings();
                     }
                     finalize();
                 }
-            }
-        });
-
-        drive->start();
-
-        return;
+            });
+        accountStatePtr->account()->spacesManager()->checkReady();
     } else {
         addFolder(accountStatePtr->account()->defaultSyncRoot(), Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
         finalize();

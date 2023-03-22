@@ -15,9 +15,12 @@
 
 #include "accountfwd.h"
 
-#include <graphapi/drives.h>
-
 #include <QAbstractItemModel>
+
+namespace OCC::GraphApi {
+class SpacesManager;
+class Space;
+};
 
 namespace OCC::Spaces {
 class SpacesModel : public QAbstractTableModel
@@ -47,12 +50,12 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    void setDriveData(OCC::AccountPtr acc, const QList<OpenAPI::OAIDrive> &data);
+    void setSpacesManager(GraphApi::SpacesManager *spacesManager);
 
 private:
-    QList<OpenAPI::OAIDrive> _data;
+    GraphApi::SpacesManager *_spacesManager = nullptr;
+    QVector<GraphApi::Space *> _spacesList;
 
     mutable QHash<QString, QPixmap> _images;
-    OCC::AccountPtr _acc;
 };
 }

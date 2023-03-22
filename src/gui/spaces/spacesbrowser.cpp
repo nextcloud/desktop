@@ -17,9 +17,6 @@
 #include "spacesdelegate.h"
 #include "spacesmodel.h"
 
-
-#include "graphapi/drives.h"
-
 #include "gui/models/expandingheaderview.h"
 #include "gui/models/models.h"
 
@@ -80,13 +77,7 @@ void SpacesBrowser::setAccount(OCC::AccountPtr acc)
 {
     _acc = acc;
     if (acc) {
-        QTimer::singleShot(0, this, [this] {
-            auto drive = new OCC::GraphApi::Drives(_acc);
-            connect(drive, &OCC::GraphApi::Drives::finishedSignal, this, [drive, this] {
-                _model->setDriveData(_acc, drive->drives());
-            });
-            drive->start();
-        });
+        _model->setSpacesManager(acc->spacesManager());
     }
 }
 

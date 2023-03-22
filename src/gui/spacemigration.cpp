@@ -21,7 +21,7 @@
 #include "gui/accountmanager.h"
 #include "gui/folderman.h"
 #include "libsync/account.h"
-#include "libsync/graphapi/drives.h"
+#include "libsync/graphapi/jobs/drives.h"
 
 #include <QJsonArray>
 

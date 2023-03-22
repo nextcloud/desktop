@@ -14,10 +14,10 @@
 
 #include "spacesmanager.h"
 
-#include "drives.h"
+#include "libsync/account.h"
+#include "libsync/creds/abstractcredentials.h"
+#include "libsync/graphapi/jobs/drives.h"
 
-#include "account.h"
-#include "creds/abstractcredentials.h"
 
 #include <QTimer>
 
@@ -41,8 +41,12 @@ SpacesManager::SpacesManager(Account *parent)
     // the timer will be restarted once we received drives data
     _refreshTimer->setSingleShot(true);
 
-    connect(_account, &Account::credentialsFetched, this, &SpacesManager::refresh);
     connect(_refreshTimer, &QTimer::timeout, this, &SpacesManager::refresh);
+    connect(_account, &Account::credentialsFetched, this, &SpacesManager::refresh);
+    if (_account->accessManager()) {
+        // If we don't have a nam yet, Account::credentialsFetched will can refresh
+        refresh();
+    }
 }
 
 void SpacesManager::refresh()
@@ -51,31 +55,56 @@ void SpacesManager::refresh()
     connect(drivesJob, &Drives::finishedSignal, this, [drivesJob, this] {
         drivesJob->deleteLater();
         if (drivesJob->httpStatusCode() == 200) {
-            std::unordered_map<QString, OpenAPI::OAIDrive> drivesMap;
             for (const auto &dr : drivesJob->drives()) {
-                drivesMap.emplace(dr.getId(), std::move(dr));
+                auto *space = this->space(dr.getId());
+                if (!space) {
+                    space = new Space(this, dr);
+                    _spacesMap.insert(dr.getId(), space);
+                } else {
+                    space->setDrive(dr);
+                }
             }
-            _drivesMap = std::move(drivesMap);
+            if (!_ready) {
+                _ready = true;
+                Q_EMIT ready();
+            }
         }
-        Q_EMIT refreshed();
+        Q_EMIT updated();
         _refreshTimer->start();
     });
     _refreshTimer->stop();
     drivesJob->start();
 }
 
-OpenAPI::OAIDrive SpacesManager::drive(const QString &id) const
+Space *SpacesManager::space(const QString &id) const
 {
-    return _drivesMap.at(id);
+    return _spacesMap.value(id);
 }
 
-OpenAPI::OAIDrive SpacesManager::driveByUrl(const QUrl &url) const
+Space *SpacesManager::spaceByUrl(const QUrl &url) const
 {
-    auto it = std::find_if(_drivesMap.cbegin(), _drivesMap.cend(), [url](const auto &d) {
-        return OCC::Utility::urlEqual(QUrl(d.second.getRoot().getWebDavUrl()), url);
-    });
-    if (it != _drivesMap.cend()) {
-        return it->second;
+    auto it = std::find_if(_spacesMap.cbegin(), _spacesMap.cend(),
+        [url](const auto *space) { return OCC::Utility::urlEqual(QUrl(space->drive().getRoot().getWebDavUrl()), url); });
+    if (it != _spacesMap.cend()) {
+        return *it;
     }
     return {};
+}
+
+Account *SpacesManager::account() const
+{
+    return _account;
+}
+
+QVector<Space *> SpacesManager::spaces() const
+{
+    return {_spacesMap.begin(), _spacesMap.end()};
+}
+
+void SpacesManager::checkReady() const
+{
+    // see constructor for calls to refresh
+    if (_ready) {
+        Q_EMIT ready();
+    }
 }

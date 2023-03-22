@@ -17,52 +17,50 @@
 #include "owncloudlib.h"
 
 #include "libsync/accountfwd.h"
-#include "libsync/graphapi/space.h"
 
 #include <OAIDrive.h>
 
-#include <algorithm>
-
-#include <QFuture>
-
-class QTimer;
-
 namespace OCC {
 namespace GraphApi {
+    class SpacesManager;
 
-    class OWNCLOUDSYNC_EXPORT SpacesManager : public QObject
+    class OWNCLOUDSYNC_EXPORT Space : public QObject
     {
         Q_OBJECT
-
     public:
-        SpacesManager(Account *parent);
+        /***
+         * Returns the display name of the drive.
+         * This is identical to drive.getName() for most drives.
+         * Exceptions: Personal spaces
+         */
+        QString displayName() const;
 
-        Space *space(const QString &id) const;
 
-        QVector<Space *> spaces() const;
+        OpenAPI::OAIDrive drive() const;
 
-        // deprecated: we need to migrate to id based spaces
-        Space *spaceByUrl(const QUrl &url) const;
-
-        Account *account() const;
+        /***
+         * Asign a priority to a drive, used for sorting
+         */
+        uint32_t priority() const;
 
         /**
-         * Only relevant during bootstraping or when disconnected
+         * Whether a drive object has been deleted.
          */
-        void checkReady() const;
+        bool disabled() const;
 
     Q_SIGNALS:
         void updated();
-        void ready() const;
+
 
     private:
-        void refresh();
+        Space(SpacesManager *spaceManager, const OpenAPI::OAIDrive &drive);
+        void setDrive(const OpenAPI::OAIDrive &drive);
 
-        Account *_account;
-        QTimer *_refreshTimer;
-        QHash<QString, Space *> _spacesMap;
-        bool _ready = false;
+        SpacesManager *_spaceManager;
+        OpenAPI::OAIDrive _drive;
+
+        friend class SpacesManager;
     };
 
-}
-}
+} // OCC
+} // GraphApi

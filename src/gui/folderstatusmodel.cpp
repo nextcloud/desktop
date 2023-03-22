@@ -19,9 +19,10 @@
 #include "folderman.h"
 #include "folderstatusdelegate.h"
 #include "gui/quotainfo.h"
-#include "libsync/graphapi/drives.h"
-#include "libsync/graphapi/spacesmanager.h"
 #include "theme.h"
+
+#include "libsync/graphapi/space.h"
+#include "libsync/graphapi/spacesmanager.h"
 
 #include <QDir>
 #include <QFileIconProvider>
@@ -48,9 +49,9 @@ namespace {
     {
         if (accountState->supportsSpaces()) {
             if (auto spacesManager = accountState->account()->spacesManager()) {
-                const auto space = spacesManager->driveByUrl(davUrl);
-                if (space.isValid()) {
-                    const auto quota = space.getQuota();
+                const auto *space = spacesManager->spaceByUrl(davUrl);
+                if (space) {
+                    const auto quota = space->drive().getQuota();
                     if (quota.isValid()) {
                         switch (type) {
                         case FolderStatusModel::Columns::QuotaTotal:
@@ -102,7 +103,7 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
         connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged, this, &FolderStatusModel::slotFolderScheduleQueueChanged);
 
         if (accountState->supportsSpaces()) {
-            connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::refreshed, this, [this] {
+            connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, [this] {
                 beginResetModel();
                 endResetModel();
             });
@@ -242,11 +243,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     const SubFolderInfo::Progress &progress = folderInfo._progress;
     const bool accountConnected = _accountState->isConnected();
 
-    const auto getDrive = [&] {
+    const auto getSpace = [&]() -> GraphApi::Space * {
         if (_accountState->supportsSpaces()) {
-            return _accountState->account()->spacesManager()->driveByUrl(f->webDavUrl());
+            return _accountState->account()->spacesManager()->spaceByUrl(f->webDavUrl());
         }
-        return OpenAPI::OAIDrive{};
+        return nullptr;
     };
 
     switch (role) {
@@ -275,9 +276,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Columns::SyncRunning:
             return f->syncResult().status() == SyncResult::SyncRunning;
         case Columns::HeaderRole: {
-            const auto drive = getDrive();
-            if (drive.isValid()) {
-                return GraphApi::Drives::getDriveDisplayName(drive);
+            if (auto *space = getSpace()) {
+                return space->displayName();
             }
             return f->displayName();
         }
@@ -304,10 +304,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Columns::SyncProgressOverallString:
             return progress._overallSyncString;
         case Columns::FolderSyncText: {
-            const auto drive = getDrive();
-            if (drive.isValid()) {
-                if (!drive.getDescription().isEmpty()) {
-                    return drive.getDescription();
+            if (auto *space = getSpace()) {
+                if (!space->drive().getDescription().isEmpty()) {
+                    return space->drive().getDescription();
                 }
             }
             return tr("Local folder: %1").arg(f->shortGuiLocalPath());

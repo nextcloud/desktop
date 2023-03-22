@@ -61,8 +61,6 @@ set(libsync_SRCS
     abstractcorejob.cpp
     determineauthtypejobfactory.cpp
 
-    graphapi/drives.cpp
-
     appprovider.cpp
 )
 
