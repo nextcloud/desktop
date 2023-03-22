@@ -426,6 +426,11 @@ bool Theme::forceOverrideServerUrl() const
     return _forceOverrideServerUrl;
 }
 
+bool Theme::isVfsEnabled() const
+{
+    return _isVfsEnabled;
+}
+
 bool Theme::startLoginFlowAutomatically() const
 {
     return _startLoginFlowAutomatically;
@@ -968,6 +973,14 @@ void Theme::setForceOverrideServerUrl(bool forceOverride)
     if (_forceOverrideServerUrl != forceOverride) {
         _forceOverrideServerUrl = forceOverride;
         emit forceOverrideServerUrlChanged();
+    }
+}
+
+void Theme::setVfsEnabled(bool enabled)
+{
+    if (_isVfsEnabled != enabled) {
+        _isVfsEnabled = enabled;
+        emit vfsEnabledChanged();
     }
 }
 

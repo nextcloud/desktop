@@ -70,6 +70,7 @@ static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char updateChannelC[] = "updateChannel";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
+static constexpr char isVfsEnabledC[] = "isVfsEnabled";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
 static constexpr char chunkSizeC[] = "chunkSize";
@@ -722,6 +723,18 @@ void ConfigFile::setOverrideLocalDir(const QString &localDir)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(overrideLocalDirC), localDir);
+}
+
+bool ConfigFile::isVfsEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value({isVfsEnabledC}, {}).toBool();
+}
+
+void ConfigFile::setVfsEnabled(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue({isVfsEnabledC}, enabled);
 }
 
 void ConfigFile::setProxyType(int proxyType,

@@ -332,13 +332,25 @@ Application::Application(int &argc, char **argv)
     ConfigFile cfg;
 
     {
+        auto shouldExit = false;
+
         // these config values will always be empty after the first client run
         if (!_overrideServerUrl.isEmpty()) {
-             cfg.setOverrideServerUrl(_overrideServerUrl);
+            cfg.setOverrideServerUrl(_overrideServerUrl);
+            shouldExit = true;
         }
 
         if (!_overrideLocalDir.isEmpty()) {
             cfg.setOverrideLocalDir(_overrideLocalDir);
+            shouldExit = true;
+        }
+
+        if (AccountSetupCommandLineManager::instance()) {
+            cfg.setVfsEnabled(AccountSetupCommandLineManager::instance()->isVfsEnabled());
+        }
+
+        if (shouldExit) {
+            std::exit(0);
         }
     }
 
