@@ -444,7 +444,7 @@ signals:
     void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
     // e.g. when the approved SSL certificates changed
-    void wantsAccountSaved(OCC::Account *acc);
+    void wantsAccountSaved(const OCC::AccountPtr &acc);
 
     void wantsFoldersSynced();
 

@@ -146,7 +146,7 @@ void Account::setDavUser(const QString &newDavUser)
 
     _davUser = newDavUser;
 
-    emit wantsAccountSaved(this);
+    emit wantsAccountSaved(sharedFromThis());
     emit prettyNameChanged();
 }
 
@@ -609,7 +609,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
         if (!approvedCerts.isEmpty()) {
             QSslConfiguration::defaultConfiguration().addCaCertificates(approvedCerts);
             addApprovedCerts(approvedCerts);
-            emit wantsAccountSaved(this);
+            emit wantsAccountSaved(sharedFromThis());
 
             // all ssl certs are known and accepted. We can ignore the problems right away.
             qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
@@ -737,7 +737,7 @@ bool Account::shouldSkipE2eeMetadataChecksumValidation() const
 void Account::resetShouldSkipE2eeMetadataChecksumValidation()
 {
     _skipE2eeMetadataChecksumValidation = false;
-    emit wantsAccountSaved(this);
+    emit wantsAccountSaved(sharedFromThis());
 }
 
 int Account::serverVersionInt() const
@@ -1122,7 +1122,7 @@ void Account::setEncryptionCertificateFingerprint(const QByteArray &fingerprint)
     _encryptionCertificateFingerprint = fingerprint;
     _e2e.usbTokenInformation()->setSha256Fingerprint(fingerprint);
     Q_EMIT encryptionCertificateFingerprintChanged();
-    Q_EMIT wantsAccountSaved(this);
+    Q_EMIT wantsAccountSaved(sharedFromThis());
 }
 
 void Account::setAskUserForMnemonic(const bool ask)
