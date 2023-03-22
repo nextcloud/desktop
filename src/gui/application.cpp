@@ -402,7 +402,7 @@ Application::Application(int &argc, char **argv)
         }
     }
 
-#ifdef Q_OS_MACOS
+#if defined(Q_OS_MACOS)
     _fileProvider.reset(new Mac::FileProvider);
 #endif
 
