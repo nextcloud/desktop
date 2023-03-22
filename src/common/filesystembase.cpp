@@ -577,9 +577,27 @@ bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
 {
     // if it is a relative path assume a local file, resolve it based on root
     const auto sensitivity = Utility::fsCaseSensitivity();
-    return (child.startsWith(parent.endsWith(QLatin1Char('/')) ? parent : parent + QLatin1Char('/'), sensitivity)
-        // clear trailing slashes etc
-        || QString::compare(QDir::cleanPath(parent), QDir::cleanPath(child), sensitivity) == 0);
+
+    // Fast-path the 2 common cases in this if-else statement:
+    if (parent.endsWith(QLatin1Char('/'))) {
+        if (child.startsWith(parent, sensitivity)) {
+            return true;
+        }
+        // else: do the `cleanPath` version below
+    } else {
+        // Prevent a string concatenation like in `child.startsWith(parent + QLatin1Char('/'))`:
+        // first check if the child string starts with the parent string
+        if (child.startsWith(parent, sensitivity)) {
+            // ok, now check if the character after the parent is a '/'
+            if (child.length() >= parent.length() + 1 && child.at(parent.length()) == QLatin1Char('/')) {
+                return true;
+            }
+            // else: do the `cleanPath` version below
+        }
+    }
+
+    // Slow path (`QDir::cleanPath` does lots of string operations):
+    return QString::compare(QDir::cleanPath(parent), QDir::cleanPath(child), sensitivity) == 0;
 }
 
 QString OCSYNC_EXPORT FileSystem::createPortableFileName(const QFileInfo &path, int reservedSize)
