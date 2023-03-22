@@ -467,7 +467,8 @@ public:
     /**
      * Whether to enable the special code for cernbox
      * This includes:
-     * - spaces migration.
+     * - spaces migration
+     * - support for .sys.admin#recall#
      */
     bool enableCernBranding() const;
 

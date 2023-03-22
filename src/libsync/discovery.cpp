@@ -13,19 +13,20 @@
  */
 
 #include "discovery.h"
-#include "common/checksums.h"
-#include "common/syncjournaldb.h"
 #include "csync.h"
 #include "csync_exclude.h"
 #include "owncloudpropagator.h"
-#include "syncengine.h"
 #include "syncfileitem.h"
+
 #include "vio/csync_vio_local.h"
 
-#include <algorithm>
-#include <set>
+#include "common/checksums.h"
+#include "common/syncjournaldb.h"
 
-#include <QDebug>
+#include "libsync/theme.h"
+
+#include <algorithm>
+
 #include <QFile>
 #include <QFileInfo>
 #include <QTextCodec>
@@ -166,7 +167,13 @@ void ProcessDirectoryJob::process()
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
         // Recall file shall not be ignored (#4420)
-        bool isHidden = e.localEntry.isHidden || (f.first[0] == QLatin1Char('.') && f.first != QLatin1String(".sys.admin#recall#"));
+        const bool isHidden = [&] {
+            if (Q_UNLIKELY(Theme::instance()->enableCernBranding())) {
+                return e.localEntry.isHidden || (f.first[0] == QLatin1Char('.') && f.first != QLatin1String(".sys.admin#recall#"));
+            } else {
+                return e.localEntry.isHidden || f.first[0] == QLatin1Char('.');
+            }
+        }();
         if (handleExcluded(path._target,
                 e.localEntry.name,
                 e.localEntry.isDirectory || e.serverEntry.isDirectory,

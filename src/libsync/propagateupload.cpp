@@ -12,20 +12,23 @@
  * for more details.
  */
 
-#include "config.h"
 #include "propagateupload.h"
-#include "owncloudpropagator_p.h"
-#include "networkjobs.h"
 #include "account.h"
+#include "config.h"
+#include "filesystem.h"
+#include "networkjobs.h"
+#include "owncloudpropagator_p.h"
+#include "propagateremotedelete.h"
+#include "propagatorjobs.h"
+#include "syncengine.h"
+
+#include "common/asserts.h"
+#include "common/checksums.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
-#include "filesystem.h"
-#include "propagatorjobs.h"
-#include "common/checksums.h"
-#include "syncengine.h"
-#include "propagateremotedelete.h"
-#include "common/asserts.h"
+
+#include "libsync/theme.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -524,7 +527,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     headers[QByteArrayLiteral("Content-Type")] = QByteArrayLiteral("application/octet-stream");
     headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
 
-    if (_item->_file.contains(QLatin1String(".sys.admin#recall#"))) {
+    if (Q_UNLIKELY(Theme::instance()->enableCernBranding() && _item->_file.contains(QLatin1String(".sys.admin#recall#")))) {
         // This is a file recall triggered by the admin.  Note: the
         // recall list file created by the admin and downloaded by the
         // client (.sys.admin#recall#) also falls into this category
