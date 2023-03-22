@@ -448,7 +448,7 @@ signals:
 
     void wantsFoldersSynced();
 
-    void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged(const AccountPtr &account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
