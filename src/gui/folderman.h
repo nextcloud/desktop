@@ -306,7 +306,7 @@ private slots:
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
-    void slotServerVersionChanged(OCC::Account *account);
+    void slotServerVersionChanged(const OCC::AccountPtr &account);
 
     /**
      * A file whose locks were being monitored has become unlocked.

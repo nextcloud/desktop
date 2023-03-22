@@ -431,7 +431,7 @@ signals:
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(const OCC::AccountPtr &acc);
 
-    void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged(const OCC::AccountPtr &account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();

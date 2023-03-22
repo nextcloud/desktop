@@ -790,7 +790,7 @@ void Account::setServerVersion(const QString &version)
 
     auto oldServerVersion = _serverVersion;
     _serverVersion = version;
-    emit serverVersionChanged(this, oldServerVersion, version);
+    emit serverVersionChanged(sharedFromThis(), oldServerVersion, version);
 }
 
 void Account::writeAppPasswordOnce(QString appPassword){
