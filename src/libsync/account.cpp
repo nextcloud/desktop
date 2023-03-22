@@ -341,7 +341,7 @@ void Account::trySetupPushNotifications()
                     return;
                 }
                 if (!_pushNotifications->isReady()) {
-                    emit pushNotificationsDisabled(this);
+                    emit pushNotificationsDisabled(sharedFromThis());
                 }
                 if (!_pushNotificationsReconnectTimer.isActive()) {
                     _pushNotificationsReconnectTimer.start();
