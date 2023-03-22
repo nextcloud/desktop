@@ -318,7 +318,7 @@ void Account::trySetupPushNotifications()
 
             connect(_pushNotifications, &PushNotifications::ready, this, [this]() {
                 _pushNotificationsReconnectTimer.stop();
-                emit pushNotificationsReady(this);
+                emit pushNotificationsReady(sharedFromThis());
             });
 
             const auto disablePushNotifications = [this]() {
