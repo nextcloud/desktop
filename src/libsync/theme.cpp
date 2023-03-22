@@ -20,6 +20,8 @@
 #include "config.h"
 #include "configfile.h"
 
+#include "resources/resources.h"
+
 #include <QtCore>
 #include <QtGui>
 #include <QStyle>
@@ -148,13 +150,6 @@ QIcon Theme::aboutIcon() const
     return applicationIcon();
 }
 
-bool Theme::isUsingDarkTheme() const
-{
-    //TODO: replace by a command line switch
-    static bool forceDark = qEnvironmentVariableIntValue("OWNCLOUD_FORCE_DARK_MODE") != 0;
-    return forceDark || QPalette().base().color().lightnessF() <= 0.5;
-}
-
 bool Theme::allowDarkTheme() const
 {
     return _hasBrandedColored == _hasBrandedDark;
@@ -179,7 +174,7 @@ QIcon Theme::themeTrayIcon(const QString &name, bool sysTrayMenuVisible, IconTyp
 
 QIcon Theme::themeIcon(const QString &name, Theme::IconType iconType) const
 {
-    return loadIcon((isUsingDarkTheme() && allowDarkTheme()) ? darkTheme() : coloredTheme(), name, iconType);
+    return loadIcon((Resources::isUsingDarkTheme() && allowDarkTheme()) ? darkTheme() : coloredTheme(), name, iconType);
 }
 /*
  * helper to load a icon from either the icon theme the desktop provides or from

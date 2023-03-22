@@ -20,6 +20,8 @@
 
 #include "ui_notificationwidget.h"
 
+#include "resources/resources.h"
+
 #include <QPushButton>
 
 namespace OCC {
@@ -140,7 +142,7 @@ void NotificationWidget::changeEvent(QEvent *e)
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
-        _ui->_notifIcon->setPixmap(Utility::getCoreIcon(QStringLiteral("bell")).pixmap(_ui->_notifIcon->size()));
+        _ui->_notifIcon->setPixmap(Resources::getCoreIcon(QStringLiteral("bell")).pixmap(_ui->_notifIcon->size()));
         break;
     default:
         break;

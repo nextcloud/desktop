@@ -4,6 +4,7 @@ add_library(owncloudResources SHARED
     client.qrc
     core_theme.qrc
     loadresources.cpp
+    resources.cpp
 )
 
 generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
@@ -11,8 +12,9 @@ generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
 # make them available to the whole project
 set(OWNCLOUD_SIDEBAR_ICONS ${OWNCLOUD_SIDEBAR_ICONS} CACHE INTERNAL "Sidebar icons" FORCE)
 
-target_link_libraries(owncloudResources PUBLIC Qt5::Core)
+target_link_libraries(owncloudResources PUBLIC Qt5::Core Qt5::Gui)
 apply_common_target_settings(owncloudResources)
+target_include_directories(owncloudResources PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>)
 
 set_target_properties(owncloudResources PROPERTIES
     OUTPUT_NAME "${APPLICATION_EXECUTABLE}Resources"
@@ -40,4 +42,4 @@ if(Qt5LinguistTools_FOUND)
     )
 endif()
 
-install(TARGETS owncloudResources ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS owncloudResources EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

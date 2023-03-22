@@ -23,6 +23,8 @@
 #include "account.h"
 #include "guiutility.h"
 
+#include "resources/resources.h"
+
 #include <QFileIconProvider>
 #include <QPainter>
 #include <QApplication>
@@ -146,7 +148,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // encoded in the status icon.
     if (warningCount > 0 && syncOngoing) {
         const auto warnRect = QRectF{iconRect.bottomLeft() - QPointF(0, 17), QSizeF{16, 16}};
-        const auto warnIcon = Utility::getCoreIcon(QStringLiteral("warning"));
+        const auto warnIcon = Resources::getCoreIcon(QStringLiteral("warning"));
         const QPixmap pm = warnIcon.pixmap(warnRect.size().toSize(), syncEnabled ? QIcon::Normal : QIcon::Disabled);
         painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, warnRect.toRect()), pm);
     }
@@ -260,7 +262,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonVisualRect.toRect();
-        btnOpt.icon = Utility::getCoreIcon(QStringLiteral("more"));
+        btnOpt.icon = Resources::getCoreIcon(QStringLiteral("more"));
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
         QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);

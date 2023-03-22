@@ -115,12 +115,6 @@ public:
     virtual QIcon aboutIcon() const;
 
     /**
-     * Whether use the dark icon theme
-     * The function also ensures the theme supports the dark theme
-     */
-    bool isUsingDarkTheme() const;
-
-    /**
     * Whether the branding allows the dark theme
     */
     bool allowDarkTheme() const;

@@ -6,6 +6,8 @@
 #include "gui/settingsdialog.h"
 #include "libsync/theme.h"
 
+#include "resources/resources.h"
+
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -29,7 +31,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
 
     _ui->useVfsRadioButton->setText(tr("Use &virtual files instead of downloading content immediately"));
     if (vfsModeIsExperimental) {
-        _ui->useVfsRadioButton->setIcon(Utility::getCoreIcon(QStringLiteral("warning")));
+        _ui->useVfsRadioButton->setIcon(Resources::getCoreIcon(QStringLiteral("warning")));
 
         // when a feature is experimental and experimental features are disabled globally, it should be hidden
         if (!Theme::instance()->enableExperimentalFeatures()) {

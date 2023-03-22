@@ -35,6 +35,8 @@
 #include "sharedialog.h"
 #include "theme.h"
 
+#include "resources/resources.h"
+
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
@@ -934,7 +936,7 @@ void ownCloudGui::slotUpdateProgress(Folder *folder, const ProgressInfo &progres
         && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
         if (Progress::isWarningKind(progress._lastCompletedItem._status)) {
             // display a warn icon if warnings happened.
-            _actionRecent->setIcon(Utility::getCoreIcon(QStringLiteral("warning")));
+            _actionRecent->setIcon(Resources::getCoreIcon(QStringLiteral("warning")));
         }
 
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);

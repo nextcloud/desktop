@@ -100,6 +100,7 @@ target_link_libraries(libsync
         Qt5::Network
         Qt5::Widgets
     PRIVATE
+        owncloudResources
         Qt5::Concurrent
         ZLIB::ZLIB
         qt5keychain

@@ -19,6 +19,8 @@
 #include "gui/creds/httpcredentialsgui.h"
 #include "gui/guiutility.h"
 
+#include "resources/resources.h"
+
 #include <QClipboard>
 
 namespace OCC {
@@ -35,7 +37,7 @@ OAuthLoginWidget::OAuthLoginWidget(QWidget *parent)
     connect(_ui->copyUrlToClipboardButton, &QPushButton::clicked, this, &OAuthLoginWidget::copyUrlToClipboardButtonClicked);
 
     // depending on the theme we have to use a light or dark icon
-    _ui->copyUrlToClipboardButton->setIcon(Utility::getCoreIcon(QStringLiteral("copy")));
+    _ui->copyUrlToClipboardButton->setIcon(Resources::getCoreIcon(QStringLiteral("copy")));
 
     setFocusProxy(_ui->openBrowserButton);
 

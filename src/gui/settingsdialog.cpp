@@ -29,6 +29,8 @@
 #include "accountmanager.h"
 #include "protocolwidget.h"
 
+#include "resources/resources.h"
+
 #include <QDesktopServices>
 #include <QImage>
 #include <QLabel>
@@ -167,7 +169,7 @@ public:
     void updateIcon()
     {
         if (!_iconName.isEmpty()) {
-            setIcon(Utility::getCoreIcon(_iconName));
+            setIcon(Resources::getCoreIcon(_iconName));
         }
     }
 

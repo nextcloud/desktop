@@ -20,6 +20,8 @@
 #include "gui/guiutility.h"
 #include "spacesmodel.h"
 
+#include "resources/resources.h"
+
 #include <QApplication>
 #include <QDesktopServices>
 #include <QMouseEvent>
@@ -161,7 +163,7 @@ QStyleOptionButton SpacesDelegate::openBrowserButtonRect(const QStyleOptionViewI
 
     opt.text = tr("Open in Web");
 
-    opt.icon = Utility::getCoreIcon(QStringLiteral("arrow-up-right-from-square"));
+    opt.icon = Resources::getCoreIcon(QStringLiteral("arrow-up-right-from-square"));
     const auto px = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
     opt.iconSize = QSize { px, px };
 

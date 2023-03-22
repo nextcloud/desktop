@@ -54,7 +54,7 @@ add_library(newwizard STATIC
 
     setupwizardcontext.cpp
 )
-target_link_libraries(newwizard PUBLIC Qt5::Widgets libsync)
+target_link_libraries(newwizard PUBLIC Qt5::Widgets libsync owncloudResources)
 set_target_properties(newwizard PROPERTIES AUTOUIC ON AUTORCC ON)
 target_include_directories(newwizard PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 apply_common_target_settings(newwizard)

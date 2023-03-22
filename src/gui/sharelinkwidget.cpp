@@ -21,6 +21,8 @@
 #include "sharemanager.h"
 #include "guiutility.h"
 
+#include "resources/resources.h"
+
 #include "QProgressIndicator.h"
 #include <QBuffer>
 #include <QClipboard>
@@ -226,8 +228,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     table->setRowCount(0);
     connect(table, &QTableWidget::itemSelectionChanged, this, &ShareLinkWidget::slotShareSelectionChanged);
 
-    auto deleteIcon = QIcon::fromTheme(QStringLiteral("user-trash"),
-        Utility::getCoreIcon(QStringLiteral("delete")));
+    auto deleteIcon = QIcon::fromTheme(QStringLiteral("user-trash"), Resources::getCoreIcon(QStringLiteral("delete")));
 
     for (const auto &share : shares) {
         if (share->getShareType() != Share::TypeLink) {

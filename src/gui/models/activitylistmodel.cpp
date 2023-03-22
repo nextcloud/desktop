@@ -28,6 +28,8 @@
 #include "models.h"
 #include "networkjobs/jsonjob.h"
 
+#include "resources/resources.h"
+
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
@@ -93,7 +95,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             if (!accountState->account()->avatar().isNull()) {
                 return QIcon(accountState->account()->avatar());
             } else {
-                return Utility::getCoreIcon(QStringLiteral("account"));
+                return Resources::getCoreIcon(QStringLiteral("account"));
             }
         default:
             return {};

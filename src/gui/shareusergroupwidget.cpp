@@ -28,6 +28,8 @@
 #include "sharemanager.h"
 #include "guiutility.h"
 
+#include "resources/resources.h"
+
 #include "QProgressIndicator.h"
 #include <QBuffer>
 #include <QFileIconProvider>
@@ -374,7 +376,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     }
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
-    _ui->permissionToolButton->setIcon(Utility::getCoreIcon(QStringLiteral("more")));
+    _ui->permissionToolButton->setIcon(Resources::getCoreIcon(QStringLiteral("more")));
 
     // If there's only a single entry in the detailed permission menu, hide it
     if (menu->actions().size() == 1) {
@@ -397,8 +399,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     connect(share.data(), &Share::permissionsSet, this, &ShareUserLine::slotPermissionsSet);
     connect(share.data(), &Share::shareDeleted, this, &ShareUserLine::slotShareDeleted);
 
-    _ui->deleteShareButton->setIcon(QIcon::fromTheme(QStringLiteral("user-trash"),
-        Utility::getCoreIcon(QStringLiteral("delete"))));
+    _ui->deleteShareButton->setIcon(QIcon::fromTheme(QStringLiteral("user-trash"), Resources::getCoreIcon(QStringLiteral("delete"))));
 
     if (!share->account()->capabilities().shareResharing()) {
         _ui->permissionShare->hide();

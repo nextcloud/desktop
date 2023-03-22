@@ -15,9 +15,12 @@
 
 #include "common/utility.h"
 // TODO: move models out from core
-#include "gui/guiutility.h"
 #include "gui/models/models.h"
 #include "networkjobs.h"
+
+#include "libsync/account.h"
+
+#include "resources/resources.h"
 
 #include <QIcon>
 #include <QPixmap>
@@ -118,7 +121,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             if (auto it = Utility::optionalFind(_images, item.getId())) {
                 return QVariant::fromValue(it->value());
             }
-            _images[item.getId()] = OCC::Utility::getCoreIcon(QStringLiteral("th-large")).pixmap(ImageSizeC);
+            _images[item.getId()] = Resources::getCoreIcon(QStringLiteral("th-large")).pixmap(ImageSizeC);
             const auto imgUrl = data(index, Models::UnderlyingDataRole).toUrl();
             if (!imgUrl.isEmpty()) {
                 auto job = new OCC::SimpleNetworkJob(_acc, imgUrl, {}, "GET", {}, {}, nullptr);
