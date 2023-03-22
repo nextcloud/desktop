@@ -13,6 +13,7 @@
 #include <QLabel>
 
 #include "accessmanager.h"
+#include "accountmanager.h"
 #include "account.h"
 #include "configfile.h"
 #include "theme.h"
@@ -227,6 +228,10 @@ bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcWebFlowCredentials()) << reply->error();
         qCWarning(lcWebFlowCredentials()) << reply->errorString();
+        const auto accounts = AccountManager::instance()->accounts();
+	for (auto account : accounts) {
+	    account->freshConnectionAttempt();
+	}
     }
     return (reply->error() != QNetworkReply::AuthenticationRequiredError);
 }
