@@ -348,7 +348,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="124"/>
         <source>%1@%2</source>
-        <translation type="unfinished"/>
+        <translation>%1@%2</translation>
     </message>
 </context>
 <context>
@@ -476,7 +476,11 @@
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>이 작업을 실행하면 가상 파일 지원이 꺼집니다. 이에 따라 &apos;온라인에서 이용 가능&apos;으로 표시된 폴더의 콘텐츠가 모두 다운로드 됩니다.
+
+가상 파일 지원을 꺼서 얻을 수 있는 유일한 장점은 선택적 동기화 기능을 다시 사용할 수 있다는 것입니다.
+
+이 작업은 현재 실행 중인 모든 동기화를 중단합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -792,17 +796,17 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="180"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>계속하게 되면 &lt;b&gt;다음 설정을 모두 삭제하게 됩니다&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>계속하게 되면 &lt;b&gt;다음 설정을 모두 무시하게 됩니다&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="188"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>일부 설정은 상위 클라이언트에서 설정되었으며 이 버전에서는 해당 기능을 사용할 수 없습니다. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;현재 설정 파일이 &lt;i&gt;%2&lt;/i&gt; 경로로 백업되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="195"/>
@@ -1009,7 +1013,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="209"/>
         <source>Failed to parse credentials %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 인증 정보 해석 실패</translation>
     </message>
 </context>
 <context>
@@ -1018,7 +1022,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discoveryphase.cpp" line="472"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="493"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>서버 오류: PROPFIND 응답이 XML 형식이 아닙니다!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="496"/>
@@ -1209,7 +1213,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>동기화된 폴더의 변경 내용을 안정적으로 추적할 수 없습니다.
+
+동기화된 클라이언트는 로컬 변경점을 즉시 업로드하지 못하며, 가끔씩(기본적으로 2시간마다) 로컬의 변경 사항을 검색하여 업로드합니다.
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1351"/>
@@ -1292,7 +1300,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1134"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>동기화가 완료되었으며, 충돌이 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1136"/>
@@ -1460,12 +1468,12 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
@@ -1533,7 +1541,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="84"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>이 문제는 inotify watch가 소진되었을 때 주로 발생합니다. 자세한 정보는 자주 묻는 질문을 확인하시기 바랍니다.</translation>
     </message>
 </context>
 <context>
@@ -1814,7 +1822,9 @@ Please consider removing this folder from the account and adding it again.</sour
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>업데이트 채널에 따라 설치 가능한 클라이언트 업데이트가 결정됩니다. &quot;안정&quot; 채널에서는 안정적이라 판단된 업그레이드만 포함되며, &quot;베타&quot; 채널에서는 철저히 시험되지 않은 새로운 기능과 버그 수정이 포함됩니다.
+
+풀은 업그레이드만 할 수 있다는 점에 유의해주시기를 바랍니다. 베타 채널에서 안정 채널로 돌아가려면 설치된 베타 버전보다 더 최신의 안정 버전이 출시될 때까지 기다려야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="235"/>
@@ -1895,7 +1905,9 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>패턴과 일치하는 파일 또는 폴더는 동기화되지 않습니다. 다음 폴더가 동기화될 때 변경점이 적용됩니다.
+
+삭제가 허용된 파일은 디렉터리 제거에 방해가 될 때 삭제됩니다. 이는 메타데이터를 처리할 때 유용합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
@@ -1948,7 +1960,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="93"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>충돌이 발생했습니다. 해결 방법은 문서를 참조해주세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
@@ -1963,7 +1975,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="223"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>충돌이 발생했습니다. &lt;a href=&quot;%1&quot;&gt;해결 방법은 문서를 참조해주세요.&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="243"/>
@@ -2000,7 +2012,7 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;로그에는 공개해서는 안 되는 민감한 정보가 포함되어 있습니다&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
@@ -2010,7 +2022,7 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="91"/>
         <source>C:/log</source>
-        <translation type="unfinished"/>
+        <translation>C:/log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
@@ -2106,7 +2118,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 클라이언트의 새로운 버전이 이용 가능하지만 업데이트가 실패했습니다.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;이(가) 다운로드 되었습니다. 설치된 버전은 %3 입니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="487"/>
@@ -2502,7 +2514,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>서버 응답: %1 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1252"/>
@@ -2517,7 +2529,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1178"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>&quot;동기화할 항목 선택&quot; 블랙리스트에 추가되어 있어서 거부됨</translation>
+        <translation>&quot;동기화할 항목 선택&quot; 차단 목록에 포함되어 있어 무시됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1211"/>
@@ -2547,7 +2559,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1443"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; 디렉터리를 읽는 중 서버에서 오류 응답: %2</translation>
     </message>
 </context>
 <context>
@@ -3284,7 +3296,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="577"/>
         <source>I shared %1 with you</source>
-        <translation type="unfinished"/>
+        <translation>당신에게 %1을(를) 공유했습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="591"/>
@@ -3425,27 +3437,27 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="541"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>컨텍스트 메뉴 공유</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="546"/>
         <source>Context menu share %1</source>
-        <translation type="unfinished"/>
+        <translation>컨텍스트 메뉴 공유 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="717"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>삭제 확인</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>&lt;i&gt;%1&lt;/i&gt; 디렉터리와 모든 콘텐츠를 영구적으로 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="720"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>&lt;i&gt;%1&lt;/i&gt; 파일을 영구적으로 삭제하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="762"/>
@@ -4079,7 +4091,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>%1 계정이 있는 서버가 지원되지 않는 %2 버전을 구동 중입니다. 지원되지 않는 서버 버전에 이 클라이언트를 사용하는 것은 시험되지 않았으며 위험할 수도 있습니다. 본인 책임하에 사용하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
@@ -4440,7 +4452,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Blacklisted</source>
-        <translation>블랙리스트에 들어감</translation>
+        <translation>차단 목록에 있음</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="104"/>

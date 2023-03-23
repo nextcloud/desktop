@@ -442,7 +442,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>أضافة مجلد.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
@@ -562,7 +562,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>انقر فوق هذا الزر لإضافة مجلد للمزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
@@ -1389,7 +1389,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="207"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 من %2 قيد الاستخدام</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1485,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <location filename="../src/gui/folderstatusmodel.cpp" line="205"/>
         <source>%1 (%2)</source>
         <comment>filename (size)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="314"/>

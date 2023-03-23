@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="51"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Der Server hat nicht nach Authentifizierung gefragt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
@@ -442,7 +442,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>Ordner hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
@@ -1398,7 +1398,7 @@ Erwägung Sie, diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="207"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 von %2 Serverkapazität verwendet</translation>
     </message>
 </context>
 <context>
@@ -4330,7 +4330,7 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Ein kompatibler Server konnte unter %1 nicht gefunden werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>

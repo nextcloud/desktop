@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="51"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Server si nevyžádal přihlášení</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
@@ -442,7 +442,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>Přidat složku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
@@ -564,7 +564,7 @@ Prosím přihlaste se v prohlížeči.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Stisknutím tlačítka přidáte adresář k synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
@@ -1386,7 +1386,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="207"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Používaných %1 z %2</translation>
     </message>
 </context>
 <context>
@@ -1484,7 +1484,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <location filename="../src/gui/folderstatusmodel.cpp" line="205"/>
         <source>%1 (%2)</source>
         <comment>filename (size)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="314"/>
@@ -2809,7 +2809,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="179"/>
         <location filename="../src/libsync/propagateupload.cpp" line="210"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 je právě využíván</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="245"/>
@@ -4309,12 +4309,12 @@ Jste si jisti, že chcete pokračovat?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se detekovat kompatibilní server na %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Uživatel odmítl přesměrování z %1 na %2</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="115"/>

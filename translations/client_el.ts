@@ -442,7 +442,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>Προσθήκη Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
@@ -1389,7 +1389,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="207"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 από %2 σε χρήση</translation>
     </message>
 </context>
 <context>

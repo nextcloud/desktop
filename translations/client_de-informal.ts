@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="51"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Der Server hat nicht nach einer Autorisierung gefragt</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
@@ -442,7 +442,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>Ordner hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
@@ -562,7 +562,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Diesen Knopf drücken um einen Ordner zur Synchronisation hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
@@ -1396,7 +1396,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="207"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 von %2 belegt</translation>
     </message>
 </context>
 <context>
@@ -1494,7 +1494,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
         <location filename="../src/gui/folderstatusmodel.cpp" line="205"/>
         <source>%1 (%2)</source>
         <comment>filename (size)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="314"/>
@@ -2821,7 +2821,7 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="179"/>
         <location filename="../src/libsync/propagateupload.cpp" line="210"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Datei %1 wird gerade benutzt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="245"/>
@@ -4327,12 +4327,12 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Ein kompatibler Server konnte unter %1 nicht gefunden werden</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Der Benutzer hat die Weiterleitung von %1 zu %2 abgelehnt</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="115"/>

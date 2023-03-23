@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="51"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Server ei küsinud autoriseerimist</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
@@ -435,14 +435,14 @@
         <location filename="../src/gui/accountsettings.cpp" line="192"/>
         <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Lisa ruum</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="194"/>
         <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Add Folder</source>
-        <translation type="unfinished"/>
+        <translation>Lisa kaust</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
@@ -495,17 +495,17 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="644"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine käib. &lt;br/&gt; Kas soovid katkestada?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ühendun: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ühendun lahti: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="729"/>
@@ -559,7 +559,7 @@ Palun autentige end brauseri abil.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Vajuta nuppu et lisada ruum</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
@@ -569,7 +569,7 @@ Palun autentige end brauseri abil.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kausta lisamiseks pead olema ühendatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="952"/>
@@ -1117,7 +1117,7 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
     <message>
         <location filename="../src/gui/folder.cpp" line="238"/>
         <source>The path &apos;%1&apos; is too long. Either enable long paths in the Windows settings, or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Rada &apos;%1&apos; on liiga pikk. Luba pikad rajanimed Windows&apos;i seadetes või vali teine kaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="246"/>
@@ -1399,7 +1399,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="207"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2-st on kasutuses</translation>
     </message>
 </context>
 <context>
@@ -2566,7 +2566,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1423"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>See ruum ei ole hetkel kättesaadav</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1443"/>
@@ -2893,7 +2893,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollsumma arvutus ebaõnnestus</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
@@ -4117,22 +4117,22 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Taaskäivita kogu sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Taaskäivita sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Peata kogu sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="825"/>
@@ -4334,7 +4334,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Ühilduvat serverit asukohas %1 ei õnnestunud tuvastada</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>

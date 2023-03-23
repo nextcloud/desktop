@@ -435,7 +435,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="192"/>
         <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Shtoni Hapësirë</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="194"/>
@@ -495,17 +495,17 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="644"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>Veprimi i njëkohësimit po kryhet.&lt;br/&gt;Doni të ndalet?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Po lidhet te %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>U shkëput prej %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="729"/>
@@ -559,7 +559,7 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Klikoni mbi këtë buton që të shtoni një Hapësirë.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
@@ -569,7 +569,7 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lypset të jeni i lidhur, që të shtoni një dosje.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="952"/>
@@ -1117,7 +1117,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/folder.cpp" line="238"/>
         <source>The path &apos;%1&apos; is too long. Either enable long paths in the Windows settings, or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shtegu “%1” është shumë i gjatë. Ose aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni dosje tjetër.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="246"/>
@@ -2568,7 +2568,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1423"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Kjo hapësirë aktualisht është e papërdorshme</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1443"/>
@@ -2895,7 +2895,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>Njehsimi i checksum-it dështoi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
@@ -4119,22 +4119,22 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Rinis krejt njëkohësimin</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Rinis njëkohësimin</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Ndal krejt njëkohësimin</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Ndal njëkohësimin</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="825"/>
