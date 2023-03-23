@@ -71,7 +71,7 @@ __TODO__:
    * [ ] QA: Ping marketing to update links on https://owncloud.com/desktop-app/ (provide links from github releases; needed for the following posts)
    * [ ] QA: Central post https://central.owncloud.org/tags/c/news/desktop
    * [ ] QA: Inform on ``#updates`` channel, so that marketing knows about the new release
-   * [ ] QA: Inform [packagers](https://confluence.owncloud.com/x/QYLEAg) - ping @dragotin (openSUSE)
+   * [ ] QA: Inform [packagers](https://confluence.owncloud.com/x/QYLEAg)
 * [ ] Inform ``#marketing`` (@bwalter, @mfeilner) and remind to update Wikipedia + Wikidata
   * [ ] https://de.wikipedia.org/wiki/OwnCloud
   * [ ] https://en.wikipedia.org/wiki/OwnCloud
@@ -82,8 +82,6 @@ __TODO__:
 * [ ] QA: Verify marketing has updated all the links (owncloud.com, wiki de, wiki en, wikidata)
 * [ ] QA/DEV: Update [stable channel](https://confluence.owncloud.com/display/OG/Online+Updater%2C+Crash+reporter%2C+Transifex#OnlineUpdater,Crashreporter,Transifex-UpdatetheUpdater) in the owncloud hosted auto updater
 * [ ] QA: Ensure that the [client release template](https://github.com/owncloud/client/blob/master/.github/release_template.md) is up to date
-* [ ] QA: Ensure that the [testplan patch release template](https://github.com/owncloud/QA/blob/master/Desktop/Regression_Test_Plan_Patch_Release.md) is up to date.
-* [ ] QA: Ensure that the [testplan minor release template](https://github.com/owncloud/QA/blob/master/Desktop/Regression_Test_Plan_Minor_Release.md) is up to date
 
 ### A Few Days After the Release
 
