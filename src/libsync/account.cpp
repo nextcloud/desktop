@@ -722,6 +722,15 @@ int Account::checksumRecalculateServerVersionMinSupportedMajor() const
     return checksumRecalculateRequestServerVersionMinSupportedMajor;
 }
 
+bool Account::isHttp2Supported() const {
+    return _http2Supported;
+}
+
+void Account::setHttp2Supported(bool value) {
+    qCInfo(lcAccount) << "HTTP2 is supported and used to communicate" << prettyName();
+    _http2Supported = value;
+}
+
 void Account::setServerVersion(const QString &version)
 {
     if (version == _serverVersion) {

@@ -268,8 +268,8 @@ public:
     [[nodiscard]] int checksumRecalculateServerVersionMinSupportedMajor() const;
 
     /** True when the server connection is using HTTP2  */
-    bool isHttp2Supported() { return _http2Supported; }
-    void setHttp2Supported(bool value) { _http2Supported = value; }
+    [[nodiscard]] bool isHttp2Supported() const;
+    void setHttp2Supported(bool value);
 
     void clearCookieJar();
     void lendCookieJarTo(QNetworkAccessManager *guest);
