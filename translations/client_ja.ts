@@ -4940,7 +4940,7 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;このリリースは%1によって提供されました&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>

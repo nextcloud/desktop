@@ -4945,7 +4945,7 @@ Server replied with error: %2</source>
         <translation>此版本由%1發佈。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;此版本由 %1 發佈。&lt;/p&gt;</translation>
     </message>

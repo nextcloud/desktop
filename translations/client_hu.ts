@@ -4945,7 +4945,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>&lt;p&gt;Ezt a kiadást a %1 biztosította&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>

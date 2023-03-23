@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>En 1%</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar más acciones</translation>
     </message>
 </context>
 <context>
@@ -26,17 +26,17 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="189"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Descartar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Abrir detalles del archivo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Abrir cuadro de diálogo para compartir</translation>
     </message>
 </context>
 <context>
@@ -44,12 +44,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="33"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de actividades</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="112"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Aún no hay actividades</translation>
     </message>
 </context>
 <context>
@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="63"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Borrar menú de mensaje de estado</translation>
     </message>
 </context>
 <context>
@@ -65,22 +65,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar de llamada de notificación de Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Responder notificación de llamada de Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Rechazar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Rechazar notificación de llamada de Talk</translation>
     </message>
 </context>
 <context>
@@ -88,83 +88,83 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="105"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>1% (2%, 3%)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Comprobando cambios en &quot;1%&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="127"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando 1% de 2% (quedan 3%)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="132"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando 1% de 2%</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="139"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando 1% (quedan 2%)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="142"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando 1%</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="163"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="225"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>No hay archivos modificados recientemente</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="179"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronización en pausa</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="182"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="218"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Abrir sitio web</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="230"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Cambiado recientemente</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="237"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="244"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Ayuda</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="247"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ajustes</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="250"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="253"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Salir del cliente de sincronización</translation>
     </message>
 </context>
 <context>
@@ -172,7 +172,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Abriendo archivo para edición local</translation>
     </message>
 </context>
 <context>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="134"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>No hay emojis recientes</translation>
     </message>
 </context>
 <context>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="50"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Descartar</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividad</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Compartiendo</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>Detalles del archivo de 1% · 2%</translation>
     </message>
 </context>
 <context>
@@ -4909,7 +4909,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
+        <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
