@@ -284,7 +284,7 @@ QString Theme::defaultServerFolder() const
 
 QString Theme::helpUrl() const
 {
-    return QStringLiteral("https://doc.owncloud.org/desktop/%1.%2/").arg(OCC::Version::version().majorVersion()).arg(OCC::Version::version().microVersion());
+    return QStringLiteral("https://doc.owncloud.com/desktop/%1.%2/").arg(OCC::Version::version().majorVersion()).arg(OCC::Version::version().microVersion());
 }
 
 QString Theme::conflictHelpUrl() const
@@ -447,7 +447,7 @@ QString Theme::about() const
     // changing the location of the settings and other registery keys.
     const QString vendor = isVanilla() ? QStringLiteral("ownCloud GmbH") : QStringLiteral(APPLICATION_VENDOR);
     return tr("<p>Version %1. For more information visit <a href=\"%2\">https://%3</a></p>"
-              "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
+              "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.com/c/desktop-client\">https://central.owncloud.com</a></p>"
               "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
               " Jan-Christoph Borchardt, Thomas Müller,<br>"
               "Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.</small></p>"
@@ -456,11 +456,8 @@ QString Theme::about() const
               "%5 and the %5 logo are registered trademarks of %4 in the "
               "United States, other countries, or both.</p>"
               "<p><small>%6</small></p>")
-        .arg(Utility::escape(Version::displayString()),
-            Utility::escape(QStringLiteral("https://" APPLICATION_DOMAIN)),
-            Utility::escape(QStringLiteral(APPLICATION_DOMAIN)),
-            Utility::escape(vendor),
-            Utility::escape(appNameGUI()),
+        .arg(Utility::escape(Version::displayString()), Utility::escape(QStringLiteral("https://" APPLICATION_DOMAIN)),
+            Utility::escape(QStringLiteral(APPLICATION_DOMAIN)), Utility::escape(vendor), Utility::escape(appNameGUI()),
             aboutVersions(Theme::VersionFormat::RichText));
 }
 
