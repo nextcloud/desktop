@@ -196,7 +196,7 @@ public:
      * subfolder of ~ would be a good candidate. When that happens \a basePath
      * is returned.
      */
-    QString findGoodPathForNewSyncFolder(const QString &basePath) const;
+    QString findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder) const;
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,

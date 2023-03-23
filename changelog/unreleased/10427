@@ -1,0 +1,5 @@
+Bugfix: Escape navigation elements from user name
+
+We use the user name as folder name, if a user name contains path navigation elements we now escape them.
+
+https://github.com/owncloud/client/issues/10427

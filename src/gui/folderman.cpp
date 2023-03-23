@@ -1224,10 +1224,10 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
     return {};
 }
 
-QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder) const
 {
     // reserve 3 characters to allow appending of a number 0-100
-    const QString normalisedPath = FileSystem::createPortableFileName(basePath, 3);
+    const QString normalisedPath = FileSystem::createPortableFileName(basePath, FileSystem::pathEscape(newFolder), 3);
 
     // If the parent folder is a sync folder or contained in one, we can't
     // possibly find a valid sync folder inside it.
@@ -1250,7 +1250,7 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
         }
     }
     // we failed to find a non existing path
-    return canonicalPath(basePath);
+    return canonicalPath(normalisedPath);
 }
 
 bool FolderMan::ignoreHiddenFiles() const
@@ -1382,7 +1382,7 @@ Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accoun
 QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)
 {
     return FolderMan::instance()->findGoodPathForNewSyncFolder(
-        QDir::homePath() + QDir::separator() + tr("%1 - %2@%3").arg(OCC::Theme::instance()->defaultClientFolder(), displayName, server.host()));
+        QDir::homePath(), tr("%1 - %2@%3").arg(OCC::Theme::instance()->defaultClientFolder(), displayName, server.host()));
 }
 
 bool FolderMan::prepareFolder(const QString &folder)

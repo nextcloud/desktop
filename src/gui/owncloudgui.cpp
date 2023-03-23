@@ -79,13 +79,13 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                 drives.erase(std::remove_if(drives.begin(), drives.end(), &GraphApi::isDriveDisabled), drives.end());
 
                 if (!drives.isEmpty()) {
-                    const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
-                    FileSystem::setFolderMinimumPermissions(localDir.path());
-                    Folder::prepareFolder(localDir.path());
-                    Utility::setupFavLink(localDir.path());
+                    const QString localDir(accountStatePtr->account()->defaultSyncRoot());
+                    FileSystem::setFolderMinimumPermissions(localDir);
+                    Folder::prepareFolder(localDir);
+                    Utility::setupFavLink(localDir);
                     for (const auto &d : drives) {
                         const QString name = GraphApi::Drives::getDriveDisplayName(d);
-                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(name));
+                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, name);
                         auto folder = addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
                         folder->setPriority(GraphApi::Drives::getDrivePriority(d));
                         // save the new priority

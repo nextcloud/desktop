@@ -180,26 +180,24 @@ private slots:
 
         // TEST
 
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/oc"),
-            QString(dirPath + "/oc"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud"),
-            QString(dirPath + "/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2"),
-            QString(dirPath + "/ownCloud22"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/foo"),
-            QString(dirPath + "/ownCloud2/foo"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/bar"),
-            QString(dirPath + "/ownCloud2/bar"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub"),
-            QString(dirPath + "/sub2"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "oc"), QString(dirPath + "/oc"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "ownCloud"), QString(dirPath + "/ownCloud3"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "ownCloud2"), QString(dirPath + "/ownCloud22"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "ownCloud2/foo"), QString(dirPath + "/ownCloud2_foo"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "ownCloud2/bar"), QString(dirPath + "/ownCloud2_bar"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "sub"), QString(dirPath + "/sub2"));
 
         // REMOVE ownCloud2 from the filesystem, but keep a folder sync'ed to it.
         // We should still not suggest this folder as a new folder.
         QDir(dirPath + "/ownCloud2/").removeRecursively();
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud"),
-            QString(dirPath + "/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2"),
-            QString(dirPath + "/ownCloud22"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "ownCloud"), QString(dirPath + "/ownCloud3"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "ownCloud2"), QString(dirPath + "/ownCloud22"));
+
+        // make sure people can't do evil stuff
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "../../../Bo/b"), QString(dirPath + "/___Bo_b"));
+
+        // normalise the name
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, "            Bo:*<>!b          "), QString(dirPath + "/Bo____!b"));
     }
 };
 

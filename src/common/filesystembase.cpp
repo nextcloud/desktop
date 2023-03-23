@@ -600,19 +600,34 @@ bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
     return QString::compare(QDir::cleanPath(parent), QDir::cleanPath(child), sensitivity) == 0;
 }
 
-QString OCSYNC_EXPORT FileSystem::createPortableFileName(const QFileInfo &path, int reservedSize)
+QString OCSYNC_EXPORT FileSystem::createPortableFileName(const QString &path, const QString &fileName, int reservedSize)
 {
     // remove leading and trailing whitespace
-    QString tmp = path.fileName().trimmed();
+    QString tmp = pathEscape(fileName);
     // limit size to fileNameMaxC
     tmp.resize(std::min(tmp.size(), fileNameMaxC - reservedSize));
     // remove eventual trailing whitespace after the resize
     tmp = tmp.trimmed();
+
+    return QDir::cleanPath(path + QLatin1Char('/') + tmp);
+}
+
+QString OCSYNC_EXPORT FileSystem::pathEscape(const QString &s)
+{
+    QString tmp = s;
+    tmp.replace(QLatin1String("../"), QString(replacementCharC));
+#ifdef Q_OS_WIN
+    tmp.replace(QLatin1String("..\\"), QString(replacementCharC));
+#endif
+
+    // escape the folder separator, "\" is handled in IllegalFilenameCharsWindows
+    tmp.replace(QLatin1Char('/'), replacementCharC);
+
     // replace non portable characters
     for (auto c : IllegalFilenameCharsWindows) {
         tmp.replace(c, replacementCharC);
     }
-    return path.dir().filePath(tmp);
+    return tmp.trimmed();
 }
 } // namespace OCC
 
