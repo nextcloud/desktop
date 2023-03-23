@@ -139,6 +139,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     if (Theme::instance()->forceVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
         _ui->groupBox_non_vfs->hide();
     }
+
+    // we want to attach the known english identifiers which are also used within the configuration file as user data inside the data model
+    // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
+    _ui->updateChannel->addItem(tr("stable"), QStringLiteral("stable"));
+    _ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -202,16 +207,14 @@ void GeneralSettings::slotUpdateInfo()
 
     // Channel selection
     _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == QLatin1String("beta") ? 1 : 0);
-    connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
+    connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GeneralSettings::slotUpdateChannelChanged,
+        Qt::UniqueConnection);
 #endif
 }
 
 void GeneralSettings::slotUpdateChannelChanged(int index)
 {
 #ifdef WITH_AUTO_UPDATER
-    const auto oldChannelIndex = _ui->updateChannel->currentIndex();
-
     QString channel = index == 0 ? QStringLiteral("stable") : QStringLiteral("beta");
     if (channel == ConfigFile().updateChannel())
         return;
@@ -234,7 +237,7 @@ void GeneralSettings::slotUpdateChannelChanged(int index)
         this);
     auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, oldChannelIndex] {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton, index] {
         msgBox->deleteLater();
         if (msgBox->clickedButton() == acceptButton) {
             ConfigFile().setUpdateChannel(channel);
@@ -249,7 +252,10 @@ void GeneralSettings::slotUpdateChannelChanged(int index)
             }
 #endif
         } else {
-            _ui->updateChannel->setCurrentIndex(oldChannelIndex);
+            const auto oldChannel = _ui->updateChannel->findData(ConfigFile().updateChannel());
+            Q_ASSERT(oldChannel >= 0);
+            Q_ASSERT(oldChannel <= 1);
+            _ui->updateChannel->setCurrentIndex(oldChannel);
         }
     });
     msgBox->open();

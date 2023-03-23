@@ -265,16 +265,6 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <item>
-             <property name="text">
-              <string>stable</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>beta</string>
-             </property>
-            </item>
            </widget>
           </item>
           <item>
