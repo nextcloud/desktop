@@ -617,7 +617,7 @@ void Application::parseOptions(const QStringList &arguments)
     auto logFlushOption = addOption({ QStringLiteral("logflush"), tr("Flush the log file after every write.") });
     auto logDebugOption = addOption({ QStringLiteral("logdebug"), tr("Output debug-level messages in the log.") });
     auto languageOption = addOption({ QStringLiteral("language"), tr("Override UI language."), QStringLiteral("language") });
-    auto listLanguagesOption = addOption({ QStringLiteral("list-languages"), tr("Override UI language.") });
+    auto listLanguagesOption = addOption({QStringLiteral("list-languages"), tr("Lists available translations, see --language.")});
     auto confDirOption = addOption({ QStringLiteral("confdir"), tr("Use the given configuration folder."), QStringLiteral("dirname") });
     auto debugOption = addOption({ QStringLiteral("debug"), tr("Enable debug mode.") });
 
