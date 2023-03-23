@@ -31,14 +31,16 @@ private Q_SLOTS:
         auto acc2 = TestUtils::createDummyAccount();
 
         model->setActivityList({
-            Activity { Activity::ActivityType, 1, acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
-            Activity { Activity::ActivityType, 2, acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
-            Activity { Activity::ActivityType, 4, acc2, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
+            Activity{Activity::ActivityType, "1", acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime()},
+            Activity{Activity::ActivityType, "2", acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime()},
+            Activity{Activity::ActivityType, "021ad48a-80ae-4af6-b878-aeb836bd367d", acc2, "test", "test", "foo.cpp",
+                QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime()},
         });
         model->setActivityList({
-            Activity { Activity::ActivityType, 1, acc2, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
-            Activity { Activity::ActivityType, 2, acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
-            Activity { Activity::ActivityType, 4, acc2, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime() },
+            Activity{Activity::ActivityType, "1", acc2, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime()},
+            Activity{Activity::ActivityType, "2", acc1, "test", "test", "foo.cpp", QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime()},
+            Activity{Activity::ActivityType, "021ad48a-80ae-4af6-b878-aeb836bd367d", acc2, "test", "test", "foo.cpp",
+                QUrl::fromUserInput("https://owncloud.com"), QDateTime::currentDateTime()},
         });
         model->slotRemoveAccount(AccountManager::instance()->accounts().first());
     }

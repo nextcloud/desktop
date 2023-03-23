@@ -75,7 +75,7 @@ void ServerNotificationHandler::slotNotificationsReceived(JsonApiJob *job, const
     list.reserve(notifies.size());
     for (const auto &element : notifies) {
         const auto json = element.toObject();
-        const auto id = json.value(QStringLiteral("notification_id")).toVariant().value<Activity::Identifier>();
+        const QString id = json.value(QStringLiteral("notification_id")).toVariant().toString();
 
         const auto actions = json.value(QStringLiteral("actions")).toArray();
         QVector<ActivityLink> linkList;
@@ -94,7 +94,7 @@ void ServerNotificationHandler::slotNotificationsReceived(JsonApiJob *job, const
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(Utility::concatUrlPath(accountState->account()->url(), notificationsPath), QString::number(id)).toString();
+        al._link = Utility::concatUrlPath(Utility::concatUrlPath(accountState->account()->url(), notificationsPath), id).toString();
         al._verb  = "DELETE";
         al._isPrimary = false;
         linkList.append(al);

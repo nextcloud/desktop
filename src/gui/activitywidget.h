@@ -100,9 +100,9 @@ private:
     QPushButton *_copyBtn;
 
     QSet<QString> _accountsWithoutActivities;
-    QMap<Activity::Identifier, NotificationWidget *> _widgetForNotifId;
+    QMap<QString, NotificationWidget *> _widgetForNotifId;
     QElapsedTimer _guiLogTimer;
-    QSet<Activity::Identifier> _guiLoggedNotifications;
+    QSet<QString> _guiLoggedNotifications;
     ActivityList _blacklistedNotifications;
 
     QHash<NotificationWidget *, QDateTime> _widgetsToRemove;

@@ -19,7 +19,8 @@
 
 namespace OCC {
 
-Activity::Activity(Activity::Type type, qlonglong id, AccountPtr acc, const QString &subject, const QString &message, const QString &file, const QUrl &link, const QDateTime &dateTime, const QVector<ActivityLink> &&links)
+Activity::Activity(Activity::Type type, const QString &id, AccountPtr acc, const QString &subject, const QString &message, const QString &file,
+    const QUrl &link, const QDateTime &dateTime, const QVector<ActivityLink> &&links)
     : _type(type)
     , _id(id)
     , _accName(acc->displayName())
@@ -38,7 +39,7 @@ Activity::Type Activity::type() const
     return _type;
 }
 
-Activity::Identifier Activity::id() const
+QString Activity::id() const
 {
     return _id;
 }
@@ -73,7 +74,7 @@ QString Activity::accName() const
     return _accName;
 }
 
-QUuid Activity::uuid() const
+QUuid Activity::accountUuid() const
 {
     return _uuid;
 }

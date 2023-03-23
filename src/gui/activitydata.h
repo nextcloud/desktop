@@ -46,17 +46,17 @@ public:
 class Activity
 {
 public:
-    using Identifier = qlonglong;
     enum Type {
         ActivityType,
         NotificationType
     };
     Activity() = default;
-    explicit Activity(Type type, Identifier id, AccountPtr acc, const QString &subject, const QString &message, const QString &file, const QUrl &link, const QDateTime &dateTime, const QVector<ActivityLink> &&links = {});
+    explicit Activity(Type type, const QString &id, AccountPtr acc, const QString &subject, const QString &message, const QString &file, const QUrl &link,
+        const QDateTime &dateTime, const QVector<ActivityLink> &&links = {});
 
     Type type() const;
 
-    Identifier id() const;
+    QString id() const;
 
     QString subject() const;
 
@@ -70,7 +70,7 @@ public:
 
     QString accName() const;
 
-    QUuid uuid() const;
+    QUuid accountUuid() const;
 
     const QVector<ActivityLink> &links() const;
 
@@ -78,7 +78,7 @@ public:
 
 private:
     Type _type;
-    Identifier _id;
+    QString _id;
     QString _accName; /* display name of the account */
     QUuid _uuid; /* uuid of the account */
     QString _subject;

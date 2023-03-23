@@ -94,7 +94,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
         }
 
         for (const auto widget : qAsConst(_widgetForNotifId)) {
-            if (widget->activity().uuid() == ast->account()->uuid()) {
+            if (widget->activity().accountUuid() == ast->account()->uuid()) {
                 scheduleWidgetToRemove(widget);
             }
         }
@@ -260,12 +260,12 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
     // check if there are widgets that have no corresponding activity from
     // the server any more. Collect them in a list
 
-    const auto accId = list.first().uuid();
-    QList<Activity::Identifier> strayCats;
+    const auto accId = list.first().accountUuid();
+    QList<QString> strayCats;
     for (auto it = _widgetForNotifId.cbegin(); it != _widgetForNotifId.cend(); ++it) {
         bool found = false;
         // do not mark widgets of other accounts to delete.
-        if (it.value()->activity().uuid() != accId) {
+        if (it.value()->activity().accountUuid() != accId) {
             continue;
         }
 
@@ -412,8 +412,7 @@ void ActivityWidget::slotCheckToCleanWidgets()
 
         if (currentTime > t) {
             // found one to remove!
-            Activity::Identifier id = widget->activity().id();
-            _widgetForNotifId.remove(id);
+            _widgetForNotifId.remove(widget->activity().id());
             widget->deleteLater();
             it = _widgetsToRemove.erase(it);
         } else {
