@@ -74,6 +74,11 @@ public:
         ErrorNonEmptyFolder
     };
 
+    enum class GoodPathStrategy {
+        AllowOnlyNewPath,
+        AllowOverrideExistingPath,
+    };
+
     ~FolderMan() override;
     static FolderMan *instance();
 
@@ -158,7 +163,7 @@ public:
      * subfolder of ~ would be a good candidate. When that happens \a basePath
      * is returned.
      */
-    [[nodiscard]] QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const;
+    [[nodiscard]] QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl, GoodPathStrategy allowExisting) const;
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,

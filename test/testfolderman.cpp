@@ -404,25 +404,25 @@ private slots:
 
         // TEST
 
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/oc", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/oc", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
                  QString(dirPath + "/oc"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
                  QString(dirPath + "/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
                  QString(dirPath + "/ownCloud22"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/foo", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/foo", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
                  QString(dirPath + "/ownCloud2/foo"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/bar", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/bar", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
                  QString(dirPath + "/ownCloud2/bar"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
                  QString(dirPath + "/sub2"));
 
         // REMOVE ownCloud2 from the filesystem, but keep a folder sync'ed to it.
         // We should still not suggest this folder as a new folder.
         QDir(dirPath + "/ownCloud2/").removeRecursively();
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
             QString(dirPath + "/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url),
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url, FolderMan::GoodPathStrategy::AllowOnlyNewPath),
             QString(dirPath + "/ownCloud22"));
     }
 };
