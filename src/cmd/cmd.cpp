@@ -477,6 +477,10 @@ int main(int argc, char **argv)
             // Perform a call to get the capabilities.
             auto *capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);
             QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
+                if (capabilitiesJob->reply()->error() != QNetworkReply::NoError || capabilitiesJob->httpStatusCode() != 200) {
+                    qCritical() << "Error connecting to server";
+                    qApp->exit(EXIT_FAILURE);
+                }
                 auto caps = capabilitiesJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
                 qDebug() << "Server capabilities" << caps;
                 ctx.account->setCapabilities(caps.toVariantMap());
@@ -489,11 +493,6 @@ int main(int argc, char **argv)
                     break;
                 case Account::ServerSupportLevel::Unsupported:
                     qCritical() << "Error unsupported server";
-                    qApp->exit(EXIT_FAILURE);
-                }
-
-                if (capabilitiesJob->reply()->error() != QNetworkReply::NoError) {
-                    qCritical() << "Error connecting to server";
                     qApp->exit(EXIT_FAILURE);
                 }
 
