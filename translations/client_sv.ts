@@ -411,12 +411,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Ändpunkt-till-ändpunkt-kryptering med virtuella filer</translation>
+        <translation>End-to-end-kryptering med virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer med ändpunkt-till-ändpunkt-kryptering. För virtuella filer och ändpunkt-till-ändpunkt-kryptering, verifiera att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
+        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer med end-to-end-kryptering. För virtuella filer och end-to-end-kryptering, verifiera att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -451,7 +451,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats för detta konto</translation>
+        <translation> End-to-end-kryptering har aktiverats för detta konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
@@ -467,8 +467,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>Ändpunkt-till-ändpunkt-kryptering är inte konfigurerad på den här enheten. När den är konfigurerad kommer du att kunna kryptera den här mappen.
-Vill du aktivera ändpunkt-till-ändpunkt-kryptering?</translation>
+        <translation>End-to-end-kryptering är inte konfigurerad på den här enheten. När den är konfigurerad kommer du att kunna kryptera den här mappen.
+Vill du aktivera end-to-end-kryptering?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -481,7 +481,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
         <location filename="../src/gui/accountsettings.cpp" line="1458"/>
         <source>This account supports End-to-End encryption</source>
-        <translation>Detta konto stödjer ändpunkt-till-ändpunkt-kryptering</translation>
+        <translation>Detta konto stödjer end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -623,7 +623,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Ändpunkt-till-ändpunkt krypteringsord</translation>
+        <translation>End-to-end-krypteringsord</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
@@ -633,17 +633,17 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Inaktivera ändpunkt-till-ändpunkt-kryptering</translation>
+        <translation>Inaktivera end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Inaktivera ändpunkt-till-ändpunkt-kryptering för %1?</translation>
+        <translation>Inaktivera end-to-end-kryptering för %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Om du tar bort ändpunkt-till-ändpunkt-kryptering tar du bort lokalt synkroniserade filer som är krypterade.&lt;br&gt;Krypterade filer kommer att finnas kvar på servern.</translation>
+        <translation>Om du tar bort end-to-end-kryptering tar du bort lokalt synkroniserade filer som är krypterade.&lt;br&gt;Krypterade filer kommer att finnas kvar på servern.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -748,7 +748,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1565"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>Detta konto stödjer ändpunkt-till-ändpunkt-kryptering</translation>
+        <translation>Detta konto stödjer end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1398"/>
@@ -773,7 +773,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Det kan aktiveras på den här enheten genom att ange ditt krypteringsord.&lt;br&gt;Detta kommer att möjliggöra synkronisering av befintliga krypterade mappar.</translation>
+        <translation>End-to-end-kryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Det kan aktiveras på den här enheten genom att ange ditt krypteringsord.&lt;br&gt;Detta kommer att möjliggöra synkronisering av befintliga krypterade mappar.</translation>
     </message>
 </context>
 <context>
@@ -1258,7 +1258,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1363"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Ange din lösenordsfras för ändpunkt-till-ändpunkt-kryptering:&lt;br&gt;&lt;br&gt;Användarnamn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Ange din lösenordsfras för end-to-end-kryptering:&lt;br&gt;&lt;br&gt;Användarnamn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1371"/>
@@ -1667,7 +1667,7 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="170"/>
         <source>Starting authorization</source>
-        <translation>Startar auktorisation</translation>
+        <translation>Startar auktorisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="174"/>
@@ -2439,7 +2439,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>%Starta om &amp;&amp; Uppdatera</translation>
+        <translation>&amp;Starta om &amp;&amp; Uppdatera</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
