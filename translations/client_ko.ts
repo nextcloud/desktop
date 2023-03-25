@@ -569,7 +569,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>폴더를 추가하려면 연결되어 있어야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="957"/>
@@ -886,7 +886,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Lists available translations, see --language.</source>
-        <translation type="unfinished"/>
+        <translation>이용 가능한 번역 목록은 --language 변수를 참조하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
@@ -945,17 +945,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;가상 파일&quot; 모드을 켜면 처음에는 파일이 다운로드되지 않습니다. 대신, 서버에 존재하는 파일마다 작은 파일이 생성됩니다. 이 작은 파일을 실행하거나 컨텍스트 메뉴를 이용하여 콘텐츠를 다운로드할 수 있습니다.
+
+가상 파일 모드는 선택적 동기화와 함께 이용할 수 없습니다. 현재 선택되지 않은 폴더는 온라인 전용 폴더로 전환되며 선택적 동기화 설정은 초기화됩니다.
+
+이 모드로 전환하면 현재 진행 중인 모든 동기화가 중단됩니다.
+
+이 설정은 새로운 실험 모드입니다. 이 모드를 사용하게 되며 발생하는 문제를 저희에게 알려주시기 바랍니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>실험적 자리 비움자 모드 켜기</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="24"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>안전 유지</translation>
     </message>
 </context>
 <context>
@@ -1115,12 +1121,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="238"/>
         <source>The path &apos;%1&apos; is too long. Either enable long paths in the Windows settings, or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; 경로가 너무 깁니다. Windows 설정에서 긴 경로를 지원할 수 있도록 설정하거나 다른 폴더를 선택하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="246"/>
         <source>%1 failed to open the database.</source>
-        <translation type="unfinished"/>
+        <translation>%1 데이터베이스를 열지 못했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="258"/>
@@ -1383,7 +1389,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>다중 계정이 %1 폴더를 공유하고 있습니다.
+이 설정은 데이터가 유실될 위험이 크기에 더 이상 지원되지 않습니다.
+계정에서 이 폴더를 제거한 후 다시 추가하는 것을 고려하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1401"/>
@@ -1541,7 +1549,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="142"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>감시자가 시험 알림을 받지 못했습니다.</translation>
     </message>
 </context>
 <context>
@@ -1651,7 +1659,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>콘텐츠를 바로 다운로드하는 대신 가상 파일 사용%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
@@ -2010,7 +2018,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>클라이언트가 임시 폴더에 디버그 로그를 씁니다. 이 로그는 문제 해결에 크게 도움이 됩니다. 로그 파일의 크기가 클 수 있기에, 클라이언트는 동기화 때마다 새로운 로그를 작성하며 예전 로그는 압축합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -2040,13 +2048,14 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>유지할 로그 파일:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
-        <translation type="unfinished"/>
+        <translation>이 설정은 클라이언트를 재시작해도 적용됩니다. 
+로깅 관련 명령줄 옵션을 사용하면 이 설정이 덮어 씌워집니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="178"/>
@@ -2072,7 +2081,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="88"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 필터:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="109"/>
@@ -2325,7 +2334,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;잘못된 사용자&lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; 사용자로 로그인되어 있지만, &lt;em&gt;%2&lt;/em&gt; 사용자로 로그인해야 합니다. &lt;br&gt;%3 클라이언트로 돌아간 후 다시 인증하세요.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
@@ -3662,7 +3671,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="438"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일에 파일 확장자를 이용하나, 확장자가 설정되지 않음</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="450"/>
@@ -3706,7 +3715,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="449"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;버전 %1. 자세한 내용은&lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt; 웹 페이지 방문.&lt;/p&gt;&lt;p&gt;알려진 문제점이나 도움말은 &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt; 참조.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller 등 제작.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;ownCloud GmbH 저작권 소유.&lt;/p&gt;&lt;p&gt;%4 배포, GNU 일반 공중 사용 허가서(GPL) 버전 2.0 라이선스 적용.&lt;br/&gt;%5 및 %5 로고는 미국 또는 다른 국가의 %4 등록 상표임.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3734,7 +3743,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;인증서 %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;조직: %2&lt;br/&gt;단위: %3&lt;br/&gt;국가: %4&lt;/p&gt;&lt;p&gt;지문 (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;지문 (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;지문 (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;발급일: %8만료일: %9&lt;/div&gt;&lt;h3&gt;발급 대상: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;조직: %11&lt;br/&gt;단위: %12&lt;br/&gt;국가: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -3785,7 +3794,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/common/checksums.cpp" line="386"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>다운로드한 파일의 체크섬이 일치하지 않습니다. 계속 진행됩니다. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -3811,7 +3820,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/plugins/vfs/suffix/vfs_suffix.cpp" line="110"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>이 자리 비움자 이름을 가진 파일이 이미 존재하여 자리 비움자를 생성할 수 없음</translation>
     </message>
 </context>
 <context>
@@ -3837,12 +3846,12 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="73"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>이 설치 방법에서는 가상 파일시스템 기능을 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일시스템 기능은 아직 안정적이지 않습니다. 주의해서 사용하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
@@ -3863,17 +3872,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;가상 파일&quot; 모드을 켜면 처음에는 파일이 다운로드되지 않습니다. 대신, 서버에 존재하는 파일마다 작은 파일이 생성됩니다. 이 작은 파일을 실행하거나 컨텍스트 메뉴를 이용하여 콘텐츠를 다운로드할 수 있습니다.
+
+가상 파일 모드는 선택적 동기화와 함께 이용할 수 없습니다. 현재 선택되지 않은 폴더는 온라인 전용 폴더로 전환되며 선택적 동기화 설정은 초기화됩니다.
+
+이 모드로 전환하면 현재 진행 중인 모든 동기화가 중단됩니다.
+
+이 설정은 새로운 실험 모드입니다. 이 모드를 사용하게 되며 발생하는 문제를 저희에게 알려주시기 바랍니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>실험적 자리 비움자 모드 켜기</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="137"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>안전 유지</translation>
     </message>
 </context>
 <context>
@@ -3899,12 +3914,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
         <source>Failed to fetch user display name</source>
-        <translation type="unfinished"/>
+        <translation>사용자 표시 이름을 가져올 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation type="unfinished"/>
+        <translation>로그인 실패: 사용자 이름 또는 암호가 잘못됨</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
@@ -4322,17 +4337,17 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>%1에서 호환되는 서버를 찾을 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1에서 %2 리다이렉트를 사용자가 거절함</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="115"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>잘못된 SSL 인증서를 사용자가 거절함</translation>
     </message>
 </context>
 <context>
@@ -4412,7 +4427,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;스페이스 추가&lt;/span&gt;&lt;/p&gt;&lt;p&gt;컴퓨터와 동기화할 스페이스를 선택하세요.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4451,7 +4466,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>파일 무시됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
@@ -4582,7 +4597,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Qt 라이브러리%3, %4%7%9사용하는 가상 파일 플러그인: %5%7%6</translation>
     </message>
 </context>
 <context>
