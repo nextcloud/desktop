@@ -213,6 +213,10 @@ private:
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
+    [[nodiscard]] bool checkMetadataKeyChecksum(const QByteArray &metadataKey, const QByteArray &metadataKeyChecksum) const;
+
+    [[nodiscard]] QByteArray computeMetadataKeyChecksum(const QByteArray &metadataKey) const;
+
     QByteArray _metadataKey;
 
     QVector<EncryptedFile> _files;

@@ -33,6 +33,7 @@
 #include <QUuid>
 #include <QScopeGuard>
 #include <QRandomGenerator>
+#include <QCryptographicHash>
 
 #include <qt5keychain/keychain.h>
 #include <common/utility.h>
@@ -1555,10 +1556,10 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         }
     }
 
-    if (_metadataKey.isEmpty()) {
-        qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
-        return;
-    }
+    const auto sharing = metadataObj["sharing"].toString().toLocal8Bit();
+    const auto files = metaDataDoc.object()["files"].toObject();
+    const auto metadataKey = metaDataDoc.object()["metadata"].toObject()["metadataKey"].toString().toUtf8();
+    const auto metadataKeyChecksum = metaDataDoc.object()["metadata"].toObject()["checksum"].toString().toUtf8();
 
     QByteArray sharing = metadataObj["sharing"].toString().toLocal8Bit();
     QJsonObject files = metaDataDoc.object()["files"].toObject();
@@ -1609,17 +1610,15 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
         file.mimetype = decryptedFileObj["mimetype"].toString().toLocal8Bit();
 
-        // In case we wrongly stored "inode/directory" we try to recover from it
-        if (file.mimetype == QByteArrayLiteral("inode/directory")) {
-            file.mimetype = QByteArrayLiteral("httpd/unix-directory");
+        if (!checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum)) {
+            _metadataKey.clear();
+            _files.clear();
+            return;
         }
 
-        _files.push_back(file);
-    }
-
-    // decryption finished, create new metadata key to be used for encryption
-    _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
-    _isMetadataSetup = true;
+        // decryption finished, create new metadata key to be used for encryption
+        _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
+        _isMetadataSetup = true;
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
@@ -1661,6 +1660,26 @@ QByteArray FolderMetadata::encryptJsonObject(const QByteArray& obj, const QByteA
 QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata, const QByteArray& pass) const
 {
     return EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata);
+}
+
+bool FolderMetadata::checkMetadataKeyChecksum(const QByteArray &metadataKey,
+                                              const QByteArray &metadataKeyChecksum) const
+{
+    const auto referenceMetadataKeyValue = computeMetadataKeyChecksum(metadataKey);
+    return referenceMetadataKeyValue == metadataKeyChecksum;
+}
+
+QByteArray FolderMetadata::computeMetadataKeyChecksum(const QByteArray &metadataKey) const
+{
+    auto checksumData = _account->e2e()->_mnemonic.remove(' ');
+    for (const auto &singleFile : _files) {
+        checksumData += singleFile.encryptedFilename;
+    }
+    checksumData += metadataKey;
+
+    auto hashAlgorithm = QCryptographicHash{QCryptographicHash::Sha256};
+    hashAlgorithm.addData(checksumData.toUtf8());
+    return hashAlgorithm.result().toHex();
 }
 
 bool FolderMetadata::isMetadataSetup() const
