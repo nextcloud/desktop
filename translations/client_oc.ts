@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Dobrir los detalhs del fichièr</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -4180,7 +4180,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="536"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Ligam de partatge</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="544"/>
@@ -4238,12 +4238,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nòta pel destinari</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Especificar una data d&apos;expiracion</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="529"/>
@@ -4268,7 +4268,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Protegir per un senhal</translation>
     </message>
 </context>
 <context>
@@ -5610,27 +5610,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Permetre la modificacion</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Protegir per un senhal</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Especificar una data d&apos;expiracion</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nòta pel destinari</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Partejar pas mai</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
@@ -6437,7 +6437,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Permetre lo mandadís e modificacion</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -6452,7 +6452,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nòta pel destinari</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
