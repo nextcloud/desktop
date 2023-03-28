@@ -1622,6 +1622,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     }
 
     if (!migratedMetadata && !checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum)) {
+        qCInfo(lcCseMetadata) << "checksum comparison failed" << "server value" << metadataKeyChecksum << "client value" << computeMetadataKeyChecksum(metadataKey);
         _metadataKey.clear();
         _files.clear();
         return;
