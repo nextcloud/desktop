@@ -2405,7 +2405,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation>새 %1이(가) 이용 가능합니다. &lt;a href=&apos;%2&apos;&gt;여기&lt;/a&gt;를 클릭하여 새 앱 이미지를 수동으로 다운로드할 수 있습니다.</translation>
+        <translation>새 %1이(가) 이용 가능합니다. &lt;a href=&apos;%2&apos;&gt;여기&lt;/a&gt;를 클릭하여 AppImage를 수동으로 다운로드할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
@@ -2623,7 +2623,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="703"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>손상된 웹 서버가 재개 시 비어 있지 않은 파일에 대해 비어 있는 콘텐츠 길이를 반환함</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="710"/>
@@ -2701,7 +2701,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 실패: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
@@ -2841,7 +2841,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="109"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중 로컬 파일이 변경되었습니다. 곧 다시 시작됩니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="591"/>
@@ -3363,7 +3363,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>비공개 링크를 공유하여 %1 파일 또는 폴더에 접근하도록 할 수 있습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
@@ -3763,7 +3763,9 @@ for additional privileges during the process.</source>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 AppImage의 업데이트가 있습니다. 이 업데이트를 설치하시겠습니까?
+
+업데이트는 백그라운드에서 실행되며 현재 AppImage 파일을 덮어씁니다. 업데이트를 완료하려면 앱을 다시 시작해야 합니다.</translation>
     </message>
 </context>
 <context>
@@ -3786,7 +3788,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>%1 URL이 %2에서 %3(으)로 변경되었습니다. 변경된 URL을 수락하시겠습니까?</translation>
     </message>
 </context>
 <context>
@@ -4659,7 +4661,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 항목이 %2(으)로 이동됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
