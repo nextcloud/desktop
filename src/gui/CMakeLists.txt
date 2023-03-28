@@ -66,7 +66,6 @@ set(client_SRCS
     thumbnailjob.cpp
     quotainfo.cpp
     accountstate.cpp
-    authenticationdialog.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp
     tooltipupdater.cpp
