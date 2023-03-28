@@ -70,6 +70,9 @@ QString SyncResult::statusString() const
     case Paused:
         re = QStringLiteral("Sync Paused");
         break;
+    case Offline:
+        re = QStringLiteral("Offline");
+        break;
     }
     return re;
 }

@@ -101,19 +101,16 @@ public:
     Q_ENUM(IconType)
 
     /**
-      * get an sync state icon
-      */
-    QIcon syncStateIcon(const SyncResult &status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+     * get an sync state icon
+     */
     QIcon syncStateIcon(SyncResult::Status result, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon syncStateIcon(const SyncResult &status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
 
     /**
      * Returns a universal (non color schema aware) icon.
      */
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
 
-
-    virtual QIcon folderDisabledIcon() const;
-    virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
     virtual QIcon applicationIcon() const;
     virtual QIcon aboutIcon() const;
 

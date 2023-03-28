@@ -118,7 +118,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _app(parent)
 {
     // for the beginning, set the offline icon until the account was verified
-    _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true, /*currently visible?*/ false));
+    _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Status::Offline, true, false));
 
     connect(_tray, &QSystemTrayIcon::activated,
         this, &ownCloudGui::slotTrayClicked);
@@ -275,7 +275,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (!problemAccounts.empty()) {
-        _tray->setIcon(Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
+        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Status::Offline, true, contextMenuVisible()));
         if (allDisconnected) {
             setStatusText(tr("Disconnected"));
         } else {
@@ -305,7 +305,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (allSignedOut) {
-        _tray->setIcon(Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
+        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Status::Offline, true, contextMenuVisible()));
         _tray->setToolTip(tr("Please sign in"));
         setStatusText(tr("Signed out"));
         return;

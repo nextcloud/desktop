@@ -43,9 +43,10 @@ public:
         SyncRunning,
         SyncAbortRequested,
         Paused,
+        Offline,
         Problem,
         Error,
-        SetupError
+        SetupError,
     };
     Q_ENUM(Status);
 

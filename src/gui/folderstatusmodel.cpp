@@ -287,14 +287,13 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return accountConnected;
         case Columns::FolderStatusIconRole:
             if (accountConnected) {
-                auto theme = Theme::instance();
                 if (f->syncPaused()) {
-                    return theme->folderDisabledIcon();
+                    return Theme::instance()->syncStateIcon(SyncResult::Status::Paused);
                 } else {
-                    return theme->syncStateIcon(f->syncResult().status());
+                    return Theme::instance()->syncStateIcon(f->syncResult());
                 }
             } else {
-                return Theme::instance()->folderOfflineIcon();
+                return Theme::instance()->syncStateIcon(SyncResult::Status::Offline);
             }
         case Columns::SyncProgressItemString:
             return progress._progressString;
