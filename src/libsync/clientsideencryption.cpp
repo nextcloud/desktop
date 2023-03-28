@@ -1541,8 +1541,10 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         }
     }
 
+    auto migratedMetadata = false;
     if (_metadataKey.isEmpty()) {
         qCDebug(lcCse()) << "Migrating from v1.1 to v1.2";
+        migratedMetadata = true;
 
         if (metadataKeys.isEmpty()) {
             qCDebug(lcCse()) << "Could not migrate. No metadata keys found!";
@@ -1556,13 +1558,15 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         }
     }
 
+    if (_metadataKey.isEmpty()) {
+        qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
+        return;
+    }
+
     const auto sharing = metadataObj["sharing"].toString().toLocal8Bit();
     const auto files = metaDataDoc.object()["files"].toObject();
     const auto metadataKey = metaDataDoc.object()["metadata"].toObject()["metadataKey"].toString().toUtf8();
     const auto metadataKeyChecksum = metaDataDoc.object()["metadata"].toObject()["checksum"].toString().toUtf8();
-
-    QByteArray sharing = metadataObj["sharing"].toString().toLocal8Bit();
-    QJsonObject files = metaDataDoc.object()["files"].toObject();
 
     _fileDrop = metaDataDoc.object().value("filedrop").toObject();
 
@@ -1610,15 +1614,23 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
         file.mimetype = decryptedFileObj["mimetype"].toString().toLocal8Bit();
 
-        if (!checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum)) {
-            _metadataKey.clear();
-            _files.clear();
-            return;
+        // In case we wrongly stored "inode/directory" we try to recover from it
+        if (file.mimetype == QByteArrayLiteral("inode/directory")) {
+            file.mimetype = QByteArrayLiteral("httpd/unix-directory");
         }
 
-        // decryption finished, create new metadata key to be used for encryption
-        _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
-        _isMetadataSetup = true;
+        _files.push_back(file);
+    }
+
+    if (!migratedMetadata && !checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum)) {
+        _metadataKey.clear();
+        _files.clear();
+        return;
+    }
+
+    // decryption finished, create new metadata key to be used for encryption
+    _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
+    _isMetadataSetup = true;
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
