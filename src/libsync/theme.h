@@ -464,10 +464,10 @@ public:
     virtual bool wizardEnableWebfinger() const;
 
     /**
-     * Returns a list of Name, Url pairs that will be displayed as buttons on AccountSettings.
-     * For each url there must be an icon provided in the form of #Name.svg or multiple #Name-#resolution.png like for the other theme icons.
+     * Returns a list of IconName, Name, Url pairs that will be displayed as buttons on AccountSettings.
+     * For each url there must be an icon provided in the form of #IconName.svg or multiple #IconName-#resolution.png like for the other theme icons.
      * */
-    virtual QVector<QPair<QString, QUrl>> urlButtons() const;
+    virtual QVector<std::tuple<QString, QString, QUrl>> urlButtons() const;
 
 protected:
     QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;

@@ -685,7 +685,7 @@ bool Theme::wizardEnableWebfinger() const
     return false;
 }
 
-QVector<QPair<QString, QUrl>> Theme::urlButtons() const
+QVector<std::tuple<QString, QString, QUrl>> Theme::urlButtons() const
 {
     return {};
 }
