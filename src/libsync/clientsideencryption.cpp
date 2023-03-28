@@ -1,24 +1,16 @@
-#include <openssl/rsa.h>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
-#include <openssl/engine.h>
-#include <openssl/rand.h>
-
-
 #include "clientsideencryption.h"
+
 #include "account.h"
 #include "capabilities.h"
 #include "networkjobs.h"
 #include "clientsideencryptionjobs.h"
 #include "theme.h"
 #include "creds/abstractcredentials.h"
+#include "common/utility.h"
+#include "common/constants.h"
+#include "wordlist.h"
 
-#include <map>
-#include <string>
-#include <algorithm>
-
-#include <cstdio>
+#include <qt5keychain/keychain.h>
 
 #include <QDebug>
 #include <QLoggingCategory>
@@ -35,11 +27,18 @@
 #include <QRandomGenerator>
 #include <QCryptographicHash>
 
-#include <qt5keychain/keychain.h>
-#include <common/utility.h>
-#include <common/constants.h>
+#include <map>
+#include <string>
+#include <algorithm>
 
-#include "wordlist.h"
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/engine.h>
+#include <openssl/rand.h>
+
+#include <cstdio>
 
 QDebug operator<<(QDebug out, const std::string& str)
 {
