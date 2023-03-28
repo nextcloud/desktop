@@ -229,9 +229,9 @@ bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
         qCWarning(lcWebFlowCredentials()) << reply->error();
         qCWarning(lcWebFlowCredentials()) << reply->errorString();
         const auto accounts = AccountManager::instance()->accounts();
-	for (auto account : accounts) {
-	    account->freshConnectionAttempt();
-	}
+	    for (auto account : accounts) {
+	        account->freshConnectionAttempt();
+	    }
     }
     return (reply->error() != QNetworkReply::AuthenticationRequiredError);
 }
