@@ -1708,7 +1708,8 @@ QByteArray FolderMetadata::encryptedMetadata() const {
     const auto version = _account->capabilities().clientSideEncryptionVersion();
     QJsonObject metadata{
         {"version", version},
-        {metadataKeyJsonKey, QJsonValue::fromVariant(encryptData(_metadataKey.toBase64()))}
+        {metadataKeyJsonKey, QJsonValue::fromVariant(encryptData(_metadataKey.toBase64()))},
+        {"checksum", QJsonValue::fromVariant(computeMetadataKeyChecksum(_metadataKey.toBase64()))},
     };
 
     QJsonObject files;
