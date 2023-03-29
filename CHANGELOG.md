@@ -12,6 +12,7 @@ Summary
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 * Bugfix - Don't abort local folder deletions on unrelated errors: [#9311](https://github.com/owncloud/client/issues/9311)
 * Bugfix - Fix update channel dropdown: [#10251](https://github.com/owncloud/client/issues/10251)
+* Bugfix - Select keep files as default action in all files removed dialog: [#10254](https://github.com/owncloud/client/issues/10254)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
@@ -61,6 +62,10 @@ Details
 
    https://github.com/owncloud/client/issues/10251
    https://github.com/owncloud/client/pull/10609
+
+* Bugfix - Select keep files as default action in all files removed dialog: [#10254](https://github.com/owncloud/client/issues/10254)
+
+   https://github.com/owncloud/client/issues/10254
 
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 
