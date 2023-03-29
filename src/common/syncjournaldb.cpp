@@ -910,7 +910,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "modtime:" << record._modtime << "type:" << record._type << "etag:" << record._etag
                  << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm.toString()
                  << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader
-                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted
+                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record.isE2eEncrypted()
                  << "lock:" << (record._lockstate._locked ? "true" : "false")
                  << "lock owner type:" << record._lockstate._lockOwnerType
                  << "lock owner:" << record._lockstate._lockOwnerDisplayName
@@ -968,7 +968,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(15, checksum);
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
-    query->bindValue(18, record._isE2eEncrypted);
+    query->bindValue(18, record.isE2eEncrypted());
     query->bindValue(19, record._lockstate._locked ? 1 : 0);
     query->bindValue(20, record._lockstate._lockOwnerType);
     query->bindValue(21, record._lockstate._lockOwnerDisplayName);

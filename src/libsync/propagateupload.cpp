@@ -219,7 +219,7 @@ void PropagateUploadFileCommon::start()
 
     if (!account->capabilities().clientSideEncryptionAvailable() ||
         !parentRec.isValid() ||
-        !parentRec._isE2eEncrypted) {
+        !parentRec.isE2eEncrypted()) {
         setupUnencryptedFile();
         return;
     }

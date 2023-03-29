@@ -66,12 +66,13 @@ struct RemoteInfo
     int64_t size = 0;
     int64_t sizeOfFolder = 0;
     bool isDirectory = false;
-    bool isE2eEncrypted = false;
+    bool _isE2eEncrypted = false;
     bool isFileDropDetected = false;
     QString e2eMangledName;
     bool sharedByMe = false;
 
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted; }
 
     QString directDownloadUrl;
     QString directDownloadCookies;
@@ -160,6 +161,9 @@ private slots:
     void metadataError(const QByteArray& fileId, int httpReturnCode);
 
 private:
+
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted; }
+
     QVector<RemoteInfo> _results;
     QString _subPath;
     QByteArray _firstEtag;

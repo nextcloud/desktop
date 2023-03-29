@@ -85,6 +85,8 @@ public:
         // Whether this has a FetchLabel subrow
         [[nodiscard]] bool hasLabel() const;
 
+        [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
+
         // Reset all subfolders and fetch status
         void resetSubs(FolderStatusModel *model, QModelIndex index);
 

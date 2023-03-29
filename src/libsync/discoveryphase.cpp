@@ -458,7 +458,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 result.sharedByMe = true;
             }
         } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
-            result.isE2eEncrypted = true;
+            result._isE2eEncrypted = true;
         } else if (property == "lock") {
             result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
         }
@@ -576,7 +576,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
-    } else if (_isE2eEncrypted) {
+    } else if (isE2eEncrypted()) {
         emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
@@ -640,7 +640,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         auto result = info;
         const auto encryptedFileInfo = findEncryptedFile(result.name);
         if (encryptedFileInfo) {
-            result.isE2eEncrypted = true;
+            result._isE2eEncrypted = true;
             result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
             result.name = encryptedFileInfo->originalFilename;
         }

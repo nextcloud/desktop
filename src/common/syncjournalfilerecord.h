@@ -67,6 +67,7 @@ public:
     [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
     [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }
     [[nodiscard]] QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted; }
 
     QByteArray _path;
     quint64 _inode = 0;

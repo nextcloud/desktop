@@ -162,7 +162,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole: {
             //: Example text: "File.txt (23KB)"
             const auto &xParent = static_cast<SubFolderInfo *>(index.internalPointer());
-            const auto suffix = (subfolderInfo._isNonDecryptable && subfolderInfo._checked && (!xParent || !xParent->_isEncrypted))
+            const auto suffix = (subfolderInfo._isNonDecryptable && subfolderInfo._checked && (!xParent || !xParent->isEncrypted()))
                 ? QStringLiteral(" - ") + tr("Could not decrypt!")
                 : QString{};
             return subfolderInfo._size < 0 ? QString(subfolderInfo._name + suffix) : QString(tr("%1 (%2)").arg(subfolderInfo._name, Utility::octetsToString(subfolderInfo._size)) + suffix);
@@ -179,7 +179,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             if (subfolderInfo._isNonDecryptable && subfolderInfo._checked) {
                 return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
             }
-            if (subfolderInfo._isEncrypted) {
+            if (subfolderInfo.isEncrypted()) {
                 return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
             } else if (subfolderInfo._size > 0 && isAnyAncestorEncrypted(index)) {
                 return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
@@ -445,7 +445,7 @@ bool FolderStatusModel::isAnyAncestorEncrypted(const QModelIndex &index) const
     auto parentIndex = parent(index);
     while (parentIndex.isValid()) {
         const auto info = infoForIndex(parentIndex);
-        if (info->_isEncrypted) {
+        if (info->isEncrypted()) {
             return true;
         }
         parentIndex = parent(parentIndex);
@@ -607,7 +607,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     QString path = info->_folder->remotePathTrailingSlash();
 
     // info->_path always contains non-mangled name, so we need to use mangled when requesting nested folders for encrypted subfolders as required by LsColJob
-    const QString infoPath = (info->_isEncrypted && !info->_e2eMangledName.isEmpty()) ? info->_e2eMangledName : info->_path;
+    const QString infoPath = (info->isEncrypted() && !info->_e2eMangledName.isEmpty()) ? info->_e2eMangledName : info->_path;
 
     if (infoPath != QLatin1String("/")) {
         path += infoPath;
@@ -752,7 +752,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._isEncrypted = encryptionMap.value(removeTrailingSlash(path)).toString() == QStringLiteral("1");
         newInfo._path = relativePath;
 
-        newInfo._isNonDecryptable = newInfo._isEncrypted
+        newInfo._isNonDecryptable = newInfo.isEncrypted()
             && _accountState->account()->e2e() && !_accountState->account()->e2e()->_publicKey.isNull()
             && _accountState->account()->e2e()->_privateKey.isNull();
 
@@ -762,7 +762,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         }
         if (rec.isValid()) {
             newInfo._name = removeTrailingSlash(rec._path).split('/').last();
-            if (rec._isE2eEncrypted && !rec._e2eMangledName.isEmpty()) {
+            if (rec.isE2eEncrypted() && !rec._e2eMangledName.isEmpty()) {
                 // we must use local path for Settings Dialog's filesystem tree, otherwise open and create new folder actions won't work
                 // hence, we are storing _e2eMangledName separately so it can be use later for LsColJob
                 newInfo._e2eMangledName = relativePath;

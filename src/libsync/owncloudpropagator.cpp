@@ -326,7 +326,7 @@ bool PropagateItemJob::hasEncryptedAncestor() const
             qCWarning(lcPropagator) << "could not get file from local DB" << pathCompontentsJointed;
         }
 
-        if (rec.isValid() && rec._isE2eEncrypted) {
+        if (rec.isValid() && rec.isE2eEncrypted()) {
             return true;
         }
         pathComponents.removeLast();
@@ -1021,14 +1021,14 @@ bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 
         if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
             !parentRec.isValid() ||
-            !parentRec._isE2eEncrypted) {
+            !parentRec.isE2eEncrypted()) {
             return false;
         }
 
         return true;
     };
 
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->isEncrypted() && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)

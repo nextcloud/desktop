@@ -1220,7 +1220,7 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
     bool anyAncestorEncrypted = false;
     auto ancestor = fileData.parentFolder();
     while (ancestor.journalRecord().isValid()) {
-        if (ancestor.journalRecord()._isE2eEncrypted) {
+        if (ancestor.journalRecord().isE2eEncrypted()) {
             anyAncestorEncrypted = true;
             break;
         }
@@ -1352,8 +1352,8 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         FileData fileData = FileData::get(argument);
         const auto record = fileData.journalRecord();
         const bool isOnTheServer = record.isValid();
-        const auto isE2eEncryptedPath = fileData.journalRecord()._isE2eEncrypted || !fileData.journalRecord()._e2eMangledName.isEmpty();
-        const auto isE2eEncryptedRootFolder = fileData.journalRecord()._isE2eEncrypted && fileData.journalRecord()._e2eMangledName.isEmpty();
+        const auto isE2eEncryptedPath = fileData.journalRecord().isE2eEncrypted() || !fileData.journalRecord()._e2eMangledName.isEmpty();
+        const auto isE2eEncryptedRootFolder = fileData.journalRecord().isE2eEncrypted() && fileData.journalRecord()._e2eMangledName.isEmpty();
         auto flagString = isOnTheServer && !isE2eEncryptedPath ? QLatin1String("::") : QLatin1String(":d:");
 
         const QFileInfo fileInfo(fileData.localPath);

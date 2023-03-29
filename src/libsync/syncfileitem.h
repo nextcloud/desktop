@@ -228,6 +228,8 @@ public:
             && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
 
+    [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
+
     // Variables useful for everybody
 
     /** The syncfolder-relative filesystem path that the operation is about

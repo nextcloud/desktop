@@ -146,7 +146,7 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
         _item->_isShared = _item->_remotePerm.hasPermission(RemotePermissions::IsShared) || _item->_sharedByMe;
         _item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
-        if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
+        if (!_uploadEncryptedHelper && !_item->isEncrypted()) {
             success();
         } else {
             // We still need to mark that folder encrypted in case we were uploading it as encrypted one

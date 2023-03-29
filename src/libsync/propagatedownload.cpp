@@ -468,7 +468,7 @@ void PropagateDownloadFile::start()
     const auto account = propagator()->account();
     if (!account->capabilities().clientSideEncryptionAvailable() ||
         !parentRec.isValid() ||
-        !parentRec._isE2eEncrypted) {
+        !parentRec.isE2eEncrypted()) {
         startAfterIsEncryptedIsChecked();
     } else {
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
@@ -718,7 +718,7 @@ void PropagateDownloadFile::startDownload()
     if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(propagator()->account(),
-            propagator()->fullRemotePath(_isEncrypted ? _item->_encryptedFileName : _item->_file),
+            propagator()->fullRemotePath(isEncrypted() ? _item->_encryptedFileName : _item->_file),
             &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
     } else {
         // We were provided a direct URL, use that one
@@ -940,7 +940,7 @@ void PropagateDownloadFile::slotChecksumFail(const QString &errMsg,
 {
     if (reason == ValidateChecksumHeader::FailureReason::ChecksumMismatch && propagator()->account()->isChecksumRecalculateRequestSupported()) {
             const QByteArray calculatedChecksumHeader(calculatedChecksumType + ':' + calculatedChecksum);
-            const QString fullRemotePathForFile(propagator()->fullRemotePath(_isEncrypted ? _item->_encryptedFileName : _item->_file));
+            const QString fullRemotePathForFile(propagator()->fullRemotePath(isEncrypted() ? _item->_encryptedFileName : _item->_file));
             auto *job = new SimpleFileJob(propagator()->account(), fullRemotePathForFile);
             QObject::connect(job, &SimpleFileJob::finishedSignal, this,
                 [this, calculatedChecksumHeader, errMsg](const QNetworkReply *reply) { processChecksumRecalculate(reply, calculatedChecksumHeader, errMsg);
@@ -1137,7 +1137,7 @@ void PropagateDownloadFile::localFileContentChecksumComputed(const QByteArray &c
 
 void PropagateDownloadFile::finalizeDownload()
 {
-    if (_isEncrypted) {
+    if (isEncrypted()) {
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
             downloadFinished();
         } else {
@@ -1329,7 +1329,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         return;
     }
 
-    if (_isEncrypted) {
+    if (isEncrypted()) {
         propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
     } else {
         propagator()->_journal->setDownloadInfo(_item->_encryptedFileName, SyncJournalDb::DownloadInfo());

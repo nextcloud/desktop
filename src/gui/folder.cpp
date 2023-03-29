@@ -1347,7 +1347,7 @@ void Folder::removeLocalE2eFiles()
     QStringList e2eFoldersToBlacklist;
     const auto couldGetFiles = _journal.getFilesBelowPath("", [this, &e2eFoldersToBlacklist, &folderRootDir](const SyncJournalFileRecord &rec) {
         // We only want to add the root-most encrypted folder to the blacklist
-        if (rec.isValid() && rec._isE2eEncrypted && rec.isDirectory()) {
+        if (rec.isValid() && rec.isE2eEncrypted() && rec.isDirectory()) {
             QDir pathDir(_canonicalLocalPath + rec.path());
             bool parentPathEncrypted = false;
 
@@ -1359,7 +1359,7 @@ void Folder::removeLocalE2eFiles()
                     qCWarning(lcFolder) << "Failed to get file record for" << currentCanonicalPath;
                 }
 
-                if (dirRec._isE2eEncrypted) {
+                if (dirRec.isE2eEncrypted()) {
                     parentPathEncrypted = true;
                     break;
                 }

@@ -130,7 +130,7 @@ private slots:
 
         SyncJournalFileRecord updatedRec;
         QVERIFY(folder->journalDb()->getFileRecord(QStringLiteral("encrypted"), &updatedRec));
-        QVERIFY(updatedRec._isE2eEncrypted);
+        QVERIFY(updatedRec.isE2eEncrypted());
         QVERIFY(updatedRec.isDirectory());
 
         FolderMan::instance()->removeE2eFiles(account);

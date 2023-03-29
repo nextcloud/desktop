@@ -250,9 +250,9 @@ void ShareModel::updateData()
 
     _numericFileId = fileRecord.numericFileId();
 
-    _isEncryptedItem = fileRecord._isE2eEncrypted;
+    _isEncryptedItem = fileRecord.isE2eEncrypted();
     _isSecureFileDropSupportedFolder =
-        fileRecord._isE2eEncrypted && fileRecord.e2eMangledName().isEmpty() && _accountState->account()->secureFileDropSupported();
+        fileRecord.isE2eEncrypted() && fileRecord.e2eMangledName().isEmpty() && _accountState->account()->secureFileDropSupported();
 
     // Will get added when shares are fetched if no link shares are fetched
     _placeholderLinkShare.reset(new Share(_accountState->account(),

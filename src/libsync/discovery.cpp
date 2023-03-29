@@ -218,7 +218,7 @@ void ProcessDirectoryJob::process()
         if (handleExcluded(path._target, e, isHidden))
             continue;
 
-        const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted &&
+        const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
             _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->_publicKey.isNull() && _discoveryData->_account->e2e()->_privateKey.isNull();
 
         if (isEncryptedFolderButE2eIsNotSetup) {
@@ -431,7 +431,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
                               << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
-                              << " | e2ee: " << dbEntry._isE2eEncrypted << "/" << serverEntry.isE2eEncrypted
+                              << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
                               << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked;
 
@@ -532,7 +532,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
-    item->_isEncrypted = serverEntry.isE2eEncrypted;
+    item->_isEncrypted = serverEntry.isE2eEncrypted();
     item->_encryptedFileName = [=] {
         if (serverEntry.e2eMangledName.isEmpty()) {
             return QString();
@@ -656,7 +656,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // or, maybe, add a flag to the database - vfsE2eeSizeCorrected? if it is not set - subtract it from the placeholder's size and re-create/update a placeholder?
             const QueryMode serverQueryMode = [this, &dbEntry, &serverEntry]() {
                 const bool isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
-                if (isVfsModeOn && dbEntry.isDirectory() && dbEntry._isE2eEncrypted) {
+                if (isVfsModeOn && dbEntry.isDirectory() && dbEntry.isE2eEncrypted()) {
                     qint64 localFolderSize = 0;
                     const auto listFilesCallback = [&localFolderSize](const OCC::SyncJournalFileRecord &record) {
                         if (record.isFile()) {
@@ -1240,7 +1240,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        if (base._isE2eEncrypted || isInsideEncryptedTree()) {
+        if (base.isE2eEncrypted() || isInsideEncryptedTree()) {
             return false;
         }
 
@@ -1289,7 +1289,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
-        if (base._isE2eEncrypted) {
+        if (base.isE2eEncrypted()) {
             // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
             // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
             item->_isEncrypted = true;
@@ -1551,7 +1551,7 @@ void ProcessDirectoryJob::processFileFinalize(
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
             _lastSyncTimestamp, this);
-        job->setInsideEncryptedTree(isInsideEncryptedTree() || item->_isEncrypted);
+        job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
         if (removed) {
             job->setParent(_discoveryData);
             _discoveryData->enqueueDirectoryToDelete(path._original, job);
