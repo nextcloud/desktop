@@ -31,6 +31,7 @@ Summary
 * Enhancement - Display space subtitle if available: [#10577](https://github.com/owncloud/client/issues/10577)
 * Enhancement - Open sharing options in Web: [#10590](https://github.com/owncloud/client/pull/10590)
 * Enhancement - Display the space name provided by the server: [#10602](https://github.com/owncloud/client/pull/10602)
+* Enhancement - Always point to the latest documentation: [#10634](https://github.com/owncloud/client/issues/10634)
 * Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
 
 Details
@@ -175,6 +176,14 @@ Details
    If a space is renamed on the server, this change is now displayed in the client.
 
    https://github.com/owncloud/client/pull/10602
+
+* Enhancement - Always point to the latest documentation: [#10634](https://github.com/owncloud/client/issues/10634)
+
+   We used a url for the documentation that contained the client version. While this ensured a used
+   would get the documentation matching to their client, this only worked with the last two
+   released clients. So users of a pre release or of a very old client where served a 404.
+
+   https://github.com/owncloud/client/issues/10634
 
 * Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
 
