@@ -284,7 +284,7 @@ QString Theme::defaultServerFolder() const
 
 QString Theme::helpUrl() const
 {
-    return QStringLiteral("https://doc.owncloud.com/desktop/%1.%2/").arg(OCC::Version::version().majorVersion()).arg(OCC::Version::version().microVersion());
+    return QStringLiteral("https://doc.owncloud.com/desktop/latest/");
 }
 
 QString Theme::conflictHelpUrl() const

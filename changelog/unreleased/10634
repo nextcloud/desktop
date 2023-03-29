@@ -1,0 +1,7 @@
+Enhancement: Always point to the latest documentation
+
+We used a url for the documentation that contained the client version.
+While this ensured a used would get the documentation matching to their client, this only worked with the last two released clients.
+So users of a pre release or of a very old client where served a 404.
+
+https://github.com/owncloud/client/issues/10634
