@@ -31,6 +31,7 @@ Summary
 * Enhancement - Display space subtitle if available: [#10577](https://github.com/owncloud/client/issues/10577)
 * Enhancement - Open sharing options in Web: [#10590](https://github.com/owncloud/client/pull/10590)
 * Enhancement - Display the space name provided by the server: [#10602](https://github.com/owncloud/client/pull/10602)
+* Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
 
 Details
 -------
@@ -174,6 +175,10 @@ Details
    If a space is renamed on the server, this change is now displayed in the client.
 
    https://github.com/owncloud/client/pull/10602
+
+* Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
+
+   https://github.com/owncloud/client/pull/10637
 
 Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
 =======================================
