@@ -1748,7 +1748,8 @@ QByteArray FolderMetadata::encryptedMetadata() const {
 
     QJsonObject metaObject = {
         {"metadata", metadata},
-        {"files", files}
+        {"files", files},
+        {"filedrop", QJsonObject{}},
     };
 
     QJsonDocument internalMetadata;
