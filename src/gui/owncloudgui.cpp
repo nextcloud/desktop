@@ -363,6 +363,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     case SyncResult::Undefined:
         _tray->setToolTip(tr("There are no sync folders configured."));
         setStatusText(tr("No sync folders configured"));
+        break;
     default:
         setStatusText(FolderMan::instance()->trayTooltipStatusString(trayOverallStatusResult.overallStatus(), false));
     }
