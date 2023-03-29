@@ -1,0 +1,3 @@
+Bugfix: Select keep files as default action in all files removed dialog
+
+https://github.com/owncloud/client/issues/10254

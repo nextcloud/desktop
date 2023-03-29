@@ -1363,6 +1363,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, const std::f
     msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
     msgBox->addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
     QPushButton *keepBtn = msgBox->addButton(tr("Keep files"), QMessageBox::AcceptRole);
+    msgBox->setDefaultButton(keepBtn);
     bool oldPaused = syncPaused();
     setSyncPaused(true);
     connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, abort, oldPaused, this] {
