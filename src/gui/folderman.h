@@ -314,10 +314,6 @@ private slots:
 
     void slotRemoveFoldersForAccount(const AccountStatePtr &accountState);
 
-    // Wraps the Folder::syncStateChange() signal into the
-    // FolderMan::folderSyncStateChange(Folder*) signal.
-    void slotForwardFolderSyncStateChange();
-
     void slotServerVersionChanged(Account *account);
 
     /**

@@ -109,8 +109,7 @@ Folder::Folder(const FolderDefinition &definition,
     if (definition.paused) {
         status = SyncResult::Paused;
     }
-    _syncResult.setStatus(status);
-
+    setSyncState(status);
     // check if the local path exists
     if (checkLocalPath()) {
         prepareFolder(path());
@@ -261,7 +260,7 @@ bool Folder::checkLocalPath()
     if (!error.isEmpty()) {
         qCWarning(lcFolder) << error;
         _syncResult.appendErrorString(error);
-        _syncResult.setStatus(SyncResult::SetupError);
+        setSyncState(SyncResult::SetupError);
         return false;
     }
     return true;
@@ -454,19 +453,21 @@ void Folder::setSyncPaused(bool paused)
     _definition.paused = paused;
     saveToSettings();
 
+    emit syncPausedChanged(this, paused);
     if (!paused) {
         setSyncState(SyncResult::NotYetStarted);
     } else {
         setSyncState(SyncResult::Paused);
     }
-    emit syncPausedChanged(this, paused);
-    emit syncStateChange();
     emit canSyncChanged();
 }
 
 void Folder::setSyncState(SyncResult::Status state)
 {
-    _syncResult.setStatus(state);
+    if (state != _syncResult.status()) {
+        _syncResult.setStatus(state);
+        Q_EMIT syncStateChange();
+    }
 }
 
 SyncResult Folder::syncResult() const
@@ -477,7 +478,7 @@ SyncResult Folder::syncResult() const
 void Folder::prepareToSync()
 {
     _syncResult.reset();
-    _syncResult.setStatus(SyncResult::NotYetStarted);
+    setSyncState(SyncResult::NotYetStarted);
 }
 
 void Folder::slotRunEtagJob()
@@ -629,7 +630,7 @@ void Folder::startVfs()
     const auto result = Vfs::checkAvailability(path(), _vfs->mode());
     if (!result) {
         _syncResult.appendErrorString(result.error());
-        _syncResult.setStatus(SyncResult::SetupError);
+        setSyncState(SyncResult::SetupError);
         return;
     }
 
@@ -658,7 +659,7 @@ void Folder::startVfs()
     });
     connect(_vfs.data(), &Vfs::error, this, [this](const QString &error) {
         _syncResult.appendErrorString(error);
-        _syncResult.setStatus(SyncResult::SetupError);
+        setSyncState(SyncResult::SetupError);
         _vfsIsReady = false;
     });
 
@@ -993,8 +994,7 @@ void Folder::startSync()
     }
 
     _timeSinceLastSyncStart.start();
-    _syncResult.setStatus(SyncResult::SyncPrepare);
-    emit syncStateChange();
+    setSyncState(SyncResult::SyncPrepare);
 
     qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << "client version"
                      << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
@@ -1074,8 +1074,7 @@ void Folder::slotSyncError(const QString &message, ErrorCategory category)
 void Folder::slotSyncStarted()
 {
     qCInfo(lcFolder) << "#### Propagation start ####################################################";
-    _syncResult.setStatus(SyncResult::SyncRunning);
-    emit syncStateChange();
+    setSyncState(SyncResult::SyncRunning);
 }
 
 void Folder::slotSyncFinished(bool success)
@@ -1097,49 +1096,44 @@ void Folder::slotSyncFinished(bool success)
 
     auto anotherSyncNeeded = _engine->isAnotherSyncNeeded();
 
+    auto syncStatus = SyncResult::Status::Undefined;
+
     if (syncError) {
-        _syncResult.setStatus(SyncResult::Error);
+        syncStatus = SyncResult::Error;
     } else if (_syncResult.foundFilesNotSynced()) {
-        _syncResult.setStatus(SyncResult::Problem);
+        syncStatus = SyncResult::Problem;
     } else if (_definition.paused) {
         // Maybe the sync was terminated because the user paused the folder
-        _syncResult.setStatus(SyncResult::Paused);
+        syncStatus = SyncResult::Paused;
     } else {
-        _syncResult.setStatus(SyncResult::Success);
+        syncStatus = SyncResult::Success;
     }
 
     // Count the number of syncs that have failed in a row.
-    if (_syncResult.status() == SyncResult::Success
-        || _syncResult.status() == SyncResult::Problem) {
+    if (syncStatus == SyncResult::Success || syncStatus == SyncResult::Problem) {
         _consecutiveFailingSyncs = 0;
     } else {
         _consecutiveFailingSyncs++;
         qCInfo(lcFolder) << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
-    if (_syncResult.status() == SyncResult::Success && success) {
+    if (syncStatus == SyncResult::Success && success) {
         // Clear the white list as all the folders that should be on that list are sync-ed
         journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
     }
 
-    if ((_syncResult.status() == SyncResult::Success
-            || _syncResult.status() == SyncResult::Problem)
-        && success) {
+    if ((syncStatus == SyncResult::Success || syncStatus == SyncResult::Problem) && success) {
         if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
             _timeSinceLastFullLocalDiscovery.start();
         }
     }
 
+    if (syncStatus != SyncResult::Undefined) {
+        setSyncState(syncStatus);
+    }
 
-    emit syncStateChange();
-
-    // The syncFinished result that is to be triggered here makes the folderman
-    // clear the current running sync folder marker.
-    // Lets wait a bit to do that because, as long as this marker is not cleared,
-    // file system change notifications are ignored for that folder. And it takes
-    // some time under certain conditions to make the file system notifications
-    // all come in.
-    QTimer::singleShot(200ms, this, &Folder::slotEmitFinishedDelayed);
+    // syncStateChange from setSyncState needs to be emitted first
+    QTimer::singleShot(0, this, &Folder::slotEmitFinishedDelayed);
 
     _lastSyncDuration = std::chrono::milliseconds(_timeSinceLastSyncStart.elapsed());
     _timeSinceLastSyncDone.start();

@@ -172,20 +172,11 @@ void FolderMan::unloadFolder(Folder *f)
 
 
     if (!f->hasSetupError()) {
-        disconnect(f, &Folder::syncStarted,
-            this, &FolderMan::slotFolderSyncStarted);
-        disconnect(f, &Folder::syncFinished,
-            this, &FolderMan::slotFolderSyncFinished);
-        disconnect(f, &Folder::syncStateChange,
-            this, &FolderMan::slotForwardFolderSyncStateChange);
-        disconnect(f, &Folder::syncPausedChanged,
-            this, &FolderMan::slotFolderSyncPaused);
-        disconnect(&f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
-            _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
-        disconnect(f, &Folder::watchedFileChangedExternally,
-            &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
-
-        f->syncEngine().disconnect(f);
+        disconnect(f, nullptr, this, nullptr);
+        disconnect(f, nullptr, &f->syncEngine().syncFileStatusTracker(), nullptr);
+        disconnect(&f->syncEngine(), nullptr, f, nullptr);
+        disconnect(
+            &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged, _socketApi.data(), &SocketApi::broadcastStatusPushMessage);
     }
 }
 
@@ -723,13 +714,6 @@ void FolderMan::slotRemoveFoldersForAccount(const AccountStatePtr &accountState)
     }
 }
 
-void FolderMan::slotForwardFolderSyncStateChange()
-{
-    if (Folder *f = qobject_cast<Folder *>(sender())) {
-        emit folderSyncStateChange(f);
-    }
-}
-
 void FolderMan::slotServerVersionChanged(Account *account)
 {
     // Pause folders if the server version is unsupported
@@ -906,7 +890,7 @@ Folder *FolderMan::addFolderInternal(
     if (!folder->hasSetupError()) {
         connect(folder, &Folder::syncStarted, this, &FolderMan::slotFolderSyncStarted);
         connect(folder, &Folder::syncFinished, this, &FolderMan::slotFolderSyncFinished);
-        connect(folder, &Folder::syncStateChange, this, &FolderMan::slotForwardFolderSyncStateChange);
+        connect(folder, &Folder::syncStateChange, this, [folder, this] { Q_EMIT folderSyncStateChange(folder); });
         connect(folder, &Folder::syncPausedChanged, this, &FolderMan::slotFolderSyncPaused);
         connect(folder, &Folder::canSyncChanged, this, &FolderMan::slotFolderCanSyncChanged);
         connect(&folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
