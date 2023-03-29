@@ -469,43 +469,36 @@ bool Theme::aboutShowCopyright() const
 namespace {
     QString syncStateIconName(SyncResult result, bool sysTray, bool sysTrayMenuVisible)
     {
-        QString statusIcon;
-
         switch (result.status()) {
         case SyncResult::NotYetStarted:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case SyncResult::SyncRunning:
-            statusIcon = QStringLiteral("state-sync");
-            break;
+            return QStringLiteral("state-sync");
         case SyncResult::SyncAbortRequested:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case SyncResult::Paused:
-            statusIcon = QStringLiteral("state-pause");
-            break;
+            return QStringLiteral("state-pause");
         case SyncResult::SyncPrepare:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case SyncResult::Success:
             if (!result.hasUnresolvedConflicts()) {
-                statusIcon = QStringLiteral("state-ok");
+                return QStringLiteral("state-ok");
             }
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case SyncResult::Problem:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case SyncResult::Undefined:
             // this can happen if no sync connections are configured.
-            statusIcon = QStringLiteral("state-information");
-            break;
+            return QStringLiteral("state-information");
         case SyncResult::Offline:
-            statusIcon = QStringLiteral("state-offline");
-            break;
+            return QStringLiteral("state-offline");
         case SyncResult::Error:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case SyncResult::SetupError:
             // FIXME: Use state-problem once we have an icon.
-            statusIcon = QStringLiteral("state-error");
+            return QStringLiteral("state-error");
         }
-
-        return statusIcon;
+        Q_UNREACHABLE();
     }
 }
 
