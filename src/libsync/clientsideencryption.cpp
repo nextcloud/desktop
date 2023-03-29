@@ -1498,7 +1498,19 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
     job->start();
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)
+FolderMetadata::FolderMetadata(AccountPtr account)
+    : _account(account)
+{
+    qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
+    setupEmptyMetadata();
+}
+
+FolderMetadata::FolderMetadata(AccountPtr account,
+                               RequiredMetadataVersion requiredMetadataVersion,
+                               const QByteArray& metadata,
+                               int statusCode)
+    : _account(account)
+    , _requiredMetadataVersion(requiredMetadataVersion)
 {
     if (metadata.isEmpty() || statusCode == 404) {
         qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
@@ -1541,7 +1553,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     }
 
     auto migratedMetadata = false;
-    if (_metadataKey.isEmpty()) {
+    if (_metadataKey.isEmpty() && _requiredMetadataVersion != RequiredMetadataVersion::Version1_2) {
         qCDebug(lcCse()) << "Migrating from v1.1 to v1.2";
         migratedMetadata = true;
 
@@ -1618,6 +1630,8 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
             file.mimetype = QByteArrayLiteral("httpd/unix-directory");
         }
 
+        qCDebug(lcCseMetadata) << "encrypted file" << decryptedFileObj["filename"].toString() << decryptedFileObj["key"].toString() << it.key();
+
         _files.push_back(file);
     }
 
@@ -1631,6 +1645,10 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     // decryption finished, create new metadata key to be used for encryption
     _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
     _isMetadataSetup = true;
+
+    if (migratedMetadata) {
+        _encryptedMetadataNeedUpdate = true;
+    }
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
@@ -1790,6 +1808,11 @@ QVector<EncryptedFile> FolderMetadata::files() const {
 bool FolderMetadata::isFileDropPresent() const
 {
     return _fileDrop.size() > 0;
+}
+
+bool FolderMetadata::encryptedMetadataNeedUpdate() const
+{
+    return _encryptedMetadataNeedUpdate;
 }
 
 bool FolderMetadata::moveFromFileDropToFiles()

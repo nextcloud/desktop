@@ -243,7 +243,7 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished()
 {
     qCDebug(lcPropagateRemoteMkdir) << "Success making the new folder encrypted";
     propagator()->_activeJobList.removeOne(this);
-    _item->_isEncrypted = true;
+    _item->_isEncrypted = SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2;
     success();
 }
 

@@ -69,8 +69,8 @@ private slots:
                     QFile fakeJsonReplyFile(QStringLiteral("fakefiledrope2eefoldermetadata.json"));
                     if (fakeJsonReplyFile.open(QFile::ReadOnly)) {
                         const auto jsonDoc = QJsonDocument::fromJson(fakeJsonReplyFile.readAll());
-                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), jsonDoc.toJson()));
-                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), jsonDoc.toJson()));
+                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), FolderMetadata::RequiredMetadataVersion::Version1_2, jsonDoc.toJson()));
+                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), FolderMetadata::RequiredMetadataVersion::Version1_2, jsonDoc.toJson()));
                         [[maybe_unused]] const auto result = _parsedMetadataAfterProcessingFileDrop->moveFromFileDropToFiles();
                         reply = new FakePayloadReply(op, req, jsonDoc.toJson(), nullptr);
                         ++_getMetadataCallsCount;

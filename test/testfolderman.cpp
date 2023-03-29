@@ -123,7 +123,7 @@ private slots:
         // the server, let's just manually set the encryption bool in the folder journal
         SyncJournalFileRecord rec;
         QVERIFY(folder->journalDb()->getFileRecord(QStringLiteral("encrypted"), &rec));
-        rec._isE2eEncrypted = true;
+        rec._isE2eEncrypted = SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2;
         rec._path = QStringLiteral("encrypted").toUtf8();
         rec._type = CSyncEnums::ItemTypeDirectory;
         QVERIFY(folder->journalDb()->setFileRecord(rec));

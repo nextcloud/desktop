@@ -646,7 +646,7 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         const auto currentDirJob = directories.top().second;
         currentDirJob->appendJob(directoryPropagationJob.get());
     }
-    if (item->_isFileDropDetected) {
+    if (item->_isFileDropDetected || item->_isEncryptedMetadataNeedUpdate) {
         directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
         item->_instruction = CSYNC_INSTRUCTION_NONE;
         _anotherSyncNeeded = true;

@@ -66,7 +66,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
-    rec._isE2eEncrypted = query.intValue(11) > 0;
+    rec._isE2eEncrypted = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
     rec._lockstate._locked = query.intValue(12) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(13);
     rec._lockstate._lockOwnerId = query.stringValue(14);
@@ -968,7 +968,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(15, checksum);
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
-    query->bindValue(18, record.isE2eEncrypted());
+    query->bindValue(18, static_cast<int>(record._isE2eEncrypted));
     query->bindValue(19, record._lockstate._locked ? 1 : 0);
     query->bindValue(20, record._lockstate._lockOwnerType);
     query->bindValue(21, record._lockstate._lockOwnerDisplayName);
@@ -2692,6 +2692,12 @@ bool operator==(const SyncJournalDb::UploadInfo &lhs,
         && lhs._size == rhs._size
         && lhs._transferid == rhs._transferid
         && lhs._contentChecksum == rhs._contentChecksum;
+}
+
+QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status)
+{
+    stream << static_cast<int>(status);
+    return stream;
 }
 
 } // namespace OCC

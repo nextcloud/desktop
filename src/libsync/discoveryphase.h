@@ -145,6 +145,7 @@ public:
     void start();
     void abort();
     [[nodiscard]] bool isFileDropDetected() const;
+    [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
     // This is not actually a network job, it is just a job
 signals:
@@ -162,7 +163,7 @@ private slots:
 
 private:
 
-    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted; }
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted != SyncFileItem::EncryptionStatus::NotEncrypted; }
 
     QVector<RemoteInfo> _results;
     QString _subPath;
@@ -178,8 +179,9 @@ private:
     // If this directory is an external storage (The first item has 'M' in its permission)
     bool _isExternalStorage = false;
     // If this directory is e2ee
-    bool _isE2eEncrypted = false;
+    SyncFileItem::EncryptionStatus _isE2eEncrypted = SyncFileItem::EncryptionStatus::NotEncrypted;
     bool _isFileDropDetected = false;
+    bool _encryptedMetadataNeedUpdate = false;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;

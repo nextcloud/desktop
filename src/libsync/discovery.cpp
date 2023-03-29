@@ -532,7 +532,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
-    item->_isEncrypted = serverEntry.isE2eEncrypted();
+    item->_isEncrypted = serverEntry.isE2eEncrypted() ? SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 : SyncFileItem::EncryptionStatus::NotEncrypted;
     item->_encryptedFileName = [=] {
         if (serverEntry.e2eMangledName.isEmpty()) {
             return QString();
@@ -1292,7 +1292,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isE2eEncrypted()) {
             // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
             // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
-            item->_isEncrypted = true;
+            item->_isEncrypted = SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2;
         }
         postProcessLocalNew();
         finalize();
@@ -1850,6 +1850,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
         if (_dirItem) {
             _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
+            _dirItem->_isEncryptedMetadataNeedUpdate = serverJob->encryptedMetadataNeedUpdate();
             qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << true;
         }
         _discoveryData->_currentlyActiveJobs--;
