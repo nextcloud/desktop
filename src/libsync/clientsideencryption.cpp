@@ -1683,14 +1683,14 @@ bool FolderMetadata::checkMetadataKeyChecksum(const QByteArray &metadataKey,
 
 QByteArray FolderMetadata::computeMetadataKeyChecksum(const QByteArray &metadataKey) const
 {
-    auto checksumData = _account->e2e()->_mnemonic.remove(' ');
-    for (const auto &singleFile : _files) {
-        checksumData += singleFile.encryptedFilename;
-    }
-    checksumData += metadataKey;
-
     auto hashAlgorithm = QCryptographicHash{QCryptographicHash::Sha256};
-    hashAlgorithm.addData(checksumData.toUtf8());
+
+    hashAlgorithm.addData(_account->e2e()->_mnemonic.remove(' ').toUtf8());
+    for (const auto &singleFile : _files) {
+        hashAlgorithm.addData(singleFile.encryptedFilename.toUtf8());
+    }
+    hashAlgorithm.addData(metadataKey);
+
     return hashAlgorithm.result().toHex();
 }
 
