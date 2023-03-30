@@ -15,6 +15,7 @@ Summary
 * Bugfix - Select keep files as default action in all files removed dialog: [#10254](https://github.com/owncloud/client/issues/10254)
 * Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
+* Bugfix - Escape navigation elements from user name: [#10427](https://github.com/owncloud/client/issues/10427)
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
 * Bugfix - Clear conflict errors after they where resolved: [#10569](https://github.com/owncloud/client/issues/10569)
@@ -81,6 +82,13 @@ Details
 
    https://github.com/owncloud/client/issues/10408
    https://github.com/owncloud/client/pull/10505
+
+* Bugfix - Escape navigation elements from user name: [#10427](https://github.com/owncloud/client/issues/10427)
+
+   We use the user name as folder name, if a user name contains path navigation elements we now
+   escape them.
+
+   https://github.com/owncloud/client/issues/10427
 
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
 
