@@ -646,10 +646,23 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         const auto currentDirJob = directories.top().second;
         currentDirJob->appendJob(directoryPropagationJob.get());
     }
-    if (item->_isFileDropDetected || item->_isEncryptedMetadataNeedUpdate) {
+    if (item->_isFileDropDetected) {
         directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
         item->_instruction = CSYNC_INSTRUCTION_NONE;
         _anotherSyncNeeded = true;
+    } else if (item->_isEncryptedMetadataNeedUpdate) {
+        SyncJournalFileRecord record;
+        if (_journal->getFileRecord(item->_file, &record) && record._isE2eEncrypted == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2) {
+            qCDebug(lcPropagator) << "could have upgraded metadata";
+            item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_ERROR;
+            item->_errorString = tr("Error with the metadata. Getting unexpected metadata format.");
+            item->_status = SyncFileItem::NormalError;
+            emit itemCompleted(item);
+        } else {
+            directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+            item->_instruction = CSYNC_INSTRUCTION_NONE;
+            _anotherSyncNeeded = true;
+        }
     }
     directories.push(qMakePair(item->destination() + "/", directoryPropagationJob.release()));
 }
