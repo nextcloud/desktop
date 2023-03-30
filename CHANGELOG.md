@@ -45,6 +45,8 @@ Details
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
 
    https://github.com/owncloud/client/issues/9270
+   https://github.com/owncloud/client/pull/10536
+   https://github.com/owncloud/client/pull/10642
 
 * Bugfix - Don't abort local folder deletions on unrelated errors: [#9311](https://github.com/owncloud/client/issues/9311)
 
