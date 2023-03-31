@@ -225,6 +225,8 @@ void AccountState::signOutByUi()
     account()->credentials()->forgetSensitiveData();
     account()->clearCookieJar();
     setState(SignedOut);
+    // persist that we are signed out
+    Q_EMIT account()->wantsAccountSaved(account().data());
 }
 
 void AccountState::freshConnectionAttempt()
@@ -239,6 +241,8 @@ void AccountState::signIn()
     if (_state == SignedOut) {
         _waitingForNewCredentials = false;
         setState(Disconnected);
+        // persist that we are no longer signed out
+        Q_EMIT account()->wantsAccountSaved(account().data());
     }
 }
 

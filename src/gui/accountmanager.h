@@ -108,7 +108,7 @@ private:
 
 public slots:
     /// Saves account data, not including the credentials
-    void saveAccount(Account *a);
+    void saveAccount(Account *account, bool saveCredentials);
 
 Q_SIGNALS:
     void accountAdded(AccountStatePtr account);

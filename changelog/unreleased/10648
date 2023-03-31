@@ -1,0 +1,5 @@
+Bugfix: Ensure the account state is properly persisted
+
+We didn't properly persist the login/logout state.
+
+https://github.com/owncloud/client/issues/10648
