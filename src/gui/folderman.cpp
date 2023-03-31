@@ -1751,7 +1751,7 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
     return result;
 }
 
-QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl, GoodPathStrategy allowExisting) const
 {
     QString folder = basePath;
 
@@ -1768,9 +1768,8 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
 
     int attempt = 1;
     forever {
-        const bool isGood =
-            !QFileInfo(folder).exists()
-            && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).second.isEmpty();
+        const auto isGood = FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).second.isEmpty() &&
+            (allowExisting == GoodPathStrategy::AllowOverrideExistingPath || !QFileInfo::exists(folder));
         if (isGood) {
             break;
         }
