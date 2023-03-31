@@ -392,8 +392,8 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
 {
     // The items list is sorted in such a way that an item for a directory come before any items
     // inside that directory. For example:
-    //  - A/      <--- directory
-    //  - A/B/    <--- directory
+    //  - A       <--- directory
+    //  - A/B     <--- directory
     //  - A/B/1   <--- file
     //  - A/2     <--- file
     // This is important, because we rely on the fact that all actions for items inside a directory
@@ -407,11 +407,15 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
     // state.
 
     // The directories stack below has the current directory on top of the stack. So if we're
-    // processing directory `/A/B/C/`, then the stack looks like this:
-    //  - PropagateDirectory job for C     <--- top-of-stack
-    //  - PropagateDirectory job for B
+    // processing directory `/A/B/C`, then the stack looks like this:
+    //  - PropagateDirectory job for A/B/C  <--- top-of-stack
+    //  - PropagateDirectory job for A/B
     //  - PropagateDirectory job for A
-    //  - PropagateDirectory job for /     <--- bottom-of-stack
+    //  - PropagateDirectory job for /      <--- bottom-of-stack
+    //
+    // IMPORTANT: this parent stack is also used when a directory is removed
+    // (`CSYNC_INSTRUCTION_REMOVE` in the last step below), in order to suppress updating the etag
+    // of the parents of the to-be-removed directory. See the comment in the code for more information.
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
     directories.push({QString(), _rootJob.data()});
 
@@ -466,7 +470,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
         // the conflict handling is likely to rename the directory. This can happen
         // when there's a new local directory at the same time as a remote file.
         if (!maybeConflictDirectory.isEmpty()) {
-            if (item->destination().startsWith(maybeConflictDirectory)) {
+            if (FileSystem::isChildPathOf(item->destination(), maybeConflictDirectory)) {
                 // We're processing an item in a CONFLICT directory.
                 qCInfo(lcPropagator) << "Skipping job inside CONFLICT directory"
                                      << item->_file << item->_instruction;
@@ -480,11 +484,11 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
         }
 
         // Thirth step: pop the directory stack when we're finished there.
-        // For example, we were processing directory `A/B/`, which means that the
+        // For example, we were processing directory `A/B`, which means that the
         // `PropagateDirectory` job for `B` is on top of the stack. If we now have
-        // an item `A/c`, then we're back to processing directory `A/`, so we have
+        // an item `A/c`, then we're back to processing directory `A`, so we have
         // to pop the `B` job off of the stack.
-        while (!item->destination().startsWith(directories.top().first)) {
+        while (!FileSystem::isChildPathOf(item->destination(), directories.top().first)) {
             directories.pop();
         }
 
@@ -501,7 +505,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 // of the file we're about to delete to decide whether uploading
                 // to the new dir is ok...
                 for (const auto &item2 : qAsConst(items)) {
-                    if (item2->destination().startsWith(item->destination() + QLatin1Char('/'))) {
+                    if (item2 != item && FileSystem::isChildPathOf(item2->destination(), item->destination())) {
                         item2->_instruction = CSYNC_INSTRUCTION_NONE;
                         _anotherSyncNeeded = true;
                     }
@@ -519,14 +523,16 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
                 for (auto &dir : directories) {
-                    if (dir.second->item()->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
+                    if (dir.second->item()->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
                         dir.second->item()->_instruction = CSYNC_INSTRUCTION_NONE;
+                        _anotherSyncNeeded = true;
+                    }
                 }
             } else {
                 directories.top().second->appendJob(dir);
             }
 
-            directories.push(qMakePair(item->destination() + QLatin1Char('/'), dir));
+            directories.push(qMakePair(item->destination(), dir));
         } else {
             // The item is not a directory, but a file.
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
@@ -540,7 +546,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
             if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
                 // This might be a file or a directory on the local side. If it's a
                 // directory we want to skip processing items inside it.
-                maybeConflictDirectory = item->_file + QLatin1Char('/');
+                maybeConflictDirectory = item->_file;
             }
         }
     }
