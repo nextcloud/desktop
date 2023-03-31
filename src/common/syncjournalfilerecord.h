@@ -53,6 +53,12 @@ public:
         return !_path.isEmpty();
     }
 
+    enum class EncryptionStatus : int {
+        NotEncrypted = 0,
+        Encrypted = 1,
+        EncryptedMigratedV1_2 = 2,
+    };
+
     /** Returns the numeric part of the full id in _fileId.
      *
      * On the server this is sometimes known as the internal file id.
@@ -67,6 +73,7 @@ public:
     [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
     [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }
     [[nodiscard]] QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted != SyncJournalFileRecord::EncryptionStatus::NotEncrypted; }
 
     QByteArray _path;
     quint64 _inode = 0;
@@ -79,12 +86,14 @@ public:
     bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
-    bool _isE2eEncrypted = false;
+    EncryptionStatus _isE2eEncrypted = EncryptionStatus::NotEncrypted;
     SyncJournalFileLockInfo _lockstate;
     bool _isShared = false;
     qint64 _lastShareStateFetchedTimestamp = 0;
     bool _sharedByMe = false;
 };
+
+QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status);
 
 bool OCSYNC_EXPORT
 operator==(const SyncJournalFileRecord &lhs,

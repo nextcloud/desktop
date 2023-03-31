@@ -49,7 +49,7 @@ PropagateRemoteDeleteEncryptedRootFolder::PropagateRemoteDeleteEncryptedRootFold
 
 void PropagateRemoteDeleteEncryptedRootFolder::start()
 {
-    Q_ASSERT(_item->_isEncrypted);
+    Q_ASSERT(_item->isEncrypted());
 
     const bool listFilesResult = _propagator->_journal->listFilesInPath(_item->_file.toUtf8(), [this](const OCC::SyncJournalFileRecord &record) {
         _nestedItems[record._e2eMangledName] = record;
@@ -81,7 +81,9 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
         return;
     }
 
-    FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+    FolderMetadata metadata(_propagator->account(),
+                            _item->_isEncrypted == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                            json.toJson(QJsonDocument::Compact), statusCode);
 
     if (!metadata.isMetadataSetup()) {
         taskFailed();

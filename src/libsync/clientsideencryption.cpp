@@ -1,24 +1,16 @@
-#include <openssl/rsa.h>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
-#include <openssl/engine.h>
-#include <openssl/rand.h>
-
-
 #include "clientsideencryption.h"
+
 #include "account.h"
 #include "capabilities.h"
 #include "networkjobs.h"
 #include "clientsideencryptionjobs.h"
 #include "theme.h"
 #include "creds/abstractcredentials.h"
+#include "common/utility.h"
+#include "common/constants.h"
+#include "wordlist.h"
 
-#include <map>
-#include <string>
-#include <algorithm>
-
-#include <cstdio>
+#include <qt5keychain/keychain.h>
 
 #include <QDebug>
 #include <QLoggingCategory>
@@ -33,12 +25,20 @@
 #include <QUuid>
 #include <QScopeGuard>
 #include <QRandomGenerator>
+#include <QCryptographicHash>
 
-#include <qt5keychain/keychain.h>
-#include <common/utility.h>
-#include <common/constants.h>
+#include <map>
+#include <string>
+#include <algorithm>
 
-#include "wordlist.h"
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/engine.h>
+#include <openssl/rand.h>
+
+#include <cstdio>
 
 QDebug operator<<(QDebug out, const std::string& str)
 {
@@ -61,259 +61,263 @@ QString e2eeBaseUrl()
 }
 
 namespace {
-    constexpr char accountProperty[] = "account";
+constexpr char accountProperty[] = "account";
 
-    const char e2e_cert[] = "_e2e-certificate";
-    const char e2e_private[] = "_e2e-private";
-    const char e2e_mnemonic[] = "_e2e-mnemonic";
+const char e2e_cert[] = "_e2e-certificate";
+const char e2e_private[] = "_e2e-private";
+const char e2e_mnemonic[] = "_e2e-mnemonic";
 
-    constexpr qint64 blockSize = 1024;
+constexpr auto metadataKeyJsonKey = "metadataKey";
 
-    QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
-    {
-        const auto separator = QByteArrayLiteral("fA=="); // BASE64 encoded '|'
-        auto result = QList<QByteArray>();
+constexpr qint64 blockSize = 1024;
 
-        auto data = cipher;
-        auto index = data.indexOf(separator);
-        while (index >=0) {
-            result.append(data.left(index));
-            data = data.mid(index + separator.size());
-            index = data.indexOf(separator);
-        }
+constexpr auto metadataKeySize = 16;
 
-        result.append(data);
-        return result;
+QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
+{
+    const auto separator = QByteArrayLiteral("fA=="); // BASE64 encoded '|'
+    auto result = QList<QByteArray>();
+
+    auto data = cipher;
+    auto index = data.indexOf(separator);
+    while (index >=0) {
+        result.append(data.left(index));
+        data = data.mid(index + separator.size());
+        index = data.indexOf(separator);
     }
 
-    QList<QByteArray> splitCipherParts(const QByteArray &data)
-    {
-        const auto isOldFormat = !data.contains('|');
-        const auto parts = isOldFormat ? oldCipherFormatSplit(data) : data.split('|');
-        qCInfo(lcCse()) << "found parts:" << parts << "old format?" << isOldFormat;
-        return parts;
-    }
+    result.append(data);
+    return result;
+}
+
+QList<QByteArray> splitCipherParts(const QByteArray &data)
+{
+    const auto isOldFormat = !data.contains('|');
+    const auto parts = isOldFormat ? oldCipherFormatSplit(data) : data.split('|');
+    qCInfo(lcCse()) << "found parts:" << parts << "old format?" << isOldFormat;
+    return parts;
+}
 } // ns
 
 namespace {
-    unsigned char* unsignedData(QByteArray& array)
+unsigned char* unsignedData(QByteArray& array)
+{
+    return (unsigned char*)array.data();
+}
+
+       //
+       // Simple classes for safe (RAII) handling of OpenSSL
+       // data structures
+       //
+
+class CipherCtx {
+public:
+    CipherCtx()
+        : _ctx(EVP_CIPHER_CTX_new())
     {
-        return (unsigned char*)array.data();
     }
 
-    //
-    // Simple classes for safe (RAII) handling of OpenSSL
-    // data structures
-    //
-
-    class CipherCtx {
-    public:
-        CipherCtx()
-            : _ctx(EVP_CIPHER_CTX_new())
-        {
-        }
-
-        ~CipherCtx()
-        {
-            EVP_CIPHER_CTX_free(_ctx);
-        }
-
-        operator EVP_CIPHER_CTX*()
-        {
-            return _ctx;
-        }
-
-    private:
-        Q_DISABLE_COPY(CipherCtx)
-
-        EVP_CIPHER_CTX* _ctx;
-    };
-
-    class Bio {
-    public:
-        Bio()
-            : _bio(BIO_new(BIO_s_mem()))
-        {
-        }
-
-        ~Bio()
-        {
-            BIO_free_all(_bio);
-        }
-
-        operator BIO*()
-        {
-            return _bio;
-        }
-
-    private:
-        Q_DISABLE_COPY(Bio)
-
-        BIO* _bio;
-    };
-
-    class PKeyCtx {
-    public:
-        explicit PKeyCtx(int id, ENGINE *e = nullptr)
-            : _ctx(EVP_PKEY_CTX_new_id(id, e))
-        {
-        }
-
-        ~PKeyCtx()
-        {
-            EVP_PKEY_CTX_free(_ctx);
-        }
-
-        // The move constructor is needed for pre-C++17 where
-        // return-value optimization (RVO) is not obligatory
-        // and we have a `forKey` static function that returns
-        // an instance of this class
-        PKeyCtx(PKeyCtx&& other)
-        {
-            std::swap(_ctx, other._ctx);
-        }
-
-        PKeyCtx& operator=(PKeyCtx&& other) = delete;
-
-        static PKeyCtx forKey(EVP_PKEY *pkey, ENGINE *e = nullptr)
-        {
-            PKeyCtx ctx;
-            ctx._ctx = EVP_PKEY_CTX_new(pkey, e);
-            return ctx;
-        }
-
-        operator EVP_PKEY_CTX*()
-        {
-            return _ctx;
-        }
-
-    private:
-        Q_DISABLE_COPY(PKeyCtx)
-
-        PKeyCtx() = default;
-
-        EVP_PKEY_CTX* _ctx = nullptr;
-    };
-
-    }
-
-    class ClientSideEncryption::PKey {
-    public:
-        ~PKey()
-        {
-            EVP_PKEY_free(_pkey);
-        }
-
-        // The move constructor is needed for pre-C++17 where
-        // return-value optimization (RVO) is not obligatory
-        // and we have a static functions that return
-        // an instance of this class
-        PKey(PKey&& other)
-        {
-            std::swap(_pkey, other._pkey);
-        }
-
-        PKey& operator=(PKey&& other) = delete;
-
-        static PKey readPublicKey(Bio &bio)
-        {
-            PKey result;
-            result._pkey = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
-            return result;
-        }
-
-        static PKey readPrivateKey(Bio &bio)
-        {
-            PKey result;
-            result._pkey = PEM_read_bio_PrivateKey(bio, nullptr, nullptr, nullptr);
-            return result;
-        }
-
-        static PKey generate(PKeyCtx& ctx)
-        {
-            PKey result;
-            if (EVP_PKEY_keygen(ctx, &result._pkey) <= 0) {
-                result._pkey = nullptr;
-            }
-            return result;
-        }
-
-        operator EVP_PKEY*()
-        {
-            return _pkey;
-        }
-
-        operator EVP_PKEY*() const
-        {
-            return _pkey;
-        }
-
-    private:
-        Q_DISABLE_COPY(PKey)
-
-        PKey() = default;
-
-        EVP_PKEY* _pkey = nullptr;
-    };
-
-    namespace
+    ~CipherCtx()
     {
-    class X509Certificate {
-    public:
-        ~X509Certificate()
-        {
-            X509_free(_certificate);
-        }
-
-        // The move constructor is needed for pre-C++17 where
-        // return-value optimization (RVO) is not obligatory
-        // and we have a static functions that return
-        // an instance of this class
-        X509Certificate(X509Certificate&& other)
-        {
-            std::swap(_certificate, other._certificate);
-        }
-
-        X509Certificate& operator=(X509Certificate&& other) = delete;
-
-        static X509Certificate readCertificate(Bio &bio)
-        {
-            X509Certificate result;
-            result._certificate = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
-            return result;
-        }
-
-        operator X509*()
-        {
-            return _certificate;
-        }
-
-        operator X509*() const
-        {
-            return _certificate;
-        }
-
-    private:
-        Q_DISABLE_COPY(X509Certificate)
-
-        X509Certificate() = default;
-
-        X509* _certificate = nullptr;
-    };
-
-    QByteArray BIO2ByteArray(Bio &b) {
-        auto pending = static_cast<int>(BIO_ctrl_pending(b));
-        QByteArray res(pending, '\0');
-        BIO_read(b, unsignedData(res), pending);
-        return res;
+        EVP_CIPHER_CTX_free(_ctx);
     }
 
-    QByteArray handleErrors()
+    operator EVP_CIPHER_CTX*()
     {
-        Bio bioErrors;
-        ERR_print_errors(bioErrors); // This line is not printing anything.
-        return BIO2ByteArray(bioErrors);
+        return _ctx;
     }
+
+private:
+    Q_DISABLE_COPY(CipherCtx)
+
+    EVP_CIPHER_CTX* _ctx;
+};
+
+class Bio {
+public:
+    Bio()
+        : _bio(BIO_new(BIO_s_mem()))
+    {
+    }
+
+    ~Bio()
+    {
+        BIO_free_all(_bio);
+    }
+
+    operator BIO*()
+    {
+        return _bio;
+    }
+
+private:
+    Q_DISABLE_COPY(Bio)
+
+    BIO* _bio;
+};
+
+class PKeyCtx {
+public:
+    explicit PKeyCtx(int id, ENGINE *e = nullptr)
+        : _ctx(EVP_PKEY_CTX_new_id(id, e))
+    {
+    }
+
+    ~PKeyCtx()
+    {
+        EVP_PKEY_CTX_free(_ctx);
+    }
+
+    // The move constructor is needed for pre-C++17 where
+    // return-value optimization (RVO) is not obligatory
+    // and we have a `forKey` static function that returns
+    // an instance of this class
+    PKeyCtx(PKeyCtx&& other)
+    {
+        std::swap(_ctx, other._ctx);
+    }
+
+    PKeyCtx& operator=(PKeyCtx&& other) = delete;
+
+    static PKeyCtx forKey(EVP_PKEY *pkey, ENGINE *e = nullptr)
+    {
+        PKeyCtx ctx;
+        ctx._ctx = EVP_PKEY_CTX_new(pkey, e);
+        return ctx;
+    }
+
+    operator EVP_PKEY_CTX*()
+    {
+        return _ctx;
+    }
+
+private:
+    Q_DISABLE_COPY(PKeyCtx)
+
+    PKeyCtx() = default;
+
+    EVP_PKEY_CTX* _ctx = nullptr;
+};
+
+}
+
+class ClientSideEncryption::PKey {
+public:
+    ~PKey()
+    {
+        EVP_PKEY_free(_pkey);
+    }
+
+    // The move constructor is needed for pre-C++17 where
+    // return-value optimization (RVO) is not obligatory
+    // and we have a static functions that return
+    // an instance of this class
+    PKey(PKey&& other)
+    {
+        std::swap(_pkey, other._pkey);
+    }
+
+    PKey& operator=(PKey&& other) = delete;
+
+    static PKey readPublicKey(Bio &bio)
+    {
+        PKey result;
+        result._pkey = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
+        return result;
+    }
+
+    static PKey readPrivateKey(Bio &bio)
+    {
+        PKey result;
+        result._pkey = PEM_read_bio_PrivateKey(bio, nullptr, nullptr, nullptr);
+        return result;
+    }
+
+    static PKey generate(PKeyCtx& ctx)
+    {
+        PKey result;
+        if (EVP_PKEY_keygen(ctx, &result._pkey) <= 0) {
+            result._pkey = nullptr;
+        }
+        return result;
+    }
+
+    operator EVP_PKEY*()
+    {
+        return _pkey;
+    }
+
+    operator EVP_PKEY*() const
+    {
+        return _pkey;
+    }
+
+private:
+    Q_DISABLE_COPY(PKey)
+
+    PKey() = default;
+
+    EVP_PKEY* _pkey = nullptr;
+};
+
+namespace
+{
+class X509Certificate {
+public:
+    ~X509Certificate()
+    {
+        X509_free(_certificate);
+    }
+
+    // The move constructor is needed for pre-C++17 where
+    // return-value optimization (RVO) is not obligatory
+    // and we have a static functions that return
+    // an instance of this class
+    X509Certificate(X509Certificate&& other)
+    {
+        std::swap(_certificate, other._certificate);
+    }
+
+    X509Certificate& operator=(X509Certificate&& other) = delete;
+
+    static X509Certificate readCertificate(Bio &bio)
+    {
+        X509Certificate result;
+        result._certificate = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
+        return result;
+    }
+
+    operator X509*()
+    {
+        return _certificate;
+    }
+
+    operator X509*() const
+    {
+        return _certificate;
+    }
+
+private:
+    Q_DISABLE_COPY(X509Certificate)
+
+    X509Certificate() = default;
+
+    X509* _certificate = nullptr;
+};
+
+QByteArray BIO2ByteArray(Bio &b) {
+    auto pending = static_cast<int>(BIO_ctrl_pending(b));
+    QByteArray res(pending, '\0');
+    BIO_read(b, unsignedData(res), pending);
+    return res;
+}
+
+QByteArray handleErrors()
+{
+    Bio bioErrors;
+    ERR_print_errors(bioErrors); // This line is not printing anything.
+    return BIO2ByteArray(bioErrors);
+}
 }
 
 
@@ -357,7 +361,7 @@ QByteArray generatePassword(const QString& wordlist, const QByteArray& salt) {
         iterationCount,                         // int iterations,
         keyLength,                              // int keylen,
         unsignedData(secretKey)                 // unsigned char *out
-    );
+        );
 
     if (ret != 1) {
         qCInfo(lcCse()) << "Failed to generate encryption key";
@@ -370,10 +374,10 @@ QByteArray generatePassword(const QString& wordlist, const QByteArray& salt) {
 }
 
 QByteArray encryptPrivateKey(
-        const QByteArray& key,
-        const QByteArray& privateKey,
-        const QByteArray& salt
-        ) {
+    const QByteArray& key,
+    const QByteArray& privateKey,
+    const QByteArray& salt
+    ) {
 
     QByteArray iv = generateRandom(12);
 
@@ -883,10 +887,10 @@ void ClientSideEncryption::initialize(const AccountPtr &account)
 void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account)
 {
     const QString kck = AbstractCredentials::keychainKey(
-                account->url().toString(),
-                account->credentials()->user() + e2e_cert,
-                account->id()
-    );
+        account->url().toString(),
+        account->credentials()->user() + e2e_cert,
+        account->id()
+        );
 
     auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setProperty(accountProperty, QVariant::fromValue(account));
@@ -970,10 +974,10 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming)
     qCInfo(lcCse()) << "Public key fetched from keychain";
 
     const QString kck = AbstractCredentials::keychainKey(
-                account->url().toString(),
-                account->credentials()->user() + e2e_private,
-                account->id()
-    );
+        account->url().toString(),
+        account->credentials()->user() + e2e_private,
+        account->id()
+        );
 
     auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setProperty(accountProperty, QVariant::fromValue(account));
@@ -1008,10 +1012,10 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
     qCInfo(lcCse()) << "Private key fetched from keychain";
 
     const QString kck = AbstractCredentials::keychainKey(
-                account->url().toString(),
-                account->credentials()->user() + e2e_mnemonic,
-                account->id()
-    );
+        account->url().toString(),
+        account->credentials()->user() + e2e_mnemonic,
+        account->id()
+        );
 
     auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setProperty(accountProperty, QVariant::fromValue(account));
@@ -1046,10 +1050,10 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming)
 void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
 {
     const QString kck = AbstractCredentials::keychainKey(
-                account->url().toString(),
-                account->credentials()->user() + e2e_private,
-                account->id()
-    );
+        account->url().toString(),
+        account->credentials()->user() + e2e_private,
+        account->id()
+        );
 
     auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
@@ -1065,10 +1069,10 @@ void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
 void ClientSideEncryption::writeCertificate(const AccountPtr &account)
 {
     const QString kck = AbstractCredentials::keychainKey(
-                account->url().toString(),
-                account->credentials()->user() + e2e_cert,
-                account->id()
-    );
+        account->url().toString(),
+        account->credentials()->user() + e2e_cert,
+        account->id()
+        );
 
     auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
@@ -1084,10 +1088,10 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
 void ClientSideEncryption::writeMnemonic(const AccountPtr &account)
 {
     const QString kck = AbstractCredentials::keychainKey(
-                account->url().toString(),
-                account->credentials()->user() + e2e_mnemonic,
-                account->id()
-    );
+        account->url().toString(),
+        account->credentials()->user() + e2e_mnemonic,
+        account->id()
+        );
 
     auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
@@ -1240,11 +1244,11 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
     qCInfo(lcCse()) << "Getting the following array for the account Id" << cnArray;
 
     auto certParams = std::map<const char *, const char*>{
-      {"C", "DE"},
-      {"ST", "Baden-Wuerttemberg"},
-      {"L", "Stuttgart"},
-      {"O","Nextcloud"},
-      {"CN", cnArray.constData()}
+        {"C", "DE"},
+        {"ST", "Baden-Wuerttemberg"},
+        {"L", "Stuttgart"},
+        {"O","Nextcloud"},
+        {"CN", cnArray.constData()}
     };
 
     int ret = 0;
@@ -1253,8 +1257,8 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
     // 2. set version of x509 req
     X509_REQ *x509_req = X509_REQ_new();
     auto release_on_exit_x509_req = qScopeGuard([&] {
-                X509_REQ_free(x509_req);
-            });
+        X509_REQ_free(x509_req);
+    });
 
     ret = X509_REQ_set_version(x509_req, nVersion);
 
@@ -1341,15 +1345,15 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
     connect(job, &StorePrivateKeyApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
         Q_UNUSED(doc);
         switch(retCode) {
-            case 200:
-                qCInfo(lcCse()) << "Private key stored encrypted on server.";
-                writePrivateKey(account);
-                writeCertificate(account);
-                writeMnemonic(account);
-                emit initializationFinished(true);
-                break;
-            default:
-                qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
+        case 200:
+            qCInfo(lcCse()) << "Private key stored encrypted on server.";
+            writePrivateKey(account);
+            writeCertificate(account);
+            writeMnemonic(account);
+            emit initializationFinished(true);
+            break;
+        default:
+            qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
         }
     });
     job->start();
@@ -1423,16 +1427,16 @@ void ClientSideEncryption::getPrivateKeyFromServer(const AccountPtr &account)
     qCInfo(lcCse()) << "Retrieving private key from server";
     auto job = new JsonApiJob(account, e2eeBaseUrl() + "private-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
-            if (retCode == 200) {
-                QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
-                qCInfo(lcCse()) << key;
-                qCInfo(lcCse()) << "Found private key, lets decrypt it!";
-                decryptPrivateKey(account, key.toLocal8Bit());
-            } else if (retCode == 404) {
-                qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
-            } else {
-                qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
-            }
+        if (retCode == 200) {
+            QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
+            qCInfo(lcCse()) << key;
+            qCInfo(lcCse()) << "Found private key, lets decrypt it!";
+            decryptPrivateKey(account, key.toLocal8Bit());
+        } else if (retCode == 404) {
+            qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
+        } else {
+            qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+        }
     });
     job->start();
 }
@@ -1442,23 +1446,23 @@ void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
     qCInfo(lcCse()) << "Retrieving public key from server";
     auto job = new JsonApiJob(account, e2eeBaseUrl() + "public-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this, account](const QJsonDocument& doc, int retCode) {
-            if (retCode == 200) {
-                QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
-                _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
-                _publicKey = _certificate.publicKey();
-                qCInfo(lcCse()) << "Found Public key, requesting Server Public Key. Public key:" << publicKey;
-                fetchAndValidatePublicKeyFromServer(account);
-            } else if (retCode == 404) {
-                qCInfo(lcCse()) << "No public key on the server";
-                if (!account->e2eEncryptionKeysGenerationAllowed()) {
-                    qCInfo(lcCse()) << "User did not allow E2E keys generation.";
-                    emit initializationFinished();
-                    return;
-                }
-                generateKeyPair(account);
-            } else {
-                qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+        if (retCode == 200) {
+            QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
+            _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
+            _publicKey = _certificate.publicKey();
+            qCInfo(lcCse()) << "Found Public key, requesting Server Public Key. Public key:" << publicKey;
+            fetchAndValidatePublicKeyFromServer(account);
+        } else if (retCode == 404) {
+            qCInfo(lcCse()) << "No public key on the server";
+            if (!account->e2eEncryptionKeysGenerationAllowed()) {
+                qCInfo(lcCse()) << "User did not allow E2E keys generation.";
+                emit initializationFinished();
+                return;
             }
+            generateKeyPair(account);
+        } else {
+            qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+        }
     });
     job->start();
 }
@@ -1494,7 +1498,19 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
     job->start();
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)
+FolderMetadata::FolderMetadata(AccountPtr account)
+    : _account(account)
+{
+    qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
+    setupEmptyMetadata();
+}
+
+FolderMetadata::FolderMetadata(AccountPtr account,
+                               RequiredMetadataVersion requiredMetadataVersion,
+                               const QByteArray& metadata,
+                               int statusCode)
+    : _account(account)
+    , _requiredMetadataVersion(requiredMetadataVersion)
 {
     if (metadata.isEmpty() || statusCode == 404) {
         qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
@@ -1507,96 +1523,97 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, i
 
 void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 {
-  /* This is the json response from the server, it contains two extra objects that we are *not* interested.
-  * ocs and data.
-  */
-  QJsonDocument doc = QJsonDocument::fromJson(metadata);
-  qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
-
-  // The metadata is being retrieved as a string stored in a json.
-  // This *seems* to be broken but the RFC doesn't explicits how it wants.
-  // I'm currently unsure if this is error on my side or in the server implementation.
-  // And because inside of the meta-data there's an object called metadata, without '-'
-  // make it really different.
-
-  QString metaDataStr = doc.object()["ocs"]
-                         .toObject()["data"]
-                         .toObject()["meta-data"]
-                         .toString();
-
-  QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
-  QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
-  QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
-
-  if (metadataKeys.isEmpty()) {
-      qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
-      return;
-  }
-
-  QByteArray sharing = metadataObj["sharing"].toString().toLocal8Bit();
-  QJsonObject files = metaDataDoc.object()["files"].toObject();
-
-  _fileDrop = metaDataDoc.object().value("filedrop").toObject();
-
-  QJsonDocument debugHelper;
-  debugHelper.setObject(metadataKeys);
-  qCDebug(lcCse) << "Keys: " << debugHelper.toJson(QJsonDocument::Compact);
-
-  // Iterate over the document to store the keys. I'm unsure that the keys are in order,
-  // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
-  for(auto it = metadataKeys.constBegin(), end = metadataKeys.constEnd(); it != end; it++) {
-    QByteArray currB64Pass = it.value().toString().toLocal8Bit();
-    /*
-     * We have to base64 decode the metadatakey here. This was a misunderstanding in the RFC
-     * Now we should be compatible with Android and IOS. Maybe we can fix it later.
+    /* This is the json response from the server, it contains two extra objects that we are *not* interested.
+     * ocs and data.
      */
-    QByteArray b64DecryptedKey = decryptData(currB64Pass);
-    if (b64DecryptedKey.isEmpty()) {
-      qCDebug(lcCse()) << "Could not decrypt metadata for key" << it.key();
-      continue;
+    QJsonDocument doc = QJsonDocument::fromJson(metadata);
+    qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
+
+    // The metadata is being retrieved as a string stored in a json.
+    // This *seems* to be broken but the RFC doesn't explicits how it wants.
+    // I'm currently unsure if this is error on my side or in the server implementation.
+    // And because inside of the meta-data there's an object called metadata, without '-'
+    // make it really different.
+
+    QString metaDataStr = doc.object()["ocs"]
+                              .toObject()["data"]
+                              .toObject()["meta-data"]
+                              .toString();
+
+    QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
+    QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
+    QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
+
+    const auto metadataKeyFromJson = metadataObj[metadataKeyJsonKey].toString().toLocal8Bit();
+    if (!metadataKeyFromJson.isEmpty()) {
+        const auto decryptedMetadataKeyBase64 = decryptData(metadataKeyFromJson);
+        if (!decryptedMetadataKeyBase64.isEmpty()) {
+            _metadataKey = QByteArray::fromBase64(decryptedMetadataKeyBase64);
+        }
     }
 
-    QByteArray decryptedKey = QByteArray::fromBase64(b64DecryptedKey);
-    _metadataKeys.insert(it.key().toInt(), decryptedKey);
-  }
+    auto migratedMetadata = false;
+    if (_metadataKey.isEmpty() && _requiredMetadataVersion != RequiredMetadataVersion::Version1_2) {
+        qCDebug(lcCse()) << "Migrating from v1.1 to v1.2";
+        migratedMetadata = true;
 
-  // Cool, We actually have the key, we can decrypt the rest of the metadata.
-  qCDebug(lcCse) << "Sharing: " << sharing;
-  if (sharing.size()) {
-      const auto metaDataKey = !_metadataKeys.isEmpty() ? _metadataKeys.last() : QByteArray{};
-      if (metaDataKey.isEmpty()) {
-          qCDebug(lcCse) << "Failed to decrypt sharing! Empty metadata key!";
-      } else {
-          auto sharingDecrypted = decryptJsonObject(sharing, metaDataKey);
-          qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
+        if (metadataKeys.isEmpty()) {
+            qCDebug(lcCse()) << "Could not migrate. No metadata keys found!";
+            return;
+        }
 
-          // Sharing is also a JSON object, so extract it and populate.
-          auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
-          auto sharingObj = sharingDoc.object();
-          for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
-              _sharing.push_back({it.key(), it.value().toString()});
-          }
-      }
-  } else {
-      qCDebug(lcCse) << "Skipping sharing section since it is empty";
-  }
+        const auto lastMetadataKey = metadataKeys.keys().last();
+        const auto decryptedMetadataKeyBase64 = decryptData(metadataKeys.value(lastMetadataKey).toString().toLocal8Bit());
+        if (!decryptedMetadataKeyBase64.isEmpty()) {
+            _metadataKey = QByteArray::fromBase64(decryptedMetadataKeyBase64);
+        }
+    }
 
-    for (auto it = files.constBegin(), end = files.constEnd(); it != end; it++) {
+    if (_metadataKey.isEmpty()) {
+        qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
+        return;
+    }
+
+    const auto sharing = metadataObj["sharing"].toString().toLocal8Bit();
+    const auto files = metaDataDoc.object()["files"].toObject();
+    const auto metadataKey = metaDataDoc.object()["metadata"].toObject()["metadataKey"].toString().toUtf8();
+    const auto metadataKeyChecksum = metaDataDoc.object()["metadata"].toObject()["checksum"].toString().toUtf8();
+
+    _fileDrop = metaDataDoc.object().value("filedrop").toObject();
+
+    // Iterate over the document to store the keys. I'm unsure that the keys are in order,
+    // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
+
+    // Cool, We actually have the key, we can decrypt the rest of the metadata.
+    qCDebug(lcCse) << "Sharing: " << sharing;
+    if (sharing.size()) {
+        auto sharingDecrypted = decryptJsonObject(sharing, _metadataKey);
+        qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
+
+        // Sharing is also a JSON object, so extract it and populate.
+        auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
+        auto sharingObj = sharingDoc.object();
+        for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
+            _sharing.push_back({it.key(), it.value().toString()});
+        }
+    } else {
+        qCDebug(lcCse) << "Skipping sharing section since it is empty";
+    }
+
+    for (auto it = files.constBegin(); it != files.constEnd(); ++it) {
         EncryptedFile file;
         file.encryptedFilename = it.key();
 
-        auto fileObj = it.value().toObject();
-        file.metadataKey = fileObj["metadataKey"].toInt();
+        const auto fileObj = it.value().toObject();
         file.authenticationTag = QByteArray::fromBase64(fileObj["authenticationTag"].toString().toLocal8Bit());
         file.initializationVector = QByteArray::fromBase64(fileObj["initializationVector"].toString().toLocal8Bit());
 
-        //Decrypt encrypted part
-        const auto key = _metadataKeys.value(file.metadataKey, {});
-        auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = !key.isEmpty() ? decryptJsonObject(encryptedFile, key) : QByteArray{};
-        auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
+        // Decrypt encrypted part
+        const auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
+        const auto decryptedFile = decryptJsonObject(encryptedFile, _metadataKey);
+        const auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
 
-        auto decryptedFileObj = decryptedFileDoc.object();
+        const auto decryptedFileObj = decryptedFileDoc.object();
 
         if (decryptedFileObj["filename"].toString().isEmpty()) {
             qCDebug(lcCse) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Indented);
@@ -1607,14 +1624,30 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         file.originalFilename = decryptedFileObj["filename"].toString();
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
         file.mimetype = decryptedFileObj["mimetype"].toString().toLocal8Bit();
-        file.fileVersion = decryptedFileObj["version"].toInt();
 
         // In case we wrongly stored "inode/directory" we try to recover from it
         if (file.mimetype == QByteArrayLiteral("inode/directory")) {
             file.mimetype = QByteArrayLiteral("httpd/unix-directory");
         }
 
+        qCDebug(lcCseMetadata) << "encrypted file" << decryptedFileObj["filename"].toString() << decryptedFileObj["key"].toString() << it.key();
+
         _files.push_back(file);
+    }
+
+    if (!migratedMetadata && !checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum)) {
+        qCInfo(lcCseMetadata) << "checksum comparison failed" << "server value" << metadataKeyChecksum << "client value" << computeMetadataKeyChecksum(metadataKey);
+        _metadataKey.clear();
+        _files.clear();
+        return;
+    }
+
+    // decryption finished, create new metadata key to be used for encryption
+    _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
+    _isMetadataSetup = true;
+
+    if (migratedMetadata) {
+        _encryptedMetadataNeedUpdate = true;
     }
 }
 
@@ -1642,10 +1675,28 @@ QByteArray FolderMetadata::decryptData(const QByteArray &data) const
 
     if (decryptResult.isEmpty())
     {
-      qCDebug(lcCse()) << "ERROR. Could not decrypt the metadata key";
-      return {};
+        qCDebug(lcCse()) << "ERROR. Could not decrypt the metadata key";
+        return {};
     }
     return QByteArray::fromBase64(decryptResult);
+}
+
+QByteArray FolderMetadata::decryptDataUsingKey(const QByteArray &data,
+                                               const QByteArray &key,
+                                               const QByteArray &authenticationTag,
+                                               const QByteArray &initializationVector) const
+{
+    // Also base64 decode the result
+    QByteArray decryptResult = EncryptionHelper::decryptStringSymmetric(QByteArray::fromBase64(key),
+                                                                        data + '|' + initializationVector + '|' + authenticationTag);
+
+    if (decryptResult.isEmpty())
+    {
+        qCDebug(lcCse()) << "ERROR. Could not decrypt";
+        return {};
+    }
+
+    return decryptResult;
 }
 
 // AES/GCM/NoPadding (128 bit key size)
@@ -1659,44 +1710,55 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
     return EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata);
 }
 
+bool FolderMetadata::checkMetadataKeyChecksum(const QByteArray &metadataKey,
+                                              const QByteArray &metadataKeyChecksum) const
+{
+    const auto referenceMetadataKeyValue = computeMetadataKeyChecksum(metadataKey);
+    return referenceMetadataKeyValue == metadataKeyChecksum;
+}
+
+QByteArray FolderMetadata::computeMetadataKeyChecksum(const QByteArray &metadataKey) const
+{
+    auto hashAlgorithm = QCryptographicHash{QCryptographicHash::Sha256};
+
+    hashAlgorithm.addData(_account->e2e()->_mnemonic.remove(' ').toUtf8());
+    for (const auto &singleFile : _files) {
+        hashAlgorithm.addData(singleFile.encryptedFilename.toUtf8());
+    }
+    hashAlgorithm.addData(metadataKey);
+
+    return hashAlgorithm.result().toHex();
+}
+
 bool FolderMetadata::isMetadataSetup() const
 {
-    return !_metadataKeys.isEmpty();
+    return _isMetadataSetup;
 }
 
 void FolderMetadata::setupEmptyMetadata() {
     qCDebug(lcCse) << "Settint up empty metadata";
-    QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
-    _metadataKeys.insert(0, newMetadataPass);
-
+    _metadataKey = EncryptionHelper::generateRandom(metadataKeySize);
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
     QString displayName = _account->displayName();
 
     _sharing.append({displayName, publicKey});
+
+    _isMetadataSetup = true;
 }
 
 QByteArray FolderMetadata::encryptedMetadata() const {
     qCDebug(lcCse) << "Generating metadata";
 
-    if (_metadataKeys.isEmpty()) {
+    if (_metadataKey.isEmpty()) {
         qCDebug(lcCse) << "Metadata generation failed! Empty metadata key!";
         return {};
     }
-
-    QJsonObject metadataKeys;
-    for (auto it = _metadataKeys.constBegin(), end = _metadataKeys.constEnd(); it != end; it++) {
-        /*
-         * We have to already base64 encode the metadatakey here. This was a misunderstanding in the RFC
-         * Now we should be compatible with Android and IOS. Maybe we can fix it later.
-         */
-        const QByteArray encryptedKey = encryptData(it.value().toBase64());
-        metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
-    }
-
-    QJsonObject metadata = {
-      {"metadataKeys", metadataKeys},
-      // {"sharing", sharingEncrypted},
-      {"version", 1}
+    const auto version = _account->capabilities().clientSideEncryptionVersion();
+    const auto encryptedMetadataKey = encryptData(_metadataKey.toBase64());
+    QJsonObject metadata{
+        {"version", version},
+        {metadataKeyJsonKey, QJsonValue::fromVariant(encryptedMetadataKey)},
+        {"checksum", QJsonValue::fromVariant(computeMetadataKeyChecksum(encryptedMetadataKey))},
     };
 
     QJsonObject files;
@@ -1705,28 +1767,37 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         encrypted.insert("key", QString(it->encryptionKey.toBase64()));
         encrypted.insert("filename", it->originalFilename);
         encrypted.insert("mimetype", QString(it->mimetype));
-        encrypted.insert("version", it->fileVersion);
         QJsonDocument encryptedDoc;
         encryptedDoc.setObject(encrypted);
 
-        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
+        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKey);
         if (encryptedEncrypted.isEmpty()) {
-          qCDebug(lcCse) << "Metadata generation failed!";
+            qCDebug(lcCse) << "Metadata generation failed!";
         }
-
         QJsonObject file;
         file.insert("encrypted", encryptedEncrypted);
         file.insert("initializationVector", QString(it->initializationVector.toBase64()));
         file.insert("authenticationTag", QString(it->authenticationTag.toBase64()));
-        file.insert("metadataKey", _metadataKeys.lastKey());
 
         files.insert(it->encryptedFilename, file);
     }
 
-    QJsonObject metaObject = {
-      {"metadata", metadata},
-      {"files", files}
-    };
+    QJsonObject filedrop;
+    for (auto fileDropIt = _fileDrop.constBegin(), end = _fileDrop.constEnd(); fileDropIt != end; ++fileDropIt) {
+        filedrop.insert(fileDropIt.key(), fileDropIt.value());
+    }
+
+    auto metaObject = QJsonObject{
+                                  {"metadata", metadata},
+                                  };
+
+    if (files.count()) {
+        metaObject.insert("files", files);
+    }
+
+    if (filedrop.count()) {
+        metaObject.insert("filedrop", filedrop);
+    }
 
     QJsonDocument internalMetadata;
     internalMetadata.setObject(metaObject);
@@ -1741,7 +1812,6 @@ void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
             break;
         }
     }
-
     _files.append(f);
 }
 
@@ -1769,30 +1839,44 @@ bool FolderMetadata::isFileDropPresent() const
     return _fileDrop.size() > 0;
 }
 
+bool FolderMetadata::encryptedMetadataNeedUpdate() const
+{
+    return _encryptedMetadataNeedUpdate;
+}
+
 bool FolderMetadata::moveFromFileDropToFiles()
 {
     if (_fileDrop.isEmpty()) {
         return false;
     }
 
-    for (auto it = _fileDrop.constBegin(); it != _fileDrop.constEnd(); ++it) {
+    for (auto it = _fileDrop.begin(); it != _fileDrop.end(); ) {
         const auto fileObject = it.value().toObject();
 
+        const auto decryptedKey = decryptData(fileObject["encryptedKey"].toString().toLocal8Bit());
+        const auto decryptedAuthenticationTag = fileObject["encryptedTag"].toString().toLocal8Bit();
+        const auto decryptedInitializationVector = fileObject["encryptedInitializationVector"].toString().toLocal8Bit();
+
+        if (decryptedKey.isEmpty() || decryptedAuthenticationTag.isEmpty() || decryptedInitializationVector.isEmpty()) {
+            qCDebug(lcCseMetadata) << "failed to decrypt filedrop entry" << it.key();
+            continue;
+        }
+
         const auto encryptedFile = fileObject["encrypted"].toString().toLocal8Bit();
-        const auto decryptedFile = decryptData(encryptedFile);
+        const auto decryptedFile = decryptDataUsingKey(encryptedFile, decryptedKey, decryptedAuthenticationTag, decryptedInitializationVector);
         const auto decryptedFileDocument = QJsonDocument::fromJson(decryptedFile);
         const auto decryptedFileObject = decryptedFileDocument.object();
+        const auto authenticationTag = QByteArray::fromBase64(fileObject["authenticationTag"].toString().toLocal8Bit());
+        const auto initializationVector = QByteArray::fromBase64(fileObject["initializationVector"].toString().toLocal8Bit());
 
         EncryptedFile file;
         file.encryptedFilename = it.key();
-        file.metadataKey = fileObject["metadataKey"].toInt();
-        file.authenticationTag = QByteArray::fromBase64(fileObject["authenticationTag"].toString().toLocal8Bit());
-        file.initializationVector = QByteArray::fromBase64(fileObject["initializationVector"].toString().toLocal8Bit());
+        file.authenticationTag = authenticationTag;
+        file.initializationVector = initializationVector;
 
         file.originalFilename = decryptedFileObject["filename"].toString();
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObject["key"].toString().toLocal8Bit());
         file.mimetype = decryptedFileObject["mimetype"].toString().toLocal8Bit();
-        file.fileVersion = decryptedFileObject["version"].toInt();
 
         // In case we wrongly stored "inode/directory" we try to recover from it
         if (file.mimetype == QByteArrayLiteral("inode/directory")) {
@@ -1800,6 +1884,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
         }
 
         _files.push_back(file);
+        it = _fileDrop.erase(it);
     }
 
     return true;
@@ -1813,10 +1898,10 @@ QJsonObject FolderMetadata::fileDrop() const
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)
 {
     if (!input->open(QIODevice::ReadOnly)) {
-      qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
+        qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
     }
     if (!output->open(QIODevice::WriteOnly)) {
-      qCDebug(lcCse) << "Could not oppen output file for writing" << output->errorString();
+        qCDebug(lcCse) << "Could not oppen output file for writing" << output->errorString();
     }
 
     // Init
@@ -1891,7 +1976,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 }
 
 bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
-                               QFile *input, QFile *output)
+                                      QFile *input, QFile *output)
 {
     input->open(QIODevice::ReadOnly);
     output->open(QIODevice::WriteOnly);

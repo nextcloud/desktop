@@ -182,13 +182,22 @@ struct EncryptedFile {
     QByteArray authenticationTag;
     QString encryptedFilename;
     QString originalFilename;
-    int fileVersion = 0;
-    int metadataKey = 0;
 };
 
 class OWNCLOUDSYNC_EXPORT FolderMetadata {
 public:
-    FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
+    enum class RequiredMetadataVersion {
+        Version1,
+        Version1_2,
+    };
+
+    explicit FolderMetadata(AccountPtr account);
+
+    explicit FolderMetadata(AccountPtr account,
+                            RequiredMetadataVersion requiredMetadataVersion,
+                            const QByteArray& metadata,
+                            int statusCode = -1);
+
     [[nodiscard]] QByteArray encryptedMetadata() const;
     void addEncryptedFile(const EncryptedFile& f);
     void removeEncryptedFile(const EncryptedFile& f);
@@ -197,6 +206,8 @@ public:
     [[nodiscard]] bool isMetadataSetup() const;
 
     [[nodiscard]] bool isFileDropPresent() const;
+
+    [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
     [[nodiscard]] bool moveFromFileDropToFiles();
 
@@ -211,15 +222,27 @@ private:
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
     [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
+    [[nodiscard]] QByteArray decryptDataUsingKey(const QByteArray &data,
+                                                 const QByteArray &key,
+                                                 const QByteArray &authenticationTag,
+                                                 const QByteArray &initializationVector) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
+    [[nodiscard]] bool checkMetadataKeyChecksum(const QByteArray &metadataKey, const QByteArray &metadataKeyChecksum) const;
+
+    [[nodiscard]] QByteArray computeMetadataKeyChecksum(const QByteArray &metadataKey) const;
+
+    QByteArray _metadataKey;
+
     QVector<EncryptedFile> _files;
-    QMap<int, QByteArray> _metadataKeys;
     AccountPtr _account;
+    RequiredMetadataVersion _requiredMetadataVersion = RequiredMetadataVersion::Version1_2;
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
+    bool _isMetadataSetup = false;
+    bool _encryptedMetadataNeedUpdate = false;
 };
 
 } // namespace OCC

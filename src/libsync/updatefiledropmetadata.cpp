@@ -122,8 +122,10 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
     qCDebug(lcUpdateFileDropMetadataJob) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
     // Encrypt File!
-    _metadata.reset(new FolderMetadata(propagator()->account(), json.toJson(QJsonDocument::Compact), statusCode));
-    if (!_metadata->moveFromFileDropToFiles()) {
+    _metadata.reset(new FolderMetadata(propagator()->account(),
+                                       FolderMetadata::RequiredMetadataVersion::Version1,
+                                       json.toJson(QJsonDocument::Compact), statusCode));
+    if (!_metadata->moveFromFileDropToFiles() && !_metadata->encryptedMetadataNeedUpdate()) {
         unlockFolder();
         return;
     }

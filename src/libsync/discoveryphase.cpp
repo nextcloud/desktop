@@ -410,6 +410,11 @@ bool DiscoverySingleDirectoryJob::isFileDropDetected() const
     return _isFileDropDetected;
 }
 
+bool DiscoverySingleDirectoryJob::encryptedMetadataNeedUpdate() const
+{
+    return _encryptedMetadataNeedUpdate;
+}
+
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
@@ -458,7 +463,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 result.sharedByMe = true;
             }
         } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
-            result.isE2eEncrypted = true;
+            result._isE2eEncrypted = true;
         } else if (property == "lock") {
             result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
         }
@@ -530,7 +535,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _fileId = map.value("id").toUtf8();
         }
         if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
-            _isE2eEncrypted = true;
+            _isE2eEncrypted = SyncFileItem::EncryptionStatus::Encrypted;
             Q_ASSERT(!_fileId.isEmpty());
         }
         if (map.contains("size")) {
@@ -576,7 +581,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
-    } else if (_isE2eEncrypted) {
+    } else if (isE2eEncrypted()) {
         emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
@@ -621,8 +626,13 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     qCDebug(lcDiscovery) << "Metadata received, applying it to the result list";
     Q_ASSERT(_subPath.startsWith('/'));
 
-    const auto metadata = FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode);
+    const auto metadata = FolderMetadata(_account,
+                                         _isE2eEncrypted == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                                         json.toJson(QJsonDocument::Compact),
+                                         statusCode);
     _isFileDropDetected = metadata.isFileDropPresent();
+    _encryptedMetadataNeedUpdate = metadata.encryptedMetadataNeedUpdate();
+
     const auto encryptedFiles = metadata.files();
 
     const auto findEncryptedFile = [=](const QString &name) {
@@ -640,7 +650,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         auto result = info;
         const auto encryptedFileInfo = findEncryptedFile(result.name);
         if (encryptedFileInfo) {
-            result.isE2eEncrypted = true;
+            result._isE2eEncrypted = true;
             result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
             result.name = encryptedFileInfo->originalFilename;
         }

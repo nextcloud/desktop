@@ -55,7 +55,9 @@ bool GetMetadataApiJob::finished()
         return true;
     }
     QJsonParseError error{};
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    const auto replyData = reply()->readAll();
+    auto json = QJsonDocument::fromJson(replyData, &error);
+    qCInfo(lcCseJob) << "metadata received for file id" << _fileId << json.toJson(QJsonDocument::Compact);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }

@@ -326,7 +326,7 @@ bool PropagateItemJob::hasEncryptedAncestor() const
             qCWarning(lcPropagator) << "could not get file from local DB" << pathCompontentsJointed;
         }
 
-        if (rec.isValid() && rec._isE2eEncrypted) {
+        if (rec.isValid() && rec.isE2eEncrypted()) {
             return true;
         }
         pathComponents.removeLast();
@@ -650,6 +650,19 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
         item->_instruction = CSYNC_INSTRUCTION_NONE;
         _anotherSyncNeeded = true;
+    } else if (item->_isEncryptedMetadataNeedUpdate) {
+        SyncJournalFileRecord record;
+        if (_journal->getFileRecord(item->_file, &record) && record._isE2eEncrypted == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2) {
+            qCDebug(lcPropagator) << "could have upgraded metadata";
+            item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_ERROR;
+            item->_errorString = tr("Error with the metadata. Getting unexpected metadata format.");
+            item->_status = SyncFileItem::NormalError;
+            emit itemCompleted(item);
+        } else {
+            directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+            item->_instruction = CSYNC_INSTRUCTION_NONE;
+            _anotherSyncNeeded = true;
+        }
     }
     directories.push(qMakePair(item->destination() + "/", directoryPropagationJob.release()));
 }
@@ -1021,14 +1034,14 @@ bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 
         if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
             !parentRec.isValid() ||
-            !parentRec._isE2eEncrypted) {
+            !parentRec.isE2eEncrypted()) {
             return false;
         }
 
         return true;
     };
 
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->isEncrypted() && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
