@@ -1681,6 +1681,24 @@ QByteArray FolderMetadata::decryptData(const QByteArray &data) const
     return QByteArray::fromBase64(decryptResult);
 }
 
+QByteArray FolderMetadata::decryptDataUsingKey(const QByteArray &data,
+                                               const QByteArray &key,
+                                               const QByteArray &authenticationTag,
+                                               const QByteArray &initializationVector) const
+{
+    // Also base64 decode the result
+    QByteArray decryptResult = EncryptionHelper::decryptStringSymmetric(QByteArray::fromBase64(key),
+                                                                        data + '|' + initializationVector + '|' + authenticationTag);
+
+    if (decryptResult.isEmpty())
+    {
+        qCDebug(lcCse()) << "ERROR. Could not decrypt";
+        return {};
+    }
+
+    return decryptResult;
+}
+
 // AES/GCM/NoPadding (128 bit key size)
 QByteArray FolderMetadata::encryptJsonObject(const QByteArray& obj, const QByteArray pass) const
 {
@@ -1764,11 +1782,22 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         files.insert(it->encryptedFilename, file);
     }
 
-    QJsonObject metaObject = {
-        {"metadata", metadata},
-        {"files", files},
-        {"filedrop", QJsonObject{}},
-    };
+    QJsonObject filedrop;
+    for (auto fileDropIt = _fileDrop.constBegin(), end = _fileDrop.constEnd(); fileDropIt != end; ++fileDropIt) {
+        filedrop.insert(fileDropIt.key(), fileDropIt.value());
+    }
+
+    auto metaObject = QJsonObject{
+                                  {"metadata", metadata},
+                                  };
+
+    if (files.count()) {
+        metaObject.insert("files", files);
+    }
+
+    if (filedrop.count()) {
+        metaObject.insert("filedrop", filedrop);
+    }
 
     QJsonDocument internalMetadata;
     internalMetadata.setObject(metaObject);
@@ -1821,18 +1850,29 @@ bool FolderMetadata::moveFromFileDropToFiles()
         return false;
     }
 
-    for (auto it = _fileDrop.constBegin(); it != _fileDrop.constEnd(); ++it) {
+    for (auto it = _fileDrop.begin(); it != _fileDrop.end(); ) {
         const auto fileObject = it.value().toObject();
 
+        const auto decryptedKey = decryptData(fileObject["encryptedKey"].toString().toLocal8Bit());
+        const auto decryptedAuthenticationTag = fileObject["encryptedTag"].toString().toLocal8Bit();
+        const auto decryptedInitializationVector = fileObject["encryptedInitializationVector"].toString().toLocal8Bit();
+
+        if (decryptedKey.isEmpty() || decryptedAuthenticationTag.isEmpty() || decryptedInitializationVector.isEmpty()) {
+            qCDebug(lcCseMetadata) << "failed to decrypt filedrop entry" << it.key();
+            continue;
+        }
+
         const auto encryptedFile = fileObject["encrypted"].toString().toLocal8Bit();
-        const auto decryptedFile = decryptData(encryptedFile);
+        const auto decryptedFile = decryptDataUsingKey(encryptedFile, decryptedKey, decryptedAuthenticationTag, decryptedInitializationVector);
         const auto decryptedFileDocument = QJsonDocument::fromJson(decryptedFile);
         const auto decryptedFileObject = decryptedFileDocument.object();
+        const auto authenticationTag = QByteArray::fromBase64(fileObject["authenticationTag"].toString().toLocal8Bit());
+        const auto initializationVector = QByteArray::fromBase64(fileObject["initializationVector"].toString().toLocal8Bit());
 
         EncryptedFile file;
         file.encryptedFilename = it.key();
-        file.authenticationTag = QByteArray::fromBase64(fileObject["authenticationTag"].toString().toLocal8Bit());
-        file.initializationVector = QByteArray::fromBase64(fileObject["initializationVector"].toString().toLocal8Bit());
+        file.authenticationTag = authenticationTag;
+        file.initializationVector = initializationVector;
 
         file.originalFilename = decryptedFileObject["filename"].toString();
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObject["key"].toString().toLocal8Bit());
@@ -1844,6 +1884,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
         }
 
         _files.push_back(file);
+        it = _fileDrop.erase(it);
     }
 
     return true;

@@ -222,6 +222,10 @@ private:
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
     [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
+    [[nodiscard]] QByteArray decryptDataUsingKey(const QByteArray &data,
+                                                 const QByteArray &key,
+                                                 const QByteArray &authenticationTag,
+                                                 const QByteArray &initializationVector) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
