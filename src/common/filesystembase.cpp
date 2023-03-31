@@ -578,13 +578,23 @@ bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
     // if it is a relative path assume a local file, resolve it based on root
     const auto sensitivity = Utility::fsCaseSensitivity();
 
-    // Fast-path the 2 common cases in this if-else statement:
-    if (parent.endsWith(QLatin1Char('/'))) {
+    // Fast-path the 3 common cases in this if-else statement:
+    if (parent.isEmpty()) {
+        // The empty parent is often used as the sync root, as (child) items do not start with a `/`
+        return true;
+    } else if (parent.endsWith(QLatin1Char('/'))) {
+        // Here we can do a normal prefix check, because the parent is "terminated" with a slash,
+        // and we can't walk into the case in the else below.
         if (child.startsWith(parent, sensitivity)) {
             return true;
         }
         // else: do the `cleanPath` version below
     } else {
+        // Here we fast-path for the case the child is "Documents/a" and the parent is "Documents",
+        // and *not* the case where the child is "Documents/a" and the parent is "Document". In
+        // the latter case, the does start with the name of the parent, but there is an extra 's',
+        // and not a slash.
+
         // Prevent a string concatenation like in `child.startsWith(parent + QLatin1Char('/'))`:
         // first check if the child string starts with the parent string
         if (child.startsWith(parent, sensitivity)) {
