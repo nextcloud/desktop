@@ -134,7 +134,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="218"/>
         <source>Open website</source>
-        <translation>Web sitesi aç</translation>
+        <translation>Site aç</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="230"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>Hesabınızla bağlantı kurmak için web tarayıcınıza geçin</translation>
+        <translation>Hesabınızla bağlantı kurmak için tarayıcınıza geçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
@@ -708,7 +708,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1247"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Kimlik web tarayıcısı üzerinden doğrulanıyor. Web tarayıcıyı yeniden açmak için &lt;a href=&apos;%1&apos;&gt;buraya tıklayın&lt;/a&gt;.</translation>
+        <translation>Kimlik tarayıcı üzerinden doğrulanıyor. Tarayıcıyı yeniden açmak için &lt;a href=&apos;%1&apos;&gt;buraya tıklayın&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1251"/>
@@ -786,7 +786,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Erişim sunucu tarafından engellendi. Web tarayıcınız ile hizmete erişerek yeterli izne sahip olup olmadığınızı doğrulamak için &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
+        <translation>Erişim sunucu tarafından engellendi. Tarayıcınız ile hizmete erişerek yeterli izne sahip olup olmadığınızı doğrulamak için &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
@@ -1652,7 +1652,7 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Web tarayıcı açılamadı. Lütfen bağlantıyı kopyalayıp tarayıcınıza yapıştırın.</translation>
+        <translation>Tarayıcı açılamadı. Lütfen bağlantıyı kopyalayıp tarayıcınıza yapıştırın.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="160"/>
@@ -2594,7 +2594,7 @@ Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>Web arayüzünden bir uygulama isteğinde bulunmak için &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
+        <translation>Site arayüzünden bir uygulama isteğinde bulunmak için &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -3257,7 +3257,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>Web tarayıcınızda oturum açın</translation>
+        <translation>Tarayıcınızda oturum açın</translation>
     </message>
 </context>
 <context>
@@ -3275,7 +3275,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>%1 web arayüzü için web tarayıcıda açacağınız bağlantı.</translation>
+        <translation>%1 site arayüzü için tarayıcıda açacağınız bağlantı.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="201"/>
@@ -3328,7 +3328,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="422"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Erişim sunucu tarafından engellendi. Web tarayıcınız ile hizmete erişerek yeterli izne sahip olup olmadığınızı doğrulamak için &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
+        <translation>Erişim sunucu tarafından engellendi. Tarayıcınız ile hizmete erişerek yeterli izne sahip olup olmadığınızı doğrulamak için &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
@@ -5233,12 +5233,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Web üzerinden kolayca kullanılan e-posta, takvim ve kişiler</translation>
+        <translation>İnternet üzerinden kolayca kullanılan e-posta, takvim ve kişiler</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Ekran paylaşımı, çevrimiçi görüşmeler ve web toplantıları</translation>
+        <translation>Ekran paylaşımı, çevrimiçi görüşmeler ve internet toplantıları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
@@ -5467,7 +5467,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Lütfen işlemi yapmak için web tarayıcınıza geçin</translation>
+        <translation>Lütfen işlemi yapmak için tarayıcınıza geçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -5506,7 +5506,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>%1 web arayüzü için web tarayıcıda açacağınız bağlantı.</translation>
+        <translation>%1 site arayüzü için tarayıcıda açacağınız bağlantı.</translation>
     </message>
 </context>
 <context>
@@ -6103,7 +6103,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="646"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Web tarayıcıda Nextcloud Talk uygulamasını aç</translation>
+        <translation>Tarayıcıda Nextcloud Talk uygulamasını aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="666"/>
