@@ -1,5 +1,12 @@
 #include "clientsideencryption.h"
 
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/engine.h>
+#include <openssl/rand.h>
+
 #include "account.h"
 #include "capabilities.h"
 #include "networkjobs.h"
@@ -30,13 +37,6 @@
 #include <map>
 #include <string>
 #include <algorithm>
-
-#include <openssl/rsa.h>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
-#include <openssl/engine.h>
-#include <openssl/rand.h>
 
 #include <cstdio>
 
