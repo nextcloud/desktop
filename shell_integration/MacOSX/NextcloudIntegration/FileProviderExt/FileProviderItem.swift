@@ -81,6 +81,10 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         return metadata.date as Date
     }
 
+    var contentModificationDate: Date? {
+        return metadata.date as Date
+    }
+
     var isDownloaded: Bool {
         return metadata.directory || NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
     }
