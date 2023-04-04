@@ -236,6 +236,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     for (const auto &[iconName, name, url] : Theme::instance()->urlButtons()) {
         auto urlAction = new ToolButtonAction(Theme::instance()->themeUniversalIcon(QStringLiteral("urlIcons/%1").arg(iconName)), name, this);
+        urlAction->setCheckable(false);
         connect(urlAction, &QAction::triggered, this, [url = url] {
             if (!QDesktopServices::openUrl(url)) {
                 qWarning(lcSettingsDialog) << "Failed to open" << url;
