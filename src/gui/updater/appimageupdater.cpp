@@ -161,7 +161,7 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
         return;
     }
 
-    auto dialog = new Ui::AppImageUpdateAvailableDialog(currentVersion, newVersion, ocApp()->gui()->settingsDialog());
+    auto dialog = new AppImageUpdateAvailableDialog(currentVersion, newVersion, ocApp()->gui()->settingsDialog());
 
     connect(dialog, &Ui::AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [newVersion]() {
         qCInfo(lcUpdater) << "Update" << newVersion << "skipped by user";

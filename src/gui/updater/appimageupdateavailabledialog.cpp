@@ -21,11 +21,11 @@
 
 #include <QStyle>
 
-namespace OCC::Ui {
+namespace OCC {
 
 AppImageUpdateAvailableDialog::AppImageUpdateAvailableDialog(const QVersionNumber &currentVersion, const QVersionNumber &newVersion, QWidget *parent)
     : QDialog(parent)
-    , _ui(new ::Ui::AppImageUpdateAvailableDialogUi)
+    , _ui(new Ui::AppImageUpdateAvailableDialogUi)
 {
     _ui->setupUi(this);
 
