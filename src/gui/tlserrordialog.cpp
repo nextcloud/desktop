@@ -38,10 +38,8 @@ TlsErrorDialog::TlsErrorDialog(const QList<QSslError> &sslErrors, const QString 
 
     // FIXME: add checkbox for second confirmation
 
-    connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, [this]() {
-        accept();
-    });
-    connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, [this]() { reject(); });
+    connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &TlsErrorDialog::accept);
+    connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &TlsErrorDialog::reject);
 }
 
 TlsErrorDialog::~TlsErrorDialog()
