@@ -27,5 +27,37 @@
         <file alias="theme/white/state-offline.svg">theme/white/ui-dark-plain-monochrom-state-offline.svg</file>
         <file alias="theme/white/state-pause.svg">theme/white/ui-dark-plain-monochrom-state-pause.svg</file>
         <file alias="theme/white/state-sync.svg">theme/white/ui-dark-plain-monochrom-state-sync.svg</file>
+        <file>theme/black/states/ok.svg</file>
+        <file>theme/black/states/downloaded.svg</file>
+        <file>theme/black/states/error.svg</file>
+        <file>theme/black/states/information.svg</file>
+        <file>theme/black/states/offline.svg</file>
+        <file>theme/black/states/pause.svg</file>
+        <file>theme/black/states/sync.svg</file>
+        <file>theme/black/states/warning.svg</file>
+        <file>theme/colored/states/ok.svg</file>
+        <file>theme/colored/states/downloaded.svg</file>
+        <file>theme/colored/states/error.svg</file>
+        <file>theme/colored/states/information.svg</file>
+        <file>theme/colored/states/offline.svg</file>
+        <file>theme/colored/states/pause.svg</file>
+        <file>theme/colored/states/sync.svg</file>
+        <file>theme/colored/states/warning.svg</file>
+        <file>theme/dark/states/ok.svg</file>
+        <file>theme/dark/states/downloaded.svg</file>
+        <file>theme/dark/states/error.svg</file>
+        <file>theme/dark/states/information.svg</file>
+        <file>theme/dark/states/offline.svg</file>
+        <file>theme/dark/states/pause.svg</file>
+        <file>theme/dark/states/sync.svg</file>
+        <file>theme/dark/states/warning.svg</file>
+        <file>theme/white/states/ok.svg</file>
+        <file>theme/white/states/downloaded.svg</file>
+        <file>theme/white/states/error.svg</file>
+        <file>theme/white/states/information.svg</file>
+        <file>theme/white/states/offline.svg</file>
+        <file>theme/white/states/pause.svg</file>
+        <file>theme/white/states/sync.svg</file>
+        <file>theme/white/states/warning.svg</file>
     </qresource>
 </RCC>
