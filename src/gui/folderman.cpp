@@ -1642,7 +1642,14 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         auto various = false;
 
         for (const Folder *folder : qAsConst(folders)) {
+            // We've already seen an error, worst case met.
+            // No need to check the remaining folders.
+            if (errorsSeen) {
+                break;
+            }
+
             const auto folderResult = folder->syncResult();
+
             if (folder->syncPaused()) {
                 abortOrPausedSeen = true;
             } else {
@@ -1671,9 +1678,12 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
                     // no default case on purpose, check compiler warnings
                 }
             }
-            if (folderResult.hasUnresolvedConflicts())
+
+            if (folderResult.hasUnresolvedConflicts()) {
                 *unresolvedConflicts = true;
+            }
         }
+
         if (errorsSeen) {
             *status = SyncResult::Error;
         } else if (abortOrPausedSeen) {
