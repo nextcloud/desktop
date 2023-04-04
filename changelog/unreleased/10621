@@ -1,0 +1,5 @@
+Bugfix: UI freeze when multiple modal dialogs displayed on macOS
+
+Due to incorrect handling of the dialogs, the UI could freeze.
+
+https://github.com/owncloud/client/issues/10621

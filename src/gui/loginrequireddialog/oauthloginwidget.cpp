@@ -31,7 +31,6 @@ OAuthLoginWidget::OAuthLoginWidget(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    Utility::setModal(this);
 
     connect(_ui->openBrowserButton, &QPushButton::clicked, this, &OAuthLoginWidget::openBrowserButtonClicked);
     connect(_ui->copyUrlToClipboardButton, &QPushButton::clicked, this, &OAuthLoginWidget::copyUrlToClipboardButtonClicked);

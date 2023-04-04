@@ -166,7 +166,6 @@ FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent)
     : QWizard(parent)
     , d_ptr(new FolderWizardPrivate(this, account))
 {
-    Utility::setModal(this);
     setWindowTitle(tr("Add Folder Sync Connection"));
     setOptions(QWizard::CancelButtonOnLeft);
     setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));

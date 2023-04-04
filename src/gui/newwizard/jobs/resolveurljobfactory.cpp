@@ -115,7 +115,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url, QObject *parent)
             setJobError(job, QApplication::translate("ResolveUrlJobFactory", "User rejected invalid SSL certificate"));
         });
 
-        tlsErrorDialog->show();
+        tlsErrorDialog->open();
         ocApp()->gui()->raiseDialog(tlsErrorDialog);
     });
 

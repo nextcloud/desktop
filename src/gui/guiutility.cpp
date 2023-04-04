@@ -102,14 +102,3 @@ QString Utility::vfsFreeSpaceActionText()
 {
     return QCoreApplication::translate("utility", "Free up local space");
 }
-
-void Utility::setModal(QWidget *w)
-{
-    // setting both sheet and explicitly modal
-    // can cause window stacking issues
-#ifdef Q_OS_MAC
-    w->setWindowFlags(Qt::Sheet);
-#else
-    w->setWindowModality(Qt::ApplicationModal);
-#endif
-}

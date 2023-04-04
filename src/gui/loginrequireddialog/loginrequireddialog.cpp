@@ -51,8 +51,6 @@ LoginRequiredDialog::LoginRequiredDialog(Mode mode, QWidget *parent)
             Q_UNREACHABLE();
         }
     }());
-
-    Utility::setModal(this);
 }
 
 LoginRequiredDialog::~LoginRequiredDialog()

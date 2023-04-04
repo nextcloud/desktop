@@ -37,7 +37,6 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::IgnoreListEditor)
 {
-    Utility::setModal(this);
     ui->setupUi(this);
 
     ConfigFile cfgFile;

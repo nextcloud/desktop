@@ -805,7 +805,7 @@ void AccountSettings::slotAccountStateChanged()
 
             showConnectionLabel(tr("Reauthorization required."));
 
-            _askForOAuthLoginDialog->show();
+            _askForOAuthLoginDialog->open();
             ocApp()->gui()->raiseDialog(_askForOAuthLoginDialog);
 
             QTimer::singleShot(0, [contentWidget]() {

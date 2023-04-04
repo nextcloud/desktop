@@ -60,7 +60,6 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     , _progressIndicator(nullptr)
     , _baseUrl(baseUrl)
 {
-    Utility::setModal(this);
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName(QStringLiteral("SharingDialog"));
 

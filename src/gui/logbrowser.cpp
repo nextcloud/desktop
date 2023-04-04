@@ -45,7 +45,6 @@ LogBrowser::LogBrowser(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::LogBrowser)
 {
-    Utility::setModal(this);
     ui->setupUi(this);
 
     ui->warningLabel->setPixmap(Resources::getCoreIcon(QStringLiteral("warning")).pixmap(ui->warningLabel->size()));

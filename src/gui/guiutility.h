@@ -57,9 +57,6 @@ namespace Utility {
 
     QString socketApiSocketPath();
 
-    // applies window flags and modality
-    void setModal(QWidget *w);
-
 } // namespace Utility
 } // namespace OCC
 

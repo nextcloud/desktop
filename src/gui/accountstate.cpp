@@ -348,7 +348,7 @@ void AccountState::checkConnectivity(bool blockJobs)
                     setState(SignedOut);
                 });
 
-                _tlsDialog->show();
+                _tlsDialog->open();
             }
         }
         if (_tlsDialog) {

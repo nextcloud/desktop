@@ -48,8 +48,6 @@ BasicLoginWidget::BasicLoginWidget(QWidget *parent)
         _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
     }
 
-    Utility::setModal(this);
-
     setFocusProxy(_ui->usernameLineEdit);
 
     connect(_ui->usernameLineEdit, &QLineEdit::textChanged, this, &AbstractLoginWidget::contentChanged);

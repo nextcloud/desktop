@@ -1095,7 +1095,7 @@ void ownCloudGui::runNewAccountWizard()
             });
 
         // all we have to do is show the dialog...
-        _wizardController->window()->show();
+        _wizardController->window()->open();
         // ... and bring it to the front
         raiseDialog(_wizardController->window());
     }

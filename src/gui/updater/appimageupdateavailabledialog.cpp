@@ -29,9 +29,6 @@ AppImageUpdateAvailableDialog::AppImageUpdateAvailableDialog(const QVersionNumbe
 {
     _ui->setupUi(this);
 
-    // we want an immediate response from the user
-    setModal(true);
-
     const auto *theme = Theme::instance();
 
     // the strings in the .ui file are not marked for translation, they're just placeholders

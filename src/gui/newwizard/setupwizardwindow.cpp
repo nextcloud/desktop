@@ -35,7 +35,6 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     : QDialog(parent)
     , _ui(new ::Ui::SetupWizardWindow)
 {
-    Utility::setModal(this);
     setWindowFlag(Qt::WindowCloseButtonHint, false);
 
     _ui->setupUi(this);
@@ -161,7 +160,7 @@ void SetupWizardWindow::reject()
         // call the base implementation
         QDialog::reject();
     });
-    messageBox->show();
+    messageBox->open();
     ocApp()->gui()->raiseDialog(messageBox);
 }
 
