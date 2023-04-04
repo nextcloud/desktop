@@ -116,6 +116,14 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         }
     }
 
+    var childItemCount: NSNumber? {
+        if metadata.directory {
+            return NSNumber(integerLiteral: NextcloudFilesDatabaseManager.shared.childItemsForDirectory(metadata).count)
+        } else {
+            return nil
+        }
+    }
+
     required init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier, ncKit: NextcloudKit) {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
