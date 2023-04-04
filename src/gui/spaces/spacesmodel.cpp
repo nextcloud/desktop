@@ -174,7 +174,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
 
 void SpacesModel::setSpacesManager(GraphApi::SpacesManager *spacesManager)
 {
-    Q_ASSERT(_spacesManager);
+    Q_ASSERT(!_spacesManager);
     _spacesManager = spacesManager;
     beginResetModel();
     _spacesList = _spacesManager->spaces();
