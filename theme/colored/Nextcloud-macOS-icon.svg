@@ -1,282 +1,936 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+    <!--
+        Purpose Statement
+
+        This SVG document is set up with human-readable
+        definitions and instances so that the markup
+        can easily be tweaked or have the logo and/or
+        squircle replaced with other shapes. If you
+        import this SVG document into Illustrator, it
+        will probably come out unrecognizable if it
+        even works at all.
+
+        I've added inline comments explaining almost
+        every single SVG entity in this document
+        in order to make it easier to understand.
+
+        Aside from the Nextcloud logo (which is
+        a registered trademark), I (Elsie Hupp) am
+        personally releasing the rest of this document
+        under the CC0 Public Domain Dedication, though
+        if it has been further edited by anyone
+        at (for example) Nextcloud, it may have been
+        re-licensed under the Affero GNU Public License
+        or another similarly restrictive license.
+
+        If you'd like a fully CC0 license-cleared copy
+        of this document, or if you have any questions
+        about how the document is set up, feel free
+        to email me.
+
+        Elsie Hupp
+        <github@elsiehupp.com>
+
+        July 2022
+
+        Basic Organization
+
+        - CSS values are at the top of this document.
+        - Object intantiations are in the middle.
+        - SVG definitions are at the bottom.
+
+        Replacing Shapes
+
+        To replace the logo, create a new path
+        called "logo-path" under <defs>. (There is
+        a skeleton definition to help you get started.)
+        Next, uncomment the "logo-path" instances
+        in "logo-include-mask" and "logo-occlude-mask".
+        Then, finally, remove the circles defining
+        the Nextcloud logo. You should be able to
+        adjust the scale in the CSS.
+
+        To replace the squircle with a different
+        shape for a platform other than macOS, scroll
+        down to <defs> and replace the contents
+        of "squircle-path". (There are examples
+        of a circle and a rounded rectangle to
+        help you get started.)
+
+        Changing Colors
+
+        All of the colors are defined in the CSS.
+        The only colors you'll likely want to change
+        are the gradient top color and the gradient
+        bottom color. If you do change the logo fill
+        color to something darker, though, you may
+        want to change the logo top-edge inner shadow
+        to an inner glow for better contrast.
+
+        Limitations
+
+        If you want to use a logo that isn't based
+        on a flat mask, you'll have to figure a lot
+        more things out yourself. That said, if
+        you're doing so you'll probably have a better
+        idea what you're doing here to begin with.
+    -->
+    <style type="text/css">
+        /*<!--
+            I used CSS variables instead of per-entity
+            values in order to make this more legible.
+            The main downside is that some of the values
+            are unable to be edited in CSS, and you have
+            to scroll down to <defs/> and edit them there
+            instead.
+        -->*/
+        svg {
+            /*<!--
+                The fill color for the logo,
+                in case you feel like changing it.
+                If you use a dark color, you should
+                make the logo top-edge filter glow
+                instead of shadow.
+            -->*/
+            --logo-fill: white;
+            --logo-opacity: 1.0;
+
+            /*<!--
+                The scale for the logo. This value
+                it doesn't do anything in this version
+                of the icon but is here to make
+                path-based logos editable.
+
+                I haven't tested this to make sure it
+                actually works. If it doesn't, you can
+                just replace instances of this variable
+                with explicit float values.
+            -->*/
+            --logo-scale: 1.0;
+
+            /*<!--
+                The color at the top of the
+                squircle fill gradient.
+            -->*/
+            --squircle-gradient-top: #1CB3FF;
+
+            /*<!--
+                The color at the bottom of the
+                squircle fill gradient.
+            -->*/
+            --squircle-gradient-bottom: #0088CC;
+
+            /*<!--
+                In case for some reason you
+                wanted to change this.
+            -->*/
+            --squircle-opacity: 1.0;
+
+            /*<!--
+                The fill colors for glow and shadow.
+                You probably don't need to edit
+                them, since opacity, offset, and
+                blur usually suffice.
+
+                The only color you might want to change
+                is making the logo top edge fill a glow
+                fill rather than a shadow fill if you
+                use a dark fill for the logo itself.
+            -->*/
+            --glow-fill: white;
+            --shadow-fill: black;
+
+            --squircle-top-edge-fill: var(--glow-fill);
+            --squircle-top-edge-opacity: 0.40;
+
+            --squircle-bottom-edge-fill: var(--shadow-fill);
+            --squircle-bottom-edge-opacity: 0.40;
+
+            --squircle-drop-shadow-fill: var(--shadow-fill);
+            --squircle-drop-shadow-opacity: 0.55;
+
+            --logo-top-edge-fill: var(--shadow-fill);
+            --logo-top-edge-opacity: 0.20;
+
+            --logo-bottom-edge-fill: var(--shadow-fill);
+            --logo-bottom-edge-opacity: 0.40;
+
+            --logo-drop-shadow-fill: var(--shadow-fill);
+            --logo-drop-shadow-opacity: 0.40;
+
+            /*<!--
+                The following are just named
+                values to make the SVG more
+                legible. You probably shouldn't
+                edit them.
+            -->*/
+            --mask-occlude: black;
+            --mask-include: white;
+        }
+    </style>
+    <!--
+        The squircle drop shadow is standardized
+        for all macOS Big-Sur icons.
+
+        You shouldn't need to edit this for
+        other variations of the icon
+        unless you're reusing this template
+        for platforms other than macOS.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To edit the
+        offset or blur, scroll down to <defs>
+        at the bottom.
+
+        This shape will automatically update to
+        match the shape of the squircle path.
+    -->
     <g
         id="squircle-shadow"
-        opacity="0.55"
         style="filter:url(#squircle-shadow-filter)"
     >
         <use
-            id="fill"
+            id="fill-squircle-shadow"
             xlink:href="#squircle-path"
-            fill="black"
+            opacity="var(--squircle-drop-shadow-opacity"
+            fill="var(--squircle-drop-shadow-fill)"
         />
     </g>
+    <!--
+        The squircle figure is standardized
+        for all macOS Big-Sur icons.
+
+        To edit the fill, change the values in the
+        CSS at the top.
+
+        You shouldn't need to edit the shape for
+        other variations of the icon
+        unless you're reusing this template
+        for platforms other than macOS.
+
+        To change the shape, scroll down to <defs>
+        and replace the contents of "squircle-path"
+    -->
     <use
         id="squircle-figure"
         xlink:href="#squircle-path"
+        opacity="var(--squircle-opacity)"
         fill="url(#squircle-gradient)"
     />
+    <!--
+        The squircle top-edge filter is the
+        inner glow at the top edge of the squircle,
+        which helps make the squircle more visible
+        against low-contrast backdrops.
+        You shouldn't need to edit this for
+        other variations of the icon.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To edit the
+        offset or blur, scroll down to <defs>
+        at the bottom.
+
+        This shape will automatically update to
+        match the shape of the squircle path.
+    -->
     <g
         id="squircle-top-edge-figure"
-        mask="url(#squircle-mask)"
-        opacity="0.40"
+        mask="url(#squircle-include-mask)"
         style="filter:url(#squircle-top-edge-filter)"
     >
         <rect
-            id="fill"
-            mask="url(#squircle-edge-mask)"
+            id="squircle-top-edge-figure-fill"
+            mask="url(#squircle-occlude-mask)"
             width="100%"
             height="100%"
-            fill="white"
+            opacity="var(--squircle-top-edge-opacity)"
+            fill="var(--squircle-top-edge-fill)"
         />
     </g>
+    <!--
+        The squircle bottom-edge filter is the
+        inner shadow at the top edge of the squircle,
+        which helps make the squircle more visible
+        against low-contrast backdrops.
+        You shouldn't need to edit this for
+        other variations of the icon.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To edit the
+        offset or blur, scroll down to <defs>
+        at the bottom.
+
+        This shape will automatically update to
+        match the shape of the squircle path.
+    -->
     <g
         id="squircle-bottom-edge-figure"
-        mask="url(#squircle-mask)"
-        opacity="0.40"
+        mask="url(#squircle-include-mask)"
         style="filter:url(#squircle-bottom-edge-filter)"
     >
         <rect
-            id="fill"
-            mask="url(#squircle-edge-mask)"
+            id="squircle-bottom-edge-figure-fill"
+            mask="url(#squircle-occlude-mask)"
             width="100%"
             height="100%"
-            fill="black"
+            opacity="var(--squircle-bottom-edge-opacity)"
+            fill="var(--squircle-bottom-edge-fill)"
         />
     </g>
+    <!--
+        The logo shadow was a point of debate
+        during the merge review for this
+        icon.
+
+        You may want to tweak the parameters for
+        versions of this icon with other logos.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To edit the
+        offset or blur, scroll down to <defs>
+        at the bottom.
+
+        This shape will automatically update to
+        match the shape of the logo path.
+    -->
     <g
-        id="logo-shadow"
-        opacity="0.40"
-        style="filter:url(#logo-shadow-filter)"
+        id="logo-drop-shadow"
+        style="filter:url(#logo-drop-shadow-filter)"
     >
         <rect
-            id="fill"
-            mask="url(#logo-mask)"
+            id="logo-drop-shadow-fill"
+            mask="url(#logo-include-mask)"
             width="100%"
             height="100%"
-            fill="black"
+            opacity="var(--logo-drop-shadow-opacity)"
+            fill="var(--logo-drop-shadow-fill)"
         />
     </g>
+    <!--
+        This is the instantiation of the logo
+        itself.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To change
+        the logo shape, scroll down to <defs>
+        and follow the instructions at "logo-path".
+    -->
     <g
         id="logo-figure"
-        mask="url(#logo-mask)"
+        mask="url(#logo-include-mask)"
     >
         <rect
-            id="fill"
+            id="logo-figure-fill"
             width="100%"
             height="100%"
-            fill="white"
+            fill="var(--logo-fill)"
+            opacity="var(--logo-opacity)"
         />
     </g>
+    <!--
+        The logo top-edge filter is the
+        inner shadow at the top edge of the logo,
+        which helps make the logo more visible
+        against low-contrast backdrops.
+        You shouldn't need to edit this for
+        other variations of the icon.
+
+        If you use a dark fill for the logo,
+        though, you may wish to change the fill
+        of the top-edge filter from an inner
+        shadow to an inner glow.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To edit the
+        offset or blur, scroll down to <defs>
+        at the bottom.
+
+        This shape will automatically update to
+        match the shape of the logo path.
+    -->
     <g
         id="logo-top-edge-figure"
-        mask="url(#logo-mask)"
-        opacity="0.20"
+        mask="url(#logo-include-mask)"
+        opacity="var(--squircle-top-edge-opacity)"
         style="filter:url(#logo-top-edge-filter)"
     >
         <rect
-            id="fill"
-            mask="url(#logo-edge-mask)"
+            id="logo-top-edge-figure-fill"
+            mask="url(#logo-occlude-mask)"
             width="100%"
             height="100%"
-            fill="black"
+            fill="var(--logo-top-edge-fill)"
         />
     </g>
+    <!--
+        The logo bottom-edge filter is the
+        inner shadow at the bottom edge of the logo,
+        which helps make the logo more visible
+        against low-contrast backdrops.
+        You shouldn't need to edit this for
+        other variations of the icon.
+
+        To edit the fill or opacity, change the
+        value in the CSS at the top. To edit the
+        offset or blur, scroll down to <defs>
+        at the bottom.
+
+        This shape will automatically update to
+        match the shape of the logo path.
+    -->
     <g
         id="logo-bottom-edge-figure"
-        mask="url(#logo-mask)"
-        opacity="0.40"
+        mask="url(#logo-include-mask)"
+        opacity="var(--squircle-bottom-edge-opacity)"
         style="filter:url(#logo-bottom-edge-filter)"
     >
         <rect
-            id="fill"
-            mask="url(#logo-edge-mask)"
+            id="logo-bottom-edge-figure-fill"
+            mask="url(#logo-occlude-mask)"
             width="100%"
             height="100%"
-            fill="black"
+            fill="var(--logo-bottom-edge-fill)"
         />
     </g>
     <defs>
-        <path
-            id="squircle-path"
-            d="M468.997,100L357.361,100.406C347.554,100.406 337.747,100.402 327.94,100.462C319.678,100.514 311.421,100.607 303.161,100.83C285.167,101.315 267.014,102.373 249.217,105.565C231.164,108.801 214.36,114.085 197.959,122.414C181.835,130.602 167.082,141.297 154.291,154.057C141.501,166.816 130.78,181.53 122.573,197.609C114.217,213.98 108.919,230.752 105.673,248.771C102.477,266.517 101.418,284.618 100.931,302.563C100.709,310.8 100.613,319.039 100.563,327.279C100.503,337.063 100,349.216 100,358.999L100,554.998L100.508,667.427C100.508,677.223 100.504,687.019 100.563,696.815C100.613,705.067 100.709,713.317 100.932,721.566C101.418,739.542 102.479,757.675 105.678,775.452C108.923,793.485 114.22,810.27 122.569,826.653C130.777,842.759 141.5,857.495 154.291,870.272C167.081,883.049 181.831,893.757 197.951,901.956C214.362,910.302 231.174,915.595 249.238,918.836C267.026,922.029 285.174,923.087 303.161,923.574C311.421,923.796 319.679,923.891 327.941,923.941C337.748,924 347.554,924 357.361,924L667.643,924C677.432,924 687.219,924 697.008,923.941C705.253,923.891 713.495,923.796 721.738,923.574C739.698,923.087 757.816,922.027 775.579,918.832C793.597,915.59 810.367,910.299 826.738,901.959C842.83,893.761 857.555,883.051 870.321,870.272C883.086,857.497 893.786,842.763 901.978,826.661C910.317,810.269 915.603,793.476 918.843,775.431C922.034,757.66 923.092,739.534 923.577,721.566C923.8,713.316 923.894,705.066 923.945,696.815C924,687.019 924,677.223 924,667.427L924,356.627C924,346.845 924,337.062 923.945,327.279C923.894,319.038 923.8,310.799 923.576,302.563C923.092,284.609 922.033,266.502 918.84,248.75C915.602,230.74 910.314,213.979 901.982,197.616C893.789,181.533 883.088,166.817 870.321,154.057C857.556,141.299 842.834,130.605 826.746,122.418C810.365,114.083 793.587,108.797 775.558,105.56C757.803,102.372 739.691,101.315 721.738,100.83C713.495,100.607 705.253,100.514 697.008,100.462C687.219,100.402 677.432,100.406 667.643,100.406L553.997,100L468.997,100Z"
-        />
+        <g id="squircle-path">
+            <!--
+                For platforms other than macOS,
+                you can replace the contents of this
+                group with any other shape (or shapes).
+                The reason for the grouping is so that
+                you don't have to use a <path> figure,
+                and also so you can use compound shapes
+                (by putting multiple shapes in the group).
+                This definition does not have any fill color
+                because it is used for both the squircle
+                and its filter effects.
+
+                The reason the macOS "squircle" is a bézier
+                <path> is that it's a weird mathematical
+                figure called a "superellipse", and it
+                isn't possible to define a superellipse
+                in SVG without using dynamic scripting.
+            -->
+            <path
+                d="M468.997,100L357.361,100.406C347.554,100.406 337.747,100.402 327.94,100.462C319.678,100.514 311.421,100.607 303.161,100.83C285.167,101.315 267.014,102.373 249.217,105.565C231.164,108.801 214.36,114.085 197.959,122.414C181.835,130.602 167.082,141.297 154.291,154.057C141.501,166.816 130.78,181.53 122.573,197.609C114.217,213.98 108.919,230.752 105.673,248.771C102.477,266.517 101.418,284.618 100.931,302.563C100.709,310.8 100.613,319.039 100.563,327.279C100.503,337.063 100,349.216 100,358.999L100,554.998L100.508,667.427C100.508,677.223 100.504,687.019 100.563,696.815C100.613,705.067 100.709,713.317 100.932,721.566C101.418,739.542 102.479,757.675 105.678,775.452C108.923,793.485 114.22,810.27 122.569,826.653C130.777,842.759 141.5,857.495 154.291,870.272C167.081,883.049 181.831,893.757 197.951,901.956C214.362,910.302 231.174,915.595 249.238,918.836C267.026,922.029 285.174,923.087 303.161,923.574C311.421,923.796 319.679,923.891 327.941,923.941C337.748,924 347.554,924 357.361,924L667.643,924C677.432,924 687.219,924 697.008,923.941C705.253,923.891 713.495,923.796 721.738,923.574C739.698,923.087 757.816,922.027 775.579,918.832C793.597,915.59 810.367,910.299 826.738,901.959C842.83,893.761 857.555,883.051 870.321,870.272C883.086,857.497 893.786,842.763 901.978,826.661C910.317,810.269 915.603,793.476 918.843,775.431C922.034,757.66 923.092,739.534 923.577,721.566C923.8,713.316 923.894,705.066 923.945,696.815C924,687.019 924,677.223 924,667.427L924,356.627C924,346.845 924,337.062 923.945,327.279C923.894,319.038 923.8,310.799 923.576,302.563C923.092,284.609 922.033,266.502 918.84,248.75C915.602,230.74 910.314,213.979 901.982,197.616C893.789,181.533 883.088,166.817 870.321,154.057C857.556,141.299 842.834,130.605 826.746,122.418C810.365,114.083 793.587,108.797 775.558,105.56C757.803,102.372 739.691,101.315 721.738,100.83C713.495,100.607 705.253,100.514 697.008,100.462C687.219,100.402 677.432,100.406 667.643,100.406L553.997,100L468.997,100Z"
+            />
+            <!--
+                For example, if you comment out the <path>
+                and uncomment the <circle> you will get a
+                circle background.
+            -->
+            <!-- <circle
+                cx="512"
+                cy="512"
+                r="448"
+            /> -->
+            <!--
+                Or, if you comment out the <path>
+                and uncomment the <rect> you will get a
+                rounded-rectangle background.
+            -->
+            <!-- <rect
+                x="64"
+                y="64"
+                width="824"
+                height="824"
+                rx="128"
+            /> -->
+        </g>
+        <!--
+            The squircle inclusion mask blocks out everything
+            *outside* the squircle. It is used to create
+            the squircle itself, as well for hiding the parts
+            of the inner shadow and inner glow that fall outside
+            the squircle.
+
+            This mask will update automatically with the
+            squircle definition.
+        -->
         <mask
-            id="squircle-mask"
+            id="squircle-include-mask"
         >
             <use
                 xlink:href="#squircle-path"
-                fill= "white"
+                fill="var(--mask-include)"
             />
         </mask>
+        <!--
+            This is the gradient fill for the squircle.
+            If you want to change the color values,
+            scroll up to the top and do it in the CSS.
+
+            You should probably only edit the definition
+            below if you're rotating the gradient or
+            doing some other type of gradient.
+        -->
         <linearGradient
             id="squircle-gradient"
             gradientTransform="rotate(90)"
         >
             <stop
                 offset="0%"
-                stop-color="#1CB3FF"
+                stop-color="var(--squircle-gradient-top)"
             />
             <stop
                 offset="100%"
-                stop-color="#0088CC"
+                stop-color="var(--squircle-gradient-bottom)"
             />
         </linearGradient>
+        <!--
+            The squircle shadow is standardized
+            for all macOS Big-Sur icons.
+
+            You shouldn't need to edit this for
+            other variations of the icon
+            unless you're reusing this template
+            for platforms other than macOS.
+
+            To edit the fill, change the value in the
+            CSS at the top. To edit the opacity,
+            scroll up to the instantiation and edit
+            it there. To edit the offset or
+            blur, change it here.
+        -->
         <filter
             id="squircle-shadow-filter"
         >
+            <!--
+                This is the offset (in pixels) for the squircle
+                shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feOffset
                 result="offOut"
                 in="SourceGraphic"
                 dx="0"
                 dy="10"
             />
+            <!--
+                This is the blur (in pixels) for the squircle
+                shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feGaussianBlur
                 result="blurOut"
                 in="offOut"
                 stdDeviation="10"
             />
+            <!--
+                This is the blend mode for the squircle
+                shadow. You shouldn't need to change
+                this for a basic drop shadow.
+
+                For an explanation of the other options
+                for for the blend mode, visit:
+
+                https://developer.mozilla.org/en-US/docs/Web/CSS/blend-mode
+            -->
             <feBlend
                 in="SourceGraphic"
                 in2="blurOut"
                 mode="normal"
             />
         </filter>
+        <!--
+            The squircle occlusion mask blocks out everything
+            *inside* the squircle. It is used to create
+            the inner shadow and inner glow at the bottom
+            and top edges of the squircle.
+
+            This mask will update automatically with the
+            squircle definition.
+        -->
         <mask
-            id="squircle-edge-mask"
+            id="squircle-occlude-mask"
         >
             <rect
-                id="fill"
+                id="squircle-occlude-mask-fill"
                 width="100%"
                 height="100%"
-                fill="white"
+                fill="var(--mask-include)"
             />
             <use
                 xlink:href="#squircle-path"
-                fill= "black"
+                fill="var(--mask-occlude)"
             />
         </mask>
+        <!--
+            The squircle top-edge filter is the
+            inner glow at the top edge of the squircle,
+            which helps make the squircle more visible
+            against low-contrast backdrops.
+            You shouldn't need to edit this for
+            other variations of the icon.
+
+            To edit the fill, change the value in the
+            CSS at the top. To edit the opacity,
+            scroll up to the instantiation and edit
+            it there. To edit the offset or
+            blur, change it here.
+        -->
         <filter
             id="squircle-top-edge-filter"
         >
+            <!--
+                This is the offset (in pixels) for the squircle
+                top-edge glow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feOffset
                 result="offOut"
                 in="SourceGraphic"
                 dx="0"
                 dy="4"
             />
+            <!--
+                This is the blur (in pixels) for the squircle
+                top-edge glow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feGaussianBlur
                 result="blurOut"
                 in="offOut"
                 stdDeviation="4"
             />
+            <!--
+                This is the blend mode for the squircle
+                top-edge glow. You shouldn't need to change
+                this for a basic inner glow.
+
+                For an explanation of the other options
+                for for the blend mode, visit:
+
+                https://developer.mozilla.org/en-US/docs/Web/CSS/blend-mode
+            -->
             <feBlend
                 in="SourceGraphic"
                 in2="blurOut"
                 mode="normal"
             />
         </filter>
+        <!--
+            The squircle bottom-edge filter is the
+            inner shadow at the top edge of the squircle,
+            which helps make the squircle more visible
+            against low-contrast backdrops.
+            You shouldn't need to edit this for
+            other variations of the icon.
+
+            To edit the fill, change the value in the
+            CSS at the top. To edit the opacity,
+            scroll up to the instantiation and edit
+            it there. To edit the offset or
+            blur, change it here.
+        -->
         <filter
             id="squircle-bottom-edge-filter"
         >
+            <!--
+                This is the offset (in pixels) for the squircle
+                bottom-edge shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feOffset
                 result="offOut"
                 in="SourceGraphic"
                 dx="0"
                 dy="-4"
             />
+            <!--
+                This is the blur (in pixels) for the squircle
+                bottom-edge shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feGaussianBlur
                 result="blurOut"
                 in="offOut"
                 stdDeviation="4"
             />
+            <!--
+                This is the blend mode for the squircle
+                bottom-edge shadow. You shouldn't need to change
+                this for a basic inner shadow.
+
+                For an explanation of the other options
+                for for the blend mode, visit:
+
+                https://developer.mozilla.org/en-US/docs/Web/CSS/blend-mode
+            -->
             <feBlend
                 in="SourceGraphic"
                 in2="blurOut"
                 mode="normal"
             />
         </filter>
+        <!--
+            If you want to use an SVG path for the logo,
+            you can define it here; uncomment the
+            instantiations in the logo inclusion and
+            occlusion masks; and then remove the circles
+            defining the Nextcloud logo.
+
+            The origin should be at (512, 512) in order
+            to facilitate scaling.
+        -->
+        <!--
+        <path
+            id="logo-path"
+            d="..."
+        />
+        -->
+        <!--
+            This is the mask used for the logo
+            and the logo drop shadow.
+        -->
         <mask
-            id="logo-mask"
+            id="logo-include-mask"
         >
-            <circle cx="292" cy="512" r="100" fill="white" />
-            <circle cx="512" cy="512" r="152.5" fill="white" />
-            <circle cx="732" cy="512" r="100" fill="white" />
-            <circle cx="292" cy="512" r="40" fill="black" />
-            <circle cx="512" cy="512" r="92.5" fill="black" />
-            <circle cx="732" cy="512" r="40" fill="black" />
+            <!--
+                If you want to use an SVG path for the logo,
+                you can use it here:
+				
+				(Remove the backslash inside "-\-"; it's
+				necessary because SVG disallows double
+				hyphens within comments.)
+            -->
+            <!--
+            <use
+                transform="translate(512 512)
+                    scale(var(-\-logo-scale))"
+                xlink:href="#logo-path"
+                fill="var(-\-mask-occlude)"
+            />
+            -->
+            <!--
+                I used actual circles for the Nextcloud
+                logo, for editability, but this does
+                make the definition a bit more complex.
+                Basically, the holes inside the circles
+                need to be defined with occluded fill,
+                becase for some reason I wasn't able to
+                get circles with strokes rather than
+                fill to work as a mask.
+            -->
+            <circle cx="292" cy="512" r="100" fill="var(--mask-include)" />
+            <circle cx="512" cy="512" r="152.5" fill="var(--mask-include)" />
+            <circle cx="732" cy="512" r="100" fill="var(--mask-include)" />
+            <circle cx="292" cy="512" r="40" fill="var(--mask-occlude)" />
+            <circle cx="512" cy="512" r="92.5" fill="var(--mask-occlude)" />
+            <circle cx="732" cy="512" r="40" fill="var(--mask-occlude)" />
         </mask>
+        <!--
+            The logo shadow was a point of debate
+            during the merge review for this
+            icon.
+
+            You may want to tweak the parameters for
+            versions of this icon with other logos.
+
+            To edit the fill, change the value in the
+            CSS at the top. To edit the opacity,
+            scroll up to the instantiation and edit
+            it there. To edit the offset or
+            blur, change it here.
+        -->
         <filter
-            id="logo-shadow-filter"
+            id="logo-drop-shadow-filter"
         >
+            <!--
+                This is the offset (in pixels) for the logo
+                shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feOffset
                 result="offOut"
                 in="SourceGraphic"
                 dx="0"
                 dy="10"
             />
+            <!--
+                This is the blur (in pixels) for the logo
+                shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feGaussianBlur
                 result="blurOut"
                 in="offOut"
                 stdDeviation="10"
             />
+            <!--
+                This is the blend mode for the logo
+                shadow. You shouldn't need to change
+                this for a basic drop shadow.
+
+                For an explanation of the other options
+                for for the blend mode, visit:
+
+                https://developer.mozilla.org/en-US/docs/Web/CSS/blend-mode
+            -->
             <feBlend
                 in="SourceGraphic"
                 in2="blurOut"
                 mode="normal"
             />
         </filter>
+        <!--
+            This is the mask used for the logo
+            top-edge and bottom-edge inner shadows.
+        -->
         <mask
-            id="logo-edge-mask"
+            id="logo-occlude-mask"
         >
+            <!--
+                If you want to use an SVG path for the logo,
+                you can use it here. Note that the color is
+                inverted from the logo.
+				
+				(Remove the backslash inside "-\-"; it's
+				necessary because SVG disallows double
+				hyphens within comments.)
+            -->
+            <!--
+            <use
+                transform="translate(512 512)
+                    scale(var(-\-logo-scale))"
+                xlink:href="#logo-path"
+                fill="var(-\-mask-include)"
+            />
+            -->
+            <!--
+                This rectangular fill covers the entire
+                canvas and is necessary for the mask
+                to work properly, so you should probably
+                not edit it.
+            -->
             <rect
-                id="fill"
+                id="canvas-mask-fill"
                 width="100%"
                 height="100%"
-                fill="white"
+                fill="var(--mask-include)"
             />
-            <circle cx="292" cy="512" r="100" fill="black" />
-            <circle cx="512" cy="512" r="152.5" fill="black" />
-            <circle cx="732" cy="512" r="100" fill="black" />
-            <circle cx="292" cy="512" r="40" fill="white" />
-            <circle cx="512" cy="512" r="92.5" fill="white" />
-            <circle cx="732" cy="512" r="40" fill="white" />
+            <!--
+                I used actual circles for the Nextcloud
+                logo, for editability, but this does
+                make the definition a bit more complex.
+                Basically, the holes inside the circles
+                need to be defined with occluded fill,
+                becase for some reason I wasn't able to
+                get circles with strokes rather than
+                fill to work as a mask.
+            -->
+            <circle cx="292" cy="512" r="100" fill="var(--mask-occlude)" />
+            <circle cx="512" cy="512" r="152.5" fill="var(--mask-occlude)" />
+            <circle cx="732" cy="512" r="100" fill="var(--mask-occlude)" />
+            <circle cx="292" cy="512" r="40" fill="var(--mask-include)" />
+            <circle cx="512" cy="512" r="92.5" fill="var(--mask-include)" />
+            <circle cx="732" cy="512" r="40" fill="var(--mask-include)" />
         </mask>
+        <!--
+            The logo top-edge filter is the
+            inner shadow at the top edge of the logo,
+            which helps make the logo appear more
+            like an object in physical space.
+            You shouldn't need to edit this for
+            other variations of the icon.
+        -->
         <filter
             id="logo-top-edge-filter"
         >
+            <!--
+                This is the offset (in pixels) for the logo
+                top-edge shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feOffset
                 result="offOut"
                 in="SourceGraphic"
                 dx="0"
                 dy="2"
             />
+            <!--
+                This is the blur (in pixels) for the logo
+                top-edge shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feGaussianBlur
                 result="blurOut"
                 in="offOut"
                 stdDeviation="2"
             />
+            <!--
+                This is the blend mode for the logo
+                top-edge shadow. You shouldn't need to change
+                this for a basic inner shadow.
+
+                For an explanation of the other options
+                for for the blend mode, visit:
+
+                https://developer.mozilla.org/en-US/docs/Web/CSS/blend-mode
+            -->
             <feBlend
                 in="SourceGraphic"
                 in2="blurOut"
                 mode="normal"
             />
         </filter>
+        <!--
+            The logo bottom-edge filter is the
+            inner shadow at the bottom edge of the logo,
+            which helps make the logo appear more
+            like an object in physical space.
+            You shouldn't need to edit this for
+            other variations of the icon.
+        -->
         <filter
             id="logo-bottom-edge-filter"
         >
+            <!--
+                This is the offset (in pixels) for the logo
+                bottom-edge shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feOffset
                 result="offOut"
                 in="SourceGraphic"
                 dx="0"
                 dy="-2"
             />
+            <!--
+                This is the blur (in pixels) for the logo
+                bottom-edge shadow. I wasn't able to get it
+                to work using CSS, so you'll have to
+                edit it here.
+            -->
             <feGaussianBlur
                 result="blurOut"
                 in="offOut"
                 stdDeviation="2"
             />
+            <!--
+                This is the blend mode for the logo
+                bottom-edge shadow. You shouldn't need to change
+                this for a basic inner shadow.
+
+                For an explanation of the other options
+                for for the blend mode, visit:
+
+                https://developer.mozilla.org/en-US/docs/Web/CSS/blend-mode
+            -->
             <feBlend
                 in="SourceGraphic"
                 in2="blurOut"
