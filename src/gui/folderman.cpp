@@ -1604,7 +1604,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
     *status = SyncResult::Undefined;
     *unresolvedConflicts = false;
 
-    int cnt = folders.count();
+    const auto cnt = folders.count();
 
     // if one folder: show the state of the one folder.
     // if more folders:
@@ -1613,7 +1613,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
     // do not show "problem" in the tray
     //
     if (cnt == 1) {
-        Folder *folder = folders.at(0);
+        const auto folder = folders.at(0);
         if (folder) {
             auto syncResult = folder->syncResult();
             if (folder->syncPaused()) {
@@ -1635,17 +1635,18 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
             *unresolvedConflicts = syncResult.hasUnresolvedConflicts();
         }
     } else {
-        int errorsSeen = 0;
-        int goodSeen = 0;
-        int abortOrPausedSeen = 0;
-        int runSeen = 0;
+        auto errorsSeen = 0;
+        auto goodSeen = 0;
+        auto abortOrPausedSeen = 0;
+        auto runSeen = 0;
+        auto various = 0;
 
         for (const Folder *folder : qAsConst(folders)) {
-            SyncResult folderResult = folder->syncResult();
+            const auto folderResult = folder->syncResult();
             if (folder->syncPaused()) {
                 abortOrPausedSeen++;
             } else {
-                SyncResult::Status syncStatus = folderResult.status();
+                const auto syncStatus = folderResult.status();
 
                 switch (syncStatus) {
                 case SyncResult::Undefined:
