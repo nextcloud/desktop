@@ -5302,7 +5302,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Account synchronization is disabled</source>
-        <translation>Kontuen sinkronizazioa desaktibatua dago</translation>
+        <translation>Kontuen sinkronizazioa desgaituta dago</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="336"/>
