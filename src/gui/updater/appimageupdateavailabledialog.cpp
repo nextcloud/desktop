@@ -13,11 +13,13 @@
  */
 
 #include "appimageupdateavailabledialog.h"
-#include <QStyle>
-
-#include "guiutility.h"
-#include "theme.h"
 #include "ui_appimageupdateavailabledialog.h"
+
+#include "theme.h"
+
+#include "resources/resources.h"
+
+#include <QStyle>
 
 namespace OCC::Ui {
 
