@@ -1760,11 +1760,11 @@ bool FolderMetadata::recoverMetadataKeyChecksum(const QByteArray &expectedChecks
         }
         hashAlgorithm.addData(metadataKey);
         if (hashAlgorithm.result().toHex() == expectedChecksum) {
-            break;
+            return true;
         }
     } while (std::next_permutation(sortedFiles.begin(), sortedFiles.end(), sortLambda));
 
-    return expectedChecksum;
+    return false;
 }
 
 bool FolderMetadata::isMetadataSetup() const
