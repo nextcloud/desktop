@@ -1580,6 +1580,8 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     const auto metadataKeyChecksum = metaDataDoc.object()["metadata"].toObject()["checksum"].toString().toUtf8();
 
     _fileDrop = metaDataDoc.object().value("filedrop").toObject();
+    // for unit tests
+    _fileDropFromServer = metaDataDoc.object().value("filedrop").toObject();
 
     // Iterate over the document to store the keys. I'm unsure that the keys are in order,
     // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
@@ -1929,7 +1931,7 @@ bool FolderMetadata::moveFromFileDropToFiles()
 
 QJsonObject FolderMetadata::fileDrop() const
 {
-    return _fileDrop;
+    return _fileDropFromServer;
 }
 
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)
