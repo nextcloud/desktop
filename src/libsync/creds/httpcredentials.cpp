@@ -300,6 +300,9 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
         case QNetworkReply::OperationCanceledError:
             [[fallthrough]];
         case QNetworkReply::TemporaryNetworkFailureError:
+            [[fallthrough]];
+        // VPN not ready?
+        case QNetworkReply::ConnectionRefusedError:
             nextTry = 0;
             [[fallthrough]];
         default:

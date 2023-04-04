@@ -1,0 +1,3 @@
+Enhancement: Don't invalidate oauth refresh token on ConnectionRefusedError
+
+https://github.com/owncloud/client/issues/10654 
