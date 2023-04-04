@@ -52,6 +52,7 @@ namespace GraphApi {
         void checkReady() const;
 
     Q_SIGNALS:
+        void spaceChanged(Space *space) const;
         void updated();
         void ready() const;
 

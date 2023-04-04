@@ -15,8 +15,11 @@
 #include "space.h"
 
 #include "libsync/account.h"
-
 #include "libsync/graphapi/spacesmanager.h"
+#include "libsync/networkjobs.h"
+#include "libsync/networkjobs/resources.h"
+
+#include "resources/resources.h"
 
 using namespace OCC;
 using namespace GraphApi;
@@ -32,8 +35,8 @@ const auto sharesIdC = QLatin1String("a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6
 Space::Space(SpacesManager *spacesManager, const OpenAPI::OAIDrive &drive)
     : QObject(spacesManager)
     , _spaceManager(spacesManager)
-    , _drive(drive)
 {
+    setDrive(drive);
 }
 
 OpenAPI::OAIDrive Space::drive() const
@@ -44,7 +47,16 @@ OpenAPI::OAIDrive Space::drive() const
 void Space::setDrive(const OpenAPI::OAIDrive &drive)
 {
     _drive = drive;
-    Q_EMIT updated();
+    if (!imageUrl().isEmpty()) {
+        auto job = _spaceManager->account()->resourcesCache()->makeGetJob(imageUrl(), {}, this);
+        connect(job, &SimpleNetworkJob::finishedSignal, this, [job, this] {
+            if (job->httpStatusCode() == 200) {
+                _image = job->asIcon();
+                Q_EMIT _spaceManager->spaceChanged(this);
+            }
+        });
+        job->start();
+    }
 }
 QString Space::displayName() const
 {
@@ -71,4 +83,19 @@ bool Space::disabled() const
 {
     // this is how disabled spaces are represented in the graph API
     return _drive.getRoot().getDeleted().getState() == QLatin1String("trashed");
+}
+
+QUrl Space::imageUrl() const
+{
+    const auto &special = _drive.getSpecial();
+    const auto img = std::find_if(special.cbegin(), special.cend(), [](const auto &it) { return it.getSpecialFolder().getName() == QLatin1String("image"); });
+    return img == special.cend() ? QUrl() : QUrl(img->getWebDavUrl());
+}
+
+QIcon Space::image() const
+{
+    if (_image.isNull()) {
+        return Resources::getCoreIcon(QStringLiteral("folder-sync"));
+    }
+    return _image;
 }

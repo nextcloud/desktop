@@ -20,6 +20,8 @@
 
 #include <OAIDrive.h>
 
+#include <QIcon>
+
 namespace OCC {
 namespace GraphApi {
     class SpacesManager;
@@ -48,9 +50,12 @@ namespace GraphApi {
          */
         bool disabled() const;
 
-    Q_SIGNALS:
-        void updated();
+        /**
+         * The image url
+         */
+        QUrl imageUrl() const;
 
+        QIcon image() const;
 
     private:
         Space(SpacesManager *spaceManager, const OpenAPI::OAIDrive &drive);
@@ -58,6 +63,8 @@ namespace GraphApi {
 
         SpacesManager *_spaceManager;
         OpenAPI::OAIDrive _drive;
+
+        QIcon _image;
 
         friend class SpacesManager;
     };

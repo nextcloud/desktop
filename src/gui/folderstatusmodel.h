@@ -50,6 +50,7 @@ public:
         FolderSyncPaused,
         FolderStatusIconRole,
         FolderAccountConnected,
+        FolderImage,
 
         SyncProgressOverallPercent,
         SyncProgressOverallString,

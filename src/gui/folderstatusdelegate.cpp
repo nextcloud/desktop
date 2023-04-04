@@ -112,24 +112,28 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     painter->save();
 
-    const QIcon statusIcon = qvariant_cast<QIcon>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderStatusIconRole)).data());
+    const QString statusIconName = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderStatusIconRole)).data().toString();
     const QString aliasText = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::HeaderRole)).data());
     const QStringList conflictTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderConflictMsg)).data());
     const QStringList errorTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderErrorMsg)).data());
     const QStringList infoTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderInfoMsg)).data());
+    const QIcon spaceImage = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderImage)).data().value<QIcon>();
 
     const int overallPercent = qvariant_cast<int>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressOverallPercent)).data());
     const QString overallString = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressOverallString)).data());
     const QString itemString = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressItemString)).data());
     const int warningCount = qvariant_cast<int>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::WarningCount)).data());
     const bool syncOngoing = qvariant_cast<bool>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncRunning)).data());
-    const bool syncEnabled = qvariant_cast<bool>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderAccountConnected)).data());
+
     const QString syncText = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderSyncText)).data());
     const bool showProgess = !overallString.isEmpty() || !itemString.isEmpty();
 
+    const auto iconState =
+        index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderAccountConnected)).data().toBool() ? QIcon::Normal : QIcon::Disabled;
+
     const auto statusRect = QRectF{option.rect}.adjusted(0, 0, 0, rootFolderHeightWithoutErrors() - option.rect.height());
     const auto iconRect =
-        QRectF{statusRect.topLeft(), QSizeF{statusRect.height(), statusRect.height()}}.marginsRemoved({_aliasMargin, _aliasMargin, _aliasMargin, 0});
+        QRectF{statusRect.topLeft(), QSizeF{statusRect.height(), statusRect.height()}}.marginsRemoved({_aliasMargin, _aliasMargin, _aliasMargin, _aliasMargin});
 
     // the rectangle next to the icon which will contain the strings
     const auto infoRect = QRectF{iconRect.topRight(), QSizeF{statusRect.width() - iconRect.width(), iconRect.height()}}.marginsRemoved({_aliasMargin, 0, 0, 0});
@@ -141,16 +145,18 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     const auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
 
-    painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect.toRect()).left(), iconRect.top(),
-        statusIcon.pixmap(iconRect.width(), iconRect.width(), syncEnabled ? QIcon::Normal : QIcon::Disabled));
+    {
+        const auto iconVisualRect = QStyle::visualRect(option.direction, option.rect, iconRect.toRect());
+        spaceImage.paint(painter, iconVisualRect, Qt::AlignCenter, iconState);
+        Theme::instance()->themeIcon(QStringLiteral("states/%1").arg(statusIconName)).paint(painter, iconVisualRect, Qt::AlignCenter, iconState);
+    }
 
     // only show the warning icon if the sync is running. Otherwise its
     // encoded in the status icon.
     if (warningCount > 0 && syncOngoing) {
-        const auto warnRect = QRectF{iconRect.bottomLeft() - QPointF(0, 17), QSizeF{16, 16}};
-        const auto warnIcon = Resources::getCoreIcon(QStringLiteral("warning"));
-        const QPixmap pm = warnIcon.pixmap(warnRect.size().toSize(), syncEnabled ? QIcon::Normal : QIcon::Disabled);
-        painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, warnRect.toRect()), pm);
+        Resources::getCoreIcon(QStringLiteral("warning"))
+            .paint(painter, QStyle::visualRect(option.direction, option.rect, QRectF{iconRect.bottomLeft() - QPointF(0, 17), QSizeF{16, 16}}.toRect()),
+                Qt::AlignCenter, iconState);
     }
 
     auto palette = option.palette;

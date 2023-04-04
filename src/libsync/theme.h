@@ -105,6 +105,9 @@ public:
      */
     QIcon syncStateIcon(SyncResult::Status result, bool sysTray = false, bool sysTrayMenuVisible = false) const;
     QIcon syncStateIcon(const SyncResult &status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon syncStateIcon(const QString &iconName, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+
+    QString syncStateIconName(const SyncResult &result) const;
 
     /**
      * Returns a universal (non color schema aware) icon.
@@ -473,9 +476,10 @@ public:
     bool enableCernBranding() const;
 
 
+    QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
+
 protected:
     QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
-    QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
 
     Theme();
 

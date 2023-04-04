@@ -464,54 +464,56 @@ bool Theme::aboutShowCopyright() const
     return true;
 }
 
-namespace {
-    QString syncStateIconName(SyncResult result, bool sysTray, bool sysTrayMenuVisible)
-    {
-        switch (result.status()) {
-        case SyncResult::NotYetStarted:
-            [[fallthrough]];
-        case SyncResult::SyncRunning:
-            return QStringLiteral("state-sync");
-        case SyncResult::SyncAbortRequested:
-            [[fallthrough]];
-        case SyncResult::Paused:
-            return QStringLiteral("state-pause");
-        case SyncResult::SyncPrepare:
-            [[fallthrough]];
-        case SyncResult::Success:
-            if (!result.hasUnresolvedConflicts()) {
-                return QStringLiteral("state-ok");
-            }
-            [[fallthrough]];
-        case SyncResult::Problem:
-            [[fallthrough]];
-        case SyncResult::Undefined:
-            // this can happen if no sync connections are configured.
-            return QStringLiteral("state-information");
-        case SyncResult::Offline:
-            return QStringLiteral("state-offline");
-        case SyncResult::Error:
-            [[fallthrough]];
-        case SyncResult::SetupError:
-            // FIXME: Use state-problem once we have an icon.
-            return QStringLiteral("state-error");
+QString Theme::syncStateIconName(const SyncResult &result) const
+{
+    switch (result.status()) {
+    case SyncResult::NotYetStarted:
+        [[fallthrough]];
+    case SyncResult::SyncRunning:
+        return QStringLiteral("sync");
+    case SyncResult::SyncAbortRequested:
+        [[fallthrough]];
+    case SyncResult::Paused:
+        return QStringLiteral("pause");
+    case SyncResult::SyncPrepare:
+        [[fallthrough]];
+    case SyncResult::Success:
+        if (!result.hasUnresolvedConflicts()) {
+            return QStringLiteral("ok");
         }
-        Q_UNREACHABLE();
+        [[fallthrough]];
+    case SyncResult::Problem:
+        [[fallthrough]];
+    case SyncResult::Undefined:
+        // this can happen if no sync connections are configured.
+        return QStringLiteral("information");
+    case SyncResult::Offline:
+        return QStringLiteral("offline");
+    case SyncResult::Error:
+        [[fallthrough]];
+    case SyncResult::SetupError:
+        // FIXME: Use problem once we have an icon.
+        return QStringLiteral("error");
     }
+    Q_UNREACHABLE();
 }
 
 QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTrayMenuVisible) const
 {
     return syncStateIcon(SyncResult{status}, sysTray, sysTrayMenuVisible);
 }
+
 QIcon Theme::syncStateIcon(const SyncResult &result, bool sysTray, bool sysTrayMenuVisible) const
 {
-    const auto statusIconName = syncStateIconName(result, sysTray, sysTrayMenuVisible);
+    return syncStateIcon(QStringLiteral("state-%1").arg(syncStateIconName(result)), sysTray, sysTrayMenuVisible);
+}
 
+QIcon Theme::syncStateIcon(const QString &iconName, bool sysTray, bool sysTrayMenuVisible) const
+{
     if (sysTray) {
-        return themeTrayIcon(statusIconName, sysTrayMenuVisible);
+        return themeTrayIcon(iconName, sysTrayMenuVisible);
     } else {
-        return themeIcon(statusIconName);
+        return themeIcon(iconName);
     }
 }
 

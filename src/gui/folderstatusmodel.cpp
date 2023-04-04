@@ -21,6 +21,8 @@
 #include "gui/quotainfo.h"
 #include "theme.h"
 
+#include "resources/resources.h"
+
 #include "libsync/graphapi/space.h"
 #include "libsync/graphapi/spacesmanager.h"
 
@@ -281,20 +283,24 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             }
             return f->displayName();
         }
+        case Columns::FolderImage:
+            if (auto *space = getSpace()) {
+                return space->image();
+            }
+            return Resources::getCoreIcon(QStringLiteral("folder-sync"));
         case Columns::FolderSyncPaused:
             return f->syncPaused();
         case Columns::FolderAccountConnected:
             return accountConnected;
-        case Columns::FolderStatusIconRole:
-            if (accountConnected) {
-                if (f->syncPaused()) {
-                    return Theme::instance()->syncStateIcon(SyncResult::Status::Paused);
-                } else {
-                    return Theme::instance()->syncStateIcon(f->syncResult());
-                }
-            } else {
-                return Theme::instance()->syncStateIcon(SyncResult::Status::Offline);
+        case Columns::FolderStatusIconRole: {
+            auto status = f->syncResult();
+            if (!accountConnected) {
+                status.setStatus(SyncResult::Status::Offline);
+            } else if (f->syncPaused()) {
+                status.setStatus(SyncResult::Status::Paused);
             }
+            return Theme::instance()->syncStateIconName(status);
+        }
         case Columns::SyncProgressItemString:
             return progress._progressString;
         case Columns::WarningCount:

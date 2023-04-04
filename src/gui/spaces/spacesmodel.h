@@ -55,7 +55,5 @@ public:
 private:
     GraphApi::SpacesManager *_spacesManager = nullptr;
     QVector<GraphApi::Space *> _spacesList;
-
-    mutable QHash<QString, QPixmap> _images;
 };
 }
