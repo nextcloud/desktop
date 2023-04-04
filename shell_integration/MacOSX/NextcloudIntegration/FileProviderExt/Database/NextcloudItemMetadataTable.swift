@@ -196,4 +196,18 @@ class NextcloudItemMetadataTable: Object {
     func canUnlock(as user: String) -> Bool {
         return !lock || (lockOwner == user && lockOwnerType == 0)
     }
+
+    func thumbnailUrl(size: CGSize) -> URL? {
+        guard hasPreview else {
+            return nil
+        }
+
+        let urlBase = urlBase.urlEncoded!
+        let webdavUrl = urlBase + NextcloudAccount.webDavFilesUrlSuffix + user // Leave the leading slash
+        let serverFileRelativeUrl = serverUrl.replacingOccurrences(of: webdavUrl, with: "") + "/" + fileName
+
+        let urlString = "\(urlBase)/index.php/core/preview.png?file=\(serverFileRelativeUrl)&x=\(size.width)&y=\(size.height)&a=1&mode=cover"
+
+        return URL(string: urlString)
+    }
 }
