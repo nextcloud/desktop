@@ -20,6 +20,7 @@ Summary
 * Bugfix - Properly handle OAuth invalidation: [#10494](https://github.com/owncloud/client/issues/10494)
 * Bugfix - Clear conflict errors after they where resolved: [#10569](https://github.com/owncloud/client/issues/10569)
 * Bugfix - Set the expected download content length in the job properly: [#10607](https://github.com/owncloud/client/pull/10607)
+* Bugfix - UI freeze when multiple modal dialogs displayed on macOS: [#10621](https://github.com/owncloud/client/issues/10621)
 * Change - Implement server guided migration to spaces: [#9945](https://github.com/owncloud/client/issues/9945)
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
@@ -107,6 +108,12 @@ Details
 * Bugfix - Set the expected download content length in the job properly: [#10607](https://github.com/owncloud/client/pull/10607)
 
    https://github.com/owncloud/client/pull/10607
+
+* Bugfix - UI freeze when multiple modal dialogs displayed on macOS: [#10621](https://github.com/owncloud/client/issues/10621)
+
+   Due to incorrect handling of the dialogs, the UI could freeze.
+
+   https://github.com/owncloud/client/issues/10621
 
 * Change - Implement server guided migration to spaces: [#9945](https://github.com/owncloud/client/issues/9945)
 
