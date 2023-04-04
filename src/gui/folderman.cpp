@@ -1681,6 +1681,8 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
             *status = SyncResult::SyncRunning;
         } else if (goodSeen > 0) {
             *status = SyncResult::Success;
+        } else if (various > 0) {
+            *status = SyncResult::Undefined;
         }
     }
 }
