@@ -342,7 +342,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
     func childDirectoriesForDirectory(_ directoryMetadata: NextcloudItemMetadataTable) -> [NextcloudItemMetadataTable] {
         let directoryServerUrl = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND ocId != %@ AND directory == true", directoryServerUrl, directoryMetadata.account)
+        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("serverUrl BEGINSWITH %@ AND directory == true", directoryServerUrl)
         return sortedItemMetadatas(metadatas)
     }
 
