@@ -78,7 +78,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     }
 
     connect(_ui->chooseLocalDirectoryButton, &QToolButton::clicked, this, [=]() {
-        auto dialog = new QFileDialog(ocApp()->gui()->settingsDialog(), tr("Select the local folder"), defaultSyncTargetDir);
+        auto dialog = new QFileDialog(this, tr("Select the local folder"), defaultSyncTargetDir);
         dialog->setFileMode(QFileDialog::Directory);
         dialog->setOption(QFileDialog::ShowDirsOnly);
 
@@ -88,8 +88,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
 
             _ui->localDirectoryLineEdit->setText(QDir::toNativeSeparators(directory));
         });
-
-        ocApp()->gui()->raiseDialog(dialog);
+        dialog->open();
     });
 
     // this should be handled on application startup, too
