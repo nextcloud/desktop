@@ -59,6 +59,11 @@ public:
 
     bool checkAccountExists(bool openSettings);
 
+    /**
+     * Raises our main Window to the front with the raiseWidget in focus.
+     * If raiseWidget is a dialog and not visible yet, ->open will be called.
+     * For normal widgets we call showNormal.
+     */
     static void raiseDialog(QWidget *raiseWidget);
     void setupOverlayIcons();
 

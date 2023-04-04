@@ -1177,15 +1177,20 @@ void ownCloudGui::slotHelp()
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
     auto window = ocApp()->gui()->settingsDialog();
+    auto *dialog = qobject_cast<QDialog *>(raiseWidget);
     OC_ASSERT(window);
-    OC_ASSERT_X(!qobject_cast<QDialog *>(raiseWidget) || raiseWidget->parentWidget() == window, "raiseDialog should only be called with modal dialogs");
+    OC_ASSERT_X(!dialog || raiseWidget->parentWidget() == window, "raiseDialog should only be called with modal dialogs");
     if (!window) {
         return;
     }
     window->showNormal();
     window->raise();
-    raiseWidget->showNormal();
-    raiseWidget->raise();
+    if (dialog && !dialog->isVisible()) {
+        dialog->open();
+    } else {
+        raiseWidget->showNormal();
+        raiseWidget->raise();
+    }
     window->activateWindow();
     raiseWidget->activateWindow();
 
