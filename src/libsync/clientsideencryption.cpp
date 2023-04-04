@@ -1722,7 +1722,11 @@ QByteArray FolderMetadata::computeMetadataKeyChecksum(const QByteArray &metadata
     auto hashAlgorithm = QCryptographicHash{QCryptographicHash::Sha256};
 
     hashAlgorithm.addData(_account->e2e()->_mnemonic.remove(' ').toUtf8());
-    for (const auto &singleFile : _files) {
+    auto sortedFiles = _files;
+    std::sort(sortedFiles.begin(), sortedFiles.end(), [] (const auto &first, const auto &second) {
+        return first.encryptedFilename < second.encryptedFilename;
+    });
+    for (const auto &singleFile : sortedFiles) {
         hashAlgorithm.addData(singleFile.encryptedFilename.toUtf8());
     }
     hashAlgorithm.addData(metadataKey);
