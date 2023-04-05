@@ -30,33 +30,37 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
     // webFingerUsername will be empty when WebFinger is not in use
     auto oAuth = new OAuth(_context->accountBuilder().serverUrl(), _context->accountBuilder().webFingerUsername(), _context->accessManager(), {}, this);
 
-    connect(oAuth, &OAuth::result, this, [this, oAuthCredentialsPage](OAuth::Result result, const QString &userName, const QString &token, const QString &refreshToken, const QString &displayName) {
-        // the button may not be clicked anymore, since the server has been shut down right before this signal was emitted by the OAuth instance
-        oAuthCredentialsPage->setButtonsEnabled(false);
+    connect(oAuth, &OAuth::result, this,
+        [this, oAuthCredentialsPage](
+            OAuth::Result result, const QString &userName, const QString &token, const QString &refreshToken, const QString &displayName) {
+            Q_UNUSED(userName);
 
-        _context->window()->slotStartTransition();
+            // the button may not be clicked anymore, since the server has been shut down right before this signal was emitted by the OAuth instance
+            oAuthCredentialsPage->setButtonsEnabled(false);
 
-        // bring window up top again, as the browser may have been raised in front of it
-        _context->window()->raise();
+            _context->window()->slotStartTransition();
 
-        switch (result) {
-        case OAuth::Result::LoggedIn: {
-            _context->accountBuilder().setAuthenticationStrategy(new OAuth2AuthenticationStrategy(userName, token, refreshToken));
-            _context->accountBuilder().setDisplayName(displayName);
-            Q_EMIT evaluationSuccessful();
-            break;
-        }
-        case OAuth::Result::Error: {
-            Q_EMIT evaluationFailed(tr("Error while trying to log in to OAuth2-enabled server."));
-            break;
-        }
-        case OAuth::Result::NotSupported: {
-            // should never happen
-            Q_EMIT evaluationFailed(tr("Server reports that OAuth2 is not supported."));
-            break;
-        }
-        }
-    });
+            // bring window up top again, as the browser may have been raised in front of it
+            _context->window()->raise();
+
+            switch (result) {
+            case OAuth::Result::LoggedIn: {
+                _context->accountBuilder().setAuthenticationStrategy(new OAuth2AuthenticationStrategy(token, refreshToken));
+                _context->accountBuilder().setDisplayName(displayName);
+                Q_EMIT evaluationSuccessful();
+                break;
+            }
+            case OAuth::Result::Error: {
+                Q_EMIT evaluationFailed(tr("Error while trying to log in to OAuth2-enabled server."));
+                break;
+            }
+            case OAuth::Result::NotSupported: {
+                // should never happen
+                Q_EMIT evaluationFailed(tr("Server reports that OAuth2 is not supported."));
+                break;
+            }
+            }
+        });
 
     connect(oAuthCredentialsPage, &OAuthCredentialsSetupWizardPage::openBrowserButtonPushed, this, [oAuth]() {
         oAuth->openBrowser();

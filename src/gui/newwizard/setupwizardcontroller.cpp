@@ -149,8 +149,6 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
     qCDebug(lcSetupWizardController) << "Current wizard state:" << _currentState->state();
 
     connect(_currentState, &AbstractSetupWizardState::evaluationSuccessful, this, [this]() {
-        _currentState->deleteLater();
-
         switch (_currentState->state()) {
         case SetupWizardState::ServerUrlState: {
             if (Theme::instance()->wizardEnableWebfinger()) {
@@ -166,7 +164,21 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
             return;
         }
         case SetupWizardState::CredentialsState: {
-            changeStateTo(SetupWizardState::AccountConfiguredState);
+            // not a fan of performing this job here, should be moved into its own (headless) state IMO
+            // we can bind it to the current state, which will be cleaned up by changeStateTo(...) as soon as the job finished
+            auto fetchUserInfoJob = _context->startFetchUserInfoJob(_currentState);
+
+            connect(fetchUserInfoJob, &CoreJob::finished, this, [this, fetchUserInfoJob] {
+                if (fetchUserInfoJob->success()) {
+                    auto result = fetchUserInfoJob->result().value<FetchUserInfoResult>();
+                    _context->accountBuilder().setDisplayName(result.displayName());
+                    changeStateTo(SetupWizardState::AccountConfiguredState);
+                } else {
+                    _context->window()->showErrorMessage(QStringLiteral("Failed to retrieve user information from server"));
+                    changeStateTo(_currentState->state());
+                }
+            });
+
             return;
         }
         case SetupWizardState::AccountConfiguredState: {

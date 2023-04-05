@@ -15,6 +15,7 @@
 #include "setupwizardaccountbuilder.h"
 
 #include "gui/accountmanager.h"
+#include "networkjobs/fetchuserinfojobfactory.h"
 
 namespace OCC::Wizard {
 
@@ -52,9 +53,13 @@ QString HttpBasicAuthenticationStrategy::password() const
     return _password;
 }
 
-OAuth2AuthenticationStrategy::OAuth2AuthenticationStrategy(const QString &davUser, const QString &token, const QString &refreshToken)
-    : _davUser(davUser)
-    , _token(token)
+FetchUserInfoJobFactory HttpBasicAuthenticationStrategy::makeFetchUserInfoJobFactory(QNetworkAccessManager *nam)
+{
+    return FetchUserInfoJobFactory::fromBasicAuthCredentials(nam, _username, _password);
+}
+
+OAuth2AuthenticationStrategy::OAuth2AuthenticationStrategy(const QString &token, const QString &refreshToken)
+    : _token(token)
     , _refreshToken(refreshToken)
 {
 }
@@ -72,6 +77,11 @@ bool OAuth2AuthenticationStrategy::isValid()
 QString OAuth2AuthenticationStrategy::davUser()
 {
     return _davUser;
+}
+
+FetchUserInfoJobFactory OAuth2AuthenticationStrategy::makeFetchUserInfoJobFactory(QNetworkAccessManager *nam)
+{
+    return FetchUserInfoJobFactory::fromOAuth2Credentials(nam, _token);
 }
 
 SetupWizardAccountBuilder::SetupWizardAccountBuilder() = default;

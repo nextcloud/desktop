@@ -17,6 +17,7 @@
 #include "account.h"
 #include "gui/creds/httpcredentialsgui.h"
 #include "networkjobs.h"
+#include "networkjobs/fetchuserinfojobfactory.h"
 
 namespace OCC::Wizard {
 
@@ -48,6 +49,8 @@ public:
      * @return username for use with WebDAV
      */
     virtual QString davUser() = 0;
+
+    virtual FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) = 0;
 };
 
 class HttpBasicAuthenticationStrategy : public AbstractAuthenticationStrategy
@@ -65,6 +68,8 @@ public:
     QString username() const;
     QString password() const;
 
+    FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) override;
+
 private:
     QString _username;
     QString _password;
@@ -73,13 +78,16 @@ private:
 class OAuth2AuthenticationStrategy : public AbstractAuthenticationStrategy
 {
 public:
-    explicit OAuth2AuthenticationStrategy(const QString &davUser, const QString &token, const QString &refreshToken);
+    explicit OAuth2AuthenticationStrategy(const QString &token, const QString &refreshToken);
 
     HttpCredentialsGui *makeCreds() override;
 
     bool isValid() override;
 
     QString davUser() override;
+    void setDavUser(const QString &user);
+
+    FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) override;
 
 private:
     QString _davUser;

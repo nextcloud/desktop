@@ -52,6 +52,9 @@ public:
 
     AccessManager *accessManager() const;
 
+    // convenience factory
+    CoreJob *startFetchUserInfoJob(QObject *parent) const;
+
 private:
     SetupWizardWindow *_window = nullptr;
     AccessManager *_accessManager = nullptr;

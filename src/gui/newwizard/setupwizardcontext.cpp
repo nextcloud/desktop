@@ -60,4 +60,9 @@ void SetupWizardContext::resetAccountBuilder()
     _accountBuilder = {};
 }
 
+CoreJob *SetupWizardContext::startFetchUserInfoJob(QObject *parent) const
+{
+    return _accountBuilder.authenticationStrategy()->makeFetchUserInfoJobFactory(_accessManager).startJob(_accountBuilder.serverUrl(), parent);
+}
+
 } // OCC::Wizard
