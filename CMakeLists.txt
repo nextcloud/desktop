@@ -44,6 +44,11 @@ set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
 
 if(NOT WITH_CRASHREPORTER)
     message(STATUS "Build of crashreporter disabled.")
+else()
+    # obviously, a crash reported without the URL set is pretty pointless and won't work
+    if(CRASHREPORTER_SUBMIT_URL STREQUAL "")
+        message(FATAL_ERROR "No crash reporter submit URL provided")
+    endif()
 endif()
 
 include(GenerateExportHeader)
