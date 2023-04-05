@@ -103,7 +103,8 @@ FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountStatePtr 
 QString FolderWizardPrivate::initialLocalPath() const
 {
     if (_account->supportsSpaces()) {
-        FolderMan::instance()->findGoodPathForNewSyncFolder(defaultSyncRoot(), _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString());
+        return FolderMan::instance()->findGoodPathForNewSyncFolder(
+            defaultSyncRoot(), _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString());
     }
     return defaultSyncRoot();
 }
