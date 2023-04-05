@@ -1,72 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="256"
-   height="256"
-   viewBox="0 0 16 16"
-   fill="none"
-   version="1.1"
-   id="svg15"
-   sodipodi:docname="checkmark.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview17"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="true"
-     showgrid="false"
-     inkscape:zoom="0.82128906"
-     inkscape:cx="118.71581"
-     inkscape:cy="-127.239"
-     inkscape:window-width="1920"
-     inkscape:window-height="1029"
-     inkscape:window-x="1920"
-     inkscape:window-y="25"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg15"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0" />
-  <path
-     fill-rule="evenodd"
-     clip-rule="evenodd"
-     d="m 17,8.4995 c 0,4.6939 -3.8061,8.499 -8.5,8.499 C 3.8061,16.9985 0,13.1934 0,8.4995 0,3.8051 3.8061,0 8.5,0 13.1939,0 17,3.8051 17,8.4995 Z"
-     fill="#5eb220"
-     id="path1193"
-     style="fill:none;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers" />
-  <path
-     fill-rule="evenodd"
-     clip-rule="evenodd"
-     d="M 16,8.000235 C 16,12.418413 12.417788,16 8,16 3.582212,16 0,12.418413 0,8.000235 0,3.581587 3.582212,0 8,0 c 4.417788,0 8,3.581587 8,8.000235 z"
-     fill="#5eb220"
-     id="path4"
-     style="stroke:none;stroke-width:2.94131;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers" />
-  <path
-     fill-rule="evenodd"
-     clip-rule="evenodd"
-     d="M 11.535,3.9398 7.0191,10.084 4.7401,8.3033 3.2383,10.2245 4.7898,11.4367 7.4953,13.5504 8.2399,12.5401 13.5,5.3843 Z"
-     fill="#ffffff"
-     stroke="#009a00"
-     stroke-width="0.25"
-     id="path6" />
-  <defs
-     id="defs13">
-    <clipPath
-       id="clip0">
-      <rect
-         width="32"
-         height="32"
-         fill="#ffffff"
-         id="rect10"
-         x="0"
-         y="0" />
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="512" height="512" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M 32 23.5 C 32 28.193 28.194 31.999 23.5 31.999 C 18.806 31.999 15 28.193 15 23.5 C 15 18.805 18.806 15 23.5 15 C 28.194 15 32 18.805 32 23.5 Z" fill="#5EB220"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M 18.414 25.203 L 19.762 23.479 L 22.044 25.262 L 26.562 19.115 L 28.325 20.411 L 23.139 27.466 L 22.471 28.373 L 18.414 25.203 Z" fill="white"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M 26.533 18.923 L 26.371 19.144 L 25.803 19.915 L 22.017 25.067 L 20.708 24.044 L 19.954 23.455 L 19.738 23.286 L 19.569 23.502 L 18.39 25.01 L 18.222 25.226 L 18.438 25.395 L 19.192 25.984 L 21.499 27.787 L 22.276 28.394 L 22.498 28.567 L 22.665 28.341 L 23.25 27.547 L 27.788 21.374 L 28.355 20.603 L 28.517 20.382 L 28.297 20.22 L 26.753 19.085 L 26.533 18.923 Z M 26.591 19.306 L 28.134 20.44 L 27.567 21.212 L 23.029 27.385 L 22.444 28.178 L 21.668 27.572 L 19.36 25.769 L 18.607 25.179 L 19.785 23.67 L 20.539 24.26 L 22.07 25.456 L 26.024 20.077 L 26.591 19.306 Z" fill="#3A9804"/>
+  </g>
+  <defs>
+    <clipPath id="clip0">
+      <rect width="32" height="32" fill="white"/>
     </clipPath>
   </defs>
 </svg>

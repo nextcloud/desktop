@@ -1,57 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   width="256"
-   height="256"
-   viewBox="0 0 16 16"
-   fill="none"
-   version="1.1"
-   id="svg13"
-   sodipodi:docname="offline.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview15"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:zoom="1.4277344"
-     inkscape:cx="99.108071"
-     inkscape:cy="15.759234"
-     inkscape:window-width="1920"
-     inkscape:window-height="1029"
-     inkscape:window-x="1920"
-     inkscape:window-y="25"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg13" />
-  <path
-     fill-rule="evenodd"
-     clip-rule="evenodd"
-     d="m 8,0 c 4.417788,0 8,3.581587 8,8.000235 C 16,12.418413 12.417788,16 8,16 3.582212,16 0,12.418413 0,8.000235 0,3.581587 3.582212,0 8,0 Z M 5.176471,6.823379 H 2.823529 v 2.353148 h 2.352942 z m 4,0 H 6.823529 v 2.353148 h 2.352942 z m 4,0 h -2.352942 v 2.353148 h 2.352942 z"
-     fill="#041e42"
-     id="path4"
-     style="stroke-width:0.941218" />
-  <defs
-     id="defs11">
-    <clipPath
-       id="clip0">
-      <rect
-         width="32"
-         height="32"
-         fill="#ffffff"
-         id="rect8"
-         x="0"
-         y="0" />
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="512" height="512" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M 23.5 15 C 28.194 15 32 18.805 32 23.5 C 32 28.193 28.194 31.999 23.5 31.999 C 18.806 31.999 15 28.193 15 23.5 C 15 18.805 18.806 15 23.5 15 Z M 20.5 22.249 L 18 22.249 L 18 24.749 L 20.5 24.749 L 20.5 22.249 Z M 24.75 22.249 L 22.25 22.249 L 22.25 24.749 L 24.75 24.749 L 24.75 22.249 Z M 29 22.249 L 26.5 22.249 L 26.5 24.749 L 29 24.749 L 29 22.249 Z" fill="#041E42"/>
+  </g>
+  <defs>
+    <clipPath id="clip0">
+      <rect width="32" height="32" fill="white"/>
     </clipPath>
   </defs>
 </svg>
