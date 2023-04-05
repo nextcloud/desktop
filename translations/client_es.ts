@@ -3267,7 +3267,7 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="658"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation type="unfinished"/>
+        <translation>Error con los metadatos. Se está obteniendo un formato inesperado de los metadatos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
