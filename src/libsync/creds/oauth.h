@@ -72,7 +72,7 @@ Q_SIGNALS:
      * The state has changed.
      * when logged in, token has the value of the token.
      */
-    void result(OAuth::Result result, const QString &userName = QString(), const QString &token = QString(), const QString &refreshToken = QString(), const QString &displayName = QString());
+    void result(OAuth::Result result, const QString &token = QString(), const QString &refreshToken = QString());
 
     /**
      * emitted when the call to the well-known endpoint is finished
@@ -101,7 +101,7 @@ protected:
 
 
 private:
-    void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QString &userName, const QString &displayName, const QUrl &messageUrl);
+    void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QUrl &messageUrl);
 
     QByteArray generateRandomString(size_t size) const;
 

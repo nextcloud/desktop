@@ -385,9 +385,11 @@ void OAuth::startAuthentication()
                             } else {
                                 auto fetchUserInfo = job->result().value<FetchUserInfoResult>();
 
+                                // note: the username still shouldn't be empty
+                                Q_ASSERT(!_davUser.isEmpty());
+
                                 // dav usernames are case-insensitive, we might compare a user input with the string provided by the server
-                                // note: the username must never be empty
-                                if (!OC_ENSURE(_davUser.isEmpty()) && fetchUserInfo.userName().compare(_davUser, Qt::CaseInsensitive) != 0) {
+                                if (fetchUserInfo.userName().compare(_davUser, Qt::CaseInsensitive) != 0) {
                                     // Connected with the wrong user
                                     qCWarning(lcOauth) << "We expected the user" << _davUser << "but the server answered with user" << fetchUserInfo.userName();
                                     const QString message = tr("<h1>Wrong user</h1>"
@@ -397,12 +399,12 @@ void OAuth::startAuthentication()
                                     httpReplyAndClose(socket, QStringLiteral("403 Forbidden"), tr("Wrong user"), message);
                                     emit result(Error);
                                 } else {
-                                    finalize(socket, accessToken, refreshToken, fetchUserInfo.userName(), fetchUserInfo.displayName(), messageUrl);
+                                    finalize(socket, accessToken, refreshToken, messageUrl);
                                 }
                             }
                         });
                     } else {
-                        finalize(socket, accessToken, refreshToken, QString(), QString(), QUrl());
+                        finalize(socket, accessToken, refreshToken, QUrl());
                     }
                 });
             });
@@ -410,7 +412,7 @@ void OAuth::startAuthentication()
     });
 }
 
-void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QString &userName, const QString &displayName, const QUrl &messageUrl)
+void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QUrl &messageUrl)
 {
     const QString loginSuccessfulHtml = tr("<h1>Login Successful</h1><p>You can close this window.</p>");
     const QString loginSuccessfulTitle = tr("Login Successful");
@@ -420,7 +422,7 @@ void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessTo
     } else {
         httpReplyAndClose(socket, QStringLiteral("200 OK"), loginSuccessfulTitle, loginSuccessfulHtml);
     }
-    emit result(LoggedIn, userName, accessToken, refreshToken, displayName);
+    emit result(LoggedIn, accessToken, refreshToken);
 }
 
 QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)

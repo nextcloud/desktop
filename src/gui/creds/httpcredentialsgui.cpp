@@ -78,8 +78,7 @@ void HttpCredentialsGui::askFromUserAsync()
     }
 }
 
-void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
-    const QString &token, const QString &refreshToken, const QString &)
+void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, const QString &refreshToken)
 {
     _asyncAuth.reset();
     switch (r) {
@@ -92,8 +91,6 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
     case OAuth::LoggedIn:
         break;
     }
-
-    OC_ASSERT(_user == user); // ensured by _asyncAuth
 
     _password = token;
     _refreshToken = refreshToken;
