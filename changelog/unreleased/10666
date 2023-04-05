@@ -1,0 +1,3 @@
+Bugfix: Reconnect got stuck if the server supports app providers
+
+https://github.com/owncloud/client/issues/10666

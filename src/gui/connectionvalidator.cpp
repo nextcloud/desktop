@@ -275,11 +275,13 @@ void ConnectionValidator::fetchUser()
         Q_ASSERT(capabilities.isValid());
 
         auto *group = new JobGroup(this);
+        group->setJobHook([](auto *job) {
+            job->setAuthenticationJob(true);
+            job->setTimeout(20s);
+        });
         if (capabilities.isValid()) {
             if (capabilities.avatarsAvailable()) {
                 auto *avatarJob = group->createJob<AvatarJob>(_account, _account->davUser(), 128, this);
-                avatarJob->setAuthenticationJob(true);
-                avatarJob->setTimeout(20s);
                 connect(avatarJob, &AvatarJob::avatarPixmap, this, [this](const QPixmap &img) {
                     _account->setAvatar(img);
                 });
