@@ -198,16 +198,17 @@ Folder::~Folder()
 
 static bool longPathsEnabledOnWindows()
 {
-    static std::optional<bool> longPathsEnabled = {};
+    static std::optional<bool> longPathsEnabledCached = {};
 
-    if (!longPathsEnabled.has_value()) {
+    if (!longPathsEnabledCached.has_value()) {
+        // https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
         QSettings fsSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem"), QSettings::NativeFormat);
         QVariant longPathsEnabled = fsSettings.value(QStringLiteral("LongPathsEnabled"));
         qCDebug(lcFolder) << "LongPathsEnabled:" << longPathsEnabled;
-        longPathsEnabled = longPathsEnabled.value<uint32_t>() == 1;
+        longPathsEnabledCached = longPathsEnabled.value<uint32_t>() == 1;
     }
 
-    return longPathsEnabled.value();
+    return longPathsEnabledCached.value();
 }
 
 bool Folder::checkLocalPath()
