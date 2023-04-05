@@ -49,7 +49,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
-    rec._isE2eEncrypted = isEncrypted() ? SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2 : SyncJournalFileRecord::EncryptionStatus::NotEncrypted;
+    rec._isE2eEncrypted = static_cast<SyncJournalFileRecord::EncryptionStatus>(_isEncrypted);
     rec._lockstate._locked = _locked == LockStatus::LockedItem;
     rec._lockstate._lockOwnerDisplayName = _lockOwnerDisplayName;
     rec._lockstate._lockOwnerId = _lockOwnerId;
