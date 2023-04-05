@@ -19,6 +19,7 @@
 
 #include "abstractnetworkjob.h"
 
+#include <functional>
 #include <unordered_set>
 
 namespace OCC {
@@ -31,13 +32,17 @@ class OWNCLOUDSYNC_EXPORT JobGroup : public QObject
 public:
     JobGroup(QObject *parent);
 
+    void setJobHook(std::function<void(AbstractNetworkJob *)> &&hook);
+
     template <typename T, typename... Args>
     T *createJob(Args &&...args)
     {
+        // requires AbstractNetworkJob, the template just makes it easy to use the returned object
+        static_assert(std::is_convertible_v<T *, AbstractNetworkJob *>);
         Q_ASSERT(!_finished);
-        auto [it, created] = _jobs.emplace(new T(args...));
-        Q_UNUSED(created);
-        auto job = static_cast<T *>(*it);
+        auto [it, _] = _jobs.emplace(new T(args...));
+        auto *job = static_cast<T *>(*it);
+        _hook(job);
         connect(job, &T::finishedSignal, this, [job, this] {
             _jobs.erase(job);
             if (_jobs.empty()) {
@@ -58,6 +63,7 @@ Q_SIGNALS:
 private:
     bool _finished = false;
     std::unordered_set<AbstractNetworkJob *> _jobs;
+    std::function<void(AbstractNetworkJob *)> _hook;
 };
 
 }

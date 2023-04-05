@@ -25,7 +25,12 @@ JobGroup::JobGroup(QObject *parent)
 {
 }
 
-bool OCC::JobGroup::isEmpty() const
+bool JobGroup::isEmpty() const
 {
     return _jobs.empty();
+}
+
+void JobGroup::setJobHook(std::function<void(AbstractNetworkJob *)> &&hook)
+{
+    _hook = hook;
 }
