@@ -75,7 +75,7 @@ public:
 
         uint32_t priority;
 
-        QStringList selectiveSyncBlackList;
+        QSet<QString> selectiveSyncBlackList;
     };
 
     explicit FolderWizard(const AccountStatePtr &account, QWidget *parent = nullptr);

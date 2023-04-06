@@ -1746,9 +1746,9 @@ void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord
     query->exec();
 }
 
-QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, bool *ok)
+QSet<QString> SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, bool *ok)
 {
-    QStringList result;
+    QSet<QString> result;
     OC_ASSERT(ok);
 
     QMutexLocker locker(&_mutex);
@@ -1781,14 +1781,14 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         if (!entry.endsWith(QLatin1Char('/'))) {
             entry.append(QLatin1Char('/'));
         }
-        result.append(entry);
+        result.insert(entry);
     }
     *ok = true;
 
     return result;
 }
 
-void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, const QStringList &list)
+void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, const QSet<QString> &list)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect()) {

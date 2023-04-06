@@ -231,7 +231,7 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
     bool ok;
     // We only care about preserving the blacklist.   The white list should anyway be empty.
     // And the undecided list will be repopulated on the next sync, if there is anything too big.
-    QStringList list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    auto list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (!ok)
         return false;
 
@@ -241,15 +241,19 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
     QString from = from_ + QLatin1String("/");
     QString to = to_ + QLatin1String("/");
 
+    QSet<QString> out;
+    out.reserve(list.size());
     for (auto it = list.begin(); it != list.end(); ++it) {
         if (it->startsWith(from)) {
-            *it = it->replace(0, from.size(), to);
+            out.insert(QString(*it).replace(0, from.size(), to));
             changed = true;
+        } else {
+            out.insert(*it);
         }
     }
 
     if (changed) {
-        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, list);
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, out);
     }
     return true;
 }

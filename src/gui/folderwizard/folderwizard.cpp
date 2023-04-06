@@ -212,13 +212,13 @@ FolderWizard::Result FolderWizard::result()
     }
 
     return {
-        d->davUrl(),
-        localPath,
-        d->remotePath(),
-        d->displayName(),
-        d->useVirtualFiles(),
-        d->priority(),
-        d->_folderWizardSelectiveSyncPage ? d->_folderWizardSelectiveSyncPage->selectiveSyncBlackList() : QStringList()
+        d->davUrl(), //
+        localPath, //
+        d->remotePath(), //
+        d->displayName(), //
+        d->useVirtualFiles(), //
+        d->priority(), //
+        d->_folderWizardSelectiveSyncPage ? d->_folderWizardSelectiveSyncPage->selectiveSyncBlackList() : QSet<QString>{} //
     };
 }
 

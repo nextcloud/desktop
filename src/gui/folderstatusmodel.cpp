@@ -718,13 +718,17 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     if (!pathToRemove.endsWith(QLatin1Char('/')))
         pathToRemove += QLatin1Char('/');
 
-    QStringList selectiveSyncBlackList;
+    QSet<QString> selectiveSyncBlackList;
     bool ok1 = true;
     bool ok2 = true;
     if (parentInfo->_checked == Qt::PartiallyChecked) {
         selectiveSyncBlackList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     }
-    auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok2);
+    // qlist for historic reasons
+    QStringList selectiveSyncUndecidedList = [&] {
+        const auto list = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok2);
+        return QStringList{list.cbegin(), list.cend()};
+    }();
 
     if (!(ok1 && ok2)) {
         qCWarning(lcFolderStatus) << "Could not retrieve selective sync info from journal";
@@ -813,8 +817,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         [&](const QString &s) { return selectiveSyncUndecidedSet.count(s); });
     if (it != selectiveSyncUndecidedList.end()) {
         selectiveSyncUndecidedList.erase(it, selectiveSyncUndecidedList.end());
+
         parentInfo->_folder->journalDb()->setSelectiveSyncList(
-            SyncJournalDb::SelectiveSyncUndecidedList, selectiveSyncUndecidedList);
+            SyncJournalDb::SelectiveSyncUndecidedList, {selectiveSyncUndecidedList.cbegin(), selectiveSyncUndecidedList.cend()});
         emit dirtyChanged();
     }
 }
@@ -846,19 +851,18 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
     }
 }
 
-QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolderInfo &root,
-    const QStringList &oldBlackList) const
+QSet<QString> FolderStatusModel::createBlackList(const FolderStatusModel::SubFolderInfo &root, const QSet<QString> &oldBlackList) const
 {
     switch (root._checked) {
     case Qt::Unchecked:
-        return QStringList(root._path);
+        return {root._path};
     case Qt::Checked:
-        return QStringList();
+        return {};
     case Qt::PartiallyChecked:
         break;
     }
 
-    QStringList result;
+    QSet<QString> result;
     if (root._fetched) {
         for (int i = 0; i < root._subs.count(); ++i) {
             result += createBlackList(root._subs.at(i), oldBlackList);
@@ -889,26 +893,25 @@ void FolderStatusModel::slotApplySelectiveSync()
 {
     for (const auto &folderInfo : qAsConst(_folders)) {
         if (!folderInfo._fetched) {
-            folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+            folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
             continue;
         }
         const auto folder = folderInfo._folder;
 
         bool ok;
-        auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+        auto oldBlackListSet = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             continue;
         }
-        QStringList blackList = createBlackList(folderInfo, oldBlackList);
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+        auto blackListSet = createBlackList(folderInfo, oldBlackListSet);
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackListSet);
 
-        auto blackListSet = blackList.toSet();
-        auto oldBlackListSet = oldBlackList.toSet();
 
         // The folders that were undecided or blacklisted and that are now checked should go on the white list.
         // The user confirmed them already just now.
-        QStringList toAddToWhiteList = ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok).toSet()) - blackListSet).toList();
+        QSet<QString> toAddToWhiteList =
+            ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok)) - blackListSet);
 
         if (!toAddToWhiteList.isEmpty()) {
             auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
@@ -918,7 +921,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             }
         }
         // clear the undecided list
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
 
         // do the sync if there were changes
         const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
@@ -1181,7 +1184,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
 {
     for (int i = 0; i < _folders.count(); ++i) {
         if (!_folders[i]._fetched) {
-            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
             continue;
         }
         auto folder = _folders.at(i)._folder;
@@ -1204,9 +1207,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
-        for (const auto &undecidedFolder : undecidedList) {
-            blackList.removeAll(undecidedFolder);
-        }
+        blackList -= undecidedList;
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
         // Add all undecided folders to the white list
@@ -1219,7 +1220,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whiteList);
 
         // Clear the undecided list
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
 
         // Trigger a sync
         if (folder->isSyncRunning()) {
@@ -1245,7 +1246,7 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
         auto folder = _folders.at(i)._folder;
 
         // clear the undecided list
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, {});
     }
 
     resetFolders();

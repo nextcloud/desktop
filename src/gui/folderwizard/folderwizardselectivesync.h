@@ -42,7 +42,7 @@ public:
     void initializePage() override;
     bool useVirtualFiles() const;
 
-    const QStringList &selectiveSyncBlackList() const;
+    const QSet<QString> &selectiveSyncBlackList() const;
 
 private slots:
     void virtualFilesCheckboxClicked();
@@ -50,7 +50,7 @@ private slots:
 private:
     SelectiveSyncWidget *_selectiveSync;
     QCheckBox *_virtualFilesCheckBox = nullptr;
-    QStringList _selectiveSyncBlackList;
+    QSet<QString> _selectiveSyncBlackList;
 };
 
 }

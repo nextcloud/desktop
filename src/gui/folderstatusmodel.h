@@ -197,8 +197,7 @@ private slots:
     void slotShowFetchProgress();
 
 private:
-    QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
-        const QStringList &oldBlackList) const;
+    QSet<QString> createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root, const QSet<QString> &oldBlackList) const;
     void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
     int indexOf(Folder *f) const;
 

@@ -38,19 +38,18 @@ public:
     explicit SelectiveSyncWidget(AccountPtr account, QWidget *parent = nullptr);
 
     /// Returns a list of blacklisted paths, each including the trailing /
-    QStringList createBlackList(QTreeWidgetItem *root = nullptr) const;
+    QSet<QString> createBlackList(QTreeWidgetItem *root = nullptr) const;
 
     /** Returns the oldBlackList passed into setFolderInfo(), except that
      *  a "/" entry is expanded to all top-level folder names.
      */
-    QStringList oldBlackList() const;
+    QSet<QString> oldBlackList() const;
 
     // Estimates the total size of checked items (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = nullptr);
 
     // oldBlackList is a list of excluded paths, each including a trailing /
-    void setFolderInfo(const QString &folderPath, const QString &rootName,
-        const QStringList &oldBlackList = QStringList());
+    void setFolderInfo(const QString &folderPath, const QString &rootName, const QSet<QString> &oldBlackList = {});
 
     QSize sizeHint() const override;
 
@@ -68,7 +67,7 @@ private:
 
     QString _folderPath;
     QString _rootName;
-    QStringList _oldBlackList;
+    QSet<QString> _oldBlackList;
 
     bool _inserting; // set to true when we are inserting new items on the list
     QLabel *_loading;
@@ -96,8 +95,8 @@ public:
 
     void accept() override;
 
-    QStringList createBlackList() const;
-    QStringList oldBlackList() const;
+    QSet<QString> createBlackList() const;
+    QSet<QString> oldBlackList() const;
 
     // Estimate the size of the total of sync'ed files from the server
     qint64 estimatedSize();

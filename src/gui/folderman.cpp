@@ -1355,8 +1355,7 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
         }
         if (!ConfigFile().newBigFolderSizeLimit().first) {
             // The user already accepted the selective sync dialog. everything is in the white list
-            newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                QStringList() << QStringLiteral("/"));
+            newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {QStringLiteral("/")});
         }
         qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
         newFolder->saveToSettings();

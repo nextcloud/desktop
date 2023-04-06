@@ -36,9 +36,9 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcDiscovery, "sync.discovery", QtInfoMsg)
 
 /* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
-static bool findPathInList(const QStringList &list, const QString &path)
+static bool findPathInList(const std::set<QString> &list, const QString &path)
 {
-    if (list.size() == 1 && list.first() == QLatin1String("/")) {
+    if (list.size() == 1 && *list.cbegin() == QLatin1String("/")) {
         // Special case for the case "/" is there, it matches everything
         return true;
     }
@@ -63,7 +63,7 @@ static bool findPathInList(const QStringList &list, const QString &path)
 
 bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 {
-    if (_selectiveSyncBlackList.isEmpty()) {
+    if (_selectiveSyncBlackList.empty()) {
         // If there is no black list, everything is allowed
         return false;
     }
@@ -88,7 +88,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
 
         // Only allow it if the white list contains exactly this path (not parents)
         // We want to ask confirmation for external storage even if the parents where selected
-        if (_selectiveSyncWhiteList.contains(path + QLatin1Char('/'))) {
+        if (_selectiveSyncWhiteList.find(path + QLatin1Char('/')) != _selectiveSyncWhiteList.cend()) {
             return callback(false);
         }
 
@@ -226,16 +226,14 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
     job->start();
 }
 
-void DiscoveryPhase::setSelectiveSyncBlackList(const QStringList &list)
+void DiscoveryPhase::setSelectiveSyncBlackList(const QSet<QString> &list)
 {
-    _selectiveSyncBlackList = list;
-    std::sort(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end());
+    _selectiveSyncBlackList = {list.cbegin(), list.cend()};
 }
 
-void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
+void DiscoveryPhase::setSelectiveSyncWhiteList(const QSet<QString> &list)
 {
-    _selectiveSyncWhiteList = list;
-    std::sort(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end());
+    _selectiveSyncWhiteList = {list.cbegin(), list.cend()};
 }
 
 void DiscoveryPhase::scheduleMoreJobs()

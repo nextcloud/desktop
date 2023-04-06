@@ -84,7 +84,7 @@ struct SyncCTX
 /* If the selective sync list is different from before, we need to disable the read from db
   (The normal client does it in SelectiveSyncDialog::accept*)
  */
-void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
+void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QSet<QString> &newListSet)
 {
     SqlDatabase db;
     if (!db.openOrCreateReadWrite(journal->databaseFilePath())) {
@@ -93,37 +93,40 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 
     bool ok;
 
-    auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+    const auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
-        auto blackListSet = newList.toSet();
-        const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        const auto changes = (oldBlackListSet - newListSet) + (newListSet - oldBlackListSet);
         for (const auto &it : changes) {
             journal->schedulePathForRemoteDiscovery(it);
         }
 
-        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newListSet);
     }
 }
 
 
 void sync(const SyncCTX &ctx)
 {
-    QStringList selectiveSyncList;
-    if (!ctx.options.unsyncedfolders.isEmpty()) {
-        QFile f(ctx.options.unsyncedfolders);
-        if (!f.open(QFile::ReadOnly)) {
-            qCritical() << "Could not open file containing the list of unsynced folders: " << ctx.options.unsyncedfolders;
-        } else {
-            // filter out empty lines and comments
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split(QLatin1Char('\n')).filter(QRegExp(QStringLiteral("\\S+"))).filter(QRegExp(QStringLiteral("^[^#]")));
+    const auto selectiveSyncList = [&]() -> QSet<QString> {
+        if (!ctx.options.unsyncedfolders.isEmpty()) {
+            QFile f(ctx.options.unsyncedfolders);
+            if (!f.open(QFile::ReadOnly)) {
+                qCritical() << "Could not open file containing the list of unsynced folders: " << ctx.options.unsyncedfolders;
+            } else {
+                // filter out empty lines and comments
+                auto selectiveSyncList =
+                    QString::fromUtf8(f.readAll()).split(QLatin1Char('\n')).filter(QRegExp(QStringLiteral("\\S+"))).filter(QRegExp(QStringLiteral("^[^#]")));
 
-            for (int i = 0; i < selectiveSyncList.count(); ++i) {
-                if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
-                    selectiveSyncList[i].append(QLatin1Char('/'));
+                for (int i = 0; i < selectiveSyncList.count(); ++i) {
+                    if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
+                        selectiveSyncList[i].append(QLatin1Char('/'));
+                    }
                 }
+                return {selectiveSyncList.cbegin(), selectiveSyncList.cend()};
             }
         }
-    }
+        return {};
+    }();
 
     const QString dbPath = ctx.options.source_dir + SyncJournalDb::makeDbName(ctx.options.source_dir);
     auto db = new SyncJournalDb(dbPath, qApp);

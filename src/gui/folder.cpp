@@ -1106,7 +1106,7 @@ void Folder::slotSyncFinished(bool success)
 
     if (syncStatus == SyncResult::Success && success) {
         // Clear the white list as all the folders that should be on that list are sync-ed
-        journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
+        journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {});
     }
 
     if ((syncStatus == SyncResult::Success || syncStatus == SyncResult::Problem) && success) {
@@ -1187,7 +1187,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
     if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
-        blacklist.append(newFolder);
+        blacklist.insert(newFolder);
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
     }
 
@@ -1195,7 +1195,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
     auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok1);
     if (ok1) {
         if (!undecidedList.contains(newFolder)) {
-            undecidedList.append(newFolder);
+            undecidedList.insert(newFolder);
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
             emit newBigFolderDiscovered(newFolder);
         }

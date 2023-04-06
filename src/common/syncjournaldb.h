@@ -170,9 +170,9 @@ public:
     Q_ENUM(SelectiveSyncListType)
 
     /* return the specified list from the database */
-    QStringList getSelectiveSyncList(SelectiveSyncListType type, bool *ok);
+    QSet<QString> getSelectiveSyncList(SelectiveSyncListType type, bool *ok);
     /* Write the selective sync list (remove all other entries of that list */
-    void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
+    void setSelectiveSyncList(SelectiveSyncListType type, const QSet<QString> &list);
 
     /**
      * Make sure that on the next sync fileName and its parents are discovered from the server.

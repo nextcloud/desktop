@@ -109,7 +109,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     }
 }
 
-const QStringList &FolderWizardSelectiveSync::selectiveSyncBlackList() const
+const QSet<QString> &FolderWizardSelectiveSync::selectiveSyncBlackList() const
 {
     return _selectiveSyncBlackList;
 }

@@ -206,8 +206,8 @@ class DiscoveryPhase : public QObject
     int _currentlyActiveJobs = 0;
 
     // both must contain a sorted list
-    QStringList _selectiveSyncBlackList;
-    QStringList _selectiveSyncWhiteList;
+    std::set<QString> _selectiveSyncBlackList;
+    std::set<QString> _selectiveSyncWhiteList;
 
     void scheduleMoreJobs();
 
@@ -261,8 +261,8 @@ public:
 
     void startJob(ProcessDirectoryJob *);
 
-    void setSelectiveSyncBlackList(const QStringList &list);
-    void setSelectiveSyncWhiteList(const QStringList &list);
+    void setSelectiveSyncBlackList(const QSet<QString> &list);
+    void setSelectiveSyncWhiteList(const QSet<QString> &list);
 
     // output
     QByteArray _dataFingerprint;

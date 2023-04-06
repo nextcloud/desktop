@@ -119,7 +119,7 @@ void SelectiveSyncWidget::refreshFolders()
     _loading->move(10, _folderTree->header()->height() + 10);
 }
 
-void SelectiveSyncWidget::setFolderInfo(const QString &folderPath, const QString &rootName, const QStringList &oldBlackList)
+void SelectiveSyncWidget::setFolderInfo(const QString &folderPath, const QString &rootName, const QSet<QString> &oldBlackList)
 {
     _folderPath = folderPath;
     _rootName = rootName;
@@ -205,7 +205,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
             if (path.isEmpty()) {
                 continue;
             }
-            _oldBlackList.append(path);
+            _oldBlackList.insert(path);
         }
     }
 
@@ -336,24 +336,24 @@ void SelectiveSyncWidget::slotItemChanged(QTreeWidgetItem *item, int col)
     }
 }
 
-QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
+QSet<QString> SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
 {
     if (!root) {
         root = _folderTree->topLevelItem(0);
     }
     if (!root)
-        return QStringList();
+        return {};
 
     switch (root->checkState(0)) {
     case Qt::Unchecked:
-        return QStringList(root->data(0, Qt::UserRole).toString() + QLatin1Char('/'));
+        return {root->data(0, Qt::UserRole).toString() + QLatin1Char('/')};
     case Qt::Checked:
-        return QStringList();
+        return {};
     case Qt::PartiallyChecked:
         break;
     }
 
-    QStringList result;
+    QSet<QString> result;
     if (root->childCount()) {
         for (int i = 0; i < root->childCount(); ++i) {
             result += createBlackList(root->child(i));
@@ -369,7 +369,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
     return result;
 }
 
-QStringList SelectiveSyncWidget::oldBlackList() const
+QSet<QString> SelectiveSyncWidget::oldBlackList() const
 {
     return _oldBlackList;
 }
@@ -415,7 +415,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
 {
     bool ok;
     init(account);
-    QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    const auto selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
         _selectiveSync->setFolderInfo(_folder->remotePath(), QStringLiteral("/"), selectiveSyncList);
     } else {
@@ -452,11 +452,11 @@ void SelectiveSyncDialog::accept()
 {
     if (_folder) {
         bool ok;
-        auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+        const auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if (!ok) {
             return;
         }
-        QStringList blackList = _selectiveSync->createBlackList();
+        const auto blackList = _selectiveSync->createBlackList();
         _folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
         FolderMan *folderMan = FolderMan::instance();
@@ -466,8 +466,7 @@ void SelectiveSyncDialog::accept()
 
         //The part that changed should not be read from the DB on next sync because there might be new folders
         // (the ones that are no longer in the blacklist)
-        auto blackListSet = blackList.toSet();
-        const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        const auto changes = (oldBlackListSet - blackList) + (blackList - oldBlackListSet);
         for (const auto &it : changes) {
             _folder->journalDb()->schedulePathForRemoteDiscovery(it);
             _folder->schedulePathForLocalDiscovery(it);
@@ -480,12 +479,12 @@ void SelectiveSyncDialog::accept()
     QDialog::accept();
 }
 
-QStringList SelectiveSyncDialog::createBlackList() const
+QSet<QString> SelectiveSyncDialog::createBlackList() const
 {
     return _selectiveSync->createBlackList();
 }
 
-QStringList SelectiveSyncDialog::oldBlackList() const
+QSet<QString> SelectiveSyncDialog::oldBlackList() const
 {
     return _selectiveSync->oldBlackList();
 }

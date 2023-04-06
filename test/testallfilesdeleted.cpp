@@ -51,7 +51,7 @@ private slots:
 
         //Just set a blacklist so we can check it is still there. This directory does not exists but
         // that does not matter for our purposes.
-        QStringList selectiveSyncBlackList = { "Q/" };
+        QSet<QString> selectiveSyncBlackList = {"Q/"};
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 selectiveSyncBlackList);
 
@@ -327,8 +327,8 @@ private slots:
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-            QStringList() << QStringLiteral("A/") << QStringLiteral("B/") << QStringLiteral("C/") << QStringLiteral("S/"));
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(
+            SyncJournalDb::SelectiveSyncBlackList, {QStringLiteral("A/"), QStringLiteral("B/"), QStringLiteral("C/"), QStringLiteral("S/")});
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one localy
