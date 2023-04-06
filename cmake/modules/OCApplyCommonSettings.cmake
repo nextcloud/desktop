@@ -10,6 +10,12 @@ function(apply_common_target_settings_soft targetName)
                 QT_FORCE_ASSERTS
                 )
     endif()
+    if(MSVC)
+        # enable linter like warnings with msvc
+        # this includes deprecations
+        # https://learn.microsoft.com/en-us/cpp/build/reference/compiler-option-warning-level?view=msvc-170
+        target_compile_options(${targetName} PRIVATE /W3)
+    endif()
 endfunction()
 
 # common target settings that are used by all important targets
