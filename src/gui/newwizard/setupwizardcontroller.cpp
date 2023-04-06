@@ -171,7 +171,9 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
             connect(fetchUserInfoJob, &CoreJob::finished, this, [this, fetchUserInfoJob] {
                 if (fetchUserInfoJob->success()) {
                     auto result = fetchUserInfoJob->result().value<FetchUserInfoResult>();
+
                     _context->accountBuilder().setDisplayName(result.displayName());
+                    _context->accountBuilder().authenticationStrategy()->setDavUser(result.userName());
                     changeStateTo(SetupWizardState::AccountConfiguredState);
                 } else {
                     _context->window()->showErrorMessage(QStringLiteral("Failed to retrieve user information from server"));

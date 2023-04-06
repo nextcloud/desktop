@@ -49,6 +49,7 @@ public:
      * @return username for use with WebDAV
      */
     virtual QString davUser() = 0;
+    virtual void setDavUser(const QString &user) = 0;
 
     virtual FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) = 0;
 };
@@ -63,6 +64,7 @@ public:
     bool isValid() override;
 
     QString davUser() override;
+    void setDavUser(const QString &user) override;
 
     // access is needed to be able to check these credentials against the server
     QString username() const;
@@ -85,7 +87,7 @@ public:
     bool isValid() override;
 
     QString davUser() override;
-    void setDavUser(const QString &user);
+    void setDavUser(const QString &user) override;
 
     FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) override;
 

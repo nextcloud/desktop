@@ -43,6 +43,14 @@ QString HttpBasicAuthenticationStrategy::davUser()
     return _username;
 }
 
+void HttpBasicAuthenticationStrategy::setDavUser(const QString &user)
+{
+    // the fetched username should always match the one the user gave us
+    Q_ASSERT(user == _username);
+    // however, as a fallback, in production, we will overwrite our current value with the one we fetched
+    _username = user;
+}
+
 QString HttpBasicAuthenticationStrategy::username() const
 {
     return _username;
@@ -77,6 +85,13 @@ bool OAuth2AuthenticationStrategy::isValid()
 QString OAuth2AuthenticationStrategy::davUser()
 {
     return _davUser;
+}
+
+void OAuth2AuthenticationStrategy::setDavUser(const QString &user)
+{
+    // should be called only once
+    Q_ASSERT(_davUser.isEmpty());
+    _davUser = user;
 }
 
 FetchUserInfoJobFactory OAuth2AuthenticationStrategy::makeFetchUserInfoJobFactory(QNetworkAccessManager *nam)
