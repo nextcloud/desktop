@@ -520,7 +520,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Availability</source>
-        <translation>Kullanılabilirlik</translation>
+        <translation>Uygunluk</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
@@ -6319,7 +6319,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
         <source>Could not open email client</source>
-        <translation>E posta istemcisi açılamadı</translation>
+        <translation>E-posta istemcisi açılamadı </translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="71"/>
