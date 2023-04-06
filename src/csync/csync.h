@@ -47,6 +47,34 @@
 
 namespace OCC {
 class SyncJournalFileRecord;
+
+namespace EncryptionStatusEnums {
+
+Q_NAMESPACE
+
+enum class ItemEncryptionStatus : int {
+    NotEncrypted = 0,
+    Encrypted = 1,
+    EncryptedMigratedV1_2 = 2,
+};
+
+Q_ENUM_NS(ItemEncryptionStatus)
+
+enum class JournalDbEncryptionStatus : int {
+    NotEncrypted = 0,
+    Encrypted = 1,
+    EncryptedMigratedV1_2Invalid = 2,
+    EncryptedMigratedV1_2 = 3,
+};
+
+Q_ENUM_NS(JournalDbEncryptionStatus)
+
+ItemEncryptionStatus fromDbEncryptionStatus(JournalDbEncryptionStatus encryptionStatus);
+
+JournalDbEncryptionStatus toDbEncryptionStatus(ItemEncryptionStatus encryptionStatus);
+
+}
+
 }
 
 #if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
