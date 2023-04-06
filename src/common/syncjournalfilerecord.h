@@ -53,11 +53,7 @@ public:
         return !_path.isEmpty();
     }
 
-    enum class EncryptionStatus : int {
-        NotEncrypted = 0,
-        Encrypted = 1,
-        EncryptedMigratedV1_2 = 2,
-    };
+    using EncryptionStatus = EncryptionStatusEnums::JournalDbEncryptionStatus;
 
     /** Returns the numeric part of the full id in _fileId.
      *
@@ -73,7 +69,7 @@ public:
     [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
     [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }
     [[nodiscard]] QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
-    [[nodiscard]] bool isE2eEncrypted() const { return _e2eEncryptionStatus != SyncJournalFileRecord::EncryptionStatus::NotEncrypted; }
+    [[nodiscard]] bool isE2eEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
 
     QByteArray _path;
     quint64 _inode = 0;

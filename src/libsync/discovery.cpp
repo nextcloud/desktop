@@ -1292,7 +1292,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (base.isE2eEncrypted()) {
             // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
             // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
-            item->_e2eEncryptionStatus = static_cast<SyncFileItem::EncryptionStatus>(base._e2eEncryptionStatus);
+            item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
         }
         postProcessLocalNew();
         finalize();

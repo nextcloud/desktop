@@ -46,12 +46,7 @@ public:
     };
     Q_ENUM(Direction)
 
-    enum class EncryptionStatus : int {
-        NotEncrypted = 0,
-        Encrypted = 1,
-        EncryptedMigratedV1_2 = 2,
-    };
-    Q_ENUM(EncryptionStatus)
+    using EncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus;
 
     // Note: the order of these statuses is used for ordering in the SortedActivityListModel
     enum Status { // stored in 4 bits
@@ -234,7 +229,7 @@ public:
             && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
 
-    [[nodiscard]] bool isEncrypted() const { return _e2eEncryptionStatus != SyncFileItem::EncryptionStatus::NotEncrypted; }
+    [[nodiscard]] bool isEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
 
     // Variables useful for everybody
 
