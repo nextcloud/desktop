@@ -74,7 +74,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
 
 public:
-    static AccountPtr create();
+    static AccountPtr create(const QUuid &uuid);
     ~Account() override;
 
     AccountPtr sharedFromThis();
@@ -234,7 +234,7 @@ protected Q_SLOTS:
     void slotCredentialsAsked();
 
 private:
-    Account(QObject *parent = nullptr);
+    Account(const QUuid &uuid, QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
 
     QWeakPointer<Account> _sharedThis;

@@ -41,9 +41,9 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
 
-Account::Account(QObject *parent)
+Account::Account(const QUuid &uuid, QObject *parent)
     : QObject(parent)
-    , _uuid(QUuid::createUuid())
+    , _uuid(uuid)
     , _capabilities(QVariantMap())
     , _jobQueue(this)
     , _queueGuard(&_jobQueue)
@@ -52,9 +52,9 @@ Account::Account(QObject *parent)
     qRegisterMetaType<AccountPtr>("AccountPtr");
 }
 
-AccountPtr Account::create()
+AccountPtr Account::create(const QUuid &uuid)
 {
-    AccountPtr acc = AccountPtr(new Account);
+    AccountPtr acc = AccountPtr(new Account(uuid));
     acc->setSharedThis(acc);
     return acc;
 }

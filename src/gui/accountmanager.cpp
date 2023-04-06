@@ -13,13 +13,15 @@
  */
 
 #include "accountmanager.h"
+#include "account.h"
+#include "common/asserts.h"
 #include "configfile.h"
 #include "creds/credentialmanager.h"
 #include "proxyauthhandler.h"
-#include "common/asserts.h"
-#include <theme.h>
-#include <creds/httpcredentialsgui.h>
 #include <cookiejar.h>
+#include <creds/httpcredentialsgui.h>
+#include <theme.h>
+
 #include <QSettings>
 #include <QDir>
 #include <QNetworkAccessManager>
@@ -317,13 +319,12 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         return AccountPtr();
     }
 
-    auto acc = createAccount();
+    auto acc = createAccount(settings.value(userUUIDC(), QVariant::fromValue(QUuid::createUuid())).toUuid());
 
     acc->setUrl(urlConfig.toUrl());
 
     acc->_davUser = settings.value(davUserC()).toString();
     acc->_displayName = settings.value(davUserDisplyNameC()).toString();
-    acc->_uuid = settings.value(userUUIDC(), acc->_uuid).toUuid();
     acc->setCapabilities(settings.value(capabilitesC()).value<QVariantMap>());
     acc->setDefaultSyncRoot(settings.value(defaultSyncRootC()).toString());
 
@@ -395,9 +396,9 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     emit accountRemoved(account);
 }
 
-AccountPtr AccountManager::createAccount()
+AccountPtr AccountManager::createAccount(const QUuid &uuid)
 {
-    AccountPtr acc = Account::create();
+    AccountPtr acc = Account::create(uuid);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
     return acc;

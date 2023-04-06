@@ -80,7 +80,7 @@ public:
      * Creates an account and sets up some basic handlers.
      * Does *not* add the account to the account manager just yet.
      */
-    static AccountPtr createAccount();
+    static AccountPtr createAccount(const QUuid &uuid);
 
     /**
      * Returns the list of settings keys that can't be read because

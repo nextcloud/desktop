@@ -28,7 +28,7 @@ namespace TestUtils {
     AccountPtr createDummyAccount()
     {
         // don't use the account manager to create the account, it would try to use widgets
-        auto acc = Account::create();
+        auto acc = Account::create(QUuid::createUuid());
         HttpCredentialsTest *cred = new HttpCredentialsTest(QStringLiteral("testuser"), QStringLiteral("secret"));
         acc->setCredentials(cred);
         acc->setUrl(QUrl(QStringLiteral("http://localhost/owncloud")));

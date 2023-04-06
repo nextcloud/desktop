@@ -437,7 +437,7 @@ int main(int argc, char **argv)
         qSetMessagePattern(Logger::loggerPattern());
     }
 
-    ctx.account = Account::create();
+    ctx.account = Account::create(QUuid::createUuid());
 
     if (!ctx.account) {
         qCritical() << "Could not initialize account!";

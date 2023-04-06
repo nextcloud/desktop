@@ -113,7 +113,7 @@ void SetupWizardAccountBuilder::setWebFingerUsername(const QString &username)
 
 AccountPtr SetupWizardAccountBuilder::build()
 {
-    auto newAccountPtr = Account::create();
+    auto newAccountPtr = Account::create(QUuid::createUuid());
 
     Q_ASSERT(!_serverUrl.isEmpty() && _serverUrl.isValid());
     newAccountPtr->setUrl(_serverUrl);

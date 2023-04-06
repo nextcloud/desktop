@@ -121,7 +121,7 @@ public:
 
     virtual void test() {
         fakeAm = new FakeAM({});
-        account = OCC::Account::create();
+        account = Account::create(QUuid::createUuid());
         account->setUrl(sOAuthTestServer);
         // the account seizes ownership over the qnam in account->setCredentials(...) by keeping a shared pointer on it
         // therefore, we should never call fakeAm->setThis(...)
