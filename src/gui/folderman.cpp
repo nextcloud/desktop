@@ -1160,6 +1160,12 @@ QString FolderMan::checkPathValidityRecursive(const QString &path)
 
 #ifdef Q_OS_WIN
     Utility::NtfsPermissionLookupRAII ntfs_perm;
+
+    if (path.size() > MAX_PATH) {
+        if (!FileSystem::longPathsEnabledOnWindows()) {
+            return tr("The path '%1' is too long. Please enable long paths in the Windows settings or choose a different folder.").arg(path);
+        }
+    }
 #endif
     const QFileInfo selFile(path);
     if (numberOfSyncJournals(selFile.filePath()) != 0) {
@@ -1208,6 +1214,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
                 .arg(QDir::toNativeSeparators(path));
         }
     }
+
     const auto result = checkPathValidityRecursive(path);
     if (!result.isEmpty()) {
         return tr("%1 Please pick another one!").arg(result);

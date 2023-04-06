@@ -20,11 +20,12 @@
 #include "utility.h"
 #include "common/asserts.h"
 
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QDir>
-#include <QUrl>
 #include <QFile>
-#include <QCoreApplication>
+#include <QSettings>
+#include <QUrl>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -383,6 +384,21 @@ QString FileSystem::fileSystemForPath(const QString &path)
     }
     return QString::fromUtf16(reinterpret_cast<const ushort *>(fileSystemBuffer));
 }
+
+bool FileSystem::longPathsEnabledOnWindows()
+{
+    static std::optional<bool> longPathsEnabledCached = {};
+
+    if (!longPathsEnabledCached.has_value()) {
+        // https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
+        QSettings fsSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem"), QSettings::NativeFormat);
+        QVariant longPathsEnabled = fsSettings.value(QStringLiteral("LongPathsEnabled"));
+        qCDebug(lcFileSystem) << "LongPathsEnabled:" << longPathsEnabled;
+        longPathsEnabledCached = longPathsEnabled.value<uint32_t>() == 1;
+    }
+
+    return longPathsEnabledCached.value();
+}
 #endif
 
 bool FileSystem::remove(const QString &fileName, QString *errorString)
@@ -639,6 +655,7 @@ QString OCSYNC_EXPORT FileSystem::pathEscape(const QString &s)
     }
     return tmp.trimmed();
 }
+
 } // namespace OCC
 
 #include "moc_filesystembase.cpp"

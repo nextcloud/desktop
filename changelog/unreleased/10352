@@ -1,3 +1,6 @@
-Bugfix: Check for long paths when these are not enabled on Windows
+Enhancement: Check for long paths when these are not enabled on Windows
 
+https://github.com/owncloud/client/issues/10264
 https://github.com/owncloud/client/pull/10352
+https://github.com/owncloud/client/issues/10677
+https://github.com/owncloud/client/pull/10679

@@ -156,6 +156,9 @@ namespace FileSystem {
     bool OCSYNC_EXPORT isFileLocked(const QString &fileName, LockMode mode);
 
 #ifdef Q_OS_WIN
+
+    bool OCSYNC_EXPORT longPathsEnabledOnWindows();
+
     /**
      * Returns the file system used at the given path.
      */

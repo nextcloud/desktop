@@ -20,6 +20,7 @@
 #include "accountstate.h"
 #include "application.h"
 #include "clientproxy.h"
+#include "common/filesystembase.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/version.h"
 #include "common/vfs.h"
@@ -196,21 +197,6 @@ Folder::~Folder()
     _engine.reset();
 }
 
-static bool longPathsEnabledOnWindows()
-{
-    static std::optional<bool> longPathsEnabledCached = {};
-
-    if (!longPathsEnabledCached.has_value()) {
-        // https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
-        QSettings fsSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem"), QSettings::NativeFormat);
-        QVariant longPathsEnabled = fsSettings.value(QStringLiteral("LongPathsEnabled"));
-        qCDebug(lcFolder) << "LongPathsEnabled:" << longPathsEnabled;
-        longPathsEnabledCached = longPathsEnabled.value<uint32_t>() == 1;
-    }
-
-    return longPathsEnabledCached.value();
-}
-
 bool Folder::checkLocalPath()
 {
 #ifdef Q_OS_WIN
@@ -232,10 +218,10 @@ bool Folder::checkLocalPath()
     QString error;
     if (fi.isDir() && fi.isReadable() && fi.isWritable()) {
 #ifdef Q_OS_WIN
-        const auto dbNameLength = std::string_view(".sync_journal.db").size();
-        if (_canonicalLocalPath.size() + dbNameLength > MAX_PATH) {
-            if (!longPathsEnabledOnWindows()) {
-                error = tr("The path '%1' is too long. Either enable long paths in the Windows settings, or choose a different folder.").arg(_canonicalLocalPath);
+        if (_canonicalLocalPath.size() > MAX_PATH) {
+            if (!FileSystem::longPathsEnabledOnWindows()) {
+                error =
+                    tr("The path '%1' is too long. Please enable long paths in the Windows settings or choose a different folder.").arg(_canonicalLocalPath);
             }
         }
 #endif
