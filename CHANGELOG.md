@@ -68,6 +68,7 @@ Details
 
    https://github.com/owncloud/client/issues/10251
    https://github.com/owncloud/client/pull/10609
+   https://github.com/owncloud/client/pull/10627
 
 * Bugfix - Select keep files as default action in all files removed dialog: [#10254](https://github.com/owncloud/client/issues/10254)
 
