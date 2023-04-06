@@ -3266,7 +3266,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="658"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation type="unfinished"/>
+        <translation>詮釋資料錯誤。取得意料之外的詮釋資料格式。</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
