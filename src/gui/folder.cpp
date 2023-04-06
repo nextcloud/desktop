@@ -1101,6 +1101,12 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
         return;
     }
 
+    if (_silenceErrorsUntilNextSync
+        && (item->_status != SyncFileItem::Status::Success && item->_status != SyncFileItem::Status::NoStatus)) {
+        item->_errorString.clear();
+        item->_status = SyncFileItem::Status::SoftError;
+    }
+
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
@@ -1230,6 +1236,7 @@ void Folder::slotHydrationStarts()
 {
     // Abort any running full sync run and reschedule
     if (_engine->isSyncRunning()) {
+        setSilenceErrorsUntilNextSync(true);
         slotTerminateSync();
         scheduleThisFolderSoon();
         // TODO: This sets the sync state to AbortRequested on done, we don't want that
