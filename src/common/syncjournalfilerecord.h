@@ -73,7 +73,7 @@ public:
     [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
     [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }
     [[nodiscard]] QString e2eMangledName() const { return QString::fromUtf8(_e2eMangledName); }
-    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted != SyncJournalFileRecord::EncryptionStatus::NotEncrypted; }
+    [[nodiscard]] bool isE2eEncrypted() const { return _e2eEncryptionStatus != SyncJournalFileRecord::EncryptionStatus::NotEncrypted; }
 
     QByteArray _path;
     quint64 _inode = 0;
@@ -86,7 +86,7 @@ public:
     bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
-    EncryptionStatus _isE2eEncrypted = EncryptionStatus::NotEncrypted;
+    EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted;
     SyncJournalFileLockInfo _lockstate;
     bool _isShared = false;
     qint64 _lastShareStateFetchedTimestamp = 0;
