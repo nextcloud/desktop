@@ -41,15 +41,8 @@ if(NO_MSG_HANDLER)
     target_compile_definitions(csync PUBLIC -DNO_MSG_HANDLER=1)
 endif()
 
-if(WIN32)
-    target_compile_definitions(csync
-        PUBLIC __USE_MINGW_ANSI_STDIO=1
-               NOMINMAX
-               # Get APIs from from Vista onwards.
-               _WIN32_WINNT=0x0600
-               WINVER=0x0600
-               NTDDI_VERSION=0x0A000003
-    )
+if(MINGWS)
+    target_compile_definitions(csync PUBLIC __USE_MINGW_ANSI_STDIO=1)
 endif()
 
 generate_export_header(csync

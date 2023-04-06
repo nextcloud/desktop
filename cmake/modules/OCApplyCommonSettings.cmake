@@ -25,6 +25,14 @@ function(apply_common_target_settings_soft targetName)
                 -Werror=switch
         )
     endif()
+    if(WIN32)
+        target_compile_definitions(${targetName} PRIVATE
+                # Get APIs from from Win8 onwards.
+                _WIN32_WINNT=_WIN32_WINNT_WIN8
+                WINVER=_WIN32_WINNT_WIN8
+                NTDDI_VERSION=NTDDI_WIN10_RS2
+        )
+    endif()
 endfunction()
 
 # common target settings that are used by all important targets
