@@ -243,6 +243,8 @@ private:
     RequiredMetadataVersion _requiredMetadataVersion = RequiredMetadataVersion::Version1_2;
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
+    // used by unit tests, must get assigned simultaneously with _fileDrop and not erased
+    QJsonObject _fileDropFromServer;
     bool _isMetadataSetup = false;
     bool _encryptedMetadataNeedUpdate = false;
 };
