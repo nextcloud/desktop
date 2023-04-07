@@ -252,7 +252,12 @@ bool EditLocallyJob::checkIfFileParentSyncIsNeeded()
 
 void EditLocallyJob::startSyncBeforeOpening()
 {
-    eraseBlacklistRecordForItem();
+    if (!eraseBlacklistRecordForItem()) {
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to synchronise the file to edit locally."));
+        return;
+    }
+
     if (!checkIfFileParentSyncIsNeeded()) {
         processLocalItem();
         return;
@@ -264,20 +269,24 @@ void EditLocallyJob::startSyncBeforeOpening()
     FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
-void EditLocallyJob::eraseBlacklistRecordForItem()
+bool EditLocallyJob::eraseBlacklistRecordForItem()
 {
     if (!_folderForFile || !_fileParentItem) {
         qCWarning(lcEditLocallyJob) << "_folderForFile or _fileParentItem is invalid!";
-        return;
+        return false;
     }
+
     Q_ASSERT(!_folderForFile->isSyncRunning());
     if (_folderForFile->isSyncRunning()) {
         qCWarning(lcEditLocallyJob) << "_folderForFile is syncing";
-        return;
+        return false;
     }
+
     if (_folderForFile->journalDb()->errorBlacklistEntry(_fileParentItem->_file).isValid()) {
         _folderForFile->journalDb()->wipeErrorBlacklistEntry(_fileParentItem->_file);
     }
+
+    return true;
 }
 
 const QString EditLocallyJob::getRelativePathToRemoteRootForFile() const
