@@ -113,15 +113,15 @@ public slots:
 private slots:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
-    void slotReceivedPushNotification(Account *account);
-    void slotReceivedPushActivity(Account *account);
+    void slotReceivedPushNotification(OCC::Account *account);
+    void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
 
     void checkNotifiedNotifications();
     void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
-    void showDesktopNotification(const Activity &activity);
-    void showDesktopNotification(const ActivityList &activityList);
-    void showDesktopTalkNotification(const Activity &activity);
+    void showDesktopNotification(const OCC::Activity &activity);
+    void showDesktopNotification(const OCC::ActivityList &activityList);
+    void showDesktopTalkNotification(const OCC::Activity &activity);
 
 private:
     void connectPushNotifications() const;
