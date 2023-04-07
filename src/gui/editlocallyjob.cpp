@@ -452,6 +452,7 @@ void EditLocallyJob::startEditLocally()
         });
         _folderForFile->setSilenceErrorsUntilNextSync(true);
         _folderForFile->slotTerminateSync();
+        _shouldScheduleFolderSyncAfterFileIsOpened = true;
 
         return;
     }
@@ -538,6 +539,8 @@ void EditLocallyJob::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
 void EditLocallyJob::openFile()
 {
+    Q_ASSERT(_folderForFile);
+
     if(_localFilePath.isEmpty()) {
         qCWarning(lcEditLocallyJob) << "Could not edit locally. Invalid local file path.";
         return;
@@ -553,6 +556,11 @@ void EditLocallyJob::openFile()
         }
 
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
+
+        if (_shouldScheduleFolderSyncAfterFileIsOpened) {
+            _folderForFile->startSync();
+        }
+
         emit finished();
     });
 }
