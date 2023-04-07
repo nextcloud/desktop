@@ -1730,17 +1730,17 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="270"/>
+        <location filename="../src/gui/generalsettings.cpp" line="145"/>
         <source>stable</source>
         <translation>稳定的</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="275"/>
+        <location filename="../src/gui/generalsettings.cpp" line="146"/>
         <source>beta</source>
         <translation>公测的</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="370"/>
+        <location filename="../src/gui/generalsettings.ui" line="360"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -1796,17 +1796,17 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>显示崩溃报告器</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="302"/>
+        <location filename="../src/gui/generalsettings.ui" line="292"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>重启并更新 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="315"/>
+        <location filename="../src/gui/generalsettings.cpp" line="321"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>你不能禁用自动启动，因为全系统的自动启动已启用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="221"/>
+        <location filename="../src/gui/generalsettings.cpp" line="224"/>
         <source>Change update channel?</source>
         <translation>更改升级渠道?</translation>
     </message>
@@ -1821,7 +1821,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>语言的改变需要重新启动这个应用程序才能生效。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="222"/>
+        <location filename="../src/gui/generalsettings.cpp" line="225"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1830,22 +1830,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 请注意，这只会从中选择进行池升级的版本，且不包含可降级的：因此，通常无法立即从测试通道回到稳定通道，这意味着要等待比当前安装的测试版本更新的稳定版本。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="235"/>
+        <location filename="../src/gui/generalsettings.cpp" line="238"/>
         <source>Change update channel</source>
         <translation>更改升级渠道</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="236"/>
+        <location filename="../src/gui/generalsettings.cpp" line="239"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="347"/>
+        <location filename="../src/gui/generalsettings.cpp" line="353"/>
         <source>unknown (%1)</source>
         <translation>未知 (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="331"/>
+        <location filename="../src/gui/generalsettings.cpp" line="337"/>
         <source>(use default)</source>
         <translation>(使用默认值)</translation>
     </message>
