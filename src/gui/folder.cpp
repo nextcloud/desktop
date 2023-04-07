@@ -123,6 +123,8 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), &SyncEngine::itemCompleted,
         _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
 
+    connect(_accountState->account().data(), &Account::capabilitiesChanged, this, &Folder::slotCapabilitiesChanged);
+
     // Potentially upgrade suffix vfs to windows vfs
     ENFORCE(_vfs);
     if (_definition.virtualFilesMode == Vfs::WithSuffix
@@ -613,6 +615,39 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
     // Also schedule this folder for a sync, but only after some delay:
     // The sync will not upload files that were changed too recently.
     scheduleThisFolderSoon();
+}
+
+void Folder::slotFilesLockReleased(const QSet<QString> &files)
+{
+    qCDebug(lcFolder) << "Going to unlock office files" << files;
+
+    for (const auto &file : files) {
+        const auto fileRecordPath = fileFromLocalPath(file);
+        SyncJournalFileRecord rec;
+        const auto canUnlockFile = journalDb()->getFileRecord(fileRecordPath, &rec)
+            && rec.isValid()
+            && rec._lockstate._locked
+            && rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::UserLock)
+            && rec._lockstate._lockOwnerId == _accountState->account()->davUser();
+
+        if (!canUnlockFile) {
+            qCDebug(lcFolder) << "Skipping file" << file << "with rec.isValid():" << rec.isValid()
+                             << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId << "and davUser:" << _accountState->account()->davUser();
+            continue;
+        }
+        const QString remoteFilePath = remotePathTrailingSlash() + rec.path();
+        qCDebug(lcFolder) << "Unlocking an office file" << remoteFilePath;
+        _officeFileLockReleaseUnlockSuccess = connect(_accountState->account().data(), &Account::lockFileSuccess, this, [this, remoteFilePath]() {
+            disconnect(_officeFileLockReleaseUnlockSuccess);
+            qCDebug(lcFolder) << "Unlocking an office file succeeded" << remoteFilePath;
+            startSync();
+        });
+        _officeFileLockReleaseUnlockFailure = connect(_accountState->account().data(), &Account::lockFileError, this, [this, remoteFilePath](const QString &message) {
+            disconnect(_officeFileLockReleaseUnlockFailure);
+            qCWarning(lcFolder) << "Failed to unlock a file:" << remoteFilePath << message;
+        });
+        _accountState->account()->setLockFileState(remoteFilePath, journalDb(), SyncFileItem::LockStatus::UnlockedItem);
+    }
 }
 
 void Folder::implicitlyHydrateFile(const QString &relativepath)
@@ -1257,6 +1292,13 @@ void Folder::slotHydrationDone()
     emit syncStateChange();
 }
 
+void Folder::slotCapabilitiesChanged()
+{
+    if (_accountState->account()->capabilities().filesLockAvailable()) {
+        connect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased, Qt::UniqueConnection);
+    }
+}
+
 void Folder::scheduleThisFolderSoon()
 {
     if (!_scheduleSelfTimer.isActive()) {
@@ -1297,6 +1339,9 @@ void Folder::registerFolderWatcher()
         this, &Folder::slotNextSyncFullLocalDiscovery);
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
         this, &Folder::slotWatcherUnreliable);
+    if (_accountState->account()->capabilities().filesLockAvailable()) {
+        connect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased);
+    }
     _folderWatcher->init(path());
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
 }
