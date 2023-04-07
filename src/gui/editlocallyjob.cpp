@@ -153,6 +153,7 @@ void EditLocallyJob::proceedWithSetup()
 
     Systray::instance()->destroyEditFileLocallyLoadingDialog();
     Q_EMIT setupFinished();
+    startEditLocally();
 }
 
 void EditLocallyJob::findAfolderAndConstructPaths()
