@@ -54,7 +54,6 @@ public slots:
 private slots:
     void fetchRemoteFileParentInfo();
     void startSyncBeforeOpening();
-    void eraseBlacklistRecordForItem();
 
     void startTokenRemoteCheck();
     void proceedWithSetup();
@@ -85,6 +84,7 @@ private slots:
 
 private:
     [[nodiscard]] bool checkIfFileParentSyncIsNeeded(); // returns true if sync will be needed, false otherwise
+    [[nodiscard]] bool eraseBlacklistRecordForItem();
     [[nodiscard]] const QString getRelativePathToRemoteRootForFile() const; // returns either '/' or a (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     [[nodiscard]] const QString getRelativePathParent() const;
 
