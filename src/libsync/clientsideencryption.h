@@ -166,6 +166,8 @@ private slots:
 private:
     void generateCSR(const AccountPtr &account, PKey keyPair);
     void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
+    [[nodiscard]] bool writeKeyPair(const AccountPtr &account,
+                                    const PKey &keyPair);
 
     [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;

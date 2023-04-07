@@ -1292,6 +1292,9 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
+    writeMnemonic(account);
+    writeKeyPair(account);
+
     sendSignRequestCSR(account, std::move(keyPair), output);
 }
 
@@ -1322,6 +1325,26 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
             fetchAndValidatePublicKeyFromServer(account);
         }
         qCInfo(lcCse()) << retCode;
+    });
+    job->start();
+}
+
+bool ClientSideEncryption::writeKeyPair(const AccountPtr &account,
+                                        const PKey &keyPair)
+{
+    const QString kck = AbstractCredentials::keychainKey(
+        account->url().toString(),
+        account->credentials()->user() + e2e_private,
+        account->id()
+        );
+
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->setBinaryData(_privateKey);
+    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+        Q_UNUSED(incoming);
+        qCInfo(lcCse()) << "Private key stored in keychain";
     });
     job->start();
 }
