@@ -929,7 +929,9 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>某些設置是在此客戶端的較新版本中配置的，並使用了此版本中不可用的功能。%1 當前配置檔案已備份到 %2。
+
+某些設置已在此客戶端的 %1 版本中配置，並使用了此版本中不可用的功能。&lt;br&gt;&lt;br&gt;繼續將意味著 &lt;b&gt;%2 這些設置&lt;/b&gt;。&lt;br&gt;&lt;br&gt;目前配置檔案已備份到 &lt;i&gt;%3&lt;/i&gt;。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
@@ -4221,7 +4223,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>安全檔案投放連結</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
@@ -4444,7 +4446,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>複製安全檔案投放連結</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
