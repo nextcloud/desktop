@@ -322,6 +322,9 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, CheckSums::Algorithm a
         return QByteArrayLiteral("0x1");
     case CheckSums::Algorithm::PARSE_ERROR:
         return {};
+    case CheckSums::Algorithm::NONE:
+        Q_UNREACHABLE();
+        return {};
     }
     Q_UNREACHABLE();
 }

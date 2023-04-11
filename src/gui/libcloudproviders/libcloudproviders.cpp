@@ -202,6 +202,8 @@ void LibCloudProvidersPrivate::updateFolderExport()
             status = CLOUD_PROVIDERS_ACCOUNT_STATUS_ERROR;
             break;
         case SyncResult::Paused:
+            [[fallthrough]];
+        case SyncResult::Offline:
             // There's no status that fits exactly. If our choice is only
             // between IDLE And ERROR, let's go for ERROR to show that no
             // syncing is happening.

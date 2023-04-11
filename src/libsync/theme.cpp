@@ -121,6 +121,9 @@ QString Theme::statusHeaderText(SyncResult::Status status) const
     case SyncResult::Paused:
         resultStr = QCoreApplication::translate("theme", "Sync is paused");
         break;
+    case SyncResult::Offline:
+        resultStr = QCoreApplication::translate("theme", "Offline");
+        break;
     }
     return resultStr;
 }

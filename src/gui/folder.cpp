@@ -494,7 +494,7 @@ void Folder::slotRunEtagJob()
     }
 
     if (!canSync()) {
-        qCInfo(lcFolder) << "Not syncing.  :" << remoteUrl().toString() << _definition.paused << AccountState::stateString(_accountState->state());
+        qCInfo(lcFolder) << "Not syncing.  :" << remoteUrl().toString() << _definition.paused << _accountState->state();
         return;
     }
 

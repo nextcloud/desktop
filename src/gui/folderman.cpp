@@ -1131,6 +1131,9 @@ QString FolderMan::trayTooltipStatusString(
     case SyncResult::Paused:
         folderMessage = tr("Sync is paused.");
         break;
+    case SyncResult::Offline:
+        folderMessage = tr("Offline.");
+        break;
         // no default case on purpose, check compiler warnings
     }
     if (paused) {

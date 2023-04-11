@@ -106,7 +106,6 @@ public:
     QStringList connectionErrors() const;
 
     State state() const;
-    static QString stateString(State state);
 
     bool isSignedOut() const;
 
