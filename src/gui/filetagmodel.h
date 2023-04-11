@@ -16,12 +16,16 @@
 
 #include <QAbstractListModel>
 
+#include "libsync/account.h"
+
+namespace OCC {
+
 class FileTagModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit FileTagModel(QObject *parent = nullptr);
+    explicit FileTagModel(const QString &serverRelativePath, const AccountPtr &account, QObject * const parent = nullptr);
 
     // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -29,4 +33,8 @@ public:
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 private:
+    QString _serverRelativePath;
+    AccountPtr _account;
 };
+
+}

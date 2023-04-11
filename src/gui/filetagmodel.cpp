@@ -14,8 +14,16 @@
 
 #include "filetagmodel.h"
 
-FileTagModel::FileTagModel(QObject *parent)
+#include "libsync/networkjobs.h"
+
+namespace OCC {
+
+FileTagModel::FileTagModel(const QString &serverRelativePath,
+                           const AccountPtr &account,
+                           QObject * const parent)
     : QAbstractListModel(parent)
+    , _serverRelativePath(serverRelativePath)
+    , _account(account)
 {
 }
 
@@ -36,4 +44,5 @@ QVariant FileTagModel::data(const QModelIndex &index, int role) const
 
     // FIXME: Implement me!
     return QVariant();
+}
 }
