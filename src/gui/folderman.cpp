@@ -1549,7 +1549,6 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         int goodSeen = 0;
         int abortOrPausedSeen = 0;
         int runSeen = 0;
-        int various = 0;
 
         for (const Folder *folder : qAsConst(folders)) {
             SyncResult folderResult = folder->syncResult();
@@ -1561,7 +1560,6 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
                 switch (syncStatus) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
-                    various++;
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:

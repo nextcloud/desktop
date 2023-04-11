@@ -389,7 +389,7 @@ public:
 
 public slots:
     /// Store a new or updated record in the database
-    void setCaseConflictRecord(const ConflictRecord &record);
+    void setCaseConflictRecord(const OCC::ConflictRecord &record);
 
     /// Delete a case clash conflict record by path of the file with the conflict tag
     void deleteCaseClashConflictByPathRecord(const QString &path);

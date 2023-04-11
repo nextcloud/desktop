@@ -88,7 +88,7 @@ public slots:
 
 private slots:
     void shareesFetched(const QJsonDocument &reply);
-    void insertSearchGloballyItem(const QVector<ShareePtr> &newShareesFetched);
+    void insertSearchGloballyItem(const QVector<OCC::ShareePtr> &newShareesFetched);
     void filterSharees();
     void slotDarkModeChanged();
 

@@ -76,7 +76,7 @@ private slots:
     void lockFile();
 
     void fileAlreadyLocked();
-    void fileLockSuccess(const SyncFileItemPtr &item);
+    void fileLockSuccess(const OCC::SyncFileItemPtr &item);
     void fileLockError(const QString &errorMessage);
     void fileLockProcedureComplete(const QString &notificationTitle,
                                    const QString &notificationMessage,

@@ -137,12 +137,12 @@ signals:
     void mnemonicDeleted();
 
 public slots:
-    void initialize(const AccountPtr &account);
-    void forgetSensitiveData(const AccountPtr &account);
+    void initialize(const OCC::AccountPtr &account);
+    void forgetSensitiveData(const OCC::AccountPtr &account);
 
 private slots:
-    void generateKeyPair(const AccountPtr &account);
-    void encryptPrivateKey(const AccountPtr &account);    
+    void generateKeyPair(const OCC::AccountPtr &account);
+    void encryptPrivateKey(const OCC::AccountPtr &account);
 
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
@@ -153,15 +153,15 @@ private slots:
     void handleMnemonicDeleted(const QKeychain::Job* const incoming);
     void checkAllSensitiveDataDeleted();
 
-    void getPrivateKeyFromServer(const AccountPtr &account);
-    void getPublicKeyFromServer(const AccountPtr &account);
-    void fetchAndValidatePublicKeyFromServer(const AccountPtr &account);
-    void decryptPrivateKey(const AccountPtr &account, const QByteArray &key);
+    void getPrivateKeyFromServer(const OCC::AccountPtr &account);
+    void getPublicKeyFromServer(const OCC::AccountPtr &account);
+    void fetchAndValidatePublicKeyFromServer(const OCC::AccountPtr &account);
+    void decryptPrivateKey(const OCC::AccountPtr &account, const QByteArray &key);
 
-    void fetchFromKeyChain(const AccountPtr &account);
-    void writePrivateKey(const AccountPtr &account);
-    void writeCertificate(const AccountPtr &account);
-    void writeMnemonic(const AccountPtr &account);
+    void fetchFromKeyChain(const OCC::AccountPtr &account);
+    void writePrivateKey(const OCC::AccountPtr &account);
+    void writeCertificate(const OCC::AccountPtr &account);
+    void writeMnemonic(const OCC::AccountPtr &account);
 
 private:
     void generateCSR(const AccountPtr &account, PKey keyPair);
