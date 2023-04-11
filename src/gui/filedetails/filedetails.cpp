@@ -14,6 +14,7 @@
 
 #include <QDateTime>
 
+#include "accountstate.h"
 #include "filedetails.h"
 #include "folderman.h"
 
@@ -71,6 +72,7 @@ void FileDetails::setLocalPath(const QString &localPath)
 
     _filelockState = _fileRecord._lockstate;
     updateLockExpireString();
+    updateFileTagModel(file, folder);
 
     Q_EMIT fileChanged();
 }
@@ -151,6 +153,21 @@ void FileDetails::updateLockExpireString()
 bool FileDetails::isFolder() const
 {
     return _fileInfo.isDir();
+}
+
+FileTagModel *FileDetails::fileTagModel() const
+{
+    return _fileTagModel.get();
+}
+
+void FileDetails::updateFileTagModel(const QString &serverRelPath, const Folder * const folder)
+{
+    Q_ASSERT(folder);
+    const auto account = folder->accountState()->account();
+    Q_ASSERT(account);
+
+    _fileTagModel = std::make_unique<FileTagModel>(serverRelPath, account);
+    Q_EMIT fileTagModelChanged();
 }
 
 } // namespace OCC
