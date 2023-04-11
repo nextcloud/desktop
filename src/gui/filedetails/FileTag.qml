@@ -17,20 +17,17 @@ import QtQuick 2.15
 import Style 1.0
 import "../tray"
 
-Rectangle {
-    property alias text: internalLabel.text
+EnforcedPlainTextLabel {
+    id: internalLabel
 
-    border.color: Style.lightHover
-    border.width: Style.normalBorderWidth
-
-    radius: Style.veryRoundedButtonRadius
-
-    EnforcedPlainTextLabel {
-        id: internalLabel
-
-        anchors.fill: parent
-
-        color: Style.ncSecondaryTextColor
-        elide: Text.ElideRight
+    background: Rectangle {
+        border.color: Style.lightHover
+        border.width: Style.normalBorderWidth
+        radius: Style.veryRoundedButtonRadius
+        color: "transparent"
     }
+
+    color: Style.ncSecondaryTextColor
+    elide: Text.ElideRight
+    padding: Style.smallSpacing
 }
