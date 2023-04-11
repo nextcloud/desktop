@@ -470,7 +470,10 @@ void FolderMan::scheduleFolder(Folder *f, bool force)
             _socketApi->slotUpdateFolderView(f);
             return;
         }
-        f->prepareToSync();
+        // don't reset the sync result during a running sync
+        if (!f->isSyncRunning()) {
+            f->prepareToSync();
+        }
         if (force) {
             _scheduledFolders.removeAll(f);
             _scheduledFolders.prepend(f);
