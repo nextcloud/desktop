@@ -16,6 +16,8 @@
 
 #include "libsync/networkjobs.h"
 
+Q_LOGGING_CATEGORY(lcFileTagModel, "nextcloud.gui.filetagmodel", QtInfoMsg)
+
 namespace OCC {
 
 FileTagModel::FileTagModel(const QString &serverRelativePath,
@@ -25,6 +27,7 @@ FileTagModel::FileTagModel(const QString &serverRelativePath,
     , _serverRelativePath(serverRelativePath)
     , _account(account)
 {
+    fetchFileTags();
 }
 
 int FileTagModel::rowCount(const QModelIndex &parent) const
@@ -45,4 +48,44 @@ QVariant FileTagModel::data(const QModelIndex &index, int role) const
     // FIXME: Implement me!
     return QVariant();
 }
+
+void FileTagModel::fetchFileTags()
+{
+    if (!_account || _serverRelativePath.isEmpty()) {
+        qCDebug(lcFileTagModel) << "Cannot fetch filetags as account is null, or server relative path is empty";
+        return;
+    }
+
+    qCDebug(lcFileTagModel) << "Starting fetch of filetags for file at:" << _serverRelativePath;
+
+    const auto propfindJob = new PropfindJob(_account, _serverRelativePath, this);
+    propfindJob->setProperties({ QByteArrayLiteral("http://nextcloud.org/ns:tags") });
+
+    connect(propfindJob, &PropfindJob::result, this, &FileTagModel::processFileTagRequestFinished);
+    connect(propfindJob, &PropfindJob::finishedWithError, this, &FileTagModel::processFileTagRequestFinishedWithError);
+
+    propfindJob->start();
+}
+
+void FileTagModel::processFileTagRequestFinished(const QVariantMap &result)
+{
+    if (result.empty()) {
+        qCDebug(lcFileTagModel) << "File tag fetch request finished successfully, but received empty results..."
+                                << _serverRelativePath;
+        return;
+    }
+
+    qCDebug(lcFileTagModel) << "File tag fetch request finished successfully, processing results..."
+                            << _serverRelativePath;
+
+    beginResetModel();
+    _tags = result.value(QStringLiteral("tags")).toStringList();
+    endResetModel();
+}
+
+void FileTagModel::processFileTagRequestFinishedWithError()
+{
+    qCWarning(lcFileTagModel) << "File tag fetch request job ended with error.";
+}
+
 }

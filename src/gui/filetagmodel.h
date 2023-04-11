@@ -32,9 +32,15 @@ public:
 
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+private slots:
+    void fetchFileTags();
+    void processFileTagRequestFinished(const QVariantMap &result);
+    void processFileTagRequestFinishedWithError();
+
 private:
     QString _serverRelativePath;
     AccountPtr _account;
+    QStringList _tags;
 };
 
 }
