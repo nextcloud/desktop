@@ -81,7 +81,19 @@ Page {
             Layout.topMargin: root.topPadding
 
             columns: root.showCloseButton ? 3 : 2
-            rows: showFileLockedString ? 3 : 2
+            rows: {
+                let rows = 2;
+
+                if (showFileLockedString) {
+                    rows++;
+                }
+
+                if (root.fileDetails.fileTagModel.totalTags > 0) {
+                    rows++;
+                }
+
+                return rows;
+            }
 
             rowSpacing: Style.standardSpacing / 2
             columnSpacing: Style.standardSpacing
@@ -153,6 +165,36 @@ Page {
                 color: Style.ncSecondaryTextColor
                 wrapMode: Text.Wrap
                 visible: headerGridLayout.showFileLockedString
+            }
+
+            RowLayout {
+                id: tagRow
+
+                Layout.fillWidth: true
+                Layout.rightMargin: headerGridLayout.textRightMargin
+
+                Repeater {
+                    id: tagRepeater
+
+                    readonly property var fileTagModel: root.fileDetails.fileTagModel
+
+                    model: fileTagModel
+                    delegate: FileTag {
+                        text: model.display
+                    }
+
+                    Component.onCompleted: fileTagModel.maxTags = 3
+                }
+
+                FileTag {
+                    id: overflowTag
+
+                    readonly property int totalFileTags: tagRepeater.fileTagModel.totalTags
+                    readonly property int maxFileTags: tagRepeater.fileTagModel.maxTags
+
+                    visible: totalFileTags > maxFileTags
+                    text: "+" + String(totalFileTags - maxFileTags)
+                }
             }
         }
 
