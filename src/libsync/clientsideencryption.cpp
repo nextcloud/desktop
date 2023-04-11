@@ -1434,8 +1434,12 @@ void ClientSideEncryption::getPrivateKeyFromServer(const AccountPtr &account)
             decryptPrivateKey(account, key.toLocal8Bit());
         } else if (retCode == 404) {
             qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
+            emit initializationFinished();
+            return;
         } else {
             qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+            emit initializationFinished();
+            return;
         }
     });
     job->start();
