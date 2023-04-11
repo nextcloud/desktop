@@ -460,42 +460,27 @@ void FolderMan::slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMod
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
   */
-void FolderMan::scheduleFolder(Folder *f)
+void FolderMan::scheduleFolder(Folder *f, bool force)
 {
     qCInfo(lcFolderMan) << "Schedule folder " << f->path() << " to sync!";
 
-    if (!_scheduledFolders.contains(f)) {
+    if (!_scheduledFolders.contains(f) || force) {
         if (!f->canSync()) {
             qCInfo(lcFolderMan) << "Folder is not ready to sync, not scheduled!";
             _socketApi->slotUpdateFolderView(f);
             return;
         }
         f->prepareToSync();
-        emit folderSyncStateChange(f);
-        _scheduledFolders.enqueue(f);
+        if (force) {
+            _scheduledFolders.removeAll(f);
+            _scheduledFolders.prepend(f);
+        } else {
+            _scheduledFolders.enqueue(f);
+        }
         emit scheduleQueueChanged();
     } else {
         qCInfo(lcFolderMan) << "Sync for folder " << f->path() << " already scheduled, do not enqueue!";
     }
-
-    startScheduledSyncSoon();
-}
-
-void FolderMan::scheduleFolderNext(Folder *f)
-{
-    qCInfo(lcFolderMan) << "Schedule folder " << f->path() << " to sync! Front-of-queue.";
-
-    if (!f->canSync()) {
-        qCInfo(lcFolderMan) << "Folder is not ready to sync, not scheduled!";
-        return;
-    }
-
-    _scheduledFolders.removeAll(f);
-
-    f->prepareToSync();
-    emit folderSyncStateChange(f);
-    _scheduledFolders.prepend(f);
-    emit scheduleQueueChanged();
 
     startScheduledSyncSoon();
 }

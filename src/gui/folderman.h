@@ -239,11 +239,11 @@ public:
      */
     void setSyncEnabled(bool);
 
-    /** Queues a folder for syncing. */
-    void scheduleFolder(Folder *);
-
-    /** Puts a folder in the very front of the queue. */
-    void scheduleFolderNext(Folder *);
+    /**
+     * Queues a folder for syncing.
+     * When force is true it will be performed asap.
+     */
+    void scheduleFolder(Folder *folder, bool force = false);
 
     /** Queues all folders for syncing. */
     void scheduleAllFolders();

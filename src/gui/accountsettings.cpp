@@ -705,7 +705,7 @@ void AccountSettings::slotForceSyncCurrentFolder()
         selectedFolder->slotWipeErrorBlacklist(); // issue #6757
         selectedFolder->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
         // Insert the selected folder at the front of the queue
-        FolderMan::instance()->scheduleFolderNext(selectedFolder);
+        FolderMan::instance()->scheduleFolder(selectedFolder, true);
     }
 }
 
