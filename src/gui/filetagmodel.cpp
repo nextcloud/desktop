@@ -92,4 +92,47 @@ void FileTagModel::processFileTagRequestFinishedWithError()
     qCWarning(lcFileTagModel) << "File tag fetch request job ended with error.";
 }
 
+void FileTagModel::resetForNewFile()
+{
+    beginResetModel();
+    _tags.clear();
+    endResetModel();
+
+    fetchFileTags();
+}
+
+QString FileTagModel::serverRelativePath() const
+{
+    return _serverRelativePath;
+}
+
+void FileTagModel::setServerRelativePath(const QString &serverRelativePath)
+{
+    if (_serverRelativePath == serverRelativePath) {
+        return;
+    }
+
+    _serverRelativePath = serverRelativePath;
+    Q_EMIT serverRelativePathChanged();
+
+    resetForNewFile();
+}
+
+AccountPtr FileTagModel::account() const
+{
+    return _account;
+}
+
+void FileTagModel::setAccount(const AccountPtr &account)
+{
+    if (_account == account) {
+        return;
+    }
+
+    _account = account;
+    Q_EMIT accountChanged();
+
+    resetForNewFile();
+}
+
 }

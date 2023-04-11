@@ -24,13 +24,26 @@ class FileTagModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString serverRelativePath READ serverRelativePath WRITE setServerRelativePath NOTIFY serverRelativePathChanged)
+    Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged)
 public:
     explicit FileTagModel(const QString &serverRelativePath, const AccountPtr &account, QObject * const parent = nullptr);
 
-    // Basic functionality:
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    [[nodiscard]] QString serverRelativePath() const;
+    [[nodiscard]] AccountPtr account() const;
+
+signals:
+    void serverRelativePathChanged();
+    void accountChanged();
+
+public slots:
+    void setServerRelativePath(const QString &serverRelativePath);
+    void setAccount(const OCC::AccountPtr &account);
+
+    void resetForNewFile();
 
 private slots:
     void fetchFileTags();
