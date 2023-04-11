@@ -34,9 +34,11 @@ int FileTagModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
         return 0;
+    } else if (_maxTags <= 0) {
+        return totalTags();
+    } else {
+        return qMin(totalTags(), maxTags());
     }
-
-    return _tags.count();
 }
 
 QVariant FileTagModel::data(const QModelIndex &index, int role) const
@@ -84,6 +86,7 @@ void FileTagModel::processFileTagRequestFinished(const QVariantMap &result)
 
     beginResetModel();
     _tags = result.value(QStringLiteral("tags")).toStringList();
+    Q_EMIT totalTagsChanged();
     endResetModel();
 }
 
@@ -96,6 +99,7 @@ void FileTagModel::resetForNewFile()
 {
     beginResetModel();
     _tags.clear();
+    Q_EMIT totalTagsChanged();
     endResetModel();
 
     fetchFileTags();
@@ -133,6 +137,26 @@ void FileTagModel::setAccount(const AccountPtr &account)
     Q_EMIT accountChanged();
 
     resetForNewFile();
+}
+
+int FileTagModel::maxTags() const
+{
+    return _maxTags;
+}
+
+void FileTagModel::setMaxTags(const int maxTags)
+{
+    if (_maxTags == maxTags) {
+        return;
+    }
+
+    _maxTags = maxTags;
+    Q_EMIT maxTagsChanged();
+}
+
+int FileTagModel::totalTags() const
+{
+    return _tags.count();
 }
 
 }

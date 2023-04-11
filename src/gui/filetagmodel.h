@@ -26,6 +26,9 @@ class FileTagModel : public QAbstractListModel
 
     Q_PROPERTY(QString serverRelativePath READ serverRelativePath WRITE setServerRelativePath NOTIFY serverRelativePathChanged)
     Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged)
+    Q_PROPERTY(int maxTags READ maxTags WRITE setMaxTags NOTIFY maxTagsChanged)
+    Q_PROPERTY(int totalTags READ totalTags NOTIFY totalTagsChanged)
+
 public:
     explicit FileTagModel(const QString &serverRelativePath, const AccountPtr &account, QObject * const parent = nullptr);
 
@@ -35,13 +38,21 @@ public:
     [[nodiscard]] QString serverRelativePath() const;
     [[nodiscard]] AccountPtr account() const;
 
+    [[nodiscard]] int maxTags() const;
+    [[nodiscard]] int totalTags() const;
+
 signals:
     void serverRelativePathChanged();
     void accountChanged();
 
+    void maxTagsChanged();
+    void totalTagsChanged();
+
 public slots:
     void setServerRelativePath(const QString &serverRelativePath);
     void setAccount(const OCC::AccountPtr &account);
+
+    void setMaxTags(const int maxTags);
 
     void resetForNewFile();
 
@@ -54,6 +65,9 @@ private:
     QString _serverRelativePath;
     AccountPtr _account;
     QStringList _tags;
+
+    int _maxTags = 0;
+    int _totalTags = 0;
 };
 
 }
