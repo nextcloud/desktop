@@ -92,6 +92,8 @@ private:
 
     bool _tokenVerified = false;
 
+    bool _shouldScheduleFolderSyncAfterFileIsOpened = false;
+
     AccountStatePtr _accountState;
     QString _userId;
     QString _relPath; // full remote path for a file (as on the server)
