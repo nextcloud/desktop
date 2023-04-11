@@ -43,7 +43,7 @@ signals:
     void skipUpdateButtonClicked();
 
 private:
-    Ui::AppImageUpdateAvailableDialogUi *_ui;
+    ::Ui::AppImageUpdateAvailableDialogUi *_ui;
 };
 
 }
