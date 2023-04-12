@@ -1287,15 +1287,19 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
 
     Bio out;
     ret = PEM_write_bio_X509_REQ(out, x509_req);
-    QByteArray output = BIO2ByteArray(out);
+    if (ret <= 0){
+        qCInfo(lcCse()) << "Error exporting the csr to the BIO";
+        return;
+    }
+
+    const auto output = BIO2ByteArray(out);
 
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
-    writeMnemonic(account);
-    writeKeyPair(account);
 
-    sendSignRequestCSR(account, std::move(keyPair), output);
+    writeMnemonic(account);
+    writeKeyPair(account, std::move(keyPair), output);
 }
 
 void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent)
@@ -1329,8 +1333,9 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
     job->start();
 }
 
-bool ClientSideEncryption::writeKeyPair(const AccountPtr &account,
-                                        const PKey &keyPair)
+void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
+                                        PKey keyPair,
+                                        const QByteArray &output)
 {
     const QString kck = AbstractCredentials::keychainKey(
         account->url().toString(),
@@ -1338,15 +1343,41 @@ bool ClientSideEncryption::writeKeyPair(const AccountPtr &account,
         account->id()
         );
 
-    auto *job = new WritePasswordJob(Theme::instance()->appName());
-    job->setInsecureFallback(false);
-    job->setKey(kck);
-    job->setBinaryData(_privateKey);
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    Bio privateKey;
+    if (PEM_write_bio_PrivateKey(privateKey, keyPair, nullptr, nullptr, 0, nullptr, nullptr) <= 0) {
+        qCInfo(lcCse()) << "Could not read private key from bio.";
+        return;
+    }
+    const auto bytearrayPrivateKey = BIO2ByteArray(privateKey);
+
+    auto *privateKeyJob = new WritePasswordJob(Theme::instance()->appName());
+    privateKeyJob->setInsecureFallback(false);
+    privateKeyJob->setKey(kck);
+    privateKeyJob->setBinaryData(bytearrayPrivateKey);
+    connect(privateKeyJob, &WritePasswordJob::finished, [&keyPair, kck, &account, &output, this](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
+
+        Bio publicKey;
+        if (PEM_write_bio_PUBKEY(publicKey, keyPair) <= 0) {
+            qCInfo(lcCse()) << "Could not read public key from bio.";
+            return;
+        }
+        const auto bytearrayPublicKey = BIO2ByteArray(publicKey);
+
+        auto *publicKeyJob = new WritePasswordJob(Theme::instance()->appName());
+        publicKeyJob->setInsecureFallback(false);
+        publicKeyJob->setKey(kck);
+        publicKeyJob->setBinaryData(bytearrayPublicKey);
+        connect(publicKeyJob, &WritePasswordJob::finished, [&account, &keyPair, &output, this](Job *incoming) {
+            Q_UNUSED(incoming);
+            qCInfo(lcCse()) << "Public key stored in keychain";
+
+            sendSignRequestCSR(account, std::move(keyPair), output);
+        });
+        publicKeyJob->start();
     });
-    job->start();
+    privateKeyJob->start();
 }
 
 void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
