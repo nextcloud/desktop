@@ -478,7 +478,6 @@ SyncResult Folder::syncResult() const
 
 void Folder::prepareToSync()
 {
-    _syncResult.reset();
     setSyncState(SyncResult::NotYetStarted);
 }
 
@@ -1075,6 +1074,7 @@ void Folder::slotSyncError(const QString &message, ErrorCategory category)
 void Folder::slotSyncStarted()
 {
     qCInfo(lcFolder) << "#### Propagation start ####################################################";
+    _syncResult.reset();
     setSyncState(SyncResult::SyncRunning);
 }
 
