@@ -20,6 +20,7 @@ Summary
 * Bugfix - Clear conflict errors after they where resolved: [#10569](https://github.com/owncloud/client/issues/10569)
 * Bugfix - Set the expected download content length in the job properly: [#10607](https://github.com/owncloud/client/pull/10607)
 * Bugfix - UI freeze when multiple modal dialogs displayed on macOS: [#10621](https://github.com/owncloud/client/issues/10621)
+* Bugfix - Ensure the account state is properly persisted: [#10648](https://github.com/owncloud/client/issues/10648)
 * Bugfix - Reconnect got stuck if the server supports app providers: [#10666](https://github.com/owncloud/client/issues/10666)
 * Change - Implement server guided migration to spaces: [#9945](https://github.com/owncloud/client/issues/9945)
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
@@ -113,6 +114,12 @@ Details
    Due to incorrect handling of the dialogs, the UI could freeze.
 
    https://github.com/owncloud/client/issues/10621
+
+* Bugfix - Ensure the account state is properly persisted: [#10648](https://github.com/owncloud/client/issues/10648)
+
+   We didn't properly persist the login/logout state.
+
+   https://github.com/owncloud/client/issues/10648
 
 * Bugfix - Reconnect got stuck if the server supports app providers: [#10666](https://github.com/owncloud/client/issues/10666)
 
