@@ -155,7 +155,6 @@ void EditLocallyJob::proceedWithSetup()
     _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
 
     Systray::instance()->destroyEditFileLocallyLoadingDialog();
-    Q_EMIT setupFinished();
     startEditLocally();
 }
 
