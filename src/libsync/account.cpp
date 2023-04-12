@@ -21,6 +21,7 @@
 #include "creds/credentialmanager.h"
 #include "graphapi/spacesmanager.h"
 #include "networkjobs.h"
+#include "networkjobs/resources.h"
 #include "theme.h"
 
 #include <QAuthenticator>
@@ -41,6 +42,22 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
 
+QString Account::_customCommonCacheDirectory = {};
+
+void Account::setCommonCacheDirectory(const QString &directory)
+{
+    _customCommonCacheDirectory = directory;
+}
+
+QString Account::commonCacheDirectory()
+{
+    if (_customCommonCacheDirectory.isEmpty()) {
+        return QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    }
+
+    return _customCommonCacheDirectory;
+}
+
 Account::Account(const QUuid &uuid, QObject *parent)
     : QObject(parent)
     , _uuid(uuid)
@@ -50,6 +67,14 @@ Account::Account(const QUuid &uuid, QObject *parent)
     , _credentialManager(new CredentialManager(this))
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
+
+    _cacheDirectory = QStringLiteral("%1/accounts/%2").arg(commonCacheDirectory(), _uuid.toString(QUuid::WithoutBraces));
+    QDir().mkpath(_cacheDirectory);
+
+    // we need to make sure the directory we pass to the resources cache exists
+    const QString resourcesCacheDir = QStringLiteral("%1/resources/").arg(_cacheDirectory);
+    QDir().mkpath(resourcesCacheDir);
+    _resourcesCache = new ResourcesCache(resourcesCacheDir, this);
 }
 
 AccountPtr Account::create(const QUuid &uuid)
@@ -164,10 +189,9 @@ void Account::setCredentials(AbstractCredentials *cred)
 
     // the network access manager takes ownership when setCache is called, so we have to reinitialize it every time we reset the manager
     _networkCache = new QNetworkDiskCache(this);
-    const QString cacheLocation =
-        QStringLiteral("%1/accounts/%2/network/").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), _uuid.toString());
-    qCDebug(lcAccount) << "Cache location for account" << this << "set to" << cacheLocation;
-    _networkCache->setCacheDirectory(cacheLocation);
+    const QString networkCacheLocation = (QStringLiteral("%1/network/").arg(_cacheDirectory));
+    qCDebug(lcAccount) << "Cache location for account" << this << "set to" << networkCacheLocation;
+    _networkCache->setCacheDirectory(networkCacheLocation);
     _am->setCache(_networkCache);
 
     if (jar) {
@@ -364,6 +388,11 @@ const AppProvider &Account::appProvider() const
 void Account::invalidCredentialsEncountered()
 {
     Q_EMIT invalidCredentials(Account::QPrivateSignal());
+}
+
+ResourcesCache *Account::resourcesCache() const
+{
+    return _resourcesCache;
 }
 
 } // namespace OCC

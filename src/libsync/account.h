@@ -57,6 +57,7 @@ namespace GraphApi {
     class SpacesManager;
 }
 
+class ResourcesCache;
 
 /**
  * @brief The Account class represents an account on an ownCloud Server
@@ -74,6 +75,12 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QUrl url MEMBER _url)
 
 public:
+    /**
+     * Set a custom directory which all accounts created after this call will share to store their cached files in.
+     */
+    static void setCommonCacheDirectory(const QString &directory);
+    static QString commonCacheDirectory();
+
     static AccountPtr create(const QUuid &uuid);
     ~Account() override;
 
@@ -202,6 +209,8 @@ public:
      */
     void invalidCredentialsEncountered();
 
+    ResourcesCache *resourcesCache() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearAMCache();
@@ -234,6 +243,9 @@ protected Q_SLOTS:
     void slotCredentialsAsked();
 
 private:
+    // directory all newly created accounts store their various caches in
+    static QString _customCommonCacheDirectory;
+
     Account(const QUuid &uuid, QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
 
@@ -246,11 +258,13 @@ private:
     QPixmap _avatarImg;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
+    QString _cacheDirectory;
 
     QSet<QSslCertificate> _approvedCerts;
     Capabilities _capabilities;
     QPointer<AccessManager> _am;
     QPointer<QNetworkDiskCache> _networkCache = nullptr;
+    QPointer<ResourcesCache> _resourcesCache;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
 
