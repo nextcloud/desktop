@@ -827,7 +827,6 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updatePlace
             // don't use destinatio() with suffix placeholder
             const auto pin = syncOptions()._vfs->pinState(item._file);
             if (pin && pin.get() == PinState::AlwaysLocal) {
-                qDebug() << fileName << item.destination() << item._file;
                 return false;
             }
         }

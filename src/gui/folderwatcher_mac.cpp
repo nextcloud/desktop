@@ -75,7 +75,6 @@ static void callback(
     }
 
     if (!paths.isEmpty()) {
-        qDebug() << paths;
         reinterpret_cast<FolderWatcherPrivate *>(clientCallBackInfo)->doNotifyParent(paths);
     }
 }
