@@ -72,7 +72,7 @@ void FileDetails::setLocalPath(const QString &localPath)
 
     _filelockState = _fileRecord._lockstate;
     updateLockExpireString();
-    updateFileTagModel(file, folder);
+    updateFileTagModel(folder);
 
     Q_EMIT fileChanged();
 }
@@ -160,11 +160,13 @@ FileTagModel *FileDetails::fileTagModel() const
     return _fileTagModel.get();
 }
 
-void FileDetails::updateFileTagModel(const QString &serverRelPath, const Folder * const folder)
+void FileDetails::updateFileTagModel(const Folder * const folder)
 {
     Q_ASSERT(folder);
     const auto account = folder->accountState()->account();
     Q_ASSERT(account);
+
+    const auto serverRelPath = QString(folder->remotePathTrailingSlash() + name());
 
     _fileTagModel = std::make_unique<FileTagModel>(serverRelPath, account);
     Q_EMIT fileTagModelChanged();

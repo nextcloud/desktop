@@ -64,7 +64,7 @@ signals:
 private slots:
     void refreshFileDetails();
     void updateLockExpireString();
-    void updateFileTagModel(const QString &serverRelPath, const Folder * const folder);
+    void updateFileTagModel(const OCC::Folder * const folder);
 
 private:
     QString _localPath;
