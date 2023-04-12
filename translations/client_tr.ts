@@ -1489,7 +1489,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
         <source>Please try again.</source>
         <translation>Lütfen yeniden deneyin.</translation>
     </message>
@@ -1524,38 +1524,38 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Yerel düzenleme için bir dosya bulunamadı. Dosyanın seçimli eşitleme ile katılmayacak olarak seçilmediğinden emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Sunucu hatası: PROPFIND yanıtı XML biçiminde değil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="487"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="488"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
         <translation>Yerel düzenleme için bir uzak dosya bulunamadı. Dosya yolunun geçerli olduğundan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
         <source>Could not open %1</source>
         <translation>%1 açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="630"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="638"/>
         <source>File %1 already locked.</source>
         <translation>%1 dosyası zaten kilitli.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="631"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="642"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="639"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Kilit %1 dakika sonra açılacak. İsterseniz dosyayı düzenlemeyi bitirdikten sonra kilidini el ile açabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="641"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="649"/>
         <source>File %1 now locked.</source>
         <translation>%1 dosyası kilitlendi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="658"/>
         <source>File %1 could not be locked.</source>
         <translation>%1 dosyası kilitlenemedi.</translation>
     </message>

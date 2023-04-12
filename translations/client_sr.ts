@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Нека подешавања су конфигурисана у %1 верзијама овог клијента и користе могућности које нису доступне у овој верзији.&lt;br&gt;&lt;br&gt;Настављање значи &lt;b&gt;%2 ових подешавања&lt;/b&gt;&lt;br&gt;&lt;br&gt;Већ је направљена резервна копија текућег конфигурационог фајла &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
@@ -1489,7 +1489,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
         <source>Please try again.</source>
         <translation>Молимо вас да покушате поново.</translation>
     </message>
@@ -1524,38 +1524,38 @@ This action will abort any currently running synchronization.</source>
         <translation>Не може да се пронађе фајл за локално уређивање. Проверите да није изузет употребом селективне синхронизације.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Срверска грешка: PROPFIND одговор није XML форматиран!</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="487"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="488"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
         <translation>Не може да се пронађе фајл за локално уређивање. Проверите да ли је исправна путања.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
         <source>Could not open %1</source>
         <translation>Не може да се отвори %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="630"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="638"/>
         <source>File %1 already locked.</source>
         <translation>Фајл %1 је већ закључан.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="631"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="642"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="639"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Закључавање ће трајати %1 минута. Фајл можете и ручно да откључате када завршите уређивање.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="641"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="649"/>
         <source>File %1 now locked.</source>
         <translation>Фајл %1 је сада закључан.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="658"/>
         <source>File %1 could not be locked.</source>
         <translation>Фајл %1 није могао да се закључа.</translation>
     </message>
@@ -4220,7 +4220,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Сигурно место за упуштање фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
@@ -4443,7 +4443,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Копирај линк сигурног места за упуштање фајлова</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>

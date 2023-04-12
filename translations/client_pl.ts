@@ -1489,7 +1489,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
         <source>Please try again.</source>
         <translation>Spróbuj ponownie.</translation>
     </message>
@@ -1524,38 +1524,38 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation>Nie udało się znaleźć pliku do lokalnej edycji. Upewnij się, że nie jest wykluczony przez synchronizację wybiórczą.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Błąd serwera: odpowiedź PROPFIND nie ma formatu XML!</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="487"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="488"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
         <translation>Nie można znaleźć informacji o zdalnym pliku do edycji lokalnej. Upewnij się, że jego ścieżka jest poprawna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
         <source>Could not open %1</source>
         <translation>Nie można otworzyć %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="630"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="638"/>
         <source>File %1 already locked.</source>
         <translation>Plik %1 jest już zablokowany.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="631"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="642"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="639"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Blokada będzie trwała przez %1 minut. Możesz także odblokować ten plik ręcznie po zakończeniu edycji.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="641"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="649"/>
         <source>File %1 now locked.</source>
         <translation>Plik %1 jest teraz zablokowany.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="658"/>
         <source>File %1 could not be locked.</source>
         <translation>Nie można zablokować pliku %1.</translation>
     </message>
