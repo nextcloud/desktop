@@ -48,7 +48,9 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         opt.rect = QStyle::visualRect(option.direction, option.rect, opt.rect);
 
         if (opt.state & QStyle::State_Selected) {
-            opt.state |= QStyle::State_On;
+            opt.state = QStyle::State_On;
+        } else {
+            opt.state = QStyle::State_Off;
         }
         style->drawPrimitive(QStyle::PE_IndicatorRadioButton, &opt, painter, option.widget);
         break;
