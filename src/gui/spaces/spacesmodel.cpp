@@ -160,16 +160,19 @@ void SpacesModel::setSpacesManager(GraphApi::SpacesManager *spacesManager)
     _spacesList = _spacesManager->spaces();
     endResetModel();
     connect(_spacesManager, &GraphApi::SpacesManager::updated, this, [this] {
-        beginResetModel();
-        _spacesList = _spacesManager->spaces();
-        endResetModel();
+        const auto newSpaces = _spacesManager->spaces();
+        if (_spacesList != newSpaces) {
+            beginResetModel();
+            _spacesList = newSpaces;
+            endResetModel();
+        }
     });
 
     connect(_spacesManager, &GraphApi::SpacesManager::spaceChanged, this, [this](GraphApi::Space *space) {
         const auto row = _spacesList.indexOf(space);
         if (row != -1) {
             const auto index = createIndex(row, 0);
-            Q_EMIT dataChanged(index, index.siblingAtColumn(static_cast<int>(SpacesModel::Columns::ColumnCount) - 1), {Qt::DecorationRole});
+            Q_EMIT dataChanged(index, index.siblingAtColumn(static_cast<int>(SpacesModel::Columns::ColumnCount) - 1));
         }
     });
 }

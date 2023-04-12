@@ -61,7 +61,7 @@ namespace GraphApi {
 
         Account *_account;
         QTimer *_refreshTimer;
-        QHash<QString, Space *> _spacesMap;
+        QMap<QString, Space *> _spacesMap;
         bool _ready = false;
     };
 

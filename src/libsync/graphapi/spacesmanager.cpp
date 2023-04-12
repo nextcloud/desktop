@@ -55,14 +55,21 @@ void SpacesManager::refresh()
     connect(drivesJob, &Drives::finishedSignal, this, [drivesJob, this] {
         drivesJob->deleteLater();
         if (drivesJob->httpStatusCode() == 200) {
+            auto oldKeys = _spacesMap.keys();
             for (const auto &dr : drivesJob->drives()) {
                 auto *space = this->space(dr.getId());
+                oldKeys.removeAll(dr.getId());
                 if (!space) {
                     space = new Space(this, dr);
                     _spacesMap.insert(dr.getId(), space);
                 } else {
                     space->setDrive(dr);
+                    Q_EMIT spaceChanged(space);
                 }
+            }
+            for (const QString &id : oldKeys) {
+                auto *oldSpace = _spacesMap.take(id);
+                oldSpace->deleteLater();
             }
             if (!_ready) {
                 _ready = true;
