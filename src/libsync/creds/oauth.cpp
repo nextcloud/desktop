@@ -404,7 +404,7 @@ void OAuth::startAuthentication()
                             }
                         });
                     } else {
-                        finalize(socket, accessToken, refreshToken, QUrl());
+                        finalize(socket, accessToken, refreshToken, messageUrl);
                     }
                 });
             });
