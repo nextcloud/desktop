@@ -435,7 +435,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Einen Space hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
@@ -495,17 +495,17 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="649"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Trotzdem beenden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde mit %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="831"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Getrennt von %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="734"/>
@@ -559,7 +559,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Diese Schaltfläche drücken um einen Space hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
@@ -569,7 +569,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Verbindung notwendig, um einen Ordner hinzuzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="957"/>
@@ -908,7 +908,7 @@ Anwendung zur Datei-Synchronisation.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Lists available translations, see --language.</source>
-        <translation type="unfinished"/>
+        <translation>Listet die verfügbaren Ubersetzungen, siehe --language.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
@@ -1118,7 +1118,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/folder.cpp" line="238"/>
         <source>The path &apos;%1&apos; is too long. Either enable long paths in the Windows settings, or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Der Pfadname &apos;%1&apos; ist zu lang. Entweder die Unterstützung für lange Pfadnamen in den Windows Einstellungen einschalten oder ein anderes Verzeichnis auswählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="246"/>
@@ -2567,7 +2567,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Space ist aktuell nicht erreichbar</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
@@ -2894,7 +2894,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>Die Generierung der Checksumme ist fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
@@ -3711,7 +3711,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="444"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1. Für weitere Informationen &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Für bekannte Probleme und Hilfe: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller und Weitere.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Urheberrecht ownCloud GmbH&lt;/p&gt;&lt;p&gt;Verteilt von %4 und lizenziert unter der GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 und das %5 Logo sind eingetragene Marken von %4 in den Vereinigten Staaten, weiteren Ländern oder beides.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4094,22 +4094,22 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="720"/>
         <source>Restart all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Alle Synchronisationen jetzt starten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="722"/>
         <source>Restart synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation jetzt starten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>Stop all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Alle Synchronisationen anhalten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="732"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation stoppen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="826"/>
