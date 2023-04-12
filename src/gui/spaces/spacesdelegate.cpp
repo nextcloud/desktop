@@ -35,7 +35,8 @@ Q_LOGGING_CATEGORY(lcSpacesDelegate, "spaces.delegate")
 void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     const auto *style = option.widget->style();
-    if (index.column() == static_cast<int>(SpacesModel::Columns::Sync)) {
+    switch (static_cast<SpacesModel::Columns>(index.column())) {
+    case SpacesModel::Columns::Sync: {
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
 
@@ -47,7 +48,9 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             opt.state |= QStyle::State_On;
         }
         style->drawPrimitive(QStyle::PE_IndicatorRadioButton, &opt, painter, option.widget);
-    } else if (index.column() == static_cast<int>(SpacesModel::Columns::WebUrl)) {
+        break;
+    }
+    case SpacesModel::Columns::WebUrl: {
         // only display the button if we have a valid url
         if (index.data().toUrl().isValid()) {
             auto opt = openBrowserButtonRect(option);
@@ -58,7 +61,9 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
             style->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
         }
-    } else if (index.column() == static_cast<int>(SpacesModel::Columns::Name)) {
+        break;
+    }
+    case SpacesModel::Columns::Name: {
         const QString subTitle =
             option.fontMetrics.elidedText(index.siblingAtColumn(static_cast<int>(SpacesModel::Columns::Subtitle)).data(Qt::DisplayRole).toString(), Qt::ElideRight, option.rect.width());
 
@@ -110,7 +115,16 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             subtitleRect.moveTop(nameBoundingRect.bottom());
             painter->drawText(QStyle::visualRect(option.direction, option.rect, subtitleRect), subTitleTextFlags, subTitle);
         }
-    } else {
+        break;
+    }
+    case SpacesModel::Columns::Image: {
+        const auto hmargin = QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+        const auto vmargin = QApplication::style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing);
+        const auto iconRect = option.rect.marginsRemoved({hmargin, vmargin, hmargin, vmargin});
+        index.data(Qt::DecorationRole).value<QIcon>().paint(painter, QStyle::visualRect(option.direction, option.rect, iconRect), Qt::AlignCenter);
+        break;
+    }
+    default:
         QStyledItemDelegate::paint(painter, option, index);
     }
 }

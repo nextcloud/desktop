@@ -120,7 +120,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (column) {
         case Columns::Image: {
-            return space->image().pixmap(ImageSizeC);
+            return space->image();
         }
         default:
             return {};
