@@ -167,7 +167,7 @@ Page {
                 visible: headerGridLayout.showFileLockedString
             }
 
-            RowLayout {
+            Row {
                 id: tagRow
 
                 Layout.fillWidth: true
@@ -177,9 +177,14 @@ Page {
                     id: tagRepeater
 
                     readonly property var fileTagModel: root.fileDetails.fileTagModel
+                    readonly property int maxTags: 3
 
                     model: fileTagModel
                     delegate: FileTag {
+                        readonly property int availableLayoutSpace: tagRow.width - tagRow.spacing - overflowTag.width
+                        readonly property int maxWidth: (availableLayoutSpace / tagRepeater.maxTags) - tagRow.spacing
+
+                        width: Math.min(maxWidth, implicitWidth)
                         text: model.display
                     }
 
