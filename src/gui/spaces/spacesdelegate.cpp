@@ -35,6 +35,9 @@ Q_LOGGING_CATEGORY(lcSpacesDelegate, "spaces.delegate")
 void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     const auto *style = option.widget->style();
+    if (option.state & QStyle::State_Selected) {
+        painter->fillRect(option.rect, option.palette.highlight());
+    }
     switch (static_cast<SpacesModel::Columns>(index.column())) {
     case SpacesModel::Columns::Sync: {
         QStyleOptionButton opt;
