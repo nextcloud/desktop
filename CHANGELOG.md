@@ -38,6 +38,7 @@ Summary
 * Enhancement - Display the space name provided by the server: [#10602](https://github.com/owncloud/client/pull/10602)
 * Enhancement - Always point to the latest documentation: [#10634](https://github.com/owncloud/client/issues/10634)
 * Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
+* Enhancement - Don't invalidate oauth refresh token on ConnectionRefusedError: [#10654](https://github.com/owncloud/client/issues/10654)
 
 Details
 -------
@@ -224,6 +225,10 @@ Details
 * Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
 
    https://github.com/owncloud/client/pull/10637
+
+* Enhancement - Don't invalidate oauth refresh token on ConnectionRefusedError: [#10654](https://github.com/owncloud/client/issues/10654)
+
+   https://github.com/owncloud/client/issues/10654
 
 Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
 =======================================
