@@ -13,7 +13,6 @@ Summary
 * Bugfix - Don't abort local folder deletions on unrelated errors: [#9311](https://github.com/owncloud/client/issues/9311)
 * Bugfix - Fix update channel dropdown: [#10251](https://github.com/owncloud/client/issues/10251)
 * Bugfix - Select keep files as default action in all files removed dialog: [#10254](https://github.com/owncloud/client/issues/10254)
-* Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Bugfix - Escape navigation elements from user name: [#10427](https://github.com/owncloud/client/issues/10427)
 * Bugfix - Under certain conditions the folder watcher could drop events: [#10458](https://github.com/owncloud/client/pull/10458)
@@ -26,6 +25,7 @@ Summary
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
+* Enhancement - Check for long paths when these are not enabled on Windows: [#10264](https://github.com/owncloud/client/issues/10264)
 * Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Display quota for Spaces: [#10453](https://github.com/owncloud/client/issues/10453)
@@ -74,10 +74,6 @@ Details
 * Bugfix - Select keep files as default action in all files removed dialog: [#10254](https://github.com/owncloud/client/issues/10254)
 
    https://github.com/owncloud/client/issues/10254
-
-* Bugfix - Check for long paths when these are not enabled on Windows: [#10352](https://github.com/owncloud/client/pull/10352)
-
-   https://github.com/owncloud/client/pull/10352
 
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 
@@ -153,6 +149,13 @@ Details
 
    https://github.com/owncloud/client/issues/10231
    https://github.com/owncloud/client/issues/10529
+
+* Enhancement - Check for long paths when these are not enabled on Windows: [#10264](https://github.com/owncloud/client/issues/10264)
+
+   https://github.com/owncloud/client/issues/10264
+   https://github.com/owncloud/client/issues/10677
+   https://github.com/owncloud/client/pull/10352
+   https://github.com/owncloud/client/pull/10679
 
 * Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
 
