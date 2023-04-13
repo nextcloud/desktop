@@ -118,12 +118,12 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     cout << msg << endl;
 #endif
     {
+        QMutexLocker lock(&_mutex);
         if (_logFile.size() >= MaxLogSizeBytes) {
             close();
             enterNextLogFile();
         }
 
-        QMutexLocker lock(&_mutex);
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
 
