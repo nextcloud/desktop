@@ -26,7 +26,7 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
         return;
     }
 
-    UNTextInputNotificationResponse *textInputResponse = (UNTextInputNotificationResponse*)response;
+    UNTextInputNotificationResponse * const textInputResponse = (UNTextInputNotificationResponse*)response;
 
     if (!textInputResponse) {
         qCWarning(lcMacSystray()) << "Notification response was not a text input response."
@@ -34,10 +34,10 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
         return;
     }
 
-    NSString *reply = textInputResponse.userText;
-    NSString *token = [content.userInfo objectForKey:@"token"];
-    NSString *account = [content.userInfo objectForKey:@"account"];
-    NSString *replyTo = [content.userInfo objectForKey:@"replyTo"];
+    NSString * const reply = textInputResponse.userText;
+    NSString * const token = [content.userInfo objectForKey:@"token"];
+    NSString * const account = [content.userInfo objectForKey:@"account"];
+    NSString * const replyTo = [content.userInfo objectForKey:@"replyTo"];
 
     const auto qReply = QString::fromNSString(reply);
     const auto qReplyTo = QString::fromNSString(replyTo);
@@ -88,7 +88,7 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
 {
     qCDebug(lcMacSystray()) << "Received notification with category identifier:" << response.notification.request.content.categoryIdentifier
                             << "and action identifier" << response.actionIdentifier;
-    UNNotificationContent* content = response.notification.request.content;
+    UNNotificationContent * const content = response.notification.request.content;
     if ([content.categoryIdentifier isEqualToString:@"UPDATE"]) {
 
         if ([response.actionIdentifier isEqualToString:@"DOWNLOAD_ACTION"] || [response.actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier]) {
@@ -112,7 +112,7 @@ namespace OCC {
 
 double menuBarThickness()
 {
-    const NSMenu *mainMenu = [[NSApplication sharedApplication] mainMenu];
+    NSMenu * const mainMenu = [[NSApplication sharedApplication] mainMenu];
 
     if (mainMenu == nil) {
         // Return this educated guess if something goes wrong.
@@ -127,39 +127,39 @@ double menuBarThickness()
 // TODO: Get this to actually check for permissions
 bool canOsXSendUserNotification()
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
     return center != nil;
 }
 
 void registerNotificationCategories(const QString &localisedDownloadString) {
-    UNNotificationCategory* generalCategory = [UNNotificationCategory
+    UNNotificationCategory * const generalCategory = [UNNotificationCategory
           categoryWithIdentifier:@"GENERAL"
           actions:@[]
           intentIdentifiers:@[]
           options:UNNotificationCategoryOptionCustomDismissAction];
 
     // Create the custom actions for update notifications.
-    UNNotificationAction* downloadAction = [UNNotificationAction
+    UNNotificationAction * const downloadAction = [UNNotificationAction
           actionWithIdentifier:@"DOWNLOAD_ACTION"
           title:localisedDownloadString.toNSString()
           options:UNNotificationActionOptionNone];
 
     // Create the category with the custom actions.
-    UNNotificationCategory* updateCategory = [UNNotificationCategory
+    UNNotificationCategory * const updateCategory = [UNNotificationCategory
           categoryWithIdentifier:@"UPDATE"
           actions:@[downloadAction]
           intentIdentifiers:@[]
           options:UNNotificationCategoryOptionNone];
 
     // Create the custom action for talk notifications
-    UNTextInputNotificationAction* talkReplyAction = [UNTextInputNotificationAction
+    UNTextInputNotificationAction * const talkReplyAction = [UNTextInputNotificationAction
             actionWithIdentifier:@"TALK_REPLY_ACTION"
             title:QObject::tr("Reply").toNSString()
             options:UNNotificationActionOptionNone
             textInputButtonTitle:QObject::tr("Reply").toNSString()
             textInputPlaceholder:QObject::tr("Send a Nextcloud Talk reply").toNSString()];
 
-    UNNotificationCategory* talkReplyCategory = [UNNotificationCategory
+    UNNotificationCategory * const talkReplyCategory = [UNNotificationCategory
             categoryWithIdentifier:@"TALK_MESSAGE"
             actions:@[talkReplyAction]
             intentIdentifiers:@[]
@@ -170,7 +170,7 @@ void registerNotificationCategories(const QString &localisedDownloadString) {
 
 void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOption)
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
     UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
 
     if(additionalAuthOption == MacNotificationAuthorizationOptions::Provisional) {
@@ -180,7 +180,7 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
     [center requestAuthorizationWithOptions:(authOptions)
         completionHandler:^(BOOL granted, NSError * _Nullable error) {
             // Enable or disable features based on authorization.
-            if(granted) {
+            if (granted) {
                 qCDebug(lcMacSystray) << "Authorization for notifications has been granted, can display notifications.";
             } else {
                 qCDebug(lcMacSystray) << "Authorization for notifications not granted.";
@@ -194,7 +194,7 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
 
 void setUserNotificationCenterDelegate()
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
 
     static dispatch_once_t once;
     dispatch_once(&once, ^{
@@ -205,7 +205,7 @@ void setUserNotificationCenterDelegate()
 
 UNMutableNotificationContent* basicNotificationContent(const QString &title, const QString &message)
 {
-    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+    UNMutableNotificationContent * const content = [[UNMutableNotificationContent alloc] init];
     content.title = title.toNSString();
     content.body = message.toNSString();
     content.sound = [UNNotificationSound defaultSound];
@@ -215,36 +215,36 @@ UNMutableNotificationContent* basicNotificationContent(const QString &title, con
 
 void sendOsXUserNotification(const QString &title, const QString &message)
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
     checkNotificationAuth();
 
-    UNMutableNotificationContent* content = basicNotificationContent(title, message);
+    UNMutableNotificationContent * const content = basicNotificationContent(title, message);
     content.categoryIdentifier = @"GENERAL";
 
-    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
-    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"NCUserNotification" content:content trigger:trigger];
+    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCUserNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
 }
 
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl)
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
     checkNotificationAuth();
 
-    UNMutableNotificationContent* content = basicNotificationContent(title, message);
+    UNMutableNotificationContent * const content = basicNotificationContent(title, message);
     content.categoryIdentifier = @"UPDATE";
     content.userInfo = [NSDictionary dictionaryWithObject:[webUrl.toNSURL() absoluteString] forKey:@"webUrl"];
 
-    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
-    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"NCUpdateNotification" content:content trigger:trigger];
+    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCUpdateNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
 }
 
 void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState)
 {
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
     checkNotificationAuth();
 
     if (!accountState || !accountState->account()) {
@@ -252,24 +252,24 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
         return;
     }
 
-    NSString *accountNS = accountState->account()->displayName().toNSString();
-    NSString *tokenNS = token.toNSString();
-    NSString *replyToNS = replyTo.toNSString();
+    NSString * const accountNS = accountState->account()->displayName().toNSString();
+    NSString * const tokenNS = token.toNSString();
+    NSString * const replyToNS = replyTo.toNSString();
 
-    UNMutableNotificationContent* content = basicNotificationContent(title, message);
+    UNMutableNotificationContent * const content = basicNotificationContent(title, message);
     content.categoryIdentifier = @"TALK_MESSAGE";
     content.userInfo = [NSDictionary dictionaryWithObjects:@[accountNS, tokenNS, replyToNS] forKeys:@[@"account", @"token", @"replyTo"]];
 
-    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
-    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"NCTalkMessageNotification" content:content trigger:trigger];
+    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCTalkMessageNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
 }
 
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
 {
-    NSView *nativeView = (NSView *)window->winId();
-    NSWindow *nativeWindow = (NSWindow *)[nativeView window];
+    NSView * const nativeView = (NSView *)window->winId();
+    NSWindow * const nativeWindow = (NSWindow *)[nativeView window];
     [nativeWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle |
                   NSWindowCollectionBehaviorTransient];
     [nativeWindow setLevel:NSMainMenuWindowLevel];
@@ -277,7 +277,7 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
 
 bool osXInDarkMode()
 {
-    NSString *osxMode = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
+    NSString * const osxMode = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
     return [osxMode containsString:@"Dark"];
 }
 
