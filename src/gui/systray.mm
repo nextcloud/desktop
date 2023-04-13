@@ -58,7 +58,7 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
                             << "Token:" << qToken
                             << "Account:" << qAccount;
 
-    QPointer<OCC::TalkReply> talkReply = new OCC::TalkReply(accountState.data(), OCC::Systray::instance());
+    const auto talkReply = QSharedPointer<OCC::TalkReply>(new OCC::TalkReply(accountState.data(), OCC::Systray::instance()));
     talkReply->sendReplyMessage(qToken, qReply, qReplyTo);
 }
 
@@ -185,7 +185,7 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
             } else {
                 qCDebug(lcMacSystray) << "Authorization for notifications not granted.";
                 if(error) {
-                    QString errorDescription([error.localizedDescription UTF8String]);
+                    const auto errorDescription = QString::fromNSString(error.localizedDescription);
                     qCDebug(lcMacSystray) << "Error from notification center: " << errorDescription;
                 }
             }
