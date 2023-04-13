@@ -83,8 +83,8 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
-    didReceiveNotificationResponse:(UNNotificationResponse *)response
-    withCompletionHandler:(void (^)(void))completionHandler
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler
 {
     qCDebug(lcMacSystray()) << "Received notification with category identifier:" << response.notification.request.content.categoryIdentifier
                             << "and action identifier" << response.actionIdentifier;
@@ -133,37 +133,37 @@ bool canOsXSendUserNotification()
 
 void registerNotificationCategories(const QString &localisedDownloadString) {
     UNNotificationCategory * const generalCategory = [UNNotificationCategory
-          categoryWithIdentifier:@"GENERAL"
-          actions:@[]
-          intentIdentifiers:@[]
-          options:UNNotificationCategoryOptionCustomDismissAction];
+        categoryWithIdentifier:@"GENERAL"
+        actions:@[]
+        intentIdentifiers:@[]
+        options:UNNotificationCategoryOptionCustomDismissAction];
 
     // Create the custom actions for update notifications.
     UNNotificationAction * const downloadAction = [UNNotificationAction
-          actionWithIdentifier:@"DOWNLOAD_ACTION"
-          title:localisedDownloadString.toNSString()
-          options:UNNotificationActionOptionNone];
+        actionWithIdentifier:@"DOWNLOAD_ACTION"
+        title:localisedDownloadString.toNSString()
+        options:UNNotificationActionOptionNone];
 
     // Create the category with the custom actions.
     UNNotificationCategory * const updateCategory = [UNNotificationCategory
-          categoryWithIdentifier:@"UPDATE"
-          actions:@[downloadAction]
-          intentIdentifiers:@[]
-          options:UNNotificationCategoryOptionNone];
+        categoryWithIdentifier:@"UPDATE"
+        actions:@[downloadAction]
+        intentIdentifiers:@[]
+        options:UNNotificationCategoryOptionNone];
 
     // Create the custom action for talk notifications
     UNTextInputNotificationAction * const talkReplyAction = [UNTextInputNotificationAction
-            actionWithIdentifier:@"TALK_REPLY_ACTION"
-            title:QObject::tr("Reply").toNSString()
-            options:UNNotificationActionOptionNone
-            textInputButtonTitle:QObject::tr("Reply").toNSString()
-            textInputPlaceholder:QObject::tr("Send a Nextcloud Talk reply").toNSString()];
+        actionWithIdentifier:@"TALK_REPLY_ACTION"
+        title:QObject::tr("Reply").toNSString()
+        options:UNNotificationActionOptionNone
+        textInputButtonTitle:QObject::tr("Reply").toNSString()
+        textInputPlaceholder:QObject::tr("Send a Nextcloud Talk reply").toNSString()];
 
     UNNotificationCategory * const talkReplyCategory = [UNNotificationCategory
-            categoryWithIdentifier:@"TALK_MESSAGE"
-            actions:@[talkReplyAction]
-            intentIdentifiers:@[]
-            options:UNNotificationCategoryOptionNone];
+        categoryWithIdentifier:@"TALK_MESSAGE"
+        actions:@[talkReplyAction]
+        intentIdentifiers:@[]
+        options:UNNotificationCategoryOptionNone];
 
     [UNUserNotificationCenter.currentNotificationCenter setNotificationCategories:[NSSet setWithObjects:generalCategory, updateCategory, talkReplyCategory, nil]];
 }
@@ -177,18 +177,17 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
         authOptions += UNAuthorizationOptionProvisional;
     }
 
-    [center requestAuthorizationWithOptions:(authOptions)
-        completionHandler:^(BOOL granted, NSError * _Nullable error) {
-            // Enable or disable features based on authorization.
-            if (granted) {
-                qCDebug(lcMacSystray) << "Authorization for notifications has been granted, can display notifications.";
-            } else {
-                qCDebug(lcMacSystray) << "Authorization for notifications not granted.";
-                if(error) {
-                    const auto errorDescription = QString::fromNSString(error.localizedDescription);
-                    qCDebug(lcMacSystray) << "Error from notification center: " << errorDescription;
-                }
+    [center requestAuthorizationWithOptions:(authOptions) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        // Enable or disable features based on authorization.
+        if (granted) {
+            qCDebug(lcMacSystray) << "Authorization for notifications has been granted, can display notifications.";
+        } else {
+            qCDebug(lcMacSystray) << "Authorization for notifications not granted.";
+            if (error) {
+                const auto errorDescription = QString::fromNSString(error.localizedDescription);
+                qCDebug(lcMacSystray) << "Error from notification center: " << errorDescription;
             }
+        }
     }];
 }
 
@@ -198,8 +197,8 @@ void setUserNotificationCenterDelegate()
 
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-            id delegate = [[NotificationCenterDelegate alloc] init];
-            [center setDelegate:delegate];
+        id delegate = [[NotificationCenterDelegate alloc] init];
+        [center setDelegate:delegate];
     });
 }
 
@@ -260,7 +259,7 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
     content.categoryIdentifier = @"TALK_MESSAGE";
     content.userInfo = [NSDictionary dictionaryWithObjects:@[accountNS, tokenNS, replyToNS] forKeys:@[@"account", @"token", @"replyTo"]];
 
-    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
     UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCTalkMessageNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
