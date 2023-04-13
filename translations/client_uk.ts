@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Окремі налаштування було сконфігуровано для версії клієнта %1, які не доступні для поточної версії.&lt;br&gt;&lt;br&gt;Якщо ви продовжите, то це означатиме&lt;b&gt;, що ці налаштування %2&lt;/b&gt;.&lt;br&gt;&lt;br&gt; Резервну копію поточного файлу налаштувань збережено до &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
@@ -2857,12 +2857,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="177"/>
+        <location filename="../src/libsync/logger.cpp" line="183"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="178"/>
+        <location filename="../src/libsync/logger.cpp" line="184"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Файл &quot;%1&quot;&lt;br/&gt;неможливо відкрити на запис.&lt;br/&gt;&lt;br/&gt;Журнал&lt;b&gt;неможливо&lt;/b&gt; зберегти!&lt;/nobr&gt;</translation>
     </message>
@@ -3271,7 +3271,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="658"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка у метаданих. Отримано метадані у неочікуваному форматі.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
@@ -4220,7 +4220,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Безпечне копіювання файлів через посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
@@ -4240,12 +4240,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Безпечне копіювання файлів через посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="599"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Безпечне копіювання файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="856"/>
@@ -4327,17 +4327,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Шукати повсюди</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation type="unfinished"/>
+        <translation>Нічого не знайдено</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Результати універсального пошуку</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
@@ -4443,7 +4443,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати посилання для безпечного копіювання файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
@@ -4455,7 +4455,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати посилання для безпечного копіювання файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
@@ -4966,7 +4966,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Цей випуск надано %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

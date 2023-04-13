@@ -928,7 +928,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Algunhas opcións configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñibles nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
@@ -2857,12 +2857,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="177"/>
+        <location filename="../src/libsync/logger.cpp" line="183"/>
         <source>Error</source>
         <translation>Produciuse un erro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="178"/>
+        <location filename="../src/libsync/logger.cpp" line="184"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Non se pode abrir o ficheiro &quot;%1&quot;&lt;br/&gt; para escribir. &lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non se pode&lt;/b&gt; gardar!&lt;/nobr&gt;</translation>
     </message>
@@ -3271,7 +3271,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="658"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation type="unfinished"/>
+        <translation>Erro cos metadatos. Obtendo un formato de metadatos inesperado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
@@ -4220,7 +4220,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Ligazón de descarga segura de ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
@@ -4443,7 +4443,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar a ligazón de descarga segura de ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
