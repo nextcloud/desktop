@@ -144,6 +144,7 @@ private slots:
     void generateKeyPair(const OCC::AccountPtr &account);
     void encryptPrivateKey(const OCC::AccountPtr &account);
 
+    void publicCertificateFetched(QKeychain::Job *incoming);
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
@@ -158,17 +159,43 @@ private slots:
     void fetchAndValidatePublicKeyFromServer(const OCC::AccountPtr &account);
     void decryptPrivateKey(const OCC::AccountPtr &account, const QByteArray &key);
 
-    void fetchFromKeyChain(const OCC::AccountPtr &account);
+    void fetchCertificateFromKeyChain(const OCC::AccountPtr &account);
+    void fetchPublicKeyFromKeyChain(const OCC::AccountPtr &account);
     void writePrivateKey(const OCC::AccountPtr &account);
     void writeCertificate(const OCC::AccountPtr &account);
-    void writeMnemonic(const OCC::AccountPtr &account);
 
 private:
-    void generateCSR(const AccountPtr &account, PKey keyPair);
-    void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
+    void generateMnemonic();
+    void generateCSR(AccountPtr account,
+                     PKey keyPair);
+    void sendSignRequestCSR(AccountPtr account,
+                            PKey keyPair,
+                            QByteArray csrContent);
     void writeKeyPair(AccountPtr account,
                       PKey keyPair,
                       QByteArray output);
+
+    template <typename L>
+    void writeMnemonic(OCC::AccountPtr account,
+                       L nextCall);
+
+    void checkServerHasSavedKeys(AccountPtr account);
+
+    template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+    void checkUserPublicKeyOnServer(OCC::AccountPtr account,
+                                    SUCCESS_CALLBACK nextCheck,
+                                    ERROR_CALLBACK onError);
+
+    template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+    void checkUserPrivateKeyOnServer(OCC::AccountPtr account,
+                                     SUCCESS_CALLBACK nextCheck,
+                                     ERROR_CALLBACK onError);
+
+    template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+    void checkUserKeyOnServer(const QString &keyType,
+                              OCC::AccountPtr account,
+                              SUCCESS_CALLBACK nextCheck,
+                              ERROR_CALLBACK onError);
 
     [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;

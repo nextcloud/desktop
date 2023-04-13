@@ -882,14 +882,30 @@ void ClientSideEncryption::initialize(const AccountPtr &account)
         return;
     }
 
-    fetchFromKeyChain(account);
+    fetchCertificateFromKeyChain(account);
 }
 
-void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account)
+void ClientSideEncryption::fetchCertificateFromKeyChain(const AccountPtr &account)
 {
     const QString kck = AbstractCredentials::keychainKey(
         account->url().toString(),
         account->credentials()->user() + e2e_cert,
+        account->id()
+        );
+
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setProperty(accountProperty, QVariant::fromValue(account));
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::publicCertificateFetched);
+    job->start();
+}
+
+void ClientSideEncryption::fetchPublicKeyFromKeyChain(const AccountPtr &account)
+{
+    const QString kck = AbstractCredentials::keychainKey(
+        account->url().toString(),
+        account->credentials()->user() + e2e_public,
         account->id()
         );
 
@@ -951,7 +967,7 @@ bool ClientSideEncryption::checkServerPublicKeyValidity(const QByteArray &server
     return true;
 }
 
-void ClientSideEncryption::publicKeyFetched(Job *incoming)
+void ClientSideEncryption::publicCertificateFetched(Job *incoming)
 {
     auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
     auto account = readJob->property(accountProperty).value<AccountPtr>();
@@ -959,18 +975,55 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming)
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
-        getPublicKeyFromServer(account);
+        fetchPublicKeyFromKeyChain(account);
         return;
     }
 
     _certificate = QSslCertificate(readJob->binaryData(), QSsl::Pem);
 
     if (_certificate.isNull()) {
-        getPublicKeyFromServer(account);
+        fetchPublicKeyFromKeyChain(account);
         return;
     }
 
     _publicKey = _certificate.publicKey();
+
+    qCInfo(lcCse()) << "Public key fetched from keychain";
+
+    const QString kck = AbstractCredentials::keychainKey(
+        account->url().toString(),
+        account->credentials()->user() + e2e_private,
+        account->id()
+        );
+
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setProperty(accountProperty, QVariant::fromValue(account));
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::privateKeyFetched);
+    job->start();
+}
+
+void ClientSideEncryption::publicKeyFetched(QKeychain::Job *incoming)
+{
+    auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
+    auto account = readJob->property(accountProperty).value<AccountPtr>();
+    Q_ASSERT(account);
+
+           // Error or no valid public key error out
+    if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
+        getPublicKeyFromServer(account);
+        return;
+    }
+
+    const auto publicKey =  QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PublicKey);
+
+    if (publicKey.isNull()) {
+        getPublicKeyFromServer(account);
+        return;
+    }
+
+    _publicKey = publicKey;
 
     qCInfo(lcCse()) << "Public key fetched from keychain";
 
@@ -1045,7 +1098,7 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming)
 
     qCInfo(lcCse()) << "Mnemonic key fetched from keychain: " << _mnemonic;
 
-    emit initializationFinished();
+    checkServerHasSavedKeys(account);
 }
 
 void ClientSideEncryption::writePrivateKey(const AccountPtr &account)
@@ -1086,7 +1139,16 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
     job->start();
 }
 
-void ClientSideEncryption::writeMnemonic(const AccountPtr &account)
+void ClientSideEncryption::generateMnemonic()
+{
+    QStringList list = WordList::getRandomWords(12);
+    _mnemonic = list.join(' ');
+    qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
+}
+
+template <typename L>
+void ClientSideEncryption::writeMnemonic(OCC::AccountPtr account,
+                                         L nextCall)
 {
     const QString kck = AbstractCredentials::keychainKey(
         account->url().toString(),
@@ -1098,9 +1160,11 @@ void ClientSideEncryption::writeMnemonic(const AccountPtr &account)
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setTextData(_mnemonic);
-    connect(job, &WritePasswordJob::finished, [](Job *incoming) {
+    connect(job, &WritePasswordJob::finished, [account, nextCall = std::move(nextCall)](Job *incoming) mutable {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Mnemonic stored in keychain";
+
+        nextCall();
     });
     job->start();
 }
@@ -1238,7 +1302,7 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
     generateCSR(account, std::move(localKeyPair));
 }
 
-void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
+void ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
 {
     // OpenSSL expects const char.
     auto cnArray = account->davUser().toLocal8Bit();
@@ -1298,12 +1362,16 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
+    if (_mnemonic.isEmpty()) {
+        generateMnemonic();
+    }
 
-    writeMnemonic(account);
-    writeKeyPair(account, std::move(keyPair), output);
+    writeMnemonic(account, [account, keyPair = std::move(keyPair), output, this]() mutable -> void {writeKeyPair(account, std::move(keyPair), output);});
 }
 
-void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent)
+void ClientSideEncryption::sendSignRequestCSR(AccountPtr account,
+                                              PKey keyPair,
+                                              QByteArray csrContent)
 {
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
     job->setCsr(csrContent);
@@ -1387,13 +1455,67 @@ void ClientSideEncryption::writeKeyPair(AccountPtr account,
     privateKeyJob->start();
 }
 
+void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
+{
+    const auto keyIsNotOnServer = [account, this] () {
+        qCInfo(lcCse) << "server is missing keys. upload is necessary";
+
+        generateCSR(account, keyPair)
+        sendSignRequestCSR(account, {}, {});
+    };
+
+    const auto privateKeyOnServerIsValid = [this] () {
+        Q_EMIT initializationFinished();
+    };
+
+    const auto publicKeyOnServerIsValid = [this, account, privateKeyOnServerIsValid, keyIsNotOnServer] () {
+        checkUserPrivateKeyOnServer(account, privateKeyOnServerIsValid, keyIsNotOnServer);
+    };
+
+    checkUserPublicKeyOnServer(account, publicKeyOnServerIsValid, keyIsNotOnServer);
+}
+
+template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+void ClientSideEncryption::checkUserKeyOnServer(const QString &keyType,
+                                                OCC::AccountPtr account,
+                                                SUCCESS_CALLBACK nextCheck,
+                                                ERROR_CALLBACK onError)
+{
+    qCInfo(lcCse()) << "Retrieving" << keyType << "from server";
+    auto job = new JsonApiJob(account, e2eeBaseUrl() + keyType, this);
+    connect(job, &JsonApiJob::jsonReceived, [nextCheck, onError](const QJsonDocument& doc, int retCode) {
+        Q_UNUSED(doc)
+
+        if (retCode == 200) {
+            nextCheck();
+        } else {
+            onError();
+        }
+    });
+    job->start();
+}
+
+template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+void ClientSideEncryption::checkUserPublicKeyOnServer(AccountPtr account,
+                                                      SUCCESS_CALLBACK nextCheck,
+                                                      ERROR_CALLBACK onError)
+{
+    checkUserKeyOnServer("public-key", account, nextCheck, onError);
+}
+
+template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+void ClientSideEncryption::checkUserPrivateKeyOnServer(AccountPtr account, SUCCESS_CALLBACK nextCheck, ERROR_CALLBACK onError)
+{
+    checkUserKeyOnServer("private-key", account, nextCheck, onError);
+}
+
 void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
 {
-    QStringList list = WordList::getRandomWords(12);
-    _mnemonic = list.join(' ');
-    qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
+    if (_mnemonic.isEmpty()) {
+        generateMnemonic();
+    }
 
-    QString passPhrase = list.join(QString()).toLower();
+    const auto passPhrase = _mnemonic.remove(' ').toLower();
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
 
     auto salt = EncryptionHelper::generateRandom(40);
@@ -1410,8 +1532,7 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
             qCInfo(lcCse()) << "Private key stored encrypted on server.";
             writePrivateKey(account);
             writeCertificate(account);
-            writeMnemonic(account);
-            emit initializationFinished(true);
+            writeMnemonic(account, [this] () {emit initializationFinished(true);});
             break;
         default:
             qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
@@ -1469,7 +1590,7 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
             if (!_privateKey.isNull() && checkPublicKeyValidity(account)) {
                 writePrivateKey(account);
                 writeCertificate(account);
-                writeMnemonic(account);
+                writeMnemonic(account, [] () {});
                 break;
             }
         } else {
