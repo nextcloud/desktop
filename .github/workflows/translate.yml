@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-          ref: "master"
+          ref: "4"
 
       - name: l10n-remove-old
         run: bash .github/workflows/run-in-docker.sh rabits/qt:5.12-desktop "cd translations && make l10n-remove-old"
