@@ -165,26 +165,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="168"/>
-        <location filename="../src/common/filesystembase.cpp" line="170"/>
-        <location filename="../src/common/filesystembase.cpp" line="235"/>
-        <location filename="../src/common/filesystembase.cpp" line="240"/>
+        <location filename="../src/common/filesystembase.cpp" line="169"/>
+        <location filename="../src/common/filesystembase.cpp" line="171"/>
+        <location filename="../src/common/filesystembase.cpp" line="236"/>
+        <location filename="../src/common/filesystembase.cpp" line="241"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
         <translation>Не може да се преименува %1, файлът се използва в момента</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="425"/>
+        <location filename="../src/common/filesystembase.cpp" line="441"/>
         <source>Could not make directories in trash</source>
         <translation>Директориите в кошчето не можаха да бъдат създадени</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="439"/>
-        <location filename="../src/common/filesystembase.cpp" line="445"/>
+        <location filename="../src/common/filesystembase.cpp" line="455"/>
+        <location filename="../src/common/filesystembase.cpp" line="461"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Неуспешно преместване на &apos;%1&apos; в &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="479"/>
+        <location filename="../src/common/filesystembase.cpp" line="495"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Преместването в кошчето не е осъществено на тази платформа</translation>
     </message>
@@ -346,7 +346,7 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="124"/>
+        <location filename="../src/libsync/account.cpp" line="149"/>
         <source>%1@%2</source>
         <translation>%1@%2</translation>
     </message>
@@ -636,54 +636,6 @@ Please authenticate using your browser.</source>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Версията на сървъра %1 не се поддържа! Продължете на свой риск.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AccountState</name>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="223"/>
-        <source>Signed out</source>
-        <translation>Излизане</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="225"/>
-        <source>Disconnected</source>
-        <translation>Изключен</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="227"/>
-        <source>Connected</source>
-        <translation>Свързан</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="229"/>
-        <source>Service unavailable</source>
-        <translation>Услугата не е достъпна</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="231"/>
-        <source>Maintenance mode</source>
-        <translation>Режим на поддръжка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="233"/>
-        <source>Network error</source>
-        <translation>Мрежова грешка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="235"/>
-        <source>Configuration error</source>
-        <translation>Конфигурационна грешка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="237"/>
-        <source>Asking Credentials</source>
-        <translation>Изискване на пълномощия</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="239"/>
-        <source>Unknown account state</source>
-        <translation>Неизвестен статус на профил</translation>
     </message>
 </context>
 <context>
@@ -1075,150 +1027,150 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="252"/>
+        <location filename="../src/gui/folder.cpp" line="238"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Локалната папка %1 не съществува.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="254"/>
+        <location filename="../src/gui/folder.cpp" line="240"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 трябва да е папка, но не е.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="256"/>
+        <location filename="../src/gui/folder.cpp" line="242"/>
         <source>%1 is not readable.</source>
         <translation>%1 не може да бъде прочетена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="573"/>
+        <location filename="../src/gui/folder.cpp" line="558"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 е премахната.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="587"/>
+        <location filename="../src/gui/folder.cpp" line="572"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 е актуализирана.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="594"/>
+        <location filename="../src/gui/folder.cpp" line="579"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 е преименувана на %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="601"/>
+        <location filename="../src/gui/folder.cpp" line="586"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 е преместена в %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="571"/>
+        <location filename="../src/gui/folder.cpp" line="556"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 и %n други файл(а) са премахнати.</numerusform><numerusform>%1 и %n други файл(а) бяха премахнати.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="238"/>
-        <source>The path &apos;%1&apos; is too long. Either enable long paths in the Windows settings, or choose a different folder.</source>
-        <translation>Пътят &apos;%1&apos; е твърде дълъг. Или разрешете дългите пътища в настройките на Windows, или изберете друга папка.</translation>
+        <location filename="../src/gui/folder.cpp" line="224"/>
+        <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="246"/>
+        <location filename="../src/gui/folder.cpp" line="232"/>
         <source>%1 failed to open the database.</source>
         <translation>%1 не успя да отвори базата данни.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="258"/>
+        <location filename="../src/gui/folder.cpp" line="244"/>
         <source>%1 is not writable.</source>
         <translation>%1 не подлежи на запис.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="578"/>
+        <location filename="../src/gui/folder.cpp" line="563"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 и %n и още файл(а) бяха добавени.</numerusform><numerusform>%1 и %n и още файл(а) бяха добавени.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="580"/>
+        <location filename="../src/gui/folder.cpp" line="565"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 е добавена.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="585"/>
+        <location filename="../src/gui/folder.cpp" line="570"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 и %n други файл(а) са актуализирани.</numerusform><numerusform>%1 и %n други файл(а) са актуализирани.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="592"/>
+        <location filename="../src/gui/folder.cpp" line="577"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 е преименуван на %2 и %n други файл(а) са също преименувани.</numerusform><numerusform>%1 е преименувана на %2 и %n други файл(а) са също преименувани.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="599"/>
+        <location filename="../src/gui/folder.cpp" line="584"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 е преместен до %2 и %n други файл(а) са също преместени.</numerusform><numerusform>%1 е преместена в %2 и %n други файл(а) са също преместени.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="606"/>
+        <location filename="../src/gui/folder.cpp" line="591"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 и още %n други файл(а) имат конфликти при синхронизацията.</numerusform><numerusform>%1 и още %n други файл(а) имат конфликти при синхронизацията.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="608"/>
+        <location filename="../src/gui/folder.cpp" line="593"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 има конфликт при синхронизацията. Моля, проверете конфликтния файл!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="613"/>
+        <location filename="../src/gui/folder.cpp" line="598"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 и %n други файл(а) не са синхронизирани, защото имат грешки. Вижте доклада за допълнителна информация.</numerusform><numerusform>%1 и %n други файл(а) не са синхронизирани защото имат грешки. Вижте доклада за допълнителна информация.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="615"/>
+        <location filename="../src/gui/folder.cpp" line="600"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 не успя да се синхронизира поради грешка. Разгледайте доклада за повече информация.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="621"/>
+        <location filename="../src/gui/folder.cpp" line="606"/>
         <source>Sync Activity</source>
         <translation>Синхринизиране Ативност</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1006"/>
+        <location filename="../src/gui/folder.cpp" line="991"/>
         <source>Could not read system exclude file</source>
         <translation>Неуспешно е  прочитането на системния файл за изключване</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1216"/>
+        <location filename="../src/gui/folder.cpp" line="1202"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Добавена е нова папка с размер по-голям от %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1219"/>
+        <location filename="../src/gui/folder.cpp" line="1205"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Добавена е папка от външно дисково устройство.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1220"/>
+        <location filename="../src/gui/folder.cpp" line="1206"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Моля, отидете в настройки, за да изберете дали искате да го изтеглите.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1265"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Папката %1 беше създадена, но преди това беше изключена от синхронизацията. Данните в нея няма да бъдат синхронизирани.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Файлът %1 беше създаден, но преди това беше изключен от синхронизация. Той няма да бъде синхронизиран.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1279"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1231,7 +1183,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1346"/>
+        <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1242,7 +1194,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Но ако решите да изтриете файловете, то те няма да са достъпни за вас, освен ако не сте собственик.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1351"/>
+        <location filename="../src/gui/folder.cpp" line="1337"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1251,17 +1203,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Ако това е инцидент и решите да запазите вашите файлове те ще бъдат синхронизирани отново от сървъра.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1355"/>
+        <location filename="../src/gui/folder.cpp" line="1341"/>
         <source>Remove All Files?</source>
         <translation>Да се премахнат ли всички файлове?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1359"/>
+        <location filename="../src/gui/folder.cpp" line="1345"/>
         <source>Remove all files</source>
         <translation>Премахване на всички файлове</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1360"/>
+        <location filename="../src/gui/folder.cpp" line="1346"/>
         <source>Keep files</source>
         <translation>Запазване на файловете</translation>
     </message>
@@ -1279,112 +1231,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Открит е стар дневник за синхронизация &apos;%1&apos;, който не може да бъде премахнат. Моля, проверете дали някое приложение не го използва в момента.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="996"/>
+        <location filename="../src/gui/folderman.cpp" line="984"/>
         <source> (backup)</source>
         <translation>(резервно копие)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1001"/>
+        <location filename="../src/gui/folderman.cpp" line="989"/>
         <source> (backup %1)</source>
         <translation>(резервно копие %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1103"/>
+        <location filename="../src/gui/folderman.cpp" line="1091"/>
         <source>Undefined State.</source>
         <translation>Неопределено състояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1106"/>
+        <location filename="../src/gui/folderman.cpp" line="1094"/>
         <source>Waiting to start syncing.</source>
         <translation>Изчакване за започване на синхронизацията.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1109"/>
+        <location filename="../src/gui/folderman.cpp" line="1097"/>
         <source>Preparing for sync.</source>
         <translation>Подготовка за синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1112"/>
+        <location filename="../src/gui/folderman.cpp" line="1100"/>
         <source>Sync is running.</source>
         <translation>Синхронизирането работи.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1118"/>
+        <location filename="../src/gui/folderman.cpp" line="1106"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Синхронизирането беше успешно, няма нерешени конфликти.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1120"/>
+        <location filename="../src/gui/folderman.cpp" line="1108"/>
         <source>Last Sync was successful.</source>
         <translation>Последната синхронизация беше успешна.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1126"/>
+        <location filename="../src/gui/folderman.cpp" line="1114"/>
         <source>Setup Error.</source>
         <translation>Грешка при настройката.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1129"/>
+        <location filename="../src/gui/folderman.cpp" line="1117"/>
         <source>User Abort.</source>
         <translation>Прекъсване от страна на потребителя.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1120"/>
         <source>Sync is paused.</source>
         <translation>Синхронизирането е на пауза.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1123"/>
+        <source>Offline.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1129"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Синхронизирането е на пауза)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1167"/>
+        <location filename="../src/gui/folderman.cpp" line="1158"/>
         <source>No valid folder selected!</source>
         <translation>Няма избрана валидна папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1175"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
+        <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1172"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>Папката %1 се използва във връзката за синхронизация на папки!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>The selected path does not exist!</source>
         <translation>Избраният път не съществува!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1186"/>
+        <location filename="../src/gui/folderman.cpp" line="1183"/>
         <source>The selected path is not a folder!</source>
         <translation>Избраният път не е папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1190"/>
+        <location filename="../src/gui/folderman.cpp" line="1187"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Вие нямате необходимите права за запис в избраната папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1205"/>
+        <location filename="../src/gui/folderman.cpp" line="1202"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Вече съществува синхронизиция между сървъра и тази локална папка. Моля, изберете друга локална папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1209"/>
+        <location filename="../src/gui/folderman.cpp" line="1206"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локалната папка %1 вече съдържа папка, която се синхронизира. Моля изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1215"/>
+        <location filename="../src/gui/folderman.cpp" line="1212"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локалната папка %1 вече се съдържа в папка, която участва в синхронизация. Моля изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1222"/>
+        <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 Моля, изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1305"/>
+        <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1393,7 +1355,7 @@ Please consider removing this folder from the account and adding it again.</sour
 Моля, помислете дали да не премахнете тази папка от профила и да я добавите отново.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1385"/>
+        <location filename="../src/gui/folderman.cpp" line="1383"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -3445,48 +3407,48 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="508"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="510"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Споделяне с %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="543"/>
         <source>Context menu share</source>
         <translation>Контекстно меню за споделяне</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="546"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="548"/>
         <source>Context menu share %1</source>
         <translation>Контекстно меню за споделяне на %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="717"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
         <source>Confirm deletion</source>
         <translation>Потвърдете изтриването</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Искате ли да изтриете за постоянно директорията &lt;i&gt;%1&lt;/i&gt; и цялото и съдържание?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="720"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="722"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Искате ли да изтриете за постоянно файла &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="762"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="764"/>
         <source>Select new location...</source>
         <translation>Избор на ново местоположение...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="772"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="774"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="773"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="775"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3495,90 +3457,90 @@ for additional privileges during the process.</source>
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="847"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="849"/>
         <source>I shared something with you</source>
         <translation>Споделих нещо с теб</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="860"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="890"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="862"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="892"/>
         <source>Share...</source>
         <translation>Споделяне...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="862"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="864"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Copy private link to clipboard</source>
         <translation>Копиране на поверителната връзка в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="863"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
         <source>Send private link by email...</source>
         <translation>Изпращане на поверителната връзка чрез имейл...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="888"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="890"/>
         <source>Resharing this file is not allowed</source>
         <translation>Повторното споделяне на този файл не е позволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="888"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="890"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Повторното споделяне на тази папка не е позволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="900"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="902"/>
         <source>Create and copy public link to clipboard</source>
         <translation>Създаване и копиране на публична връзка в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="902"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
         <source>Copy public link to clipboard</source>
         <translation>Копиране на публичната връзка в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="986"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="988"/>
         <source>Open in %1</source>
         <translation>Отваряне в %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="996"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="998"/>
         <source>Show file versions in browser</source>
         <translation>Показване на версиите на файла в браузъра</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1017"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1019"/>
         <source>Rename...</source>
         <translation>Преименуване</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1020"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1022"/>
         <source>Rename and upload...</source>
         <translation>Преименуване и качване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1025"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1027"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1031"/>
         <source>Move and rename...</source>
         <translation>Преместване и преименуване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1032"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1034"/>
         <source>Move, rename and upload...</source>
         <translation>Преместване, преименуване и качване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1035"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1037"/>
         <source>Delete local changes</source>
         <translation>Изтриване на локалните промени</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1040"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
         <source>Move and upload...</source>
         <translation>Преместване и качване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1041"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1043"/>
         <source>Delete</source>
         <translation>Изтриване</translation>
     </message>
@@ -3712,7 +3674,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="444"/>
+        <location filename="../src/libsync/theme.cpp" line="447"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -3771,7 +3733,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="386"/>
+        <location filename="../src/common/checksums.cpp" line="389"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Изтегленият файл не съответства на контролната сума, той ще бъде възстановен. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
@@ -4028,66 +3990,66 @@ Are you sure you want to proceed?</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Please sign in</source>
         <translation>Моля, влезте в профила си</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="337"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="336"/>
         <source>Folder %1: %2</source>
         <translation>Папка на %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="346"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="345"/>
         <source>Unresolved %1 conflicts</source>
         <translation>Неразрешени %1 конфликти</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Ignored errors %1</source>
         <translation>Пренебрегнати грешки %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="364"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="363"/>
         <source>There are no sync folders configured.</source>
         <translation>Няма конфигурирани папки за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="376"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Open in browser</source>
         <translation>Отваряне в браузър</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="425"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="749"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="843"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="748"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
         <source>Log in...</source>
         <translation>Влезте...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="429"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="741"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="845"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="740"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="844"/>
         <source>Log out</source>
         <translation>Излизане</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="535"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="534"/>
         <source>Recent Changes</source>
         <translation>Последни промени</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="404"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="403"/>
         <source>Managed Folders:</source>
         <translation>Управлявани папки:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="407"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="406"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Отваряне на папка &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="378"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
         <source>Open %1 in browser</source>
         <translation>Отваряне на %1 в браузър</translation>
     </message>
@@ -4097,42 +4059,47 @@ Are you sure you want to proceed?</source>
         <translation>Сървърът на профила %1 работи с неподдържана версия %2. Използването на този клиент с неподдържани версии на сървъра не е тествано и е потенциално опасно. Продължете на свой риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="720"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
+        <source>Account %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
         <translation>Рестартиране на цялата синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="722"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
         <translation>Рестартиране на синхронизацията</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="730"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
         <translation>Спиране на цялата синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="732"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Stop synchronization</source>
         <translation>Спиране на синхронизацията</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="826"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>Unknown status</source>
         <translation>Неизвестен статус</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="830"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="829"/>
         <source>Details...</source>
         <translation>Подробности...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="836"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
         <source>Help</source>
         <translation>Помощ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="839"/>
         <source>Quit %1</source>
         <translation>Излизане от %1</translation>
     </message>
@@ -4162,107 +4129,102 @@ Are you sure you want to proceed?</source>
         <translation>Прекъсната е връзката с някои от профилите:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
-        <source>Account %1: %2</source>
-        <translation>Профил %1: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="310"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
         <source>Signed out</source>
         <translation>Излизане</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>Account synchronization is disabled</source>
         <translation>Синхронизирането на профила е деактивирано</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="315"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Synchronization is paused</source>
         <translation>Синхронизирането е на пауза</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Up to date (%1)</source>
         <translation>Към днешна дата (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>No sync folders configured</source>
         <translation>Няма конфигурирани папки за синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Unpause all folders</source>
         <translation>Отмяна на паузата за всички папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Pause all folders</source>
         <translation>Пауза на всички папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="739"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="738"/>
         <source>Log out of all accounts</source>
         <translation>Излизане от всички профили</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="747"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="746"/>
         <source>Log in to all accounts...</source>
         <translation>Влизане във всички профили...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="828"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="827"/>
         <source>Show %1</source>
         <translation>Показване на %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="829"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="828"/>
         <source>New account...</source>
         <translation>Нов профил...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="838"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="837"/>
         <source>About %1</source>
         <translation>Относно %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
         <source>No items synced recently</source>
         <translation>Няма наскоро синхронизирани елементи</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="890"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="889"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Проверка за промени в отдалечената &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="893"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="892"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Проверка за промени в локалната &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="908"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="907"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Синхронизиране на %1 от %2 (остават %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="913"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="912"/>
         <source>Syncing %1 of %2</source>
         <translation>Синхронизиране на %1 от %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="921"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Синхронизиране на %1 (остават %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="925"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="924"/>
         <source>Syncing %1</source>
         <translation>Синхронизиране на %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="942"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="941"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -4471,12 +4433,12 @@ Are you sure you want to proceed?</source>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="691"/>
+        <location filename="../src/libsync/theme.cpp" line="694"/>
         <source>Username</source>
         <translation>Потребителско име</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="693"/>
+        <location filename="../src/libsync/theme.cpp" line="696"/>
         <source>E-mail address</source>
         <translation>Имейл адрес</translation>
     </message>
@@ -4574,7 +4536,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="420"/>
+        <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
         <translation>%1 %2%7%8Библиотеки Qt %3, %4%7%9Използване на приставка за виртуални файлове: %5%7%6</translation>
     </message>
@@ -4582,7 +4544,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>ownCloudTheme::pluginDir</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="415"/>
+        <location filename="../src/libsync/theme.cpp" line="418"/>
         <source>Plugin dir: %1%2</source>
         <translation>Директория на приставката: %1%2</translation>
     </message>
@@ -4590,7 +4552,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="402"/>
+        <location filename="../src/libsync/theme.cpp" line="405"/>
         <source>%1 (Built against Qt %2)</source>
         <translation>%1 (Създаден срещу Qt %2)</translation>
     </message>
@@ -4598,7 +4560,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="407"/>
+        <location filename="../src/libsync/theme.cpp" line="410"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
@@ -4754,6 +4716,11 @@ Are you sure you want to proceed?</source>
         <location filename="../src/libsync/theme.cpp" line="122"/>
         <source>Sync is paused</source>
         <translation>Синхронизирането е на пауза</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="125"/>
+        <source>Offline</source>
+        <translation>Офлайн</translation>
     </message>
 </context>
 <context>
