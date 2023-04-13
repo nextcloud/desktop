@@ -119,6 +119,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 #endif
     {
         if (_logFile.size() >= MaxLogSizeBytes) {
+            close();
             enterNextLogFile();
         }
 
