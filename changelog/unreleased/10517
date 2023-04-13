@@ -1,0 +1,13 @@
+Enhancement: New WebFinger workflow
+
+ownCloud Infinite Scale servers may provide a new WebFinger service which
+clients can use to discover an actual instance they should connect to.
+
+This is useful when a large organization operates multiple instances to
+distribute the load on multiple servers, or single departments operate their
+own servers but they all use a common entrypoint URL and authentication
+system.
+
+https://github.com/owncloud/client/issues/10517
+https://github.com/owncloud/client/pull/10665
+https://owncloud.dev/services/webfinger/
