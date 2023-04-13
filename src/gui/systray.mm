@@ -118,7 +118,7 @@ double menuBarThickness()
         // Return this educated guess if something goes wrong.
         // As of macOS 12.4 this will always return 22, even on notched Macbooks.
         qCWarning(lcMacSystray) << "Got nil for main menu. Going with reasonable menu bar height guess.";
-        return [[NSStatusBar systemStatusBar] thickness];
+        return NSStatusBar.systemStatusBar.thickness;
     }
 
     return mainMenu.menuBarHeight;
@@ -127,7 +127,7 @@ double menuBarThickness()
 // TODO: Get this to actually check for permissions
 bool canOsXSendUserNotification()
 {
-    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
     return center != nil;
 }
 
@@ -165,12 +165,12 @@ void registerNotificationCategories(const QString &localisedDownloadString) {
             intentIdentifiers:@[]
             options:UNNotificationCategoryOptionNone];
 
-    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithObjects:generalCategory, updateCategory, talkReplyCategory, nil]];
+    [UNUserNotificationCenter.currentNotificationCenter setNotificationCategories:[NSSet setWithObjects:generalCategory, updateCategory, talkReplyCategory, nil]];
 }
 
 void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOption)
 {
-    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
     UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
 
     if(additionalAuthOption == MacNotificationAuthorizationOptions::Provisional) {
@@ -194,7 +194,7 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
 
 void setUserNotificationCenterDelegate()
 {
-    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
 
     static dispatch_once_t once;
     dispatch_once(&once, ^{
@@ -215,13 +215,13 @@ UNMutableNotificationContent* basicNotificationContent(const QString &title, con
 
 void sendOsXUserNotification(const QString &title, const QString &message)
 {
-    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
     checkNotificationAuth();
 
     UNMutableNotificationContent * const content = basicNotificationContent(title, message);
     content.categoryIdentifier = @"GENERAL";
 
-    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
     UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCUserNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
@@ -229,14 +229,14 @@ void sendOsXUserNotification(const QString &title, const QString &message)
 
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl)
 {
-    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
     checkNotificationAuth();
 
     UNMutableNotificationContent * const content = basicNotificationContent(title, message);
     content.categoryIdentifier = @"UPDATE";
     content.userInfo = [NSDictionary dictionaryWithObject:[webUrl.toNSURL() absoluteString] forKey:@"webUrl"];
 
-    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNTimeIntervalNotificationTrigger * const trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
     UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCUpdateNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
@@ -244,7 +244,7 @@ void sendOsXUpdateNotification(const QString &title, const QString &message, con
 
 void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState)
 {
-    UNUserNotificationCenter * const center = [UNUserNotificationCenter currentNotificationCenter];
+    UNUserNotificationCenter * const center = UNUserNotificationCenter.currentNotificationCenter;
     checkNotificationAuth();
 
     if (!accountState || !accountState->account()) {
@@ -269,7 +269,7 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
 {
     NSView * const nativeView = (NSView *)window->winId();
-    NSWindow * const nativeWindow = (NSWindow *)[nativeView window];
+    NSWindow * const nativeWindow = (NSWindow *)(nativeView.window);
     [nativeWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle |
                   NSWindowCollectionBehaviorTransient];
     [nativeWindow setLevel:NSMainMenuWindowLevel];
@@ -277,7 +277,7 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
 
 bool osXInDarkMode()
 {
-    NSString * const osxMode = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
+    NSString * const osxMode = [NSUserDefaults.standardUserDefaults stringForKey:@"AppleInterfaceStyle"];
     return [osxMode containsString:@"Dark"];
 }
 
