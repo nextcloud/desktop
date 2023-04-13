@@ -30,6 +30,7 @@ Summary
 * Enhancement - Implement a possibility to Desktop.ini icon updates on Windows: [#10361](https://github.com/owncloud/client/issues/10361)
 * Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Display quota for Spaces: [#10453](https://github.com/owncloud/client/issues/10453)
+* Enhancement - New WebFinger workflow: [#10517](https://github.com/owncloud/client/issues/10517)
 * Enhancement - Branding: Allow the addition of buttons to open a url: [#10518](https://github.com/owncloud/client/issues/10518)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 * Enhancement - Improve presentation of connection state: [#10557](https://github.com/owncloud/client/issues/10557)
@@ -182,6 +183,19 @@ Details
    Quota is now displayed for all folders.
 
    https://github.com/owncloud/client/issues/10453
+
+* Enhancement - New WebFinger workflow: [#10517](https://github.com/owncloud/client/issues/10517)
+
+   OwnCloud Infinite Scale servers may provide a new WebFinger service which clients can use to
+   discover an actual instance they should connect to.
+
+   This is useful when a large organization operates multiple instances to distribute the load on
+   multiple servers, or single departments operate their own servers but they all use a common
+   entrypoint URL and authentication system.
+
+   https://github.com/owncloud/client/issues/10517
+   https://github.com/owncloud/client/pull/10665
+   https://owncloud.dev/services/webfinger/
 
 * Enhancement - Branding: Allow the addition of buttons to open a url: [#10518](https://github.com/owncloud/client/issues/10518)
 
