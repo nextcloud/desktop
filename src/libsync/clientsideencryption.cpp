@@ -63,9 +63,10 @@ QString e2eeBaseUrl()
 namespace {
 constexpr char accountProperty[] = "account";
 
-const char e2e_cert[] = "_e2e-certificate";
-const char e2e_private[] = "_e2e-private";
-const char e2e_mnemonic[] = "_e2e-mnemonic";
+constexpr char e2e_cert[] = "_e2e-certificate";
+constexpr char e2e_private[] = "_e2e-private";
+constexpr char e2e_public[] = "_e2e-public";
+constexpr char e2e_mnemonic[] = "_e2e-mnemonic";
 
 constexpr auto metadataKeyJsonKey = "metadataKey";
 
@@ -1333,13 +1334,19 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
     job->start();
 }
 
-void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
+void ClientSideEncryption::writeKeyPair(AccountPtr account,
                                         PKey keyPair,
-                                        const QByteArray &output)
+                                        QByteArray output)
 {
-    const QString kck = AbstractCredentials::keychainKey(
+    const auto privateKeyKeychainId = AbstractCredentials::keychainKey(
         account->url().toString(),
         account->credentials()->user() + e2e_private,
+        account->id()
+        );
+
+    const auto publicKeyKeychainId = AbstractCredentials::keychainKey(
+        account->url().toString(),
+        account->credentials()->user() + e2e_public,
         account->id()
         );
 
@@ -1352,9 +1359,9 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
 
     auto *privateKeyJob = new WritePasswordJob(Theme::instance()->appName());
     privateKeyJob->setInsecureFallback(false);
-    privateKeyJob->setKey(kck);
+    privateKeyJob->setKey(privateKeyKeychainId);
     privateKeyJob->setBinaryData(bytearrayPrivateKey);
-    connect(privateKeyJob, &WritePasswordJob::finished, [&keyPair, kck, &account, &output, this](Job *incoming) {
+    connect(privateKeyJob, &WritePasswordJob::finished, [keyPair = std::move(keyPair), publicKeyKeychainId, account, output, this] (Job *incoming) mutable {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
 
@@ -1367,9 +1374,9 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
 
         auto *publicKeyJob = new WritePasswordJob(Theme::instance()->appName());
         publicKeyJob->setInsecureFallback(false);
-        publicKeyJob->setKey(kck);
+        publicKeyJob->setKey(publicKeyKeychainId);
         publicKeyJob->setBinaryData(bytearrayPublicKey);
-        connect(publicKeyJob, &WritePasswordJob::finished, [&account, &keyPair, &output, this](Job *incoming) {
+        connect(publicKeyJob, &WritePasswordJob::finished, [account, keyPair = std::move(keyPair), output, this](Job *incoming) mutable {
             Q_UNUSED(incoming);
             qCInfo(lcCse()) << "Public key stored in keychain";
 
