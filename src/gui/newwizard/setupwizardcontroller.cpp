@@ -9,9 +9,9 @@
 #include "states/abstractsetupwizardstate.h"
 #include "states/accountconfiguredsetupwizardstate.h"
 #include "states/basiccredentialssetupwizardstate.h"
+#include "states/legacywebfingersetupwizardstate.h"
 #include "states/oauthcredentialssetupwizardstate.h"
 #include "states/serverurlsetupwizardstate.h"
-#include "states/webfingersetupwizardstate.h"
 #include "theme.h"
 
 #include <QClipboard>
@@ -36,7 +36,7 @@ QList<SetupWizardState> getNavigationEntries()
     };
 
     if (Theme::instance()->wizardEnableWebfinger()) {
-        states.append(SetupWizardState::WebFingerState);
+        states.append(SetupWizardState::LegacyWebFingerState);
     }
 
     states.append({
@@ -90,7 +90,7 @@ SetupWizardController::SetupWizardController(SettingsDialog *parent)
         auto previousState = static_cast<SetupWizardState>(currentStateIdx - 1);
 
         // skip WebFinger page when WebFinger is not available
-        if (previousState == SetupWizardState::WebFingerState && !Theme::instance()->wizardEnableWebfinger()) {
+        if (previousState == SetupWizardState::LegacyWebFingerState && !Theme::instance()->wizardEnableWebfinger()) {
             previousState = SetupWizardState::ServerUrlState;
         }
 
@@ -117,8 +117,8 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
         _currentState = new ServerUrlSetupWizardState(_context);
         break;
     }
-    case SetupWizardState::WebFingerState: {
-        _currentState = new WebFingerSetupWizardState(_context);
+    case SetupWizardState::LegacyWebFingerState: {
+        _currentState = new LegacyWebFingerSetupWizardState(_context);
         break;
     }
     case SetupWizardState::CredentialsState: {
@@ -152,18 +152,24 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
         switch (_currentState->state()) {
         case SetupWizardState::ServerUrlState: {
             if (Theme::instance()->wizardEnableWebfinger()) {
-                changeStateTo(SetupWizardState::WebFingerState);
+                changeStateTo(SetupWizardState::LegacyWebFingerState);
             } else {
                 changeStateTo(SetupWizardState::CredentialsState);
             }
             return;
-            Q_FALLTHROUGH();
         }
-        case SetupWizardState::WebFingerState: {
+        case SetupWizardState::LegacyWebFingerState: {
             changeStateTo(SetupWizardState::CredentialsState);
             return;
         }
         case SetupWizardState::CredentialsState: {
+            // for now, we assume there is only a single instance
+            const auto webFingerInstances = _context->accountBuilder().webFingerInstances();
+            if (!webFingerInstances.isEmpty()) {
+                Q_ASSERT(webFingerInstances.size() == 1);
+                _context->accountBuilder().setWebFingerSelectedInstance(webFingerInstances.front());
+            }
+
             // not a fan of performing this job here, should be moved into its own (headless) state IMO
             // we can bind it to the current state, which will be cleaned up by changeStateTo(...) as soon as the job finished
             auto fetchUserInfoJob = _context->startFetchUserInfoJob(_currentState);

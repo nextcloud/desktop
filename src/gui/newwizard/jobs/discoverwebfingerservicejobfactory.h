@@ -14,38 +14,19 @@
 
 #pragma once
 
-#include "common/utility.h"
-#include "enums.h"
+#include "abstractcorejob.h"
 
-#include <QObject>
+namespace OCC::Wizard::Jobs {
 
-namespace OCC::Wizard {
-Q_NAMESPACE
+/**
+ * Check whether we need to run an authenticated WebFinger request to find a user's list of allowed instances.
+ * https://owncloud.dev/services/webfinger/
+ */
+class DiscoverWebFingerServiceJobFactory : public AbstractCoreJobFactory
+{
+public:
+    DiscoverWebFingerServiceJobFactory(QNetworkAccessManager *nam);
 
-enum class SetupWizardState {
-    ServerUrlState,
-    FirstState = ServerUrlState,
-
-    LegacyWebFingerState,
-
-    CredentialsState,
-
-    AccountConfiguredState,
-    FinalState = AccountConfiguredState,
+    CoreJob *startJob(const QUrl &url, QObject *parent) override;
 };
-Q_ENUM_NS(SetupWizardState)
-
-enum class SyncMode {
-    Invalid = 0,
-    SyncEverything,
-    ConfigureUsingFolderWizard,
-    UseVfs,
-};
-Q_ENUM_NS(SyncMode)
-
-}
-
-namespace OCC {
-template <>
-QString Utility::enumToDisplayName(Wizard::SetupWizardState state);
 }

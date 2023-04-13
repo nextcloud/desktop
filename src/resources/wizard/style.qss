@@ -33,7 +33,8 @@
 #contentWidget #topLabel,
 #contentWidget #usernameLabel,
 #contentWidget #passwordLabel,
-#contentWidget #advancedConfigGroupBox::title
+#contentWidget #advancedConfigGroupBox::title,
+#contentWidget #instancesListLabel
 {
     color: @{WIZARD_FONT_COLOR};
 }

@@ -59,6 +59,6 @@ private:
 
     // keeping a pointer on the current page allows us to check whether the controller has been initialized yet
     // the pointer is also used to clean up the page
-    AbstractSetupWizardState *_currentState = nullptr;
+    QPointer<AbstractSetupWizardState> _currentState = nullptr;
 };
 }

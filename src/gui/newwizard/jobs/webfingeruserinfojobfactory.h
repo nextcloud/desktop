@@ -14,28 +14,18 @@
 
 #pragma once
 
-#include "abstractsetupwizardpage.h"
+#include "abstractcorejob.h"
+namespace OCC::Wizard::Jobs {
 
-namespace Ui {
-class WebFingerSetupWizardPage;
-}
-
-namespace OCC::Wizard {
-
-class WebFingerSetupWizardPage : public AbstractSetupWizardPage
+class WebFingerInstanceLookupJobFactory : public AbstractCoreJobFactory
 {
-    Q_OBJECT
-
 public:
-    WebFingerSetupWizardPage(const QUrl &serverUrl);
-    ~WebFingerSetupWizardPage() noexcept override;
+    WebFingerInstanceLookupJobFactory(QNetworkAccessManager *nam, const QString &bearerToken);
 
-    QString username() const;
-
-    bool validateInput() override;
+    CoreJob *startJob(const QUrl &url, QObject *parent) override;
 
 private:
-    ::Ui::WebFingerSetupWizardPage *_ui;
+    QString _authorizationHeader;
 };
 
-}
+} // OCC::Wizard::Jobs

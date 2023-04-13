@@ -12,22 +12,22 @@
  * for more details.
  */
 
-#include "webfingersetupwizardstate.h"
+#include "legacywebfingersetupwizardstate.h"
 #include "creds/webfinger.h"
 #include "determineauthtypejobfactory.h"
-#include "pages/webfingersetupwizardpage.h"
+#include "pages/legacywebfingersetupwizardpage.h"
 
 namespace OCC::Wizard {
 
-WebFingerSetupWizardState::WebFingerSetupWizardState(SetupWizardContext *context)
+LegacyWebFingerSetupWizardState::LegacyWebFingerSetupWizardState(SetupWizardContext *context)
     : AbstractSetupWizardState(context)
 {
-    _page = new WebFingerSetupWizardPage(_context->accountBuilder().webFingerServerUrl());
+    _page = new LegacyWebFingerSetupWizardPage(_context->accountBuilder().legacyWebFingerServerUrl());
 }
 
-void WebFingerSetupWizardState::evaluatePage()
+void LegacyWebFingerSetupWizardState::evaluatePage()
 {
-    auto *webFingerSetupWizardPage = qobject_cast<WebFingerSetupWizardPage *>(_page);
+    auto *webFingerSetupWizardPage = qobject_cast<LegacyWebFingerSetupWizardPage *>(_page);
     OC_ASSERT(webFingerSetupWizardPage != nullptr);
 
     const QString resource = QStringLiteral("acct:%1").arg(webFingerSetupWizardPage->username());
@@ -58,18 +58,18 @@ void WebFingerSetupWizardState::evaluatePage()
                 return;
             }
 
-            _context->accountBuilder().setWebFingerUsername(webFingerSetupWizardPage->username());
+            _context->accountBuilder().setLegacyWebFingerUsername(webFingerSetupWizardPage->username());
             _context->accountBuilder().setServerUrl(webFinger->href(), qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
             Q_EMIT evaluationSuccessful();
         });
     });
 
-    webFinger->start(_context->accountBuilder().webFingerServerUrl(), resource);
+    webFinger->start(_context->accountBuilder().legacyWebFingerServerUrl(), resource);
 }
 
-SetupWizardState WebFingerSetupWizardState::state() const
+SetupWizardState LegacyWebFingerSetupWizardState::state() const
 {
-    return SetupWizardState::WebFingerState;
+    return SetupWizardState::LegacyWebFingerState;
 }
 
 } // OCC::Wizard

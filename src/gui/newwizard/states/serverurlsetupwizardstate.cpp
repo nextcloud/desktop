@@ -14,6 +14,7 @@
 
 #include "serverurlsetupwizardstate.h"
 #include "determineauthtypejobfactory.h"
+#include "jobs/discoverwebfingerservicejobfactory.h"
 #include "jobs/resolveurljobfactory.h"
 #include "theme.h"
 
@@ -36,7 +37,7 @@ ServerUrlSetupWizardState::ServerUrlSetupWizardState(SetupWizardContext *context
 {
     auto serverUrl = [this]() {
         if (Theme::instance()->wizardEnableWebfinger()) {
-            return _context->accountBuilder().webFingerServerUrl();
+            return _context->accountBuilder().legacyWebFingerServerUrl();
         } else {
             return _context->accountBuilder().serverUrl();
         }
@@ -105,49 +106,65 @@ void ServerUrlSetupWizardState::evaluatePage()
         // and certificates are deleted from the access manager
         _context->resetAccessManager();
 
-        // first, we must resolve the actual server URL
-        auto resolveJob = Jobs::ResolveUrlJobFactory(_context->accessManager()).startJob(serverUrl, this);
+        // since classic WebFinger is not enabled, we need to check whether modern (oCIS) WebFinger is available
+        // therefore, we run the corresponding discovery job
+        auto checkWebFingerAuthJob = Jobs::DiscoverWebFingerServiceJobFactory(_context->accessManager()).startJob(serverUrl, this);
 
-        connect(resolveJob, &CoreJob::finished, resolveJob, [this, resolveJob]() {
-            resolveJob->deleteLater();
+        connect(checkWebFingerAuthJob, &CoreJob::finished, this, [job = checkWebFingerAuthJob, serverUrl, this]() {
+            // in case any kind of error occurs, we assume the WebFinger service is not available
+            if (!job->success()) {
+                // first, we must resolve the actual server URL
+                auto resolveJob = Jobs::ResolveUrlJobFactory(_context->accessManager()).startJob(serverUrl, this);
 
-            if (!resolveJob->success()) {
-                Q_EMIT evaluationFailed(resolveJob->errorMessage());
-                return;
-            }
+                connect(resolveJob, &CoreJob::finished, resolveJob, [this, resolveJob, serverUrl]() {
+                    resolveJob->deleteLater();
 
-            const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
-
-            if (Theme::instance()->wizardEnableWebfinger()) {
-                _context->accountBuilder().setWebFingerServerUrl(resolvedUrl);
-                Q_EMIT evaluationSuccessful();
-            } else {
-                // next, we need to find out which kind of authentication page we have to present to the user
-                auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(resolvedUrl, this);
-
-                connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
-                    authTypeJob->deleteLater();
-
-                    if (authTypeJob->result().isNull()) {
-                        Q_EMIT evaluationFailed(authTypeJob->errorMessage());
+                    if (!resolveJob->success()) {
+                        Q_EMIT evaluationFailed(resolveJob->errorMessage());
                         return;
                     }
 
-                    _context->accountBuilder().setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
-                    Q_EMIT evaluationSuccessful();
+                    const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
+
+                    // classic WebFinger workflow: auth type determination is delegated to whatever server the WebFinger service points us to in a dedicated
+                    // step we can skip it here therefore
+                    if (Theme::instance()->wizardEnableWebfinger()) {
+                        _context->accountBuilder().setLegacyWebFingerServerUrl(resolvedUrl);
+                        Q_EMIT evaluationSuccessful();
+                        return;
+                    }
+
+                    // next, we need to find out which kind of authentication page we have to present to the user
+                    auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(serverUrl, this);
+
+                    connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, serverUrl]() {
+                        authTypeJob->deleteLater();
+
+                        if (authTypeJob->result().isNull()) {
+                            Q_EMIT evaluationFailed(authTypeJob->errorMessage());
+                            return;
+                        }
+
+                        _context->accountBuilder().setServerUrl(serverUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
+                        Q_EMIT evaluationSuccessful();
+                    });
                 });
+
+                connect(
+                    resolveJob, &CoreJob::caCertificateAccepted, this,
+                    [this](const QSslCertificate &caCertificate) {
+                        // future requests made through this access manager should accept the certificate
+                        _context->accessManager()->addCustomTrustedCaCertificates({caCertificate});
+
+                        // the account maintains a list, too, which is also saved in the config file
+                        _context->accountBuilder().addCustomTrustedCaCertificate(caCertificate);
+                    },
+                    Qt::DirectConnection);
+            } else {
+                _context->accountBuilder().setWebFingerAuthenticationServerUrl(job->result().toUrl());
+                Q_EMIT evaluationSuccessful();
             }
         });
-
-        connect(
-            resolveJob, &CoreJob::caCertificateAccepted, this, [this](const QSslCertificate &caCertificate) {
-                // future requests made through this access manager should accept the certificate
-                _context->accessManager()->addCustomTrustedCaCertificates({ caCertificate });
-
-                // the account maintains a list, too, which is also saved in the config file
-                _context->accountBuilder().addCustomTrustedCaCertificate(caCertificate);
-            },
-            Qt::DirectConnection);
     });
 
     // instead of defining a lambda that we could call from here as well as the message box, we can put the

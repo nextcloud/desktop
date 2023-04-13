@@ -12,23 +12,22 @@
  * for more details.
  */
 
-#include "webfingersetupwizardpage.h"
-#include "ui_webfingersetupwizardpage.h"
+#include "legacywebfingersetupwizardpage.h"
+#include "ui_legacywebfingersetupwizardpage.h"
 
 #include "theme.h"
 
 namespace OCC::Wizard {
 
-WebFingerSetupWizardPage::WebFingerSetupWizardPage(const QUrl &serverUrl)
-    : _ui(new ::Ui::WebFingerSetupWizardPage)
+LegacyWebFingerSetupWizardPage::LegacyWebFingerSetupWizardPage(const QUrl &serverUrl)
+    : _ui(new ::Ui::LegacyWebFingerSetupWizardPage)
 {
     _ui->setupUi(this);
 
-    _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), Theme::instance()->wizardHeaderTitleColor().name()));
+    _ui->urlLabel->setText(
+        tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), Theme::instance()->wizardHeaderTitleColor().name()));
 
-    connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
-        _ui->usernameLineEdit->setFocus();
-    });
+    connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() { _ui->usernameLineEdit->setFocus(); });
 
     const QString usernameLabelText = []() {
         const auto userIdType = Theme::instance()->userIDType();
@@ -54,17 +53,17 @@ WebFingerSetupWizardPage::WebFingerSetupWizardPage(const QUrl &serverUrl)
     connect(_ui->usernameLineEdit, &QLineEdit::textChanged, this, &AbstractSetupWizardPage::contentChanged);
 }
 
-QString WebFingerSetupWizardPage::username() const
+QString LegacyWebFingerSetupWizardPage::username() const
 {
     return _ui->usernameLineEdit->text();
 }
 
-WebFingerSetupWizardPage::~WebFingerSetupWizardPage()
+LegacyWebFingerSetupWizardPage::~LegacyWebFingerSetupWizardPage()
 {
     delete _ui;
 }
 
-bool WebFingerSetupWizardPage::validateInput()
+bool LegacyWebFingerSetupWizardPage::validateInput()
 {
     return !(username().isEmpty());
 }
