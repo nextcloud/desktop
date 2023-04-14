@@ -20,6 +20,7 @@
 #include "accountstate.h"
 #include "application.h"
 #include "clientproxy.h"
+#include "common/checksums.h"
 #include "common/filesystembase.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/version.h"
@@ -86,6 +87,8 @@ constexpr int SettingsVersionC = 5;
 }
 
 namespace OCC {
+
+using namespace FileSystem::SizeLiterals;
 
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
 
@@ -751,6 +754,25 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
             }
             if (spurious) {
                 qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+                Q_ASSERT([&] {
+                    if (record._fileSize < 1_mb) {
+                        const auto header = ChecksumHeader::parseChecksumHeader(record._checksumHeader);
+                        auto *compute = new ComputeChecksum(this);
+                        compute->setChecksumType(header.type());
+                        quint64 inode = 0;
+                        FileSystem::getInode(path, &inode);
+                        connect(compute, &ComputeChecksum::done, this, [=](CheckSums::Algorithm checksumType, const QByteArray &checksum) {
+                            compute->deleteLater();
+                            qWarning() << "Spurious notification:" << path << (checksum == header.checksum()) << checksum << header.checksum()
+                                       << "Inode:" << record._inode << inode;
+                            Q_ASSERT(inode == record._inode);
+                            Q_ASSERT(checksum == header.checksum());
+                        });
+                        compute->start(path);
+                    }
+                    return true;
+                }());
+
                 return; // probably a spurious notification
             }
         }
