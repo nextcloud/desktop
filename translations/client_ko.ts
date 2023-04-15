@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>폼</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="79"/>
@@ -1377,7 +1377,7 @@ Please consider removing this folder from the account and adding it again.</sour
 계정에서 이 폴더를 제거한 후 다시 추가하는 것을 고려하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>

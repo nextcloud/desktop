@@ -1367,7 +1367,7 @@ Please consider removing this folder from the account and adding it again.</sour
 请考虑从帐户中删除此文件夹并重新添加。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"/>
     </message>

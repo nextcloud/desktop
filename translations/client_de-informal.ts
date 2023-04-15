@@ -276,13 +276,13 @@
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="79"/>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="92"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername</translation>
     </message>
 </context>
 <context>
@@ -1373,7 +1373,7 @@ So eine Konfiguration führt bekanntermaßen zu Datenverlust und wird nicht mehr
 Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -3906,7 +3906,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>Der WebFinger Endpoint hat das &quot;href&quot; Attribut nicht gesendet</translation>
     </message>
 </context>
 <context>

@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="79"/>
@@ -1094,7 +1094,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="232"/>
@@ -1310,7 +1310,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Jashtë interneti.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
@@ -1325,7 +1325,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1172"/>
@@ -1377,7 +1377,7 @@ Ky formësim dihet që shpie në humbje të dhënash dhe nuk mbulohet më.
 Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të shtimit të saj sërish.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -4084,7 +4084,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Llogari %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>

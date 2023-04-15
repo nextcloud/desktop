@@ -1377,7 +1377,7 @@ Bu yapılandırmanın veri kaybına yol açtığı biliniyor ve artık desteklen
 Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
