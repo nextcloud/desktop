@@ -923,17 +923,17 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="158"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Ezarpen batzuk bezero honen bertsio berriagoetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden funtzioak erabiltzen dituzte.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Uneko konfigurazio fitxategiaren babeskopia egin zen&lt;i&gt;%2&lt;/i&gt;-ra.</translation>
+        <translation>Ezarpen batzuk bezero honen bertsio berriagoetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden funtzioak erabiltzen dituzte.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Uneko konfigurazio fitxategiaren babeskopia egin da&lt;i&gt;%2&lt;/i&gt;-n.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ezarpen batzuk bezero honen %1 bertsioetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden eginbideak erabiltzen dituzte. &lt;br&gt;&lt;br&gt;Jarraitzeak esan nahi du &lt;/b&gt;%2 ezarpen hauek&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Oraingo konfigurazio-fitxategiaren babeskopia &lt;i&gt;%3&lt;/i&gt;-n egin da.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ezarpen batzuk bezero honen %1 bertsioetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden eginbideak erabiltzen dituzte. &lt;br&gt;&lt;br&gt;Jarraitzeak esan nahi du &lt;b&gt;%2 ezarpen hauek&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Oraingo konfigurazio-fitxategiaren babeskopia &lt;i&gt;%3&lt;/i&gt;-n egin da.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
@@ -1123,12 +1123,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Kasu-talka gatazka</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia ezin izan da sinkronizatu sistema honetan dagoen fitxategi batekin kasu-talka bat sortzen duelako.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1171,7 +1171,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Kasu-talka egiteko fitxategia</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -1187,12 +1187,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Ireki talka fitxategia</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez, sartu izen berri bat talka egiten duen fitxategiarentzat:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
@@ -1207,12 +1207,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; fitxategia ezin izan da sinkronizatu sistema honetan dagoen fitxategi batekin kasu-talka bat dagoelako.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>% 1ek ez ditu fitxategi-izen berdinak onartzen letra maiuskula/minuskula ezberdintasunarekin bakarrik.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
@@ -3271,7 +3271,7 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="658"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuekin. Ustekabeko metadatuen formatua lortzea.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
@@ -3590,7 +3590,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/discovery.cpp" line="378"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>Kasu-talka gatazka: zerbitzariaren fitxategia deskargatu eta izena aldatu da talka saihesteko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="382"/>
@@ -3826,7 +3826,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da % 1 karpeta sortu fitxategi lokalaren edo karpetaren izen-talka dela eta!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
@@ -4220,7 +4220,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-jartze esteka segurua</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
@@ -4443,7 +4443,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiatu fitxategi jartze esteka segurua</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
