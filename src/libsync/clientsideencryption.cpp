@@ -1300,10 +1300,13 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
     generateCSR(account, std::move(localKeyPair));
+    writeMnemonic(account, [account, keyPair = std::move(keyPair), output, this]() mutable -> void {writeKeyPair(account, std::move(keyPair), output);});
 }
 
-void ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
+QByteArray ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
 {
+    auto result = QByteArray{};
+
     // OpenSSL expects const char.
     auto cnArray = account->davUser().toLocal8Bit();
     qCInfo(lcCse()) << "Getting the following array for the account Id" << cnArray;
@@ -1334,39 +1337,39 @@ void ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
         ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (const unsigned char*) v.second, -1, -1, 0);
         if (ret != 1) {
             qCInfo(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
-            return;
+            return result;
         }
     }
 
     ret = X509_REQ_set_pubkey(x509_req, keyPair);
     if (ret != 1){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        return;
+        return result;
     }
 
     ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
     if (ret <= 0){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        return;
+        return result;
     }
 
     Bio out;
     ret = PEM_write_bio_X509_REQ(out, x509_req);
     if (ret <= 0){
         qCInfo(lcCse()) << "Error exporting the csr to the BIO";
-        return;
+        return result;
     }
 
-    const auto output = BIO2ByteArray(out);
+    result = BIO2ByteArray(out);
 
     qCInfo(lcCse()) << "Returning the certificate";
-    qCInfo(lcCse()) << output;
+    qCInfo(lcCse()) << result;
 
     if (_mnemonic.isEmpty()) {
         generateMnemonic();
     }
 
-    writeMnemonic(account, [account, keyPair = std::move(keyPair), output, this]() mutable -> void {writeKeyPair(account, std::move(keyPair), output);});
+    return result;
 }
 
 void ClientSideEncryption::sendSignRequestCSR(AccountPtr account,
@@ -1460,8 +1463,11 @@ void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
     const auto keyIsNotOnServer = [account, this] () {
         qCInfo(lcCse) << "server is missing keys. upload is necessary";
 
-        generateCSR(account, keyPair)
-        sendSignRequestCSR(account, {}, {});
+        Bio privateKeyBio;
+        auto keyPair = PKey::readPublicKey(privateKeyBio);
+        auto csrData = generateCSR(account, std::move(keyPair));
+        auto keyPair2 = PKey::readPublicKey(privateKeyBio);
+        sendSignRequestCSR(account, std::move(keyPair2), csrData);
     };
 
     const auto privateKeyOnServerIsValid = [this] () {

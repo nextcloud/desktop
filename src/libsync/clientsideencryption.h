@@ -166,11 +166,13 @@ private slots:
 
 private:
     void generateMnemonic();
-    void generateCSR(AccountPtr account,
-                     PKey keyPair);
+    [[nodiscard]] QByteArray generateCSR(AccountPtr account,
+                                         PKey keyPair);
+
     void sendSignRequestCSR(AccountPtr account,
                             PKey keyPair,
                             QByteArray csrContent);
+
     void writeKeyPair(AccountPtr account,
                       PKey keyPair,
                       QByteArray output);
