@@ -41,16 +41,15 @@ SpacesManager::SpacesManager(Account *parent)
     // the timer will be restarted once we received drives data
     _refreshTimer->setSingleShot(true);
 
-    connect(_refreshTimer, &QTimer::timeout, this, &SpacesManager::refresh);
-    connect(_account, &Account::credentialsFetched, this, &SpacesManager::refresh);
-    if (_account->accessManager()) {
-        // If we don't have a nam yet, Account::credentialsFetched will can refresh
-        refresh();
-    }
+    connect(_refreshTimer, &QTimer::timeout, this, &SpacesManager::checkReady);
+    connect(_account, &Account::credentialsFetched, this, &SpacesManager::checkReady);
 }
 
 void SpacesManager::refresh()
 {
+    if (!OC_ENSURE(_account->accessManager())) {
+        return;
+    }
     auto drivesJob = new Drives(_account->sharedFromThis(), this);
     connect(drivesJob, &Drives::finishedSignal, this, [drivesJob, this] {
         drivesJob->deleteLater();
@@ -108,10 +107,12 @@ QVector<Space *> SpacesManager::spaces() const
     return {_spacesMap.begin(), _spacesMap.end()};
 }
 
-void SpacesManager::checkReady() const
+void SpacesManager::checkReady()
 {
     // see constructor for calls to refresh
     if (_ready) {
         Q_EMIT ready();
+    } else {
+        refresh();
     }
 }
