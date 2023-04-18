@@ -60,7 +60,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     reloadConfig();
     loadMiscSettings();
-    slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -128,6 +127,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         }
 #endif
     }
+    // we want to attach the known english identifiers which are also used within the configuration file as user data inside the data model
+    // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
+    _ui->updateChannel->addItem(tr("stable"), QStringLiteral("stable"));
+    _ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
+    connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GeneralSettings::slotUpdateChannelChanged);
+    slotUpdateInfo();
 #else
     _ui->updaterWidget->hide();
 #endif
@@ -139,11 +144,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     if (Theme::instance()->forceVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
         _ui->groupBox_non_vfs->hide();
     }
-
-    // we want to attach the known english identifiers which are also used within the configuration file as user data inside the data model
-    // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
-    _ui->updateChannel->addItem(tr("stable"), QStringLiteral("stable"));
-    _ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -206,16 +206,20 @@ void GeneralSettings::slotUpdateInfo()
 #endif
 
     // Channel selection
-    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == QLatin1String("beta") ? 1 : 0);
-    connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GeneralSettings::slotUpdateChannelChanged,
-        Qt::UniqueConnection);
+    _ui->updateChannel->setCurrentIndex(_ui->updateChannel->findData(ConfigFile().updateChannel()));
 #endif
 }
 
 void GeneralSettings::slotUpdateChannelChanged(int index)
 {
 #ifdef WITH_AUTO_UPDATER
-    QString channel = index == 0 ? QStringLiteral("stable") : QStringLiteral("beta");
+    QString channel;
+    if (index < 0) {
+        // invalid index reset to stable
+        channel = QStringLiteral("stable");
+    } else {
+        channel = _ui->updateChannel->itemData(index).toString();
+    }
     if (channel == ConfigFile().updateChannel())
         return;
 
