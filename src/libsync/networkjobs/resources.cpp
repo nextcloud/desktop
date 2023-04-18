@@ -34,8 +34,6 @@ namespace {
 
 void ResourceJob::finished()
 {
-    qCInfo(lcResources) << "Resource job of" << reply()->request().url() << "finished with status" << replyStatusString();
-
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcResources) << "Network error: " << this << errorString();
     } else {
