@@ -1,3 +1,262 @@
 [General]
 version = 2
 blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.git|master|;https://invent.kde.org/packaging/craft-blueprints-kde.git|master|
+
+[core/cacert]
+version = 2022-04-26
+
+[craft/craft-blueprints-kde]
+version = master
+revision = 95a56054
+
+[craft/craft-blueprints-owncloud]
+version = master
+revision = 76361b7
+
+[craft/craft-core]
+version = master
+revision = a45503841
+
+[dev-utils/7zip]
+version = latest
+
+[dev-utils/breakpad]
+version = v2022.07.12
+
+[dev-utils/cmake]
+version = latest
+
+[dev-utils/cmake-base]
+version = 3.23.3
+
+[dev-utils/depot-tools]
+version = master
+revision = 3f3e2f78
+
+[dev-utils/jom]
+version = 1_1_3
+
+[dev-utils/kshimgen]
+version = 0.5.4
+
+[dev-utils/msys]
+version = base
+
+[dev-utils/nasm]
+version = 2.15.05
+
+[dev-utils/ninja]
+version = 1.11.1
+
+[dev-utils/patch]
+version = 2.7.6
+
+[dev-utils/perl]
+version = 5.36.0
+
+[dev-utils/pkg-config]
+version = 0.29.2
+
+[dev-utils/python3]
+version = 3
+
+[dev-utils/qtbinpatcher]
+version = 2.2.0
+
+[kde/frameworks/extra-cmake-modules]
+version = 5.104.0
+
+[libs/cairo]
+version = 1.16.0
+
+[libs/d3dcompiler]
+version = master
+
+[libs/freetype]
+version = 2.12.1
+
+[libs/gettext]
+version = 0.21
+
+[libs/glib]
+version = 2.68.4
+
+[libs/harfbuzz]
+version = 2.7.2
+
+[libs/libbzip2]
+version = 1.0.6
+
+[libs/libffi]
+version = 3.3
+
+[libs/libjpeg-turbo]
+version = 2.1.2
+
+[libs/liblzma]
+version = 5.2.3
+
+[libs/libpng]
+version = 1.6.37
+
+[libs/libre-graph-api-cpp-qt-client]
+version = v1.0.1
+
+[libs/libxml2]
+version = 2.10.3
+
+[libs/libzstd]
+version = 1.5.2
+
+[libs/openssl]
+version = 1.1.1t
+
+[libs/pcre2]
+version = 10.37
+
+[libs/pixman]
+version = 0.42.2
+
+[libs/qt5/qtbase]
+version = kde/5.15
+
+[libs/qt5/qtdeclarative]
+version = kde/5.15
+
+[libs/qt5/qtremoteobjects]
+version = kde/5.15
+
+[libs/qt5/qtscxml]
+version = kde/5.15
+
+[libs/qt5/qtsvg]
+version = kde/5.15
+
+[libs/qt5/qttools]
+version = kde/5.15
+
+[libs/qt5/qttranslations]
+version = kde/5.15
+
+[libs/qt5/qtwinextras]
+version = kde/5.15
+
+[libs/qt5/qtxmlpatterns]
+version = kde/5.15
+
+[libs/runtime]
+version = 16
+
+[libs/sqlite]
+version = 3.39.2
+
+[libs/zlib]
+version = 1.2.13
+
+[owncloud/libcrashreporter-qt]
+version = master
+
+[python-modules/meson]
+version = master
+
+[python-modules/pip]
+version = master
+
+[python-modules/pip-system]
+version = master
+
+[python-modules/virtualenv]
+version = master
+
+[qt-libs/qtkeychain]
+version = 0.13.1
+
+[virtual/base]
+version = 0.2
+
+[virtual/bin-base]
+version = 0.2
+
+[virtual/craft-blueprints-kde-base]
+version = 0.1
+
+[data/docbook-dtd]
+version = 4.5
+
+[data/docbook-xsl]
+version = 1.78.1
+
+[dev-utils/autoconf]
+version = 2.71
+
+[dev-utils/automake]
+version = 1.16.3
+
+[dev-utils/bison]
+version = 3.7.6
+
+[dev-utils/gtk-doc]
+version = 1.33.2
+
+[dev-utils/help2man]
+version = 1.47.6
+
+[dev-utils/libtool]
+version = 2.4.7
+
+[dev-utils/m4]
+version = 1.4.19
+
+[dev-utils/texinfo]
+version = 7.0.2
+
+[libs/args]
+version = 6.3.0
+
+[libs/cpr]
+version = 1.8.3
+
+[libs/dbus]
+version = 1.14.4
+
+[libs/fontconfig]
+version = 2.13.1
+
+[libs/libappimage-minimal]
+version = 1.0.4-5
+
+[libs/libappimageupdate]
+version = 2.0.0-alpha-1-20220512
+
+[libs/libcloudproviders]
+version = 0.3.1
+
+[libs/libdwarf]
+version = 20201020
+
+[libs/libsecret]
+version = 0.20.4
+
+[libs/libssh2]
+version = 1.10.0
+
+[libs/libxslt]
+version = 1.1.37
+
+[libs/qt5/qtwayland]
+version = kde/5.15
+
+[libs/uuid]
+version = 2.37.2
+
+[libs/zsync2]
+version = 2.0.0-alpha-1-20220602
+
+[dev-utils/create-dmg]
+version = master
+
+[libs/qt5/qtmacextras]
+version = kde/5.15
+
+[libs/sparkle]
+version = 1.24.0
