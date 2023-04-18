@@ -4546,7 +4546,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation>%1 %2%7%8Qt Bibliotheken %3, %4%7verwenden die Erweiterung für virtuelle Dateien: %5%7%6</translation>
+        <translation>%1 %2%7%8Bibliotheken Qt %3, %4%7%9Verwendete Erweiterung für virtuelle Dateien: %5%7%6</translation>
     </message>
 </context>
 <context>

@@ -457,7 +457,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Alan Ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
@@ -522,12 +522,12 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı kuruluyor: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="831"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı kesildi: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="734"/>
@@ -581,7 +581,7 @@ Lütfen tarayıcınızı kullanarak kimliğinizi doğrulayın.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Bir alan eklemek için bu butona tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
@@ -591,7 +591,7 @@ Lütfen tarayıcınızı kullanarak kimliğinizi doğrulayın.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Bir klasör eklemek için bağlı olmanız gerekir.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="957"/>
@@ -882,7 +882,7 @@ Dosya senkronizasyonu masaüstü yardımcı programı.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Lists available translations, see --language.</source>
-        <translation type="unfinished"/>
+        <translation>Mevcut çevirileri listeler, bkz. --dil.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
@@ -1310,7 +1310,7 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Çevrimdışı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
@@ -2552,7 +2552,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Bu Alan şu anda kullanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
@@ -3899,7 +3899,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Lütfen %1 bilginizi giriniz:</translation>
     </message>
 </context>
 <context>
@@ -3999,7 +3999,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>Kurulumu İptal Et</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
@@ -4081,7 +4081,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Hesap %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
