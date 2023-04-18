@@ -928,7 +928,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Néhány beállítást a kliens %1 verzióiban konfiguráltak, és olyan funkciókat használnak, amelyek ebben a verzióban nem érhetők el. &lt;br&gt;&lt;br&gt;A folytatás &lt;b&gt;ezen beállítások %2&lt;/b&gt; jelenti.&lt;br&gt;&lt;br&gt;Az aktuális konfigurációs fájlról már készült biztonsági másolat: &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
@@ -3272,7 +3272,7 @@ Ne feledje, hogy a naplózás parancssori kapcsolóinak használata felülbírá
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="658"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a metaadatokkal. Váratlan metaadat-formátum érkezett.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
@@ -4221,7 +4221,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Biztonságos fájllerakat-hivatkozás</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="587"/>
@@ -4444,7 +4444,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Biztonságos fájllerakat-hivatkozás másolása</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
