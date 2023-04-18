@@ -66,6 +66,7 @@ def main(ctx):
         "ref": [
             "refs/heads/master",
             "refs/heads/3.**",
+            "refs/heads/4.**",
             "refs/tags/**",
             "refs/pull/**",
         ],
