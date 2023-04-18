@@ -155,6 +155,14 @@
     </message>
 </context>
 <context>
+    <name>DiscoverWebFingerServiceJobFactory</name>
+    <message>
+        <location filename="../src/gui/newwizard/jobs/discoverwebfingerservicejobfactory.cpp" line="43"/>
+        <source>Invalid reply received from server</source>
+        <translation>U mor përgjigje e pavlefshme nga shërbyesi</translation>
+    </message>
+</context>
+<context>
     <name>FetchUserInfoJobFactory</name>
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="67"/>
@@ -261,6 +269,20 @@
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="39"/>
         <source>Folders</source>
         <translation>Dosje</translation>
+    </message>
+</context>
+<context>
+    <name>LegacyWebFingerSetupWizardPage</name>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="14"/>
+        <source>Form</source>
+        <translation>Formular</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="79"/>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="92"/>
+        <source>Username</source>
+        <translation>Emër përdoruesi</translation>
     </message>
 </context>
 <context>
@@ -1072,7 +1094,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="232"/>
@@ -1288,7 +1310,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Jashtë interneti.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
@@ -1303,7 +1325,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1172"/>
@@ -1355,7 +1377,7 @@ Ky formësim dihet që shpie në humbje të dhënash dhe nuk mbulohet më.
 Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të shtimit të saj sërish.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -1363,7 +1385,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="194"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="200"/>
         <source>%1 of %2 in use</source>
         <translation>%1 nga %2 në përdorim</translation>
     </message>
@@ -1371,136 +1393,136 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="224"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="226"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Gabim gjatë ngarkimit të listës së dosjeve prej shërbyesit.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="274"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="276"/>
         <source>Virtual file support is enabled.</source>
         <translation>Mbulimi i kartelave virtuale është i aktivizuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>Fetching folder list from server...</source>
         <translation>Po sillet prej shërbyesi listë dosjesh…</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="262"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>Ka përplasje të pazgjidhura. Klikoni për hollës.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="338"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="344"/>
         <source>%1
 %2</source>
         <translation>%1
 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="340"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="346"/>
         <source>Signed out
 %1</source>
         <translation>Dalë
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Po kërkohet për ndryshime te shërbyesi i largët &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Po kërkohet për ndryshime te shërbyesi vendor &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>Reconciling changes</source>
         <translation>Po pajtohen ndryshimet mes tyre</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>&apos;%1&apos;</source>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1029"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Po njëkohësohet %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1037"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>shkarko %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1037"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1043"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1053"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1045"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1051"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ngarko %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="201"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="206"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="203"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="208"/>
         <source>%1 (%2)</source>
         <comment>filename (size)</comment>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="312"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="318"/>
         <source>Local folder: %1</source>
         <translation>Dosje vendore: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1053"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 nga %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>edhe %5, %1 nga %2, kartela %3 nga %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1088"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 nga %2, kartela %3 nga %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1089"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1095"/>
         <source>file %1 of %2</source>
         <translation>kartela %1 nga %2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1138"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Po pritet për %n dosje tjetër…</numerusform><numerusform>Po pritet për %n dosje të tjera…</numerusform></translation>
     </message>
@@ -1827,12 +1849,12 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
 <context>
     <name>OCC::GraphApi::Space</name>
     <message>
-        <location filename="../src/libsync/graphapi/space.cpp" line="52"/>
+        <location filename="../src/libsync/graphapi/space.cpp" line="64"/>
         <source>Personal</source>
         <translation>Personale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/graphapi/space.cpp" line="55"/>
+        <location filename="../src/libsync/graphapi/space.cpp" line="67"/>
         <source>Shares</source>
         <translation>Pjesë</translation>
     </message>
@@ -2544,12 +2566,12 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1129"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1128"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1131"/>
         <source>%1 the folder is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -2772,12 +2794,12 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1313"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1312"/>
         <source>Could not update file : %1</source>
         <translation>S’u përditësua dot kartela : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1316"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1315"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
@@ -3549,7 +3571,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::Spaces::SpacesDelegate</name>
     <message>
-        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="164"/>
+        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="183"/>
         <source>Open in Web</source>
         <translation>Hape në Web</translation>
     </message>
@@ -3849,24 +3871,51 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::Wizard::BasicCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="43"/>
         <source>Invalid credentials</source>
         <translation>Kredenciale të pavlefshme</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="66"/>
         <source>Failed to fetch user display name</source>
         <translation>S’u arrit të sillet emër përdoruesi në ekran</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="71"/>
         <source>Login failed: username and/or password incorrect</source>
         <translation>Hyrja dështoi: emër përdoruesi dhe/ose fjalëkalim i pasaktë</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="76"/>
         <source>Login failed: %1</source>
         <translation>Hyrja dështoi: %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Wizard::LegacyWebFingerSetupWizardPage</name>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="28"/>
+        <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
+        <translation>Po lidhet te &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
+        <source>Please enter your %1:</source>
+        <comment>Please enter your [username, e-mail address, ...]:</comment>
+        <translation>Ju lutemi, jepni %1 tuaj:</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Wizard::LegacyWebFingerSetupWizardState</name>
+    <message>
+        <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="39"/>
+        <source>Failed to parse WebFinger response: %1</source>
+        <translation>S’u arrit të përtypet përgjigje WebFinger: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
+        <source>WebFinger endpoint did not send href attribute</source>
+        <translation>Pikëmbarim WebFinger s’dërgoi atribut href</translation>
     </message>
 </context>
 <context>
@@ -3890,12 +3939,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::Wizard::OAuthCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="58"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
         <translation>Gabim teksa provohej të bëhej hyrja te shërbyes me OAuth2 të aktivizuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="54"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="63"/>
         <source>Server reports that OAuth2 is not supported.</source>
         <translation>Shërbyesi njofton se OAuth2 nuk mbulohet.</translation>
     </message>
@@ -3911,29 +3960,29 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::Wizard::ServerUrlSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="84"/>
         <source>Invalid server URL</source>
         <translation>URL e pavlefshme shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>Insecure connection</source>
         <translation>Lidhje jo e siguruar</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="91"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
         <translation>Lidhja me %1 është jo e siguruar.
 Jeni i sigurt se doni të ecet më tej?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="98"/>
         <source>Confirm</source>
         <translation>Ripohojeni</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="101"/>
         <source>Insecure server rejected by user</source>
         <translation>Shërbyes jo i siguruar i hedhur tej nga përdoruesi</translation>
     </message>
@@ -3959,33 +4008,6 @@ Jeni i sigurt se doni të ecet më tej?</translation>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Do you really want to cancel the account setup?</source>
         <translation>Doni vërtet të anuloni ujdisjen e llogarisë?</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::Wizard::WebFingerSetupWizardPage</name>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
-        <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Po lidhet me &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
-        <source>Please enter your %1:</source>
-        <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation>Ju lutemi, jepni %1 tuaj:</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::Wizard::WebFingerSetupWizardState</name>
-    <message>
-        <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="39"/>
-        <source>Failed to parse WebFinger response: %1</source>
-        <translation>S’u arrit të përtypet përgjigje WebFinger: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="44"/>
-        <source>WebFinger endpoint did not send href attribute</source>
-        <translation>Pikëmbarim WebFinger s’dërgoi atribut href</translation>
     </message>
 </context>
 <context>
@@ -4062,7 +4084,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Llogari %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
@@ -4434,12 +4456,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="694"/>
+        <location filename="../src/libsync/theme.cpp" line="696"/>
         <source>Username</source>
         <translation>Emër përdoruesi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="696"/>
+        <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>E-mail address</source>
         <translation>Adresë email</translation>
     </message>
@@ -4508,17 +4530,11 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     </message>
 </context>
 <context>
-    <name>WebFingerSetupWizardPage</name>
+    <name>WebFingerUserInfoJobFactory</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="92"/>
-        <source>Username</source>
-        <translation>Emër përdoruesi</translation>
+        <location filename="../src/gui/newwizard/jobs/webfingeruserinfojobfactory.cpp" line="59"/>
+        <source>Failed to retrieve user info</source>
+        <translation>S’u arrit të merren hollësi përdoruesi</translation>
     </message>
 </context>
 <context>

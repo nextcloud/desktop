@@ -155,6 +155,14 @@
     </message>
 </context>
 <context>
+    <name>DiscoverWebFingerServiceJobFactory</name>
+    <message>
+        <location filename="../src/gui/newwizard/jobs/discoverwebfingerservicejobfactory.cpp" line="43"/>
+        <source>Invalid reply received from server</source>
+        <translation>Resposta inválida recebida do servidor</translation>
+    </message>
+</context>
+<context>
     <name>FetchUserInfoJobFactory</name>
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="67"/>
@@ -261,6 +269,20 @@
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="39"/>
         <source>Folders</source>
         <translation>Pastas</translation>
+    </message>
+</context>
+<context>
+    <name>LegacyWebFingerSetupWizardPage</name>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="14"/>
+        <source>Form</source>
+        <translation>Formulário</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="79"/>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="92"/>
+        <source>Username</source>
+        <translation>Nome do Usuário</translation>
     </message>
 </context>
 <context>
@@ -1353,7 +1375,7 @@ Esta configuração é conhecida por causar perda de dados e não é mais suport
 Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -1361,7 +1383,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="194"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="200"/>
         <source>%1 of %2 in use</source>
         <translation>%1 de %2 em uso</translation>
     </message>
@@ -1369,136 +1391,136 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="224"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="226"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Erro enquanto carregava a lista de pastas do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="274"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="276"/>
         <source>Virtual file support is enabled.</source>
         <translation>O suporte a arquivos virtuais está ativado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>Fetching folder list from server...</source>
         <translation>Obtendo lista de pastas do servidor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="262"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>Existem conflitos não resolvidos. Clique para detalhes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="338"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="344"/>
         <source>%1
 %2</source>
         <translation>%1
 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="340"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="346"/>
         <source>Signed out
 %1</source>
         <translation>Assinado
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Verificando alterações remotamente &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Verificação de alterações no local &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>Reconciling changes</source>
         <translation>Reconciliando mudanças</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>&apos;%1&apos;</source>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1029"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1037"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
         <source>, </source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>baixar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1037"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1043"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1053"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1045"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1051"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>enviar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="201"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="206"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="203"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="208"/>
         <source>%1 (%2)</source>
         <comment>filename (size)</comment>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="312"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="318"/>
         <source>Local folder: %1</source>
         <translation>Pasta local: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1053"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1057"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 restando, %1 de %2, arquivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1088"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 de%2, arquivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1089"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1095"/>
         <source>file %1 of %2</source>
         <translation>arquivo %1 de %2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1138"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Esperando por %n outra pasta...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform></translation>
     </message>
@@ -1825,12 +1847,12 @@ Observe que isso seleciona apenas de qual conjunto de atualizações são retira
 <context>
     <name>OCC::GraphApi::Space</name>
     <message>
-        <location filename="../src/libsync/graphapi/space.cpp" line="52"/>
+        <location filename="../src/libsync/graphapi/space.cpp" line="64"/>
         <source>Personal</source>
         <translation>Pessoal</translation>
     </message>
     <message>
-        <location filename="../src/libsync/graphapi/space.cpp" line="55"/>
+        <location filename="../src/libsync/graphapi/space.cpp" line="67"/>
         <source>Shares</source>
         <translation>Compartilhamentos</translation>
     </message>
@@ -2542,12 +2564,12 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1129"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1128"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1132"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1131"/>
         <source>%1 the folder is currently in use</source>
         <translation>A pasta %1  está atualmente em uso</translation>
     </message>
@@ -2770,12 +2792,12 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1313"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1312"/>
         <source>Could not update file : %1</source>
         <translation>Não foi possível atualizar o arquivo: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1316"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1315"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está atualmente em uso </translation>
     </message>
@@ -3547,7 +3569,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Spaces::SpacesDelegate</name>
     <message>
-        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="164"/>
+        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="183"/>
         <source>Open in Web</source>
         <translation>Abrir na web</translation>
     </message>
@@ -3847,24 +3869,51 @@ Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer p
 <context>
     <name>OCC::Wizard::BasicCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="43"/>
         <source>Invalid credentials</source>
         <translation>Credenciais inválidas</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="66"/>
         <source>Failed to fetch user display name</source>
         <translation>Falha ao buscar o nome de exibição do usuário</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="71"/>
         <source>Login failed: username and/or password incorrect</source>
         <translation>Falha no login: nome de usuário e/ou senha incorretos</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="76"/>
         <source>Login failed: %1</source>
         <translation>Falha na autenticação: %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Wizard::LegacyWebFingerSetupWizardPage</name>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="28"/>
+        <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
+        <translation>Conectando a &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
+        <source>Please enter your %1:</source>
+        <comment>Please enter your [username, e-mail address, ...]:</comment>
+        <translation>Por favor insira o seu %1:</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Wizard::LegacyWebFingerSetupWizardState</name>
+    <message>
+        <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="39"/>
+        <source>Failed to parse WebFinger response: %1</source>
+        <translation>Falha ao analisar a resposta do WebFinger: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
+        <source>WebFinger endpoint did not send href attribute</source>
+        <translation>O endpoint WebFinger não enviou o atributo href</translation>
     </message>
 </context>
 <context>
@@ -3888,12 +3937,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer p
 <context>
     <name>OCC::Wizard::OAuthCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="49"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="58"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
         <translation>Erro ao tentar fazer login no servidor habilitado para OAuth2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="54"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="63"/>
         <source>Server reports that OAuth2 is not supported.</source>
         <translation>O servidor relata que o OAuth2 não é compatível.</translation>
     </message>
@@ -3909,29 +3958,29 @@ Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer p
 <context>
     <name>OCC::Wizard::ServerUrlSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="84"/>
         <source>Invalid server URL</source>
         <translation>URL do servidor inválido</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>Insecure connection</source>
         <translation>Conexão insegura</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="91"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
         <translation>A conexão com %1 é insegura.
 Tem certeza de que deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="98"/>
         <source>Confirm</source>
         <translation>Confirmar</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="101"/>
         <source>Insecure server rejected by user</source>
         <translation>Servidor inseguro rejeitado pelo usuário</translation>
     </message>
@@ -3957,33 +4006,6 @@ Tem certeza de que deseja continuar?</translation>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Do you really want to cancel the account setup?</source>
         <translation>Você realmente deseja cancelar a configuração da conta?</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::Wizard::WebFingerSetupWizardPage</name>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
-        <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Conectando a &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
-        <source>Please enter your %1:</source>
-        <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation>Por favor insira o seu %1:</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::Wizard::WebFingerSetupWizardState</name>
-    <message>
-        <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="39"/>
-        <source>Failed to parse WebFinger response: %1</source>
-        <translation>Falha ao analisar a resposta do WebFinger: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="44"/>
-        <source>WebFinger endpoint did not send href attribute</source>
-        <translation>O endpoint WebFinger não enviou o atributo href</translation>
     </message>
 </context>
 <context>
@@ -4432,12 +4454,12 @@ Tem certeza de que deseja continuar?</translation>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="694"/>
+        <location filename="../src/libsync/theme.cpp" line="696"/>
         <source>Username</source>
         <translation>Nome do Usuário</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="696"/>
+        <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>E-mail address</source>
         <translation>Endereço de e-mail</translation>
     </message>
@@ -4506,17 +4528,11 @@ Tem certeza de que deseja continuar?</translation>
     </message>
 </context>
 <context>
-    <name>WebFingerSetupWizardPage</name>
+    <name>WebFingerUserInfoJobFactory</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formulário</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="92"/>
-        <source>Username</source>
-        <translation>Nome do Usuário</translation>
+        <location filename="../src/gui/newwizard/jobs/webfingeruserinfojobfactory.cpp" line="59"/>
+        <source>Failed to retrieve user info</source>
+        <translation>Falha ao recuperar informações do usuário</translation>
     </message>
 </context>
 <context>
