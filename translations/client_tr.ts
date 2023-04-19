@@ -5732,7 +5732,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Kullanıcı ya da grup arama…</translation>
+        <translation>Kullanıcı ya da grup ara…</translation>
     </message>
 </context>
 <context>
