@@ -1372,7 +1372,7 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="200"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="201"/>
         <source>%1 of %2 in use</source>
         <translation>%2 のうち %1 を使用中</translation>
     </message>
@@ -1711,12 +1711,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>アップデート</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="145"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>stable</source>
         <translation>安定</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="146"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>beta</source>
         <translation>ベータ</translation>
     </message>
@@ -1782,49 +1782,49 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>再起動してアップデート(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="321"/>
+        <location filename="../src/gui/generalsettings.cpp" line="325"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>システム全体の自動起動が有効になっているため、自動起動を無効にすることはできません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="228"/>
         <source>Change update channel?</source>
         <translation>アップデートチャンネルを変更しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="77"/>
+        <location filename="../src/gui/generalsettings.cpp" line="76"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="77"/>
+        <location filename="../src/gui/generalsettings.cpp" line="76"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation>言語の変更を有効にするには、このアプリケーションの再起動が必要です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="225"/>
+        <location filename="../src/gui/generalsettings.cpp" line="229"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="242"/>
         <source>Change update channel</source>
         <translation>Change update channel</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="239"/>
+        <location filename="../src/gui/generalsettings.cpp" line="243"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="353"/>
+        <location filename="../src/gui/generalsettings.cpp" line="357"/>
         <source>unknown (%1)</source>
         <translation>不明 (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="337"/>
+        <location filename="../src/gui/generalsettings.cpp" line="341"/>
         <source>(use default)</source>
         <translation>(デフォルトを使用)</translation>
     </message>

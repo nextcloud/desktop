@@ -1372,7 +1372,7 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="200"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="201"/>
         <source>%1 of %2 in use</source>
         <translation>มีการใช้งาน %1 จาก %2</translation>
     </message>
@@ -1711,12 +1711,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>อัปเดต</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="145"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>stable</source>
         <translation>เวอร์ชันเสถียร</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="146"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>beta</source>
         <translation>เวอร์ชันเบต้า</translation>
     </message>
@@ -1782,27 +1782,27 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>และเริ่มต้นใหม่ &amp;&amp; อัปเดต</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="321"/>
+        <location filename="../src/gui/generalsettings.cpp" line="325"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>คุณไม่สามารถปิดใช้งานระบบเริ่มต้นอัตโนมัติได้เนื่องจาก system-wide ได้ถูกเปิดใช้งานแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="228"/>
         <source>Change update channel?</source>
         <translation>เปลี่ยนช่องทางการอัปเดต?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="77"/>
+        <location filename="../src/gui/generalsettings.cpp" line="76"/>
         <source>Warning</source>
         <translation>คำเตือน</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="77"/>
+        <location filename="../src/gui/generalsettings.cpp" line="76"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation>การเปลี่ยนแปลงภาษาจำเป็นต้องรีสตาร์ทแอปพลิเคชันนี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="225"/>
+        <location filename="../src/gui/generalsettings.cpp" line="229"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1811,22 +1811,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 โปรดทราบว่าการเลือกนี้จะไม่สามารถดาวน์เกรดจากเวอร์ชันเบต้าไปยังเวอร์ชันเสถียรได้ ต้องรอให้เวอร์ชันเสถียรใหม่กว่าเวอร์ชันเบต้าก่อนถึงจะอัปเกรดเป็นเวอร์ชันเสถียรได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="242"/>
         <source>Change update channel</source>
         <translation>ตกลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="239"/>
+        <location filename="../src/gui/generalsettings.cpp" line="243"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="353"/>
+        <location filename="../src/gui/generalsettings.cpp" line="357"/>
         <source>unknown (%1)</source>
         <translation>ไม่รู้จัก (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="337"/>
+        <location filename="../src/gui/generalsettings.cpp" line="341"/>
         <source>(use default)</source>
         <translation>(ใช้ค่าเริ่มต้น)</translation>
     </message>

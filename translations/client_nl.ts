@@ -1384,7 +1384,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="200"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="201"/>
         <source>%1 of %2 in use</source>
         <translation>%1 van %2 in gebruik</translation>
     </message>
@@ -1726,12 +1726,12 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="145"/>
+        <location filename="../src/gui/generalsettings.cpp" line="132"/>
         <source>stable</source>
         <translation>stabiel</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="146"/>
+        <location filename="../src/gui/generalsettings.cpp" line="133"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -1797,27 +1797,27 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
         <translation>&amp;Herstarten en &amp;Bijwerken</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="321"/>
+        <location filename="../src/gui/generalsettings.cpp" line="325"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Je kunt autostart niet uitschakelen omdat autostart systeembreed is ingeschakeld.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="224"/>
+        <location filename="../src/gui/generalsettings.cpp" line="228"/>
         <source>Change update channel?</source>
         <translation>Updatekanaal veranderen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="77"/>
+        <location filename="../src/gui/generalsettings.cpp" line="76"/>
         <source>Warning</source>
         <translation>Waarschuwing</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="77"/>
+        <location filename="../src/gui/generalsettings.cpp" line="76"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation>Verandering van taal vereist een herstart om effect te hebben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="225"/>
+        <location filename="../src/gui/generalsettings.cpp" line="229"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1826,22 +1826,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Let op dat dit alleen selecteert uit welke pool upgrades worden gehaald, en dat er geen downgrades zijn: dus teruggaan van het beta kanaal naar het stabiele kanaal kan meestal niet meteen en betekent dat je moet wachten op een stabiele versie die nieuwer is dan de huidig geïnstalleerde beta versie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="238"/>
+        <location filename="../src/gui/generalsettings.cpp" line="242"/>
         <source>Change update channel</source>
         <translation>Verander updatekanaal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="239"/>
+        <location filename="../src/gui/generalsettings.cpp" line="243"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="353"/>
+        <location filename="../src/gui/generalsettings.cpp" line="357"/>
         <source>unknown (%1)</source>
         <translation>onbekend (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="337"/>
+        <location filename="../src/gui/generalsettings.cpp" line="341"/>
         <source>(use default)</source>
         <translation>(gebruik standaard)</translation>
     </message>
