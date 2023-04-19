@@ -285,7 +285,8 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
             },
             "commands": [
                 "cd %s" % dir["build"],
-                build_command + " -j4",
+                # 18 jobs (default in CI) are used to speed up the build
+                build_command + " -j 18",
             ],
         },
     ]
