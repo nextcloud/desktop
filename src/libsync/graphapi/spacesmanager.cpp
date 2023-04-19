@@ -50,6 +50,9 @@ void SpacesManager::refresh()
     if (!OC_ENSURE(_account->accessManager())) {
         return;
     }
+    if (!_account->credentials()->ready()) {
+        return;
+    }
     auto drivesJob = new Drives(_account->sharedFromThis(), this);
     drivesJob->setTimeout(refreshTimeoutC);
     connect(drivesJob, &Drives::finishedSignal, this, [drivesJob, this] {
