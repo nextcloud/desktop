@@ -567,15 +567,15 @@ void AccountState::slotCheckServerAvailibility()
         || state() == AccountState::SignedOut
         || state() == AccountState::MaintenanceMode
         || state() == AccountState::AskingCredentials) {
-        qCInfo(lcAccountState) << "Skipping server availibility check for account" << _account->id() << "with state" << state();
+        qCInfo(lcAccountState) << "Skipping server availibility check for account" << _account->davUser() << "with state" << state();
         return;
     }
-    qCInfo(lcAccountState) << "Checking server availibility for account" << _account->id();
+    qCInfo(lcAccountState) << "Checking server availibility for account" << _account->davUser();
     const auto serverAvailibilityUrl = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/204"));
     auto checkServerAvailibilityJob = _account->sendRequest(QByteArrayLiteral("GET"), serverAvailibilityUrl);
     connect(checkServerAvailibilityJob, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 204) {
-            qCInfo(lcAccountState) << "Server is now available for account" << _account->id();
+            qCInfo(lcAccountState) << "Server is now available for account" << _account->davUser();
             _lastCheckConnectionTimer.invalidate();
             resetRetryCount();
             QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);
