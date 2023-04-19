@@ -64,7 +64,6 @@ public:
     void invalidateToken() override;
     void forgetSensitiveData() override;
     QString fetchUser();
-    virtual bool sslIsTrusted() { return false; }
 
     /* If we still have a valid refresh token, try to refresh it assynchronously and emit fetched()
      * otherwise return false
@@ -78,9 +77,6 @@ public:
     bool isUsingOAuth() const { return _authType == DetermineAuthTypeJob::AuthType::OAuth; }
 protected:
     HttpCredentials() = default;
-
-    /// Wipes legacy keychain locations
-    void deleteOldKeychainEntries();
 
     void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
     void fetchFromKeychainHelper();
