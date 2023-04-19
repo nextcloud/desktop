@@ -183,11 +183,6 @@ public:
      */
     virtual QString defaultServerFolder() const;
 
-    /**
-     * Override to encforce a particular locale, i.e. "de" or "pt_BR"
-     */
-    virtual QString enforcedLocale() const { return QString(); }
-
     /** colored, white or black */
     QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
