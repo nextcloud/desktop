@@ -237,12 +237,6 @@ version = 20201020
 [libs/libsecret]
 version = 0.20.4
 
-[libs/libssh2]
-version = 1.10.0
-
-[libs/libxslt]
-version = 1.1.37
-
 [libs/qt5/qtwayland]
 version = kde/5.15
 
