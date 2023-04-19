@@ -1379,9 +1379,9 @@ Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accoun
 
 QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)
 {
-    QString folderName = tr("%1 - %2@%3").arg(Theme::instance()->defaultClientFolder(), displayName, server.host());
+    QString folderName = tr("%1 - %2@%3").arg(Theme::instance()->appName(), displayName, server.host());
     if (!Theme::instance()->multiAccount()) {
-        folderName = Theme::instance()->defaultClientFolder();
+        folderName = Theme::instance()->appName();
     }
     return FolderMan::instance()->findGoodPathForNewSyncFolder(QDir::homePath(), folderName);
 }

@@ -184,11 +184,6 @@ public:
     virtual QString defaultServerFolder() const;
 
     /**
-     * The default folder name without path on the client side at setup time.
-     */
-    virtual QString defaultClientFolder() const;
-
-    /**
      * Override to encforce a particular locale, i.e. "de" or "pt_BR"
      */
     virtual QString enforcedLocale() const { return QString(); }
