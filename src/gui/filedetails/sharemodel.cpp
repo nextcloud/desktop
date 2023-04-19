@@ -81,7 +81,11 @@ QHash<int, QByteArray> ShareModel::roleNames() const
     roles[PasswordRole] = "password";
     roles[PasswordEnforcedRole] = "passwordEnforced";
     roles[EditingAllowedRole] = "editingAllowed";
-    roles[IsSecureFileDropLinkRole] = "isSecureFileDropLink";
+    roles[CurrentPermissionModeRole] = "currentPermissionMode";
+    roles[SharedItemTypeRole] = "sharedItemType";
+    roles[IsSharePermissionsChangeInProgress] = "isSharePermissionChangeInProgress";
+    roles[HideDownloadEnabledRole] = "hideDownload";
+    roles[IsHideDownloadEnabledChangeInProgress] = "isHideDownloadInProgress";
 
     return roles;
 }
@@ -107,6 +111,8 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
             return linkShare->getLabel();
         case NoteEnabledRole:
             return !linkShare->getNote().isEmpty();
+        case HideDownloadEnabledRole:
+            return linkShare->getHideDownload();
         case NoteRole:
             return linkShare->getNote();
         case ExpireDateEnabledRole:
@@ -151,8 +157,22 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         return expireDateEnforcedForShare(share);
     case EnforcedMaximumExpireDateRole:
         return enforcedMaxExpireDateForShare(share);
-    case IsSecureFileDropLinkRole:
-        return _isSecureFileDropSupportedFolder && share->getPermissions().testFlag(OCC::SharePermission::SharePermissionCreate);
+    case CurrentPermissionModeRole: {
+        if (share->getPermissions() == OCC::SharePermission::SharePermissionCreate) {
+            return QVariant::fromValue(SharePermissionsMode::ModeFileDropOnly);
+        } else if ((share->getPermissions() & SharePermissionRead) && (share->getPermissions() & SharePermissionCreate)
+                   && (share->getPermissions() & SharePermissionUpdate) && (share->getPermissions() & SharePermissionDelete)) {
+            return QVariant::fromValue(SharePermissionsMode::ModeUploadAndEditing);
+        } else {
+            return QVariant::fromValue(SharePermissionsMode::ModeViewOnly);
+        }
+    }
+    case SharedItemTypeRole:
+        return static_cast<int>(_sharedItemType);
+    case IsSharePermissionsChangeInProgress:
+        return _sharePermissionsChangeInProgress;
+    case IsHideDownloadEnabledChangeInProgress:
+        return _hideDownloadEnabledChangeInProgress;
     case PasswordProtectEnabledRole:
         return share->isPasswordSet();
     case PasswordRole:
@@ -250,9 +270,15 @@ void ShareModel::updateData()
 
     _numericFileId = fileRecord.numericFileId();
 
-    _isEncryptedItem = fileRecord.isE2eEncrypted();
-    _isSecureFileDropSupportedFolder =
-        fileRecord.isE2eEncrypted() && fileRecord.e2eMangledName().isEmpty() && _accountState->account()->secureFileDropSupported();
+    if (fileRecord.isDirectory()) {
+        if (fileRecord.isE2eEncrypted()) {
+            _sharedItemType = fileRecord.e2eMangledName().isEmpty() ? SharedItemType::SharedItemTypeEncryptedTopLevelFolder : SharedItemType::SharedItemTypeEncryptedFolder;
+        } else {
+            _sharedItemType = SharedItemType::SharedItemTypeFolder;
+        }
+    } else {
+        _sharedItemType = fileRecord.isE2eEncrypted() ? SharedItemType::SharedItemTypeEncryptedFile : SharedItemType::SharedItemTypeFile;
+    }
 
     // Will get added when shares are fetched if no link shares are fetched
     _placeholderLinkShare.reset(new Share(_accountState->account(),
@@ -386,9 +412,9 @@ void ShareModel::handleSecureFileDropLinkShare()
 
 void ShareModel::handleLinkShare()
 {
-    if (!_isEncryptedItem) {
+    if (!isEncryptedItem()) {
         handlePlaceholderLinkShare();
-    } else if (_isSecureFileDropSupportedFolder) {
+    } else if (isSecureFileDropSupportedFolder()) {
         handleSecureFileDropLinkShare();
     }
 }
@@ -456,7 +482,7 @@ void ShareModel::setupInternalLinkShare()
         _accountState->account().isNull() ||
         _localPath.isEmpty() ||
         _privateLinkUrl.isEmpty() ||
-        _isEncryptedItem) {
+        isEncryptedItem()) {
         return;
     }
 
@@ -464,6 +490,30 @@ void ShareModel::setupInternalLinkShare()
     _shares.append(_internalLinkShare);
     endInsertRows();
     Q_EMIT internalLinkReady();
+}
+
+void ShareModel::setSharePermissionChangeInProgress(const QString &shareId, const bool isInProgress)
+{
+    if (isInProgress == _sharePermissionsChangeInProgress) {
+        return;
+    }
+
+    _sharePermissionsChangeInProgress = isInProgress;
+    
+    const auto shareIndex = _shareIdIndexHash.value(shareId);
+    Q_EMIT dataChanged(shareIndex, shareIndex, {IsSharePermissionsChangeInProgress});
+}
+
+void ShareModel::setHideDownloadEnabledChangeInProgress(const QString &shareId, const bool isInProgress)
+{
+    if (isInProgress == _hideDownloadEnabledChangeInProgress) {
+        return;
+    }
+
+    _hideDownloadEnabledChangeInProgress = isInProgress;
+
+    const auto shareIndex = _shareIdIndexHash.value(shareId);
+    Q_EMIT dataChanged(shareIndex, shareIndex, {IsHideDownloadEnabledChangeInProgress});
 }
 
 void ShareModel::slotAddShare(const SharePtr &share)
@@ -515,6 +565,7 @@ void ShareModel::slotAddShare(const SharePtr &share)
         connect(linkShare.data(), &LinkShare::nameSet, this, [this, shareId]{ slotShareNameSet(shareId); });
         connect(linkShare.data(), &LinkShare::labelSet, this, [this, shareId]{ slotShareLabelSet(shareId); });
         connect(linkShare.data(), &LinkShare::expireDateSet, this, [this, shareId]{ slotShareExpireDateSet(shareId); });
+        connect(linkShare.data(), &LinkShare::hideDownloadSet, this, [this, shareId] { slotHideDownloadSet(shareId); });
     } else if (const auto userGroupShare = share.objectCast<UserGroupShare>()) {
         connect(userGroupShare.data(), &UserGroupShare::noteSet, this, [this, shareId]{ slotShareNoteSet(shareId); });
         connect(userGroupShare.data(), &UserGroupShare::expireDateSet, this, [this, shareId]{ slotShareExpireDateSet(shareId); });
@@ -582,7 +633,7 @@ QString ShareModel::displayStringForShare(const SharePtr &share) const
 {
     if (const auto linkShare = share.objectCast<LinkShare>()) {
 
-        const auto isSecureFileDropShare = _isSecureFileDropSupportedFolder && linkShare->getPermissions().testFlag(OCC::SharePermission::SharePermissionCreate);
+        const auto isSecureFileDropShare = isSecureFileDropSupportedFolder() && linkShare->getPermissions().testFlag(OCC::SharePermission::SharePermissionCreate);
 
         const auto displayString = isSecureFileDropShare ? tr("Secure file drop link") : tr("Share link");
 
@@ -708,7 +759,8 @@ void ShareModel::slotSharePermissionsSet(const QString &shareId)
 
     const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
     const auto shareModelIndex = index(sharePersistentModelIndex.row());
-    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { EditingAllowedRole });
+    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { EditingAllowedRole, CurrentPermissionModeRole });
+    setSharePermissionChangeInProgress(shareId, false);
 }
 
 void ShareModel::slotSharePasswordSet(const QString &shareId)
@@ -720,6 +772,18 @@ void ShareModel::slotSharePasswordSet(const QString &shareId)
     const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
     const auto shareModelIndex = index(sharePersistentModelIndex.row());
     Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { PasswordProtectEnabledRole, PasswordRole });
+}
+
+void ShareModel::slotHideDownloadSet(const QString &shareId)
+{
+    if (shareId.isEmpty() || !_shareIdIndexHash.contains(shareId)) {
+        return;
+    }
+
+    const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
+    const auto shareModelIndex = index(sharePersistentModelIndex.row());
+    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, {HideDownloadEnabledRole});
+    setHideDownloadEnabledChangeInProgress(shareId, false);
 }
 
 void ShareModel::slotShareNoteSet(const QString &shareId)
@@ -768,37 +832,56 @@ void ShareModel::slotShareExpireDateSet(const QString &shareId)
 
 // ----------------------- Shares modification slots ----------------------- //
 
-void ShareModel::toggleShareAllowEditing(const SharePtr &share, const bool enable) const
+void ShareModel::toggleShareAllowEditing(const SharePtr &share, const bool enable)
 {
-    if (share.isNull()) {
+    if (share.isNull() || _sharePermissionsChangeInProgress) {
         return;
     }
 
     auto permissions = share->getPermissions();
     enable ? permissions |= SharePermissionUpdate : permissions &= ~SharePermissionUpdate;
 
+    setSharePermissionChangeInProgress(share->getId(), true);
     share->setPermissions(permissions);
 }
 
-void ShareModel::toggleShareAllowEditingFromQml(const QVariant &share, const bool enable) const
+void ShareModel::toggleShareAllowEditingFromQml(const QVariant &share, const bool enable)
 {
     const auto ptr = share.value<SharePtr>();
     toggleShareAllowEditing(ptr, enable);
 }
 
-void ShareModel::toggleShareAllowResharing(const SharePtr &share, const bool enable) const
+void ShareModel::toggleShareAllowResharing(const SharePtr &share, const bool enable)
 {
-    if (share.isNull()) {
+    if (share.isNull() || _sharePermissionsChangeInProgress) {
         return;
     }
 
     auto permissions = share->getPermissions();
     enable ? permissions |= SharePermissionShare : permissions &= ~SharePermissionShare;
 
+    setSharePermissionChangeInProgress(share->getId(), true);
     share->setPermissions(permissions);
 }
 
-void ShareModel::toggleShareAllowResharingFromQml(const QVariant &share, const bool enable) const
+void ShareModel::toggleHideDownloadFromQml(const QVariant &share, const bool enable)
+{
+    const auto sharePtr = share.value<SharePtr>();
+    if (sharePtr.isNull() || _hideDownloadEnabledChangeInProgress) {
+        return;
+    }
+
+    const auto linkShare = sharePtr.objectCast<LinkShare>();
+
+    if (linkShare.isNull()) {
+        return;
+    }
+
+    setHideDownloadEnabledChangeInProgress(linkShare->getId(), true);
+    linkShare->setHideDownload(enable);
+}
+
+void ShareModel::toggleShareAllowResharingFromQml(const QVariant &share, const bool enable)
 {
     const auto ptr = share.value<SharePtr>();
     toggleShareAllowResharing(ptr, enable);
@@ -865,6 +948,42 @@ void ShareModel::toggleShareNoteToRecipientFromQml(const QVariant &share, const 
 {
     const auto ptr = share.value<SharePtr>();
     toggleShareNoteToRecipient(ptr, enable);
+}
+
+void ShareModel::changePermissionModeFromQml(const QVariant &share, const SharePermissionsMode permissionMode)
+{
+    const auto sharePtr = share.value<SharePtr>();
+    if (sharePtr.isNull() || _sharePermissionsChangeInProgress) {
+        return;
+    }
+
+    const auto shareIndex = _shareIdIndexHash.value(sharePtr->getId());
+
+    if (!checkIndex(shareIndex, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
+        qCWarning(lcShareModel) << "Can't change permission mode for:" << sharePtr->getId() << ", invalid share index: " << shareIndex;
+        return;
+    }
+
+    const auto currentPermissionMode = shareIndex.data(ShareModel::CurrentPermissionModeRole).value<SharePermissionsMode>();
+
+    if (currentPermissionMode == permissionMode) {
+        return;
+    }
+
+    SharePermissions perm = SharePermissionRead;
+    switch (permissionMode) {
+    case SharePermissionsMode::ModeViewOnly:
+        break;
+    case SharePermissionsMode::ModeUploadAndEditing:
+        perm |= SharePermissionCreate | SharePermissionUpdate | SharePermissionDelete;
+        break;
+    case SharePermissionsMode::ModeFileDropOnly:
+        perm = SharePermissionCreate;
+        break;
+    }
+
+    setSharePermissionChangeInProgress(sharePtr->getId(), true);
+    sharePtr->setPermissions(perm);
 }
 
 void ShareModel::setLinkShareLabel(const QSharedPointer<LinkShare> &linkShare, const QString &label) const
@@ -944,7 +1063,7 @@ void ShareModel::setShareNoteFromQml(const QVariant &share, const QString &note)
 
 void ShareModel::createNewLinkShare() const
 {
-    if (_isEncryptedItem && !_isSecureFileDropSupportedFolder) {
+    if (isEncryptedItem() && !isSecureFileDropSupportedFolder()) {
         qCWarning(lcShareModel) << "Attempt to create a link share for non-root encrypted folder or a file.";
         return;
     }
@@ -952,7 +1071,7 @@ void ShareModel::createNewLinkShare() const
     if (_manager) {
         const auto askOptionalPassword = _accountState->account()->capabilities().sharePublicLinkAskOptionalPassword();
         const auto password = askOptionalPassword ? createRandomPassword() : QString();
-        if (_isSecureFileDropSupportedFolder) {
+        if (isSecureFileDropSupportedFolder()) {
             _manager->createSecureFileDropShare(_sharePath, {}, password);
             return;
         }
@@ -1087,6 +1206,17 @@ bool ShareModel::validCapabilities() const
     return _accountState &&
             _accountState->account() &&
             _accountState->account()->capabilities().isValid();
+}
+
+bool ShareModel::isSecureFileDropSupportedFolder() const
+{
+    return _sharedItemType == SharedItemType::SharedItemTypeEncryptedTopLevelFolder && _accountState->account()->secureFileDropSupported();
+}
+
+bool ShareModel::isEncryptedItem() const
+{
+    return _sharedItemType == SharedItemType::SharedItemTypeEncryptedFile || _sharedItemType == SharedItemType::SharedItemTypeEncryptedFolder
+        || _sharedItemType == SharedItemType::SharedItemTypeEncryptedTopLevelFolder;
 }
 
 bool ShareModel::sharingEnabled() const
