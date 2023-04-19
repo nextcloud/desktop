@@ -35,7 +35,6 @@
 
 namespace {
 constexpr int CrashLogSize = 20;
-constexpr int MaxLogSizeBytes = 1024 * 512;
 }
 namespace OCC {
 
@@ -118,14 +117,9 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     cout << msg << endl;
 #endif
     {
-        if (_logFile.size() >= MaxLogSizeBytes) {
-            enterNextLogFile();
-        }
-
         QMutexLocker lock(&_mutex);
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
-
         if (_logstream) {
             (*_logstream) << msg << Qt::endl;
             if (_doFileFlush)
