@@ -197,15 +197,6 @@ public:
     virtual QIcon wizardHeaderLogo() const;
 
     /**
-     * The default implementation creates a
-     * background based on
-     * \ref wizardHeaderTitleColor().
-     *
-     * @return banner for the setup wizard.
-     */
-    [[deprecated]] virtual QPixmap wizardHeaderBanner(const QSize &size) const;
-
-    /**
      * The SHA sum of the released git commit
      */
     QString gitSHA1(VersionFormat format = VersionFormat::Plain) const;
@@ -247,17 +238,6 @@ public:
      * Set -1 to never ask confirmation.  0 to ask confirmation for every folder.
      **/
     virtual qint64 newBigFolderSizeLimit() const;
-
-    /**
-     * Hide the checkbox that says "Ask for confirmation before synchronizing folders larger than X MB"
-     * in the account wizard
-     */
-    [[deprecated]] virtual bool wizardHideFolderSizeLimitCheckbox() const;
-    /**
-     * Hide the checkbox that says "Ask for confirmation before synchronizing external storages"
-     * in the account wizard
-     */
-    [[deprecated]] virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
 
     /**
      * Skip the advanced page and create a sync with the default settings
@@ -332,13 +312,6 @@ public:
      * @return An empty string, unless reimplemented
      */
     virtual QString wizardUrlPostfix() const;
-
-    /**
-     * @brief String that will be shown as long as no text has been entered by the user.
-     *
-     * @return An empty string, unless reimplemented
-     */
-    [[deprecated]] virtual QString wizardUrlHint() const;
 
     /**
      * @brief the server folder that should be queried for the quota information

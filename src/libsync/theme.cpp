@@ -345,17 +345,7 @@ qint64 Theme::newBigFolderSizeLimit() const
     return 500;
 }
 
-bool Theme::wizardHideExternalStorageConfirmationCheckbox() const
-{
-    return false;
-}
-
 bool Theme::wizardSkipAdvancedPage() const
-{
-    return false;
-}
-
-bool Theme::wizardHideFolderSizeLimitCheckbox() const
 {
     return false;
 }
@@ -531,16 +521,6 @@ QIcon Theme::wizardHeaderLogo() const
     return applicationIcon();
 }
 
-QPixmap Theme::wizardHeaderBanner(const QSize &size) const
-{
-    const QColor c = wizardHeaderBackgroundColor();
-    if (!c.isValid())
-        return QPixmap();
-    QPixmap pix(size);
-    pix.fill(c);
-    return pix;
-}
-
 QString Theme::webDavPath() const
 {
     return QStringLiteral("remote.php/webdav/");
@@ -578,11 +558,6 @@ QString Theme::userIDHint() const
 
 
 QString Theme::wizardUrlPostfix() const
-{
-    return QString();
-}
-
-QString Theme::wizardUrlHint() const
 {
     return QString();
 }
