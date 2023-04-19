@@ -117,8 +117,8 @@ def main(ctx):
                     unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
                     gui_test_pipeline(ctx, trigger = build_trigger, server_version = ocis_server_version, server_type = "ocis")
 
-        # run gui tests against oc10 server only if the build title contains "gui-tests"
-        if "oc10-gui-tests" in ctx.build.title.lower():
+        # run gui tests against oc10 server only if the build title contains "full-ci"
+        if "full-ci" in ctx.build.title.lower():
             pipelines += gui_test_pipeline(ctx, trigger = build_trigger, server_version = oc10_server_version, server_type = "oc10")
 
     return pipelines
