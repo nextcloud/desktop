@@ -220,8 +220,8 @@ signals:
     // this signal is emited when a network job failed due to invalid credentials
     void invalidCredentials(QPrivateSignal);
 
-    void credentialsFetched(AbstractCredentials *credentials);
-    void credentialsAsked(AbstractCredentials *credentials);
+    void credentialsFetched();
+    void credentialsAsked();
 
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(Account *acc);
@@ -237,10 +237,6 @@ signals:
 
     // the signal exists on the Account object as the Approvider itself can change during runtime
     void appProviderErrorOccured(const QString &error);
-
-protected Q_SLOTS:
-    void slotCredentialsFetched();
-    void slotCredentialsAsked();
 
 private:
     // directory all newly created accounts store their various caches in

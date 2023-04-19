@@ -510,7 +510,7 @@ void AccountState::slotInvalidCredentials()
     }
 }
 
-void AccountState::slotCredentialsFetched(AbstractCredentials *)
+void AccountState::slotCredentialsFetched()
 {
     // Make a connection attempt, no matter whether the credentials are
     // ready or not - we want to check whether we can get an SSL connection
@@ -521,14 +521,13 @@ void AccountState::slotCredentialsFetched(AbstractCredentials *)
     checkConnectivity();
 }
 
-void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
+void AccountState::slotCredentialsAsked()
 {
-    qCInfo(lcAccountState) << "Credentials asked for" << _account->url().toString()
-                           << "are they ready?" << credentials->ready();
+    qCInfo(lcAccountState) << "Credentials asked for" << _account->url().toString() << "are they ready?" << _account->credentials()->ready();
 
     _waitingForNewCredentials = false;
 
-    if (!credentials->ready()) {
+    if (!_account->credentials()->ready()) {
         // User canceled the connection or did not give a password
         setState(SignedOut);
         return;

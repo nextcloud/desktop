@@ -97,13 +97,6 @@ Q_SIGNALS:
     // TODO: rename
     void fetched();
 
-    /** Emitted when askFromUser() is done.
-     *
-     * Note that ready() can be true or false, depending on whether the user provided
-     * data or not.
-     */
-    void asked();
-
     void authenticationStarted();
     void authenticationFailed();
 

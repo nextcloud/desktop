@@ -165,8 +165,8 @@ signals:
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
     void slotInvalidCredentials();
-    void slotCredentialsFetched(AbstractCredentials *creds);
-    void slotCredentialsAsked(AbstractCredentials *creds);
+    void slotCredentialsFetched();
+    void slotCredentialsAsked();
 
 private:
     AccountPtr _account;

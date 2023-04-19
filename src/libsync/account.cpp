@@ -197,10 +197,10 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (jar) {
         _am->setCookieJar(jar);
     }
-    connect(_credentials.data(), &AbstractCredentials::fetched,
-        this, &Account::slotCredentialsFetched);
-    connect(_credentials.data(), &AbstractCredentials::asked,
-        this, &Account::slotCredentialsAsked);
+    connect(_credentials.data(), &AbstractCredentials::fetched, this, [this] {
+        emit credentialsFetched();
+        _queueGuard.unblock();
+    });
     connect(_credentials.data(), &AbstractCredentials::authenticationStarted, this, [this] {
         _queueGuard.block();
     });
@@ -282,17 +282,6 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
         QString prefix = _credentials->authType();
         _settingsMap.insert(prefix + QLatin1Char('_') + key, value);
     }
-}
-
-void Account::slotCredentialsFetched()
-{
-    emit credentialsFetched(_credentials.data());
-    _queueGuard.unblock();
-}
-
-void Account::slotCredentialsAsked()
-{
-    emit credentialsAsked(_credentials.data());
 }
 
 JobQueue *Account::jobQueue()

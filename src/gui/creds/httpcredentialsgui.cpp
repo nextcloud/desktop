@@ -71,7 +71,7 @@ void HttpCredentialsGui::askFromUserAsync()
                 showDialog();
             } else {
                 qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
-                emit asked();
+                emit fetched();
             }
         });
         job->start();
@@ -100,7 +100,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
     _refreshToken = refreshToken;
     _ready = true;
     persist();
-    emit asked();
+    emit fetched();
 }
 
 void HttpCredentialsGui::showDialog()
@@ -131,7 +131,7 @@ void HttpCredentialsGui::showDialog()
         } else {
             Q_EMIT requestLogout();
         }
-        emit asked();
+        emit fetched();
     });
 
     dialog->open();

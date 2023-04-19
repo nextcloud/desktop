@@ -1033,7 +1033,7 @@ void ownCloudGui::runNewAccountWizard()
                             }
 
                             // the account is now ready, emulate a normal account loading and emit that the credentials are ready
-                            Q_EMIT accountStatePtr->account()->credentialsFetched(accountStatePtr->account()->credentials());
+                            Q_EMIT accountStatePtr->account()->credentialsFetched();
 
                             switch (syncMode) {
                             case Wizard::SyncMode::SyncEverything:
