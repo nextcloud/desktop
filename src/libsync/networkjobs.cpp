@@ -555,7 +555,7 @@ PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *paren
 
 void PropfindJob::start()
 {
-    QList<QByteArray> properties = _properties;
+    const auto properties = _properties;
 
     if (properties.isEmpty()) {
         qCWarning(lcLsColJob) << "Propfind with no properties!";
@@ -567,21 +567,21 @@ void PropfindJob::start()
     req.setPriority(QNetworkRequest::HighPriority);
     req.setRawHeader("Depth", "0");
     QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
+    for (const auto &prop : properties) {
         if (prop.contains(':')) {
-            int colIdx = prop.lastIndexOf(":");
+            const auto colIdx = prop.lastIndexOf(":");
             propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
         } else {
             propStr += "    <d:" + prop + " />\n";
         }
     }
-    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
-                     "<d:propfind xmlns:d=\"DAV:\">\n"
-                     "  <d:prop>\n"
-        + propStr + "  </d:prop>\n"
-                    "</d:propfind>\n";
+    const auto xml = QByteArray("<?xml version=\"1.0\" ?>\n"
+                                "<d:propfind xmlns:d=\"DAV:\">\n"
+                                "  <d:prop>\n"
+                    + propStr + "  </d:prop>\n"
+                                "</d:propfind>\n");
 
-    auto *buf = new QBuffer(this);
+    const auto buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
@@ -604,7 +604,7 @@ bool PropfindJob::finished()
     qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS"
                           << replyStatusString();
 
-    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (http_result_code == 207) {
         // Parse DAV response
@@ -616,7 +616,7 @@ bool PropfindJob::finished()
         QStack<QString> curElement;
 
         while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
+            const auto type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {
                 if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
                     items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
