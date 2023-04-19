@@ -41,8 +41,8 @@ SpacesManager::SpacesManager(Account *parent)
     // the timer will be restarted once we received drives data
     _refreshTimer->setSingleShot(true);
 
-    connect(_refreshTimer, &QTimer::timeout, this, &SpacesManager::checkReady);
-    connect(_account, &Account::credentialsFetched, this, &SpacesManager::checkReady);
+    connect(_refreshTimer, &QTimer::timeout, this, &SpacesManager::refresh);
+    connect(_account, &Account::credentialsFetched, this, &SpacesManager::refresh);
 }
 
 void SpacesManager::refresh()
