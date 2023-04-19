@@ -51,6 +51,7 @@ void SpacesManager::refresh()
         return;
     }
     auto drivesJob = new Drives(_account->sharedFromThis(), this);
+    drivesJob->setTimeout(refreshTimeoutC);
     connect(drivesJob, &Drives::finishedSignal, this, [drivesJob, this] {
         drivesJob->deleteLater();
         if (drivesJob->httpStatusCode() == 200) {
