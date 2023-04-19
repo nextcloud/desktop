@@ -30,9 +30,6 @@ JsonJob::~JsonJob()
 
 void JsonJob::finished()
 {
-    qCInfo(lcJsonApiJob) << "JsonJob of" << reply()->request().url() << "FINISHED WITH STATUS"
-                         << replyStatusString();
-
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << this << errorString();
     } else {

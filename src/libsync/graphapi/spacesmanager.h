@@ -49,7 +49,7 @@ namespace GraphApi {
         /**
          * Only relevant during bootstraping or when disconnected
          */
-        void checkReady() const;
+        void checkReady();
 
     Q_SIGNALS:
         void spaceChanged(Space *space) const;

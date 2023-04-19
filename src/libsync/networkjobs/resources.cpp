@@ -22,8 +22,12 @@ namespace {
         const QString urlHash = hashMd5(reply->url().toString());
         const QString eTagHash = hashMd5(reply->header(QNetworkRequest::ETagHeader).toString());
 
-        QString extension = QMimeDatabase().mimeTypeForData(reply).preferredSuffix();
+        const auto db = QMimeDatabase();
 
+        QString extension = db.mimeTypeForName(reply->header(QNetworkRequest::ContentTypeHeader).toString()).preferredSuffix();
+        if (extension.isEmpty()) {
+            extension = db.mimeTypeForData(reply).preferredSuffix();
+        }
         if (extension.isEmpty()) {
             extension = QStringLiteral("unknown");
         }
@@ -34,8 +38,6 @@ namespace {
 
 void ResourceJob::finished()
 {
-    qCInfo(lcResources) << "Resource job of" << reply()->request().url() << "finished with status" << replyStatusString();
-
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcResources) << "Network error: " << this << errorString();
     } else {

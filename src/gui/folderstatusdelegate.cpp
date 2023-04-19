@@ -148,7 +148,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     {
         const auto iconVisualRect = QStyle::visualRect(option.direction, option.rect, iconRect.toRect());
         spaceImage.paint(painter, iconVisualRect, Qt::AlignCenter, iconState);
-        Theme::instance()->themeIcon(QStringLiteral("states/%1").arg(statusIconName)).paint(painter, iconVisualRect, Qt::AlignCenter, iconState);
+        // paint the overlay in NormalState, on mac os disabled icons have an alpha channel, drawing semi transparent icons on top of each other...
+        Theme::instance()->themeIcon(QStringLiteral("states/%1").arg(statusIconName)).paint(painter, iconVisualRect, Qt::AlignCenter, QIcon::Normal);
     }
 
     // only show the warning icon if the sync is running. Otherwise its
