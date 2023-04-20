@@ -1294,17 +1294,19 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
         qCInfo(lcCse()) << "Could not read private key from bio.";
         return;
     }
-    QByteArray key = BIO2ByteArray(privKey);
+    auto privateKey = PKey::readPrivateKey(privKey);
+    const auto key = BIO2ByteArray(privKey);
     //_privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
     _privateKey = key;
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
-    auto csrOutput = generateCSR(account, std::move(localKeyPair));
+    auto csrOutput = generateCSR(account, std::move(localKeyPair), std::move(privateKey));
     writeMnemonic(account, [account, keyPair = std::move(csrOutput.second), output = std::move(csrOutput.first), this]() mutable -> void {writeKeyPair(account, std::move(keyPair), output);});
 }
 
 std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generateCSR(AccountPtr account,
-                                                                                    PKey keyPair)
+                                                                                    PKey keyPair,
+                                                                                    PKey privateKey)
 {
     auto result = QByteArray{};
 
@@ -1348,9 +1350,9 @@ std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generate
         return {result, std::move(keyPair)};
     }
 
-    ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
+    ret = X509_REQ_sign(x509_req, privateKey, EVP_sha1());    // return x509_req->signature->length
     if (ret <= 0){
-        qCInfo(lcCse()) << "Error setting the public key on the csr";
+        qCInfo(lcCse()) << "Error signing the csr with the private key";
         return {result, std::move(keyPair)};
     }
 
@@ -1464,9 +1466,16 @@ void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
     const auto keyIsNotOnServer = [account, this] () {
         qCInfo(lcCse) << "server is missing keys. upload is necessary";
 
+        Bio publicKeyBio;
+        const auto publicKeyData = _publicKey.toPem();
+        BIO_write(publicKeyBio, publicKeyData.constData(), publicKeyData.size());
+        auto publicKey = PKey::readPublicKey(publicKeyBio);
+
         Bio privateKeyBio;
-        auto keyPair = PKey::readPublicKey(privateKeyBio);
-        auto csrData = generateCSR(account, std::move(keyPair));
+        BIO_write(privateKeyBio, _privateKey.constData(), _privateKey.size());
+        auto privateKey = PKey::readPrivateKey(privateKeyBio);
+
+        auto csrData = generateCSR(account, std::move(publicKey), std::move(privateKey));
         sendSignRequestCSR(account, std::move(csrData.second), std::move(csrData.first));
     };
 

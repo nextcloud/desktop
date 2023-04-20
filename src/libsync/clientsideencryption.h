@@ -166,8 +166,10 @@ private slots:
 
 private:
     void generateMnemonic();
+
     [[nodiscard]] std::pair<QByteArray, PKey> generateCSR(AccountPtr account,
-                                                          PKey keyPair);
+                                                          PKey keyPair,
+                                                          PKey privateKey);
 
     void sendSignRequestCSR(AccountPtr account,
                             PKey keyPair,
