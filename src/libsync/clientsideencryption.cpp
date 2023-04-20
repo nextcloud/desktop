@@ -1299,11 +1299,12 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
     _privateKey = key;
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
-    generateCSR(account, std::move(localKeyPair));
-    writeMnemonic(account, [account, keyPair = std::move(keyPair), output, this]() mutable -> void {writeKeyPair(account, std::move(keyPair), output);});
+    auto csrOutput = generateCSR(account, std::move(localKeyPair));
+    writeMnemonic(account, [account, keyPair = std::move(csrOutput.second), output = std::move(csrOutput.first), this]() mutable -> void {writeKeyPair(account, std::move(keyPair), output);});
 }
 
-QByteArray ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
+std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generateCSR(AccountPtr account,
+                                                                                    PKey keyPair)
 {
     auto result = QByteArray{};
 
@@ -1337,27 +1338,27 @@ QByteArray ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
         ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (const unsigned char*) v.second, -1, -1, 0);
         if (ret != 1) {
             qCInfo(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
-            return result;
+            return {result, std::move(keyPair)};
         }
     }
 
     ret = X509_REQ_set_pubkey(x509_req, keyPair);
     if (ret != 1){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        return result;
+        return {result, std::move(keyPair)};
     }
 
     ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
     if (ret <= 0){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        return result;
+        return {result, std::move(keyPair)};
     }
 
     Bio out;
     ret = PEM_write_bio_X509_REQ(out, x509_req);
     if (ret <= 0){
         qCInfo(lcCse()) << "Error exporting the csr to the BIO";
-        return result;
+        return {result, std::move(keyPair)};
     }
 
     result = BIO2ByteArray(out);
@@ -1369,7 +1370,7 @@ QByteArray ClientSideEncryption::generateCSR(AccountPtr account, PKey keyPair)
         generateMnemonic();
     }
 
-    return result;
+    return {result, std::move(keyPair)};
 }
 
 void ClientSideEncryption::sendSignRequestCSR(AccountPtr account,
@@ -1466,8 +1467,7 @@ void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
         Bio privateKeyBio;
         auto keyPair = PKey::readPublicKey(privateKeyBio);
         auto csrData = generateCSR(account, std::move(keyPair));
-        auto keyPair2 = PKey::readPublicKey(privateKeyBio);
-        sendSignRequestCSR(account, std::move(keyPair2), csrData);
+        sendSignRequestCSR(account, std::move(csrData.second), std::move(csrData.first));
     };
 
     const auto privateKeyOnServerIsValid = [this] () {

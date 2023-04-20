@@ -166,8 +166,8 @@ private slots:
 
 private:
     void generateMnemonic();
-    [[nodiscard]] QByteArray generateCSR(AccountPtr account,
-                                         PKey keyPair);
+    [[nodiscard]] std::pair<QByteArray, PKey> generateCSR(AccountPtr account,
+                                                          PKey keyPair);
 
     void sendSignRequestCSR(AccountPtr account,
                             PKey keyPair,
