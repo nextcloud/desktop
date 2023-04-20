@@ -2857,12 +2857,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="183"/>
+        <location filename="../src/libsync/logger.cpp" line="177"/>
         <source>Error</source>
         <translation>Produciuse un erro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="184"/>
+        <location filename="../src/libsync/logger.cpp" line="178"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Non se pode abrir o ficheiro &quot;%1&quot;&lt;br/&gt; para escribir. &lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non se pode&lt;/b&gt; gardar!&lt;/nobr&gt;</translation>
     </message>

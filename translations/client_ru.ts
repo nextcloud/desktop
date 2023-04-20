@@ -467,7 +467,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Сквозное шифрование не настроено на этом устройстве. После настройки вы сможете зашифровать эту папку.
+Хотите настроить сквозное шифрование?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -771,7 +772,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Сквозное шифрование было включено для этой учетной записи с другим устройством.&lt;br&gt;Его можно включить на этом устройстве, введя мнемонику.&lt;br&gt;Это позволит синхронизировать существующие зашифрованные папки.</translation>
     </message>
 </context>
 <context>
@@ -926,34 +927,34 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Некоторые параметры были настроены в %1 версиях этого клиента и используют функции, недоступные в этой версии.&lt;br&gt;&lt;br&gt;Продолжение будет означать &lt;b&gt;%2 этих параметров&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Текущий файл конфигурации уже был скопирован до &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Некоторые параметры были настроены в %1 версиях этого клиента и используют функции, недоступные в этой версии.&lt;br&gt;&lt;br&gt;Продолжение будет означать &lt;b&gt;%2 этих параметров&lt;/b&gt;&lt;br&gt;&lt;br&gt;Текущий файл конфигурации уже был скопирован до &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>никогда</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>старше</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>игнорирование</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>удаление</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="185"/>
@@ -1126,7 +1127,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Файл не удалось синхронизировать, так как он создает конфликт с существующим файлом в этой системе.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1146,7 +1147,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>fileA</source>
-        <translation type="unfinished"/>
+        <translation>файл A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
@@ -1169,28 +1170,28 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Конфликтующий файл</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>файл B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>fileB</source>
-        <translation type="unfinished"/>
+        <translation>файл B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Открыть конфликтующий файл</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>Введите новое имя конфликтующего файла:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
@@ -1200,22 +1201,22 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Переименовать файл</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось синхронизировать файл &quot;%1&quot; из-за конфликта с существующим файлом в этой системе.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>%1 не поддерживает одинаковые имена файлов, отличающиеся только регистром букв.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Имя файла содержит начальные и конечные пробелы.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
@@ -1529,7 +1530,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="488"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти информацию об удаленном файле для локального редактирования. Убедитесь, что его путь действителен.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
@@ -2853,12 +2854,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="183"/>
+        <location filename="../src/libsync/logger.cpp" line="177"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="184"/>
+        <location filename="../src/libsync/logger.cpp" line="178"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Файл «%1»&lt;br/&gt;не может быть открыт на запись.&lt;br/&gt;&lt;br/&gt;Журнал &lt;b&gt;не может&lt;/b&gt; быть сохранён!&lt;/nobr&gt;</translation>
     </message>

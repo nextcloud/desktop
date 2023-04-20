@@ -2858,12 +2858,12 @@ Nótese que usar cualquier opción de toma de registros a través de línea de c
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="183"/>
+        <location filename="../src/libsync/logger.cpp" line="177"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="184"/>
+        <location filename="../src/libsync/logger.cpp" line="178"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;El archivo &quot;%1&quot;&lt;br/&gt;no se puede abrir para escritura.&lt;br/&gt;&lt;br/&gt;¡El archivo de registro &lt;b&gt;no se puede&lt;/b&gt; guardar!&lt;/nobr&gt;</translation>
     </message>
