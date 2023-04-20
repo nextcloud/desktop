@@ -234,7 +234,7 @@ def build_client(image = OC_CI_CLIENT, ctest = True):
 
     return [
         {
-            "name": "generate",
+            "name": "build-client",
             "image": image,
             "environment": {
                 "LC_ALL": "C.UTF-8",
@@ -242,17 +242,9 @@ def build_client(image = OC_CI_CLIENT, ctest = True):
             "commands": [
                 "mkdir -p %s" % dir["build"],
                 "cd %s" % dir["build"],
+                # generate build files
                 "cmake %s -S .." % cmake_options,
-            ],
-        },
-        {
-            "name": "build",
-            "image": image,
-            "environment": {
-                "LC_ALL": "C.UTF-8",
-            },
-            "commands": [
-                "cd %s" % dir["build"],
+                # build
                 build_config["command"],
             ],
         },
