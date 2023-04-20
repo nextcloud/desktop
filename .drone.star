@@ -61,6 +61,16 @@ oc_extra_apps = {
     },
 }
 
+config = {
+    "build": {
+        "c_compiler": "clang",
+        "cxx_compiler": "clang++",
+        "build_type": "Debug",
+        "generator": "Ninja",
+        "command": "ninja -j",
+    },
+}
+
 def main(ctx):
     build_trigger = {
         "ref": [
@@ -84,22 +94,7 @@ def main(ctx):
         if ctx.build.event == "tag":
             trigger = build_trigger
 
-        # cron job pipelines
-        unit_tests = unit_test_pipeline(
-            ctx,
-            "gcc",
-            "g++",
-            "Release",
-            "Unix Makefiles",
-            trigger = trigger,
-        ) + unit_test_pipeline(
-            ctx,
-            "clang",
-            "clang++",
-            "Debug",
-            "Ninja",
-            trigger = trigger,
-        )
+        unit_tests = unit_test_pipeline(ctx, trigger = trigger)
 
         gui_tests = gui_test_pipeline(ctx, trigger = trigger) + \
                     gui_test_pipeline(ctx, trigger = trigger, server_version = ocis_server_version, server_type = "ocis")
@@ -114,7 +109,7 @@ def main(ctx):
                     gui_tests_format(build_trigger) + \
                     check_starlark(build_trigger) + \
                     changelog(ctx, trigger = build_trigger) + \
-                    unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
+                    unit_test_pipeline(ctx, trigger = build_trigger) + \
                     gui_test_pipeline(ctx, trigger = build_trigger, server_version = ocis_server_version, server_type = "ocis")
 
         # run gui tests against oc10 server only if the build title contains "full-ci"
@@ -158,20 +153,17 @@ def check_starlark(trigger = {}):
         "trigger": trigger,
     }]
 
-def unit_test_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, trigger = {}):
-    build_command = "ninja" if generator == "Ninja" else "make"
-    pipeline_name = c_compiler + "-" + build_type.lower() + "-" + build_command
-
+def unit_test_pipeline(ctx, trigger = {}):
     return [{
         "kind": "pipeline",
-        "name": pipeline_name,
+        "name": "unit-tests",
         "platform": {
             "os": "linux",
             "arch": "amd64",
         },
         "steps": skipIfUnchanged(ctx, "unit-tests") +
                  gitSubModules() +
-                 build_client(c_compiler, cxx_compiler, build_type, generator, build_command) +
+                 build_client() +
                  unit_tests(),
         "trigger": trigger,
     }]
@@ -187,14 +179,6 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
     }
     if ctx.build.event == "tag":
         upload_report_trigger["status"].append("success")
-
-    build_config = {
-        "c_compiler": "gcc",
-        "cxx_compiler": "g++",
-        "build_type": "Debug",
-        "generator": "Ninja",
-        "build_command": "ninja",
-    }
 
     steps = skipIfUnchanged(ctx, "gui-tests") + \
             gitSubModules()
@@ -219,15 +203,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
 
     steps += installPnpm() + \
              setGuiTestReportDir() + \
-             build_client(
-                 build_config["c_compiler"],
-                 build_config["cxx_compiler"],
-                 build_config["build_type"],
-                 build_config["generator"],
-                 build_config["build_command"],
-                 OC_CI_CLIENT_FEDORA,
-                 False,
-             ) + \
+             build_client(OC_CI_CLIENT_FEDORA, False) + \
              gui_tests(squish_parameters, server_type) + \
              uploadGuiTestLogs(server_type, trigger = upload_report_trigger) + \
              buildGithubComment(pipeline_name, server_type) + \
@@ -256,8 +232,10 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
         ],
     }]
 
-def build_client(c_compiler, cxx_compiler, build_type, generator, build_command, image = OC_CI_CLIENT, ctest = True):
-    cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s" -DWITH_LIBCLOUDPROVIDERS=ON' % (generator, c_compiler, cxx_compiler, build_type)
+def build_client(image = OC_CI_CLIENT, ctest = True):
+    build = config["build"]
+    cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s" -DWITH_LIBCLOUDPROVIDERS=ON'
+    cmake_options = cmake_options % (build["generator"], build["c_compiler"], build["cxx_compiler"], build["build_type"])
 
     if ctest:
         cmake_options += " -DBUILD_TESTING=ON"
@@ -278,15 +256,14 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
             ],
         },
         {
-            "name": build_command,
+            "name": "build",
             "image": image,
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
             "commands": [
                 "cd %s" % dir["build"],
-                # 18 jobs (default in CI) are used to speed up the build
-                build_command + " -j 18",
+                build["command"],
             ],
         },
     ]
