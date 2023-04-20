@@ -61,6 +61,8 @@ Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", Q
 
 constexpr auto notModifiedStatusCode = 304;
 constexpr auto propfindPropElementTagName = "prop";
+constexpr auto propfindFileTagElementTagName = "tag";
+constexpr auto propfindFileTagsContainerElementTagName = "tags";
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -658,7 +660,31 @@ QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocum
             const auto propChildElement = propChildNode.toElement();
 
             if (!propChildElement.isNull()) {
-                items.insert(propChildElement.tagName(), propChildElement.text());
+                const auto propChildElementTagName = propChildElement.tagName();
+
+                if (propChildElementTagName == propfindFileTagsContainerElementTagName) {
+                    const auto tagNodes = domDocument.elementsByTagName(propfindFileTagElementTagName);
+                    const auto tagCount = tagNodes.count();
+
+                    auto tagList = QStringList();
+                    tagList.reserve(tagCount);
+
+                    for (auto i = 0; i < tagCount; ++i) {
+                        const auto tagNode = tagNodes.at(i);
+                        const auto tagElement = tagNode.toElement();
+
+                        if (tagElement.isNull()) {
+                            continue;
+                        }
+
+                        tagList.append(tagElement.text());
+                    }
+
+                    items.insert(propChildElementTagName, tagList);
+
+                } else {
+                    items.insert(propChildElementTagName, propChildElement.text());
+                }
             }
 
             propChildNode = propChildNode.nextSibling();
