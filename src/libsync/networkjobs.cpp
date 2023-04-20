@@ -63,6 +63,8 @@ constexpr auto notModifiedStatusCode = 304;
 constexpr auto propfindPropElementTagName = "prop";
 constexpr auto propfindFileTagElementTagName = "tag";
 constexpr auto propfindFileTagsContainerElementTagName = "tags";
+constexpr auto propfindSystemFileTagElementTagName = "system-tag";
+constexpr auto propfindSystemFileTagsContainerElementTagName = "system-tags";
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -665,6 +667,9 @@ QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocum
                 if (propChildElementTagName == propfindFileTagsContainerElementTagName) {
                     const auto tagList = processTagsInPropfindDomDocument(domDocument);
                     items.insert(propChildElementTagName, tagList);
+                } else if (propChildElementTagName == propfindSystemFileTagsContainerElementTagName) {
+                    const auto systemTagList = processSystemTagsInPropfindDomDocument(domDocument);
+                    items.insert(propChildElementTagName, systemTagList);
                 } else {
                     items.insert(propChildElementTagName, propChildElement.text());
                 }
@@ -700,6 +705,40 @@ QStringList PropfindJob::processTagsInPropfindDomDocument(const QDomDocument &do
     }
 
     return tagList;
+}
+
+QVariantList PropfindJob::processSystemTagsInPropfindDomDocument(const QDomDocument &domDocument)
+{
+    const auto systemTagNodes = domDocument.elementsByTagName(propfindSystemFileTagElementTagName);
+    if (systemTagNodes.isEmpty()) {
+        return {};
+    }
+
+    const auto systemTagCount = systemTagNodes.count();
+    auto systemTagsList = QVariantList();
+
+    for (auto i = 0; i < systemTagCount; ++i) {
+        const auto systemTagNode = systemTagNodes.at(i);
+        const auto systemTagElem = systemTagNode.toElement();
+
+        if (systemTagElem.isNull()) {
+            continue;
+        }
+
+        auto systemTagMap = QVariantMap{ { QStringLiteral("tag"), systemTagElem.text() } };
+
+        const auto systemTagElemAttrs = systemTagElem.attributes();
+        for (auto i = 0; i < systemTagElemAttrs.count(); ++i) {
+            const auto systemTagElemAttrNode = systemTagElemAttrs.item(i);
+            const auto systemTagElemAttr = systemTagElemAttrNode.toAttr();
+
+            systemTagMap.insert(systemTagElemAttr.name(), systemTagElemAttr.value());
+        }
+
+        systemTagsList.append(systemTagMap);
+    }
+
+    return systemTagsList;
 }
 
 /*********************************************************************************************/
