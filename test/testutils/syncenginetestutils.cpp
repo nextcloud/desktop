@@ -862,7 +862,7 @@ void FakeHangingReply::abort()
     // Follow more or less the implementation of QNetworkReplyImpl::abort
     close();
     setError(OperationCanceledError, tr("Operation canceled"));
-    emit error(OperationCanceledError);
+    emit errorOccurred(OperationCanceledError);
     setFinished(true);
     emit finished();
 }
