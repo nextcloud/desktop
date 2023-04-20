@@ -45,7 +45,18 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
         break;
     }
 
-    _page = new AccountConfiguredWizardPage(FolderMan::suggestSyncFolder(_context->accountBuilder().serverUrl(), _context->accountBuilder().displayName()), vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
+    const auto urlToSuggestSyncFolderFor = [this]() {
+        const auto selectedInstance = _context->accountBuilder().webFingerSelectedInstance();
+
+        if (!selectedInstance.isEmpty()) {
+            return selectedInstance;
+        }
+
+        return _context->accountBuilder().serverUrl();
+    }();
+
+    _page = new AccountConfiguredWizardPage(FolderMan::suggestSyncFolder(urlToSuggestSyncFolderFor, _context->accountBuilder().displayName()), vfsIsAvailable,
+        enableVfsByDefault, vfsModeIsExperimental);
 }
 
 SetupWizardState AccountConfiguredSetupWizardState::state() const
