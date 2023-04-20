@@ -68,7 +68,7 @@ QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
                << qSetFieldWidth(0)
                << end;
     });
-    stream << endl;
+    stream << Qt::endl;
     for (const auto &index : items) {
         iterate([&](int c) {
             const auto &child = index.siblingAtColumn(c);
@@ -78,7 +78,7 @@ QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
                    << qSetFieldWidth(0)
                    << end;
         });
-        stream << endl;
+        stream << Qt::endl;
     }
     return out;
 }
