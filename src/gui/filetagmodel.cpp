@@ -65,7 +65,8 @@ void FileTagModel::fetchFileTags()
     qCDebug(lcFileTagModel) << "Starting fetch of filetags for file at:" << _serverRelativePath;
 
     const auto propfindJob = new PropfindJob(_account, _serverRelativePath, this);
-    propfindJob->setProperties({ QByteArrayLiteral("http://nextcloud.org/ns:tags") });
+    propfindJob->setProperties({ QByteArrayLiteral("http://nextcloud.org/ns:tags"),
+                                 QByteArrayLiteral("http://nextcloud.org/ns:system-tags") });
 
     connect(propfindJob, &PropfindJob::result, this, &FileTagModel::processFileTagRequestFinished);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &FileTagModel::processFileTagRequestFinishedWithError);
@@ -85,7 +86,20 @@ void FileTagModel::processFileTagRequestFinished(const QVariantMap &result)
                             << _serverRelativePath;
 
     beginResetModel();
-    _tags = result.value(QStringLiteral("tags")).toStringList();
+    _tags.clear();
+
+    const auto normalTags = result.value(QStringLiteral("tags")).toStringList();
+    const auto systemTags = result.value(QStringLiteral("system-tags")).toList();
+
+    auto systemTagStringList = QStringList();
+    for (const auto &systemTagMapVariant : systemTags) {
+        const auto systemTagMap = systemTagMapVariant.toMap();
+        const auto systemTag = systemTagMap.value(QStringLiteral("tag")).toString();
+        systemTagStringList << systemTag;
+    }
+
+    _tags << normalTags << systemTagStringList;
+
     Q_EMIT totalTagsChanged();
     endResetModel();
 }
