@@ -45,9 +45,6 @@ dir = {
     "build": "/drone/src/build",
 }
 
-oc10_server_version = "latest"  # stable release
-ocis_server_version = "2.0.0"
-
 notify_channels = {
     "desktop-internal": {
         "type": "channel",
@@ -157,7 +154,6 @@ def unit_test_pipeline(ctx):
             "arch": "amd64",
         },
         "steps": skipIfUnchanged(ctx, "unit-tests") +
-                 gitSubModules() +
                  build_client() +
                  unit_tests(),
         "trigger": {
@@ -178,7 +174,7 @@ def gui_test_pipeline(ctx):
             squish_parameters += " --tags %s" % params["tags"]
 
         steps = skipIfUnchanged(ctx, "gui-tests") + \
-                gitSubModules()
+                build_client(OC_CI_CLIENT_FEDORA, False)
 
         services = testMiddlewareService(server)
 
@@ -196,7 +192,6 @@ def gui_test_pipeline(ctx):
 
         steps += installPnpm() + \
                  setGuiTestReportDir() + \
-                 build_client(OC_CI_CLIENT_FEDORA, False) + \
                  gui_tests(squish_parameters, server) + \
                  uploadGuiTestLogs(ctx, server) + \
                  buildGithubComment(pipeline_name, server) + \
@@ -240,6 +235,7 @@ def build_client(image = OC_CI_CLIENT, ctest = True):
                 "LC_ALL": "C.UTF-8",
             },
             "commands": [
+                "git submodule update --init --recursive",
                 "mkdir -p %s" % dir["build"],
                 "cd %s" % dir["build"],
                 # generate build files
@@ -604,15 +600,6 @@ def installPnpm():
             "pnpm install",
             # install required browser
             "npx playwright install chromium",
-        ],
-    }]
-
-def gitSubModules():
-    return [{
-        "name": "submodules",
-        "image": DOCKER_GIT,
-        "commands": [
-            "git submodule update --init --recursive",
         ],
     }]
 
