@@ -71,7 +71,7 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url, QObject *parent)
         }();
 
         qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << job->reply()->url() << "is" << authType;
-        setJobResult(job, qVariantFromValue(authType));
+        setJobResult(job, QVariant::fromValue(authType));
     });
 
     return job;
