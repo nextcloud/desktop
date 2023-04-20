@@ -594,9 +594,7 @@ void Application::parseOptions(const QStringList &arguments)
     descriptionTextStream << tr("%1 version %2\r\nFile synchronization desktop utility.").arg(_theme->appName(), OCC::Version::displayString()) << Qt::endl;
 
     if (_theme->appName() == QLatin1String("ownCloud")) {
-        descriptionTextStream << Qt::endl
-                              << Qt::endl
-                              << tr("For more information, see %1", "link to homepage").arg(QStringLiteral("https://www.owncloud.com"));
+        descriptionTextStream << Qt::endl << Qt::endl << tr("For more information, see %1", "link to homepage").arg(QStringLiteral("https://www.owncloud.com"));
     }
 
     parser.setApplicationDescription(descriptionText);

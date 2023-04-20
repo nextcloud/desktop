@@ -88,21 +88,11 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     QString tmp;
     {
         QDebug(&tmp).noquote() << dateTimeStr(QDateTime::fromString(QString::fromUtf8(item._responseTimeStamp), Qt::RFC2822Date)) << L
-                               << ((item._instruction != CSYNC_INSTRUCTION_RENAME) ? item.destination() : item._file + QStringLiteral(" -> ") + item._renameTarget) << L
-                               << item._instruction << L
-                               << item._direction << L
-                               << L
-                               << item._modtime << L
-                               << item._etag << L
-                               << item._size << L
-                               << item._fileId << L
-                               << item._status << L
-                               << item._errorString << L
-                               << item._httpErrorCode << L
-                               << item._previousSize << L
-                               << item._previousModtime << L
-                               << item._requestId << L
-                               << Qt::endl;
+                               << ((item._instruction != CSYNC_INSTRUCTION_RENAME) ? item.destination()
+                                                                                   : item._file + QStringLiteral(" -> ") + item._renameTarget)
+                               << L << item._instruction << L << item._direction << L << L << item._modtime << L << item._etag << L << item._size << L
+                               << item._fileId << L << item._status << L << item._errorString << L << item._httpErrorCode << L << item._previousSize << L
+                               << item._previousModtime << L << item._requestId << L << Qt::endl;
     }
     *_out << tmp;
 }
@@ -111,10 +101,8 @@ void SyncRunFileLog::logLap(const QString &name)
 {
     QString tmp;
     {
-        QDebug(&tmp).noquote() << "#=#=#=#=#" << name << dateTimeStr()
-                               << "(last step:" << _lapDuration.restart() << "msec"
-                               << ", total:" << _totalDuration.elapsed() << "msec)"
-                               << Qt::endl;
+        QDebug(&tmp).noquote() << "#=#=#=#=#" << name << dateTimeStr() << "(last step:" << _lapDuration.restart() << "msec"
+                               << ", total:" << _totalDuration.elapsed() << "msec)" << Qt::endl;
     }
     *_out << tmp;
 }
@@ -123,10 +111,8 @@ void SyncRunFileLog::finish()
 {
     QString tmp;
     {
-        QDebug(&tmp).noquote() << "#=#=#=# Syncrun finished" << dateTimeStr()
-                               << "(last step:" << _lapDuration.elapsed() << "msec"
-                               << ", total:" << _totalDuration.elapsed() << "msec)"
-                               << Qt::endl;
+        QDebug(&tmp).noquote() << "#=#=#=# Syncrun finished" << dateTimeStr() << "(last step:" << _lapDuration.elapsed() << "msec"
+                               << ", total:" << _totalDuration.elapsed() << "msec)" << Qt::endl;
     }
     *_out << tmp;
     _out->flush();
