@@ -23,15 +23,14 @@
 #include <QSslCipher>
 #include <QBuffer>
 #include <QXmlStreamReader>
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 #include <QStringList>
 #include <QStack>
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
-#include <QJsonDocument>
 #include <QJsonObject>
-#include <qloggingcategory.h>
+#include <QLoggingCategory>
 #ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
 #include <QPainterPath>
