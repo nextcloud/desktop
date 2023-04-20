@@ -23,6 +23,7 @@
 #include <QSslCipher>
 #include <QBuffer>
 #include <QXmlStreamReader>
+#include <QtXml/QDomDocument>
 #include <QStringList>
 #include <QStack>
 #include <QTimer>
@@ -608,34 +609,43 @@ bool PropfindJob::finished()
 
     if (http_result_code == 207) {
         // Parse DAV response
-        QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+        auto items = QVariantMap();
+        auto domDocument = QDomDocument();
+        auto errorMsg = QString();
+        auto errorLine = -1;
+        auto errorColumn = -1;
 
-        QVariantMap items;
-        // introduced to nesting is ignored
-        QStack<QString> curElement;
-
-        while (!reader.atEnd()) {
-            const auto type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement) {
-                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
-                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
-                } else {
-                    curElement.push(reader.name().toString());
-                }
-            }
-            if (type == QXmlStreamReader::EndElement) {
-                if (curElement.top() == reader.name()) {
-                    curElement.pop();
-                }
-            }
-        }
-        if (reader.hasError()) {
-            qCWarning(lcPropfindJob) << "XML parser error: " << reader.errorString();
+        if (!domDocument.setContent(reply(), true, &errorMsg, &errorLine, &errorColumn)) {
+            qCWarning(lcPropfindJob) << "XML parser error: " << errorMsg << errorLine << errorColumn;
             emit finishedWithError(reply());
-        } else {
-            emit result(items);
+            return true;
         }
+
+        const auto rootElement = domDocument.documentElement();
+        const auto propNodes = rootElement.elementsByTagName("prop");
+
+        for (auto i = 0; i < propNodes.count(); ++i) {
+            const auto propNode = propNodes.at(i);
+            const auto propElement = propNode.toElement();
+
+            if (propElement.isNull() || propElement.tagName() != "prop") {
+                continue;
+            }
+
+            auto propChildNode = propElement.firstChild();
+
+            while (!propChildNode.isNull()) {
+                const auto propChildElement = propChildNode.toElement();
+
+                if (!propChildElement.isNull()) {
+                    items.insert(propChildElement.tagName(), propChildElement.text());
+                }
+
+                propChildNode = propChildNode.nextSibling();
+            }
+    }
+
+        emit result(items);
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
