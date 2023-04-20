@@ -981,6 +981,7 @@ void Folder::startSync()
 
     _timeSinceLastSyncStart.start();
     setSyncState(SyncResult::SyncPrepare);
+    _syncResult.reset();
 
     qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << "client version"
                      << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
@@ -1060,7 +1061,6 @@ void Folder::slotSyncError(const QString &message, ErrorCategory category)
 void Folder::slotSyncStarted()
 {
     qCInfo(lcFolder) << "#### Propagation start ####################################################";
-    _syncResult.reset();
     setSyncState(SyncResult::SyncRunning);
 }
 
