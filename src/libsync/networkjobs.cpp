@@ -663,25 +663,8 @@ QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocum
                 const auto propChildElementTagName = propChildElement.tagName();
 
                 if (propChildElementTagName == propfindFileTagsContainerElementTagName) {
-                    const auto tagNodes = domDocument.elementsByTagName(propfindFileTagElementTagName);
-                    const auto tagCount = tagNodes.count();
-
-                    auto tagList = QStringList();
-                    tagList.reserve(tagCount);
-
-                    for (auto i = 0; i < tagCount; ++i) {
-                        const auto tagNode = tagNodes.at(i);
-                        const auto tagElement = tagNode.toElement();
-
-                        if (tagElement.isNull()) {
-                            continue;
-                        }
-
-                        tagList.append(tagElement.text());
-                    }
-
+                    const auto tagList = processTagsInPropfindDomDocument(domDocument);
                     items.insert(propChildElementTagName, tagList);
-
                 } else {
                     items.insert(propChildElementTagName, propChildElement.text());
                 }
@@ -692,6 +675,31 @@ QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocum
     }
 
     return items;
+}
+
+QStringList PropfindJob::processTagsInPropfindDomDocument(const QDomDocument &domDocument)
+{
+    const auto tagNodes = domDocument.elementsByTagName(propfindFileTagElementTagName);
+    if (tagNodes.isEmpty()) {
+        return {};
+    }
+
+    const auto tagCount = tagNodes.count();
+    auto tagList = QStringList();
+    tagList.reserve(tagCount);
+
+    for (auto i = 0; i < tagCount; ++i) {
+        const auto tagNode = tagNodes.at(i);
+        const auto tagElement = tagNode.toElement();
+
+        if (tagElement.isNull()) {
+            continue;
+        }
+
+        tagList.append(tagElement.text());
+    }
+
+    return tagList;
 }
 
 /*********************************************************************************************/

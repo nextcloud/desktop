@@ -200,6 +200,7 @@ private slots:
 
 private:
     static QVariantMap processPropfindDomDocument(const QDomDocument &domDocument);
+    static QStringList processTagsInPropfindDomDocument(const QDomDocument &domDocument);
 
     QList<QByteArray> _properties;
 };
