@@ -61,6 +61,7 @@ Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determinea
 Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
 
 constexpr auto notModifiedStatusCode = 304;
+constexpr auto propfindPropElementTagName = "prop";
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -623,13 +624,13 @@ bool PropfindJob::finished()
         }
 
         const auto rootElement = domDocument.documentElement();
-        const auto propNodes = rootElement.elementsByTagName("prop");
+        const auto propNodes = rootElement.elementsByTagName(propfindPropElementTagName);
 
         for (auto i = 0; i < propNodes.count(); ++i) {
             const auto propNode = propNodes.at(i);
             const auto propElement = propNode.toElement();
 
-            if (propElement.isNull() || propElement.tagName() != "prop") {
+            if (propElement.isNull() || propElement.tagName() != propfindPropElementTagName) {
                 continue;
             }
 
