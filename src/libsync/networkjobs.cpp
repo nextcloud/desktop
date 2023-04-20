@@ -610,7 +610,6 @@ bool PropfindJob::finished()
 
     if (http_result_code == 207) {
         // Parse DAV response
-        auto items = QVariantMap();
         auto domDocument = QDomDocument();
         auto errorMsg = QString();
         auto errorLine = -1;
@@ -619,40 +618,54 @@ bool PropfindJob::finished()
         if (!domDocument.setContent(reply(), true, &errorMsg, &errorLine, &errorColumn)) {
             qCWarning(lcPropfindJob) << "XML parser error: " << errorMsg << errorLine << errorColumn;
             emit finishedWithError(reply());
-            return true;
+
+        } else {
+            const auto parsedItems = processPropfindDomDocument(domDocument);
+            emit result(parsedItems);
         }
 
-        const auto rootElement = domDocument.documentElement();
-        const auto propNodes = rootElement.elementsByTagName(propfindPropElementTagName);
-
-        for (auto i = 0; i < propNodes.count(); ++i) {
-            const auto propNode = propNodes.at(i);
-            const auto propElement = propNode.toElement();
-
-            if (propElement.isNull() || propElement.tagName() != propfindPropElementTagName) {
-                continue;
-            }
-
-            auto propChildNode = propElement.firstChild();
-
-            while (!propChildNode.isNull()) {
-                const auto propChildElement = propChildNode.toElement();
-
-                if (!propChildElement.isNull()) {
-                    items.insert(propChildElement.tagName(), propChildElement.text());
-                }
-
-                propChildNode = propChildNode.nextSibling();
-            }
-    }
-
-        emit result(items);
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
         emit finishedWithError(reply());
     }
+
     return true;
+}
+
+QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocument)
+{
+    if (!domDocument.hasChildNodes()) {
+        return {};
+    }
+
+    auto items = QVariantMap();
+
+    const auto rootElement = domDocument.documentElement();
+    const auto propNodes = rootElement.elementsByTagName(propfindPropElementTagName);
+
+    for (auto i = 0; i < propNodes.count(); ++i) {
+        const auto propNode = propNodes.at(i);
+        const auto propElement = propNode.toElement();
+
+        if (propElement.isNull() || propElement.tagName() != propfindPropElementTagName) {
+            continue;
+        }
+
+        auto propChildNode = propElement.firstChild();
+
+        while (!propChildNode.isNull()) {
+            const auto propChildElement = propChildNode.toElement();
+
+            if (!propChildElement.isNull()) {
+                items.insert(propChildElement.tagName(), propChildElement.text());
+            }
+
+            propChildNode = propChildNode.nextSibling();
+        }
+    }
+
+    return items;
 }
 
 /*********************************************************************************************/

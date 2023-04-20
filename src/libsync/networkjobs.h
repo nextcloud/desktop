@@ -199,6 +199,8 @@ private slots:
     bool finished() override;
 
 private:
+    static QVariantMap processPropfindDomDocument(const QDomDocument &domDocument);
+
     QList<QByteArray> _properties;
 };
 
