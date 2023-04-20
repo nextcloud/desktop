@@ -54,14 +54,27 @@ notify_channels = {
     },
 }
 
+trigger_ref = {
+    "cron": [
+        "refs/heads/master",
+        "refs/heads/3.**",
+        "refs/heads/4**",
+        "refs/tags/**",
+    ],
+    "pull_request": [
+        "refs/pull/**",
+    ],
+}
+
+build_config = {
+    "c_compiler": "clang",
+    "cxx_compiler": "clang++",
+    "build_type": "Debug",
+    "generator": "Ninja",
+    "command": "ninja",
+}
+
 config = {
-    "build": {
-        "c_compiler": "clang",
-        "cxx_compiler": "clang++",
-        "build_type": "Debug",
-        "generator": "Ninja",
-        "command": "ninja -j",
-    },
     "gui-tests": {
         "servers": {
             "oc10": {
@@ -86,54 +99,24 @@ config = {
 }
 
 def main(ctx):
-    return gui_test_pipeline(ctx)
-    build_trigger = {
-        "ref": [
-            "refs/heads/master",
-            "refs/heads/3.**",
-            "refs/heads/4**",
-            "refs/tags/**",
-            "refs/pull/**",
-        ],
-    }
-    cron_trigger = {
-        "event": [
-            "cron",
-        ],
-    }
+    pipelines = cancelPreviousBuilds() + \
+                check_starlark() + \
+                gui_tests_format() + \
+                changelog(ctx)
+    unit_tests = unit_test_pipeline(ctx)
+    gui_tests = gui_test_pipeline(ctx)
 
-    pipelines = []
-
-    if ctx.build.event == "cron" or ctx.build.event == "tag":
-        trigger = cron_trigger
-        if ctx.build.event == "tag":
-            trigger = build_trigger
-
-        unit_tests = unit_test_pipeline(ctx, trigger = trigger)
-
-        gui_tests = gui_test_pipeline(ctx, trigger)
-
-        notify = notification(
-            name = "nightly" if ctx.build.event == "cron" else "tag",
-            trigger = trigger,
-        )
-        pipelines = unit_tests + gui_tests + pipelinesDependsOn(notify, unit_tests + gui_tests)
-    else:
-        pipelines = cancelPreviousBuilds() + \
-                    gui_tests_format(build_trigger) + \
-                    check_starlark(build_trigger) + \
-                    changelog(ctx, trigger = build_trigger) + \
-                    unit_test_pipeline(ctx, trigger = build_trigger) + \
-                    gui_test_pipeline(ctx, build_trigger)
-
-    return pipelines
+    return pipelines + \
+           unit_tests + \
+           gui_tests + \
+           pipelinesDependsOn(notification(), unit_tests + gui_tests)
 
 def from_secret(name):
     return {
         "from_secret": name,
     }
 
-def check_starlark(trigger = {}):
+def check_starlark():
     return [{
         "kind": "pipeline",
         "type": "docker",
@@ -160,10 +143,12 @@ def check_starlark(trigger = {}):
                 },
             },
         ],
-        "trigger": trigger,
+        "trigger": {
+            "ref": trigger_ref["pull_request"],
+        },
     }]
 
-def unit_test_pipeline(ctx, trigger = {}):
+def unit_test_pipeline(ctx):
     return [{
         "kind": "pipeline",
         "name": "unit-tests",
@@ -175,19 +160,13 @@ def unit_test_pipeline(ctx, trigger = {}):
                  gitSubModules() +
                  build_client() +
                  unit_tests(),
-        "trigger": trigger,
+        "trigger": {
+            "ref": trigger_ref["cron"] + trigger_ref["pull_request"],
+        },
     }]
 
-def gui_test_pipeline(ctx, trigger = {}):
+def gui_test_pipeline(ctx):
     squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false  --tags ~@skip" % dir["guiTestReport"]
-    upload_report_trigger = {
-        "status": [
-            "failure",
-        ],
-    }
-    if ctx.build.event == "tag":
-        upload_report_trigger["status"].append("success")
-
     pipelines = []
     for server, params in config["gui-tests"]["servers"].items():
         if ctx.build.event == "pull_request" and params.get("skip_in_pr", False) and not "full-ci" in ctx.build.title.lower():
@@ -219,11 +198,11 @@ def gui_test_pipeline(ctx, trigger = {}):
                  setGuiTestReportDir() + \
                  build_client(OC_CI_CLIENT_FEDORA, False) + \
                  gui_tests(squish_parameters, server) + \
-                 uploadGuiTestLogs(server, upload_report_trigger) + \
+                 uploadGuiTestLogs(ctx, server) + \
                  buildGithubComment(pipeline_name, server) + \
                  githubComment(pipeline_name, server)
 
-        pipelines.append([{
+        pipelines.append({
             "kind": "pipeline",
             "name": pipeline_name,
             "platform": {
@@ -232,20 +211,21 @@ def gui_test_pipeline(ctx, trigger = {}):
             },
             "steps": steps,
             "services": services,
-            "trigger": trigger,
+            "trigger": {
+                "ref": trigger_ref["cron"] + trigger_ref["pull_request"],
+            },
             "volumes": [
                 {
                     "name": "uploads",
                     "temp": {},
                 },
             ],
-        }])
+        })
     return pipelines
 
 def build_client(image = OC_CI_CLIENT, ctest = True):
-    build = config["build"]
     cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s" -DWITH_LIBCLOUDPROVIDERS=ON'
-    cmake_options = cmake_options % (build["generator"], build["c_compiler"], build["cxx_compiler"], build["build_type"])
+    cmake_options = cmake_options % (build_config["generator"], build_config["c_compiler"], build_config["cxx_compiler"], build_config["build_type"])
 
     if ctest:
         cmake_options += " -DBUILD_TESTING=ON"
@@ -273,7 +253,7 @@ def build_client(image = OC_CI_CLIENT, ctest = True):
             },
             "commands": [
                 "cd %s" % dir["build"],
-                build["command"],
+                build_config["command"],
             ],
         },
     ]
@@ -313,7 +293,7 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
         },
     }]
 
-def gui_tests_format(trigger):
+def gui_tests_format():
     return [{
         "kind": "pipeline",
         "type": "docker",
@@ -328,10 +308,12 @@ def gui_tests_format(trigger):
                 ],
             },
         ],
-        "trigger": trigger,
+        "trigger": {
+            "ref": trigger_ref["pull_request"],
+        },
     }]
 
-def changelog(ctx, trigger = {}):
+def changelog(ctx):
     repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
 
     return [{
@@ -404,17 +386,12 @@ def changelog(ctx, trigger = {}):
                 },
             },
         ],
-        "trigger": trigger,
+        "trigger": {
+            "ref": trigger_ref["pull_request"],
+        },
     }]
 
-def notification(name, trigger = {}):
-    trigger = dict(trigger)
-    if not "status" in trigger:
-        trigger["status"] = []
-
-    trigger["status"].append("success")
-    trigger["status"].append("failure")
-
+def notification():
     steps = [{
         "name": "create-template",
         "image": OC_CI_ALPINE,
@@ -451,13 +428,21 @@ def notification(name, trigger = {}):
 
     return [{
         "kind": "pipeline",
-        "name": "notifications-" + name,
+        "name": "notifications",
         "platform": {
             "os": "linux",
             "arch": "amd64",
         },
         "steps": steps,
-        "trigger": trigger,
+        "trigger": {
+            "event": [
+                "cron",
+            ],
+            "status": [
+                "success",
+                "failure",
+            ],
+        },
     }]
 
 def databaseService():
@@ -663,7 +648,15 @@ def showGuiTestResult():
         },
     }]
 
-def uploadGuiTestLogs(server_type = "oc10", trigger = {}):
+def uploadGuiTestLogs(ctx, server_type = "oc10"):
+    trigger = {
+        "status": [
+            "failure",
+        ],
+    }
+    if ctx.build.event == "tag":
+        trigger["status"].append("success")
+
     return [{
         "name": "upload-gui-test-result",
         "image": PLUGINS_S3,
@@ -760,9 +753,7 @@ def cancelPreviousBuilds():
             },
         }],
         "trigger": {
-            "ref": [
-                "refs/pull/**",
-            ],
+            "ref": trigger_ref["pull_request"],
         },
     }]
 
