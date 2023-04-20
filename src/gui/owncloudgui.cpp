@@ -1021,6 +1021,9 @@ void ownCloudGui::runNewAccountWizard()
 
                     QObject::connect(validator, &ConnectionValidator::connectionResult, accountStatePtr.data(), [accountStatePtr, syncMode, dynamicRegistrationData](ConnectionValidator::Status status, const QStringList &errors) {
                         if (OC_ENSURE(status == ConnectionValidator::Connected || status == ConnectionValidator::ServerVersionMismatch)) {
+                            // TODO: DOCUMENT THIS
+                            Q_EMIT accountStatePtr->account()->credentialsFetched(accountStatePtr->account()->credentials());
+
                             // saving once after adding makes sure the account is stored in the config in a working state
                             // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
                             // (for instance, when running from a debugger and stopping the process from there)

@@ -457,7 +457,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Add Space</source>
-        <translation>Einen Space hinzufügen</translation>
+        <translation>Space hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
@@ -581,7 +581,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>Click this button to add a Space.</source>
-        <translation>Diese Schaltfläche drücken um einen Space hinzuzufügen.</translation>
+        <translation>Diese Schaltfläche drücken, um einen Space hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
@@ -784,7 +784,7 @@ Bitte über den Browser authentifizieren.</translation>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation>Eine Aktualisierung ist für dieses AppImage verfügbar von %1. Möchten Sie die Aktualisierung installieren?
+        <translation>Eine Aktualisierung ist für dieses AppImage von %1 verfügbar. Möchten Sie die Aktualisierung installieren?
 
 Die Aktualisierung wird im Hintergrund durchgeführt und überschreibt die aktuelle AppImage-Datei. Sie müssen die App neu starten, um die Aktualisierung abzuschließen.</translation>
     </message>
@@ -1092,7 +1092,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Der Pfad &apos;%1&apos; ist zu lang. Entweder die Unterstützung für lange Pfadnamen in den Windows Einstellungen einschalten oder ein anderes Verzeichnis auswählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="232"/>
@@ -1308,7 +1308,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
@@ -1323,7 +1323,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Der Pfad &apos;%1&apos; ist zu lang. Entweder die Unterstützung für lange Pfadnamen in den Windows Einstellungen einschalten oder ein anderes Verzeichnis auswählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1172"/>
@@ -1385,7 +1385,7 @@ Erwägung Sie, diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="201"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 von %2 Serverkapazität verwendet</translation>
+        <translation>%1 von %2 verwendet</translation>
     </message>
 </context>
 <context>
@@ -2551,7 +2551,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation>Dieser Space ist aktuell nicht erreichbar</translation>
+        <translation>Dieser Space ist aktuell nicht erreichbar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
@@ -4078,22 +4078,22 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Konto %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation>Alle Synchronisationen jetzt starten</translation>
+        <translation>Alle Synchronisationen fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
-        <translation>Synchronisation jetzt starten</translation>
+        <translation>Synchronisation neu starten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
-        <translation>Alle Synchronisationen anhalten</translation>
+        <translation>Alle Synchronisationen anhalten.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>

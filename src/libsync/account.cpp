@@ -206,13 +206,7 @@ void Account::setCredentials(AbstractCredentials *cred)
     connect(_credentials.data(), &AbstractCredentials::authenticationStarted, this, [this] {
         _queueGuard.block();
     });
-    connect(_credentials.data(), &AbstractCredentials::authenticationFailed, this, [this] {
-        _queueGuard.clear();
-    });
-
-    if (_spacesManager) {
-        _spacesManager->checkReady();
-    }
+    connect(_credentials.data(), &AbstractCredentials::authenticationFailed, this, [this] { _queueGuard.clear(); });
 }
 
 QUrl Account::davUrl() const

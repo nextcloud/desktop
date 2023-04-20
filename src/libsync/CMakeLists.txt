@@ -47,7 +47,6 @@ set(libsync_SRCS
     syncoptions.cpp
     theme.cpp
     creds/credentialmanager.cpp
-    creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/oauth.cpp
