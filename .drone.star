@@ -54,13 +54,6 @@ notify_channels = {
     },
 }
 
-oc_extra_apps = {
-    "oauth2": {
-        "enabled": False,
-        "command": "make dist",
-    },
-}
-
 config = {
     "build": {
         "c_compiler": "clang",
@@ -69,9 +62,31 @@ config = {
         "generator": "Ninja",
         "command": "ninja -j",
     },
+    "gui-tests": {
+        "servers": {
+            "oc10": {
+                "version": "latest",
+                # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
+                "tags": "~@skipOnOC10",
+                "extra_apps": {
+                    "oauth2": {
+                        "enabled": False,
+                        "command": "make dist",
+                    },
+                },
+                "skip_in_pr": True,
+            },
+            "ocis": {
+                "version": "2.0.0",
+                # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
+                "tags": "~@skipOnOCIS",
+            },
+        },
+    },
 }
 
 def main(ctx):
+    return gui_test_pipeline(ctx)
     build_trigger = {
         "ref": [
             "refs/heads/master",
@@ -96,8 +111,7 @@ def main(ctx):
 
         unit_tests = unit_test_pipeline(ctx, trigger = trigger)
 
-        gui_tests = gui_test_pipeline(ctx, trigger = trigger) + \
-                    gui_test_pipeline(ctx, trigger = trigger, server_version = ocis_server_version, server_type = "ocis")
+        gui_tests = gui_test_pipeline(ctx, trigger)
 
         notify = notification(
             name = "nightly" if ctx.build.event == "cron" else "tag",
@@ -110,11 +124,7 @@ def main(ctx):
                     check_starlark(build_trigger) + \
                     changelog(ctx, trigger = build_trigger) + \
                     unit_test_pipeline(ctx, trigger = build_trigger) + \
-                    gui_test_pipeline(ctx, trigger = build_trigger, server_version = ocis_server_version, server_type = "ocis")
-
-        # run gui tests against oc10 server only if the build title contains "full-ci"
-        if "full-ci" in ctx.build.title.lower():
-            pipelines += gui_test_pipeline(ctx, trigger = build_trigger, server_version = oc10_server_version, server_type = "oc10")
+                    gui_test_pipeline(ctx, build_trigger)
 
     return pipelines
 
@@ -168,10 +178,8 @@ def unit_test_pipeline(ctx, trigger = {}):
         "trigger": trigger,
     }]
 
-def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_server_version, server_type = "oc10"):
-    pipeline_name = "GUI-tests-%s" % server_type
-    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false" % dir["guiTestReport"]
-
+def gui_test_pipeline(ctx, trigger = {}):
+    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false  --tags ~@skip" % dir["guiTestReport"]
     upload_report_trigger = {
         "status": [
             "failure",
@@ -180,57 +188,59 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
     if ctx.build.event == "tag":
         upload_report_trigger["status"].append("success")
 
-    steps = skipIfUnchanged(ctx, "gui-tests") + \
-            gitSubModules()
+    pipelines = []
+    for server, params in config["gui-tests"]["servers"].items():
+        if ctx.build.event == "pull_request" and params.get("skip_in_pr", False) and not "full-ci" in ctx.build.title.lower():
+            continue
 
-    services = testMiddlewareService(server_type)
+        pipeline_name = "GUI-tests-%s" % server
 
-    if server_type == "oc10":
-        squish_parameters += " --tags ~@skip --tags ~@skipOnOC10"
+        if params["tags"]:
+            squish_parameters += " --tags %s" % params["tags"]
 
-        steps += installCore(server_version) + \
-                 setupServerAndApp() + \
-                 installExtraApps(oc_extra_apps) + \
-                 fixPermissions() + \
-                 owncloudLog()
-        services += owncloudService() + \
-                    databaseService()
-    else:
-        squish_parameters += " --tags ~@skip --tags ~@skipOnOCIS"
+        steps = skipIfUnchanged(ctx, "gui-tests") + \
+                gitSubModules()
 
-        steps += ocisService(server_version) + \
-                 waitForOcisService()
+        services = testMiddlewareService(server)
 
-    steps += installPnpm() + \
-             setGuiTestReportDir() + \
-             build_client(OC_CI_CLIENT_FEDORA, False) + \
-             gui_tests(squish_parameters, server_type) + \
-             uploadGuiTestLogs(server_type, trigger = upload_report_trigger) + \
-             buildGithubComment(pipeline_name, server_type) + \
-             githubComment(pipeline_name, server_type)
+        if server == "oc10":
+            steps += installCore(params["version"]) + \
+                     setupServerAndApp() + \
+                     installExtraApps(params["extra_apps"]) + \
+                     fixPermissions() + \
+                     owncloudLog()
+            services += owncloudService() + \
+                        databaseService()
+        else:
+            steps += ocisService(params["version"]) + \
+                     waitForOcisService()
 
-    if (len(filterTags) > 0):
-        tags = ",".join(filterTags)
-        squish_parameters += " --tags %s" % tags
-        pipeline_name += "-" + tags
+        steps += installPnpm() + \
+                 setGuiTestReportDir() + \
+                 build_client(OC_CI_CLIENT_FEDORA, False) + \
+                 gui_tests(squish_parameters, server) + \
+                 uploadGuiTestLogs(server, upload_report_trigger) + \
+                 buildGithubComment(pipeline_name, server) + \
+                 githubComment(pipeline_name, server)
 
-    return [{
-        "kind": "pipeline",
-        "name": pipeline_name,
-        "platform": {
-            "os": "linux",
-            "arch": "amd64",
-        },
-        "steps": steps,
-        "services": services,
-        "trigger": trigger,
-        "volumes": [
-            {
-                "name": "uploads",
-                "temp": {},
+        pipelines.append([{
+            "kind": "pipeline",
+            "name": pipeline_name,
+            "platform": {
+                "os": "linux",
+                "arch": "amd64",
             },
-        ],
-    }]
+            "steps": steps,
+            "services": services,
+            "trigger": trigger,
+            "volumes": [
+                {
+                    "name": "uploads",
+                    "temp": {},
+                },
+            ],
+        }])
+    return pipelines
 
 def build_client(image = OC_CI_CLIENT, ctest = True):
     build = config["build"]
