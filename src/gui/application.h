@@ -19,7 +19,6 @@
 #include <QPointer>
 #include <QQueue>
 #include <QTimer>
-#include <QNetworkConfigurationManager>
 
 #include "3rdparty/qtsingleapplication/qtsingleapplication.h"
 
@@ -96,7 +95,6 @@ protected slots:
     void slotCleanup();
     void slotAccountStateAdded(AccountStatePtr accountState) const;
     void slotAccountStateRemoved() const;
-    void slotSystemOnlineConfigurationChanged(const QNetworkConfiguration &);
 
 private:
     /**
@@ -123,7 +121,6 @@ private:
 
     ClientProxy _proxy;
 
-    QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
 
     QScopedPointer<FolderMan> _folderManager;

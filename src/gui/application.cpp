@@ -368,10 +368,6 @@ Application::Application(int &argc, char **argv, Platform *platform)
     // Also check immediately
     QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
-    // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
-        this, &Application::slotSystemOnlineConfigurationChanged);
-
 #ifdef WITH_AUTO_UPDATER
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
@@ -437,16 +433,6 @@ void Application::slotCleanup()
 
     _gui->slotShutdown();
     _gui->deleteLater();
-}
-
-// FIXME: This is not ideal yet since a ConnectionValidator might already be running and is in
-// progress of timing out in some seconds.
-// Maybe we need 2 validators, one triggered by timer, one by network configuration changes?
-void Application::slotSystemOnlineConfigurationChanged(const QNetworkConfiguration &cnf)
-{
-    if (cnf.state() & QNetworkConfiguration::Active) {
-        QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);
-    }
 }
 
 void Application::slotCheckConnection()

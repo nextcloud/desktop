@@ -14,7 +14,6 @@
 
 #include <QAuthenticator>
 #include <QLoggingCategory>
-#include <QNetworkConfiguration>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkProxy>
@@ -37,10 +36,6 @@ Q_LOGGING_CATEGORY(lcAccessManager, "sync.accessmanager", QtInfoMsg)
 AccessManager::AccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
-#ifndef Q_OS_LINUX
-    // Atempt to workaround for https://github.com/owncloud/client/issues/3969
-    setConfiguration(QNetworkConfiguration());
-#endif
     setCookieJar(new CookieJar);
 
     connect(this, &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
