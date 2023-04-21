@@ -286,7 +286,7 @@ QRectF FolderStatusDelegate::optionsButtonRect(QRectF within, Qt::LayoutDirectio
     QStyleOptionToolButton opt;
     int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
     opt.rect.setSize(QSize(e,e));
-    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
+    QSizeF size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size());
 
     QRectF r(QPoint(within.right() - size.width() - QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing),
                  within.top() + within.height() / 2 - size.height() / 2),
