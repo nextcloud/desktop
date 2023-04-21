@@ -43,7 +43,6 @@ protected:
     }
 
 private:
-    static QString getSystemInfo();
     static QUrlQuery getQueryParams();
     static Updater *create();
     static Updater *_instance;
