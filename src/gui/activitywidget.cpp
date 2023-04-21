@@ -208,7 +208,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         return;
     }
     // compute the count to display later
-    QHash<QString, int> accNotified;
+    QMap<QString, int> accNotified;
 
     // Whether a new notification widget was added to the notificationLayout.
     bool newNotificationShown = false;
