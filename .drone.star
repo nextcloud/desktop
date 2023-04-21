@@ -51,17 +51,12 @@ notify_channels = {
     },
 }
 
-trigger_ref = {
-    "cron": [
-        "refs/heads/master",
-        "refs/heads/3.**",
-        "refs/heads/4**",
-        "refs/tags/**",
-    ],
-    "pull_request": [
-        "refs/pull/**",
-    ],
-}
+trigger_refs = [
+    "refs/heads/master",
+    "refs/heads/4**",
+    "refs/tags/**",
+    "refs/pull/**",
+]
 
 build_config = {
     "c_compiler": "clang",
@@ -141,7 +136,9 @@ def check_starlark():
             },
         ],
         "trigger": {
-            "ref": trigger_ref["pull_request"],
+            "event": [
+                "pull_request",
+            ],
         },
     }]
 
@@ -157,7 +154,7 @@ def unit_test_pipeline(ctx):
                  build_client() +
                  unit_tests(),
         "trigger": {
-            "ref": trigger_ref["cron"] + trigger_ref["pull_request"],
+            "ref": trigger_refs,
         },
     }]
 
@@ -166,6 +163,10 @@ def gui_test_pipeline(ctx):
     pipelines = []
     for server, params in config["gui-tests"]["servers"].items():
         if ctx.build.event == "pull_request" and params.get("skip_in_pr", False) and not "full-ci" in ctx.build.title.lower():
+            continue
+
+        # also skip in commit push
+        if params.get("skip_in_pr", False) and ctx.build.event == "push":
             continue
 
         pipeline_name = "GUI-tests-%s" % server
@@ -207,7 +208,7 @@ def gui_test_pipeline(ctx):
             "steps": steps,
             "services": services,
             "trigger": {
-                "ref": trigger_ref["cron"] + trigger_ref["pull_request"],
+                "ref": trigger_refs,
             },
             "volumes": [
                 {
@@ -297,7 +298,9 @@ def gui_tests_format():
             },
         ],
         "trigger": {
-            "ref": trigger_ref["pull_request"],
+            "event": [
+                "pull_request",
+            ],
         },
     }]
 
@@ -375,7 +378,9 @@ def changelog(ctx):
             },
         ],
         "trigger": {
-            "ref": trigger_ref["pull_request"],
+            "event": [
+                "pull_request",
+            ],
         },
     }]
 
@@ -732,7 +737,9 @@ def cancelPreviousBuilds():
             },
         }],
         "trigger": {
-            "ref": trigger_ref["pull_request"],
+            "event": [
+                "pull_request",
+            ],
         },
     }]
 
