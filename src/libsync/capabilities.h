@@ -167,6 +167,8 @@ public:
      */
     [[nodiscard]] bool uploadConflictFiles() const;
 
+    [[nodiscard]] bool groupFoldersAvailable() const;
+
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
     DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);

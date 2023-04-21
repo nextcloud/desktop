@@ -24,6 +24,7 @@ RowLayout {
     property color titleColor: Style.ncTextColor
     property color sublineColor: Style.ncSecondaryTextColor
 
+
     Accessible.role: Accessible.ListItem
     Accessible.name: resultTitle
     Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
@@ -79,29 +80,16 @@ RowLayout {
         }
     }
 
-    ColumnLayout {
+    ListItemLineAndSubline {
         id: unifiedSearchResultTextContainer
+
+        spacing: Style.standardSpacing
 
         Layout.fillWidth: true
         Layout.rightMargin: Style.trayHorizontalMargin
-        spacing: Style.standardSpacing
 
-        EnforcedPlainTextLabel {
-            id: unifiedSearchResultTitleText
-            Layout.fillWidth: true
-            text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
-            elide: Text.ElideRight
-            font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
-            color: unifiedSearchResultItemDetails.titleColor
-        }
-        EnforcedPlainTextLabel {
-            id: unifiedSearchResultTextSubline
-            Layout.fillWidth: true
-            text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
-            elide: Text.ElideRight
-            font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
-            color: unifiedSearchResultItemDetails.sublineColor
-        }
+        lineText: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
+        sublineText: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
     }
 
 }

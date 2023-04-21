@@ -51,6 +51,7 @@ QtObject {
 
     property int standardSpacing: 10
     property int smallSpacing: 5
+    property int extraSmallSpacing: 2
 
     property int iconButtonWidth: 36
     property int standardPrimaryButtonHeight: 40
@@ -130,6 +131,20 @@ QtObject {
     readonly property var fontMetrics: FontMetrics {}
 
     readonly property int activityContentSpace: 4
+
+    readonly property double smallIconScaleFactor: 0.6
+
+    readonly property double trayFolderListButtonWidthScaleFactor: 1.75
+    readonly property int trayFolderStatusIndicatorSizeOffset: 2
+    readonly property double trayFolderStatusIndicatorRadiusFactor: 0.5
+    readonly property double trayFolderStatusIndicatorMouseHoverOpacityFactor: 0.2
+
+    readonly property double trayWindowMenuWidthFactor: 0.35
+
+    readonly property int trayWindowMenuOffsetX: -2
+    readonly property int trayWindowMenuOffsetY: 2
+
+    readonly property int trayWindowMenuEntriesMargin: 6
 
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));

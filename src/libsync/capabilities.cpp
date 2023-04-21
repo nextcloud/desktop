@@ -350,6 +350,11 @@ bool Capabilities::uploadConflictFiles() const
     return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
 }
 
+bool Capabilities::groupFoldersAvailable() const
+{
+    return _capabilities[QStringLiteral("groupfolders")].toMap().value(QStringLiteral("hasGroupFolders"), false).toBool();
+}
+
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
