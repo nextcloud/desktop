@@ -4,6 +4,10 @@ include(OCRcVersion)
 # not adding strict compile settings
 # included in apply_common_target_settings
 function(apply_common_target_settings_soft targetName)
+    target_compile_definitions(${targetName}
+        PRIVATE
+            QT_DISABLE_DEPRECATED_BEFORE=0x051500
+    )
     if(FORCE_ASSERTS)
         target_compile_definitions(${targetName}
             PRIVATE
