@@ -34,9 +34,38 @@
 #endif
 
 namespace {
+
 constexpr int CrashLogSize = 20;
 constexpr int MaxLogSizeBytes = 1024 * 512;
+
+static bool compressLog(const QString &originalName, const QString &targetName)
+{
+#ifdef ZLIB_FOUND
+    QFile original(originalName);
+    if (!original.open(QIODevice::ReadOnly))
+        return false;
+    auto compressed = gzopen(targetName.toUtf8(), "wb");
+    if (!compressed) {
+        return false;
+    }
+
+    while (!original.atEnd()) {
+        auto data = original.read(1024 * 1024);
+        auto written = gzwrite(compressed, data.data(), data.size());
+        if (written != data.size()) {
+            gzclose(compressed);
+            return false;
+        }
+    }
+    gzclose(compressed);
+    return true;
+#else
+    return false;
+#endif
 }
+
+}
+
 namespace OCC {
 
 Logger *Logger::instance()
@@ -118,11 +147,13 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     cout << msg << endl;
 #endif
     {
+        QMutexLocker lock(&_mutex);
+
         if (_logFile.size() >= MaxLogSizeBytes) {
-            enterNextLogFile();
+            closeNoLock();
+            enterNextLogFileNoLock();
         }
 
-        QMutexLocker lock(&_mutex);
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
 
@@ -132,7 +163,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
                 _logstream->flush();
         }
         if (type == QtFatalMsg) {
-            close();
+            closeNoLock();
 #if defined(Q_OS_WIN)
             // Make application terminate in a way that can be caught by the crash reporter
             Utility::crash();
@@ -142,7 +173,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     emit logWindowLog(msg);
 }
 
-void Logger::close()
+void Logger::closeNoLock()
 {
     dumpCrashLog();
     if (_logstream)
@@ -155,40 +186,14 @@ void Logger::close()
 
 QString Logger::logFile() const
 {
+    QMutexLocker locker(&_mutex);
     return _logFile.fileName();
 }
 
 void Logger::setLogFile(const QString &name)
 {
     QMutexLocker locker(&_mutex);
-    if (_logstream) {
-        _logstream.reset(nullptr);
-        _logFile.close();
-    }
-
-    if (name.isEmpty()) {
-        return;
-    }
-
-    bool openSucceeded = false;
-    if (name == QLatin1String("-")) {
-        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
-    } else {
-        _logFile.setFileName(name);
-        openSucceeded = _logFile.open(QIODevice::WriteOnly);
-    }
-
-    if (!openSucceeded) {
-        locker.unlock(); // Just in case postGuiMessage has a qDebug()
-        postGuiMessage(tr("Error"),
-            QString(tr("<nobr>File \"%1\"<br/>cannot be opened for writing.<br/><br/>"
-                       "The log output <b>cannot</b> be saved!</nobr>"))
-                .arg(name));
-        return;
-    }
-
-    _logstream.reset(new QTextStream(&_logFile));
-    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
+    setLogFileNoLock(name);
 }
 
 void Logger::setLogExpire(int expire)
@@ -273,33 +278,7 @@ void Logger::dumpCrashLog()
     }
 }
 
-static bool compressLog(const QString &originalName, const QString &targetName)
-{
-#ifdef ZLIB_FOUND
-    QFile original(originalName);
-    if (!original.open(QIODevice::ReadOnly))
-        return false;
-    auto compressed = gzopen(targetName.toUtf8(), "wb");
-    if (!compressed) {
-        return false;
-    }
-
-    while (!original.atEnd()) {
-        auto data = original.read(1024 * 1024);
-        auto written = gzwrite(compressed, data.data(), data.size());
-        if (written != data.size()) {
-            gzclose(compressed);
-            return false;
-        }
-    }
-    gzclose(compressed);
-    return true;
-#else
-    return false;
-#endif
-}
-
-void Logger::enterNextLogFile()
+void Logger::enterNextLogFileNoLock()
 {
     if (!_logDirectory.isEmpty()) {
 
@@ -332,7 +311,7 @@ void Logger::enterNextLogFile()
         newLogName.append("." + QString::number(maxNumber + 1));
 
         auto previousLog = _logFile.fileName();
-        setLogFile(dir.filePath(newLogName));
+        setLogFileNoLock(dir.filePath(newLogName));
 
         // Compress the previous log file. On a restart this can be the most recent
         // log file.
@@ -348,6 +327,43 @@ void Logger::enterNextLogFile()
             }
         }
     }
+}
+
+void Logger::setLogFileNoLock(const QString &name)
+{
+    if (_logstream) {
+        _logstream.reset(nullptr);
+        _logFile.close();
+    }
+
+    if (name.isEmpty()) {
+        return;
+    }
+
+    bool openSucceeded = false;
+    if (name == QLatin1String("-")) {
+        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
+    } else {
+        _logFile.setFileName(name);
+        openSucceeded = _logFile.open(QIODevice::WriteOnly);
+    }
+
+    if (!openSucceeded) {
+        postGuiMessage(tr("Error"),
+                       QString(tr("<nobr>File \"%1\"<br/>cannot be opened for writing.<br/><br/>"
+                                  "The log output <b>cannot</b> be saved!</nobr>"))
+                           .arg(name));
+        return;
+    }
+
+    _logstream.reset(new QTextStream(&_logFile));
+    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
+}
+
+void Logger::enterNextLogFile()
+{
+    QMutexLocker locker(&_mutex);
+    enterNextLogFileNoLock();
 }
 
 } // namespace OCC
