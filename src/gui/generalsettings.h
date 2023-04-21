@@ -49,7 +49,6 @@ private slots:
 #ifdef Q_OS_WIN
     void slotShowInExplorerNavigationPane(bool);
 #endif
-    void slotUpdateInfo();
     void slotUpdateChannelChanged(int index);
     void slotIgnoreFilesEditor();
     void loadMiscSettings();

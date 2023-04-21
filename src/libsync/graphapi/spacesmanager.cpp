@@ -43,6 +43,8 @@ SpacesManager::SpacesManager(Account *parent)
 
     connect(_refreshTimer, &QTimer::timeout, this, &SpacesManager::refresh);
     connect(_account, &Account::credentialsFetched, this, &SpacesManager::refresh);
+    // legacy signal which is going to be removed in 5.0
+    connect(_account, &Account::credentialsAsked, this, &SpacesManager::refresh);
 }
 
 void SpacesManager::refresh()

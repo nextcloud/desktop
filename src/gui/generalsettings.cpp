@@ -52,8 +52,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
+    connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
 #ifdef Q_OS_WIN
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 #endif
@@ -81,9 +80,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
      * handled globally. Save it to every folder that is defined.
      */
-    connect(_ui->syncHiddenFilesCheckBox, &QCheckBox::toggled, this,[](bool checked){
-        FolderMan::instance()->setIgnoreHiddenFiles(!checked);
-    });
+    connect(_ui->syncHiddenFilesCheckBox, &QCheckBox::toggled, this, [](bool checked) { FolderMan::instance()->setIgnoreHiddenFiles(!checked); });
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -131,8 +128,32 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // that way, when we intend to reset to the original selection when the dialog, we can look up the config file's stored value in the data model
     _ui->updateChannel->addItem(tr("stable"), QStringLiteral("stable"));
     _ui->updateChannel->addItem(tr("beta"), QStringLiteral("beta"));
-    connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GeneralSettings::slotUpdateChannelChanged);
-    slotUpdateInfo();
+
+    if (!ConfigFile().skipUpdateCheck() && Updater::instance()) {
+        // Channel selection
+        _ui->updateChannel->setCurrentIndex(_ui->updateChannel->findData(ConfigFile().updateChannel()));
+        connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &GeneralSettings::slotUpdateChannelChanged);
+
+        // Note: the sparkle-updater is not an OCUpdater
+        if (auto *ocupdater = qobject_cast<OCUpdater *>(Updater::instance())) {
+            auto updateInfo = [ocupdater, this] {
+                _ui->updateStateLabel->setText(ocupdater->statusString());
+                _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
+            };
+            connect(ocupdater, &OCUpdater::downloadStateChanged, this, updateInfo);
+            connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller);
+            connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit);
+            updateInfo();
+        }
+#ifdef HAVE_SPARKLE
+        if (SparkleUpdater *sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+            _ui->updateStateLabel->setText(sparkleUpdater->statusString());
+            _ui->restartButton->setVisible(false);
+        }
+#endif
+    } else {
+        _ui->updaterWidget->hide();
+    }
 #else
     _ui->updaterWidget->hide();
 #endif
@@ -176,38 +197,6 @@ void GeneralSettings::loadMiscSettings()
 void GeneralSettings::showEvent(QShowEvent *)
 {
     reloadConfig();
-}
-
-void GeneralSettings::slotUpdateInfo()
-{
-#ifdef WITH_AUTO_UPDATER
-    if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
-        // updater disabled on compile
-        _ui->updaterWidget->setVisible(false);
-        return;
-    }
-
-    // Note: the sparkle-updater is not an OCUpdater
-    OCUpdater *ocupdater = qobject_cast<OCUpdater *>(Updater::instance());
-    if (ocupdater) {
-        connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
-        connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
-        connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
-
-        _ui->updateStateLabel->setText(ocupdater->statusString());
-        _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
-
-    }
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    else if (SparkleUpdater *sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
-        _ui->updateStateLabel->setText(sparkleUpdater->statusString());
-        _ui->restartButton->setVisible(false);
-    }
-#endif
-
-    // Channel selection
-    _ui->updateChannel->setCurrentIndex(_ui->updateChannel->findData(ConfigFile().updateChannel()));
-#endif
 }
 
 void GeneralSettings::slotUpdateChannelChanged(int index)

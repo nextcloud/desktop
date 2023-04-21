@@ -85,10 +85,6 @@ QUrlQuery Updater::getQueryParams()
         platform = QStringLiteral("macos");
     }
 
-    QString sysInfo = getSystemInfo();
-    if (!sysInfo.isEmpty()) {
-        query.addQueryItem(QStringLiteral("client"), sysInfo);
-    }
     query.addQueryItem(QStringLiteral("version"), Version::versionWithBuildNumber().toString());
     query.addQueryItem(QStringLiteral("platform"), platform);
     query.addQueryItem(QStringLiteral("oem"), theme->appName());
@@ -110,24 +106,6 @@ QUrlQuery Updater::getQueryParams()
     }
 
     return query;
-}
-
-
-QString Updater::getSystemInfo()
-{
-#ifdef Q_OS_LINUX
-    QProcess process;
-    process.start(QStringLiteral("lsb_release -a"));
-    process.waitForFinished();
-    QByteArray output = process.readAllStandardOutput();
-    qCDebug(lcUpdater) << "Sys Info size: " << output.length();
-    if (output.length() > 1024)
-        output.clear(); // don't send too much.
-
-    return QString::fromLocal8Bit(output.toBase64());
-#else
-    return QString();
-#endif
 }
 
 // To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
