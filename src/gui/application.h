@@ -24,13 +24,9 @@
 #include "3rdparty/qtsingleapplication/qtsingleapplication.h"
 
 #include "clientproxy.h"
-#include "connectionvalidator.h"
 #include "folderman.h"
-#include "logbrowser.h"
 #include "owncloudgui.h"
 #include "platform.h"
-#include "progressdispatcher.h"
-#include "syncresult.h"
 
 class QMessageBox;
 class QSystemTrayIcon;

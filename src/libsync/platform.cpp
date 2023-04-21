@@ -33,7 +33,7 @@ void Platform::migrate()
 
 void Platform::setApplication(QCoreApplication *application)
 {
-    Q_UNUSED(application);
+    Q_UNUSED(application)
 }
 
 void Platform::startServices() { }

@@ -13,25 +13,23 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "config.h"
+
+#include "folder.h"
 
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "application.h"
-#include "clientproxy.h"
 #include "common/filesystembase.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/version.h"
 #include "common/vfs.h"
 #include "configfile.h"
-#include "creds/abstractcredentials.h"
 #include "csync_exclude.h"
 #include "filesystem.h"
-#include "folder.h"
 #include "folderman.h"
+#include "folderwatcher.h"
 #include "localdiscoverytracker.h"
-#include "logger.h"
 #include "networkjobs.h"
 #include "settingsdialog.h"
 #include "socketapi/socketapi.h"

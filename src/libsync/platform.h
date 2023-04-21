@@ -18,7 +18,6 @@
 #include <QCoreApplication>
 #include <QString>
 
-#include <QCoreApplication>
 #include <memory>
 
 #include "owncloudlib.h"

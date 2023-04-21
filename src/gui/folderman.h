@@ -21,17 +21,16 @@
 #include <QList>
 
 #include "folder.h"
-#include "folderwatcher.h"
 #include "navigationpanehelper.h"
-#include "syncfileitem.h"
 
 #include "folderwizard/folderwizard.h"
-
-#include "newwizard/enums.h"
 
 class TestFolderMigration;
 
 namespace OCC {
+
+class FolderMan;
+
 namespace TestUtils {
     // prototype for test friend
     FolderMan *folderMan();

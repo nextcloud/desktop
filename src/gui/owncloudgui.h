@@ -15,7 +15,7 @@
 #ifndef OWNCLOUDGUI_H
 #define OWNCLOUDGUI_H
 
-#include "connectionvalidator.h"
+#include "account.h"
 #include "progressdispatcher.h"
 #include "systray.h"
 

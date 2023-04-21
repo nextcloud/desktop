@@ -20,9 +20,8 @@
 #include <QRunnable>
 #include <QUrl>
 
-#include <csync.h>
 #include "common/utility.h"
-#include "owncloudlib.h"
+#include "csync.h"
 
 namespace OCC {
 

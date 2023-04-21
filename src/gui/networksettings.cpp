@@ -15,16 +15,16 @@
 #include "networksettings.h"
 #include "ui_networksettings.h"
 
-#include "theme.h"
-#include "configfile.h"
-#include "application.h"
+#include "accountmanager.h"
+#include "clientproxy.h"
 #include "configfile.h"
 #include "folderman.h"
-#include "accountmanager.h"
+#include "theme.h"
 
+#include <QList>
 #include <QNetworkProxy>
 #include <QString>
-#include <QList>
+#include <QtGui/QtEvents>
 
 namespace OCC {
 
