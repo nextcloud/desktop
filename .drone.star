@@ -380,6 +380,7 @@ def changelog(ctx):
         "trigger": {
             "event": [
                 "pull_request",
+                "push",
             ],
         },
     }]
