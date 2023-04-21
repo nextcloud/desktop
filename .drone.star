@@ -51,9 +51,12 @@ notify_channels = {
     },
 }
 
-trigger_refs = [
+branch_ref = [
     "refs/heads/master",
     "refs/heads/4**",
+]
+
+trigger_ref = branch_ref + [
     "refs/tags/**",
     "refs/pull/**",
 ]
@@ -154,7 +157,7 @@ def unit_test_pipeline(ctx):
                  build_client() +
                  unit_tests(),
         "trigger": {
-            "ref": trigger_refs,
+            "ref": trigger_ref,
         },
     }]
 
@@ -208,7 +211,7 @@ def gui_test_pipeline(ctx):
             "steps": steps,
             "services": services,
             "trigger": {
-                "ref": trigger_refs,
+                "ref": trigger_ref,
             },
             "volumes": [
                 {
@@ -378,9 +381,8 @@ def changelog(ctx):
             },
         ],
         "trigger": {
-            "event": [
-                "pull_request",
-                "push",
+            "ref": branch_ref + [
+                "refs/pull/**",
             ],
         },
     }]
