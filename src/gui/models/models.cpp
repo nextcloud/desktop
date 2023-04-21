@@ -52,10 +52,10 @@ QString OCC::Models::formatSelection(const QModelIndexList &items, int dataRole)
         }
     };
     if (qApp->layoutDirection() == Qt::RightToLeft) {
-        stream << right;
+        stream << Qt::right;
         begin = QLatin1Char(',');
     } else {
-        stream << left;
+        stream << Qt::left;
         end = QLatin1Char(',');
     }
 

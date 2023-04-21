@@ -670,7 +670,7 @@ void Application::parseOptions(const QStringList &arguments)
         }
     }
     if (parser.isSet(listLanguagesOption)) {
-        auto availableTranslations = Translations::listAvailableTranslations().toList();
+        auto availableTranslations = Translations::listAvailableTranslations().values();
         availableTranslations.sort(Qt::CaseInsensitive);
         displayHelpText(tr("Available translations: %1").arg(availableTranslations.join(QStringLiteral(", "))));
         std::exit(1);
