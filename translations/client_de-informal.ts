@@ -457,7 +457,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Add Space</source>
-        <translation>Einen Space hinzufügen</translation>
+        <translation>Space hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
@@ -515,7 +515,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="649"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Trotzdem beenden?</translation>
+        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Soll diese beenden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="820"/>
@@ -579,12 +579,12 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>Click this button to add a Space.</source>
-        <translation>Diese Schaltfläche drücken um einen Space hinzuzufügen.</translation>
+        <translation>Diese Schaltfläche drücken, um einen Space hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Diesen Knopf drücken um einen Ordner zur Synchronisation hinzuzufügen.</translation>
+        <translation>Diesen Knopf drücken, um einen Ordner zur Synchronisation hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
@@ -1090,7 +1090,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/folder.cpp" line="224"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Der Pfad &apos;%1&apos; ist zu lang. Entweder die Unterstützung für lange Pfadnamen in den Windows Einstellungen einschalten oder ein anderes Verzeichnis auswählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="232"/>
@@ -1154,7 +1154,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <translation>Synchronisierungsaktivität</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="991"/>
+        <location filename="../src/gui/folder.cpp" line="992"/>
         <source>Could not read system exclude file</source>
         <translation>Die systemeigene Ausschlussdatei kann nicht gelesen werden</translation>
     </message>
@@ -1306,7 +1306,7 @@ Falls dies ein Missgeschick war und du dich zum Behalten der Datei entscheidest,
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
@@ -1321,7 +1321,7 @@ Falls dies ein Missgeschick war und du dich zum Behalten der Datei entscheidest,
     <message>
         <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Der Pfad &apos;%1&apos; ist zu lang. Entweder die Unterstützung für lange Pfadnamen in den Windows Einstellungen einschalten oder ein anderes Verzeichnis auswählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1172"/>
@@ -3783,7 +3783,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Wizard::AccountConfiguredSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
+        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="75"/>
         <source>Invalid local download directory: %1</source>
         <translation>Falsches lokales Download Verzeichnis: %1</translation>
     </message>
@@ -3893,7 +3893,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation>Bitte geben Sie Ihr %1 ein:</translation>
+        <translation>Bitte %1 eingeben:</translation>
     </message>
 </context>
 <context>
@@ -4075,12 +4075,12 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Konto %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation>Alle Synchronisationen jetzt starten</translation>
+        <translation>Alle Synchronisationen fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>

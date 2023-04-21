@@ -1158,7 +1158,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer p
         <translation>Atividade de Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="991"/>
+        <location filename="../src/gui/folder.cpp" line="992"/>
         <source>Could not read system exclude file</source>
         <translation>Não foi possível ler o sistema de arquivo de exclusão</translation>
     </message>
@@ -3788,7 +3788,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Wizard::AccountConfiguredSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
+        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="75"/>
         <source>Invalid local download directory: %1</source>
         <translation>Diretório de download local inválido:%1</translation>
     </message>

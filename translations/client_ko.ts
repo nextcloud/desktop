@@ -1158,7 +1158,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>동기화 활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="991"/>
+        <location filename="../src/gui/folder.cpp" line="992"/>
         <source>Could not read system exclude file</source>
         <translation>시스템 제외 파일을 읽을 수 없음</translation>
     </message>
@@ -3789,7 +3789,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Wizard::AccountConfiguredSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
+        <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="75"/>
         <source>Invalid local download directory: %1</source>
         <translation>잘못된 로컬 다운로드 디렉터리: %1</translation>
     </message>
