@@ -32,7 +32,7 @@ void PostfixLineEdit::setPostfix(const QString &postfix)
     _postfix = postfix;
     QFontMetricsF fm(font());
     QMargins tm = textMargins();
-    tm.setRight(tm.right() + fm.width(_postfix) + verticalMargin);
+    tm.setRight(tm.right() + fm.horizontalAdvance(_postfix) + verticalMargin);
     setTextMargins(tm);
 }
 
@@ -63,7 +63,7 @@ void PostfixLineEdit::paintEvent(QPaintEvent *pe)
     //
     p.setPen(palette().color(QPalette::Disabled, QPalette::Text));
     QFontMetricsF fm(font());
-    int start = rect().right() - fm.width(_postfix);
+    int start = rect().right() - fm.horizontalAdvance(_postfix);
     QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);

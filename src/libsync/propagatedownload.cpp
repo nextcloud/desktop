@@ -770,9 +770,7 @@ void PropagateDownloadFile::slotGetFinished()
     // but not for HTTP2 or SPDY replies. For these it remains and contains the size
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
-    if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()
-            || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
+    if ((contentEncoding == "gzip" || contentEncoding == "deflate") && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool())) {
         bodySize = 0;
         hasSizeHeader = false;
     }

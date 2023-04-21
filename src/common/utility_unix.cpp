@@ -93,17 +93,17 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
 
         QTextStream ts(&iniFile);
         ts.setCodec("UTF-8");
-        ts << QLatin1String("[Desktop Entry]") << endl
-           << QLatin1String("Name=") << guiName << endl
-           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << endl
-           << QLatin1String("Exec=") << autostartApplicationPath << endl
-           << QLatin1String("Terminal=") << "false" << endl
-           << QLatin1String("Icon=") << appName.toLower() << endl // always use lowercase for icons
-           << QLatin1String("Categories=") << QLatin1String("Network") << endl
-           << QLatin1String("Type=") << QLatin1String("Application") << endl
-           << QLatin1String("StartupNotify=") << "false" << endl
-           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl
-           << QLatin1String("X-GNOME-Autostart-Delay=10") << endl;
+        ts << QLatin1String("[Desktop Entry]") << Qt::endl
+           << QLatin1String("Name=") << guiName << Qt::endl
+           << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << Qt::endl
+           << QLatin1String("Exec=") << autostartApplicationPath << Qt::endl
+           << QLatin1String("Terminal=") << "false" << Qt::endl
+           << QLatin1String("Icon=") << appName.toLower() << Qt::endl // always use lowercase for icons
+           << QLatin1String("Categories=") << QLatin1String("Network") << Qt::endl
+           << QLatin1String("Type=") << QLatin1String("Application") << Qt::endl
+           << QLatin1String("StartupNotify=") << "false" << Qt::endl
+           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << Qt::endl
+           << QLatin1String("X-GNOME-Autostart-Delay=10") << Qt::endl;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
             qCWarning(lcUtility) << "Could not remove autostart desktop file";

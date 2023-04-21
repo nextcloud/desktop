@@ -382,7 +382,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
     if (auto it = Utility::optionalFind(map, QStringLiteral("getlastmodified"))) {
         const auto date = QDateTime::fromString(**it, Qt::RFC2822Date);
         Q_ASSERT(date.isValid());
-        result.modtime = date.toTime_t();
+        result.modtime = date.toSecsSinceEpoch();
     }
     if (auto it = Utility::optionalFind(map, QStringLiteral("getcontentlength"))) {
         // See #4573, sometimes negative size values are returned

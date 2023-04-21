@@ -21,9 +21,7 @@ private:
 
 private slots:
     void initTestCase() {
-        qsrand(QTime::currentTime().msec());
-
-        _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
+        _root = QDir::tempPath() + "/" + "test_" + QString::number(QRandomGenerator::global()->generate());
         qDebug() << "creating test directory tree in " << _root;
         QDir rootDir(_root);
 
