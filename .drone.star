@@ -430,6 +430,7 @@ def notification():
         "trigger": {
             "event": [
                 "cron",
+                "tag",
             ],
             "status": [
                 "success",
