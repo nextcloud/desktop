@@ -1725,12 +1725,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Актуализации</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="129"/>
         <source>stable</source>
         <translation>стабилна</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="133"/>
+        <location filename="../src/gui/generalsettings.cpp" line="130"/>
         <source>beta</source>
         <translation>бета</translation>
     </message>
@@ -1796,27 +1796,27 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;Рестарт &amp;&amp; Актуализация</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="325"/>
+        <location filename="../src/gui/generalsettings.cpp" line="314"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Не можете да деактивирате автоматичното стартиране, тъй като автоматичният старт за цялата система е активиран.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Change update channel?</source>
         <translation>Да се промени ли канала за актуализация?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation>За да влязат в сила езиковите промени изискват рестартиране на това приложение.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="229"/>
+        <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1825,22 +1825,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Обърнете внимание, че по този начин се избира само от кой пакет ще се вземат подобренията, и че няма да има понижение във версията: Така, че връщането от бета канала към стабилния канал обикновено не може да се извърши веднага и означава изчакване на стабилна версия, която е по-нова от инсталираната в момента бета версия.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="231"/>
         <source>Change update channel</source>
         <translation>Промяна на канала за актуализация</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="243"/>
+        <location filename="../src/gui/generalsettings.cpp" line="232"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="346"/>
         <source>unknown (%1)</source>
         <translation>неизвестен (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="341"/>
+        <location filename="../src/gui/generalsettings.cpp" line="330"/>
         <source>(use default)</source>
         <translation>( използване по подразбиране)</translation>
     </message>

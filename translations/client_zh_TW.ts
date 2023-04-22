@@ -1711,12 +1711,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="129"/>
         <source>stable</source>
         <translation>穩定</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="133"/>
+        <location filename="../src/gui/generalsettings.cpp" line="130"/>
         <source>beta</source>
         <translation>資料</translation>
     </message>
@@ -1782,27 +1782,27 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>重新啟動並更新 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="325"/>
+        <location filename="../src/gui/generalsettings.cpp" line="314"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>您無法停用自動啟動，因為啟用了系統範圍的自動已啟用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Change update channel?</source>
         <translation>更改更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="229"/>
+        <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1811,22 +1811,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 請注意，這只會選擇從中進行池升級的版本，並且不會降級：因此，通常無法立即從Beta通道返回到穩定通道，這意味著要等待比當前安裝的Beta更新的穩定版本 版。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="231"/>
         <source>Change update channel</source>
         <translation>更改更新頻道</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="243"/>
+        <location filename="../src/gui/generalsettings.cpp" line="232"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="346"/>
         <source>unknown (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="341"/>
+        <location filename="../src/gui/generalsettings.cpp" line="330"/>
         <source>(use default)</source>
         <translation type="unfinished"/>
     </message>

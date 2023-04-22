@@ -1710,12 +1710,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="129"/>
         <source>stable</source>
         <translation>stable</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="133"/>
+        <location filename="../src/gui/generalsettings.cpp" line="130"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -1781,49 +1781,49 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;Restart &amp;&amp; aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="325"/>
+        <location filename="../src/gui/generalsettings.cpp" line="314"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Change update channel?</source>
         <translation>Změnit aktualizační kanál?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation>Změna jazyku vyžaduje restart aplikace, aby byla změna aplikována.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="229"/>
+        <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="231"/>
         <source>Change update channel</source>
         <translation>Změnit aktualizační kanál</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="243"/>
+        <location filename="../src/gui/generalsettings.cpp" line="232"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="346"/>
         <source>unknown (%1)</source>
         <translation>neznámý (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="341"/>
+        <location filename="../src/gui/generalsettings.cpp" line="330"/>
         <source>(use default)</source>
         <translation>(použij výchozí)</translation>
     </message>

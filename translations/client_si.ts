@@ -1714,12 +1714,12 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>යාවත්කාලීන</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="132"/>
+        <location filename="../src/gui/generalsettings.cpp" line="129"/>
         <source>stable</source>
         <translation>ස්ථාවර</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="133"/>
+        <location filename="../src/gui/generalsettings.cpp" line="130"/>
         <source>beta</source>
         <translation>බීටා</translation>
     </message>
@@ -1785,27 +1785,27 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&amp;නැවත ආරම්භ කරන්න සහ යාවත්කාලීන කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="325"/>
+        <location filename="../src/gui/generalsettings.cpp" line="314"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>පද්ධතිය පුරා ස්වයංක්‍රීය ආරම්භය සක්‍රීය කර ඇති නිසා ඔබට ස්වයංක්‍රීය ආරම්භය අක්‍රිය කළ නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="228"/>
+        <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Change update channel?</source>
         <translation>යාවත්කාලීන නාලිකාව වෙනස් කරන්නද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Warning</source>
         <translation>අවවාදයයි</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="76"/>
+        <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Language changes require a restart of this application to take effect.</source>
         <translation>භාෂා වෙනස්කම් බලාත්මක වීමට මෙම යෙදුම නැවත ආරම්භ කිරීම අවශ්‍ය වේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="229"/>
+        <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1814,22 +1814,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 මෙය තෝරා ගන්නේ සංචිත උත්ශ්‍රේණිගත කිරීම් මොනවාද යන්න පමණක් බවත්, පහත් කිරීම් නොමැති බවත් සලකන්න: එබැවින් බීටා නාලිකාවේ සිට ස්ථාවර නාලිකාවට ආපසු යාම සාමාන්‍යයෙන් වහාම කළ නොහැකි අතර එයින් අදහස් කරන්නේ දැනට ස්ථාපනය කර ඇති නව ස්ථාවර අනුවාදයක් සඳහා රැඳී සිටීමයි. බීටා අනුවාදය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="242"/>
+        <location filename="../src/gui/generalsettings.cpp" line="231"/>
         <source>Change update channel</source>
         <translation>යාවත්කාලීන නාලිකාව වෙනස් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="243"/>
+        <location filename="../src/gui/generalsettings.cpp" line="232"/>
         <source>Cancel</source>
         <translation>අවලංගු කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="346"/>
         <source>unknown (%1)</source>
         <translation>නොදන්නා (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="341"/>
+        <location filename="../src/gui/generalsettings.cpp" line="330"/>
         <source>(use default)</source>
         <translation>(පෙරනිමි භාවිතාකරන්න)</translation>
     </message>
