@@ -2857,12 +2857,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="177"/>
+        <location filename="../src/libsync/logger.cpp" line="352"/>
         <source>Error</source>
         <translation>오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="178"/>
+        <location filename="../src/libsync/logger.cpp" line="353"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation> 쓰기 위해 &lt;nobr&gt;파일 &apos;%1&apos;&lt;br/&gt;을 열 수 없습니다.&lt;br/&gt;&lt;br/&gt;로그 출력이 &lt;b&gt;저장되지 않습니다!&lt;/b&gt;&lt;/nobr&gt;</translation>
     </message>
