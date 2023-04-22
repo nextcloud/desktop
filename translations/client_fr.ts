@@ -2856,12 +2856,12 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="177"/>
+        <location filename="../src/libsync/logger.cpp" line="352"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="178"/>
+        <location filename="../src/libsync/logger.cpp" line="353"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Le fichier &quot;%1&quot;&lt;br/&gt;ne peut pas être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;Le fichier journal &lt;b&gt;ne peut pas&lt;/b&gt; être sauvegardé !&lt;/nobr&gt;</translation>
     </message>

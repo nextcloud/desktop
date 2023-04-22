@@ -2856,12 +2856,12 @@ Uporaba kateregakoli argumenta z ukazom v ukazni vrstici prepiše to nastavitev.
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="177"/>
+        <location filename="../src/libsync/logger.cpp" line="352"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="178"/>
+        <location filename="../src/libsync/logger.cpp" line="353"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datoteke »%1«&lt;br/&gt;ni mogoče odpreti za pisanje.&lt;br/&gt;&lt;br/&gt;Dnevniškega zapisa &lt;b&gt;ni mogoče&lt;/b&gt; shraniti!&lt;/nobr&gt;</translation>
     </message>
