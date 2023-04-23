@@ -3744,7 +3744,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Файл %1 не може бути завантажено через конфлікт назви файлу на пристрої! </translation>
+        <translation>Файл %1 не може бути звантажено через конфлікт назви файлу на пристрої! </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="692"/>
@@ -6178,7 +6178,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation>Завантажено</translation>
+        <translation>Звантажено</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
