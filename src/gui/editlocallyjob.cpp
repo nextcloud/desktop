@@ -89,6 +89,9 @@ void EditLocallyJob::startTokenRemoteCheck()
                                         << "accountState:" << _accountState
                                         << "relPath:" << _relPath
                                         << "token:" << _token;
+
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to verify the request to edit locally."));
         return;
     }
 
@@ -152,7 +155,7 @@ void EditLocallyJob::proceedWithSetup()
     _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
 
     Systray::instance()->destroyEditFileLocallyLoadingDialog();
-    Q_EMIT setupFinished();
+    startEditLocally();
 }
 
 void EditLocallyJob::findAfolderAndConstructPaths()
@@ -198,6 +201,8 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
 
     if (_relPathParent == QStringLiteral("/")) {
         qCWarning(lcEditLocallyJob) << "LsColJob must only be used for nested folders.";
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred during data retrieval."));
         return;
     }
 
@@ -251,7 +256,12 @@ bool EditLocallyJob::checkIfFileParentSyncIsNeeded()
 
 void EditLocallyJob::startSyncBeforeOpening()
 {
-    eraseBlacklistRecordForItem();
+    if (!eraseBlacklistRecordForItem()) {
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to synchronise the file to edit locally."));
+        return;
+    }
+
     if (!checkIfFileParentSyncIsNeeded()) {
         processLocalItem();
         return;
@@ -263,20 +273,24 @@ void EditLocallyJob::startSyncBeforeOpening()
     FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
-void EditLocallyJob::eraseBlacklistRecordForItem()
+bool EditLocallyJob::eraseBlacklistRecordForItem()
 {
     if (!_folderForFile || !_fileParentItem) {
         qCWarning(lcEditLocallyJob) << "_folderForFile or _fileParentItem is invalid!";
-        return;
+        return false;
     }
+
     Q_ASSERT(!_folderForFile->isSyncRunning());
     if (_folderForFile->isSyncRunning()) {
         qCWarning(lcEditLocallyJob) << "_folderForFile is syncing";
-        return;
+        return false;
     }
+
     if (_folderForFile->journalDb()->errorBlacklistEntry(_fileParentItem->_file).isValid()) {
         _folderForFile->journalDb()->wipeErrorBlacklistEntry(_fileParentItem->_file);
     }
+
+    return true;
 }
 
 const QString EditLocallyJob::getRelativePathToRemoteRootForFile() const
@@ -438,6 +452,8 @@ void EditLocallyJob::startEditLocally()
                                         << "fileName:" << _fileName
                                         << "localFilePath:" << _localFilePath
                                         << "folderForFile:" << _folderForFile;
+
+        showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
         return;
     }
 
@@ -494,6 +510,8 @@ void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMa
 
     if (_relPathParent == QStringLiteral("/")) {
         qCWarning(lcEditLocallyJob) << "LsColJob must only be used for nested folders.";
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred during data retrieval."));
         return;
     }
 
@@ -501,6 +519,8 @@ void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMa
     Q_ASSERT(job);
     if (!job) {
         qCWarning(lcEditLocallyJob) << "Must call slotDirectoryListingIterated from a signal.";
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred during data retrieval."));
         return;
     }
 
@@ -524,8 +544,9 @@ void EditLocallyJob::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     Q_ASSERT(item && !item->isEmpty());
     if (!item || item->isEmpty()) {
         qCWarning(lcEditLocallyJob) << "invalid item";
-    }
-    if (item->_file == _relativePathToRemoteRoot) {
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to synchronise the file to edit locally."));
+    } else if (item->_file == _relativePathToRemoteRoot) {
         disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
         if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
             // return early if the file is already in sync
@@ -543,6 +564,8 @@ void EditLocallyJob::openFile()
 
     if(_localFilePath.isEmpty()) {
         qCWarning(lcEditLocallyJob) << "Could not edit locally. Invalid local file path.";
+        showError(tr("Could not start editing locally."),
+                  tr("Invalid local file path."));
         return;
     }
 
