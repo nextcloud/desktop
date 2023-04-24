@@ -110,13 +110,11 @@ InvalidFilenameDialog::~InvalidFilenameDialog() = default;
 
 void InvalidFilenameDialog::checkIfAllowedToRename()
 {
-    qCInfo(lcFileSystem) << "== InvalidFilenameDialog::checkIfAllowedToRename";
     qCInfo(lcFileSystem) <<  "RP:" << _folder->remotePath();
     qCInfo(lcFileSystem) <<  "RP + trailing:" << QDir::cleanPath(_folder->remotePath());
     qCInfo(lcFileSystem) << "Trailing:" << _folder->remotePathTrailingSlash();
     qCInfo(lcFileSystem) << "CP + Trailing:" << QDir::cleanPath(_folder->remotePathTrailingSlash());
     qCInfo(lcFileSystem) << QDir::cleanPath(_folder->remotePathTrailingSlash()) + _originalFileName;
-    qCInfo(lcFileSystem) << "== InvalidFilenameDialog::checkIfAllowedToRename";
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(_folder->remotePath() + _originalFileName));
     propfindJob->setProperties({ "http://owncloud.org/ns:permissions" });
     connect(propfindJob, &PropfindJob::result, this, &InvalidFilenameDialog::onPropfindPermissionSuccess);
