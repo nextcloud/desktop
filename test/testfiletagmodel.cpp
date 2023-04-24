@@ -17,6 +17,7 @@
 #include <QTest>
 #include <QSignalSpy>
 #include <QDomDocument>
+#include <QAbstractItemModelTester>
 
 #include "accountmanager.h"
 #include "syncenginetestutils.h"
@@ -101,6 +102,24 @@ private slots:
             "one",
             "two"
         };
+    }
+
+    void testModelTagFetch()
+    {
+        auto fileTagModel = FileTagModel(testFilePath, _account);
+        const auto fileTagModelTester = QAbstractItemModelTester(&fileTagModel);
+        QSignalSpy fileTagsChanged(&fileTagModel, &FileTagModel::totalTagsChanged);
+        fileTagsChanged.wait(1000);
+
+        const auto modelTotalTags = fileTagModel.totalTags();
+        QCOMPARE(modelTotalTags, testNumTags);
+
+        for (auto i = 0; i < modelTotalTags; ++i) {
+            const auto index = fileTagModel.index(i);
+            const auto tag = index.data();
+
+            QCOMPARE(tag.toString(), _expectedTags[i]);
+        }
     }
 };
 
