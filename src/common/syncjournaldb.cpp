@@ -882,10 +882,15 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
-    qint64 h = 0;
-    int len = file.length();
+    QByteArray bytes = file;
+#ifdef Q_OS_MAC
+    bytes = QString::fromUtf8(file).normalized(QString::NormalizationForm_C).toUtf8();
+#endif
 
-    h = c_jhash64((uint8_t *)file.data(), len, 0);
+    qint64 h = 0;
+    int len = bytes.length();
+
+    h = c_jhash64((uint8_t *)bytes.data(), len, 0);
     return h;
 }
 
