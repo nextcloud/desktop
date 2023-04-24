@@ -54,7 +54,6 @@ private slots:
             Q_UNUSED(device);
             QNetworkReply *reply = nullptr;
 
-            const auto urlQuery = QUrlQuery(req.url());
             const auto path = req.url().path();
 
             auto requestDom = QDomDocument();
@@ -63,23 +62,23 @@ private slots:
             const auto systemTagElems = requestDom.elementsByTagName("system-tags");
 
             if (!parsedCorrectly || !req.url().toString().startsWith(_accountState->account()->url().toString())) {
-                reply = new FakePayloadReply(op, req, testErrorXmlResponse, qnamDelay, _fakeQnam.data());
+                reply = new FakePropfindReply(testErrorXmlResponse, op, req, this);
             }
 
-            if (path.startsWith(testUrlPath)) {
+            if (path.contains(testUrlPath)) {
                 if (tagElems.count() > 0 && systemTagElems.count() > 0) {
-                    reply = new FakePayloadReply(op, req, testSystemAndNormalTagsOnlyXmlResponse, qnamDelay, _fakeQnam.data());
+                    reply = new FakePropfindReply(testSystemAndNormalTagsOnlyXmlResponse, op, req, this);
                 } else if (tagElems.count() > 0) {
-                    reply = new FakePayloadReply(op, req, testTagsOnlyXmlResponse, qnamDelay, _fakeQnam.data());
+                    reply = new FakePropfindReply(testTagsOnlyXmlResponse, op, req, this);
                 } else if (systemTagElems.count() > 0) {
-                    reply = new FakePayloadReply(op, req, testSystemTagsOnlyXmlResponse, qnamDelay, _fakeQnam.data());
+                    reply = new FakePropfindReply(testSystemTagsOnlyXmlResponse, op, req, this);
                 } else {
-                    reply = new FakePayloadReply(op, req, testTaglessXmlResponse, qnamDelay, _fakeQnam.data());
+                    reply = new FakePropfindReply(testTaglessXmlResponse, op, req, this);
                 }
             }
 
             if (!reply) {
-                reply = new FakePayloadReply(op, req, testErrorXmlResponse, qnamDelay, _fakeQnam.data());
+                reply = new FakePropfindReply(testErrorXmlResponse, op, req, this);
             }
 
             return reply;
