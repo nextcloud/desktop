@@ -578,7 +578,7 @@ void AccountState::slotCheckServerAvailibility()
             qCInfo(lcAccountState) << "Server is now available for account" << _account->davUser();
             _lastCheckConnectionTimer.invalidate();
             resetRetryCount();
-            QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, &AccountState::slotCheckConnection, Qt::QueuedConnection);
         }
     });
 }
