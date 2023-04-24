@@ -1487,9 +1487,9 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
         <source>Please try again.</source>
         <translation>Lütfen yeniden deneyin.</translation>
     </message>
@@ -1504,58 +1504,98 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Yerel düzenleme için bir hesap bulunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="93"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="204"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="260"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="456"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="513"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="522"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="547"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="567"/>
+        <source>Could not start editing locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
+        <source>An error occurred trying to verify the request to edit locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Sunucudaki bir dosyayı açma isteği doğrulanamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="148"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Yerel düzenleme için bir dosya bulunamadı. Dosyanın yolunun geçerli olduğundan ve yerel olarak eşitlendiğinden emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="143"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="163"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="171"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="178"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="166"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="181"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Yerel düzenleme için bir dosya bulunamadı. Dosyanın seçimli eşitleme ile katılmayacak olarak seçilmediğinden emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="205"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <source>An error occurred during data retrieval.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="548"/>
+        <source>An error occurred trying to synchronise the file to edit locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="456"/>
+        <source>An error occurred during setup.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="502"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Sunucu hatası: PROPFIND yanıtı XML biçiminde değil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="488"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="504"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
         <translation>Yerel düzenleme için bir uzak dosya bulunamadı. Dosya yolunun geçerli olduğundan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="555"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="568"/>
+        <source>Invalid local file path.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
         <source>Could not open %1</source>
         <translation>%1 açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="638"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="661"/>
         <source>File %1 already locked.</source>
         <translation>%1 dosyası zaten kilitli.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="639"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="662"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="673"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
         <translation>Kilit %1 dakika sonra açılacak. İsterseniz dosyayı düzenlemeyi bitirdikten sonra kilidini el ile açabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="649"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="672"/>
         <source>File %1 now locked.</source>
         <translation>%1 dosyası kilitlendi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="658"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="681"/>
         <source>File %1 could not be locked.</source>
         <translation>%1 dosyası kilitlenemedi.</translation>
     </message>
@@ -5738,7 +5778,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="926"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
         <translation>Veri tabanı bağlantısı kurulamadı.</translation>
     </message>
