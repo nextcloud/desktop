@@ -63,9 +63,13 @@ QString CaseClashConflictSolver::errorString() const
 
 void CaseClashConflictSolver::solveConflict(const QString &newFilename)
 {
-    _newFilename = newFilename;
-
-    const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteNewFilename()));
+    _newFilename = _remotePath + "/" + newFilename;
+    const auto cleanNewFileName = QDir::cleanPath(_newFilename);
+    qCInfo(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::solveConflict()";
+    qCInfo(lcCaseClashConflictSolver) << "cleanNewFileName: " << cleanNewFileName;
+    qCInfo(lcCaseClashConflictSolver) << "_newFileName: " << _newFilename;
+    qCInfo(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::solveConflict()";
+    const auto propfindJob = new PropfindJob(_account, _newFilename);
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onRemoteDestinationFileAlreadyExists);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist);
     propfindJob->start();
@@ -81,7 +85,14 @@ void CaseClashConflictSolver::onRemoteDestinationFileAlreadyExists()
 
 void CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist()
 {
-    const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteTargetFilePath()));
+    qCInfo(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist()";
+
+    const auto cleanPath = QDir::cleanPath(remoteTargetFilePath());
+    const auto notCleanPath = remoteTargetFilePath();
+    qCInfo(lcCaseClashConflictSolver) << "cleanPath: " << cleanPath;
+    qCInfo(lcCaseClashConflictSolver) << "NOT cleanPath: " << notCleanPath;
+    qCInfo(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::onRemoteDestinationFileDoesNotExist()";
+    const auto propfindJob = new PropfindJob(_account, notCleanPath);
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onRemoteSourceFileAlreadyExists);
     connect(propfindJob, &PropfindJob::finishedWithError, this, &CaseClashConflictSolver::onRemoteSourceFileDoesNotExist);
     propfindJob->start();
@@ -109,6 +120,7 @@ void CaseClashConflictSolver::onRemoteSourceFileAlreadyExists()
 
 void CaseClashConflictSolver::onRemoteSourceFileDoesNotExist()
 {
+    qCInfo(lcCaseClashConflictSolver) << "CaseClashConflictSolver::onRemoteSourceFileDoesNotExist()";
     Q_EMIT failed();
 }
 
@@ -136,23 +148,37 @@ void CaseClashConflictSolver::onMoveJobFinished()
 
 QString CaseClashConflictSolver::remoteNewFilename() const
 {
+    qCDebug(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::remoteNewFilename()";
     if (_remotePath == QStringLiteral("/")) {
-        qCDebug(lcCaseClashConflictSolver) << _newFilename << _remotePath << _newFilename;
+        qCDebug(lcCaseClashConflictSolver) << "_newFilename" << _newFilename << "_remotePath" <<  _remotePath;
         return _newFilename;
     } else {
-        const auto result = QString{_remotePath + _newFilename};
-        qCDebug(lcCaseClashConflictSolver) << result << _remotePath << _newFilename;
+        const auto result = QString{_remotePath + "/" + _newFilename};
+        qCDebug(lcCaseClashConflictSolver) << result  << "_newFilename" << _newFilename << "_remotePath" <<  _remotePath;
         return result;
     }
+    qCDebug(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::remoteNewFilename()";
 }
 
 QString CaseClashConflictSolver::remoteTargetFilePath() const
 {
+    qCDebug(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::remoteTargetFilePath()";
+    qCInfo(lcFileSystem) << "_remotePath: " << _remotePath;
+    qCInfo(lcFileSystem) << "_targetFilePath: " << _targetFilePath;
+    qCInfo(lcFileSystem) << "_localPath: " << _localPath;
     if (_remotePath == QStringLiteral("/")) {
+        qCDebug(lcCaseClashConflictSolver) << "== _remotePath == QStringLiteral(/)";
         const auto result = QString{_targetFilePath.mid(_localPath.length())};
+        qCInfo(lcFileSystem) << "_targetFilePath.mid(_localPath.length()): " << _targetFilePath.mid(_localPath.length());
+        qCInfo(lcFileSystem) << "result: " << result;
+        qCDebug(lcCaseClashConflictSolver) << "CaseClashConflictSolver::remoteTargetFilePath()";
         return result;
     } else {
-        const auto result = QString{_remotePath + _targetFilePath.mid(_localPath.length())};
+        qCDebug(lcCaseClashConflictSolver) << "== _remotePath != QStringLiteral(/)";
+        const auto result = QString{_remotePath + QStringLiteral("/") + _targetFilePath.mid(_localPath.length())};
+        qCInfo(lcFileSystem) << "_targetFilePath.mid(_localPath.length()): " << _targetFilePath.mid(_localPath.length());
+        qCInfo(lcFileSystem) << "result: " << result;
+        qCDebug(lcCaseClashConflictSolver) << "== CaseClashConflictSolver::remoteTargetFilePath()";
         return result;
     }
 }
@@ -219,6 +245,10 @@ void CaseClashConflictSolver::processLeadingOrTrailingSpacesError(const QString 
 
 void CaseClashConflictSolver::checkIfAllowedToRename()
 {
+    qCInfo(lcFileSystem) << "==  CaseClashConflictSolver::checkIfAllowedToRename()";
+    qCInfo(lcFileSystem) << "CP + Remote target:" << QDir::cleanPath(remoteTargetFilePath());
+    qCInfo(lcFileSystem) << "Remote target:" << remoteTargetFilePath();
+    qCInfo(lcFileSystem) << "==  CaseClashConflictSolver::checkIfAllowedToRename()";
     const auto propfindJob = new PropfindJob(_account, QDir::cleanPath(remoteTargetFilePath()));
     propfindJob->setProperties({ "http://owncloud.org/ns:permissions" });
     connect(propfindJob, &PropfindJob::result, this, &CaseClashConflictSolver::onPropfindPermissionSuccess);
