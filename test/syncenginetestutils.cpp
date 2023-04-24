@@ -394,6 +394,18 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
 }
 
+FakePropfindReply::FakePropfindReply(const QByteArray &replyContents, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+    : FakeReply { parent }
+{
+    setRequest(request);
+    setUrl(request.url());
+    setOperation(op);
+
+    payload = replyContents;
+
+    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+}
+
 void FakePropfindReply::respond()
 {
     setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
