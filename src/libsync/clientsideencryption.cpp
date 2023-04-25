@@ -146,6 +146,11 @@ public:
         BIO_free_all(_bio);
     }
 
+    operator const BIO*() const
+    {
+        return _bio;
+    }
+
     operator BIO*()
     {
         return _bio;
@@ -1289,15 +1294,24 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
     qCInfo(lcCse()) << "Key correctly generated";
     qCInfo(lcCse()) << "Storing keys locally";
 
+    {
+        Bio privKey;
+        if (PEM_write_bio_PrivateKey(privKey, localKeyPair, nullptr, nullptr, 0, nullptr, nullptr) <= 0) {
+            qCInfo(lcCse()) << "Could not read private key from bio.";
+            return;
+        }
+
+        const auto key = BIO2ByteArray(privKey);
+        _privateKey = key;     qCDebug(lcCse) << _privateKey;
+    }
+
     Bio privKey;
     if (PEM_write_bio_PrivateKey(privKey, localKeyPair, nullptr, nullptr, 0, nullptr, nullptr) <= 0) {
         qCInfo(lcCse()) << "Could not read private key from bio.";
         return;
     }
+
     auto privateKey = PKey::readPrivateKey(privKey);
-    const auto key = BIO2ByteArray(privKey);
-    //_privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
-    _privateKey = key;
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
     auto csrOutput = generateCSR(account, std::move(localKeyPair), std::move(privateKey));
@@ -1530,7 +1544,8 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
         generateMnemonic();
     }
 
-    const auto passPhrase = _mnemonic.remove(' ').toLower();
+    auto passPhrase = _mnemonic;
+    passPhrase = passPhrase.remove(' ').toLower();
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
 
     auto salt = EncryptionHelper::generateRandom(40);
