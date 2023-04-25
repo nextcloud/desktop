@@ -1,0 +1,7 @@
+Enhancement: Port from QtSingleApplication to KDSingleApplication
+
+Instead of relying on an old copy of QtSingleApplication we use https://github.com/KDAB/KDSingleApplication
+
+https://github.com/owncloud/client/issues/8432
+https://github.com/owncloud/client/pull/10754
+https://github.com/owncloud/client/pull/10758

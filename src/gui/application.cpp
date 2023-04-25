@@ -355,9 +355,6 @@ Application::~Application()
     if (_folderManager) {
         _folderManager->unloadAndDeleteAllFolders();
     }
-
-    // Remove the account from the account manager so it can be deleted.
-    AccountManager::instance()->shutdown();
 }
 
 void Application::slotAccountStateRemoved() const
@@ -393,11 +390,15 @@ void Application::slotAccountStateAdded(AccountStatePtr accountState) const
 
 void Application::slotCleanup()
 {
+    // unload the ui to make sure we no longer react to signals
+    _gui->slotShutdown();
+    delete _gui;
+
     AccountManager::instance()->save();
     FolderMan::instance()->unloadAndDeleteAllFolders();
 
-    _gui->slotShutdown();
-    _gui->deleteLater();
+    // Remove the account from the account manager so it can be deleted.
+    AccountManager::instance()->shutdown();
 }
 
 void Application::slotCheckConnection()

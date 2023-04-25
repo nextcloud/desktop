@@ -27,6 +27,8 @@
 #include "gui/translations.h"
 #include "libsync/logger.h"
 
+#include <kdsingleapplication.h>
+
 #ifdef WITH_AUTO_UPDATER
 #include "updater/updater.h"
 #endif
@@ -226,24 +228,6 @@ void setupLogging(const CommandLineOptions &options)
                    << "version:" << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
     qCInfo(lcMain) << "Arguments:" << qApp->arguments();
 }
-
-void slotParseMessage(OCC::Application *ocApp, const QString &msg)
-{
-    qCInfo(lcMain) << Q_FUNC_INFO << msg;
-    if (msg.startsWith(msgParseOptionsC())) {
-        QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
-        CommandLineOptions options = parseOptions(optionsStrings);
-        if (options.showSettings) {
-            ocApp->showSettingsDialog();
-        }
-        if (options.quitInstance) {
-            qApp->quit();
-        }
-        if (!options.fileToOpen.isEmpty()) {
-            QTimer::singleShot(0, ocApp, [ocApp, options] { ocApp->openVirtualFile(options.fileToOpen); });
-        }
-    }
-}
 }
 
 int main(int argc, char **argv)
@@ -266,37 +250,92 @@ int main(int argc, char **argv)
     app.setWindowIcon(Theme::instance()->applicationIcon());
     app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
-    const auto options = parseOptions(app.arguments());
+    KDSingleApplication singleApplication;
 
-    setupLogging(options);
+    if (singleApplication.isPrimaryInstance()) {
+        const auto options = parseOptions(app.arguments());
 
-    platform->setApplication(&app);
+        setupLogging(options);
 
-    auto ocApp = OCC::Application(platform.get(), options.debugMode, &app);
+        platform->setApplication(&app);
 
-    if (options.showSettings) {
-        ocApp.showSettingsDialog();
-    }
-    if (!options.fileToOpen.isEmpty()) {
-        QTimer::singleShot(0, &ocApp, [&] { ocApp.openVirtualFile(options.fileToOpen); });
-    }
+        auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
+        QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {
+            const QString msg = QString::fromUtf8(message);
+            qCInfo(lcMain) << Q_FUNC_INFO << msg;
+            if (msg.startsWith(msgParseOptionsC())) {
+                const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
+                CommandLineOptions options = parseOptions(optionsStrings);
+                if (options.showSettings) {
+                    ocApp->showSettingsDialog();
+                }
+                if (options.quitInstance) {
+                    qApp->quit();
+                }
+                if (!options.fileToOpen.isEmpty()) {
+                    QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+                }
+            }
+        });
 
-    platform->startServices();
+        if (options.showSettings) {
+            ocApp->showSettingsDialog();
+        }
+        if (!options.fileToOpen.isEmpty()) {
+            QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+        }
+
+        platform->startServices();
 
 #ifdef WITH_AUTO_UPDATER
-    // if handleStartup returns true, main()
-    // needs to terminate here, e.g. because
-    // the updater is triggered
-    Updater *updater = Updater::instance();
-    if (updater && updater->handleStartup()) {
-        return 1;
-    }
+        // if handleStartup returns true, main()
+        // needs to terminate here, e.g. because
+        // the updater is triggered
+        Updater *updater = Updater::instance();
+        if (updater && updater->handleStartup()) {
+            return 1;
+        }
 #endif
+        // TODO: still needed? Move to platform
+        // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
+        // (issue #4693)
+        if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5") {
+            if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                // If the systemtray is not there, we will wait one second for it to maybe start
+                // (eg boot time) then we show the settings dialog if there is still no systemtray.
+                // On XFCE however, we show a message box with explainaition how to install a systemtray.
+                qCInfo(lcMain) << "System tray is not available, waiting...";
+                Utility::sleep(1);
 
-#if 0
-    // TODO: upcoming pr introducing KDSingleApplication
-    if (app.isRunning()) {
-    // if the application is already running, notify it.
+                auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
+                if (desktopSession.isEmpty()) {
+                    desktopSession = qgetenv("DESKTOP_SESSION").toLower();
+                }
+                if (desktopSession == "xfce") {
+                    int attempts = 0;
+                    while (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                        attempts++;
+                        if (attempts >= 30) {
+                            qCWarning(lcMain) << "System tray unavailable (xfce)";
+                            warnSystray();
+                            break;
+                        }
+                        Utility::sleep(1);
+                    }
+                }
+
+                if (QSystemTrayIcon::isSystemTrayAvailable()) {
+                    ocApp->tryTrayAgain();
+                } else if (desktopSession != "ubuntu") {
+                    qCInfo(lcMain) << "System tray still not available, showing window and trying again later";
+                    QTimer::singleShot(10s, ocApp, &Application::tryTrayAgain);
+                } else {
+                    qCInfo(lcMain) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
+                }
+            }
+        }
+    } else {
+        // if the application is already running, notify it.
         qCInfo(lcMain) << "Already running, exiting...";
         if (app.isSessionRestored()) {
             // This call is mirrored with the one in Application::slotParseMessage
@@ -307,52 +346,10 @@ int main(int argc, char **argv)
         QStringList args = app.arguments();
         if (args.size() > 1) {
             QString msg = args.join(QLatin1String("|"));
-            if (!app.sendMessage(msgParseOptionsC() + msg))
+            if (!singleApplication.sendMessage((msgParseOptionsC() + msg).toUtf8()))
                 return -1;
         }
         return 0;
-    }
-
-#endif
-
-    // TODO: still needed? Move to platform
-    // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
-    // (issue #4693)
-    if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5")
-    {
-        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-            // If the systemtray is not there, we will wait one second for it to maybe start
-            // (eg boot time) then we show the settings dialog if there is still no systemtray.
-            // On XFCE however, we show a message box with explainaition how to install a systemtray.
-            qCInfo(lcMain) << "System tray is not available, waiting...";
-            Utility::sleep(1);
-
-            auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
-            if (desktopSession.isEmpty()) {
-                desktopSession = qgetenv("DESKTOP_SESSION").toLower();
-            }
-            if (desktopSession == "xfce") {
-                int attempts = 0;
-                while (!QSystemTrayIcon::isSystemTrayAvailable()) {
-                    attempts++;
-                    if (attempts >= 30) {
-                        qCWarning(lcMain) << "System tray unavailable (xfce)";
-                        warnSystray();
-                        break;
-                    }
-                    Utility::sleep(1);
-                }
-            }
-
-            if (QSystemTrayIcon::isSystemTrayAvailable()) {
-                ocApp.tryTrayAgain();
-            } else if (desktopSession != "ubuntu") {
-                qCInfo(lcMain) << "System tray still not available, showing window and trying again later";
-                QTimer::singleShot(10s, &ocApp, &Application::tryTrayAgain);
-            } else {
-                qCInfo(lcMain) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
-            }
-        }
     }
 
     return app.exec();

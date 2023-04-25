@@ -2,6 +2,8 @@ include(ECMAddAppIcon)
 
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
+find_package(KDSingleApplication REQUIRED)
+
 if (WIN32)
     find_package(Qt5 REQUIRED COMPONENTS WinExtras)
 endif()
@@ -174,7 +176,7 @@ set_target_properties(owncloud PROPERTIES
     AUTORCC ON
 )
 apply_common_target_settings(owncloud)
-target_link_libraries(owncloud owncloudCore owncloudResources)
+target_link_libraries(owncloud owncloudCore owncloudResources KDAB::kdsingleapplication )
 
 MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 
