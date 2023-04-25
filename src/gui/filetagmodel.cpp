@@ -164,7 +164,22 @@ void FileTagModel::setMaxTags(const int maxTags)
         return;
     }
 
+    const auto totalTagCount = totalTags();
+    const auto tagsWillBeTruncated = maxTags < totalTagCount;
+
+    // Summary tag will be after the last tag
+    const auto notifyOverflowingTagsRemoved = tagsWillBeTruncated && totalTagCount > maxTags;
+
+    if (notifyOverflowingTagsRemoved) {
+        beginResetModel();
+    }
+
     _maxTags = maxTags;
+
+    if (notifyOverflowingTagsRemoved) {
+        endResetModel();
+    }
+
     Q_EMIT maxTagsChanged();
 }
 

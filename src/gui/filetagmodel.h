@@ -67,7 +67,6 @@ private:
     QStringList _tags;
 
     int _maxTags = 0;
-    int _totalTags = 0;
 };
 
 }
