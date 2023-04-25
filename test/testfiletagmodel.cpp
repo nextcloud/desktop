@@ -121,6 +121,23 @@ private slots:
             QCOMPARE(tag.toString(), _expectedTags[i]);
         }
     }
+
+    void testModelMaxTags()
+    {
+        auto fileTagModel = FileTagModel(testFilePath, _account);
+        const auto fileTagModelTester = QAbstractItemModelTester(&fileTagModel);
+        QSignalSpy fileTagsChanged(&fileTagModel, &FileTagModel::totalTagsChanged);
+        fileTagsChanged.wait(1000);
+
+        constexpr auto testMaxTags = 3;
+        Q_ASSERT(testMaxTags < testNumTags);
+
+        QSignalSpy maxTagsChangedSpy(&fileTagModel, &FileTagModel::maxTagsChanged);
+        fileTagModel.setMaxTags(testMaxTags);
+        QCOMPARE(maxTagsChangedSpy.count(), 1);
+        QCOMPARE(fileTagModel.maxTags(), testMaxTags);
+        QCOMPARE(fileTagModel.rowCount(), testMaxTags);
+    }
 };
 
 QTEST_MAIN(TestFileTagModel)
