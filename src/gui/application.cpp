@@ -15,9 +15,7 @@
  */
 
 #include "application.h"
-#include "application_p.h"
 
-#include <iostream>
 #include <random>
 
 #include "account.h"
@@ -29,12 +27,9 @@
 #include "common/vfs.h"
 #include "configfile.h"
 #include "connectionvalidator.h"
-#include "creds/abstractcredentials.h"
 #include "csync_exclude.h"
 #include "folder.h"
 #include "folderman.h"
-#include "logbrowser.h"
-#include "logger.h"
 #include "settingsdialog.h"
 #include "sharedialog.h"
 #include "socketapi/socketapi.h"
@@ -55,11 +50,12 @@
 #include <libcrashreporter-handler/Handler.h>
 #endif
 
-#include <QCommandLineParser>
+#include <QApplication>
 #include <QDir>
+#include <QFileOpenEvent>
 #include <QLibraryInfo>
-#include <QMenu>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QScopeGuard>
 #include <QTranslator>
 
@@ -74,7 +70,7 @@ class QSocket;
 
 namespace {
 
-void migrateConfigFile(const QCoreApplication *app)
+void migrateConfigFile(const OCC::Application *app)
 {
     using namespace OCC;
     if (!ConfigFile::exists()) {
@@ -88,9 +84,9 @@ void migrateConfigFile(const QCoreApplication *app)
             QStringList out;
             // note: this change is temporary to allow using QDesktopServices etc. to determine the paths
             // the application name was changed to
-            auto scopeGuard = qScopeGuard([&app, oldApplicationName = app->applicationName()] {
+            auto scopeGuard = qScopeGuard([&app, oldApplicationName = qApp->applicationName()] {
                 // reset to original value
-                app->setApplicationName(oldApplicationName);
+                qApp->setApplicationName(oldApplicationName);
             });
 
             auto addLegacyLocation = [&out](const QString &path) {
@@ -223,35 +219,19 @@ ownCloudGui *Application::gui() const
     return _gui;
 }
 
-Application::Application(int &argc, char **argv, Platform *platform)
-    : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
-    , _gui(nullptr)
-    , _theme(Theme::instance())
-    , _logFlush(false)
-    , _logDebug(false)
-    , _userTriggeredConnect(false)
-    , _debugMode(false)
-{
-    platform->setApplication(this);
+Application *Application::_instance = nullptr;
 
-    // TODO: Can't set this without breaking current config paths
-    //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
-    setOrganizationDomain(QStringLiteral(APPLICATION_REV_DOMAIN));
-    setApplicationName(_theme->appName());
-    setWindowIcon(_theme->applicationIcon());
+Application::Application(Platform *platform, bool debugMode, QObject *parent)
+    : QObject(parent)
+    , _debugMode(debugMode)
+{
+    Q_ASSERT(!_instance);
+    _instance = this;
 
     // migrate old configuration files if necessary
     migrateConfigFile(this);
 
     platform->migrate();
-
-    // needed during commandline options parsing
-    setApplicationVersion(_theme->versionSwitchOutput());
-
-    parseOptions(arguments());
-
-    if (isRunning())
-        return;
 
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter()) {
@@ -265,10 +245,9 @@ Application::Application(int &argc, char **argv, Platform *platform)
     }
 #endif
 
-    setupLogging();
     setupTranslations();
 
-    qCInfo(lcApplication) << "Plugin search paths:" << libraryPaths();
+    qCInfo(lcApplication) << "Plugin search paths:" << qApp->libraryPaths();
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::Off) {
@@ -302,14 +281,7 @@ Application::Application(int &argc, char **argv, Platform *platform)
     if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
-
     _folderManager.reset(new FolderMan);
-
-    connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
     if (!AccountManager::instance()->restore()) {
         // If there is an error reading the account settings, try again
@@ -332,34 +304,29 @@ Application::Application(int &argc, char **argv, Platform *platform)
 
     FolderMan::instance()->setSyncEnabled(true);
 
-    setQuitOnLastWindowClosed(false);
+    qApp->setQuitOnLastWindowClosed(false);
 
-    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+    Theme::instance()->setSystrayUseMonoIcons(cfg.monoIcons());
+    connect(Theme::instance(), &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
-    if (_showSettings) {
-        _gui->slotShowSettings();
-    }
 
     FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     // Enable word wrapping of QInputDialog (#4197)
-    setStyleSheet(QStringLiteral("QInputDialog QLabel { qproperty-wordWrap:1; }"));
+    // TODO:
+    qApp->setStyleSheet(QStringLiteral("QInputDialog QLabel { qproperty-wordWrap:1; }"));
 
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &Application::slotAccountStateAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &Application::slotAccountStateRemoved);
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &Application::slotAccountStateAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, &Application::slotAccountStateRemoved);
     for (const auto &ai : AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai);
     }
 
-    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
-        _gui.data(), &ownCloudGui::slotShowShareDialog);
+    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived, _gui.data(), &ownCloudGui::slotShowShareDialog);
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
@@ -371,16 +338,14 @@ Application::Application(int &argc, char **argv, Platform *platform)
 #ifdef WITH_AUTO_UPDATER
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
-    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
-        _gui.data(), [this](const QString &title, const QString &msg) {
-            _gui->slotShowTrayMessage(title, msg);
-        });
-    connect(updaterScheduler, &UpdaterScheduler::requestRestart,
-        _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement, _gui.data(),
+        [this](const QString &title, const QString &msg) { _gui->slotShowTrayMessage(title, msg); });
+    connect(updaterScheduler, &UpdaterScheduler::requestRestart, _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 #endif
 
     // Cleanup at Quit.
-    connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
+    connect(qApp, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
+    qApp->installEventFilter(this);
 }
 
 Application::~Application()
@@ -499,7 +464,7 @@ AccountStatePtr Application::addNewAccount(AccountPtr newAccount)
         && QCoreApplication::applicationDirPath().startsWith(QLatin1String("/Applications/"));
 #endif
     if (shouldSetAutoStart) {
-        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
+        Utility::setLaunchOnStartup(Theme::instance()->appName(), Theme::instance()->appNameGUI(), true);
     }
 
     // showing the UI to show the user that the account has been added successfully
@@ -508,166 +473,9 @@ AccountStatePtr Application::addNewAccount(AccountPtr newAccount)
     return accountStatePtr;
 }
 
-void Application::setupLogging()
-{
-    // might be called from second instance
-    auto logger = Logger::instance();
-    // call setLogFlush first, other log settings might already imply flushing
-    // so setting it false in the end will have undesired results.
-    logger->setLogFlush(_logFlush);
-
-    if (!_logDir.isEmpty()) {
-        logger->setLogDir(_logDir);
-    }
-    if (!_logFile.isEmpty()) {
-        Q_ASSERT(_logDir.isEmpty());
-        logger->setLogFile(_logFile);
-    }
-    logger->setLogDebug(_logDebug);
-
-    // Possibly configure logging from config file
-    LogBrowser::setupLoggingFromConfig();
-
-    qCInfo(lcApplication) << "##################" << _theme->appName()
-                          << "locale:" << QLocale::system().name()
-                          << "version:" << _theme->aboutVersions(Theme::VersionFormat::OneLiner);
-    qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
-}
-
 void Application::slotUseMonoIconsChanged(bool)
 {
     _gui->slotComputeOverallSyncStatus();
-}
-
-void Application::slotParseMessage(const QString &msg, QObject *)
-{
-    qCInfo(lcApplication) << Q_FUNC_INFO << msg;
-    if (msg.startsWith(ApplicationPrivate::msgParseOptionsC())) {
-        QStringList options = msg.mid(ApplicationPrivate::msgParseOptionsC().size()).split(QLatin1Char('|'));
-        // TODO: don't modify the application state in the parser
-        _showSettings = false;
-        parseOptions(options);
-        if (_showSettings) {
-            _gui->slotShowSettings();
-        }
-        if (_quitInstance) {
-            qApp->quit();
-        }
-    }
-}
-
-// Helpers for displaying messages. Note that there is probably no console on Windows.
-static void displayHelpText(const QString &t, std::ostream &stream = std::cout)
-{
-    Logger::instance()->attacheToConsole();
-    stream << qUtf8Printable(t) << std::endl;
-#ifdef Q_OS_WIN
-    // No console on Windows.
-    QString spaces(80, QLatin1Char(' ')); // Add a line of non-wrapped space to make the messagebox wide enough.
-    QString text = QStringLiteral("<qt><pre style='white-space:pre-wrap'>")
-        + t.toHtmlEscaped() + QStringLiteral("</pre><pre>") + spaces + QStringLiteral("</pre></qt>");
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
-#endif
-}
-
-void Application::parseOptions(const QStringList &arguments)
-{
-    QCommandLineParser parser;
-
-    QString descriptionText;
-    QTextStream descriptionTextStream(&descriptionText);
-
-    descriptionTextStream << tr("%1 version %2\r\nFile synchronization desktop utility.").arg(_theme->appName(), OCC::Version::displayString()) << Qt::endl;
-
-    if (_theme->appName() == QLatin1String("ownCloud")) {
-        descriptionTextStream << Qt::endl << Qt::endl << tr("For more information, see %1", "link to homepage").arg(QStringLiteral("https://www.owncloud.com"));
-    }
-
-    parser.setApplicationDescription(descriptionText);
-
-    auto helpOption = parser.addHelpOption();
-    auto versionOption = parser.addVersionOption();
-
-    // this little snippet saves a few lines below
-    auto addOption = [&parser](const QCommandLineOption &option) {
-        parser.addOption(option);
-        return option;
-    };
-
-    auto showSettingsOption = addOption({ { QStringLiteral("s"), QStringLiteral("showsettings") }, tr("Show the settings dialog while starting.") });
-    auto quitInstanceOption = addOption({ { QStringLiteral("q"), QStringLiteral("quit") }, tr("Quit the running instance.") });
-    auto logFileOption = addOption({ QStringLiteral("logfile"), tr("Write log to file (use - to write to stdout)."), QStringLiteral("filename") });
-    auto logDirOption = addOption({ QStringLiteral("logdir"), tr("Write each sync log output in a new file in folder."), QStringLiteral("name") });
-    auto logFlushOption = addOption({ QStringLiteral("logflush"), tr("Flush the log file after every write.") });
-    auto logDebugOption = addOption({ QStringLiteral("logdebug"), tr("Output debug-level messages in the log.") });
-    auto languageOption = addOption({ QStringLiteral("language"), tr("Override UI language."), QStringLiteral("language") });
-    auto listLanguagesOption = addOption({QStringLiteral("list-languages"), tr("Lists available translations, see --language.")});
-    auto confDirOption = addOption({ QStringLiteral("confdir"), tr("Use the given configuration folder."), QStringLiteral("dirname") });
-    auto debugOption = addOption({ QStringLiteral("debug"), tr("Enable debug mode.") });
-
-    // virtual file system parameters (optional)
-    parser.addPositionalArgument(QStringLiteral("vfs file"), tr("Virtual file system file to be opened (optional)."), { tr("[<vfs file>]") });
-
-    parser.process(arguments);
-
-    // TODO: rename this option (see #8234 for more information)
-    if (parser.isSet(showSettingsOption)) {
-        _showSettings = true;
-    }
-    if (parser.isSet(quitInstanceOption)) {
-        _quitInstance = true;
-    }
-    if (parser.isSet(logFileOption)) {
-        _logFile = parser.value(logFileOption);
-    }
-    if (parser.isSet(logDirOption)) {
-        if (parser.isSet(logFileOption)) {
-            displayHelpText(tr("--logfile and --logdir are mutually exclusive"));
-            std::exit(1);
-        }
-        _logDir = parser.value(logDirOption);
-    }
-    if (parser.isSet(logFlushOption)) {
-        _logFlush = true;
-    }
-    if (parser.isSet(logDebugOption)) {
-        _logDebug = true;
-    }
-    if (parser.isSet(confDirOption)) {
-        const auto confDir = parser.value(confDirOption);
-        if (!ConfigFile::setConfDir(confDir)) {
-            displayHelpText(tr("Invalid path passed to --confdir"));
-            std::exit(1);
-        }
-    }
-    if (parser.isSet(debugOption)) {
-        _logDebug = true;
-        _debugMode = true;
-    }
-    if (parser.isSet(languageOption)) {
-        const auto languageValue = parser.value(languageOption);
-
-        // fail if the language is unknown
-        if (!Translations::listAvailableTranslations().contains(languageValue)) {
-            displayHelpText(tr("Error: unknown language \"%1\" (use --list-languages to get a complete list of supported translations)").arg(languageValue));
-            std::exit(1);
-        } else {
-            _userEnforcedLanguage = languageValue;
-        }
-    }
-    if (parser.isSet(listLanguagesOption)) {
-        auto availableTranslations = Translations::listAvailableTranslations().values();
-        availableTranslations.sort(Qt::CaseInsensitive);
-        displayHelpText(tr("Available translations: %1").arg(availableTranslations.join(QStringLiteral(", "))));
-        std::exit(1);
-    }
-
-    auto positionalArguments = parser.positionalArguments();
-
-    // ignore any positional arguments beyond the first one
-    if (!positionalArguments.empty()) {
-        QTimer::singleShot(0, this, [this, positionalArguments] { openVirtualFile(positionalArguments.front()); });
-    }
 }
 
 bool Application::debugMode()
@@ -762,13 +570,13 @@ void Application::setupTranslations()
                 }
             }
 
-            if (!translator->isEmpty() && !installTranslator(translator)) {
+            if (!translator->isEmpty() && !qApp->installTranslator(translator)) {
                 qCCritical(lcApplication) << "Failed to install translator";
             }
-            if (!qtTranslator->isEmpty() && !installTranslator(qtTranslator)) {
+            if (!qtTranslator->isEmpty() && !qApp->installTranslator(qtTranslator)) {
                 qCCritical(lcApplication) << "Failed to install Qt translator";
             }
-            if (!qtkeychainTranslator->isEmpty() && !installTranslator(qtkeychainTranslator)) {
+            if (!qtkeychainTranslator->isEmpty() && !qApp->installTranslator(qtkeychainTranslator)) {
                 qCCritical(lcApplication) << "Failed to install qtkeychain translator";
             }
 
@@ -829,7 +637,7 @@ void Application::tryTrayAgain()
         _gui->hideAndShowTray();
 }
 
-bool Application::event(QEvent *event)
+bool Application::eventFilter(QObject *obj, QEvent *event)
 {
 #ifdef Q_OS_MAC
     if (event->type() == QEvent::FileOpen) {
@@ -840,7 +648,6 @@ bool Application::event(QEvent *event)
         QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
     }
 #endif
-    return SharedTools::QtSingleApplication::event(event);
+    return QObject::eventFilter(obj, event);
 }
-
 } // namespace OCC

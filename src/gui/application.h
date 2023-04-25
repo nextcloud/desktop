@@ -15,12 +15,9 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QApplication>
 #include <QPointer>
 #include <QQueue>
 #include <QTimer>
-
-#include "3rdparty/qtsingleapplication/qtsingleapplication.h"
 
 #include "clientproxy.h"
 #include "folderman.h"
@@ -41,18 +38,17 @@ Q_DECLARE_LOGGING_CATEGORY(lcApplication)
 
 class Theme;
 class Folder;
-class SslErrorDialog;
 
 /**
  * @brief The Application class
  * @ingroup gui
  */
-class Application : public SharedTools::QtSingleApplication
+class Application : public QObject
 {
     Q_OBJECT
 public:
-    explicit Application(int &argc, char **argv, Platform *platform);
-    ~Application() override;
+    explicit Application(Platform *platform, bool debugMode, QObject *parent);
+    ~Application();
 
     bool debugMode();
 
@@ -79,17 +75,15 @@ public slots:
     void tryTrayAgain();
 
 protected:
-    void parseOptions(const QStringList &);
     void setupTranslations();
-    void setupLogging();
-    bool event(QEvent *event) override;
+
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 signals:
     void folderRemoved();
     void folderStateChanged(Folder *);
 
 protected slots:
-    void slotParseMessage(const QString &, QObject *);
     void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
     void slotCleanup();
@@ -103,19 +97,9 @@ private:
      */
     bool configVersionMigration();
 
-    QPointer<ownCloudGui> _gui;
+    QPointer<ownCloudGui> _gui = {};
 
-    Theme *_theme;
-
-    // options from command line:
-    bool _showSettings = false;
-    bool _quitInstance = false;
-    QString _logFile;
-    QString _logDir;
-    bool _logFlush;
-    bool _logDebug;
-    bool _userTriggeredConnect;
-    bool _debugMode;
+    const bool _debugMode = false;
     QString _userEnforcedLanguage;
     QString _displayLanguage;
 
@@ -124,13 +108,16 @@ private:
     QTimer _checkConnectionTimer;
 
     QScopedPointer<FolderMan> _folderManager;
+
+
+    static Application *_instance;
+    friend Application *ocApp();
 };
 
 inline Application *ocApp()
 {
-    auto instance = qobject_cast<Application *>(qApp);
-    OC_ENFORCE(instance);
-    return instance;
+    OC_ENFORCE(Application::_instance);
+    return Application::_instance;
 }
 
 } // namespace OCC

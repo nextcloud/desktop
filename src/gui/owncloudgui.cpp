@@ -39,11 +39,12 @@
 
 #include "resources/resources.h"
 
+#include <QApplication>
 #include <QDesktopServices>
-#include <QDir>
-#include <QMessageBox>
 #include <QDialog>
+#include <QDir>
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include <QScreen>
 
 #ifdef WITH_LIBCLOUDPROVIDERS

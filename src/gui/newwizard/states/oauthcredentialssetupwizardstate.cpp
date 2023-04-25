@@ -107,7 +107,7 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
     connect(oAuthCredentialsPage, &OAuthCredentialsSetupWizardPage::copyUrlToClipboardButtonPushed, this, [oAuth]() {
         const auto link = oAuth->authorisationLink();
         Q_ASSERT(!link.isEmpty());
-        ocApp()->clipboard()->setText(link.toString());
+        qApp->clipboard()->setText(link.toString());
     });
 
     // the implementation moves to the next state automatically once ready, no user interaction needed

@@ -768,7 +768,7 @@ void AccountSettings::slotAccountStateChanged()
             connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [account]() {
                 // TODO: use authorisationLinkAsync
                 auto link = qobject_cast<HttpCredentialsGui *>(account->credentials())->authorisationLink().toString();
-                ocApp()->clipboard()->setText(link);
+                qApp->clipboard()->setText(link);
             });
 
             connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, _askForOAuthLoginDialog, [cred]() {
