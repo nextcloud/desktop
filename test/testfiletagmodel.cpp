@@ -104,6 +104,28 @@ private slots:
         };
     }
 
+    void testModelMainProps()
+    {
+        auto fileTagModel = FileTagModel(testFilePath, _account);
+        const auto fileTagModelTester = QAbstractItemModelTester(&fileTagModel);
+        QSignalSpy fileTagsChanged(&fileTagModel, &FileTagModel::totalTagsChanged);
+        fileTagsChanged.wait(1000);
+
+        QCOMPARE(fileTagModel.serverRelativePath(), testFilePath);
+        QCOMPARE(fileTagModel.account(), _account);
+
+        QSignalSpy serverRelativePathChangedSpy(&fileTagModel, &FileTagModel::serverRelativePathChanged);
+        fileTagModel.setServerRelativePath("");
+        QCOMPARE(serverRelativePathChangedSpy.count(), 1);
+        QCOMPARE(fileTagModel.serverRelativePath(), "");
+
+        QSignalSpy accountChangedSpy(&fileTagModel, &FileTagModel::accountChanged);
+        const AccountPtr testAccount;
+        fileTagModel.setAccount(testAccount);
+        QCOMPARE(accountChangedSpy.count(), 1);
+        QCOMPARE(fileTagModel.account(), testAccount);
+    }
+
     void testModelTagFetch()
     {
         auto fileTagModel = FileTagModel(testFilePath, _account);
