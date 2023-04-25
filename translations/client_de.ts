@@ -1512,12 +1512,12 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="547"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="567"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Bearbeitung konnte nicht gestartet werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Beim Versuch, die Anfrage zur lokalen Bearbeitung zu überprüfen, ist ein Fehler aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
@@ -1544,18 +1544,18 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
         <source>An error occurred during data retrieval.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Datenabruf.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="548"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Beim Versuch, die Datei zu synchronisieren, um sie lokal zu bearbeiten, ist ein Fehler aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="456"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>Während der Einrichtung ist ein Fehler aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="502"/>
@@ -1570,7 +1570,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="568"/>
         <source>Invalid local file path.</source>
-        <translation type="unfinished"/>
+        <translation>Ungültiger lokaler Dateipfad.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>

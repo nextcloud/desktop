@@ -1513,12 +1513,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/gui/editlocallyjob.cpp" line="547"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="567"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Düzenleme yerel olarak başlatılamadı</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel olarak düzenleme isteği doğrulanmaya çalışılırken bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
@@ -1545,18 +1545,18 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
         <source>An error occurred during data retrieval.</source>
-        <translation type="unfinished"/>
+        <translation>Veriler alınırken bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="548"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yerel olarak düzenlenmek üzere eşitlenirken bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="456"/>
         <source>An error occurred during setup.</source>
-        <translation type="unfinished"/>
+        <translation>Kurulum sırasında bir sorun çıktı.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="502"/>
@@ -1571,7 +1571,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="568"/>
         <source>Invalid local file path.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel dosya yolu geçersiz.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
