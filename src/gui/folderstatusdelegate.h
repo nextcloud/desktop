@@ -35,7 +35,7 @@ public:
     /**
      * return the position of the option button within the item
      */
-    QRectF optionsButtonRect(QRectF within, Qt::LayoutDirection direction) const;
+    QRectF computeOptionsButtonRect(QRectF within) const;
     QRectF errorsListRect(QRectF within, const QModelIndex &) const;
     qreal rootFolderHeightWithoutErrors() const;
 
