@@ -1,5 +1,5 @@
 include(OCApplyCommonSettings)
-find_package(Qt5 COMPONENTS Core Test Xml Network REQUIRED)
+find_package(Qt5 COMPONENTS Test REQUIRED)
 
 include(ECMAddTests)
 

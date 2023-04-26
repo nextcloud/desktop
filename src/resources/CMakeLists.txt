@@ -1,5 +1,3 @@
-find_package(Qt5LinguistTools)
-
 add_library(owncloudResources SHARED
     client.qrc
     core_theme.qrc

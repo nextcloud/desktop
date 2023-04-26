@@ -45,8 +45,6 @@ set_target_properties(${CRASHREPORTER_EXECUTABLE}
     MACOSX_BUNDLE FALSE
 )
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-
 target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(${CRASHREPORTER_EXECUTABLE}
     PRIVATE

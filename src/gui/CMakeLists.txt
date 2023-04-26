@@ -1,13 +1,5 @@
 include(ECMAddAppIcon)
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-
-find_package(KDSingleApplication REQUIRED)
-
-if (WIN32)
-    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
-endif()
-
 set(client_UI_SRCS
     aboutdialog.ui
     accountsettings.ui
@@ -128,7 +120,6 @@ target_include_directories(owncloudCore PUBLIC
 )
 
 IF( APPLE )
-    find_package(Qt5 COMPONENTS MacExtras)
     target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
 
     target_sources(owncloudCore PRIVATE
@@ -144,7 +135,6 @@ elseif( WIN32 )
     target_link_libraries(owncloudCore PUBLIC Qt5::WinExtras)
 elseif(UNIX AND NOT APPLE)
     ## handle DBUS for Fdo notifications
-    find_package(Qt5 COMPONENTS DBus)
     if (TARGET Qt5::DBus)
         target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
         target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")

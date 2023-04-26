@@ -24,8 +24,19 @@ include(ECMSetupVersion)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+find_package(Qt5 5.15 COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
+find_package(Qt5LinguistTools)
 
-find_package(Qt5 REQUIRED COMPONENTS Core)
+if (WIN32)
+    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
+elseif(APPLE)
+    find_package(Qt5 REQUIRED COMPONENTS MacExtras)
+elseif(UNIX)
+    find_package(Qt5 REQUIRED COMPONENTS DBus)
+endif()
+
+get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")
@@ -96,6 +107,9 @@ option(WITH_AUTO_UPDATER "WITH_AUTO_UPDATER" OFF)
 # build with -DQT_FORCE_ASSERTS
 option(FORCE_ASSERTS "FORCE_ASSERTS" OFF)
 
+option(WITH_APPIMAGEUPDATER OFF "Enable built-in libappimageupdate based updater on Linux")
+add_feature_info(AppImageUpdate WITH_APPIMAGEUPDATER "Built-in libappimageupdate based updater")
+
 # specify additional vfs plugins
 set(VIRTUAL_FILE_SYSTEM_PLUGINS off suffix win CACHE STRING "Name of internal plugin in src/libsync/vfs or the locations of virtual file plugins")
 
@@ -107,8 +121,6 @@ if(APPLE)
     find_package(Sparkle REQUIRED)
 endif(APPLE)
 
-option(WITH_APPIMAGEUPDATER OFF "Enable built-in libappimageupdate based updater on Linux")
-add_feature_info(AppImageUpdate WITH_APPIMAGEUPDATER "Built-in libappimageupdate based updater")
 if(WITH_APPIMAGEUPDATER)
     find_package(AppImageUpdate REQUIRED)
 endif()

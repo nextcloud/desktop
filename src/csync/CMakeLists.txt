@@ -61,7 +61,6 @@ target_link_libraries(csync
 
 # For platform_win.cpp
 if (WIN32)
-    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
     target_link_libraries(csync PUBLIC Qt5::WinExtras)
 endif()
 
