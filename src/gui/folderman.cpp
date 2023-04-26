@@ -178,11 +178,11 @@ int FolderMan::setupFolders()
     auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
-        int r = setupFoldersMigration();
-        if (r > 0) {
+        const auto migratedFoldersCount = setupFoldersMigration();
+        if (migratedFoldersCount > 0) {
             AccountManager::instance()->save(false); // don't save credentials, they had not been loaded from keychain
         }
-        return r;
+        return migratedFoldersCount;
     }
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
@@ -197,7 +197,7 @@ int FolderMan::setupFolders()
 
         // The "backwardsCompatible" flag here is related to migrating old
         // database locations
-        auto process = [&](const QString &groupName, bool backwardsCompatible, bool foldersWithPlaceholders) {
+        auto process = [&](const QString &groupName, const bool backwardsCompatible, const bool foldersWithPlaceholders) {
             settings->beginGroup(groupName);
             if (skipSettingsKeys.contains(settings->group())) {
                 // Should not happen: bad container keys should have been deleted
