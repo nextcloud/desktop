@@ -90,9 +90,6 @@ option(BUILD_SHELL_INTEGRATION_NAUTILUS "BUILD_SHELL_INTEGRATION_NAUTILUS" ON)
 # this option builds the client
 option(BUILD_CLIENT "BUILD_CLIENT" ON)
 
-# this option creates only libocsync and libowncloudsync (NOTE: BUILD_CLIENT needs to be on)
-option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
-
 # build the GUI component, when disabled only owncloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
 
@@ -154,11 +151,9 @@ endif()
 
 if(BUILD_CLIENT)
     add_subdirectory(src)
-    if(NOT BUILD_LIBRARIES_ONLY)
-        if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
-            add_subdirectory(admin)
-        endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
-    endif(NOT BUILD_LIBRARIES_ONLY)
+    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
+        add_subdirectory(admin)
+    endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
 endif()
 
 if(BUILD_SHELL_INTEGRATION)

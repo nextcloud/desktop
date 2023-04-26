@@ -1,4 +1,4 @@
-if(APPLE AND NOT BUILD_LIBRARIES_ONLY)
+if(APPLE)
     if (SPARKLE_FOUND)
         list(APPEND OWNCLOUD_BUNDLED_RESOURCES
             "${PROJECT_SOURCE_DIR}/admin/osx/deny_autoupdate_com.owncloud.desktopclient.plist"

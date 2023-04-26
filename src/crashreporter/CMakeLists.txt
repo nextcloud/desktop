@@ -32,34 +32,31 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CrashReporterConfig.h.in
 list(APPEND crashreporter_SOURCES main.cpp)
 list(APPEND crashreporter_RC "${CMAKE_CURRENT_BINARY_DIR}/resources.qrc")
 
+add_executable(${CRASHREPORTER_EXECUTABLE}
+    ${crashreporter_SOURCES}
+    ${crashreporter_HEADERS_MOC}
+    ${crashreporter_UI_HEADERS}
+    ${crashreporter_RC}
+)
 
-if(NOT BUILD_LIBRARIES_ONLY)
-    add_executable(${CRASHREPORTER_EXECUTABLE}
-        ${crashreporter_SOURCES}
-        ${crashreporter_HEADERS_MOC}
-        ${crashreporter_UI_HEADERS}
-        ${crashreporter_RC}
-    )
+# This is a GUI Application without its own bundle
+set_target_properties(${CRASHREPORTER_EXECUTABLE}
+  PROPERTIES
+    MACOSX_BUNDLE FALSE
+)
 
-    # This is a GUI Application without its own bundle
-    set_target_properties(${CRASHREPORTER_EXECUTABLE}
-      PROPERTIES
-        MACOSX_BUNDLE FALSE
-    )
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
-    find_package(Qt5 REQUIRED COMPONENTS Widgets)
+target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(${CRASHREPORTER_EXECUTABLE}
+    PRIVATE
+        CrashReporterQt::Gui
+        Qt5::Core
+        Qt5::Widgets
+)
 
-    target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    target_link_libraries(${CRASHREPORTER_EXECUTABLE}
-        PRIVATE
-            CrashReporterQt::Gui
-            Qt5::Core
-            Qt5::Widgets
-    )
-
-    if(APPLE)
-      install(TARGETS ${CRASHREPORTER_EXECUTABLE} RUNTIME DESTINATION "${KDE_INSTALL_BUNDLEDIR}/${APPLICATION_EXECUTABLE}.app/Contents/MacOS/")
-    else()
-      install(TARGETS ${CRASHREPORTER_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-    endif()
+if(APPLE)
+  install(TARGETS ${CRASHREPORTER_EXECUTABLE} RUNTIME DESTINATION "${KDE_INSTALL_BUNDLEDIR}/${APPLICATION_EXECUTABLE}.app/Contents/MacOS/")
+else()
+  install(TARGETS ${CRASHREPORTER_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 endif()
