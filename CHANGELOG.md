@@ -23,6 +23,7 @@ Summary
 * Bugfix - Ensure the account state is properly persisted: [#10648](https://github.com/owncloud/client/issues/10648)
 * Bugfix - Reconnect got stuck if the server supports app providers: [#10666](https://github.com/owncloud/client/issues/10666)
 * Change - Implement server guided migration to spaces: [#9945](https://github.com/owncloud/client/issues/9945)
+* Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
@@ -132,6 +133,15 @@ Details
 
    https://github.com/owncloud/client/issues/9945
    https://github.com/owncloud/ocis/issues/3574
+
+* Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
+
+   Instead of relying on an old copy of QtSingleApplication we use
+   https://github.com/KDAB/KDSingleApplication
+
+   https://github.com/owncloud/client/issues/8432
+   https://github.com/owncloud/client/pull/10754
+   https://github.com/owncloud/client/pull/10758
 
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 
