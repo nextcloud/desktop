@@ -79,10 +79,6 @@ protected:
 
     bool eventFilter(QObject *obj, QEvent *event) override;
 
-signals:
-    void folderRemoved();
-    void folderStateChanged(Folder *);
-
 protected slots:
     void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
