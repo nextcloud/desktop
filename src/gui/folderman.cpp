@@ -284,8 +284,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                     qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
                 }
 
-                Folder *f = addFolderInternal(folderDefinition, account.data(), std::move(vfs));
-                f->saveToSettings();
+                const auto folder = addFolderInternal(folderDefinition, account.data(), std::move(vfs));
+                folder->saveToSettings();
 
                 continue;
             }
@@ -316,26 +316,25 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 qFatal("Could not load plugin");
             }
 
-            Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
-            if (f) {
+            if (const auto folder = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs))) {
                 if (switchToVfs) {
-                    f->switchToVirtualFiles();
+                    folder->switchToVirtualFiles();
                 }
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
                 if (settings.value(QLatin1String(settingsVersionC), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
                     qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
-                    f->setRootPinState(PinState::OnlineOnly);
+                    folder->setRootPinState(PinState::OnlineOnly);
                 }
 
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
                 if (backwardsCompatible)
-                    f->setSaveBackwardsCompatible(true);
+                    folder->setSaveBackwardsCompatible(true);
                 if (foldersWithPlaceholders)
-                    f->setSaveInFoldersWithPlaceholders();
+                    folder->setSaveInFoldersWithPlaceholders();
 
-                scheduleFolder(f);
-                emit folderSyncStateChange(f);
+                scheduleFolder(folder);
+                emit folderSyncStateChange(folder);
             }
         }
         settings.endGroup();
