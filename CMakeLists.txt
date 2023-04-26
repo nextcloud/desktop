@@ -87,9 +87,6 @@ option(BUILD_SHELL_INTEGRATION_DOLPHIN "BUILD_SHELL_INTEGRATION_DOLPHIN" ON)
 # this options builds the nautilus (like) integration plugins
 option(BUILD_SHELL_INTEGRATION_NAUTILUS "BUILD_SHELL_INTEGRATION_NAUTILUS" ON)
 
-# this option builds the client
-option(BUILD_CLIENT "BUILD_CLIENT" ON)
-
 # build the GUI component, when disabled only owncloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
 
@@ -106,24 +103,22 @@ if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
-if(BUILD_CLIENT)
-    if(APPLE)
-        find_package(Sparkle REQUIRED)
-    endif(APPLE)
+if(APPLE)
+    find_package(Sparkle REQUIRED)
+endif(APPLE)
 
-    option(WITH_APPIMAGEUPDATER OFF "Enable built-in libappimageupdate based updater on Linux")
-    add_feature_info(AppImageUpdate WITH_APPIMAGEUPDATER "Built-in libappimageupdate based updater")
-    if(WITH_APPIMAGEUPDATER)
-        find_package(AppImageUpdate REQUIRED)
-    endif()
-
-    if(UNIX AND NOT APPLE)
-        find_package(Inotify REQUIRED)
-    endif()
-
-    find_package(ZLIB REQUIRED)
-    find_package(SQLite3 3.9.0 REQUIRED)
+option(WITH_APPIMAGEUPDATER OFF "Enable built-in libappimageupdate based updater on Linux")
+add_feature_info(AppImageUpdate WITH_APPIMAGEUPDATER "Built-in libappimageupdate based updater")
+if(WITH_APPIMAGEUPDATER)
+    find_package(AppImageUpdate REQUIRED)
 endif()
+
+if(UNIX AND NOT APPLE)
+    find_package(Inotify REQUIRED)
+endif()
+
+find_package(ZLIB REQUIRED)
+find_package(SQLite3 3.9.0 REQUIRED)
 
 # in the ownBrander themes, the icon files are named after the shortname
 # the theme included in this repository defines a custom icon name, therefore we set the shortname as a fallback if the
@@ -140,7 +135,7 @@ MESSAGE(STATUS "OWNCLOUD_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS}")
 
 if(APPLE)
     list(APPEND OWNCLOUD_BUNDLED_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/sync-exclude.lst")
-elseif(BUILD_CLIENT)
+else()
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
     if(WIN32)
         install(FILES sync-exclude.lst DESTINATION bin)
@@ -149,12 +144,10 @@ elseif(BUILD_CLIENT)
     endif()
 endif()
 
-if(BUILD_CLIENT)
-    add_subdirectory(src)
-    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
-        add_subdirectory(admin)
-    endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
-endif()
+add_subdirectory(src)
+if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
+    add_subdirectory(admin)
+endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
 
 if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
