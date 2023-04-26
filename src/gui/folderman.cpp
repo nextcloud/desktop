@@ -356,12 +356,12 @@ int FolderMan::setupFoldersMigration()
     const auto list = dir.entryList();
 
     // Normally there should be only one account when migrating.
-    AccountState *accountState = AccountManager::instance()->accounts().value(0).data();
+    const auto accountState = AccountManager::instance()->accounts().value(0).data();
     for (const auto &alias : list) {
-        Folder *f = setupFolderFromOldConfigFile(alias, accountState);
-        if (f) {
-            scheduleFolder(f);
-            emit folderSyncStateChange(f);
+        const auto folder = setupFolderFromOldConfigFile(alias, accountState);
+        if (folder) {
+            scheduleFolder(folder);
+            emit folderSyncStateChange(folder);
         }
     }
 
