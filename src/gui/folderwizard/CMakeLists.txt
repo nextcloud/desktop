@@ -12,7 +12,6 @@ add_library(folderwizard STATIC
     spacespage.ui
 )
 
-target_link_libraries(folderwizard PUBLIC Qt5::Widgets libsync)
+target_link_libraries(folderwizard PUBLIC Qt::Widgets libsync)
 set_target_properties(folderwizard PROPERTIES AUTOUIC ON AUTORCC ON)
 apply_common_target_settings(folderwizard)
- 

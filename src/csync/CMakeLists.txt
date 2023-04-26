@@ -52,16 +52,16 @@ generate_export_header(csync
 
 target_link_libraries(csync
     PUBLIC
-        Qt5::Core
+        Qt::Core
     PRIVATE
-        Qt5::Concurrent
+        Qt::Concurrent
         SQLite::SQLite3
         ZLIB::ZLIB
 )
 
 # For platform_win.cpp
-if (WIN32)
-    target_link_libraries(csync PUBLIC Qt5::WinExtras)
+if (WIN32 AND TARGET Qt::WinExtras)
+    target_link_libraries(csync PUBLIC Qt::WinExtras)
 endif()
 
 # For src/common/utility_mac.cpp

@@ -1,5 +1,5 @@
 include(OCApplyCommonSettings)
-find_package(Qt5 COMPONENTS Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Test REQUIRED)
 
 include(ECMAddTests)
 
@@ -15,7 +15,7 @@ function(owncloud_add_test test_class)
         ${ARGN}
         TEST_NAME "${OWNCLOUD_TEST_CLASS}Test"
         LINK_LIBRARIES
-        owncloudCore syncenginetestutils testutilsloader Qt5::Test
+        owncloudCore syncenginetestutils testutilsloader Qt::Test
     )
     apply_common_target_settings_soft(${OWNCLOUD_TEST_CLASS}Test)
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin" SOURCEDIR="${PROJECT_SOURCE_DIR}" QT_FORCE_ASSERTS)

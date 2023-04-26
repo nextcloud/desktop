@@ -10,7 +10,7 @@ generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
 # make them available to the whole project
 set(OWNCLOUD_SIDEBAR_ICONS ${OWNCLOUD_SIDEBAR_ICONS} CACHE INTERNAL "Sidebar icons" FORCE)
 
-target_link_libraries(owncloudResources PUBLIC Qt5::Core Qt5::Gui)
+target_link_libraries(owncloudResources PUBLIC Qt::Core Qt::Gui)
 apply_common_target_settings(owncloudResources)
 target_include_directories(owncloudResources PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>)
 
@@ -28,16 +28,14 @@ generate_export_header(owncloudResources
         STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
 )
 
-if(Qt5LinguistTools_FOUND)
-    # Handle Translations, pick all client_* files from trans directory.
-    file(GLOB client_translations ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
-    qt5_add_translation(client_compiled_translations ${client_translations})
-    target_sources(owncloudResources PRIVATE ${client_compiled_translations})
-    add_resources_to_target(
-        TARGET owncloudResources
-        PREFIX translations
-        FILES "${client_compiled_translations}"
-    )
-endif()
+# Handle Translations, pick all client_* files from trans directory.
+file(GLOB client_translations ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
+qt_add_translation(client_compiled_translations ${client_translations})
+target_sources(owncloudResources PRIVATE ${client_compiled_translations})
+add_resources_to_target(
+    TARGET owncloudResources
+    PREFIX translations
+    FILES "${client_compiled_translations}"
+)
 
 install(TARGETS owncloudResources EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

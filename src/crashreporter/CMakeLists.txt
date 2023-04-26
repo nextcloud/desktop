@@ -49,8 +49,8 @@ target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_B
 target_link_libraries(${CRASHREPORTER_EXECUTABLE}
     PRIVATE
         CrashReporterQt::Gui
-        Qt5::Core
-        Qt5::Widgets
+        Qt::Core
+        Qt::Widgets
 )
 
 if(APPLE)

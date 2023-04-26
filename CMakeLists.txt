@@ -16,27 +16,32 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PAT
 # disable pointless warning in KDECMakeSettings
 set(APPLE_SUPPRESS_X11_WARNING ON)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+find_package(QT 5.15 NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
+get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
+message(STATUS "Using Qt ${QT_VERSION} (${QT_QMAKE_EXECUTABLE})")
+
+if (${QT_VERSION_MAJOR} EQUAL 5)
+    if (WIN32)
+        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS WinExtras)
+    elseif(APPLE)
+        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS MacExtras)
+    endif()
+endif()
+if (UNIX AND NOT APPLE)
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS DBus)
+endif()
+
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(ECMMarkNonGuiExecutable)
 include(ECMSetupVersion)
 
 include(KDECompilerSettings NO_POLICY_SCOPE)
-
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-find_package(Qt5 5.15 COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
-find_package(Qt5LinguistTools)
-
-if (WIN32)
-    find_package(Qt5 REQUIRED COMPONENTS WinExtras)
-elseif(APPLE)
-    find_package(Qt5 REQUIRED COMPONENTS MacExtras)
-elseif(UNIX)
-    find_package(Qt5 REQUIRED COMPONENTS DBus)
-endif()
-
-get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")

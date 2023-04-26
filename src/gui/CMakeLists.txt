@@ -1,5 +1,7 @@
 include(ECMAddAppIcon)
 
+find_package(KDSingleApplication REQUIRED)
+
 set(client_UI_SRCS
     aboutdialog.ui
     accountsettings.ui
@@ -99,10 +101,11 @@ add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore
     PUBLIC
-        Qt5::Widgets Qt5::Network Qt5::Xml
-        qt5keychain
+        Qt::Widgets Qt::Network Qt::Xml
         newwizard folderwizard spaces loginrequireddialog
-        libsync)
+        libsync
+        Qt${QT_VERSION_MAJOR}Keychain::Qt${QT_VERSION_MAJOR}Keychain
+)
 
 apply_common_target_settings(owncloudCore)
 
@@ -120,7 +123,9 @@ target_include_directories(owncloudCore PUBLIC
 )
 
 IF( APPLE )
-    target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
+    if (TARGET Qt::MacExtras)
+        target_link_libraries(owncloudCore PUBLIC Qt::MacExtras)
+    endif()
 
     target_sources(owncloudCore PRIVATE
             systray.mm
@@ -132,11 +137,13 @@ elseif( WIN32 )
             guiutility_win.cpp
             folderwatcher_win.cpp
             navigationpanehelper.cpp)
-    target_link_libraries(owncloudCore PUBLIC Qt5::WinExtras)
+    if(TARGET Qt::WinExtras)
+        target_link_libraries(owncloudCore PUBLIC Qt::WinExtras)
+    endif()
 elseif(UNIX AND NOT APPLE)
     ## handle DBUS for Fdo notifications
-    if (TARGET Qt5::DBus)
-        target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
+    if (TARGET Qt::DBus)
+        target_link_libraries(owncloudCore PUBLIC Qt::DBus)
         target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
     endif()
     target_sources(owncloudCore PRIVATE
