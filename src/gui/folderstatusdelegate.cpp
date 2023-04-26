@@ -139,11 +139,15 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const auto infoRect = QRectF{iconRect.topRight(), QSizeF{statusRect.width() - iconRect.width(), iconRect.height()}}.marginsRemoved({_aliasMargin, 0, 0, 0});
     const auto aliasRect = QRectF{infoRect.topLeft(), QSizeF{infoRect.width(), aliasFm.height()}};
 
+    const auto optionsButtonRect = this->computeOptionsButtonRect(option.rect);
     const auto marginOffset = QPointF{0, _margin};
     const auto localPathRect = QRectF{aliasRect.bottomLeft() + marginOffset, QSizeF{aliasRect.width(), subFm.height()}};
-    const auto quotaTextRect = QRectF{localPathRect.bottomLeft() + marginOffset, QSizeF{aliasRect.width(), subFm.height()}};
+    const auto quotaTextRect = [&] {
+        QRectF rect{localPathRect.bottomLeft() + marginOffset, QSizeF{aliasRect.width(), subFm.height()}};
+        rect.setRight(optionsButtonRect.left() - _margin);
+        return rect;
+    }();
 
-    const auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
 
     {
         const auto iconVisualRect = QStyle::visualRect(option.direction, option.rect, iconRect.toRect());
@@ -268,7 +272,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonVisualRect.toRect();
+        btnOpt.rect = QStyle::visualRect(option.direction, option.rect, optionsButtonRect.toRect());
         btnOpt.icon = Resources::getCoreIcon(QStringLiteral("more"));
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
@@ -276,7 +280,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 }
 
-QRectF FolderStatusDelegate::optionsButtonRect(QRectF within, Qt::LayoutDirection direction) const
+QRectF FolderStatusDelegate::computeOptionsButtonRect(QRectF within) const
 {
     if (!_ready) {
         return {};
@@ -289,8 +293,7 @@ QRectF FolderStatusDelegate::optionsButtonRect(QRectF within, Qt::LayoutDirectio
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
 
     qreal margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
-    QRectF r(QPoint(within.right() - size.width() - margin, within.top() + within.height() / 2 - size.height() / 2), size);
-    return QStyle::visualRect(direction, within.toRect(), r.toRect());
+    return {QPoint(within.right() - size.width() - margin, within.top() + within.height() / 2 - size.height() / 2), size};
 }
 
 QRectF FolderStatusDelegate::errorsListRect(QRectF within, const QModelIndex &index) const

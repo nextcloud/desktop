@@ -91,10 +91,11 @@ protected:
             Qt::CursorShape shape = Qt::ArrowCursor;
             auto pos = folderList->mapFromGlobal(QCursor::pos());
             auto index = folderList->indexAt(pos);
+            const auto rect = folderList->visualRect(index);
             if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>()
                     == FolderStatusModel::RootFolder
-                && (delegate->errorsListRect(folderList->visualRect(index), index).contains(pos)
-                    || delegate->optionsButtonRect(folderList->visualRect(index), folderList->layoutDirection()).contains(pos))) {
+                && (QStyle::visualRect(folderList->layoutDirection(), rect, delegate->errorsListRect(rect, index).toRect()).contains(pos)
+                    || QStyle::visualRect(folderList->layoutDirection(), rect, delegate->computeOptionsButtonRect(rect).toRect()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
             folderList->setCursor(shape);
@@ -394,8 +395,9 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
     if (itemType == FolderStatusModel::RootFolder) {
         // tries to find if we clicked on the '...' button.
         QTreeView *tv = ui->_folderList;
-        auto pos = tv->mapFromGlobal(QCursor::pos());
-        if (_delegate->optionsButtonRect(tv->visualRect(indx), layoutDirection()).contains(pos)) {
+        const auto pos = tv->mapFromGlobal(QCursor::pos());
+        const auto rect = tv->visualRect(indx);
+        if (QStyle::visualRect(layoutDirection(), rect, _delegate->computeOptionsButtonRect(rect).toRect()).contains(pos)) {
             slotCustomContextMenuRequested(pos);
             return;
         }
