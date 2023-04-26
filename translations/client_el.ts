@@ -1,45 +1,45 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="el">
 <context>
     <name>AccountConfiguredWizardPage</name>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="33"/>
         <source>✓ You&apos;re all set!</source>
-        <translation>✓ Jeni gati!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
         <source>Advanced configuration</source>
-        <translation>Formësim i mëtejshëm</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
         <source>Configure files download:</source>
-        <translation>Formësoni hkarkim kartelash:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
         <source>Download everything</source>
-        <translation>Shkarko gjithçka</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation>Pas plotësimit të këtyre hapave, mun të ujdisni dorazi njëkohësim dosjesh.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
-        <translation>Formësoni njëkohësim dorazi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
-        <translation>Zgjidhni drejtori vendore shkarkimesh:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="219"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="20"/>
         <source>Update available</source>
         <extracomment>AppImage update available dialog</extracomment>
-        <translation>Ka një përditësim gati</translation>
+        <translation>Υπάρχει διαθέσιμη ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="127"/>
         <source>Skip this version</source>
-        <translation>Anashkaloje këtë version</translation>
+        <translation>Παράλειψη αυτής της έκδοσης</translation>
     </message>
 </context>
 <context>
@@ -61,12 +61,12 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="89"/>
         <source>Error</source>
-        <translation>Gabim</translation>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="90"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation>S’u arrit të hapej %1 në web. Gabim: %2.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -75,13 +75,13 @@
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="75"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="88"/>
         <source>Username</source>
-        <translation>Emër përdoruesi</translation>
+        <translation>Όνομα χρήστη</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="95"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="111"/>
         <source>Password</source>
-        <translation>Fjalëkalim</translation>
+        <translation>Συνθηατικό</translation>
     </message>
 </context>
 <context>
@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="52"/>
         <source>Invalid reply received from server</source>
-        <translation>U mor përgjigje e pavlefshme nga shërbyesi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -97,12 +97,12 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
-        <translation>Kryet e checksum-it janë të keqformuara: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation>Kryet e checksum-it përmbanin një lloj të panjohur checksum-i &apos;%1&apos;</translation>
+        <translation>Το checksum header περιέχει άγνωστο τύπο checksum &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -111,7 +111,7 @@
         <location filename="../src/gui/main.cpp" line="112"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
-        <translation>Për më tepër hollësi, shihni %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -119,27 +119,27 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation>përgjegjës kartelash</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
         <source>Show in %1</source>
-        <translation>Shfaqe në %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation>Shfaqe në shfletues</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
         <source>Copy</source>
-        <translation>Kopjoje</translation>
+        <translation>Αντιγραφή</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation><numerusform>%n Filtër</numerusform><numerusform>%n Filtra</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -147,7 +147,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/credentialssetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
 </context>
 <context>
@@ -155,12 +155,12 @@
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="51"/>
         <source>Server did not ask for authorization</source>
-        <translation>Shërbyesi s’kërkoi mirëfilltësim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
         <source>Failed to determine auth type: %1</source>
-        <translation>S’u arrit të përcaktohet lloj mirëfilltësimi: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/newwizard/jobs/discoverwebfingerservicejobfactory.cpp" line="43"/>
         <source>Invalid reply received from server</source>
-        <translation>U mor përgjigje e pavlefshme nga shërbyesi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="67"/>
         <source>Failed to retrieve user info</source>
-        <translation>S’u arrit të merren hollësi përdoruesi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -187,28 +187,28 @@
         <location filename="../src/common/filesystembase.cpp" line="236"/>
         <location filename="../src/common/filesystembase.cpp" line="241"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation>S’riemërtohet dot %1, kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="441"/>
         <source>Could not make directories in trash</source>
-        <translation>S’u krijuan dot drejtori në hedhurina</translation>
+        <translation>Δεν ήταν δυνατή η δημιουργία καταλόγων σε απορρίμματα</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="455"/>
         <location filename="../src/common/filesystembase.cpp" line="461"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation>S’u kalua dot &apos;%1&apos; te &apos;%2&apos;</translation>
+        <translation>Αδυναμία μετακίνησης του &apos;%1&apos; σε &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="495"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Shpënia te hedhurinat s’është e sendërtuar në këtë platformë</translation>
+        <translation>Η μετακίνηση στα απορρίμματα δεν υποστηρίζεται σε αυτήν την πλατφόρμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation>S’u hoq dot dosje</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -216,22 +216,22 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Gabim:&lt;/b&gt; %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Kujdes:&lt;/b&gt; %1</translation>
+        <translation>&lt;b&gt;Προειδοποίηση:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="62"/>
         <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation>&lt;b&gt;Gabim:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="63"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation>&lt;b&gt;Sinjalizim:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -239,17 +239,17 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardsourcepage.ui" line="20"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Zgjidhni te kompjuteri juaj një dosje që të njëkohësohet</translation>
+        <translation>Επιλέξτε έναν τοπικό φάκελο στον υπολογιστή σας προς συγχρονισμό</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardsourcepage.ui" line="32"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Zgjidhni…</translation>
+        <translation>&amp;Επιλογή...</translation>
     </message>
 </context>
 <context>
@@ -257,27 +257,27 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="20"/>
         <source>Select a remote destination folder</source>
-        <translation>Përzgjidhni një dosje të largët vendmbërritje</translation>
+        <translation>Επιλέξτε έναν απομακρυσμένο φάκελο προορισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="49"/>
         <source>Create Folder</source>
-        <translation>Krijoni Dosje</translation>
+        <translation>Δημιουργία Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="56"/>
         <source>Refresh</source>
-        <translation>Rifreskoje</translation>
+        <translation>Ανανέωση </translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="39"/>
         <source>Folders</source>
-        <translation>Dosje</translation>
+        <translation>Φάκελοι</translation>
     </message>
 </context>
 <context>
@@ -285,13 +285,13 @@
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="79"/>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.ui" line="92"/>
         <source>Username</source>
-        <translation>Emër përdoruesi</translation>
+        <translation>Όνομα χρήστη</translation>
     </message>
 </context>
 <context>
@@ -299,7 +299,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="20"/>
         <source>Login required</source>
-        <translation>Lypset kryerja e hyrjes</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -307,17 +307,17 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="20"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="73"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation>Lorem ipsum dolor sit amet</translation>
+        <translation>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="86"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
+        <translation>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία</translation>
     </message>
 </context>
 <context>
@@ -325,17 +325,17 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="63"/>
         <source>Open Browser</source>
-        <translation>Hap Shfletues</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="76"/>
         <source>Copy URL to clipboard</source>
-        <translation>Kopjoja URL në të papastër</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="176"/>
         <source>Retry</source>
-        <translation>Riprovo</translation>
+        <translation>Επανάληψη</translation>
     </message>
 </context>
 <context>
@@ -343,17 +343,17 @@
     <message>
         <location filename="../src/gui/aboutdialog.ui" line="24"/>
         <source>About</source>
-        <translation>Rreth</translation>
+        <translation>Περί</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.ui" line="93"/>
         <source>Versions</source>
-        <translation>Versione</translation>
+        <translation>Εκδόσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/aboutdialog.cpp" line="27"/>
         <source>About %1</source>
-        <translation>Rreth %1</translation>
+        <translation>Σχετικά %1</translation>
     </message>
 </context>
 <context>
@@ -361,17 +361,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="260"/>
         <source>Connection timed out</source>
-        <translation>Lidhjes i mbaroi koha</translation>
+        <translation>Η σύνδεση έληξε.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="262"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>Gabim i panjohur: përgjigja e rrjetit qe fshirë</translation>
+        <translation>Άγνωστο σφάλμα: η απάντηση δικτύου διαγράφηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="359"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>Shërbyesi u përgjigj &quot;%1 %2&quot; për &quot;%3 %4&quot;</translation>
+        <translation>Ο διακομιστής απάντησε &quot;%1 %2&quot; σε &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -387,37 +387,37 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="45"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="109"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Dosjeve që iu hoq shenja do të &lt;b&gt;hiqen&lt;/b&gt; nga sistemi juaj vendor i kartelave dhe s’do të njëkohësohen më në këtë kompjuter</translation>
+        <translation>Οι μη επιλεγμένοι φάκελοι θα &lt;b&gt;αφαιρεθούν&lt;/ b&gt; από το τοπικό σύστημα αρχείων σας και δεν θα συγχρονιστούν πια με αυτόν τον υπολογιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Synchronize all</source>
-        <translation>Njëkohësoji krejt</translation>
+        <translation>Συγχρονισμός όλων</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="162"/>
         <source>Synchronize none</source>
-        <translation>Mos njëkohëso gjë</translation>
+        <translation>Κανένας συγχρονισμός</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="169"/>
         <source>Apply manual changes</source>
-        <translation>Zbato ndryshimet e bëra dorazi</translation>
+        <translation>Χειροκίνητη αλλαγή εφαρμογών</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="232"/>
         <source>Apply</source>
-        <translation>Zbatoje</translation>
+        <translation>Εφαρμογή</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="219"/>
@@ -425,80 +425,80 @@
         <location filename="../src/gui/accountsettings.cpp" line="578"/>
         <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Άκυρο</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="29"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>I lidhur me &lt;server&gt; si &lt;user&gt;</translation>
+        <translation>Συνδεδεμένοι με το &lt;server&gt; ως &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="222"/>
         <source>Remove</source>
-        <translation>Hiqe</translation>
+        <translation>Αφαίρεση</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="226"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="350"/>
         <source>Choose what to sync</source>
-        <translation>Zgjidhni çfarë të njëkohësohet</translation>
+        <translation>Επιλέξτε τι θα συγχρονιστεί</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Force sync now</source>
-        <translation>Detyro njëkohësim tani</translation>
+        <translation>Εξαναγκασμός συγχρονισμού τώρα</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>Restart sync</source>
-        <translation>Rinise njëkohësimin</translation>
+        <translation>Επανεκκίνηση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="268"/>
         <source>Remove folder sync connection</source>
-        <translation>Hiqe lidhjen për njëkohësim dosjeje</translation>
+        <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
         <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Add Space</source>
-        <translation>Shtoni Hapësirë</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
         <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <location filename="../src/gui/accountsettings.cpp" line="861"/>
         <source>Add Folder</source>
-        <translation>Shtoni Dosje</translation>
+        <translation>Προσθήκη Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>Reconnect</source>
-        <translation>Rilidhu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="373"/>
         <source>Disable virtual file support...</source>
-        <translation>Çaktivizoni mbulim kartelash virtuale…</translation>
+        <translation>Απενεργοποίηση υποστήριξης εικονικού αρχείου...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Ripohoni Heqje Lidhjeje Njëkohësimi Dosjeje</translation>
+        <translation>Επιβεβαίωση αφαίρεσης σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="474"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Hiqni Lidhjen Për Njëkohësim Dosjeje</translation>
+        <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <source>Disable virtual file support?</source>
-        <translation>Të çaktivizohet mbulimi për kartela virtuale?</translation>
+        <translation>Απενεργοποίηση υποστήριξης εικονικού αρχείου;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -507,166 +507,164 @@
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Ky veprim do të çaktivizojë mbulimin për kartela virtuale. Si pasojë, lëndë e dosjeve të cilave u është vënë shenjë si “të passhme vetëm në linjë” do të shkarkohen.
+        <translation>Αυτή η ενέργεια θα απενεργοποιήσει την υποστήριξη εικονικού αρχείου. Κατά συνέπεια, τα περιεχόμενα φακέλων που επισημαίνονται επί του παρόντος ως «διαθέσιμα μόνο σε σύνδεση» θα μεταφορτωθούν.
 
-Përfitimi i vetëm i çaktivizimit të mbulimit për kartela virtuale është se veçoria e njëkohësimit përzgjedhës do të jetë sërish e përdorshme.
+Το μόνο πλεονέκτημα της απενεργοποίησης της υποστήριξης εικονικού αρχείου είναι ότι η λειτουργία επιλεκτικού συγχρονισμού θα είναι και πάλι διαθέσιμη.
 
-Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e sipër atë çast.</translation>
+Αυτή η ενέργεια θα ακυρώσει οποιονδήποτε τρέχοντα συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="577"/>
         <source>Disable support</source>
-        <translation>Çaktivizoje mbulimin</translation>
+        <translation>Απενεργοποίηση υποστήριξης</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>Sync Running</source>
-        <translation>Njëkohësimi Po Kryhet</translation>
+        <translation>Εκτελείται Συγχρονισμός </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation>Veprimi i njëkohësimit po kryhet.&lt;br/&gt;Doni të ndalet?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="822"/>
         <source>Connecting to: %1.</source>
-        <translation>Po lidhet te %1.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="833"/>
         <source>Disconnected from: %1.</source>
-        <translation>U shkëput prej %1.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="736"/>
         <source>Connected to %1.</source>
-        <translation>I lidhur tek %1.</translation>
+        <translation>Συνδεδεμένο με %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="743"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>Shërbyesi %1 është përkohësisht i pakapshëm.</translation>
+        <translation>Ο διακομιστής %1 δεν είναι διαθέσιμος προσωρινά.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>Shërbyesi %1 tani gjendet nën mënyrën mirëmbajtje.</translation>
+        <translation>Ο διακομιστής %1 είναι προς το παρόν σε κατάσταση συντήρησης.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>Signed out from %1.</source>
-        <translation>U dol nga %1.</translation>
+        <translation>Αποσυνδέθηκε από %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
-        <translation>Prej llogarisë %1 është bërë dalja.
-
-Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>Reauthorization required.</source>
-        <translation>Lypset riautorizim.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="817"/>
         <source>Connecting to %1...</source>
-        <translation>Po lidhet te %1…</translation>
+        <translation>Σύνδεση σε %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="825"/>
         <source>Server configuration error: %1.</source>
-        <translation>Gabim formësimi shërbyesi: %1.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>Log in</source>
-        <translation>Hyni</translation>
+        <translation>Είσοδος</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Click this button to add a Space.</source>
-        <translation>Klikoni mbi këtë buton që të shtoni një Hapësirë.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="857"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Klikoni mbi këtë buton që të shtoni një dosje për njëkohësim.</translation>
+        <translation>Κάντε κλικ σε αυτό το κουμπί για να προσθέσετε ένα φάκελο προς συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="862"/>
         <source>You need to be connected to add a folder.</source>
-        <translation>Lypset të jeni i lidhur, që të shtoni një dosje.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Ka dosje që s’u njëkohësuan, ngaqë janë shumë të mëdha: </translation>
+        <translation>Υπάρχουν φάκελοι που δεν συγχρονίστηκαν επειδή είναι πολύ μεγάλοι:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="961"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Ka dosje që s’u njëkohësuan, ngaqë janë depozita të jashtme: </translation>
+        <translation>Υπάρχουν φάκελοι που δεν συγχρονίστηκαν επειδή είναι εξωτερικοί αποθηκευτικοί χώροι:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="962"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Ka dosje që s’u njëkohësuan, ngaqë janë shumë të mëdha ose janë depozita të jashtme: </translation>
+        <translation>Υπάρχουν φάκελοι που δεν συγχρονίστηκαν επειδή είναι πολύ μεγάλοι ή αποθηκευτικοί χώροι:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="995"/>
         <source>Confirm Account Removal</source>
-        <translation>Ripohoni Heqjen e Llogarisë</translation>
+        <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="996"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Doni vërtet të hiqet lidhja për te llogaria &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Shënim:&lt;/b&gt; Kjo &lt;b&gt;nuk&lt;/b&gt; do të fshijë ndonjë kartelë.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>Remove connection</source>
-        <translation>Hiqe lidhjen</translation>
+        <translation>Αφαίρεση σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="213"/>
         <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Log out</source>
-        <translation>Dilni</translation>
+        <translation>Αποσύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="364"/>
         <source>Resume sync</source>
-        <translation>Rimerre njëkohësimin</translation>
+        <translation>Συνέχιση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="364"/>
         <source>Pause sync</source>
-        <translation>Ndale njëkohësimin</translation>
+        <translation>Παύση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Enable virtual file support%1...</source>
-        <translation>Aktivizoni mbulim kartelash virtuale%1…</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source> (experimental)</source>
-        <translation> (eksperimentale)</translation>
+        <translation> (πειραματικό)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="467"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Doni vërtet të ndalet njëkohësimi i dosjes &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Shënim:&lt;/b&gt; Kjo &lt;b&gt;nuk&lt;/b&gt; do të fshijë ndonjë kartelë.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να σταματήσετε το συγχρονισμό του φακέλου &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="734"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Versioni %1 i shërbyesit nuk mbulohet! Qari dhe zarari i juaj.</translation>
+        <translation>Η έκδοση διακομιστή %1 δεν υποστηρίζεται! Προχωρήστε με δική σας ευθύνη.</translation>
     </message>
 </context>
 <context>
@@ -674,27 +672,27 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="91"/>
         <source>%1 %2 on %3</source>
-        <translation>%1 %2 në %3</translation>
+        <translation>%1 %2 στο %3</translation>
     </message>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="117"/>
         <source>Activity</source>
-        <translation>Veprimtari</translation>
+        <translation>Δραστηριότητα</translation>
     </message>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="119"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="121"/>
         <source>Time</source>
-        <translation>Kohë</translation>
+        <translation>Ώρα</translation>
     </message>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="123"/>
         <source>Local path</source>
-        <translation>Shteg vendor</translation>
+        <translation>Τοπική διαδρομή</translation>
     </message>
 </context>
 <context>
@@ -703,23 +701,23 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
         <location filename="../src/gui/activitywidget.cpp" line="472"/>
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
         <source>Server Activity</source>
-        <translation>Veprimtari Shërbyesi</translation>
+        <translation>Δραστηριότητα διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="478"/>
         <source>Sync Protocol</source>
-        <translation>Protokoll Njëkohësimesh</translation>
+        <translation>Προτοκολο συγχρονισμου</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="524"/>
         <source>Not Synced</source>
-        <translation>Të panjëkohësuara</translation>
+        <translation>Δεν είναι συγχρονισμένα</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="527"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation>Të panjëkohësuara (%1)</translation>
+        <translation>Δεν είναι συγχρονισμένα (%1)</translation>
     </message>
 </context>
 <context>
@@ -727,53 +725,53 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="90"/>
         <source>Filter</source>
-        <translation>Filtër</translation>
+        <translation>Φίλτρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="107"/>
         <location filename="../src/gui/activitywidget.cpp" line="113"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="155"/>
         <source>Server Activities</source>
-        <translation>Veprimtari Shërbyesi</translation>
+        <translation>Δραστηριότητες διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="159"/>
         <source>Notifications</source>
-        <translation>Njoftime</translation>
+        <translation>Ειδοποιήσεις</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="302"/>
         <source>%n notifications(s) for %1.</source>
-        <translation><numerusform>%n njoftim për %1.</numerusform><numerusform>%n njoftime për %1.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="308"/>
         <source>%n notifications(s) for %1 and %2.</source>
-        <translation><numerusform>%n njoftim për %1 dhe %2.</numerusform><numerusform>%n njoftime për %1 dhe %2.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="310"/>
         <source>New notifications for %1, %2 and other accounts.</source>
-        <translation>Njoftime të reja për %1, %2 dhe llogari të tjera.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Open the activity view for details.</source>
-        <translation>Për hollësi, hapni skenën e veprimtarisë.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="164"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br/&gt;Llogaria %1 s’i ka të aktivizuara veprimtaritë.</translation>
+        <translation>&lt;br/&gt;Ο λογαριασμός %1 δεν έχει ενεργοποιήσει τις δραστηριότητες.</translation>
     </message>
 </context>
 <context>
@@ -781,21 +779,19 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="35"/>
         <source>Installed version: %1</source>
-        <translation>Version i instaluar: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
         <source>Available update: %1</source>
-        <translation>Përditësim i gatshëm: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation>Për këtë AppImage të %1 ka një përditësim gati. Doni të instalohet ky përditësim?
-
-Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e tanishme AppImage. Që të plotësohet përditësimi, lypset të rinisni aplikacionin.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -803,42 +799,42 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation>Vazhdimi do të thotë &lt;b&gt;fshirje e këtyre rregullimeve&lt;/b&gt;.</translation>
+        <translation>Η συνέχιση θα σημαίνει τη &lt;b&gt;διαγραφή αυτών των ρυθμίσεων&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="178"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation>Vazhdimi do të thotë &lt;b&gt;shpërfillje e këtyre rregullimeve&lt;/b&gt;.</translation>
+        <translation>Η συνέχιση θα σημαίνει την &lt;b&gt;παράβλεψη αυτών των ρυθμίσεων&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Disa rregullime janë formësuar në versione më të rinj të këtij klienti dhe përdorin veçori që s’gjenden në këtë version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Kartela e tanishme e formësimit është kopjeruajtur tashmë si &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Ορισμένες ρυθμίσεις έχουν ρυθμιστεί σε νεότερες εκδόσεις αυτού του πελάτη και χρησιμοποιούν λειτουργίες που δεν είναι διαθέσιμες σε αυτή την έκδοση. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Έχει ήδη δημιουργηθεί ήδη αντίγραφο ασφαλείας του τρέχοντος αρχείου ρυθμίσεων στο &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>Quit</source>
-        <translation>Dilni</translation>
+        <translation>Έξοδος</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>Continue</source>
-        <translation>Vazhdo</translation>
+        <translation>Συνέχεια</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="295"/>
         <source>Error accessing the configuration file</source>
-        <translation>Gabim gjatë hyrjes në kartelën e formësimit</translation>
+        <translation>Σφάλμα πρόσβασης στο αρχείο ρυθμίσεων</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="296"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation>Pati një gabim teksa hyhej te kartela e formësimit në %1.</translation>
+        <translation>Υπήρξε σφάλμα κατά την πρόσβαση του αρχείου ρυθμίσεων στο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="299"/>
         <source>Quit %1</source>
-        <translation>Dilni nga %1</translation>
+        <translation>Κλείσιμο %1</translation>
     </message>
 </context>
 <context>
@@ -846,7 +842,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="7"/>
         <source>Enable experimental feature?</source>
-        <translation>Të aktivizohet veçoria eksperimentale?</translation>
+        <translation>Ενεργοποίηση πειραματικής λειτουργίας;</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="8"/>
@@ -857,23 +853,17 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Kur aktivizohet mënyra “kartela virtuale”, fillimisht s’do të shkarkohen kartela. Në vend të kësaj, për çdo kartelë që ekziston në shërbyes, do të krijohet një kartelë e vockël. Lënda mund të shkarkohet duke i vënë në punë këto kartela, ose duke përdorur menunë përkatëse të kontekstit.
-
-Mënyra kartela virtuale dhe njëkohësimi përzgjedhës përjashtojnë njëra-tjetrin. Dosjet aktualisht të papërzgjedhura do të përshoqërohen me dosje vetëm për në internet dhe nga kjo mundet që rregullimet tuaja për njëkohësim përzgjedhës të rikthehen te parazgjedhjet.
-
-Kalimi te kjo mënyrë do të ndërpresë çfarëdo njëkohësimi aktualisht në punë e sipër.
-
-Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju lutemi, njoftoni çfarëdo problemesh që dalin.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Aktivizoni mënyrë eksperimentale vendëmbajtësish</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="24"/>
         <source>Stay safe</source>
-        <translation>Rrini i parrezikuar</translation>
+        <translation>Μείνετε ασφαλείς</translation>
     </message>
 </context>
 <context>
@@ -881,32 +871,32 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
         <source>No ownCloud account configured</source>
-        <translation>Nuk ka llogari ownCloud të formësuar</translation>
+        <translation>Δεν έχει ρυθμιστεί λογαριασμός ownCloud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="320"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Ju lutemi, përditësoni shërbyesin me versionin më të ri dhe rinisni klientin.</translation>
+        <translation>Παρακαλώ ενημερώστε το διακομιστή στη νεώτερη έκδοση και επανεκκινήστε το δέκτη.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Gabim mirëfilltësimi: Ose emri i përdoruesit, ose fjalëkalimi është i gabuar.</translation>
+        <translation>Σφάλμα Πιστοποίησης: Το όνομα χρήστη ή ο κωδικός πρόσβασης είναι λανθασμένα.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
         <source>timeout</source>
-        <translation>mbarim kohe</translation>
+        <translation>παρέλευση χρονικού ορίου</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
         <source>The provided credentials are not correct</source>
-        <translation>Kredencialet e dhëna s’janë të sakta</translation>
+        <translation>Τα παρεχόμενα διαπιστευτήρια δεν είναι σωστά</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="319"/>
         <source>The configured server for this client is too old.</source>
-        <translation>Shërbyesi i formësuar për këtë klient është shumë i vjetër.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -914,7 +904,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="209"/>
         <source>Failed to parse credentials %1</source>
-        <translation>S’u arrit të përtypen kredencialet %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -923,12 +913,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <location filename="../src/libsync/discoveryphase.cpp" line="470"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="491"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Gabim shërbyesi: përgjigja PROPFIND s’është e formatuar si XML!</translation>
+        <translation>Σφάλμα διακομιστή: Η απάντηση PROPFIND δεν έχει μορφοποιηθεί με XML!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="494"/>
         <source>Connection timed out</source>
-        <translation>Lidhjes i mbaroi koha</translation>
+        <translation>Η σύνδεση έληξε.</translation>
     </message>
 </context>
 <context>
@@ -936,22 +926,22 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="271"/>
         <source>Error while opening directory %1</source>
-        <translation>Gabim gjatë hapjes së drejtorisë %1</translation>
+        <translation>Σφάλμα κατά το άνοιγμα του καταλόγου %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="273"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Drejtori jo e përdorshme nën klient, u mohua hyrja</translation>
+        <translation>Ο κατάλογος δεν είναι προσβάσιμος από τον πελάτη, άρνηση πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="277"/>
         <source>Directory not found: %1</source>
-        <translation>Drejtori që s’gjendet: %1</translation>
+        <translation>Δεν βρέθηκε ο κατάλογος: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="312"/>
         <source>Error while reading directory %1</source>
-        <translation>Gabim gjatë leximit të drejtorisë %1</translation>
+        <translation>Σφάλμα κατά την ανάγνωση του καταλόγου %1</translation>
     </message>
 </context>
 <context>
@@ -959,7 +949,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="104"/>
         <source>Reset column sizes</source>
-        <translation>Ricaktoni madhësi shtyllash</translation>
+        <translation>Επαναφορά μεγεθών στήλης</translation>
     </message>
 </context>
 <context>
@@ -967,145 +957,145 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/folder.cpp" line="239"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Dosja vendore %1 s’ekziston.</translation>
+        <translation>Δεν υπάρχει ο τοπικός φάκελος %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="241"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 duhej të ishte dosje, por ja që s’është.</translation>
+        <translation>Το %1 θα έπρεπε να είναι φάκελος αλλά δεν είναι.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="243"/>
         <source>%1 is not readable.</source>
-        <translation>%1 s’është i lexueshëm.</translation>
+        <translation> Το %1 δεν είναι αναγνώσιμο. </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 u hoq.</translation>
+        <translation>Το %1 αφαιρέθηκε.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="573"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 u përditësua.</translation>
+        <translation>Το %1 έχει ενημερωθεί.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="580"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 u riemërtua si %2.</translation>
+        <translation>Το %1 έχει μετονομαστεί σε %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="587"/>
         <source>%1 has been moved to %2.</source>
-        <translation>%1 u kalua te %2.</translation>
+        <translation>Το %1 έχει μετακινηθεί στο %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="557"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>U hoqën %1 dhe %n kartelë tjetër.</numerusform><numerusform>U hoqën %1 dhe %n kartela të tjera.</numerusform></translation>
+        <translation><numerusform>%1 και%n άλλo αρχείo(α) έχουν καταργηθεί.</numerusform><numerusform>%1 και%n άλλo αρχείo(α) έχουν καταργηθεί.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="225"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="233"/>
         <source>%1 failed to open the database.</source>
-        <translation>%1 s’arriti të hapë bazën e të dhënave.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="245"/>
         <source>%1 is not writable.</source>
-        <translation>%1 s’është e shkrueshme.</translation>
+        <translation> Το %1 δεν είναι εγγράψιμο.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="564"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>Është shtuar %1 dhe %n kartelë tjetër.</numerusform><numerusform>Është shtuar %1 dhe %n kartela të tjera.</numerusform></translation>
+        <translation><numerusform>%1 και %n άλλο(-α) αρχείο(-α) έχουν προστεθεί.</numerusform><numerusform>%1 και %n άλλο(-α) αρχείο(-α) έχουν προστεθεί.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation>U shtua %1.</translation>
+        <translation>%1 προστέθηκαν.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="571"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>U përditësua %1 dhe %n kartelë tjetër.</numerusform><numerusform>U përditësua %1 dhe %n kartela të tjera.</numerusform></translation>
+        <translation><numerusform>%1 και%n άλλο αρχείο(α) έχουν ενημερωθεί.</numerusform><numerusform>%1 και%n άλλο αρχείο(α) έχουν ενημερωθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="578"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 u riemërtua si %2 dhe u riemërtua dhe %n kartelë tjetër.</numerusform><numerusform>%1 u riemërtua si %2 dhe u riemërtuan dhe %n kartela të tjera.</numerusform></translation>
+        <translation><numerusform>%1 μετονομάστηκε σε %2 και %n άλλο αρχείο(α) έχουν μετονομαστεί.</numerusform><numerusform>%1 μετονομάστηκε σε %2 και %n άλλο αρχείο(α) έχουν μετονομαστεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="585"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 u kalua te %2 dhe u lëviz edhe %n kartelë tjetër.</numerusform><numerusform>%1 u kalua te %2 dhe u lëvizën edhe %n kartela të tjera.</numerusform></translation>
+        <translation><numerusform>%1 έχει μετακινηθεί σε %2 και %n άλλo αρχείο(α) έχουν μετακινηθεί.</numerusform><numerusform>%1 έχει μετακινηθεί σε %2 και %n άλλo αρχείο(α) έχουν μετακινηθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="592"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 dhe %n kartelë tjetër kanë përplasje njëkohësimi.</numerusform><numerusform>%1 dhe %n kartela të tjera kanë përplasje njëkohësimi.</numerusform></translation>
+        <translation><numerusform>%1 έχει και %n άλλο αρχείο(α) έχουν διένεξη συγχρονισμού.</numerusform><numerusform>%1 έχει και %n άλλο αρχείο(α) έχουν διένεξη συγχρονισμού.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="594"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 ka një përplasje njëkohësimi. Ju lutemi, kontrolloni kartelën e përplasjes!</translation>
+        <translation>%1 έχει μια διένεξη συγχρονισμού. Παρακαλώ ελέγξτε τη διένεξη του αρχείου! </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="599"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 dhe %n kartelë tjetër s’u njëkohësuan dot për shkak gabimesh. Për hollësi, shihni regjistrin.</numerusform><numerusform>%1 dhe %n kartela të tjera s’u njëkohësuan dot për shkak gabimesh. Për hollësi, shihni regjistrin.</numerusform></translation>
+        <translation><numerusform>%1 και %n άλλο(α) αρχείο(α) δεν μπορούν να συγχρονιστούν λόγω σφαλμάτων. Δείτε το ιστορικό για λεπτομέρειες</numerusform><numerusform>%1 και %n άλλο αρχείο(α) δεν μπορούν να συγχρονιστούν λόγω σφαλμάτων. Δείτε το ημερολόγιο για λεπτομέρειες. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="601"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 s’u njëkohësua dot, për shkak gabimesh. Për hollësi, shihni regjistrin.</translation>
+        <translation>%1 δεν ήταν δυνατό να συγχρονιστεί εξαιτίας ενός σφάλματος. Δείτε το αρχείο καταγραφής για λεπτομέρειες.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="607"/>
         <source>Sync Activity</source>
-        <translation>Veprimtari Njëkohësimesh</translation>
+        <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1013"/>
         <source>Could not read system exclude file</source>
-        <translation>S’u lexua dot kartelë përjashtimi sistemi</translation>
+        <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1223"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>U shtua një dosje më e madhe se %1 MB: %2.
+        <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1226"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>U shtua një dosje nga një depozitë e jashtme.
+        <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1227"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Ju lutemi, shkoni te rregullimet që ta përzgjidhni, nëse doni ta shkarkoni.</translation>
+        <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1286"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. Të dhënat brenda saj nuk do të njëkohësohen.</translation>
+        <translation>Ο φάκελος %1 δημιουργήθηκε αλλά εξαιρέθηκε προηγουμένως από συγχρονισμό. Τα δεδομένα στο εσωτερικό του δεν θα συγχρονιστούν.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1289"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. S’do të njëkohësohet.</translation>
+        <translation>Το αρχείο %1 δημιουργήθηκε αλλά εξαιρέθηκε προηγουμένως από συγχρονισμό. Δεν θα συγχρονιστεί.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1300"/>
@@ -1114,9 +1104,9 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Ndryshimet në dosje të njëkohësuara s’u ndoqën dot si duhet.
+        <translation>Δεν ήταν δυνατή η αξιόπιστη παρακολούθηση των αλλαγών στους συγχρονισμένους φακέλους.
 
-Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëherë ndryshime vendore dhe, në vend të kësaj, do të kontrollojë për ndryshime vendore dhe do t’i ngarkojë ato me raste (si parazgjedhje, çdo dy orë).
+Αυτό σημαίνει ότι ο πελάτης συγχρονισμού ενδέχεται να μην μεταφορτώνει άμεσα τις τοπικές αλλαγές και αντίθετα, θα ανιχνεύει μόνο τοπικές αλλαγές και θα τις ανεβάζει περιστασιακά (κάθε δύο ώρες από προεπιλογή).
 
 %1</translation>
     </message>
@@ -1126,34 +1116,34 @@ Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëher
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Krejt kartelat te dosja e njëkohësimit &apos;%1&apos; u fshinë te shërbyesi.
-Këto fshirje do të njëkohësohen te dosja juaj vendore e njëkohësimeve, duke jua hequr mundësinë e përdorimit të këtyre kartelave, hiq rastin kur keni të drejta rikthimi. 
-Nëse vendosni t’i mbani këto kartela, ato do të rinjëkohësohen me shërbyesin, nëse keni të drejta për të bërë kështu.
-Nëse vendosni t’i fshini këto kartela, s’do të mund t’i keni, veç në mos qofshi i zoti.</translation>
+        <translation>Όλα τα αρχεία στο φάκελο συγχρονισμού &apos;%1&apos; έχουν διαγραφεί στον διακομιστή.
+Αυτές οι διαγραφές θα συγχρονιστούν στον τοπικό σας φάκελο συγχρονισμού, κάνοντας τέτοιου είδους αρχεία μη διαθέσιμα, εκτός εάν έχετε δικαίωμα επαναφοράς. 
+Εάν αποφασίσετε να διατηρήσετε αυτά τα αρχεία, θα συγχρονιστούν εκ νέου με το διακομιστή, εφόσον έχετε δικαιώματα να το κάνετε.
+Εφόσον επιλέξετε να διαγράψετε τα αρχεία, δε θα είναι διαθέσιμα σε εσάς, εκτός εάν είστε ο ιδιοκτήτης τους.  </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1358"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Krejt kartelat te dosja juaj vendore e njëkohësimit &apos;%1&apos; u fshinë. Këto fshirje do të njëkohësohen me shërbyesin tuaj, duke jua hequr mundësinë e përdorimit të këtyre kartelave, veç në mos i rikthefshi. 
-Jeni i sigurt se doni të njëkohësohen këto veprime me shërbyesin?
-Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëkohësohen me shërbyesin.</translation>
+        <translation>Όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού σας &apos;% 1&apos; διαγράφηκαν. Αυτές οι διαγραφές θα συγχρονιστούν με το διακομιστή σας, καθιστώντας αυτά τα αρχεία μη διαθέσιμα εκτός εάν τα έχετε επαναφέρει.
+Είστε βέβαιοι ότι θέλετε να συγχρονίσετε αυτές τις ενέργειες με το διακομιστή; 
+Αν αυτό ήταν ένα ατύχημα και αποφασίσατε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν εκ νέου από το διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1362"/>
         <source>Remove All Files?</source>
-        <translation>Të hiqen Krejt Kartelat?</translation>
+        <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1366"/>
         <source>Remove all files</source>
-        <translation>Hiqi krejt kartelat</translation>
+        <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1367"/>
         <source>Keep files</source>
-        <translation>Mbaji kartelat</translation>
+        <translation>Διατήρηση αρχείων</translation>
     </message>
 </context>
 <context>
@@ -1161,141 +1151,139 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="382"/>
         <source>Could not reset folder state</source>
-        <translation>Gjendja e dosjes s’u ricaktua dot</translation>
+        <translation>Δεν ήταν δυνατό να επαναφερθεί η κατάσταση του φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="383"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>U gjet një regjistër i vjetër njëkohësimesh &apos;%1&apos;, por s’u hoq dot. Ju lutemi, sigurohuni që s’po e përdor ndonjë aplikacion.</translation>
+        <translation>Βρέθηκε ένα παλαιότερο αρχείο συγχρονισμού &apos;%1&apos;, αλλά δεν μπόρεσε να αφαιρεθεί. Παρακαλώ βεβαιωθείτε ότι καμμία εφαρμογή δεν το χρησιμοποιεί αυτή τη στιγμή.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="984"/>
         <source> (backup)</source>
-        <translation> (kopjeruajtje)</translation>
+        <translation>(αντίγραφο ασφαλείας)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="989"/>
         <source> (backup %1)</source>
-        <translation> (kopjeruajtja %1)</translation>
+        <translation>(αντίγραοφ ασφαλέιας %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1091"/>
         <source>Undefined State.</source>
-        <translation>Gjendje e Papërkufizuar.</translation>
+        <translation>Απροσδιόριστη Κατάσταση.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1094"/>
         <source>Waiting to start syncing.</source>
-        <translation>Po pritet të fillohet njëkohësimi.</translation>
+        <translation>Αναμονή έναρξης συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1097"/>
         <source>Preparing for sync.</source>
-        <translation>Po përgatitet për njëkohësim.</translation>
+        <translation>Προετοιμασία για συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1100"/>
         <source>Sync is running.</source>
-        <translation>Njëkohësimi po kryhet.</translation>
+        <translation>Ο συγχρονισμός εκτελείται.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1106"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>Njëkohësimi qe i suksesshëm, ka përplasje të pazgjidhura.</translation>
+        <translation>Επιτυχημένος συγχρονισμός, ανεπίλυτες συγκρούσεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1108"/>
         <source>Last Sync was successful.</source>
-        <translation>Njëkohësimi i Fundit qe i suksesshëm.</translation>
+        <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1114"/>
         <source>Setup Error.</source>
-        <translation>Gabim te Rregullimet.</translation>
+        <translation>Σφάλμα Ρύθμισης.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1117"/>
         <source>User Abort.</source>
-        <translation>Ndërprerje Nga Përdoruesi.</translation>
+        <translation>Ματαίωση από Χρήστη.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1120"/>
         <source>Sync is paused.</source>
-        <translation>Njëkohësimi është ndalur.</translation>
+        <translation>Παύση συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation>Jashtë interneti.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (Njëkohësimi është ndalur)</translation>
+        <translation>%1 (Παύση συγχρονισμού)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1158"/>
         <source>No valid folder selected!</source>
-        <translation>S’është përzgjedhur dosje e vlefshme!</translation>
+        <translation>Δεν επιλέχθηκε έγκυρος φάκελος!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1172"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation>Dosja %1 është e përdorur në një lidhje njëkohësimi dosjesh!</translation>
+        <translation>Ο φάκελος %1 χρησιμοποιείται ήδη για συγχρονισμό!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>The selected path does not exist!</source>
-        <translation>Shtegu i përzgjedhur s’ekziston!</translation>
+        <translation>Η επιλεγμένη διαδρομή δεν υπάρχει!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1183"/>
         <source>The selected path is not a folder!</source>
-        <translation>Shtegu i përzgjedhur s’ka dosje!</translation>
+        <translation>Η επιλεγμένη διαδρομή δεν είναι φάκελος!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1187"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>S’keni leje për shkrim te dosja e përzgjedhur!</translation>
+        <translation>Δεν έχετε δικαιώματα εγγραφής στον επιλεγμένο φάκελο!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1202"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Ka tashmë një njëkohësim prej shërbyesi te kjo dosje vendore. Ju lutemi, përzgjidhni një tjetër dosje vendore!</translation>
+        <translation>Υπάρχει ήδη συγχρονισμός από το διακομιστή σε αυτόν τον τοπικό φάκελο. Επιλέξτε έναν άλλο τοπικό φάκελο!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1206"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Dosja vendore %1 përmban tashmë një dosje të përdorur në një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër!</translation>
+        <translation>Ο τοπικός φάκελος %1 περιέχει ήδη ένα φάκελο που χρησιμοποιείται σε μια σύνδεση συγχρονισμού φακέλου. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1212"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Dosja vendore %1 përmbahet tashmë në një dosje të përdorur një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër!</translation>
+        <translation>Ο τοπικός φάκελος %1 περιέχεται ήδη σε φάκελο που χρησιμοποιείται σε μια σύνδεση συγχρονισμού. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>%1 Please pick another one!</source>
-        <translation>%1 Ju lutemi, zgjidhni një tjetër!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation>Dosja %1 është e përbashkët për disa llogari.
-Ky formësim dihet që shpie në humbje të dhënash dhe nuk mbulohet më.
-Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të shtimit të saj sërish.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1381"/>
         <source>%1 - %2@%3</source>
-        <translation>%1 - %2@%3</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1303,7 +1291,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="205"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 nga %2 në përdorim</translation>
+        <translation>%1 από %2 σε χρήση</translation>
     </message>
 </context>
 <context>
@@ -1311,22 +1299,22 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="226"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Gabim gjatë ngarkimit të listës së dosjeve prej shërbyesit.</translation>
+        <translation>Σφάλμα κατά τη φόρτωση της λίστας φακέλων από το διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="276"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Mbulimi i kartelave virtuale është i aktivizuar.</translation>
+        <translation>Η υποστήριξη για το εικονικό αρχείο είναι ενεργοποιημένη.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>Fetching folder list from server...</source>
-        <translation>Po sillet prej shërbyesi listë dosjesh…</translation>
+        <translation>Λήψη λίστας φακέλων από το διακομιστή...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Ka përplasje të pazgjidhura. Klikoni për hollës.</translation>
+        <translation>Αυτές είναι οι ανεπίλυτες διενέξεις. Κάντε κλικ για λεπτομέρειες.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="344"/>
@@ -1339,23 +1327,22 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <location filename="../src/gui/folderstatusmodel.cpp" line="346"/>
         <source>Signed out
 %1</source>
-        <translation>Dalë
-%1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Po kërkohet për ndryshime te shërbyesi i largët &apos;%1&apos;</translation>
+        <translation>Έλεγχος για αλλαγές στο απομακρυσμένο &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Po kërkohet për ndryshime te shërbyesi vendor &apos;%1&apos;</translation>
+        <translation>Έλεγχος για αλλαγές στο τοπικό &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
         <source>Reconciling changes</source>
-        <translation>Po pajtohen ndryshimet mes tyre</translation>
+        <translation>Συνδυασμός αλλαγών</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
@@ -1366,7 +1353,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <location filename="../src/gui/folderstatusmodel.cpp" line="1038"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>Po njëkohësohet %1</translation>
+        <translation>Συγχρονισμός %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1040"/>
@@ -1378,7 +1365,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <location filename="../src/gui/folderstatusmodel.cpp" line="1044"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>shkarko %1/s</translation>
+        <translation>λήψη %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
@@ -1394,7 +1381,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>ngarko %1/s</translation>
+        <translation>μεταφόρτωση %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="203"/>
@@ -1406,13 +1393,13 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="318"/>
         <source>Local folder: %1</source>
-        <translation>Dosje vendore: %1</translation>
+        <translation>Τοπικός φάκελος: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 nga %4)</translation>
+        <translation>%1 %2 (%3 από %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
@@ -1424,23 +1411,23 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <location filename="../src/gui/folderstatusmodel.cpp" line="1083"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>edhe %5, %1 nga %2, kartela %3 nga %4</translation>
+        <translation>Απομένει %5, %1 από %2, αρχείο  %3 από  %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 nga %2, kartela %3 nga %4</translation>
+        <translation>%1 από %2, αρχείο %3 από %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1098"/>
         <source>file %1 of %2</source>
-        <translation>kartela %1 nga %2</translation>
+        <translation>αρχείο %1 από %2</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1147"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Po pritet për %n dosje tjetër…</numerusform><numerusform>Po pritet për %n dosje të tjera…</numerusform></translation>
+        <translation><numerusform>Αναμονή για %n άλλο φάκελο...</numerusform><numerusform>Αναμονή για %n άλλους φακέλους...</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1448,7 +1435,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="142"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation>Vëzhguesi s’mori njoftim testi.</translation>
+        <translation>Ο παρατηρητής δεν έλαβε μια ειδοποίηση δοκιμής.</translation>
     </message>
 </context>
 <context>
@@ -1456,7 +1443,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="84"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτό το πρόβλημα συμβαίνει συνήθως όταν εξαντληθούν τα ρολόγια inotify. Ελέγξτε τις Συχνές Ερωτήσεις (FAQ) για λεπτομέρειες.</translation>
     </message>
 </context>
 <context>
@@ -1464,17 +1451,17 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="157"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>S’ka kartela virtuale për dosjen e përzgjedhur</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="170"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Shtoni Lidhje Njëkohësimi Dosjesh</translation>
+        <translation>Προσθήκη Σύνδεσης Συγχρονισμού Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="172"/>
         <source>Add Sync Connection</source>
-        <translation>Shtoni Lidhje Njëkohësimesh</translation>
+        <translation>Προσθήκη Σύνδεσης Συγχρονισμού</translation>
     </message>
 </context>
 <context>
@@ -1482,17 +1469,17 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="40"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Klikoni që të përzgjidhni një dosje vendore për njëkohësim.</translation>
+        <translation>Κλικάρετε για να επιλέξετε έναν τοπικό φάκελο προς συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="42"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Jepni shtegun për te dosja vendore.</translation>
+        <translation>Εισάγετε τη διαδρομή προς τον τοπικό φάκελο.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation>Përzgjidhni dosjen vendore</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1500,57 +1487,57 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="73"/>
         <source>Create Remote Folder</source>
-        <translation>Krijoni Dosje të Largët</translation>
+        <translation>Δημιουργία Απομακρυσμένου Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Jepni më poshtë emrin e dosjes së re që duhet krijuar &apos;%1&apos;:</translation>
+        <translation>Εισάγετε το όνομα του νέου φακέλου που θα δημιουργηθεί παρακάτω &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="103"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Dosja u krijua me sukses te %1.</translation>
+        <translation>Επιτυχής δημιουργία φακέλου στο %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="113"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Dështoi mirëfilltësimi gjatë hyrjes te %1</translation>
+        <translation>Η πιστοποίηση απέτυχε κατά την πρόσβαση %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="115"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>S’u arrit të krijohej dosja te %1. Ju lutemi, kontrollojeni dorazi.</translation>
+        <translation>Αποτυχία δημιουργίας φακέλου στο %1. Παρακαλώ ελέγξτε χειροκίνητα.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="133"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Dështoi në paraqitjen e një dosjeje. Gabim: %1</translation>
+        <translation>Αδυναμία εμφάνισης ενός φακέλου. Σφάλμα: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="219"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Zgjidhni këtë që të njëkohësohet krejt lënda e llogarisë</translation>
+        <translation>Επιλέξτε να συγχρονίσετε ολόκληρο το λογαριασμό</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="333"/>
         <source>This folder is already being synced.</source>
-        <translation>Kjo dosje është duke u njëkohësuar.</translation>
+        <translation>Αυτός ο φάκελος συγχρονίζεται ήδη.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation>Kjo dosje s’mund të njëkohësohet. Ju lutemi, zgjidhni një tjetër.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Po e njëkohësoni tashmë &lt;i&gt;%1&lt;/i&gt;, që është dosja mëmë e &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Ο φάκελος &lt;i&gt;%1&lt;/i&gt;, ο οποίος είναι γονεϊκός φάκελος του &lt;i&gt;%2&lt;/i&gt;, συγχρονίζεται ήδη.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Po e njëkohësoni tashmë &lt;i&gt;%1&lt;/i&gt;, që është një nëndosje e &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1558,12 +1545,12 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation>Përdor kartela virtuale, në vend të shkarkimit të menjëhershëm të lëndës%1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
         <source> (experimental)</source>
-        <translation> (eksperimentale)</translation>
+        <translation> (πειραματικό)</translation>
     </message>
 </context>
 <context>
@@ -1571,27 +1558,27 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="171"/>
         <source>Connection Timeout</source>
-        <translation>Lidhjes i Mbaroi Koha</translation>
+        <translation>Λήξη Χρόνου Αναμονής Σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="256"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>S’u mor E-Tag prej shërbyesit, kontrolloni Ndërmjetësin/Kanalin</translation>
+        <translation>Δεν ελήφθη ηλεκτρονική ετικέτα από το διακομιστή, ελέγξτε το διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="263"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Morëm një tjetër E-Tag për rimarrje të procesit. Do të provohet herës tjetër.</translation>
+        <translation>Ελήφθη διαφορετική ηλεκτρονική ετικέτα για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="274"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Morëm një Content-Length shkarkimi të papritur.</translation>
+        <translation>Λάβαμε μια μη αναμενόμενη λήψη περιεχομένου-μήκους.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="302"/>
         <source>Server returned wrong content-range</source>
-        <translation>Shërbyesi u përgjigj me content-range të gabuar</translation>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο πεδίο τιμών</translation>
     </message>
 </context>
 <context>
@@ -1599,52 +1586,52 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/generalsettings.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="35"/>
         <source>General Settings</source>
-        <translation>Rregullime të Përgjithshme</translation>
+        <translation>Γενικές Ρυθμίσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on &amp;Login</source>
-        <translation>Fillo gjatë &amp;Hyrjes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
         <source>Language</source>
-        <translation>Gjuhë</translation>
+        <translation>Γλώσσα</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="113"/>
         <source>Sync hidden files</source>
-        <translation>Njëkohëso kartela të fshehura</translation>
+        <translation>Συγχρονισμός κρυφών αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Log Settings</source>
-        <translation>Rregullime Regjistrimi</translation>
+        <translation>Ρυθμίσεις ιστορικού</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Advanced - Approval of folder sync (Non virtual file mode only)</source>
-        <translation>Të mëtejshme - Miratim njëkohësimi dosjesh (Vetëm nën mënyrën pa kartelë virtuale)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Network</source>
-        <translation>Rrjet</translation>
+        <translation>Δίκτυο</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="241"/>
         <source>Updates</source>
-        <translation>Përditësime</translation>
+        <translation>Ενημερώσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="129"/>
         <source>stable</source>
-        <translation>i qëndrueshëm</translation>
+        <translation>σταθερή</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="130"/>
@@ -1654,112 +1641,112 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/generalsettings.ui" line="360"/>
         <source>About</source>
-        <translation>Rreth</translation>
+        <translation>Περί</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
         <source>Advanced</source>
-        <translation>Të mëtejshme</translation>
+        <translation>Για προχωρημένους</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use &amp;Monochrome Icons in the system tray</source>
-        <translation>Te paneli i sistemit përdor Ikona &amp;Njëngjyrëshe</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Kërko ripohim përpara njëkohësimi dosjesh më të mëdha se</translation>
+        <translation>Ζητήστε επιβεβαίωση πριν τον συγχρονισμό φακέλων μεγαλύτερων από</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="197"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
+        <translation>ΜΒ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="219"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Kërko ripohim përpara njëkohësimi depozitash të jashtme</translation>
+        <translation>Ζητήστε επιβεβαίωση πριν τον συγχρονισμό εξωτερικών αποθηκευτικών χώρων</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation>Shfaq Njoftime &amp;Desktopi</translation>
+        <translation>Εμφάνιση &amp;Ειδοποιήσεις επιφάνειας εργασίας</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
         <source>&amp;Update Channel</source>
-        <translation>Kanal &amp;Përditësimesh</translation>
+        <translation>&amp;Ενημέρωση καναλιού</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="135"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Përpunoni Kartela të &amp;Shpërfillura</translation>
+        <translation>Εισαγωγή &amp; Αγνοούμενα Αρχεία</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Shfaq dosje njëkohësimi te Kuadrati i Lëvizjeve te Explorer</translation>
+        <translation>Εμφάνιση φακέλων συγχρονισμού στο &amp;Πίνακα περιήγησης του διαχειριστή αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>S&amp;how crash reporter</source>
-        <translation>S&amp;hfaq njoftues vithisjesh</translation>
+        <translation>S&amp;πως κατάρρευση αναφοράς</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="292"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Rinise &amp;&amp; Përditësoje</translation>
+        <translation>&amp;Επανεκκίνηση &amp;&amp; Ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="314"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>S’mund ta çaktivizoni vetënisjen, ngaqë është e aktivizuar vetënisja për krejt sistemin.</translation>
+        <translation>Δεν μπορείτε να απενεργοποιήσετε την αυτόματη εκκίνηση επειδή είναι ενεργοποιημένη η αυτόματη εκκίνηση σε επίπεδο συστήματος.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="217"/>
         <source>Change update channel?</source>
-        <translation>Të ndryshohet kanali i përditësimit?</translation>
+        <translation>Αλλαγή καναλιού ενημέρωσης;</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Warning</source>
-        <translation>Kujdes</translation>
+        <translation>Προειδοποίηση</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation>Ndryshimet e gjuhës lypin rinisje të këtij aplikacioni, që të hyjnë në fuqi.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>Kanali i përditësimeve përcakton se cilat përditësime të klientit do të ofrohen për instalim. Kanali &quot;i qëndrueshëm&quot; përmban vetëm përmirësime që konsiderohen të qëndrueshme, ndërsa versionet në kanalin &quot;beta&quot; mund të përmbajnë veçori të reja dhe ndreqje të metash, por s’janë testuar plotësisht.
+        <translation>Το κανάλι ενημέρωσης καθορίζει ποιες ενημερώσεις πελατών θα προσφέρονται για εγκατάσταση. Το &quot;σταθερό&quot; κανάλι περιέχει μόνο αναβαθμίσεις που θεωρούνται αξιόπιστες, ενώ οι εκδόσεις στο κανάλι &quot;beta&quot; ενδέχεται να περιέχουν νεότερες λειτουργίες και διορθώσεις σφαλμάτων, αλλά δεν έχουν ακόμη δοκιμαστεί πλήρως.
 
-Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, dhe që nuk ka kthim mbrapsht: Me një fjalë, kalimi nga kanali beta te kanali i qëndrueshëm, zakonisht, s’mund të bëhet menjëherë dhe do të thotë të pritet për një version të qëndrueshëm që është më i ri se versioni beta i instaluar.</translation>
+Σημειώστε ότι αυτό επιλέγει μόνο από ποιες αναβαθμίσεις έχουν ληφθεί και ότι δεν υπάρχουν υποβαθμίσεις: Έτσι, η επιστροφή από το κανάλι beta στο σταθερό κανάλι συνήθως δεν μπορεί να γίνει αμέσως και σημαίνει αναμονή για μια σταθερή έκδοση που είναι νεότερη από την τρέχουσα beta έκδοση.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="231"/>
         <source>Change update channel</source>
-        <translation>Ndryshoje kanalin e përditësimit</translation>
+        <translation>Αλλαγή καναλιού ενημέρωσης</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="232"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Ακύρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="346"/>
         <source>unknown (%1)</source>
-        <translation>e panjohur (%1)</translation>
+        <translation>άγνωστo (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="330"/>
         <source>(use default)</source>
-        <translation>(përdor parazgjedhjen)</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1767,12 +1754,12 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/libsync/graphapi/space.cpp" line="64"/>
         <source>Personal</source>
-        <translation>Personale</translation>
+        <translation>Προσωπικό</translation>
     </message>
     <message>
         <location filename="../src/libsync/graphapi/space.cpp" line="67"/>
         <source>Shares</source>
-        <translation>Pjesë</translation>
+        <translation>Κοινόχρηστοι φάκελοι</translation>
     </message>
 </context>
 <context>
@@ -1780,7 +1767,7 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="113"/>
         <source>Please enter your password to log in to your account.</source>
-        <translation>Ju lutemi, që të hyni te llogaria juaj, jepni fjalëkalimin tuaj.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1788,66 +1775,66 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Përpunues Kartelash të Shpërfillura</translation>
+        <translation>Επεξεργαστής Αγνοημένων Αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Kartela të Shpërfillura nga Mostrat</translation>
+        <translation>Αρχεία που αγνοούνται από τα πρότυπα</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="59"/>
         <source>Add</source>
-        <translation>Shtoje</translation>
+        <translation>Προσθήκη</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="41"/>
         <source>Pattern</source>
-        <translation>Mostër</translation>
+        <translation>Πρότυπα</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="46"/>
         <source>Allow Deletion</source>
-        <translation>Lejoni Fshirje</translation>
+        <translation>Να πειτρέπεται η διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="69"/>
         <source>Remove</source>
-        <translation>Hiqe</translation>
+        <translation>Αφαίρεση</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="105"/>
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Kartela ose dosje me përputhje me një rregullsi s’do të njëkohësohen. Ndryshimet hyjnë në fuqi herën pasuese që njëkohësohen dosjet.
+        <translation>Τα αρχεία ή οι φάκελοι που ταιριάζουν με ένα μοτίβο δεν θα συγχρονιστούν. Οι αλλαγές αρχίζουν να ισχύουν την επόμενη φορά που θα συγχρονίζονται οι φάκελοι.
 
-Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e një drejtorie. Kjo është e dobishme për të dhëna meta.</translation>
+Τα στοιχεία όπου επιτρέπεται η διαγραφή θα διαγραφούν αν αποτρέψουν την αφαίρεση ενός καταλόγου. Αυτό είναι χρήσιμο για μεταδεδομένα.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
         <source>Could not open file</source>
-        <translation>S&apos;u hap dot kartela</translation>
+        <translation>Αδυναμία ανοίγματος αρχείου</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation>S’shkruhen dot ndryshimet te &apos;%1&apos;.</translation>
+        <translation>Αδυναμία εγγραφής αλλαγών στο &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="135"/>
         <source>Add Ignore Pattern</source>
-        <translation>Shtoni Mostër Shpërfilljeje</translation>
+        <translation>Προσθήκη Προτύπου Αγνόησης</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="136"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Shtoni një mostër të re shpërfilljeje:</translation>
+        <translation>Προσθήκη νέου προτύπου αγνόησης:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="43"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Ky zë sillet nga sistemi në &apos;%1&apos; dhe s’mund të modifikohet në këtë skenë.</translation>
+        <translation>Αυτή η είσοδος παρέχεται από το σύστημα στο &apos;%1&apos; και δεν μπορεί να τροποποιηθεί σε αυτή την προβολή.</translation>
     </message>
 </context>
 <context>
@@ -1855,47 +1842,47 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="22"/>
         <source>List of issues</source>
-        <translation>Listë Problemesh</translation>
+        <translation>Λίστα των θεμάτων</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
         <source>Filter</source>
-        <translation>Filtër</translation>
+        <translation>Φίλτρο</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation>Ka shumë probleme. Jo të gjithë do të jenë të dukshëm këtu.</translation>
+        <translation>Υπήρχαν πάρα πολλά ζητήματα. Δεν θα είναι ορατά όλες εδώ.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="93"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation>Pati përplasje. Se si t’i zgjidhni, shihni dokumentimin.</translation>
+        <translation>Υπήρχαν συγκρούσεις. Ελέγξτε την τεκμηρίωση σχετικά με τον τρόπο επίλυσής τους.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation>Kartela %1 u shpërfill, ngaqë emri i saj është i rezervuar nga %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
         <source>Reset column sizes</source>
-        <translation>Ricaktoni madhësi shtyllash</translation>
+        <translation>Επαναφορά μεγεθών στήλης</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="223"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation>Pati përplasje. &lt;a href=&quot;%1&quot;&gt;Se si t’i zgjidhni, shihni dokumentimin.&lt;/a&gt;</translation>
+        <translation>Υπήρχαν συγκρούσεις. &lt;a href=&quot;%1&quot;&gt;Ελέγξτε την τεκμηρίωση σχετικά με τον τρόπο επίλυσής τους.&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="243"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
 </context>
 <context>
@@ -1903,7 +1890,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/libcloudproviders/libcloudproviders.cpp" line="140"/>
         <source>Settings</source>
-        <translation>Rregullime</translation>
+        <translation>Ρυθμίσεις</translation>
     </message>
 </context>
 <context>
@@ -1911,29 +1898,28 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/logbrowser.ui" line="14"/>
         <source>Log Output</source>
-        <translation>Përgjigje Regjistri</translation>
+        <translation>Καταγραφή Εξόδου</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation>Klienti mund të shkruajë regjistra diagnostikimi te një dosje e përkohshme. Këta regjistra janë shumë të dobishëm për diagnostikim problemesh.
-Ngaqë kartelat regjistër mund të bëhen shumë të mëdha, klienti do të fillojë një të re, për çdo xhirim të njëkohësimit dhe të vjetrat do t’i ngjeshë.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
-        <translation>Aktivizo regjistrim për dosje të përkohshme</translation>
+        <translation>Ενεργοποίηση της καταγραφής σε προσωρινό φάκελο</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Regjistrat përmbajnë të dhëna rezervat të cilat s’duhet t’i bëni të passhme publikisht&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
         <source>If enabled, logs will be written to:</source>
-        <translation>Në u aktivizoftë, regjistrat do të shkruhen te:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="91"/>
@@ -1943,24 +1929,24 @@ Ngaqë kartelat regjistër mund të bëhen shumë të mëdha, klienti do të fil
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation>Regjistro trafik Http </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation>Kartela regjistër për t’u mbajtur:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
-        <translation>Këto rregullime ruhen gjatë rinisjesh klienti.
-Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urdhrash do të anashkalojë rregullimet.</translation>
+        <translation>Αυτές οι ρυθμίσεις παραμένουν σε όλες τις επανεκκινήσεις πελάτη.
+Σημειώστε ότι η χρήση οποιασδήποτε επιλογής γραμμής εντολών καταγραφής θα παρακάμψει τις ρυθμίσεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="178"/>
         <source>Open folder</source>
-        <translation>Hap dosje</translation>
+        <translation>Άνοιγμα φακέλου</translation>
     </message>
 </context>
 <context>
@@ -1968,12 +1954,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="36"/>
         <source>Log out</source>
-        <translation>Dilni</translation>
+        <translation>Αποσύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="68"/>
         <source>Log in</source>
-        <translation>Hyni</translation>
+        <translation>Σύνδεση</translation>
     </message>
 </context>
 <context>
@@ -1981,22 +1967,22 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/models/models.cpp" line="88"/>
         <source>%1 Filter:</source>
-        <translation>Filtër %1:</translation>
+        <translation>%1 Φίλτρο:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="109"/>
         <source>All</source>
-        <translation>Krejt</translation>
+        <translation>Όλα</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="258"/>
         <source>Reset Filters</source>
-        <translation>Ktheji Filtrat Te Parazgjedhjet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="346"/>
         <source>Status Filter:</source>
-        <translation>Filtër Gjendjesh:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2004,53 +1990,53 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="417"/>
         <source>New Version Available</source>
-        <translation>Ka Gati Version të Ri</translation>
+        <translation>Νέα Έκδοση Διαθέσιμη </translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="423"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ka të gatshëm një version të ri të Klientit %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; është gati për shkarkim. Versioni i instaluar është %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Μια νέα έκδοση του %1 Δέκτη είναι διαθέσιμη.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; είναι διαθέσιμη για λήψη. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="436"/>
         <location filename="../src/gui/updater/ocupdater.cpp" line="486"/>
         <source>Skip this version</source>
-        <translation>Anashkaloje këtë version</translation>
+        <translation>Παράλειψη αυτής της έκδοσης</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="437"/>
         <source>Skip this time</source>
-        <translation>Anashkaloje këtë herë</translation>
+        <translation>Παράλειψη αυτή τη φορά</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="438"/>
         <source>Get update</source>
-        <translation>Merre përditësimin</translation>
+        <translation>Λήψη ενημέρωσης</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="467"/>
         <source>Update Failed</source>
-        <translation>Përditësimi Dështoi</translation>
+        <translation>Απέτυχε η ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ka të gatshëm një version të ri të Klientit %1, por procesi i përditësimit dështoi&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; është shkarkuar. Versioni i instaluar është %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Μια νέα έκδοση του πελάτη %1 είναι διαθέσιμη αλλά η διαδικασία ενημέρωσης απέτυχε.&lt;/p&gt;&lt;p&gt;Το &lt;b&gt;%2&lt;/b&gt; έχει ληφθεί. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="487"/>
         <source>Ask again later</source>
-        <translation>Ripyet më vonë</translation>
+        <translation>Να γίνει ερώτηση ξανά αργότερα</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="488"/>
         <source>Restart and update</source>
-        <translation>Rinise dhe përditësoje</translation>
+        <translation>Επανεκκίνηση και ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="489"/>
         <source>Update manually</source>
-        <translation>Përditësojeni dorazi</translation>
+        <translation>Χειροκίνητη ενημέρωση</translation>
     </message>
 </context>
 <context>
@@ -2058,32 +2044,32 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Rregullime Ndërmjetësi</translation>
+        <translation>Ρυθμίσεις Ενδιάμεσου Διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Pa Ndërmjetës</translation>
+        <translation>Χωρίς Ενδιάμεσο Διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Përdor ndërmjetësin e sistemit</translation>
+        <translation>Χρήση ενδιάμεσου διακομιστή συστήματος</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="54"/>
         <source>Specify proxy manually as</source>
-        <translation>Përcaktojeni ndërmjetësin dorazi si</translation>
+        <translation>Προσδιορίστε ενδιάμεσο διακομιστή χειροκίνητα ως</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="84"/>
         <source>Host</source>
-        <translation>Strehë</translation>
+        <translation>Διακομιστής</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="104"/>
@@ -2093,77 +2079,77 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="135"/>
         <source>Proxy server requires authentication</source>
-        <translation>Shërbyesi ndërmjetës lyp mirëfilltësim</translation>
+        <translation>Ο ενδιάμεσος διακομιστής απαιτεί πιστοποίηση</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="180"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Shënim: Rregullimet e ndërmjetësit nuk kanë efekt për llogari në localhost</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="201"/>
         <source>Download Bandwidth</source>
-        <translation>Gjerësi Bande Shkarkimi</translation>
+        <translation>Ταχύτητα λήψεως</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="229"/>
         <location filename="../src/gui/networksettings.ui" line="308"/>
         <source>Limit to</source>
-        <translation>Kufizoje deri në</translation>
+        <translation>Περιορισμός σε</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="249"/>
         <location filename="../src/gui/networksettings.ui" line="331"/>
         <source>KBytes/s</source>
-        <translation>KBajte/s</translation>
+        <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="207"/>
         <location filename="../src/gui/networksettings.ui" line="286"/>
         <source>No limit</source>
-        <translation>Pa kufi</translation>
+        <translation>Χωρίς όριο</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="217"/>
         <location filename="../src/gui/networksettings.ui" line="296"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Kufizoje te 3/4 e gjerësisë së bandës së pritshme</translation>
+        <translation>Περιορισμός στα 3/4 της εκτιμώμενης ταχύτητας σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="280"/>
         <source>Upload Bandwidth</source>
-        <translation>Gjerësi Bande Ngarkimi</translation>
+        <translation>Ταχύτητα Μεταφόρτωσης</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="220"/>
         <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>Limit automatically</source>
-        <translation>Kufizoje vetvetiu</translation>
+        <translation>Αυτόματος περιορισμός</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation>Strehëemër për shërbyesin ndërmjetës</translation>
+        <translation>Όνομα συστήματος του ενδιάμεσου διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation>Emër përdoruesi për shërbyesin ndërmjetës</translation>
+        <translation>Όνομα χρήστη για τον ενδιάμεσο διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation>Fjalëkalim për shërbyesin ndërmjetës</translation>
+        <translation>Κωδικός πρόσβασης για τον ενδιάμεσο διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>HTTP(S) proxy</source>
-        <translation>Ndërmjetës HTTP(S)</translation>
+        <translation>Ενδιάμεσος HTTP(S) </translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>SOCKS5 proxy</source>
-        <translation>Ndërmjetës SOCKS5</translation>
+        <translation>Ενδιάμεσος SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -2171,24 +2157,24 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="67"/>
         <source>Created at %1</source>
-        <translation>Krijuar më %1</translation>
+        <translation>Ολοκληρώθηκε στο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="80"/>
         <source>Closing in a few seconds...</source>
-        <translation>Do të mbyllet pas pak sekondash…</translation>
+        <translation>Κλείσιμο σε λίγα δευτερόλεπτα...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="126"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation>Kërkesa %1 dështoi në %2</translation>
+        <translation>Το αίτημα% 1 απέτυχε στο% 2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="132"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
-        <translation>&apos;%1&apos; përzgjedhur në %2</translation>
+        <translation>&apos;% 1&apos; επιλέχθηκε στο% 2</translation>
     </message>
 </context>
 <context>
@@ -2196,76 +2182,75 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="355"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Gabim i kthyer nga shërbyesi: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Σφάλμα που επέστρεψε από το διακομιστή: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="358"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Pati një gabim në përdorimin e pikëmbarimit të &apos;tokenit&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Παρουσιάστηκε ένα σφάλμα κατά την πρόσβαση στο τελικό σημείο του &apos;διακριτικού&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>S’u përtyp dot JSON-i i kthyer nga shërbyesi: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Αδυναμία ανάλυσης του JSON που επέστρεψε από το διακομιστή: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
-        <translation>Lloj token-i i pambuluar: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
-        <translation>Përgjigja prej shërbyesit s’përmbante krejt fushat e pritura
-:%1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
-        <translation>Gabim i Panjohur</translation>
+        <translation>Άγνωστο σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>Login Error</source>
-        <translation>Gabim Hyrjeje</translation>
+        <translation>Σφάλμα Σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="395"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Përdoruesi i gabuar&lt;/h1&gt;&lt;p&gt;Bëtë hyrjen si përdoruesi &lt;em&gt;%1&lt;/em&gt;, por duhet të hyni si përdoruesi &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Ju lutemi, kthehuni te klienti %3 dhe rinisni mirëfilltësimin.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="399"/>
         <source>Wrong user</source>
-        <translation>Përdorues i gabuar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="417"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Hyrje e Suksesshme&lt;/h1&gt;&lt;p&gt;Mund ta mbyllni këtë dritare.&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="418"/>
         <source>Login Successful</source>
-        <translation>Hyrje e Suksesshme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="572"/>
         <source>Oauth2 Error</source>
-        <translation>Gabim OAuth2</translation>
+        <translation>Σφάλμα Oauth2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="573"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation>Mirëfilltësimi Oauth2 lyp një lidhje të siguruar.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="383"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Gabim Hyrjeje&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Σφάλμα εισόδου&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2273,64 +2258,64 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="111"/>
         <source>New %1 Update Ready</source>
-        <translation>Përditësim i Ri %1 Gati</translation>
+        <translation>Νέα %1 Ενημέρωση Έτοιμη</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="112"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Ju ndan një hap nga instalimi i një përditësimi të ri për %1.
-Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translation>
+        <translation>Μια νέα ενημέρωση για %1 πρόκειται να εγκατασταθεί. Ο βοηθός ενημέρωσης μπορεί να ζητήσει
+επιπλέον παραχωρήσεις δικαιωμάτων κατά τη διαδικασία.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>S’u shkarkua dot përditësimi. Ju lutemi, klikoni &lt;a href=&apos;%1&apos;&gt;këtu&lt;/a&gt; që ta shkarkoni përditësimin dorazi.</translation>
+        <translation>Αδυναμία λήψης της ενημέρωσης. Παρακαλώ κλικάρετε &lt;a href=&apos;%1&apos;&gt;εδώ&lt;/a&gt; για να κατεβάσετε την ενημέρωση χειροκίνητα.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not check for new updates.</source>
-        <translation>S’u kontrollua dot për përditësime të reja.</translation>
+        <translation>Αδυναμία ελέγχου για νέες ενημερώσεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>Downloading %1. Please wait...</source>
-        <translation>Po shkarkohet %1. Ju lutemi, pritni…</translation>
+        <translation>Γίνεται λήψη %1. Παρακαλούμε περιμένετε...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>%1 i gatshëm. Rinisni aplikacionin që të nisë përditësimi.</translation>
+        <translation>%1 διαθέσιμη. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε την ενημέρωση.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation>Ka gati %1 të ri. Ju lutemi, klikoni &lt;a href=&apos;%2&apos;&gt;këtu&lt;/a&gt; që të shkarkoni dorazi AppImage-in e ri.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>%1 i ri i gatshëm. Ju lutemi, për ta instaluar, përdorni mjetin e sistemit për përditësime.</translation>
+        <translation>Υπάρχει διαθέσιμο νέο %1. Χρησιμοποιήστε το εργαλείο ενημέρωσης του συστήματος για να το εγκαταστήσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
         <source>Checking update server...</source>
-        <translation>Po kontrollohet shërbyesi i përditësimeve…</translation>
+        <translation>Έλεγχος διακομιστή ενημερώσεων...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Gjendja e përditësimit është e panjohur: S’u kontrollua për përditësime të rinj.</translation>
+        <translation>Η κατάσταση ενημέρωσης είναι άγνωστη: Δεν έγινε έλεγχος για για νέες ενημερώσεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>S’ka përditësime gati. Instalimi juaj është versioni më i ri.</translation>
+        <translation>Δεν υπάρχουν ενημερώσεις διαθέσιμες. Η εγκατάστασή σας βρίσκεται στην τελευταία έκδοση.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="193"/>
         <source>Update Check</source>
-        <translation>Kontroll Përditësimesh</translation>
+        <translation>Έλεγχος για ενημερώσεις</translation>
     </message>
 </context>
 <context>
@@ -2338,7 +2323,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="765"/>
         <source>File %1 is currently in use</source>
-        <translation>Kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2346,137 +2331,137 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/discovery.cpp" line="252"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>Njëkohësimi s’i mbulon lidhjet simbolike.</translation>
+        <translation>Οι συμβολικού σύνδεσμοι δεν υποστηρίζονται για το συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="261"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Kartela bën pjesë te lista e shpërfilljeve.</translation>
+        <translation>Το αρχείο περιέχεται στη λίστα αρχείων προς αγνόηση.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="266"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Në këtë sistem kartelash nuk mbulohen emra kartelash që mbarojnë me një pikë.</translation>
+        <translation>Τα ονόματα αρχείων που διαρκούν μια ορισμένη χρονική περίοδο δεν υποστηρίζονται σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>Në këtë sistem kartelash nuk mbulohen emra kartelash që përmbajnë shenjën &apos;%1&apos;.</translation>
+        <translation>Τα ονόματα αρχείων που περιέχουν τον χαρακτήρα &apos;% 1&apos; δεν υποστηρίζονται σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>File name contains at least one invalid character</source>
-        <translation>Emri i kartelës përmban të paktën një shenjë të pavlefshme</translation>
+        <translation>Το όνομα αρχείου περιέχει τουλάχιστο ένα μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="284"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation>Në këtë sistem kartelash, emri i kartelës është një emër i rezervuar.</translation>
+        <translation>Το όνομα αρχείου είναι ένα κατοχυρωμένο όνομα σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="293"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Emri i kartelës përmban shenja të zbrazëta në fund.</translation>
+        <translation>Το όνομα του αρχείου περιέχει συνεχόμενα κενά.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="296"/>
         <source>Filename is too long.</source>
-        <translation>Emri i kartelës është shumë i gjatë.</translation>
+        <translation>Το όνομα αρχείου είνια πολύ μεγάλο.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="299"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Kartela/Dosja është shpërfillur, ngaqë është e fshehur.</translation>
+        <translation>Το Αρχείο/ο Φάκελος αγνοήθηκε επειδή είναι κρυφό.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="303"/>
         <source>Stat failed.</source>
-        <translation>Statistikat dështuan.</translation>
+        <translation>Απέτυχε.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="306"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Përplasje: Versioni i shërbyesit u shkarkua, kopja vendore u riemërtua dhe s’është ngarkuar.</translation>
+        <translation>Σύγκρουση: Έγινε λήψη της έκδοσης του διακομιστή, το τοπικό αντίγραφο μετονομάστηκε και δεν μεταφορτώθηκε.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="310"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>Emri i kartelës s’mund të kodohet në sistemin tuaj të kartelave.</translation>
+        <translation>Το όνομα αρχείου δεν μπορεί να κωδικοποιηθεί στο σύστημα αρχείων σας.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="313"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>Emri i kartelës gjendet në listë bllokimesh te shërbyesi.</translation>
+        <translation>Το όνομα αρχείου είναι στην μαύρη λίστα του διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="416"/>
         <source>size</source>
-        <translation>madhësi</translation>
+        <translation>μέγεθος</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>permissions</source>
-        <translation>leje</translation>
+        <translation>δικαιώματα</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>etag</source>
-        <translation>etag</translation>
+        <translation>ηλεκτρονική ετικέτα</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="422"/>
         <source>file id</source>
-        <translation>ID kartele</translation>
+        <translation>id αρχείου</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="426"/>
         <source>server reported no %1</source>
-        <translation>shërbyesi s’raportoi %1</translation>
+        <translation>ο διακομιστής ανέφερε όχι %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1259"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>U shpu te vendmbërritje e pavlefshme, po rikthehet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1272"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>S’lejohet të hiqet, po rikthehet</translation>
+        <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1185"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>U shpërfill për shkak të listës së bllokimeve &quot;zgjidhni ç’doni të njëkohësoni&quot;</translation>
+        <translation>Αγνοήθηκε εξαιτίας της μαύρης λίστας &quot;διάλεξε τι να συγχρονιστεί&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1218"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>S’lejohet, ngaqë s’keni leje për shtim nëndosjesh te ajo dosje</translation>
+        <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υποφακέλους σε αυτό τον φάκελο</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1223"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>S’lejohet, ngaqë s’keni leje të shtoni kartela te ajo dosje</translation>
+        <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε αρχεία σε αυτόν τον φάκελο</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1236"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>S’lejohet të ngarkohet kjo kartelë, ngaqë është vetëm për lexim te shërbyesi, po rikthehet</translation>
+        <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1382"/>
         <source>Error while reading the database</source>
-        <translation>Gabim gjatë leximit të bazës së të dhënave</translation>
+        <translation>Σφάλμα κατά την ανάγνωση της βάσης δεδομένων</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation>Kjo hapësirë aktualisht është e papërdorshme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation>Shërbyesi u përgjigj me një gabim teksa lexohej drejtoria &apos;%1&apos; : %2</translation>
+        <translation>Ο διακομιστής απάντησε με σφάλμα κατά την ανάγνωση του καταλόγου &apos;%1&apos; : %2</translation>
     </message>
 </context>
 <context>
@@ -2484,7 +2469,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1128"/>
         <source>Error updating metadata: %1</source>
-        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1131"/>
@@ -2497,53 +2482,53 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="435"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation>S’u arrit të lirohet hapësirë, kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="450"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="536"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation>Kartela %1 s’mund shkarkohet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="594"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>Shkarkimi mund të ulë nën kufi sasinë e hapësirës së lirë në disk</translation>
+        <translation>Η λήψη θα μειώσει τον ελεύθερο χώρο τοπικού δίσκου κάτω από το όριο</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="598"/>
         <source>Free space on disk is less than %1</source>
-        <translation>Hapësira e lirë në disk është nën %1</translation>
+        <translation>Ο διαθέσιμος χώρος στο δίσκο είναι λιγότερος από %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="724"/>
         <source>File was deleted from server</source>
-        <translation>Kartela është fshirë te shërbyesi</translation>
+        <translation>Το αρχείο διαγράφηκε από τον διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="783"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation>Shërbyes i dëmtuar u përgjigj me gjatësi lënde të zbrazët për kartelë jo të zbrazët, gjatë rimarrjeje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>The file could not be downloaded completely.</source>
-        <translation>Kartela s’u shkarkua plotësisht.</translation>
+        <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="797"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation>Kartela e shkarkuar është e zbrazët, edhe pse shërbyesi njoftoi se duhej të ishte %1.</translation>
+        <translation>Το ληφθέν αρχείο είναι άδειο, παρόλο που ο διακομιστής ανακοίνωσε ότι θα έπρεπε να ήταν% 1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="903"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation>Kartela %1 s’mund të ruhet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1022"/>
         <source>Error updating metadata: %1</source>
-        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="544"/>
@@ -2551,13 +2536,13 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <location filename="../src/libsync/propagatedownload.cpp" line="960"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>The file %1 is currently in use</source>
-        <translation>Kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="430"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
         <source>File has changed since discovery</source>
-        <translation>Kartela ka ndryshuar, qëkurse u zbulua</translation>
+        <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>
 </context>
 <context>
@@ -2565,7 +2550,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; Rikthimi Dështoi: %1</translation>
+        <translation>; Η Αποκατάσταση Απέτυχε: %1</translation>
     </message>
 </context>
 <context>
@@ -2573,27 +2558,27 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>s’u fshi dot kartela %1, gabim: %2</translation>
+        <translation>αδυναμία διαγραφής αρχείου %1, σφάλμα: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation>S’krijohet dot dosje vendore %1, për shkak të një përplasje emrash kartele vendore me %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
-        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation>Kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
-        <translation>s’u krijua dot dosja %1</translation>
+        <translation>αδυναμία δημιουργίας φακέλου %1</translation>
     </message>
 </context>
 <context>
@@ -2601,18 +2586,18 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation>%1 dështoi me: %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation>S’u hoq dot %1, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>%1 the file is currently in use</source>
-        <translation>%1 kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2620,32 +2605,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>Kartela %1 s’mund të riemërtohet si %2, për shkak të një përplasje emrash kartele vendore</translation>
+        <translation>Το αρχείο %1 δεν είναι δυνατό να μετονομαστεί σε %2 λόγω μιας διένεξης με το όνομα ενός τοπικού αρχείου</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation>S’u riemërtua dot %1 si %2, kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <source>Error updating metadata: %1</source>
-        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation>Kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation>S’u arrit të riemërtohej kartela</translation>
+        <translation>Αποτυχία μετονομασίας αρχείου</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
         <source>Error setting pin state</source>
-        <translation>Gabim në caktim gjendjeje pini</translation>
+        <translation>Σφάλμα στη ρύθμιση της κατάστασης pin</translation>
     </message>
 </context>
 <context>
@@ -2653,7 +2638,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="97"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Shërbyesi u përgjigj me kod HTTP të gabuar. Pritej 204, por u mor &quot;%1 %2&quot;.</translation>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 204, αλλά ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -2661,17 +2646,17 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="108"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Shërbyesi u përgjigj me kod HTTP të gabuar. Pritej 201, por u mor &quot;%1 %2&quot;.</translation>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 201, αλλά ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="185"/>
         <source>Setting file status failed due to file lock</source>
-        <translation>Caktimi i gjendjes së kartelës dështoi për shkak të një kyçjeje kartele</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2679,32 +2664,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="120"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>S’u emërtua dot %1 si %2, gabim: %3</translation>
+        <translation>Αδυναμία μετονομασίας %1 σε %2, σφάλμα: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="167"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Shërbyesi u përgjigj me kod HTTP të gabuar. Pritej 201, por u mor &quot;%1 %2&quot;.</translation>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 201, αλλά ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="205"/>
         <source>Error updating metadata: %1</source>
-        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="208"/>
         <source>The file %1 is currently in use</source>
-        <translation>Kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
         <source>Error writing metadata to the database</source>
-        <translation>Gabim në shkrim tejtëdhënash te baza e të dhënave</translation>
+        <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="213"/>
         <source>Error setting pin state</source>
-        <translation>Gabim në caktim gjendjeje pini</translation>
+        <translation>Σφάλμα στη ρύθμιση της κατάστασης pin</translation>
     </message>
 </context>
 <context>
@@ -2712,12 +2697,12 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1312"/>
         <source>Could not update file : %1</source>
-        <translation>S’u përditësua dot kartela : %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1315"/>
         <source>The file %1 is currently in use</source>
-        <translation>Kartela %1 është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2725,34 +2710,34 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="129"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Kartela %1 s’mund të ngarkohet, ngaqë ka një tjetër kartelë me të njëjtin emër, me ndryshim vetëm në shkronjë të madhe-shkronjë të vogël</translation>
+        <translation>Το αρχείο % 1 δεν μπορεί να ανέβει επειδή υπάρχει ένα άλλο αρχείο με το ίδιο όνομα, που διαφέρει μόνο στη περίπτωση,</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="182"/>
         <location filename="../src/libsync/propagateupload.cpp" line="213"/>
         <source>%1 the file is currently in use</source>
-        <translation>%1 kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="248"/>
         <source>File Removed</source>
-        <translation>Kartela u Hoq</translation>
+        <translation>Το αρχείο αφαιρέθηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="112"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation>Kartela vendore ndryshoi gjatë njëkohësimit. Do të rimerret.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
-        <translation>Gabim në përditësim tejtëdhënash: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <location filename="../src/libsync/propagateupload.cpp" line="487"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Ngarkimi i %1 i tejkalon kuotat për dosjen</translation>
+        <translation>Η μεταφόρτωση του %1 υπερβαίνει το μέγεθος του φακέλου</translation>
     </message>
 </context>
 <context>
@@ -2760,32 +2745,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="95"/>
         <source>%1 the file is currently in use</source>
-        <translation>%1 kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="464"/>
         <source>The local file was removed during sync.</source>
-        <translation>Kartela vendore u hoq gjatë njëkohësimit.</translation>
+        <translation>Το τοπικό αρχείο αφαιρέθηκε κατά το συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="511"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation>Shërbyesi kërkoi një veçori të dikurshme që është hequr (vjelje)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="516"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>Kod i papritur përgjigjeje nga shërbyesi (%1)</translation>
+        <translation>Ο διακομιστής επέστρεψε απροσδόκητο κωδικό (%1) </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="523"/>
         <source>Missing File ID from server</source>
-        <translation>Mungon ID kartele nga shërbyesi</translation>
+        <translation>Απουσία ID αρχείου από τον διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="536"/>
         <source>Missing ETag from server</source>
-        <translation>Mungon ETag nga shërbyesi</translation>
+        <translation>Απουσία ETag από τον διακομιστή</translation>
     </message>
 </context>
 <context>
@@ -2793,17 +2778,17 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="63"/>
         <source>%1 the file is currently in use</source>
-        <translation>%1 kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation>Njehsimi i checksum-it dështoi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
         <source>The local file was removed during sync.</source>
-        <translation>Kartela vendore u hoq gjatë njëkohësimit.</translation>
+        <translation>Το τοπικό αρχείο αφαιρέθηκε κατά το συγχρονισμό.</translation>
     </message>
 </context>
 <context>
@@ -2811,22 +2796,22 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="48"/>
         <source>%1 the file is currently in use</source>
-        <translation>%1 kartela është aktualisht në përdorim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="213"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation>Shërbyesi kërkoi një veçori të dikurshme që është hequr (vjelje)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="233"/>
         <source>The local file was removed during sync.</source>
-        <translation>Kartela vendore u hoq gjatë njëkohësimit.</translation>
+        <translation>Το τοπικό αρχείο αφαιρέθηκε κατά το συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="256"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>Shërbyesi nuk e njohu copën e fundit. (S’kishte të pranishëm e-tag)</translation>
+        <translation>Ο διακομιστής δεν αναγνώρισε το τελευταίο τμήμα. (Δεν υπήρχε e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2834,42 +2819,42 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="128"/>
         <source>Time</source>
-        <translation>Kohë</translation>
+        <translation>Ώρα</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="130"/>
         <source>File</source>
-        <translation>Kartelë</translation>
+        <translation>Αρχείο</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="132"/>
         <source>Folder</source>
-        <translation>Dosje</translation>
+        <translation>Φάκελος</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Issues</source>
-        <translation>Probleme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Action</source>
-        <translation>Veprim</translation>
+        <translation>Ενέργεια</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="136"/>
         <source>Size</source>
-        <translation>Madhësi</translation>
+        <translation>Μέγεθος</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="138"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="140"/>
         <source>Status</source>
-        <translation>Gjendje</translation>
+        <translation>Κατάσταση</translation>
     </message>
 </context>
 <context>
@@ -2877,28 +2862,28 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="22"/>
         <source>Local sync protocol</source>
-        <translation>Protokoll vendor njëkohësimesh</translation>
+        <translation>Πρωτόκολλο τοπικού συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
         <source>Filter</source>
-        <translation>Filtër</translation>
+        <translation>Φίλτρο</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="68"/>
         <location filename="../src/gui/protocolwidget.cpp" line="74"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
-        <translation>Riprovo njëkohësim</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2906,27 +2891,27 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Lypset mirëfilltësim ndërmjetësi</translation>
+        <translation>Απαιτείται πιστοποίηση στον διαμεσολαβητή</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="35"/>
         <source>Username:</source>
-        <translation>Emër përdoruesi:</translation>
+        <translation>Όνομα χρήστη:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="59"/>
         <source>Proxy:</source>
-        <translation>Ndërmjetës:</translation>
+        <translation>Διαμεσολαβητής:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Shërbyesi ndërmjetës lyp një emër përdoruesi dhe fjalëkalim.</translation>
+        <translation>Ο διαμεσολαβητής απαιτεί όνομα χρήστη και κωδικό.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="45"/>
         <source>Password:</source>
-        <translation>Fjalëkalim:</translation>
+        <translation>Κωδικός Πρόσβασης:</translation>
     </message>
 </context>
 <context>
@@ -2934,7 +2919,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="438"/>
         <source>Choose What to Sync</source>
-        <translation>Zgjidhni Çfarë të Njëkohësohet</translation>
+        <translation>Επιλέξτε Τι θα Συγχρονιστεί</translation>
     </message>
 </context>
 <context>
@@ -2942,33 +2927,33 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading ...</source>
-        <translation>Po ngarkohet …</translation>
+        <translation>Φόρτωση ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Shpërzgjidhni dosje të largëta që nuk doni të njëkohësohen.</translation>
+        <translation>Απορρίψτε τους απομακρυσμένους φακέλους που δεν θέλετε να συγχρονιστούν.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
         <source>Name</source>
-        <translation>Emër</translation>
+        <translation>Όνομα</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="96"/>
         <source>Size</source>
-        <translation>Madhësi</translation>
+        <translation>Μέγεθος</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="213"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="261"/>
         <source>No subfolders currently on the server.</source>
-        <translation>Hëpërhë s’ka nëndosje te shërbyesi.</translation>
+        <translation>Δεν υπάρχουν υποφάκελοι αυτή τη στιγμή στον διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="263"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Ndodhi një gabim teksa ngarkohej lista e nëndosjeve.</translation>
+        <translation>Παρουσιάστηκε σφάλμα κατά την φόρτωση της λίστας των υπο-φακέλων</translation>
     </message>
 </context>
 <context>
@@ -2976,7 +2961,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="96"/>
         <source>Dismiss</source>
-        <translation>Mos e merr parasysh</translation>
+        <translation>Απόρριψη</translation>
     </message>
 </context>
 <context>
@@ -2984,33 +2969,33 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="224"/>
         <source>Settings</source>
-        <translation>Rregullime</translation>
+        <translation>Ρυθμίσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="213"/>
         <source>Activity</source>
-        <translation>Veprimtari</translation>
+        <translation>Δραστηριότητα</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="202"/>
         <source>Add account</source>
-        <translation>Shtoni llogari</translation>
+        <translation>Προσθήκη λογαριασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="248"/>
         <location filename="../src/gui/settingsdialog.cpp" line="251"/>
         <source>Quit %1</source>
-        <translation>Dilni nga %1</translation>
+        <translation>Κλείσιμο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="252"/>
         <source>Are you sure you want to quit %1?</source>
-        <translation>Jeni i sigurt se doni të dilet nga %1?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="379"/>
         <source>Account</source>
-        <translation>Llogari</translation>
+        <translation>Λογαριασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
@@ -3020,7 +3005,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
         <source>Hide</source>
-        <translation>Fshihe</translation>
+        <translation>Απόκρυψη</translation>
     </message>
 </context>
 <context>
@@ -3028,22 +3013,22 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/sharedialog.ui" line="40"/>
         <source>share label</source>
-        <translation>etiketë pjese</translation>
+        <translation>Διαμοιρασμός ετικέτας</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation>Παράθυρο διαλόγου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="62"/>
         <source>ownCloud Path:</source>
-        <translation>Shteg ownCloud-i:</translation>
+        <translation>Διαδρομή ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>%1 Sharing</source>
-        <translation>Ndarje e %1</translation>
+        <translation>%1 Διαμοιράστηκε</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="91"/>
@@ -3053,32 +3038,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="107"/>
         <source>Folder: %2</source>
-        <translation>Dosje: %2</translation>
+        <translation>Φάκελος: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>The server does not allow sharing</source>
-        <translation>Shërbyesi nuk lejon ndarjet</translation>
+        <translation>Ο διακομιστής δεν επιτρέπει τον διαμοιρασμό</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="129"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation>Po merren nga shërbyesi lejet maksimum të mundshme për ndarje…</translation>
+        <translation>Ανάκτηση των μέγιστων δυνατών δικαιωμάτων κοινής χρήσης από το διακομιστή ...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="190"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Kartela s’mund të ndahet me të tjerët, ngaqë qe ndarë pa leje për ndarje.</translation>
+        <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="199"/>
         <source>Users and Groups</source>
-        <translation>Përdorues dhe Grupe</translation>
+        <translation>Χρήστες και Ομάδες</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="206"/>
         <source>Public Links</source>
-        <translation>Lidhje Publike</translation>
+        <translation>Δημόσιοι σύνδεσμοι</translation>
     </message>
 </context>
 <context>
@@ -3086,166 +3071,166 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation>Ndani DokumentiRi.odt</translation>
+        <translation>Διαμοιρασμός NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="147"/>
         <source>Upload only (File Drop)</source>
-        <translation>Vetëm ngarkim (Lënie Kartele)</translation>
+        <translation>Μόνο μεταφόρτωση (File Drop)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="160"/>
         <source>Receive files from others without revealing the contents of the folder.</source>
-        <translation>Merr kartela prej të tjerësh pa e zbuluar lëndën e dosjes.</translation>
+        <translation>Λήψη αρχείων από άλλους χωρίς να αποκαλύπτεται το περιεχόμενο του φακέλου.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="124"/>
         <source>Download / View / Edit</source>
-        <translation>Të shkarkojë / Të shohë / Të përpunojë</translation>
+        <translation>Λήψη / Προβολή / Επεξεργασία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="269"/>
         <source>Name:</source>
-        <translation>Emër:</translation>
+        <translation>Όνομα:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
         <source>Enter name of new share...</source>
-        <translation>Jepni emër të pjesës së re…</translation>
+        <translation>Εισάγετε όνομα του νέου κοινόχρηστου...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
         <source>&amp;Create</source>
-        <translation>&amp;Krijo</translation>
+        <translation>&amp;Δημιουργία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="221"/>
         <source>Set &amp;password </source>
-        <translation>Caktoni &amp;fjalëkalim </translation>
+        <translation>Ορισμός &amp;κωδικού πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="235"/>
         <source>Set &amp;expiration date</source>
-        <translation>Caktoni datë &amp;skadimi</translation>
+        <translation>Ορισμός &amp;ημερομηνίας λήξης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="181"/>
         <source>Set password</source>
-        <translation>Caktoni fjalëkalimin</translation>
+        <translation>Ορισμός κωδικού πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Recipients can view or download contents.</source>
-        <translation>Marrësit mund të shohin dhe shkarkojnë lëndë.</translation>
+        <translation>Οι παραλήπτες μπορούν να προβάλλουν ή να κατεβάζουν περιεχόμενο.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="99"/>
         <source>Download / View</source>
-        <translation>Të shkarkojë / Të shohë</translation>
+        <translation>Λήψη / Προβολή</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="137"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
-        <translation>Marrësit mund të shohin shkarkojnë, përpunojnë, fshijnë dhe ngarkojnë lëndë.</translation>
+        <translation>Οι παραλήπτες μπορούν να προβάλλουν, να κατεβάζουν, να επεξεργάζονται, να διαγράφουν και να μεταφορτώνουν περιεχόμενα.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation>Cilido që zotëron lidhjen, ka hyrje te kartela/dosja</translation>
+        <translation>Οποιοσδήποτε με τη σύνδεση έχει πρόσβαση στο αρχείο / φάκελο</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="120"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="353"/>
         <source>P&amp;assword protect</source>
-        <translation>Mbroje me fj&amp;alëkalim</translation>
+        <translation>Π&amp;ροστασία με κωδικό</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="98"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Kartela s’mund të ndahet me të tjerët, ngaqë qe ndarë pa leje për ndarje.</translation>
+        <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>
         <source>Link shares have been disabled</source>
-        <translation>Ndarjet përmes lidhjesh janë çaktivizuar</translation>
+        <translation>Οι σύνδεσμοι των κοινόχρηστων έχουν απενεργοποιηθεί</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="109"/>
         <source>Create public link share</source>
-        <translation>Krijo lidhje publike ndarjesh</translation>
+        <translation>Δημιουργία δημόσιου συνδέσμου κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="599"/>
         <source>Delete</source>
-        <translation>Fshije</translation>
+        <translation>Διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Open link in browser</source>
-        <translation>Hape lidhjen në shfletues</translation>
+        <translation>Άνοιγμα συνδέσμου στον περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Copy link to clipboard</source>
-        <translation>Kopjoja lidhjen në të papastër</translation>
+        <translation>Αντιγραφή συνδέσμου στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation>Kopjoja lidhjen në të papastër (shkarkim i drejtpërdrejtë)</translation>
+        <translation>Αντιγραφή συνδέσμου στο πρόχειρο (άμεση λήψη)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>Send link by email</source>
-        <translation>Dërgoje lidhjen me email</translation>
+        <translation>Αποστολή συνδέσμου με αλληλογραφία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Send link by email (direct download)</source>
-        <translation>Dërgoje lidhjen me email (shkarkim i drejtpërdrejt)</translation>
+        <translation>Αποστολή συνδέσμου με ηλεκτρονικό ταχυδρομείο (απευθείας λήψη)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="285"/>
         <source>Create new...</source>
-        <translation>Krijoni të re…</translation>
+        <translation>Δημιουργία νέου...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="578"/>
         <source>I shared %1 with you</source>
-        <translation>Ndava %1 me ju</translation>
+        <translation>Διαμοιράστηκα %1 με εσένα</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="592"/>
         <source>Confirm Link Share Deletion</source>
-        <translation>Ripohoni Fshirje Lidhjeje Ndarjesh</translation>
+        <translation>Επιβεβαίωση διαγραφής συνδέσμου κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="593"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Doni vërtet të fshihet lidhja publike e ndarjes &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Shënim: Ky veprim s’mund të zhbëhet.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να διαγράψετε τον σύνδεσμο κοινόχρηστου &lt;i&gt;%1&lt;/i&gt;; &lt;/p&gt;&lt;p&gt;Σημείωση: Αυτή η ενέργεια δεν μπορεί να ανακληθεί.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="600"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Ακύρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="64"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="616"/>
         <source>Public link</source>
-        <translation>Lidhje publike</translation>
+        <translation>Δημόσιος σύνδεσμος</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="269"/>
         <source>Delete link share</source>
-        <translation>Fshi lidhje ndarjesh</translation>
+        <translation>Διαγραφή συνδέσμου κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="357"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="546"/>
         <source>Please Set Password</source>
-        <translation>Ju lutemi, Caktoni Fjalëkalim</translation>
+        <translation>Παρακαλούμε ορίστε Κωδικό</translation>
     </message>
 </context>
 <context>
@@ -3253,47 +3238,47 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation>Ndani DokumentiRi.odt</translation>
+        <translation>Διαμοιρασμός NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
         <source>Share with users or groups ...</source>
-        <translation>Ndajeni me përdorues ose grupe …</translation>
+        <translation>Διαμοιρασμός με χρήστες ή ομάδες ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="96"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation>Mund t’i drejtoni njerëzit për te kjo kartelë ose dosje e përbashkët %1 duke u dhënë atyre një lidhje private</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>The item is not shared with any users or groups</source>
-        <translation>Ky objekt s’është ndarë me ndonjë përdorues apo grup</translation>
+        <translation>Το στοιχείο δεν διαμοιράζεται με κανέναν χρήστη ή ομάδα</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>Open link in browser</source>
-        <translation>Hape lidhjen në shfletues</translation>
+        <translation>Άνοιγμα συνδέσμου στον περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
         <source>Copy link to clipboard</source>
-        <translation>Kopjoja lidhjen në të papastër</translation>
+        <translation>Αντιγραφή συνδέσμου στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="253"/>
         <source>Send link by email</source>
-        <translation>Dërgoje lidhjen me email</translation>
+        <translation>Αποστολή συνδέσμου με αλληλογραφία</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="263"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation>Pa përfundime për &apos;%1&apos;</translation>
+        <translation>Κανένα αποτέλεσμα για &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
         <source>I shared something with you</source>
-        <translation>Ndava diçka me ju</translation>
+        <translation>Διαμοιράστηκα κάτι μαζί σου</translation>
     </message>
 </context>
 <context>
@@ -3301,37 +3286,37 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/shareuserline.ui" line="17"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="59"/>
         <source>can edit</source>
-        <translation>mund të përpunojnë</translation>
+        <translation>δυνατότητα επεξεργασίας</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="52"/>
         <source>can share</source>
-        <translation>mund të ndajnë</translation>
+        <translation>δυνατότητα διαμοιρασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
         <source>create</source>
-        <translation>krijoje</translation>
+        <translation>δημιουργία</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="362"/>
         <source>change</source>
-        <translation>ndrysho</translation>
+        <translation>αλλαγή</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>delete</source>
-        <translation>fshi</translation>
+        <translation>διαγραφή</translation>
     </message>
 </context>
 <context>
@@ -3349,139 +3334,139 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <location filename="../src/gui/socketapi/socketapi.cpp" line="510"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation>Ndajeni me %1</translation>
+        <translation>Διαμοιρασμός με %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="543"/>
         <source>Context menu share</source>
-        <translation>Ndarje përmes menuje konteksti</translation>
+        <translation>Μενού περιβάλλοντος κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="548"/>
         <source>Context menu share %1</source>
-        <translation>Ndarje përmes menuje konteksti %1</translation>
+        <translation>Μενού περιβάλλοντος κοινόχρηστου %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
         <source>Confirm deletion</source>
-        <translation>Ripohoni fshirjen</translation>
+        <translation>Επιβεβαίωση διαγραφής</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Doni të fshihet përgjithmonë drejtoria &lt;i&gt;%1&lt;/i&gt; dhe krejt lënda e saj?</translation>
+        <translation>Θέλετε να διαγράψετε μονίμως τον κατάλογο &lt;i&gt;%1&lt;/i&gt; και όλα τα περιεχόμενά του;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="722"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Doni të fshihet përgjithnjë kartela &lt;i&gt;%1&lt;/i&gt;?</translation>
+        <translation>Θέλετε να διαγράψετε οριστικά το αρχείο &lt;i&gt;%1&lt;/i&gt;;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="764"/>
         <source>Select new location...</source>
-        <translation>Përzgjidhni vendndodhje të re…</translation>
+        <translation>Επιλογή νέας τοποθεσίας...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="774"/>
         <source>Error</source>
-        <translation>Gabim</translation>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="775"/>
         <source>Moving file failed:
 
 %1</source>
-        <translation>Dështoi zhvendosja e kartelës:
+        <translation>Αποτυχία μετακίνησης αρχείου:
 
 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="849"/>
         <source>I shared something with you</source>
-        <translation>Ndava diçka me ju</translation>
+        <translation>Διαμοιράστηκα κάτι μαζί σου</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="862"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="892"/>
         <source>Share...</source>
-        <translation>Ndani me të tjerë…</translation>
+        <translation>Διαμοιρασμός</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="864"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Copy private link to clipboard</source>
-        <translation>Kopjoje lidhjen private në të papastër</translation>
+        <translation>Αντιγραφή ιδιωτικού συνδέσμου στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
         <source>Send private link by email...</source>
-        <translation>Dërgoni lidhje private me email…</translation>
+        <translation>Αποστολή ιδιωτικού συνδέσμου με αλληλογραφία...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="890"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Rindarja e kësaj kartelë s’është e lejuar</translation>
+        <translation>Δεν επιτρέπεται να διαμοιράσετε ξανά αυτό το αρχείο</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="890"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Nuk lejohet rindarja e kësaj dosjeje</translation>
+        <translation>Δεν επιτρέπεται να διαμοιράσετε ξανά αυτόν τον φάκελο</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="902"/>
         <source>Create and copy public link to clipboard</source>
-        <translation>Krijoni dhe kopjojeni lidhjen publike në të papastër</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
         <source>Copy public link to clipboard</source>
-        <translation>Kopjoje lidhjen publike në të papastër</translation>
+        <translation>Αντιγραφή δημόσιου συνδέσμου στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="988"/>
         <source>Open in %1</source>
-        <translation>Hape me %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="998"/>
         <source>Show file versions in browser</source>
-        <translation>Shfaq në shfletues versione kartele</translation>
+        <translation>Εμφάνιση εκδόσεων αρχείου στον περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1019"/>
         <source>Rename...</source>
-        <translation>Riemërtoni…</translation>
+        <translation>Μετονομασία...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1022"/>
         <source>Rename and upload...</source>
-        <translation>Riemërtoni dhe ngarkoni…</translation>
+        <translation>Μετονομασία και μεταφόρτωση...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1027"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1031"/>
         <source>Move and rename...</source>
-        <translation>Zhvendosni dhe riemërtoni…</translation>
+        <translation>Μετακίνηση και μετονομασία...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1034"/>
         <source>Move, rename and upload...</source>
-        <translation>Zhvendosni, riemërtoni dhe ngarkoni…</translation>
+        <translation>Μετακίνηση, μετονομασία και μεταφόρτωση...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1037"/>
         <source>Delete local changes</source>
-        <translation>Fshiji ndryshimet vendore</translation>
+        <translation>Διαγραφή τοπικών αλλαγών</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
         <source>Move and upload...</source>
-        <translation>Zhvendosni dhe ngarkoni…</translation>
+        <translation>Μετακίνηση και μεταφόρτωση...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1043"/>
         <source>Delete</source>
-        <translation>Fshije</translation>
+        <translation>Διαγραφή</translation>
     </message>
 </context>
 <context>
@@ -3489,7 +3474,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="183"/>
         <source>Open in Web</source>
-        <translation>Hape në Web</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3497,42 +3482,42 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="50"/>
         <source>Sync</source>
-        <translation>Njëkohësim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="52"/>
         <source>Name</source>
-        <translation>Emër</translation>
+        <translation>Όνομα</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="54"/>
         <source>Subtitle</source>
-        <translation>Nëntitull</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="56"/>
         <source>Web URL</source>
-        <translation>URL Web</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="58"/>
         <source>Web Dav URL</source>
-        <translation>URL Web Dav</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="60"/>
         <source>Image</source>
-        <translation>Figurë</translation>
+        <translation>Εικόνα</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="62"/>
         <source>Priority</source>
-        <translation>Përparësi</translation>
+        <translation>Προτεραιότητα</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="64"/>
         <source>Enabled</source>
-        <translation>E aktivizuar</translation>
+        <translation>Ενεργοποιημένη</translation>
     </message>
 </context>
 <context>
@@ -3540,58 +3525,58 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="191"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (u anashkalua për shkak të një gabimi më të hershëm, do të riprovohet për %2)</translation>
+        <translation>%1 (έχει παραλειφθεί λόγω προηγούμενου σφάλματος, θα γίνει προσπάθεια ξανά σε %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="394"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Ka të lira vetëm %1, që të fillohet lypsen të paktën %2</translation>
+        <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="422"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>S’arrihet të hapet apo të krijohet një bazë vendore të dhënash njëkohësimi. Sigurohuni që keni të drejta shkrimi te dosja e njëkohësimeve.</translation>
+        <translation>Δεν είναι δυνατό το άνοιγμα ή η δημιουργία της τοπικής βάσης δεδομένων συγχρονισμού. Βεβαιωθείτε ότι έχετε πρόσβαση εγγραφής στο φάκελο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1019"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Hapësira në disk është e pakët: Shkarkimet që do ta ulnin hapësirën e lirë nën %1 janë anashkaluar.</translation>
+        <translation>Ο χώρος στο δίσκο είναι χαμηλός: Λήψεις που θα μειώσουν τον ελεύθερο χώρο κάτω από το %1 έχουν παραβλεφθεί.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1026"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Ka hapësirë të pamjaftueshme në shërbyes për disa nga ngarkimet.</translation>
+        <translation>Ανεπαρκής διαθέσιμος χώρος στο διακομιστή για κάποιες μεταφορτώσεις.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="320"/>
         <source>Unresolved conflict.</source>
-        <translation>Përplasje e pazgjidhur.</translation>
+        <translation>Ανεπίλυτη σύγκρουση.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="438"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Po përdoren kartela virtuale me prapashtesë, por s’është caktuar prapashtesë</translation>
+        <translation>Γίνεται χρήση εικονικών αρχεία με κατάληξη, αλλά η κατάληξη δεν έχει οριστεί</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="450"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>S’arrihet të lexohet lista e bllokimeve prej bazës vendore të të dhënave</translation>
+        <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="479"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>S’arrihet të lexohet prej ditari njëkohësimesh.</translation>
+        <translation>Αδυναμία ανάγνωσης από το ημερολόγιο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="558"/>
         <source>Cannot open the sync journal</source>
-        <translation>S’hapet dot regjistri i njëkohësimeve.</translation>
+        <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1001"/>
         <source>Aborted</source>
-        <translation>U ndërpre</translation>
+        <translation>Ματαιώθηκε</translation>
     </message>
 </context>
 <context>
@@ -3599,7 +3584,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="946"/>
         <source>Failed to connect database.</source>
-        <translation>S’u arrit të lidhej baza e të dhënave.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3615,7 +3600,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/theme.cpp" line="447"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %1. Për më tepër hollësi vizitoni &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Për çështje të ditura dhe ndihmë, ju lutemi, vizitoni: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nga Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller dhe të tjerë.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Të drejta kopjimi ownCloud GmbH&lt;/p&gt;&lt;p&gt;Shpërndarë nga %4 dhe licencuar sipas GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 dhe stema %5 janë shenja tregtare të regjistruara të %4 në Shtetet e Bashkuara, vende të tjera, ose të dy rastet.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3623,27 +3608,27 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="14"/>
         <source>TLS Certificate Error</source>
-        <translation>Gabim Dëshmie TLS</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
         <source>Do you want to trust this certificate anyway?</source>
-        <translation>Doni të besohet kjo dëshmi sido qoftë?</translation>
+        <translation>Θέλετε να θεωρείται έμπιστο το πιστοποιητικό αυτό παρ&apos; όλα αυτά;</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
         <source>Cannot connect securely to %1</source>
-        <translation>S’mund të lidhet në mënyrë të parrezik te %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="62"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;e papërcaktuar&amp;gt;</translation>
+        <translation>&amp;lt;δεν κατονομάζονται&amp;gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="68"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;me Dëshmi %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Ent: %2&lt;br/&gt;Njësi: %3&lt;br/&gt;Vend: %4&lt;/p&gt;&lt;p&gt;Shenja gishtash (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Shenja gishtash (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Shenja gishtash (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Datë Hyrjeje Në Fuqi: %8Datë Skadimi: %9&lt;/div&gt;&lt;h3&gt;Lëshues: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Ent: %11&lt;br/&gt;Njësi: %12&lt;br/&gt;Vend: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3651,22 +3636,22 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="40"/>
         <source>Change url permanently to %1</source>
-        <translation>Ndryshoje përgjithmonë URL-në në %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
         <source>Reject</source>
-        <translation>Hidheni tej</translation>
+        <translation>Απόρριψη</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
         <source>Url update requested for %1</source>
-        <translation>U kërkua përditësim URL-je për %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation>URL-ja për %1 ndryshoi nga %2 në %3, doni të pranohet URL-ja e ndryshuar?</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3674,7 +3659,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/common/checksums.cpp" line="389"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation>Kartela e shkarkuar nuk përputhet me vlerën e llogaritur të checksum-it, do të rimerret. &apos;%1&apos; != &apos;%2&apos;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3682,17 +3667,17 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation>Veçoria për sistem Virtual kartelash nuk mbulon disk si “sync root”</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>Veçoria sistem Virtual kartelash lyp një sistem NTFS kartelash, %1 po përdor %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="84"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation>Veçoria e sistemit Virtual të kartelave nuk mbulohet në disqe rrjeti</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3700,7 +3685,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/plugins/vfs/suffix/vfs_suffix.cpp" line="110"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation>S’mund të krijohet një vendmbajtëse, ngaqë ka tashmë një kartelë me emrin e vendmbajtëses</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3708,7 +3693,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="75"/>
         <source>Invalid local download directory: %1</source>
-        <translation>Drejtori vendore shkarkimesh e pavlefshme: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3716,32 +3701,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="32"/>
         <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation>Përdor kartela &amp;virtuale, në vend se shkarkim të menjëhershëm lënde</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="57"/>
         <source>%1 (recommended)</source>
-        <translation>%1 (e rekomanduar)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation>Veçoria sistem kartelash virtuale s’është e passhme për këtë instalim.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="77"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
-        <translation>Veçoria sistem kartelash virtual s’është ende e qëndrueshme. Përdoreni me kujdes.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="81"/>
         <source>Select the local folder</source>
-        <translation>Përzgjidhni dosjen vendore</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
         <source>Enable experimental feature?</source>
-        <translation>Të aktivizohet veçoria eksperimentale?</translation>
+        <translation>Ενεργοποίηση πειραματικής λειτουργίας;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="121"/>
@@ -3752,23 +3737,17 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Kur aktivizohet mënyra “kartela virtuale”, fillimisht s’do të shkarkohen kartela. Në vend të kësaj, për çdo kartelë që ekziston në shërbyes, do të krijohet një kartelë e vockël. Lënda mund të shkarkohet duke i vënë në punë këto kartela, ose duke përdorur menunë përkatëse të kontekstit.
-
-Mënyra kartela virtuale dhe njëkohësimi përzgjedhës përjashtojnë njëra-tjetrin. Dosjet aktualisht të papërzgjedhura do të përshoqërohen me dosje vetëm për në internet dhe nga kjo mundet që rregullimet tuaja për njëkohësim përzgjedhës të rikthehen te parazgjedhjet.
-
-Kalimi te kjo mënyrë do të ndërpresë çfarëdo njëkohësimi aktualisht në punë e sipër.
-
-Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju lutemi, njoftoni çfarëdo problemesh që dalin.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Aktivizoni mënyrë eksperimentale vendëmbajtësish</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="137"/>
         <source>Stay safe</source>
-        <translation>Rrini i parrezikuar</translation>
+        <translation>Μείνετε ασφαλείς</translation>
     </message>
 </context>
 <context>
@@ -3776,12 +3755,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation>Për të bërë hyrjen në llogarinë tuaj, ju lutemi, jepni kredencialet tuaja.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Po lidhet me &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3789,22 +3768,22 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="43"/>
         <source>Invalid credentials</source>
-        <translation>Kredenciale të pavlefshme</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="66"/>
         <source>Failed to fetch user display name</source>
-        <translation>S’u arrit të sillet emër përdoruesi në ekran</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="71"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation>Hyrja dështoi: emër përdoruesi dhe/ose fjalëkalim i pasaktë</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="76"/>
         <source>Login failed: %1</source>
-        <translation>Hyrja dështoi: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3812,13 +3791,13 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="28"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Po lidhet te &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation>Ju lutemi, jepni %1 tuaj:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3826,12 +3805,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation>S’u arrit të përtypet përgjigje WebFinger: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation>Pikëmbarim WebFinger s’dërgoi atribut href</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3839,17 +3818,17 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Po lidhet te &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
         <source>Reopen Browser</source>
-        <translation>Rihapni Shfletuesin</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation>Ju lutemi, përdorni shfletuesin tuaj për të bërë hyrjen te %1.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3857,12 +3836,12 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="58"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation>Gabim teksa provohej të bëhej hyrja te shërbyes me OAuth2 të aktivizuar.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="63"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation>Shërbyesi njofton se OAuth2 nuk mbulohet.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3870,7 +3849,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="16"/>
         <source>Welcome to %1</source>
-        <translation>Mirë se vini te %1</translation>
+        <translation>Καλώς ήλθατε στο %1</translation>
     </message>
 </context>
 <context>
@@ -3878,29 +3857,28 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="84"/>
         <source>Invalid server URL</source>
-        <translation>URL e pavlefshme shërbyesi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>Insecure connection</source>
-        <translation>Lidhje jo e siguruar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="91"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation>Lidhja me %1 është jo e siguruar.
-Jeni i sigurt se doni të ecet më tej?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="98"/>
         <source>Confirm</source>
-        <translation>Ripohojeni</translation>
+        <translation>Επιβεβαίωση</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="101"/>
         <source>Insecure server rejected by user</source>
-        <translation>Shërbyes jo i siguruar i hedhur tej nga përdoruesi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3908,22 +3886,22 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="110"/>
         <source>Finish</source>
-        <translation>Përfundoje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="112"/>
         <source>Next &gt;</source>
-        <translation>Pasuesi &gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Cancel Setup</source>
-        <translation>Anuloni Ujdisjen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation>Doni vërtet të anuloni ujdisjen e llogarisë?</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3931,236 +3909,236 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="309"/>
         <source>Please sign in</source>
-        <translation>Ju lutemi, bëni hyrjen</translation>
+        <translation>Παρκαλώ συνδεθείτε</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="337"/>
         <source>Folder %1: %2</source>
-        <translation>Dosja %1: %2</translation>
+        <translation>Φάκελος %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="346"/>
         <source>Unresolved %1 conflicts</source>
-        <translation>%1 përplasje të pazgjidhura</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="349"/>
         <source>Ignored errors %1</source>
-        <translation>Gabime të shpërfillur %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>There are no sync folders configured.</source>
-        <translation>S’ka të formësuara dosje njëkohësimi.</translation>
+        <translation>Δεν έχουν ρυθμιστεί φάκελοι συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="376"/>
         <source>Open in browser</source>
-        <translation>Hape në shfletues</translation>
+        <translation>Άνοιγμα στον περιηγητή ιστού</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="425"/>
         <location filename="../src/gui/owncloudgui.cpp" line="749"/>
         <location filename="../src/gui/owncloudgui.cpp" line="843"/>
         <source>Log in...</source>
-        <translation>Hyni…</translation>
+        <translation>Σύνδεση...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <location filename="../src/gui/owncloudgui.cpp" line="741"/>
         <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Log out</source>
-        <translation>Dilni</translation>
+        <translation>Αποσύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="535"/>
         <source>Recent Changes</source>
-        <translation>Ndryshime Së Fundi</translation>
+        <translation>Πρόσφατες Αλλαγές</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Managed Folders:</source>
-        <translation>Dosje të Administruara:</translation>
+        <translation>Φάκελοι υπό Διαχείριση:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="407"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>Hapni dosjen &apos;%1&apos;</translation>
+        <translation>Άνοιγμα φακέλου &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="378"/>
         <source>Open %1 in browser</source>
-        <translation>Hapeni %1 në shfletues</translation>
+        <translation>Άνοιγμα %1 στον περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Shërbyesi në llogarinë %1 xhiron një version të pambuluar të %2. Përdorimi i këtij klienti me versione të pambuluar të shërbyesit është i patestuar dhe potencialisht i rrezikshëm. Qari dhe zarari i juaj.</translation>
+        <translation>Ο διακομιστής στο λογαριασμό %1 εκτελεί μια μη υποστηριζόμενη έκδοση %2. Η χρήση αυτού του πελάτη με μη υποστηριζόμενες εκδόσεις διακομιστών δεν είναι δοκιμασμένη και δυνητικά επικίνδυνη. Προχωρήστε με δική σας ευθύνη.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Account %1</source>
-        <translation>Llogari %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="720"/>
         <source>Restart all synchronization</source>
-        <translation>Rinis krejt njëkohësimin</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="722"/>
         <source>Restart synchronization</source>
-        <translation>Rinis njëkohësimin</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>Stop all synchronization</source>
-        <translation>Ndal krejt njëkohësimin</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="732"/>
         <source>Stop synchronization</source>
-        <translation>Ndal njëkohësimin</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="826"/>
         <source>Unknown status</source>
-        <translation>Gjendje e panjohur</translation>
+        <translation>Άγνωστη κατάσταση</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="830"/>
         <source>Details...</source>
-        <translation>Hollësi…</translation>
+        <translation>Λεπτομέρειες...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="836"/>
         <source>Help</source>
-        <translation>Ndihmë</translation>
+        <translation>Βοήθεια</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="840"/>
         <source>Quit %1</source>
-        <translation>Dilni nga %1</translation>
+        <translation>Κλείσιμο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Disconnected from %1</source>
-        <translation>U shkëput prej %1</translation>
+        <translation>Αποσυνδέθηκε από %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>Unsupported Server Version</source>
-        <translation>Version i Pambuluar Shërbyesi</translation>
+        <translation>Μη υποστηριζόμενη έκδοση διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="281"/>
         <source>Disconnected</source>
-        <translation>I shkëputur</translation>
+        <translation>Αποσυνδεδεμένο</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Disconnected from some accounts</source>
-        <translation>I shkëputur prej disa llogarish</translation>
+        <translation>Έγινε αποσύνδεση από μερικούς λογαριασμούς</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Disconnected from accounts:</source>
-        <translation>U shkëput prej llogarive:</translation>
+        <translation>Αποσυνδέθηκε από τους λογαριασμούς:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="310"/>
         <source>Signed out</source>
-        <translation>Dolët</translation>
+        <translation>Αποσύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Account synchronization is disabled</source>
-        <translation>Njëkohësimi i llogarisë është çaktivizuar</translation>
+        <translation>Ο λογαριασμός συγχρονισμού έχει απενεργοποιηθεί</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="315"/>
         <source>Synchronization is paused</source>
-        <translation>Njëkohësimi është ndalur</translation>
+        <translation>Παύθηκε ο συγχρονισμός</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Up to date (%1)</source>
-        <translation>Të përditësuar (%1)</translation>
+        <translation>Ενημερωμένο (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
         <source>No sync folders configured</source>
-        <translation>S’ka të formësuara dosje njëkohësimesh</translation>
+        <translation>Δεν ρυθμίστηκαν φάκελοι συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Unpause all folders</source>
-        <translation>Hiqe ndalesën për krejt dosjet</translation>
+        <translation>Αναίρεση παύσης όλων των φακέλων</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Pause all folders</source>
-        <translation>Ndaloje për krejt dosjet</translation>
+        <translation>Παύση όλων των φακέλων</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="739"/>
         <source>Log out of all accounts</source>
-        <translation>Dil nga krejt llogaritë</translation>
+        <translation>Έξοδος από όλους τους λογαριασμούς</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="747"/>
         <source>Log in to all accounts...</source>
-        <translation>Futu në krejt llogaritë…</translation>
+        <translation>Είσοδος σε όλους τους λογαριασμούς</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="828"/>
         <source>Show %1</source>
-        <translation>Shfaq %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="829"/>
         <source>New account...</source>
-        <translation>Llogari e re…</translation>
+        <translation>Νέος λογαριασμός...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="838"/>
         <source>About %1</source>
-        <translation>Rreth %1</translation>
+        <translation>Σχετικά %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>No items synced recently</source>
-        <translation>Pa objekte të njëkohësuar së fundi</translation>
+        <translation>Κανένα στοιχείο δεν συγχρονίστηκε πρόσφατα</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="890"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Po kërkohet për ndryshime te shërbyesi i largët &apos;%1&apos;</translation>
+        <translation>Έλεγχος για αλλαγές στο απομακρυσμένο &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="893"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Po kërkohet për ndryshime te shërbyesi vendor &apos;%1&apos;</translation>
+        <translation>Έλεγχος για αλλαγές στο τοπικό &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="908"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Po njëkohësohet %1 nga %2  (mbeten edhe %3)</translation>
+        <translation>Συγχρονισμός %1 από %2 (%3 απομένουν)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="913"/>
         <source>Syncing %1 of %2</source>
-        <translation>Po njëkohësohet %1 nga %2</translation>
+        <translation>Συγχρονισμός %1 από %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Po njëkohësohet %1 (mbeten edhe %2)</translation>
+        <translation>Συγχρονισμός %1 (%2 απομένουν)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="925"/>
         <source>Syncing %1</source>
-        <translation>Po njëkohësohet %1</translation>
+        <translation>Συγχρονισμός %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>
@@ -4173,37 +4151,37 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="401"/>
         <source>in the future</source>
-        <translation>në të ardhmen</translation>
+        <translation>στο μέλλον</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="397"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>%n ditë më parë</numerusform><numerusform>%n ditë më parë</numerusform></translation>
+        <translation><numerusform>%n μέρα(ες) πριν</numerusform><numerusform>%n μέρα(ες) πριν</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="405"/>
         <source>%n hour(s) ago</source>
-        <translation><numerusform>%n orë më parë</numerusform><numerusform>%n orë më parë</numerusform></translation>
+        <translation><numerusform>%n ώρα(ες) πριν</numerusform><numerusform>%n ώρα(ες) πριν</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="410"/>
         <source>now</source>
-        <translation>tani</translation>
+        <translation>τώρα</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="412"/>
         <source>Less than a minute ago</source>
-        <translation>Më pak se një minutë më parë</translation>
+        <translation>Λιγότερο από ένα λεπτό πριν</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="415"/>
         <source>%n minute(s) ago</source>
-        <translation><numerusform>%n minutë më parë</numerusform><numerusform>%n minuta më parë</numerusform></translation>
+        <translation><numerusform>%n λεπτό(ά) πριν</numerusform><numerusform>%n λεπτό(ά) πριν</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="418"/>
         <source>Some time ago</source>
-        <translation>Ca kohë më parë</translation>
+        <translation>Λίγη ώρα πριν</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="130"/>
@@ -4217,17 +4195,17 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation>S’u pikas dot shërbyes i përputhshmë te %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation>Përdoruesi hodhi poshtë ridrejtimin nga %1 në %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="115"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation>Përdoruesi hodhi poshtë dëshmi SSL të pavlefshme</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4235,12 +4213,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation>Cila është adresa e shërbyesit tuaj?</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4248,27 +4226,27 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="29"/>
         <source>Server URL</source>
-        <translation>URL shërbyesi</translation>
+        <translation>Διεύθυνση URL διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="31"/>
         <source>Welcome</source>
-        <translation>Mirë se vini</translation>
+        <translation>Καλώς ήλθατε!</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
         <source>Username</source>
-        <translation>Emër përdoruesi</translation>
+        <translation>Όνομα χρήστη</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
         <source>Login</source>
-        <translation>Hyrje</translation>
+        <translation>Σύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation>Mundësi Njëkohësimi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4276,22 +4254,22 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation>Shtoni Llogari të Re</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
         <source>Dismiss</source>
-        <translation>Mos e merr parasysh</translation>
+        <translation>Αποδέσμευση</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="105"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>Aκύρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation>&lt; Mbrapasht</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4299,7 +4277,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/spaces/spacesbrowser.ui" line="14"/>
         <source>Form</source>
-        <translation>Formular</translation>
+        <translation>Φόρμα</translation>
     </message>
 </context>
 <context>
@@ -4307,7 +4285,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Shtoni një Hapësirë&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Përzgjidhni një Hapësirë për ta njëkohësuar në kompjuterin tuaj.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4315,58 +4293,58 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
         <source>Undefined</source>
-        <translation>I papërcaktuar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
         <source>Fatal Error</source>
-        <translation>Gabim Fatal</translation>
+        <translation>Μοιραίο Σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
         <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
         <source>Error</source>
-        <translation>Gabim</translation>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
         <source>Info</source>
-        <translation>Hollësi</translation>
+        <translation>Πληροφορίες</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
         <source>Success</source>
-        <translation>Sukses</translation>
+        <translation>Επιτυχία</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
         <source>Conflict</source>
-        <translation>Përplasje</translation>
+        <translation>Διένεξη</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>File Ignored</source>
-        <translation>Kartela u Shpërfill</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
         <source>Restored</source>
-        <translation>E rikthyer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Blacklisted</source>
-        <translation>Në listë bllokimesh</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
         <source>Excluded</source>
-        <translation>E përjashtuar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
         <source>Message</source>
-        <translation>Mesazh</translation>
+        <translation>Μήνυμα</translation>
     </message>
 </context>
 <context>
@@ -4374,12 +4352,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="696"/>
         <source>Username</source>
-        <translation>Emër përdoruesi</translation>
+        <translation>Όνομα χρήστη</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>E-mail address</source>
-        <translation>Adresë email</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4407,32 +4385,32 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="267"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n vit</numerusform><numerusform>%n vjet</numerusform></translation>
+        <translation><numerusform>%n χρόνος</numerusform><numerusform>%n χρόνια</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="268"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n muaj</numerusform><numerusform>%n muaj</numerusform></translation>
+        <translation><numerusform>%n μήνας(ες)</numerusform><numerusform>%n μήνας(ες)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="269"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n ditë</numerusform><numerusform>%n ditë</numerusform></translation>
+        <translation><numerusform>%n ημέρα(ες)</numerusform><numerusform>%n ημέρα(ες)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="270"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n orë</numerusform><numerusform>%n orë</numerusform></translation>
+        <translation><numerusform>%n ώρα(ες)</numerusform><numerusform>%n ώρα(ες)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="271"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minutë</numerusform><numerusform>%n minuta</numerusform></translation>
+        <translation><numerusform>%n λεπτό(ά)</numerusform><numerusform>%n λεπτό(ά)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="272"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekondë</numerusform><numerusform>%n sekonda</numerusform></translation>
+        <translation><numerusform>%n δευτερόλεπτο(α)</numerusform><numerusform>%n δευτερόλεπτο(α)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="296"/>
@@ -4442,7 +4420,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/platform_win.cpp" line="116"/>
         <source>Shutting down %1</source>
-        <translation>Po fiket %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4450,7 +4428,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/jobs/webfingeruserinfojobfactory.cpp" line="59"/>
         <source>Failed to retrieve user info</source>
-        <translation>S’u arrit të merren hollësi përdoruesi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4458,12 +4436,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="57"/>
         <source>System Tray not available</source>
-        <translation>Nuk ka Panel Sistemi</translation>
+        <translation>Μπάρα Συστήματος μη-διαθέσιμη</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="58"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 lyp një panel sistemi funksional. Nëse xhironi XFCE, ju lutemi, ndiqni &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;këto udhëzime&lt;/a&gt;. Përndryshe, ju lutemi, instaloni një aplikacion paneli sistemi, bie fjala, &apos;trayer&apos; dhe riprovoni.</translation>
+        <translation>Το %1 απαιτεί μια μπάρα συστήματος σε λειτουργία. Εάν χρησιμοποιείτε το XFCE, παρακαλώ ακολουθείστε &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;αυτές τις οδηγίες&lt;/a&gt;. Διαφορετικά, παρακαλώ εγκαταστείστε μια εφαρμογή μπάρας συστήματος όπως η &apos;trayer&apos; και δοκιμάστε ξανά.</translation>
     </message>
 </context>
 <context>
@@ -4471,7 +4449,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation>%1 %2%7%8Biblioteka Qt %3, %4%7%9Me përdorim shtojce kartelash virtuale: %5%7%6</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4479,7 +4457,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="418"/>
         <source>Plugin dir: %1%2</source>
-        <translation>Drejtori shtojce: %1%2</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4487,7 +4465,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="405"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation>%1 (Montuar me Qt %2)</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4503,99 +4481,99 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation>U krijua kartelë virtuale</translation>
+        <translation>Το εικονικό αρχείο δημιουργήθηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation>U zëvendësua me kartelë virtuale</translation>
+        <translation>Αντικαταστάθηκε από εικονικό αρχείο</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation>U shkarkua</translation>
+        <translation>Ελήφθη</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
         <source>Uploaded</source>
-        <translation>U ngarkua</translation>
+        <translation>Μεταφορτώθηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>U shkarkua versioni i shërbyesit, kartela vendore e ndryshuar u kopjua te një kartelë përplasjeje</translation>
+        <translation>Η έκδοση του διακομιστή κατέβηκε, η αντιγραφή άλλαξε το τοπικό αρχείο σε συγκρουόμενο αρχείο </translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Deleted</source>
-        <translation>U fshi</translation>
+        <translation>Διεγράφη</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>%1 moved to %2</source>
-        <translation>%1 kaloi te %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Ignored</source>
-        <translation>U shpërfill</translation>
+        <translation>Αγνοήθηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Filesystem access error</source>
-        <translation>Gabim hyrjeje në sistem kartelash</translation>
+        <translation>Σφάλμα πρόσβασης στο σύστημα αρχείων</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Error</source>
-        <translation>Gabim</translation>
+        <translation>Σφάλμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated local metadata</source>
-        <translation>U përditësuan tejtëdhëna vendore</translation>
+        <translation>Ενημερωμένα τοπικά μεταδεδομένα</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <source>Unknown</source>
-        <translation>E panjohur</translation>
+        <translation>Άγνωστο</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
         <source>downloading</source>
-        <translation>po shkarkohet</translation>
+        <translation>λήψη</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
         <source>uploading</source>
-        <translation>po ngarkohet</translation>
+        <translation>μεταφόρτωση</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
         <source>deleting</source>
-        <translation>po fshihet</translation>
+        <translation>διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>moving</source>
-        <translation>po zhvendoset</translation>
+        <translation>μετακίνηση</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>ignoring</source>
-        <translation>po shpërfillet</translation>
+        <translation>αγνοείται</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="85"/>
         <source>error</source>
-        <translation>gabim</translation>
+        <translation>σφάλμα </translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
         <source>updating local metadata</source>
-        <translation>po përditësohen tejtëdhëna vendore</translation>
+        <translation>γίνεται ενημέρωση μεταδεδομένων</translation>
     </message>
 </context>
 <context>
@@ -4603,57 +4581,57 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="95"/>
         <source>Status undefined</source>
-        <translation>Gjendje e papërcaktuar</translation>
+        <translation>Απροσδιόριστη κατάσταση</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="98"/>
         <source>Waiting to start sync</source>
-        <translation>Po pritet të fillohet njëkohësimi</translation>
+        <translation>Αναμονή έναρξης συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="101"/>
         <source>Sync is running</source>
-        <translation>Njëkohësimi po kryhet</translation>
+        <translation>Ο συγχρονισμός εκτελείται</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="104"/>
         <source>Sync Success</source>
-        <translation>Sukses Njëkohësimi</translation>
+        <translation>Επιτυχημένος Συγχρονισμός</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="107"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Sukses njëkohësimi, disa prej kartelave u shpërfillën.</translation>
+        <translation>Επιτυχία Συγχρονισμού, κάποια αρχεία αγνοήθηκαν.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="110"/>
         <source>Sync Error</source>
-        <translation>Gabim Njëkohësimi</translation>
+        <translation>Σφάλμα Συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="113"/>
         <source>Setup Error</source>
-        <translation>Gabim Rregullimi</translation>
+        <translation>Σφάλμα Ρυθμίσεων</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="116"/>
         <source>Preparing to sync</source>
-        <translation>Po përgatitet për njëkohësim</translation>
+        <translation>Προετοιμασία για συγχρονισμό</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="119"/>
         <source>Aborting...</source>
-        <translation>Po ndërpritet…</translation>
+        <translation>Ματαίωση σε εξέλιξη...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="122"/>
         <source>Sync is paused</source>
-        <translation>Njëkohësimi është ndalur</translation>
+        <translation>Παύση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="125"/>
         <source>Offline</source>
-        <translation>Jashtë linje</translation>
+        <translation>Εκτός σύνδεσης</translation>
     </message>
 </context>
 <context>
@@ -4661,53 +4639,53 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="43"/>
         <source>Could not open browser</source>
-        <translation>S’hapet dot shfletuesi</translation>
+        <translation>Αδυναμία ανοίγματος περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="44"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Pati një gabim gjatë nisjes së shfletuesit për të hapur URL-në %1. Mos vallë nuk ka shfletues parazgjedhje të formësuar?</translation>
+        <translation>Παρουσιάστηκε ένα σφάλμα κατά την εκκίνηση του περιηγητή για την μετάβαση στη διεύθυνση URL %1. Ίσως δεν έχει ρυθμιστεί προεπιλεγμένο πρόγραμμα περιήγησης;</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="67"/>
         <source>Could not open email client</source>
-        <translation>S’u hap dot klienti email</translation>
+        <translation>Αδυναμία ανοίγματος πελάτη ηλεκτρονικής αλληλογραφίας</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="68"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Pati një gabim gjatë nisjes së klientit email për të krijuar një mesazh të ri. Mos vallë s’ka të formësuar klient parazgjedhje për email-in?</translation>
+        <translation>Παρουσιάστηκε σφάλμα κατά την εκκίνηση του προγράμματος-πελάτη ηλεκτρονικού ταχυδρομείου για τη δημιουργία νέου μηνύματος. Ίσως δεν έχει ρυθμιστεί προεπιλεγμένο πρόγραμμα-πελάτη ηλεκτρονικού ταχυδρομείου;</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Always available locally</source>
-        <translation>Përherë i passhëm lokalisht</translation>
+        <translation>Πάντα διαθέσιμο τοπικά</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="87"/>
         <source>Some available online only</source>
-        <translation>Disa të passhëm vetëm &lt;em&gt;online&lt;/em&gt;</translation>
+        <translation>Μερικά διαθέσιμα μόνο σε σύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Available online only</source>
-        <translation>I passhëm vetëm &lt;em&gt;online&lt;/em&gt;</translation>
+        <translation>Διαθέσιμο μόνο σε σύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="85"/>
         <source>Currently available locally</source>
-        <translation>Aktualisht i passhëm lokalisht</translation>
+        <translation>Διατίθεται επί του παρόντος τοπικά</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="98"/>
         <source>Make always available locally</source>
-        <translation>Bëje përherë të passhëm lokalisht</translation>
+        <translation>Να είναι πάντα διαθέσιμα τοπικά</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="103"/>
         <source>Free up local space</source>
-        <translation>Liro hapësirë vendore</translation>
+        <translation>Ελευθερώστε τοπικό αποθηκευτικό χώρο</translation>
     </message>
 </context>
 </TS>
