@@ -200,7 +200,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         if (totalQuota > 0) {
             const auto usedQuota = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::QuotaUsed)).data().value<int64_t>();
             painter->setFont(_font);
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, quotaTextRect.toRect()),
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, quotaTextRect.toRect()), Qt::AlignLeft | Qt::AlignVCenter,
                 subFm.elidedText(
                     tr("%1 of %2 in use").arg(Utility::octetsToString(usedQuota), Utility::octetsToString(totalQuota)), Qt::ElideRight, quotaTextRect.width()));
         }
