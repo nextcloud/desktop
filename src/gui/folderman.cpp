@@ -482,8 +482,6 @@ QString FolderMan::unescapeAlias(const QString &alias)
 // WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
 Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState)
 {
-    Folder *folder = nullptr;
-
     qCInfo(lcFolderMan) << "  ` -> setting up:" << file;
     QString escapedAlias(file);
     // check the unescaped variant (for the case when the filename comes out
@@ -498,7 +496,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     }
     if (!cfgFile.isReadable()) {
         qCWarning(lcFolderMan) << "Cannot read folder definition for alias " << cfgFile.filePath();
-        return folder;
+        return nullptr;
     }
 
     QSettings settings(_folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
@@ -509,7 +507,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     const auto groups = settings.childGroups();
     if (groups.isEmpty()) {
         qCWarning(lcFolderMan) << "empty file:" << cfgFile.filePath();
-        return folder;
+        return nullptr;
     }
 
     if (!accountState) {
@@ -565,8 +563,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
             folderDefinition.paused = paused;
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
-            folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>());
-            if (folder) {
+            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
                 const auto blackList = settings.value(QLatin1String("blackList")).toStringList();
                 if (!blackList.empty()) {
                     //migrate settings
@@ -577,11 +574,10 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
                 }
 
                 folder->saveToSettings();
-            }
-            qCInfo(lcFolderMan) << "Migrated!" << folder;
-            settings.sync();
 
-            if (folder) {
+                qCInfo(lcFolderMan) << "Migrated!" << folder;
+                settings.sync();
+
                 return folder;
             }
 
@@ -591,7 +587,8 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
         settings.endGroup();
         settings.endGroup();
     }
-    return folder;
+
+    return nullptr;
 }
 
 void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
