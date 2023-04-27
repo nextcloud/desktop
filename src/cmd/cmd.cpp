@@ -21,7 +21,6 @@
 #include "httpcredentialstext.h"
 #include "libsync/logger.h"
 #include "libsync/theme.h"
-#include "netrcparser.h"
 #include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/jsonjob.h"
 #include "platform.h"
@@ -60,7 +59,6 @@ struct CmdOptions
     QString proxy;
     bool silent = false;
     bool trustSSL = false;
-    bool useNetrc = false;
     bool interactive = true;
     bool ignoreHiddenFiles = true;
     QString exclude;
@@ -225,8 +223,7 @@ void setupCredentials(SyncCTX &ctx)
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
     // 2. From options
-    // 3. From netrc (if enabled)
-    // 4. From prompt (if interactive)
+    // 3. From prompt (if interactive)
 
     const auto &url = ctx.options.target_url;
     ctx.user = url.userName();
@@ -238,15 +235,6 @@ void setupCredentials(SyncCTX &ctx)
 
     if (!ctx.options.password.isEmpty()) {
         password = ctx.options.password;
-    }
-
-    if (ctx.options.useNetrc) {
-        NetrcParser parser;
-        if (parser.parse()) {
-            NetrcParser::LoginPair pair = parser.find(url.host());
-            ctx.user = pair.first;
-            password = pair.second;
-        }
     }
 
     if (!ctx.options.proxy.isNull()) {
@@ -328,8 +316,7 @@ CmdOptions parseOptions(const QStringList &app_args)
 
     auto serverOption = addOption({ { QStringLiteral("server") }, QStringLiteral("Use [url] as the location of the server. OCIS only (server location and spaces url can differ)"), QStringLiteral("url") });
     auto userOption = addOption({ { QStringLiteral("u"), QStringLiteral("user") }, QStringLiteral("Use [name] as the login name"), QStringLiteral("name") });
-    auto passwordOption = addOption({ { QStringLiteral("p"), QStringLiteral("password") }, QStringLiteral("Use [pass] as password"), QStringLiteral("password") });
-    auto useNetrcOption = addOption({ { QStringLiteral("n") }, QStringLiteral("Use netrc (5) for login") });
+    auto passwordOption = addOption({{QStringLiteral("p"), QStringLiteral("password")}, QStringLiteral("Use [pass] as password"), QStringLiteral("password")});
 
     auto nonInterActiveOption = addOption({ { QStringLiteral("non-interactive") }, QStringLiteral("Do not block execution with interaction") });
     auto maxRetriesOption = addOption({ { QStringLiteral("max-sync-retries") }, QStringLiteral("Retries maximum n times (default to 3)"), QStringLiteral("n") });
@@ -380,9 +367,6 @@ CmdOptions parseOptions(const QStringList &app_args)
     }
     if (parser.isSet(trustOption)) {
         options.trustSSL = true;
-    }
-    if (parser.isSet(useNetrcOption)) {
-        options.useNetrc = true;
     }
     if (parser.isSet(nonInterActiveOption)) {
         options.interactive = false;
