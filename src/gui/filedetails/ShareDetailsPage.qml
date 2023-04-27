@@ -32,9 +32,11 @@ Page {
 
     signal toggleAllowEditing(bool enable)
     signal toggleAllowResharing(bool enable)
+    signal toggleHideDownload(bool enable)
     signal togglePasswordProtect(bool enable)
     signal toggleExpirationDate(bool enable)
     signal toggleNoteToRecipient(bool enable)
+    signal permissionModeChanged(int permissionMode)
 
     signal setLinkShareLabel(string label)
     signal setExpireDate(var milliseconds) // Since QML ints are only 32 bits, use a variant
@@ -65,16 +67,21 @@ Page {
     readonly property string linkShareLabel: shareModelData.linkShareLabel ?? ""
 
     readonly property bool editingAllowed: shareModelData.editingAllowed
+    readonly property bool hideDownload: shareModelData.hideDownload
     readonly property bool noteEnabled: shareModelData.noteEnabled
     readonly property bool expireDateEnabled: shareModelData.expireDateEnabled
     readonly property bool expireDateEnforced: shareModelData.expireDateEnforced
     readonly property bool passwordProtectEnabled: shareModelData.passwordProtectEnabled
     readonly property bool passwordEnforced: shareModelData.passwordEnforced
-    readonly property bool isSecureFileDropLink: shareModelData.isSecureFileDropLink
+    readonly property bool isSharePermissionChangeInProgress: shareModelData.isSharePermissionChangeInProgress
+    readonly property bool isHideDownloadInProgress: shareModelData.isHideDownloadInProgress
+    readonly property int  currentPermissionMode: shareModelData.currentPermissionMode
 
     readonly property bool isLinkShare: shareModelData.shareType === ShareModel.ShareTypeLink
 
-    property bool waitingForEditingAllowedChange: false
+    readonly property bool isFolderItem: shareModelData.sharedItemType === ShareModel.SharedItemTypeFolder
+    readonly property bool isEncryptedItem: shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedFile || shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedFolder || shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedTopLevelFolder
+
     property bool waitingForNoteEnabledChange: false
     property bool waitingForExpireDateEnabledChange: false
     property bool waitingForPasswordProtectEnabledChange: false
@@ -108,11 +115,6 @@ Page {
         waitingForExpireDateChange = false;
     }
 
-    function resetEditingAllowedField() {
-        editingAllowedMenuItem.checked = editingAllowed;
-        waitingForEditingAllowedChange = false;
-    }
-
     function resetNoteEnabledField() {
         noteEnabledMenuItem.checked = noteEnabled;
         waitingForNoteEnabledChange = false;
@@ -135,8 +137,6 @@ Page {
         resetPasswordField();
         resetLinkShareLabelField();
         resetExpireDateField();
-
-        resetEditingAllowedField();
         resetNoteEnabledField();
         resetExpireDateEnabledField();
         resetPasswordProtectEnabledField();
@@ -154,8 +154,6 @@ Page {
     onPasswordChanged: resetPasswordField()
     onLinkShareLabelChanged: resetLinkShareLabelField()
     onExpireDateChanged: resetExpireDateField()
-
-    onEditingAllowedChanged: resetEditingAllowedField()
     onNoteEnabledChanged: resetNoteEnabledField()
     onExpireDateEnabledChanged: resetExpireDateEnabledField()
     onPasswordProtectEnabledChanged: resetPasswordProtectEnabledField()
@@ -313,34 +311,124 @@ Page {
                 }
             }
 
-            // On these checkables, the clicked() signal is called after
-            // the check state changes.
-            CheckBox {
-                id: editingAllowedMenuItem
+            Loader {
+                Layout.fillWidth: true
+                active: !root.isFolderItem && !root.isEncryptedItem
+                visible: active
+                sourceComponent: CheckBox {
+                    spacing: moreMenu.indicatorSpacing
+                    padding: moreMenu.itemPadding
+                    indicator.width: moreMenu.indicatorItemWidth
+                    indicator.height: moreMenu.indicatorItemWidth
 
+                    checkable: true
+                    checked: root.editingAllowed
+                    text: qsTr("Allow upload and editing")
+                    enabled: !root.isSharePermissionChangeInProgress
+
+                    onClicked: root.toggleAllowEditing(checked)
+
+                    NCBusyIndicator {
+                        anchors.fill: parent
+                        visible: root.isSharePermissionChangeInProgress
+                        running: visible
+                        z: 1
+                    }
+                }
+            }
+
+            Loader {
+                Layout.fillWidth: true
+                active: root.isFolderItem && !root.isEncryptedItem
+                visible: active
+                sourceComponent: ColumnLayout {
+                    id: permissionRadioButtonsLayout
+                    spacing: 0
+                    width: parent.width
+
+                    ButtonGroup {
+                        id: permissionModeRadioButtonsGroup
+                    }
+
+                    NCRadioButton {
+                        readonly property int permissionMode: ShareModel.ModeViewOnly
+                        Layout.fillWidth: true
+                        ButtonGroup.group: permissionModeRadioButtonsGroup
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checked: root.currentPermissionMode === permissionMode
+                        text: qsTr("View only")
+                        indicatorItemWidth: moreMenu.indicatorItemWidth
+                        indicatorItemHeight: moreMenu.indicatorItemWidth
+                        spacing: moreMenu.indicatorSpacing
+                        padding: moreMenu.itemPadding
+                        onClicked: root.permissionModeChanged(permissionMode)
+                    }
+
+                    NCRadioButton {
+                        readonly property int permissionMode: ShareModel.ModeUploadAndEditing
+                        Layout.fillWidth: true
+                        ButtonGroup.group: permissionModeRadioButtonsGroup
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checked: root.currentPermissionMode === permissionMode
+                        text: qsTr("Allow upload and editing")
+                        indicatorItemWidth: moreMenu.indicatorItemWidth
+                        indicatorItemHeight: moreMenu.indicatorItemWidth
+                        spacing: moreMenu.indicatorSpacing
+                        padding: moreMenu.itemPadding
+                        onClicked: root.permissionModeChanged(permissionMode)
+
+                        NCBusyIndicator {
+                            anchors.fill: parent
+                            visible: root.isSharePermissionChangeInProgress
+                            running: visible
+                            z: 1
+                        }
+                    }
+
+                    NCRadioButton {
+                        readonly property int permissionMode: ShareModel.ModeFileDropOnly
+                        Layout.fillWidth: true
+                        ButtonGroup.group: permissionModeRadioButtonsGroup
+                        enabled: !root.isSharePermissionChangeInProgress
+                        checked: root.currentPermissionMode === permissionMode
+                        text: qsTr("File drop (upload only)")
+                        indicatorItemWidth: moreMenu.indicatorItemWidth
+                        indicatorItemHeight: moreMenu.indicatorItemWidth
+                        spacing: moreMenu.indicatorSpacing
+                        padding: moreMenu.itemPadding
+                        onClicked: root.permissionModeChanged(permissionMode)
+                    }
+                }
+            }
+
+            Loader {
                 Layout.fillWidth: true
 
-                spacing: moreMenu.indicatorSpacing
-                padding: moreMenu.itemPadding
-                indicator.width: moreMenu.indicatorItemWidth
-                indicator.height: moreMenu.indicatorItemWidth
+                active: root.isLinkShare
+                visible: active
+                sourceComponent: ColumnLayout {
+                    CheckBox {
+                        id: hideDownloadEnabledMenuItem
 
-                checkable: true
-                checked: root.editingAllowed
-                text: qsTr("Allow editing")
-                enabled: !root.waitingForEditingAllowedChange
-                visible: !root.isSecureFileDropLink
+                        anchors.left: parent.left
+                        anchors.right: parent.right
 
-                onClicked: {
-                    root.toggleAllowEditing(checked);
-                    root.waitingForEditingAllowedChange = true;
-                }
+                        spacing: moreMenu.indicatorSpacing
+                        padding: moreMenu.itemPadding
+                        indicator.width: moreMenu.indicatorItemWidth
+                        indicator.height: moreMenu.indicatorItemWidth
+                        checked: root.hideDownload
+                        text: qsTr("Hide download")
+                        enabled: !root.isHideDownloadInProgress
+                        onClicked: root.toggleHideDownload(checked);
 
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForEditingAllowedChange
-                    running: visible
-                    z: 1
+                        NCBusyIndicator {
+                            anchors.fill: parent
+                            visible: root.isHideDownloadInProgress
+                            running: visible
+                            z: 1
+                        }
+                    }
                 }
             }
 

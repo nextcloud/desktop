@@ -241,9 +241,11 @@ ColumnLayout {
 
                     onToggleAllowEditing: shareModel.toggleShareAllowEditingFromQml(model.share, enable)
                     onToggleAllowResharing: shareModel.toggleShareAllowResharingFromQml(model.share, enable)
+                    onToggleHideDownload: shareModel.toggleHideDownloadFromQml(model.share, enable)
                     onTogglePasswordProtect: shareModel.toggleSharePasswordProtectFromQml(model.share, enable)
                     onToggleExpirationDate: shareModel.toggleShareExpirationDateFromQml(model.share, enable)
                     onToggleNoteToRecipient: shareModel.toggleShareNoteToRecipientFromQml(model.share, enable)
+                    onPermissionModeChanged: shareModel.changePermissionModeFromQml(model.share, permissionMode)
 
                     onSetLinkShareLabel: shareModel.setLinkShareLabelFromQml(model.share, label)
                     onSetExpireDate: shareModel.setShareExpireDateFromQml(model.share, milliseconds)
