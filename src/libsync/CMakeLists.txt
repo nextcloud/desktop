@@ -48,7 +48,6 @@ set(libsync_SRCS
     theme.cpp
     creds/credentialmanager.cpp
     creds/abstractcredentials.cpp
-    creds/credentialscommon.cpp
     creds/oauth.cpp
     creds/webfinger.cpp
 

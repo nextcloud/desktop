@@ -15,14 +15,13 @@
 #include "creds/httpcredentials.h"
 #include "creds/httpcredentials_p.h"
 
-#include "account.h"
 #include "accessmanager.h"
+#include "account.h"
 #include "configfile.h"
-#include "theme.h"
-#include "syncengine.h"
-#include "oauth.h"
-#include "creds/credentialscommon.h"
 #include "creds/credentialmanager.h"
+#include "oauth.h"
+#include "syncengine.h"
+#include "theme.h"
 
 #include <QAuthenticator>
 #include <QBuffer>
