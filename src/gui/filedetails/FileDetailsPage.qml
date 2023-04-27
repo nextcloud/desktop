@@ -199,6 +199,15 @@ Page {
 
                     visible: totalFileTags > maxFileTags
                     text: "+" + String(totalFileTags - maxFileTags)
+
+                    HoverHandler {
+                        id: hoverHandler
+                    }
+
+                    NCToolTip {
+                        visible: hoverHandler.hovered
+                        text: tagRepeater.fileTagModel.overflowTagsString
+                    }
                 }
             }
         }
