@@ -101,6 +101,7 @@ void FileTagModel::processFileTagRequestFinished(const QVariantMap &result)
     _tags << normalTags << systemTagStringList;
 
     Q_EMIT totalTagsChanged();
+    updateOverflowTagsString();
     endResetModel();
 }
 
@@ -181,6 +182,25 @@ void FileTagModel::setMaxTags(const int maxTags)
     }
 
     Q_EMIT maxTagsChanged();
+    updateOverflowTagsString();
+}
+
+QString FileTagModel::overflowTagsString() const
+{
+    return _overflowTagsString;
+}
+
+void FileTagModel::updateOverflowTagsString()
+{
+    if (totalTags() <= _maxTags) {
+        _overflowTagsString = "";
+    } else {
+        const auto overflowingTags = _tags.mid(_maxTags + 1);
+        _overflowTagsString = overflowingTags.join(", ");
+    }
+
+    qDebug() << _overflowTagsString;
+    Q_EMIT overflowTagsStringChanged();
 }
 
 int FileTagModel::totalTags() const

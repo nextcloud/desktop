@@ -28,6 +28,7 @@ class FileTagModel : public QAbstractListModel
     Q_PROPERTY(AccountPtr account READ account WRITE setAccount NOTIFY accountChanged)
     Q_PROPERTY(int maxTags READ maxTags WRITE setMaxTags NOTIFY maxTagsChanged)
     Q_PROPERTY(int totalTags READ totalTags NOTIFY totalTagsChanged)
+    Q_PROPERTY(QString overflowTagsString READ overflowTagsString NOTIFY overflowTagsStringChanged)
 
 public:
     explicit FileTagModel(const QString &serverRelativePath, const AccountPtr &account, QObject * const parent = nullptr);
@@ -41,18 +42,22 @@ public:
     [[nodiscard]] int maxTags() const;
     [[nodiscard]] int totalTags() const;
 
+    [[nodiscard]] QString overflowTagsString() const;
+
 signals:
     void serverRelativePathChanged();
     void accountChanged();
 
     void maxTagsChanged();
     void totalTagsChanged();
+    void overflowTagsStringChanged();
 
 public slots:
     void setServerRelativePath(const QString &serverRelativePath);
     void setAccount(const OCC::AccountPtr &account);
 
     void setMaxTags(const int maxTags);
+    void updateOverflowTagsString();
 
     void resetForNewFile();
 
@@ -67,6 +72,7 @@ private:
     QStringList _tags;
 
     int _maxTags = 0;
+    QString _overflowTagsString;
 };
 
 }
