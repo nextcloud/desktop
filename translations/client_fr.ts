@@ -1511,7 +1511,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="547"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="567"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de démarrer l&apos;édition localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
@@ -1569,7 +1569,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="568"/>
         <source>Invalid local file path.</source>
-        <translation type="unfinished"/>
+        <translation>Chemin d&apos;accès au fichier local non valide.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
