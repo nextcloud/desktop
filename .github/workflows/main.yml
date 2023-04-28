@@ -32,6 +32,11 @@ jobs:
               os: windows-latest
               fetch-depth: 0
               container:
+            - name: Windows 64-bit cl Qt6
+              target: windows-cl-msvc2022-x86_64
+              os: windows-latest
+              fetch-depth: 0
+              container:
             - name: macOS 64-bit clang
               target: macos-64-clang
               os: macos-latest
