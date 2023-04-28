@@ -32,7 +32,7 @@
 #include <QWidget>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <qloggingcategory.h>
+#include <QLoggingCategory>
 
 namespace OCC {
 
