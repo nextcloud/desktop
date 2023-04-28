@@ -25,6 +25,7 @@ jobs:
       # actions/upload-artifact doesn't need contents: write
       contents: read
     strategy:
+        fail-fast: false
         matrix:
             include:
             - name: Windows 64-bit cl
