@@ -835,7 +835,8 @@ The update will be performed in the background, and overwrite the current AppIma
         <location filename="../src/gui/application.cpp" line="594"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 версия %2
+Помощна програма за синхронизиране на файлове за настолни компютри.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -851,7 +852,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="614"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Напускане на работещата инстанция.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="615"/>
@@ -861,7 +862,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="616"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Записване на всяко извеждане от дневника за синхронизиране, като нов файл в папката.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="617"/>
@@ -886,7 +887,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>Използвайте дадената конфигурационна папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="622"/>
@@ -906,7 +907,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="641"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile и --logdir се изключват взаимно</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="655"/>

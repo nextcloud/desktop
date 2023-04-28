@@ -849,7 +849,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="614"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Zavřít běžící program.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="615"/>
@@ -904,7 +904,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="641"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile a --logdir se vzájemně vylučují</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="655"/>
