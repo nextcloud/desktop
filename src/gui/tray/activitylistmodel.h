@@ -162,6 +162,8 @@ private:
     void insertOrRemoveDummyFetchingActivity();
     void triggerCaseClashAction(Activity activity);
 
+    void displaySingleConflictDialog(const Activity &activity);
+
     Activity _notificationIgnoredFiles;
     Activity _dummyFetchingActivities;
 

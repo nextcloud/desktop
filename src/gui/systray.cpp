@@ -285,6 +285,21 @@ void Systray::destroyEditFileLocallyLoadingDialog()
     _editFileLocallyLoadingDialog = nullptr;
 }
 
+void Systray::createResolveConflictsDialog()
+{
+    const auto callDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
+    const QVariantMap initialProperties{};
+
+    if(callDialog->isError()) {
+        qCWarning(lcSystray) << callDialog->errorString();
+        return;
+    }
+
+    // This call dialog gets deallocated on close conditions
+    // by a call from the QML side to the destroyDialog slot
+    callDialog->createWithInitialProperties(initialProperties);
+}
+
 bool Systray::raiseDialogs()
 {
     return raiseFileDetailDialogs();
