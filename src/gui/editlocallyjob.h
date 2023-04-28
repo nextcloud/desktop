@@ -106,7 +106,6 @@ private:
     QString _localFilePath;
     QString _folderRelativePath;
     Folder *_folderForFile = nullptr;
-    std::unique_ptr<SimpleApiJob> _checkTokenJob;
     QMetaObject::Connection _syncTerminatedConnection = {};
     QVector<QMetaObject::Connection> _folderConnections;
 };
