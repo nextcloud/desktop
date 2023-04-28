@@ -31,6 +31,8 @@ Item {
     required property string conflictDate
     required property bool existingSelected
     required property bool conflictSelected
+    required property url existingPreviewUrl
+    required property url conflictPreviewUrl
 
     EnforcedPlainTextLabel {
         id: existingFileNameLabel
@@ -40,7 +42,7 @@ Item {
 
         text: root.existingFileName
 
-        font.weight: Font.Light
+        font.weight: Font.Bold
         font.pixelSize: 15
     }
 
@@ -54,17 +56,29 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            CheckBox {
+                id: selectExisting
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+
+                leftPadding: 0
+                spacing: 0
+
+                checked: root.existingSelected
+            }
+
             Image {
                 id: existingPreview
 
-                anchors.top: parent.top
-                anchors.left: parent.left
+                anchors.left: selectExisting.right
+                anchors.verticalCenter: parent.verticalCenter
 
-                source: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                width: 64
-                height: 64
-                sourceSize.width: 64
-                sourceSize.height: 64
+                source: root.existingPreviewUrl
+                width: 48
+                height: 48
+                sourceSize.width: 48
+                sourceSize.height: 48
             }
 
             ColumnLayout {
@@ -72,13 +86,15 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.left: existingPreview.right
                 anchors.right: parent.right
+                anchors.leftMargin: 10
+                spacing: 0
 
-                CheckBox {
-                    id: selectExisting
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
 
-                    Layout.alignment: Layout.TopLeft
+                    text: qsTr('Local version')
 
-                    checked: root.existingSelected
+                    font.pixelSize: 15
                 }
 
                 EnforcedPlainTextLabel {
@@ -103,17 +119,30 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
+            CheckBox {
+                id: selectConflict
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: 0
+
+                leftPadding: 0
+                spacing: 0
+
+                checked: root.conflictSelected
+            }
+
             Image {
                 id: conflictPreview
 
-                anchors.top: parent.top
-                anchors.left: parent.left
+                anchors.left: selectConflict.right
+                anchors.verticalCenter: parent.verticalCenter
 
-                source: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                width: 64
-                height: 64
-                sourceSize.width: 64
-                sourceSize.height: 64
+                source: root.conflictPreviewUrl
+                width: 48
+                height: 48
+                sourceSize.width: 48
+                sourceSize.height: 48
             }
 
             ColumnLayout {
@@ -121,13 +150,15 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.left: conflictPreview.right
                 anchors.right: parent.right
+                anchors.leftMargin: 10
+                spacing: 0
 
-                CheckBox {
-                    id: selectConflict
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
 
-                    Layout.alignment: Layout.TopLeft
+                    text: qsTr('Server version')
 
-                    checked: root.conflictSelected
+                    font.pixelSize: 15
                 }
 
                 EnforcedPlainTextLabel {

@@ -32,6 +32,7 @@ Window {
     height: 800
     minimumWidth: 600
     minimumHeight: 800
+    title: qsTr('Solve sync conflicts')
 
     onClosing: function() {
         Systray.destroyDialog(root);
@@ -63,13 +64,8 @@ Window {
         }
 
         EnforcedPlainTextLabel {
-            text: qsTr("Which files do you want to keep?")
-            font.pixelSize: 15
-            Layout.fillWidth: true
-        }
-
-        EnforcedPlainTextLabel {
-            text: qsTr("If you select both versions, the local file will have a number added to its name.")
+            text: qsTr("Choose if you want to keep the local version, server version, or both? If you choose both, the local file will have a number added to its name.")
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             font.pixelSize: 15
             Layout.fillWidth: true
             Layout.topMargin: -15
@@ -83,9 +79,11 @@ Window {
                 id: selectExisting
 
                 Layout.fillWidth: true
-                Layout.alignment: Layout.TopLeft
 
-                text: qsTr('Local version')
+                text: qsTr('All local versions')
+
+                leftPadding: 0
+                implicitWidth: 100
 
                 font.pixelSize: 15
             }
@@ -94,9 +92,11 @@ Window {
                 id: selectConflict
 
                 Layout.fillWidth: true
-                Layout.alignment: Layout.TopLeft
 
-                text: qsTr('Server version')
+                text: qsTr('All server versions')
+
+                leftPadding: 0
+                implicitWidth: 100
 
                 font.pixelSize: 15
             }
@@ -131,6 +131,8 @@ Window {
                             conflictDate: '28 avril 2023 09:53'
                             existingSelected: false
                             conflictSelected: false
+                            existingPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
+                            conflictPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
                         }
 
                         ListElement {
@@ -142,6 +144,8 @@ Window {
                             conflictDate: '28 avril 2023 09:53'
                             existingSelected: false
                             conflictSelected: false
+                            existingPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
+                            conflictPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
                         }
 
                         ListElement {
@@ -153,6 +157,8 @@ Window {
                             conflictDate: '28 avril 2023 09:53'
                             existingSelected: false
                             conflictSelected: false
+                            existingPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
+                            conflictPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
                         }
                     }
 
