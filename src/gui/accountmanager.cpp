@@ -70,7 +70,7 @@ AccountManager *AccountManager::instance()
     return &instance;
 }
 
-bool AccountManager::restore(bool alsoRestoreLegacySettings)
+AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRestoreLegacySettings)
 {
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
@@ -79,21 +79,22 @@ bool AccountManager::restore(bool alsoRestoreLegacySettings)
     if (settings->status() != QSettings::NoError || !settings->isWritable()) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
-        return false;
+        return AccountsRestoreFailure;
     }
 
     if (skipSettingsKeys.contains(settings->group())) {
         // Should not happen: bad container keys should have been deleted
         qCWarning(lcAccountManager) << "Accounts structure is too new, ignoring";
-        return true;
+        return AccountsRestoreSuccessWithSkipped;
     }
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
-        return true;
+        return AccountsRestoreSuccessFromLegacyVersion;
     }
 
+    auto result = AccountsRestoreSuccess;
     const auto settingsChildGroups = settings->childGroups();
     for (const auto &accountId : settingsChildGroups) {
         settings->beginGroup(accountId);
@@ -111,11 +112,12 @@ bool AccountManager::restore(bool alsoRestoreLegacySettings)
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
             _additionalBlockedAccountIds.insert(accountId);
+            result = AccountsRestoreSuccessWithSkipped;
         }
         settings->endGroup();
     }
 
-    return true;
+    return result;
 }
 
 void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)

@@ -27,6 +27,14 @@ class AccountManager : public QObject
 {
     Q_OBJECT
 public:
+    enum AccountsRestoreResult {
+        AccountsRestoreFailure = 0,
+        AccountsRestoreSuccess,
+        AccountsRestoreSuccessFromLegacyVersion,
+        AccountsRestoreSuccessWithSkipped
+    };
+    Q_ENUM (AccountsRestoreResult);
+
     static AccountManager *instance();
     ~AccountManager() override = default;
 
@@ -41,7 +49,7 @@ public:
      * Returns false if there was an error reading the settings,
      * but note that settings not existing is not an error.
      */
-    bool restore(bool alsoRestoreLegacySettings = true);
+    AccountsRestoreResult restore(const bool alsoRestoreLegacySettings = true);
 
     /**
      * Add this account in the list of saved accounts.
