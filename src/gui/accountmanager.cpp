@@ -222,6 +222,7 @@ bool AccountManager::restoreFromLegacySettings()
                     settings = std::move(oCSettings);
                 }
 
+                ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 break;
             } else {
                 qCInfo(lcAccountManager) << "Migrate: could not read old config " << configFile;
