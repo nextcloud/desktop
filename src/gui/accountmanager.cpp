@@ -36,6 +36,7 @@ constexpr auto userC = "user";
 constexpr auto displayNameC = "displayName";
 constexpr auto httpUserC = "http_user";
 constexpr auto davUserC = "dav_user";
+constexpr auto webflowUserC = "webflow_user";
 constexpr auto shibbolethUserC = "shibboleth_shib_user";
 constexpr auto caCertsKeyC = "CaCertificates";
 constexpr auto accountsC = "Accounts";
@@ -362,6 +363,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             authType = httpAuthTypeC;
         } else if (settings.contains(QLatin1String(shibbolethUserC))) {
             authType = shibbolethAuthTypeC;
+        } else if (settings.contains(webflowUserC)) {
+            authType = webflowAuthTypeC;
         }
     }
 
