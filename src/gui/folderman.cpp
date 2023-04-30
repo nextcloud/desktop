@@ -352,12 +352,12 @@ int FolderMan::setupFoldersMigration()
     QDir dir(_folderConfigPath);
     //We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
-    const auto list = dir.entryList();
+    const auto dirFiles = dir.entryList();
 
-    // Normally there should be only one account when migrating.
+    // Normally there should be only one account when migrating. TODO: Change
     const auto accountState = AccountManager::instance()->accounts().value(0).data();
-    for (const auto &alias : list) {
-        const auto folder = setupFolderFromOldConfigFile(alias, accountState);
+    for (const auto &fileName : dirFiles) {
+        const auto folder = setupFolderFromOldConfigFile(fileName, accountState);
         if (folder) {
             scheduleFolder(folder);
             emit folderSyncStateChange(folder);
