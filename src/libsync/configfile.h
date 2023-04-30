@@ -236,8 +236,6 @@ private:
 private:
     using SharedCreds = QSharedPointer<AbstractCredentials>;
 
-    static bool _askedUser;
-    static QString _oCVersion;
     static QString _confDir;
 };
 }
