@@ -347,9 +347,12 @@ int FolderMan::setupFoldersMigration()
     QDir storageDir(cfg.configPath());
     _folderConfigPath = cfg.configPath();
 
-    qCInfo(lcFolderMan) << "Setup folders from " << _folderConfigPath << "(migration)";
+    const auto legacyConfigPath = ConfigFile::discoveredLegacyConfigPath();
+    const auto configPath = legacyConfigPath.isEmpty() ? _folderConfigPath : legacyConfigPath;
 
-    QDir dir(_folderConfigPath);
+    qCInfo(lcFolderMan) << "Setup folders from " << configPath << "(migration)";
+
+    QDir dir(configPath);
     //We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
     const auto dirFiles = dir.entryList();
@@ -357,7 +360,8 @@ int FolderMan::setupFoldersMigration()
     // Normally there should be only one account when migrating. TODO: Change
     const auto accountState = AccountManager::instance()->accounts().value(0).data();
     for (const auto &fileName : dirFiles) {
-        const auto folder = setupFolderFromOldConfigFile(fileName, accountState);
+        const auto fullFilePath = dir.filePath(fileName);
+        const auto folder = setupFolderFromOldConfigFile(fullFilePath, accountState);
         if (folder) {
             scheduleFolder(folder);
             emit folderSyncStateChange(folder);
@@ -477,29 +481,27 @@ QString FolderMan::unescapeAlias(const QString &alias)
     return a;
 }
 
-// filename is the name of the file only, it does not include
-// the configuration directory path
 // WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
-Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState)
+Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, AccountState *accountState)
 {
-    qCInfo(lcFolderMan) << "  ` -> setting up:" << file;
-    QString escapedAlias(file);
+    qCInfo(lcFolderMan) << "  ` -> setting up:" << fileNamePath;
+    QString escapedFileNamePath(fileNamePath);
     // check the unescaped variant (for the case when the filename comes out
     // of the directory listing). If the file does not exist, escape the
     // file and try again.
-    QFileInfo cfgFile(_folderConfigPath, file);
+    QFileInfo cfgFile(fileNamePath);
 
     if (!cfgFile.exists()) {
         // try the escaped variant.
-        escapedAlias = escapeAlias(file);
-        cfgFile.setFile(_folderConfigPath, escapedAlias);
+        escapedFileNamePath = escapeAlias(fileNamePath);
+        cfgFile.setFile(_folderConfigPath, escapedFileNamePath);
     }
     if (!cfgFile.isReadable()) {
         qCWarning(lcFolderMan) << "Cannot read folder definition for alias " << cfgFile.filePath();
         return nullptr;
     }
 
-    QSettings settings(_folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
+    QSettings settings(escapedFileNamePath, QSettings::IniFormat);
     qCInfo(lcFolderMan) << "    -> file path: " << settings.fileName();
 
     // Check if the filename is equal to the group setting. If not, use the group
