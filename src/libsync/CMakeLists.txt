@@ -1,19 +1,9 @@
-set(LibreGraphAPIVersion 1.0.3)
-find_package(LibreGraphAPI ${LibreGraphAPIVersion} QUIET)
+find_package(LibreGraphAPI 1.0.4 REQUIRED)
 set_package_properties(LibreGraphAPI PROPERTIES
         URL https://github.com/owncloud/libre-graph-api-cpp-qt-client.git
         DESCRIPTION "Libre Graph is a free API for cloud collaboration inspired by the MS Graph API."
         TYPE OPTIONAL
 )
-if (NOT TARGET OpenAPI::LibreGraphAPI)
-    message(WARNING "Failed to find system OpenAPI::LibreGraphAPI: fetching ${LibreGraphAPIVersion}")
-    include(FetchContent)
-    FetchContent_Populate(LibreGraphAPISrc
-                        QUIET
-                        GIT_REPOSITORY https://github.com/owncloud/libre-graph-api-cpp-qt-client.git
-                        GIT_TAG v${LibreGraphAPIVersion})
-    add_subdirectory(${libregraphapisrc_SOURCE_DIR}/client ${libregraphapisrc_BINARY_DIR}/client EXCLUDE_FROM_ALL)
-endif()
 
 set(libsync_SRCS
     account.cpp
