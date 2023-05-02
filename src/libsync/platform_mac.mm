@@ -150,7 +150,8 @@ namespace OCC {
 class MacPlatformPrivate
 {
 public:
-    QMacAutoReleasePool autoReleasePool;
+    ~MacPlatformPrivate() { [autoReleasePool release]; }
+    NSAutoreleasePool *autoReleasePool = [[NSAutoreleasePool alloc] init];
     OwnAppDelegate *appDelegate;
     PowerNotificationsListener listener;
 };
