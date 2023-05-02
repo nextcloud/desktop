@@ -1,13 +1,17 @@
-set(LibreGraphAPIVersion v1.0.1)
-# TODO: pass version to find_package once LibreGraphAPI provides versioned releases
-find_package(LibreGraphAPI QUIET)
+set(LibreGraphAPIVersion 1.0.3)
+find_package(LibreGraphAPI ${LibreGraphAPIVersion} QUIET)
+set_package_properties(LibreGraphAPI PROPERTIES
+        URL https://github.com/owncloud/libre-graph-api-cpp-qt-client.git
+        DESCRIPTION "Libre Graph is a free API for cloud collaboration inspired by the MS Graph API."
+        TYPE OPTIONAL
+)
 if (NOT TARGET OpenAPI::LibreGraphAPI)
     message(WARNING "Failed to find system OpenAPI::LibreGraphAPI: fetching ${LibreGraphAPIVersion}")
     include(FetchContent)
     FetchContent_Populate(LibreGraphAPISrc
                         QUIET
                         GIT_REPOSITORY https://github.com/owncloud/libre-graph-api-cpp-qt-client.git
-                        GIT_TAG ${LibreGraphAPIVersion})
+                        GIT_TAG v${LibreGraphAPIVersion})
     add_subdirectory(${libregraphapisrc_SOURCE_DIR}/client ${libregraphapisrc_BINARY_DIR}/client EXCLUDE_FROM_ALL)
 endif()
 
