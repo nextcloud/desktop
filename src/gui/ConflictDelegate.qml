@@ -87,7 +87,12 @@ Item {
                 anchors.left: existingPreview.right
                 anchors.right: parent.right
                 anchors.leftMargin: 10
+
                 spacing: 0
+
+                Item {
+                    Layout.fillHeight: true
+                }
 
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
@@ -111,6 +116,10 @@ Item {
                     text: existingSize
 
                     font.pixelSize: 15
+                }
+
+                Item {
+                    Layout.fillHeight: true
                 }
             }
         }
@@ -151,7 +160,12 @@ Item {
                 anchors.left: conflictPreview.right
                 anchors.right: parent.right
                 anchors.leftMargin: 10
+
                 spacing: 0
+
+                Item {
+                    Layout.fillHeight: true
+                }
 
                 EnforcedPlainTextLabel {
                     Layout.fillWidth: true
@@ -175,6 +189,10 @@ Item {
                     text: conflictSize
 
                     font.pixelSize: 15
+                }
+
+                Item {
+                    Layout.fillHeight: true
                 }
             }
         }

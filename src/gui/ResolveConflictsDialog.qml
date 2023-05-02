@@ -64,7 +64,7 @@ Window {
         }
 
         EnforcedPlainTextLabel {
-            text: qsTr("Choose if you want to keep the local version, server version, or both? If you choose both, the local file will have a number added to its name.")
+            text: qsTr("Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.")
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             font.pixelSize: 15
             Layout.fillWidth: true
