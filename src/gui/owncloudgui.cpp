@@ -31,6 +31,7 @@
 #include "settingsdialog.h"
 #include "theme.h"
 #include "wheelhandler.h"
+#include "syncconflictsmodel.h"
 #include "filedetails/filedetails.h"
 #include "filedetails/shareemodel.h"
 #include "filedetails/sharemodel.h"
@@ -125,6 +126,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
+    qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
 
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");

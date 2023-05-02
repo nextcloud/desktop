@@ -110,6 +110,10 @@ Window {
             height: 1
         }
 
+        SyncConflictsModel {
+            id: realModel
+        }
+
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
