@@ -280,7 +280,7 @@ void Folder::prepareFolder(const QString &path)
 {
 #ifdef Q_OS_WIN
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
-    const QFileInfo desktopIniPath = QStringLiteral("%1/Desktop.ini").arg(path);
+    const QFileInfo desktopIniPath{QStringLiteral("%1/Desktop.ini").arg(path)};
     {
         const QString updateIconKey = QStringLiteral("%1/UpdateIcon").arg(Theme::instance()->appName());
         QSettings desktopIni(desktopIniPath.absoluteFilePath(), QSettings::IniFormat);
@@ -740,7 +740,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
             // Check that the mtime/size actually changed or there was
             // an attribute change (pin state) that caused the notification
             bool spurious = false;
-            if (record.isValid() && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+            if (record.isValid() && !FileSystem::fileChanged(QFileInfo{path}, record._fileSize, record._modtime)) {
                 spurious = true;
 
                 if (auto pinState = _vfs->pinState(relativePath)) {

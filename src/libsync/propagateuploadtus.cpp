@@ -226,7 +226,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
     }
 
     // Check whether the file changed since discovery.
-    if (FileSystem::fileChanged(fullFilePath, _item->_size, _item->_modtime)) {
+    if (FileSystem::fileChanged(QFileInfo{fullFilePath}, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!_finished) {
             abortWithError(SyncFileItem::Message, fileChangedMessage());

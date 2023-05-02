@@ -349,7 +349,7 @@ bool ExcludedFiles::isExcluded(
             }
 
             // Get the parent path
-            fi = { fi.path() };
+            fi = QFileInfo{fi.path()};
         }
     }
     ItemType type = ItemTypeFile;

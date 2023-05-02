@@ -105,8 +105,7 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     Q_ASSERT(fn.endsWith(fileSuffix()));
 
     QFile file(fn);
-    if (file.exists() && file.size() > 1
-        && FileSystem::fileChanged(fn, item._size, item._modtime)) {
+    if (file.exists() && file.size() > 1 && FileSystem::fileChanged(QFileInfo{fn}, item._size, item._modtime)) {
         return tr("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 

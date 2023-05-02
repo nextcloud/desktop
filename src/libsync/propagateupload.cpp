@@ -248,7 +248,7 @@ void PropagateUploadFileCommon::slotStartUpload(CheckSums::Algorithm transmissio
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
-    _item->_size = FileSystem::getSize(fullFilePath);
+    _item->_size = FileSystem::getSize(QFileInfo{fullFilePath});
 
     const time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
@@ -298,7 +298,7 @@ bool UploadDevice::open(QIODevice::OpenMode mode)
 
     // Get the file size now: _file.fileName() is no longer reliable
     // on all platforms after openAndSeekFileSharedRead().
-    auto fileDiskSize = FileSystem::getSize(_file.fileName());
+    auto fileDiskSize = FileSystem::getSize(QFileInfo{_file.fileName()});
 
     QString openError;
     if (!FileSystem::openAndSeekFileSharedRead(&_file, &openError, _start)) {

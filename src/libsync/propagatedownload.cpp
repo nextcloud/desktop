@@ -425,7 +425,7 @@ void PropagateDownloadFile::start()
     // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
         const QString fsPath = propagator()->fullLocalPath(_item->_file);
-        if (FileSystem::fileChanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
+        if (FileSystem::fileChanged(QFileInfo{fsPath}, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
             return;
@@ -947,7 +947,7 @@ void PropagateDownloadFile::downloadFinished()
         // the discovery phase and now.
         const qint64 expectedSize = _item->_previousSize;
         const time_t expectedMtime = _item->_previousModtime;
-        if (FileSystem::fileChanged(fn, expectedSize, expectedMtime)) {
+        if (FileSystem::fileChanged(QFileInfo{fn}, expectedSize, expectedMtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
             return;
@@ -975,7 +975,7 @@ void PropagateDownloadFile::downloadFinished()
 
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
-    _item->_size = FileSystem::getSize(fn);
+    _item->_size = FileSystem::getSize(QFileInfo{fn});
 
     // Maybe what we downloaded was a conflict file? If so, set a conflict record.
     // (the data was prepared in slotGetFinished above)

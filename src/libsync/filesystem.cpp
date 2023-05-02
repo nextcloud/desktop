@@ -41,7 +41,7 @@ bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
         return false;
     }
 
-    if (getSize(fn1) != getSize(fn2)) {
+    if (getSize(QFileInfo{fn1}) != getSize(QFileInfo{fn2})) {
         return false;
     }
 
