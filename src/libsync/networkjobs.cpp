@@ -266,7 +266,11 @@ void PropfindJob::start()
     QByteArray data;
     {
         QTextStream stream(&data, QIODevice::WriteOnly);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         stream.setCodec("UTF-8");
+#else
+        stream.setEncoding(QStringConverter::Utf8);
+#endif
         stream << QByteArrayLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                                     "<d:propfind xmlns:d=\"DAV:\">"
                                     "<d:prop>");

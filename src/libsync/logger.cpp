@@ -145,7 +145,11 @@ void Logger::open(const QString &name)
         return;
     }
     _logstream.reset(new QTextStream(&_logFile));
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     _logstream->setCodec("UTF-8");
+#else
+    _logstream->setEncoding(QStringConverter::Utf8);
+#endif
     (*_logstream) << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner) << " " << qApp->applicationName() << Qt::endl;
 }
 
@@ -245,7 +249,11 @@ void Logger::dumpCrashLog()
     QFile logFile(QStringLiteral("%1/%2-crash.log").arg(QDir::tempPath(), qApp->applicationName()));
     if (logFile.open(QFile::WriteOnly)) {
         QTextStream out(&logFile);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         out.setCodec("UTF-8");
+#else
+        out.setEncoding(QStringConverter::Utf8);
+#endif
         for (int i = 1; i <= crashLogSizeC; ++i) {
             out << _crashLog[(_crashLogIndex + i) % crashLogSizeC];
         }
