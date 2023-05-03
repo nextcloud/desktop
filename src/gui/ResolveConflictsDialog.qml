@@ -173,7 +173,14 @@ Window {
         DialogButtonBox {
             Layout.fillWidth: true
 
-            standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+            Button {
+                text: qsTr("Resolve conflicts")
+                DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            }
+            Button {
+                text: qsTr("Cancel")
+                DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            }
 
             onAccepted: function() {
                 console.log("Ok clicked")
