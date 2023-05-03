@@ -25,6 +25,8 @@ import "./tray"
 Window {
     id: root
 
+    required property var allConflicts
+
     flags: Qt.Dialog
     visible: true
 
@@ -112,6 +114,8 @@ Window {
 
         SyncConflictsModel {
             id: realModel
+
+            conflictActivities: root.allConflicts
         }
 
         ScrollView {
@@ -125,46 +129,7 @@ Window {
                 id: conflictListView
 
                 model: DelegateModel {
-                    model: ListModel {
-                        ListElement {
-                            existingFileName: 'Text File.txt'
-                            conflictFileName: 'Text File.txt'
-                            existingSize: '2 B'
-                            conflictSize: '15 B'
-                            existingDate: '28 avril 2023 09:53'
-                            conflictDate: '28 avril 2023 09:53'
-                            existingSelected: false
-                            conflictSelected: false
-                            existingPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                            conflictPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                        }
-
-                        ListElement {
-                            existingFileName: 'Text File.txt'
-                            conflictFileName: 'Text File.txt'
-                            existingSize: '2 B'
-                            conflictSize: '15 B'
-                            existingDate: '28 avril 2023 09:53'
-                            conflictDate: '28 avril 2023 09:53'
-                            existingSelected: false
-                            conflictSelected: false
-                            existingPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                            conflictPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                        }
-
-                        ListElement {
-                            existingFileName: 'Text File.txt'
-                            conflictFileName: 'Text File.txt'
-                            existingSize: '2 B'
-                            conflictSize: '15 B'
-                            existingDate: '28 avril 2023 09:53'
-                            conflictDate: '28 avril 2023 09:53'
-                            existingSelected: false
-                            conflictSelected: false
-                            existingPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                            conflictPreviewUrl: 'https://nextcloud.local/index.php/apps/theming/img/core/filetypes/text.svg?v=b9feb2d6'
-                        }
-                    }
+                    model: realModel
 
                     delegate: ConflictDelegate {
                         width: conflictListView.contentItem.width

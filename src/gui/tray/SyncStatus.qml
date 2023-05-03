@@ -121,7 +121,8 @@ RowLayout {
         contentsFont.bold: true
         bgColor: Style.currentUserHeaderColor
 
-        visible: !syncStatus.syncing &&
+        visible: !activityModel.hasManySyncConflicts &&
+                 !syncStatus.syncing &&
                  NC.UserModel.currentUser.hasLocalFolder &&
                  NC.UserModel.currentUser.isConnected
         enabled: visible
@@ -129,6 +130,29 @@ RowLayout {
             if(!syncStatus.syncing) {
                 NC.UserModel.currentUser.forceSyncNow();
             }
+        }
+    }
+
+    CustomButton {
+        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
+                               leftPadding +
+                               rightPadding +
+                               Style.standardSpacing * 2
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Solve all conflicts")
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        contentsFont.bold: true
+        bgColor: Style.currentUserHeaderColor
+
+        visible: activityModel.hasManySyncConflicts &&
+                 !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
+        enabled: visible
+        onClicked: {
+            Systray.createResolveConflictsDialog();
         }
     }
 }

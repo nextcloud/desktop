@@ -42,6 +42,7 @@ class ActivityListModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
     Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
+    Q_PROPERTY(bool hasManySyncConflicts READ hasManySyncConflicts NOTIFY hasManySyncConflictsChanged)
 
 public:
     enum DataRole {
@@ -105,6 +106,8 @@ public:
 
     [[nodiscard]] QString replyMessageSent(const Activity &activity) const;
 
+    [[nodiscard]] bool hasManySyncConflicts() const;
+
 public slots:
     void slotRefreshActivity();
     void slotRefreshActivityInitial();
@@ -126,6 +129,7 @@ public slots:
 
 signals:
     void accountStateChanged();
+    void hasManySyncConflictsChanged();
 
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
@@ -191,6 +195,8 @@ private:
     bool _currentlyFetching = false;
     bool _doneFetching = false;
     bool _hideOldActivities = true;
+
+    bool _hasManySyncConflicts = false;
 
     static constexpr quint32 MaxActionButtons = 3;
 };

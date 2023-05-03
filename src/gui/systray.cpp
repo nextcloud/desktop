@@ -285,10 +285,12 @@ void Systray::destroyEditFileLocallyLoadingDialog()
     _editFileLocallyLoadingDialog = nullptr;
 }
 
-void Systray::createResolveConflictsDialog()
+void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts)
 {
     const auto callDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
-    const QVariantMap initialProperties{};
+    const QVariantMap initialProperties{
+                                        {"allConflicts", QVariant::fromValue(allConflicts)},
+    };
 
     if(callDialog->isError()) {
         qCWarning(lcSystray) << callDialog->errorString();

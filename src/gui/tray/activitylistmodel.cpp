@@ -548,6 +548,21 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
         _finalList.append(activity);
     }
     endInsertRows();
+
+    auto conflictsCount = 0;
+    for(const auto &activity : _finalList) {
+        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+            ++conflictsCount;
+        }
+    }
+
+    if (!_hasManySyncConflicts && conflictsCount > 2) {
+        _hasManySyncConflicts = true;
+        emit hasManySyncConflictsChanged();
+    } else if (_hasManySyncConflicts && conflictsCount <= 2) {
+        _hasManySyncConflicts = false;
+        emit hasManySyncConflictsChanged();
+    }
 }
 
 void ActivityListModel::addErrorToActivityList(const Activity &activity)
@@ -893,4 +908,10 @@ QString ActivityListModel::replyMessageSent(const Activity &activity) const
 {
     return activity._talkNotificationData.messageSent;
 }
+
+bool ActivityListModel::hasManySyncConflicts() const
+{
+    return _hasManySyncConflicts;
+}
+
 }
