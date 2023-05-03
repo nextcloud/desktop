@@ -638,7 +638,7 @@ QString FileSystem::createPortableFileName(const QString &path, const QString &f
     return QDir::cleanPath(path + QLatin1Char('/') + tmp);
 }
 
-QString OCSYNC_EXPORT FileSystem::pathEscape(const QString &s)
+QString FileSystem::pathEscape(const QString &s)
 {
     QString tmp = s;
     tmp.replace(QLatin1String("../"), QString(replacementCharC));
