@@ -118,9 +118,9 @@ private slots:
         qDebug() << "Version of installed ownCloud Binary: " << ver;
         QVERIFY(!ver.isEmpty());
 
-        QRegExp rx(APPLICATION_SHORTNAME "cmd ownCloud \\d+\\.\\d+\\.\\d+.*", Qt::CaseInsensitive);
+        QRegularExpression rx(APPLICATION_SHORTNAME "cmd ownCloud \\d+\\.\\d+\\.\\d+.*", QRegularExpression::CaseInsensitiveOption);
         qDebug() << rx.pattern();
-        QVERIFY(rx.exactMatch(ver));
+        QVERIFY(rx.match(ver).isValid());
     }
 
     void testTimeAgo()

@@ -179,7 +179,7 @@ void ProtocolWidget::slotItemCompleted(Folder *folder, const SyncFileItemPtr &it
 
 void ProtocolWidget::filterDidChange()
 {
-    _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
+    _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegularExpression().pattern().isEmpty() ? 0 : 1));
 }
 
 } // OCC namespace

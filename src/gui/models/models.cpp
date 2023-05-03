@@ -90,7 +90,7 @@ std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QString
     auto filterGroup = new QActionGroup(menu);
     filterGroup->setExclusive(true);
 
-    const auto currentFilter = model->filterRegExp().pattern();
+    const auto currentFilter = model->filterRegularExpression().pattern();
     auto addAction = [=](const QString &s, const QString &filter) {
         auto action = menu->addAction(s, menu, [=]() {
             model->setFilterRole(role);

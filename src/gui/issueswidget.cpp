@@ -324,7 +324,7 @@ void IssuesWidget::filterDidChange()
     // We have two filters here: the filter by status (which can have multiple items checked *off*...
     int filterCount = _statusSortModel->filterCount();
     // .. and the filter on the account name, which can only be 1 item checked:
-    if (!_sortModel->filterRegExp().isEmpty()) {
+    if (!_sortModel->filterRegularExpression().pattern().isEmpty()) {
         filterCount += 1;
     }
 

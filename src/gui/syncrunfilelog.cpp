@@ -13,7 +13,6 @@
  */
 
 #include <QDate>
-#include <QRegExp>
 
 #include "syncrunfilelog.h"
 #include "common/utility.h"

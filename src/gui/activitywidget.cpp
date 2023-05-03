@@ -112,9 +112,8 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
         ProtocolWidget::showFilterMenu(_ui->_filterButton, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), tr("Account"));
     });
-    connect(_sortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, [this]() {
-        _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
-    });
+    connect(_sortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this,
+        [this]() { _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegularExpression().pattern().isEmpty() ? 0 : 1)); });
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
     _removeTimer.setInterval(1000);

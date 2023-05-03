@@ -483,7 +483,7 @@ void SyncEngine::startSync()
 
     const QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
     if (!invalidFilenamePattern.isEmpty()) {
-        _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
+        _discoveryPhase->_invalidFilenameRx = QRegularExpression(invalidFilenamePattern);
     }
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();

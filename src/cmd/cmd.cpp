@@ -112,8 +112,10 @@ void sync(const SyncCTX &ctx)
                 qCritical() << "Could not open file containing the list of unsynced folders: " << ctx.options.unsyncedfolders;
             } else {
                 // filter out empty lines and comments
-                auto selectiveSyncList =
-                    QString::fromUtf8(f.readAll()).split(QLatin1Char('\n')).filter(QRegExp(QStringLiteral("\\S+"))).filter(QRegExp(QStringLiteral("^[^#]")));
+                auto selectiveSyncList = QString::fromUtf8(f.readAll())
+                                             .split(QLatin1Char('\n'))
+                                             .filter(QRegularExpression(QStringLiteral("\\S+")))
+                                             .filter(QRegularExpression(QStringLiteral("^[^#]")));
 
                 for (int i = 0; i < selectiveSyncList.count(); ++i) {
                     if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
