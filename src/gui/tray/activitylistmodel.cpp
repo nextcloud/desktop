@@ -428,6 +428,8 @@ void ActivityListModel::startFetchJob()
 void ActivityListModel::setFinalList(const ActivityList &finalList)
 {
     _finalList = finalList;
+
+    emit allConflictsChanged();
 }
 
 const ActivityList &ActivityListModel::finalList() const
@@ -910,6 +912,19 @@ QString ActivityListModel::replyMessageSent(const Activity &activity) const
 bool ActivityListModel::hasManySyncConflicts() const
 {
     return _hasManySyncConflicts;
+}
+
+ActivityList ActivityListModel::allConflicts() const
+{
+    auto result = ActivityList{};
+
+    for(const auto &activity : _finalList) {
+        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+            result.push_back(activity);
+        }
+    }
+
+    return result;
 }
 
 }

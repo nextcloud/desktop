@@ -59,7 +59,7 @@ Window {
         z: 2
 
         EnforcedPlainTextLabel {
-            text: qsTr("%1 files in conflict").arg(12)
+            text: qsTr("%1 files in conflict").arg(delegateModel.count)
             font.bold: true
             font.pixelSize: 20
             Layout.fillWidth: true
@@ -129,6 +129,8 @@ Window {
                 id: conflictListView
 
                 model: DelegateModel {
+                    id: delegateModel
+
                     model: realModel
 
                     delegate: ConflictDelegate {

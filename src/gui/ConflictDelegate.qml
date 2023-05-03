@@ -24,7 +24,6 @@ Item {
     id: root
 
     required property string existingFileName
-    required property string conflictFileName
     required property string existingSize
     required property string conflictSize
     required property string existingDate
