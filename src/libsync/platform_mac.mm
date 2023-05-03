@@ -147,6 +147,12 @@ private:
 
 namespace OCC {
 
+/*
+ * We need to instantiate an autorelease pool here. Normally a
+ * QApplication would take care of this, but some cocoa/carbon code is
+ * run before the QApplication is instantiated, and cocoa/carbon need
+ * such a pool.
+ */
 class MacPlatformPrivate
 {
 public:
