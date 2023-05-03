@@ -387,8 +387,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
         auto gmtDate = fileInfo.lastModifiedInUtc();
-        auto stringDate = QLocale::c().toString(gmtDate, QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'"));
-        xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
+        xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), gmtDate.toString(Qt::RFC2822Date));
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.contentSize));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW")
