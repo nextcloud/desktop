@@ -43,7 +43,7 @@ namespace {
 // https://en.wikipedia.org/wiki/Comparison_of_file_systems#Limits
 // the file name limit appears to be about 255 chars
 // -10 for safety
-constexpr int fileNameMaxC = 255 - 10;
+constexpr qsizetype fileNameMaxC = 255 - 10;
 
 constexpr auto replacementCharC = QLatin1Char('_');
 }
@@ -626,12 +626,12 @@ bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
     return QString::compare(QDir::cleanPath(parent), QDir::cleanPath(child), sensitivity) == 0;
 }
 
-QString OCSYNC_EXPORT FileSystem::createPortableFileName(const QString &path, const QString &fileName, int reservedSize)
+QString FileSystem::createPortableFileName(const QString &path, const QString &fileName, qsizetype reservedSize)
 {
     // remove leading and trailing whitespace
     QString tmp = pathEscape(fileName);
     // limit size to fileNameMaxC
-    tmp.resize(std::min(tmp.size(), fileNameMaxC - reservedSize));
+    tmp.resize(std::min<qsizetype>(tmp.size(), fileNameMaxC - reservedSize));
     // remove eventual trailing whitespace after the resize
     tmp = tmp.trimmed();
 

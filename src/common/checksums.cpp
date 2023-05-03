@@ -188,7 +188,7 @@ QByteArray findBestChecksum(const QByteArray &_checksums)
 
     // The order of the searches here defines the preference ordering.
     // we assume _checksums to be utf-8 so toUpper is valid here
-    const int i = [checksums = _checksums.toUpper()] {
+    const auto i = [checksums = _checksums.toUpper()]() -> qsizetype {
         for (const auto &algo : CheckSums::All) {
             auto i = checksums.indexOf(algo.second.data());
             if (i != -1) {

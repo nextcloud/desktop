@@ -322,7 +322,7 @@ void Logger::rotateLog()
 
                 // keeping the last maxLogFiles files in total (need to subtract one from maxLogFiles to ensure the limit)
                 std::sort(oldLogFiles.begin(), oldLogFiles.end(), std::greater<QString>());
-                oldLogFiles.erase(oldLogFiles.begin(), oldLogFiles.begin() + std::min(maxLogFiles - 1, oldLogFiles.size()));
+                oldLogFiles.erase(oldLogFiles.begin(), oldLogFiles.begin() + std::min<qsizetype>(maxLogFiles - 1, oldLogFiles.size()));
 
                 for (const auto &s : oldLogFiles) {
                     if (!QFile::remove(dir.absoluteFilePath(s))) {
