@@ -894,21 +894,21 @@ QNetworkReply *FakeAM::createRequest(QNetworkAccessManager::Operation op, const 
         const bool isUpload = newRequest.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
-        auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
-        if (verb == QLatin1String("PROPFIND"))
+        const auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+        if (verb == QByteArrayLiteral("PROPFIND"))
             // Ignore outgoingData always returning somethign good enough, works for now.
             reply = new FakePropfindReply { info, op, newRequest, this };
-        else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
+        else if (verb == QByteArrayLiteral("GET") || op == QNetworkAccessManager::GetOperation)
             reply = new FakeGetReply { info, op, newRequest, this };
-        else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation)
+        else if (verb == QByteArrayLiteral("PUT") || op == QNetworkAccessManager::PutOperation)
             reply = new FakePutReply { info, op, newRequest, outgoingData->readAll(), this };
-        else if (verb == QLatin1String("MKCOL"))
+        else if (verb == QByteArrayLiteral("MKCOL"))
             reply = new FakeMkcolReply { info, op, newRequest, this };
-        else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation)
+        else if (verb == QByteArrayLiteral("DELETE") || op == QNetworkAccessManager::DeleteOperation)
             reply = new FakeDeleteReply { info, op, newRequest, this };
-        else if (verb == QLatin1String("MOVE") && !isUpload)
+        else if (verb == QByteArrayLiteral("MOVE") && !isUpload)
             reply = new FakeMoveReply { info, op, newRequest, this };
-        else if (verb == QLatin1String("MOVE") && isUpload)
+        else if (verb == QByteArrayLiteral("MOVE") && isUpload)
             reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, newRequest, this };
         else {
             qDebug() << verb << outgoingData;

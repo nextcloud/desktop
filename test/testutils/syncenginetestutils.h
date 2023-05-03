@@ -768,7 +768,7 @@ struct OperationCounter
             ++nPUT;
         } else if (op == QNetworkAccessManager::DeleteOperation) {
             ++nDELETE;
-        } else if (req.attribute(QNetworkRequest::CustomVerbAttribute) == QLatin1String("MOVE")) {
+        } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == QByteArrayLiteral("MOVE")) {
             ++nMOVE;
         }
         return nullptr;

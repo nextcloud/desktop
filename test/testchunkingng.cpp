@@ -192,7 +192,7 @@ private slots:
                 sawPut = true;
             } else if (op == QNetworkAccessManager::DeleteOperation) {
                 sawDelete = true;
-            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "MOVE") {
                 sawMove = true;
             }
             return nullptr;
@@ -249,7 +249,7 @@ private slots:
         int nGET = 0;
         const auto responseDelay = 24h; // bigger than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "MOVE") {
                 QTimer::singleShot(50ms, &parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
                 return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
@@ -344,7 +344,7 @@ private slots:
         QObject parent;
         const auto responseDelay = 200ms; // smaller than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "MOVE") {
                 QTimer::singleShot(50ms, &parent, [&]() { fakeFolder.syncEngine().abort(); });
                 return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
             }
@@ -552,7 +552,7 @@ private slots:
             if (!chunking && op == QNetworkAccessManager::PutOperation) {
                 checksumHeader = request.rawHeader("OC-Checksum");
                 return new DelayedReply<FakePutReply>(responseDelay, fakeFolder.remoteModifier(), op, request, outgoingData->readAll(), &fakeFolder.syncEngine());
-            } else if (chunking && request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            } else if (chunking && request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "MOVE") {
                 checksumHeader = request.rawHeader("OC-Checksum");
                 return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &fakeFolder.syncEngine());
             } else if (op == QNetworkAccessManager::GetOperation) {
@@ -638,7 +638,7 @@ private slots:
         OperationCounter counter;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
             counter.serverOverride(op, request, device);
-            if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "MOVE") {
                 return new FakeErrorReply(op, request, this, 423, {});
             }
             return nullptr;

@@ -44,7 +44,8 @@ private Q_SLOTS:
 
         QTest::newRow("bool") << QVariant::fromValue(true);
         QTest::newRow("int") << QVariant::fromValue(1);
-        QTest::newRow("map") << QVariant::fromValue(QVariantMap { { "foo", QColor(Qt::red) }, { "bar", "42" } });
+        QTest::newRow("map") << QVariant::fromValue(
+            QVariantMap{{QStringLiteral("foo"), QColor(Qt::red).name()}, {QStringLiteral("bar"), QStringLiteral("42")}});
     }
 
     void testSetGet()

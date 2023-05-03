@@ -113,9 +113,8 @@ private slots:
 
         QString errorFolder = fakeFolder.account()->davPath() + QStringLiteral("B");
         QString fatalErrorPrefix = QStringLiteral("Server replied with an error while reading directory 'B' : ");
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
-                -> QNetworkReply *{
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND" && req.url().path().endsWith(errorFolder)) {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "PROPFIND" && req.url().path().endsWith(errorFolder)) {
                 if (errorKind == InvalidXML) {
                     return new FakeBrokenXmlPropfindReply(fakeFolder.remoteModifier(), op, req, this);
                 } else if (errorKind == Timeout) {
@@ -175,9 +174,8 @@ private slots:
         fakeFolder.remoteModifier().mkdir(QStringLiteral("nopermissions"));
         fakeFolder.remoteModifier().insert(QStringLiteral("nopermissions/A"));
 
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
-                                         -> QNetworkReply * {
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND" && req.url().path().endsWith(QLatin1String("nopermissions")))
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "PROPFIND" && req.url().path().endsWith(QLatin1String("nopermissions")))
                 return new MissingPermissionsPropfindReply(fakeFolder.remoteModifier(), op, req, this);
             return nullptr;
         });
