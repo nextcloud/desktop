@@ -82,7 +82,7 @@ bool SqlDatabase::openHelper(const QString &filename, int sqliteFlags)
 #ifdef Q_OS_WIN
     // allow file paths > 260
     // https://www.sqlite.org/vfs.html#standard_windows_vfses
-    char *vfs = "win32-longpath";
+    const char *vfs = "win32-longpath";
 #else
     char *vfs = nullptr;
 #endif
