@@ -31,6 +31,7 @@
 
 #include "resources/resources.h"
 
+#include <QActionGroup>
 #include <QDesktopServices>
 #include <QImage>
 #include <QLabel>

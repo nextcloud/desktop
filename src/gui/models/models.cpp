@@ -13,11 +13,12 @@
  */
 #include "models.h"
 
+#include <QActionGroup>
 #include <QApplication>
 #include <QItemSelectionRange>
-#include <QTextStream>
-#include <QSortFilterProxyModel>
 #include <QMenu>
+#include <QSortFilterProxyModel>
+#include <QTextStream>
 #include <QTimer>
 
 #include <functional>
