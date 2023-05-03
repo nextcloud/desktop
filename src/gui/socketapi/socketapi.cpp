@@ -258,7 +258,7 @@ void SocketApi::slotReadSocket()
             } else {
                 functionWithArguments += command.toUtf8() + QByteArrayLiteral("(QString,SocketListener*)");
             }
-            Q_ASSERT(staticQtMetaObject.normalizedSignature(functionWithArguments.constData()) == functionWithArguments);
+            Q_ASSERT(staticMetaObject.normalizedSignature(functionWithArguments.constData()) == functionWithArguments);
             const auto out = staticMetaObject.indexOfMethod(functionWithArguments.constData());
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
