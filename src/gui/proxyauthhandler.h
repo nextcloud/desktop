@@ -24,6 +24,12 @@
 #include <QSettings>
 #include <QSet>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <qt5keychain/keychain.h>
+#else
+#include <qt6keychain/keychain.h>
+#endif
+
 namespace QKeychain {
 class Job;
 class ReadPasswordJob;

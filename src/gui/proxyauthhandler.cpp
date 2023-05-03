@@ -22,8 +22,6 @@
 
 #include <QApplication>
 
-#include <qt5keychain/keychain.h>
-
 using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcProxy, "gui.credentials.proxy", QtInfoMsg)
