@@ -51,8 +51,10 @@ Q_LOGGING_CATEGORY(lcPlatform, "platform.windows")
 
 WinPlatform::WinPlatform()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton, true);
+#endif
     QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 }
 
