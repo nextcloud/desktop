@@ -5708,7 +5708,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="326"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Onartu kargatzea eta edizioa</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
@@ -5718,17 +5718,17 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="359"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Ikusi soilik</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="394"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia jaregitea (kargatzeko soilik)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="421"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Ezkutuko deskarga</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="447"/>
