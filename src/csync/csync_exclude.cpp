@@ -197,7 +197,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(QStringView path, bool excludeC
     // Filter out characters not allowed in a filename on windows
     // see https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file
     for (auto c : path) {
-        if (c < 32) {
+        if (c.toLatin1() < 32) {
             return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         }
         if (std::find_if(
