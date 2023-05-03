@@ -749,8 +749,6 @@ void ActivityListModel::displaySingleConflictDialog(const Activity &activity)
     });
     _currentConflictDialog->open();
     ownCloudGui::raiseDialog(_currentConflictDialog);
-
-    Systray::instance()->createResolveConflictsDialog();
 }
 
 void ActivityListModel::slotTriggerAction(const int activityIndex, const int actionIndex)
