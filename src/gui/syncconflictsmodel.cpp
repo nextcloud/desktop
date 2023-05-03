@@ -151,17 +151,14 @@ void SyncConflictsModel::updateConflictsData()
         const auto existingFileInfo = QFileInfo(basePath);
         const auto conflictFileInfo = QFileInfo(conflictedPath);
 
-        const auto existingMimeType = mMimeDb.mimeTypeForFile(existingFileInfo.fileName());
-        const auto conflictMimeType = mMimeDb.mimeTypeForFile(conflictFileInfo.fileName());
-
         auto newConflictData = ConflictInfo{
             existingFileInfo.fileName(),
             mLocale.formattedDataSize(existingFileInfo.size()),
             mLocale.formattedDataSize(conflictFileInfo.size()),
             existingFileInfo.lastModified().toString(),
             conflictFileInfo.lastModified().toString(),
-            QIcon::hasThemeIcon(existingMimeType.iconName()) ? QUrl{} : QUrl{":/qt-project.org/styles/commonstyle/images/file-128.png"},
-            QIcon::hasThemeIcon(conflictMimeType.iconName()) ? QUrl{} : QUrl{":/qt-project.org/styles/commonstyle/images/file-128.png"},
+            QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + existingFileInfo.fileName()},
+            QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + conflictFileInfo.fileName()},
             false,
             false,
         };
