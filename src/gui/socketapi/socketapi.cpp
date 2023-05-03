@@ -267,7 +267,7 @@ void SocketApi::slotReadSocket()
             return out;
         }();
 
-        const auto argument = argPos != -1 ? line.midRef(argPos + 1) : QStringRef();
+        const auto argument = argPos != -1 ? line.mid(argPos + 1) : QString();
         if (command.startsWith(QLatin1String("ASYNC_"))) {
             auto arguments = argument.split(QLatin1Char('|'));
             if (arguments.size() != 2) {
@@ -279,8 +279,7 @@ void SocketApi::slotReadSocket()
 
             auto jobId = arguments[0];
 
-            auto socketApiJob = QSharedPointer<SocketApiJob>(
-                new SocketApiJob(jobId.toString(), listener, json), &QObject::deleteLater);
+            auto socketApiJob = QSharedPointer<SocketApiJob>(new SocketApiJob(jobId, listener, json), &QObject::deleteLater);
             if (indexOfMethod != -1) {
                 staticMetaObject.method(indexOfMethod)
                     .invoke(this, Qt::QueuedConnection,
@@ -294,7 +293,7 @@ void SocketApi::slotReadSocket()
             QJsonParseError error;
             const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
             if (error.error != QJsonParseError::NoError) {
-                qCWarning(lcSocketApi()) << "Invalid json" << argument.toString() << error.errorString();
+                qCWarning(lcSocketApi()) << "Invalid json" << argument << error.errorString();
                 listener->sendError(error.errorString());
                 return;
             }
@@ -312,9 +311,7 @@ void SocketApi::slotReadSocket()
             if (indexOfMethod != -1) {
                 // to ensure that listener is still valid we need to call it with Qt::DirectConnection
                 OC_ASSERT(thread() == QThread::currentThread())
-                staticMetaObject.method(indexOfMethod)
-                    .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument.toString()),
-                        Q_ARG(SocketListener*, listener.data()));
+                staticMetaObject.method(indexOfMethod).invoke(this, Qt::DirectConnection, Q_ARG(QString, argument), Q_ARG(SocketListener *, listener.data()));
             }
         }
     }

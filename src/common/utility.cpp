@@ -542,7 +542,7 @@ QString Utility::makeConflictFileName(
     return conflictFileName;
 }
 
-bool Utility::isConflictFile(const QStringRef &name)
+bool Utility::isConflictFile(QStringView name)
 {
     auto bname = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
 

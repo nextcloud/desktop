@@ -239,11 +239,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
     /** Returns whether a file name indicates a conflict file
      */
-    OCSYNC_EXPORT bool isConflictFile(const QStringRef &name);
-    inline auto isConflictFile(const QString &name)
-    {
-        return isConflictFile(&name);
-    }
+    OCSYNC_EXPORT bool isConflictFile(QStringView name);
 
     /** Find the base name for a conflict file name, using name pattern only
      *

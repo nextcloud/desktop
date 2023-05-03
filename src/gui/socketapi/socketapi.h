@@ -32,7 +32,6 @@ using SocketApiSocket = QLocalSocket;
 
 class QUrl;
 class QLocalSocket;
-class QStringList;
 
 namespace OCC {
 

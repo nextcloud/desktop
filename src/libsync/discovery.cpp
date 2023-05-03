@@ -198,7 +198,7 @@ void ProcessDirectoryJob::process()
 
 bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &localName, bool isDirectory, bool isHidden, bool isSymlink)
 {
-    auto excluded = _discoveryData->_excludes->traversalPatternMatch(&path, isDirectory ? ItemTypeDirectory : ItemTypeFile);
+    auto excluded = _discoveryData->_excludes->traversalPatternMatch(path, isDirectory ? ItemTypeDirectory : ItemTypeFile);
 
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;

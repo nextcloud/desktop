@@ -37,8 +37,8 @@ static void updateFolder(const AccountPtr &account, const QString &path)
         if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith(QLatin1Char('/')) || path[folderPath.size()] == QLatin1Char('/'))) {
             // Workaround the fact that the server does not invalidate the etags of parent directories
             // when something is shared.
-            auto relative = path.midRef(f->remotePathTrailingSlash().length());
-            f->journalDb()->schedulePathForRemoteDiscovery(relative.toString());
+            auto relative = path.mid(f->remotePathTrailingSlash().length());
+            f->journalDb()->schedulePathForRemoteDiscovery(relative);
 
             // Schedule a sync so it can update the remote permission flag and let the socket API
             // know about the shared icon.

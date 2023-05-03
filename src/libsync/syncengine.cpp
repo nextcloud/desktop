@@ -589,13 +589,13 @@ void SyncEngine::slotDiscoveryFinished()
 
         const auto regex = syncOptions().fileRegex();
         if (regex.isValid()) {
-            QSet<QStringRef> names;
+            QSet<QStringView> names;
             for (auto &i : _syncItems) {
                 if (regex.match(i->_file).hasMatch()) {
                     int index = -1;
-                    QStringRef ref;
+                    QStringView ref;
                     do {
-                        ref = i->_file.midRef(0, index);
+                        ref = QStringView(i->_file).mid(0, index);
                         names.insert(ref);
                         index = ref.lastIndexOf(QLatin1Char('/'));
                     } while (index > 0);
@@ -614,9 +614,7 @@ void SyncEngine::slotDiscoveryFinished()
                 }
                 return old_size - c.size();
             };
-            erase_if(_syncItems, [&names](const SyncFileItemPtr &i) {
-                return !names.contains(QStringRef { &i->_file });
-            });
+            erase_if(_syncItems, [&names](const SyncFileItemPtr &i) { return !names.contains(QStringView{i->_file}); });
         }
 
         qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";

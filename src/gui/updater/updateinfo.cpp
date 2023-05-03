@@ -88,9 +88,8 @@ UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
     int errorLine, errorCol;
     QDomDocument doc;
     if (!doc.setContent(xml, false, &errorMsg, &errorLine, &errorCol)) {
-        qCWarning(lcUpdater).noquote().nospace() << errorMsg << " at " << errorLine << "," << errorCol
-                                                 << "\n"
-                                                 << xml.splitRef(QStringLiteral("\n")).value(errorLine - 1) << "\n"
+        qCWarning(lcUpdater).noquote().nospace() << errorMsg << " at " << errorLine << "," << errorCol << "\n"
+                                                 << xml.split(QStringLiteral("\n")).value(errorLine - 1) << "\n"
                                                  << QStringLiteral(" ").repeated(errorCol - 1) << "^\n"
                                                  << "->" << xml << "<-";
         if (ok)

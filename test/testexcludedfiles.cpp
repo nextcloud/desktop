@@ -43,25 +43,13 @@ class TestExcludedFiles: public QObject
 {
     Q_OBJECT
 
-    static auto check_file_full(const QString &path)
-    {
-        return excludedFiles->fullPatternMatch(&path, ItemTypeFile);
-    }
+    static auto check_file_full(const QString &path) { return excludedFiles->fullPatternMatch(path, ItemTypeFile); }
 
-    static auto check_dir_full(const QString &path)
-    {
-        return excludedFiles->fullPatternMatch(&path, ItemTypeDirectory);
-    }
+    static auto check_dir_full(const QString &path) { return excludedFiles->fullPatternMatch(path, ItemTypeDirectory); }
 
-    static auto check_file_traversal(const QString &path)
-    {
-        return excludedFiles->traversalPatternMatch(&path, ItemTypeFile);
-    }
+    static auto check_file_traversal(const QString &path) { return excludedFiles->traversalPatternMatch(path, ItemTypeFile); }
 
-    static auto check_dir_traversal(const QString &path)
-    {
-        return excludedFiles->traversalPatternMatch(&path, ItemTypeDirectory);
-    }
+    static auto check_dir_traversal(const QString &path) { return excludedFiles->traversalPatternMatch(path, ItemTypeDirectory); }
 
 private slots:
     void testFun()
@@ -551,8 +539,8 @@ private slots:
     {
         auto csync_is_windows_reserved_word = [](const char *fn) {
             QString s = QString::fromLatin1(fn);
-            extern bool csync_is_windows_reserved_word(const QStringRef &filename);
-            return csync_is_windows_reserved_word(&s);
+            extern bool csync_is_windows_reserved_word(QStringView filename);
+            return csync_is_windows_reserved_word(s);
         };
 
         QVERIFY(csync_is_windows_reserved_word("CON"));

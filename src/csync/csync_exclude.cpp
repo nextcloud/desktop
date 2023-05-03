@@ -100,7 +100,7 @@ OCSYNC_EXPORT void csync_exclude_expand_escapes(QByteArray &input)
  * @param file_name filename
  * @return true if file is reserved, false otherwise
  */
-OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
+OCSYNC_EXPORT bool csync_is_windows_reserved_word(QStringView filename)
 {
     size_t len_filename = filename.size();
 
@@ -143,10 +143,10 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
     return false;
 }
 
-static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QStringRef &path, bool excludeConflictFiles)
+static CSYNC_EXCLUDE_TYPE _csync_excluded_common(QStringView path, bool excludeConflictFiles)
 {
     /* split up the path */
-    QStringRef bname(path);
+    QStringView bname(path);
     int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
         bname = path.mid(lastSlash + 1);
@@ -366,7 +366,7 @@ bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &bas
         return true;
     }
 
-    auto relativePath = filePath.midRef(basePath.size());
+    auto relativePath = filePath.mid(basePath.size());
     if (relativePath.endsWith(QLatin1Char('/'))) {
         relativePath.chop(1);
     }
@@ -382,7 +382,7 @@ bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &bas
     return fullPatternMatch(relativePath, type) != CSYNC_NOT_EXCLUDED;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QStringRef &path, ItemType filetype) const
+CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(QStringView path, ItemType filetype) const
 {
     auto match = _csync_excluded_common(path, _excludeConflictFiles);
     if (match != CSYNC_NOT_EXCLUDED)
@@ -392,7 +392,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QStringRef &path, 
 
     // Check the bname part of the path to see whether the full
     // regex should be run.
-    QStringRef bnameStr(path);
+    QStringView bnameStr(path);
     int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
         bnameStr = path.mid(lastSlash + 1);
@@ -413,7 +413,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QStringRef &path, 
     }
 
     // third capture: full path matching is triggered
-    QStringRef pathStr = path;
+    QStringView pathStr = path;
 
     if (filetype == ItemTypeDirectory) {
         m = _fullTraversalRegexDir.match(pathStr);
@@ -430,7 +430,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QStringRef &path, 
     return CSYNC_NOT_EXCLUDED;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const QStringRef &p, ItemType filetype) const
+CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(QStringView p, ItemType filetype) const
 {
     auto match = _csync_excluded_common(p, _excludeConflictFiles);
     if (match != CSYNC_NOT_EXCLUDED)
