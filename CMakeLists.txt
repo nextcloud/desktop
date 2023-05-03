@@ -87,8 +87,6 @@ if ("${GIT_SHA1}" STREQUAL "GITDIR-NOTFOUND")
 endif()
 message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 
-set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
-
 option(NO_MSG_HANDLER "Don't redirect QDebug outputs to the log window/file" OFF)
 
 # this option builds the shell integration
