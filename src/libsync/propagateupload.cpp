@@ -493,12 +493,13 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 
 void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize)
 {
-    job->setTimeout(qBound<std::chrono::seconds>(
-        job->timeoutSec(),
-        // Calculate 3 minutes for each gigabyte of data
-        std::chrono::minutes(static_cast<quint64>((3min).count() * fileSize / 1e9)),
-        // Maximum of 30 minutes
-        30min));
+    // Calculate 3 minutes for each gigabyte of data
+    const auto timeout = std::chrono::minutes(static_cast<quint64>((3min).count() * fileSize / 1e9));
+    // Maximum of 30 minutes
+    // not less than the default/current val
+    if (timeout > job->timeoutSec() && timeout < 30min) {
+        job->setTimeout(timeout);
+    }
 }
 
 // This function is used whenever there is an error occuring and jobs might be in progress
