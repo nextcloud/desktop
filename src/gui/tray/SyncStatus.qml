@@ -152,7 +152,7 @@ RowLayout {
                  NC.UserModel.currentUser.isConnected
         enabled: visible
         onClicked: {
-            Systray.createResolveConflictsDialog();
+            NC.Systray.createResolveConflictsDialog();
         }
     }
 }

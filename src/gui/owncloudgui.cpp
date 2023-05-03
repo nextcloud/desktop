@@ -140,6 +140,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qRegisterMetaType<SharePtr>("SharePtr");
     qRegisterMetaType<ShareePtr>("ShareePtr");
     qRegisterMetaType<Sharee>("Sharee");
+    qRegisterMetaType<OCC::ActivityList>("ActivityList");
 
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
