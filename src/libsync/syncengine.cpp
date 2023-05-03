@@ -40,19 +40,18 @@
 #include <chrono>
 
 #include <QCoreApplication>
-#include <QSslSocket>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QLoggingCategory>
 #include <QMutexLocker>
-#include <QThread>
+#include <QProcess>
+#include <QSslCertificate>
+#include <QSslSocket>
 #include <QStringList>
 #include <QTextStream>
+#include <QThread>
 #include <QTime>
 #include <QUrl>
-#include <QSslCertificate>
-#include <QProcess>
-#include <QElapsedTimer>
-#include <qtextcodec.h>
 
 using namespace std::chrono_literals;
 

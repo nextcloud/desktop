@@ -29,7 +29,6 @@
 
 #include <QFile>
 #include <QFileInfo>
-#include <QTextCodec>
 #include <QThreadPool>
 
 namespace OCC {
@@ -215,21 +214,6 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             && _discoveryData->_serverBlacklistedFiles.contains(localName)) {
         excluded = CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED;
         isInvalidPattern = true;
-    }
-
-    auto localCodec = QTextCodec::codecForLocale();
-    if (!OCC::Utility::isWindows() && localCodec->mibEnum() != 106) {
-        // If the locale codec is not UTF-8, we must check that the filename from the server can
-        // be encoded in the local file system.
-        // (Note: on windows, the FS is always UTF-16, so we don't need to check)
-        //
-        // We cannot use QTextCodec::canEncode() since that can incorrectly return true, see
-        // https://bugreports.qt.io/browse/QTBUG-6925.
-        QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
-        if (encoder.fromUnicode(path).contains('\0')) {
-            qCWarning(lcDisco) << "Cannot encode " << path << " to local encoding " << localCodec->name();
-            excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
-        }
     }
 
     if (excluded == CSYNC_NOT_EXCLUDED && !isSymlink) {
