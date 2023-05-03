@@ -22,7 +22,10 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QLoggingCategory>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QtMacExtras/QtMacExtras>
+#endif
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
