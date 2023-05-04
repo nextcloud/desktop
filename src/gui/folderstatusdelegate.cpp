@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QCommonStyle>
 
 inline static QFont makeAliasFont(const QFont &normalFont)
 {
@@ -33,6 +34,12 @@ inline static QFont makeAliasFont(const QFont &normalFont)
     aliasFont.setBold(true);
     aliasFont.setPointSize(normalFont.pointSize() + 2);
     return aliasFont;
+}
+
+namespace {
+#ifdef Q_OS_MACOS
+    QCommonStyle backupStyle;
+#endif
 }
 
 namespace OCC {
@@ -310,7 +317,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         progressBarOpt.progress = overallPercent;
         progressBarOpt.orientation = Qt::Horizontal;
         progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
+#ifdef Q_OS_MACOS
+        backupStyle.drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
+#else
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
+#endif
 
 
         // Overall Progress Text
