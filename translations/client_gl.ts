@@ -5708,7 +5708,7 @@ O servidor respondeu cun erro: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="326"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Permitir carga e edición</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
@@ -5718,17 +5718,17 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="359"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Só ver</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="394"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Soltar ficheiros (só carga)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="421"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>Ocultar descarga</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="447"/>
