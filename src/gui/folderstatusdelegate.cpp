@@ -297,17 +297,16 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
         const auto fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-        const auto barHeight = 7; // same height as quota bar
+        constexpr auto barHeight = 7; // same height as quota bar
         const auto overallWidth = option.rect.right() - aliasMargin - optionsButtonVisualRect.width() - nextToIcon;
 
         painter->save();
 
         // Overall Progress Bar.
-        QRect progressBarRect;
-        progressBarRect.setTop(remotePathRect.top());
-        progressBarRect.setLeft(nextToIcon);
-        progressBarRect.setHeight(barHeight);
-        progressBarRect.setWidth(overallWidth - 2 * margin);
+        const auto progressBarRect = QRect(nextToIcon,
+                                           remotePathRect.top(),
+                                           overallWidth - 2 * margin,
+                                           barHeight);
 
         QStyleOptionProgressBar progressBarOpt;
 
