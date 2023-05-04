@@ -14,7 +14,7 @@
 
 import QtQml 2.15
 import QtQuick 2.15
-import QtQuick.Window 2.15
+import QtQuick.Window 2.15 as QtWindow
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQml.Models 2.15
@@ -22,12 +22,12 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0
 import "./tray"
 
-Window {
-    id: root
+QtWindow.Window {
+    id: conflictsDialog
 
     required property var allConflicts
 
-    flags: Qt.Dialog
+    flags: Qt.Window | Qt.Dialog
     visible: true
 
     width: 600
@@ -36,17 +36,9 @@ Window {
     minimumHeight: 800
     title: qsTr('Solve sync conflicts')
 
-    onClosing: function() {
+    onClosing: function(close) {
         Systray.destroyDialog(root);
-    }
-
-    Component.onCompleted: {
-        Systray.forceWindowInit(root);
-        Systray.positionNotificationWindow(root);
-
-        root.show();
-        root.raise();
-        root.requestActivate();
+        close.accepted = true
     }
 
     ColumnLayout {
@@ -115,7 +107,7 @@ Window {
         SyncConflictsModel {
             id: realModel
 
-            conflictActivities: root.allConflicts
+            conflictActivities: conflictsDialog.allConflicts
         }
 
         ScrollView {
