@@ -551,20 +551,15 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     }
     endInsertRows();
 
-    auto conflictsCount = 0;
+    auto conflictsFound = false;
     for(const auto &activity : _finalList) {
         if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
-            ++conflictsCount;
+            conflictsFound = true;
+            break;
         }
     }
 
-    if (!_hasManySyncConflicts && conflictsCount > 2) {
-        _hasManySyncConflicts = true;
-        emit hasManySyncConflictsChanged();
-    } else if (_hasManySyncConflicts && conflictsCount <= 2) {
-        _hasManySyncConflicts = false;
-        emit hasManySyncConflictsChanged();
-    }
+    setHasSyncConflicts(conflictsFound);
 }
 
 void ActivityListModel::addErrorToActivityList(const Activity &activity)
@@ -753,6 +748,14 @@ void ActivityListModel::displaySingleConflictDialog(const Activity &activity)
     ownCloudGui::raiseDialog(_currentConflictDialog);
 }
 
+void ActivityListModel::setHasSyncConflicts(bool conflictsFound)
+{
+    if (_hasSyncConflicts != conflictsFound) {
+        _hasSyncConflicts = conflictsFound;
+        emit hasSyncConflictsChanged();
+    }
+}
+
 void ActivityListModel::slotTriggerAction(const int activityIndex, const int actionIndex)
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
@@ -909,9 +912,9 @@ QString ActivityListModel::replyMessageSent(const Activity &activity) const
     return activity._talkNotificationData.messageSent;
 }
 
-bool ActivityListModel::hasManySyncConflicts() const
+bool ActivityListModel::hasSyncConflicts() const
 {
-    return _hasManySyncConflicts;
+    return _hasSyncConflicts;
 }
 
 ActivityList ActivityListModel::allConflicts() const

@@ -121,7 +121,7 @@ RowLayout {
         contentsFont.bold: true
         bgColor: Style.currentUserHeaderColor
 
-        visible: !activityModel.hasManySyncConflicts &&
+        visible: !activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
                  NC.UserModel.currentUser.hasLocalFolder &&
                  NC.UserModel.currentUser.isConnected
@@ -140,13 +140,13 @@ RowLayout {
                                Style.standardSpacing * 2
         Layout.rightMargin: Style.trayHorizontalMargin
 
-        text: qsTr("Solve all conflicts")
+        text: qsTr("Resolve conflicts")
         textColor: Style.adjustedCurrentUserHeaderColor
         textColorHovered: Style.currentUserHeaderTextColor
         contentsFont.bold: true
         bgColor: Style.currentUserHeaderColor
 
-        visible: activityModel.hasManySyncConflicts &&
+        visible: activityModel.hasSyncConflicts &&
                  !syncStatus.syncing &&
                  NC.UserModel.currentUser.hasLocalFolder &&
                  NC.UserModel.currentUser.isConnected
