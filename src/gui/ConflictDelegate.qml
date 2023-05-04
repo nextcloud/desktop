@@ -50,6 +50,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.bottomMargin: 8
 
         Item {
             Layout.fillWidth: true
