@@ -26,7 +26,7 @@
 #include <QPainter>
 #include <QApplication>
 #include <QMouseEvent>
-#include <QCommonStyle>
+#include <QStyleFactory>
 
 inline static QFont makeAliasFont(const QFont &normalFont)
 {
@@ -38,7 +38,7 @@ inline static QFont makeAliasFont(const QFont &normalFont)
 
 namespace {
 #ifdef Q_OS_MACOS
-    QCommonStyle backupStyle;
+    const auto backupStyle = QStyleFactory::create("Fusion");
 #endif
 }
 
@@ -318,7 +318,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         progressBarOpt.orientation = Qt::Horizontal;
         progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
 #ifdef Q_OS_MACOS
-        backupStyle.drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
+        backupStyle->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #else
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #endif
