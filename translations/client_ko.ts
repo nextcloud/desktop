@@ -2489,7 +2489,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="313"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>이 파일 명은 서버의 블랙리스트에 들어 있습니다.</translation>
+        <translation>이 파일 이름은 서버 차단 목록에 들어 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="416"/>
