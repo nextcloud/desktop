@@ -292,8 +292,6 @@ bool SqlQuery::isPragma()
 
 bool SqlQuery::exec()
 {
-    qCDebug(lcSql) << "SQL exec" << _sql;
-
     if (!_stmt) {
         qCWarning(lcSql) << "Can't exec query, statement unprepared.";
         return false;
@@ -324,8 +322,6 @@ bool SqlQuery::exec()
                 qCWarning(lcSql) << "IOERR system errno: " << sqlite3_system_errno(_db);
 #endif
             }
-        } else {
-            qCDebug(lcSql) << "Last exec affected" << numRowsAffected() << "rows.";
         }
         return (_errId == SQLITE_DONE); // either SQLITE_ROW or SQLITE_DONE
     }
