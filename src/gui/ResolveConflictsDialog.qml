@@ -37,7 +37,7 @@ QtWindow.Window {
     title: qsTr('Solve sync conflicts')
 
     onClosing: function(close) {
-        Systray.destroyDialog(root);
+        Systray.destroyDialog(self);
         close.accepted = true
     }
 
