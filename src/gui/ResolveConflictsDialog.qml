@@ -147,12 +147,12 @@ QtWindow.Window {
 
             onAccepted: function() {
                 console.log("Ok clicked")
-                Systray.destroyDialog(root)
+                Systray.destroyDialog(conflictsDialog)
             }
 
             onRejected: function() {
                 console.log("Cancel clicked")
-                Systray.destroyDialog(root)
+                Systray.destroyDialog(conflictsDialog)
             }
         }
     }

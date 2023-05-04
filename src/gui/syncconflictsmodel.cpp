@@ -146,8 +146,6 @@ void SyncConflictsModel::updateConflictsData()
         const auto conflictedPath = dir.filePath(conflictedRelativePath);
         const auto basePath = dir.filePath(baseRelativePath);
 
-        qCInfo(lcSyncConflictsModel()) << "conflictedPath" << conflictedPath << "basePath" << basePath;
-
         const auto existingFileInfo = QFileInfo(basePath);
         const auto conflictFileInfo = QFileInfo(conflictedPath);
 
@@ -157,8 +155,8 @@ void SyncConflictsModel::updateConflictsData()
             mLocale.formattedDataSize(conflictFileInfo.size()),
             existingFileInfo.lastModified().toString(),
             conflictFileInfo.lastModified().toString(),
-            QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + existingFileInfo.fileName()},
-            QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + conflictFileInfo.fileName()},
+            QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + existingFileInfo.filePath()},
+            QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + conflictFileInfo.filePath()},
             false,
             false,
         };
