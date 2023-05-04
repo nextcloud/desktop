@@ -104,8 +104,8 @@ private slots:
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSize)), QString{"5 bytes"});
         QVERIFY(!model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingDate)).toString().isEmpty());
         QVERIFY(!model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictDate)).toString().isEmpty());
-        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingPreviewUrl)), QUrl{":/qt-project.org/styles/commonstyle/images/file-128.png"});
-        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictPreviewUrl)), QUrl{":/qt-project.org/styles/commonstyle/images/file-128.png"});
+        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingPreviewUrl)), QVariant::fromValue(QUrl{QStringLiteral("image://tray-image-provider/:/fileicon%1A/a2").arg(fakeFolder.localPath())}));
+        QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictPreviewUrl)), QVariant::fromValue(QUrl{QStringLiteral("image://tray-image-provider/:/fileicon%1%2").arg(fakeFolder.localPath(), conflicts.constFirst())}));
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingSelected)), false);
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSelected)), false);
     }
