@@ -61,6 +61,7 @@ namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
 constexpr int usernamePrefillServerVersionMinSupportedMajor = 24;
 constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
+constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRALL_VERSION_MAJOR == 3 && MIRALL_VERSION_MINOR == 8;
 }
 
 namespace OCC {
@@ -675,6 +676,17 @@ void Account::setupUserStatusConnector()
 QString Account::serverVersion() const
 {
     return _serverVersion;
+}
+
+bool Account::shouldSkipE2eeMetadataChecksumValidation() const
+{
+    return isSkipE2eeMetadataChecksumValidationAllowedInClientVersion && _skipE2eeMetadataChecksumValidation;
+}
+
+void Account::resetShouldSkipE2eeMetadataChecksumValidation()
+{
+    _skipE2eeMetadataChecksumValidation = false;
+    emit wantsAccountSaved(this);
 }
 
 int Account::serverVersionInt() const
