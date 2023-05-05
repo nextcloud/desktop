@@ -246,11 +246,17 @@ bool AccountManager::restoreFromLegacySettings()
             settings->beginGroup(accountId);
             if (const auto acc = loadAccountHelper(*settings)) {
                 addAccount(acc);
-
+                QMessageBox::information(nullptr,
+                                         tr("Legacy import"),
+                                         tr("Successfully imported account from legacy client: %1").arg(acc->prettyName()));
                 return true;
             }
         }
     }
+
+    QMessageBox::information(nullptr,
+                             tr("Legacy import"),
+                             tr("Could not import accounts from legacy client configuration."));
     return false;
 }
 
