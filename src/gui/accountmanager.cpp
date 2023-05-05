@@ -175,10 +175,17 @@ bool AccountManager::restoreFromLegacySettings()
                                                       legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
 
         for (const auto &configFile : legacyLocations) {
-            if (const QFileInfo configFileInfo(configFile);
-                    configFileInfo.exists() && configFileInfo.isReadable()) {
-
+            if (const QFileInfo configFileInfo(configFile); configFileInfo.exists() && configFileInfo.isReadable()) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
+
+                const auto importQuestion = tr("An existing configuration from a legacy desktop client was detected.\n"
+                                               "Should an account import be attempted?");
+                const auto messageBoxSelection = QMessageBox::question(nullptr, tr("Legacy import"), importQuestion);
+
+                if (messageBoxSelection == QMessageBox::No) {
+                    // User said don't import, return immediately
+                    return false;
+                }
 
                 auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
                 if (oCSettings->status() != QSettings::Status::NoError) {
