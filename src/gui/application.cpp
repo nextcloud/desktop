@@ -95,7 +95,8 @@ namespace {
         "  --localdirpath       : (optional) path where to create a local sync folder when creating an account via command-line.\n"
         "  --isvfsenabled       : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
         "  --remotedirpath      : (optional) path to a remote subfolder when creating an account via command-line.\n"
-        "  --serverurl          : a server URL to use when creating an account via command-line.\n";
+        "  --serverurl          : a server URL to use when creating an account via command-line.\n"
+        "  --forcelegacyimport  : forcefully import account configurations from legacy clients (if available).\n";
 
     QString applicationTrPath()
     {
@@ -749,8 +750,9 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
-        }
-        else {
+        } else if (option == QStringLiteral("--forcelegacyimport")) {
+            AccountManager::instance()->setForceLegacyImport(true);
+        } else {
             QString errorMessage;
             if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 if (!errorMessage.isEmpty()) {
