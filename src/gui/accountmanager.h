@@ -96,6 +96,19 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
+public slots:
+    /// Saves account data, not including the credentials
+    void saveAccount(OCC::Account *a);
+
+    /// Saves account state data, not including the account
+    void saveAccountState(OCC::AccountState *a);
+
+signals:
+    void accountAdded(OCC::AccountState *account);
+    void accountRemoved(OCC::AccountState *account);
+    void accountSyncConnectionRemoved(OCC::AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
+
 private:
     // saving and loading Account to settings
     void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
@@ -113,19 +126,5 @@ private:
     QList<AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
-
-public slots:
-    /// Saves account data, not including the credentials
-    void saveAccount(OCC::Account *a);
-
-    /// Saves account state data, not including the account
-    void saveAccountState(OCC::AccountState *a);
-
-
-Q_SIGNALS:
-    void accountAdded(OCC::AccountState *account);
-    void accountRemoved(OCC::AccountState *account);
-    void accountSyncConnectionRemoved(OCC::AccountState *account);
-    void removeAccountFolders(OCC::AccountState *account);
 };
 }
