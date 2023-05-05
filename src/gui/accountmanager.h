@@ -39,11 +39,6 @@ public:
     ~AccountManager() override = default;
 
     /**
-     * Saves the accounts to a given settings file
-     */
-    void save(bool saveCredentials = true);
-
-    /**
      * Creates account objects from a given settings file.
      *
      * Returns false if there was an error reading the settings,
@@ -56,11 +51,6 @@ public:
      * Typically called from the wizard
      */
     AccountState *addAccount(const AccountPtr &newAccount);
-
-    /**
-     * remove all accounts
-     */
-    void shutdown();
 
     /**
      * Return a list of all accounts.
@@ -80,11 +70,6 @@ public:
     [[nodiscard]] AccountStatePtr accountFromUserId(const QString &id) const;
 
     /**
-     * Delete the AccountState
-     */
-    void deleteAccount(AccountState *account);
-
-    /**
      * Creates an account and sets up some basic handlers.
      * Does *not* add the account to the account manager just yet.
      */
@@ -102,6 +87,15 @@ public slots:
 
     /// Saves account state data, not including the account
     void saveAccountState(OCC::AccountState *a);
+
+    /// Saves the accounts to a given settings file
+    void save(bool saveCredentials = true);
+
+    /// Delete the AccountState
+    void deleteAccount(AccountState *account);
+
+    /// Remove all accounts
+    void shutdown();
 
 signals:
     void accountAdded(OCC::AccountState *account);
