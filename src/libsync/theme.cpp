@@ -145,7 +145,12 @@ QString Theme::configFileName() const
 
 QIcon Theme::applicationIcon() const
 {
-    return themeUniversalIcon(QStringLiteral(APPLICATION_ICON_NAME "-icon"));
+    return themeUniversalIcon(applicationIconName() + QStringLiteral("-icon"));
+}
+
+QString Theme::applicationIconName() const
+{
+    return QStringLiteral(APPLICATION_ICON_NAME);
 }
 
 QIcon Theme::aboutIcon() const

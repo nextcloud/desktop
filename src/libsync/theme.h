@@ -115,6 +115,7 @@ public:
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
 
     virtual QIcon applicationIcon() const;
+    virtual QString applicationIconName() const;
     virtual QIcon aboutIcon() const;
 
     /**
