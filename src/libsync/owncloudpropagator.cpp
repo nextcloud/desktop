@@ -652,7 +652,11 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         _anotherSyncNeeded = true;
     } else if (item->_isEncryptedMetadataNeedUpdate) {
         SyncJournalFileRecord record;
-        if (_journal->getFileRecord(item->_file, &record) && record._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2) {
+        const auto isUnexpectedMetadataFormat = _journal->getFileRecord(item->_file, &record)
+            && record._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2;
+        if (isUnexpectedMetadataFormat && _account->shouldSkipE2eeMetadataChecksumValidation()) {
+            qCDebug(lcPropagator) << "Getting unexpected metadata format, but allowing to continue as shouldSkipE2eeMetadataChecksumValidation is set.";
+        } else if (isUnexpectedMetadataFormat && !_account->shouldSkipE2eeMetadataChecksumValidation()) {
             qCDebug(lcPropagator) << "could have upgraded metadata";
             item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Error with the metadata. Getting unexpected metadata format.");

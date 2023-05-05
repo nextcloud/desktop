@@ -233,6 +233,10 @@ public:
      */
     [[nodiscard]] QString serverVersion() const;
 
+    // check if the checksum validation of E2EE metadata is allowed to be skipped via config file, this will only work before client 3.9.0
+    [[nodiscard]] bool shouldSkipE2eeMetadataChecksumValidation() const;
+    void resetShouldSkipE2eeMetadataChecksumValidation();
+
     /** Server version for easy comparison.
      *
      * Example: serverVersionInt() >= makeServerVersion(11, 2, 3)
@@ -402,6 +406,7 @@ private:
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
     QString _serverVersion;
+    bool _skipE2eeMetadataChecksumValidation = false;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QSharedPointer<QNetworkAccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
