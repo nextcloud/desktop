@@ -558,4 +558,19 @@ void AccountManager::addAccountState(AccountState *accountState)
     ptr->trySignIn();
     emit accountAdded(accountState);
 }
+
+bool AccountManager::forceLegacyImport() const
+{
+    return _forceLegacyImport;
+}
+
+void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
+{
+    if (_forceLegacyImport == forceLegacyImport) {
+        return;
+    }
+
+    _forceLegacyImport = forceLegacyImport;
+    Q_EMIT forceLegacyImportChanged();
+}
 }

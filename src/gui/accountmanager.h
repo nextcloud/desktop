@@ -26,6 +26,9 @@ namespace OCC {
 class AccountManager : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(bool forceLegacyImport READ forceLegacyImport WRITE setForceLegacyImport NOTIFY forceLegacyImportChanged)
+
 public:
     enum AccountsRestoreResult {
         AccountsRestoreFailure = 0,
@@ -70,6 +73,12 @@ public:
     [[nodiscard]] AccountStatePtr accountFromUserId(const QString &id) const;
 
     /**
+     * Returns whether the account setup will force an import of
+     * legacy clients' accounts (true), or ask first (false)
+     */
+    [[nodiscard]] bool forceLegacyImport() const;
+
+    /**
      * Creates an account and sets up some basic handlers.
      * Does *not* add the account to the account manager just yet.
      */
@@ -97,11 +106,14 @@ public slots:
     /// Remove all accounts
     void shutdown();
 
+    void setForceLegacyImport(const bool forceLegacyImport);
+
 signals:
     void accountAdded(OCC::AccountState *account);
     void accountRemoved(OCC::AccountState *account);
     void accountSyncConnectionRemoved(OCC::AccountState *account);
     void removeAccountFolders(OCC::AccountState *account);
+    void forceLegacyImportChanged();
 
 private:
     // saving and loading Account to settings
@@ -120,5 +132,6 @@ private:
     QList<AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
+    bool _forceLegacyImport = false;
 };
 }
