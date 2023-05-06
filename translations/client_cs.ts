@@ -5707,7 +5707,7 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="326"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Povolit nahrávání a úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
@@ -5717,7 +5717,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="359"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>Pouze prohlížet</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="394"/>
