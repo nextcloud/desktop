@@ -17,22 +17,22 @@
 #include <QObject>
 #include <QString>
 #include <QNetworkReply>
-
+#include "encryptedfoldermetadatahandler.h"
 #include "syncfileitem.h"
 
 namespace OCC {
 
 class OwncloudPropagator;
 /**
- * @brief The AbstractPropagateRemoteDeleteEncrypted class is the base class for Propagate Remote Delete Encrypted jobs
+ * @brief The BasePropagateRemoteDeleteEncrypted class is the base class for Propagate Remote Delete Encrypted jobs
  * @ingroup libsync
  */
-class AbstractPropagateRemoteDeleteEncrypted : public QObject
+class BasePropagateRemoteDeleteEncrypted : public QObject
 {
     Q_OBJECT
 public:
-    AbstractPropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
-    ~AbstractPropagateRemoteDeleteEncrypted() override = default;
+    BasePropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
+    ~BasePropagateRemoteDeleteEncrypted() override = default;
 
     [[nodiscard]] QNetworkReply::NetworkError networkError() const;
     [[nodiscard]] QString errorString() const;
@@ -46,27 +46,33 @@ protected:
     void storeFirstError(QNetworkReply::NetworkError err);
     void storeFirstErrorString(const QString &errString);
 
-    void startLsColJob(const QString &path);
-    void slotFolderEncryptedIdReceived(const QStringList &list);
-    void slotTryLock(const QByteArray &folderId);
-    void slotFolderLockedSuccessfully(const QByteArray &folderId, const QByteArray &token);
-    virtual void slotFolderUnLockedSuccessfully(const QByteArray &folderId);
-    virtual void slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode) = 0;
-    void slotDeleteRemoteItemFinished();
+    void fetchMetadataForPath(const QString &path);
+    void uploadMetadata(const EncryptedFolderMetadataHandler::UploadMode uploadMode = EncryptedFolderMetadataHandler::UploadMode::DoNotKeepLock);
+
+    [[nodiscard]] QSharedPointer<FolderMetadata> folderMetadata() const;
+    [[nodiscard]] const QByteArray folderToken() const;
 
     void deleteRemoteItem(const QString &filename);
-    void unlockFolder();
+
+    void unlockFolder(const EncryptedFolderMetadataHandler::UnlockFolderWithResult result);
     void taskFailed();
 
+protected slots:
+    virtual void slotFolderUnLockFinished(const QByteArray &folderId, int statusCode);
+    virtual void slotFetchMetadataJobFinished(int statusCode, const QString &message) = 0;
+    virtual void slotUpdateMetadataJobFinished(int statusCode, const QString &message) = 0;
+    void slotDeleteRemoteItemFinished();
+
 protected:
-    OwncloudPropagator *_propagator = nullptr;
+    QPointer<OwncloudPropagator> _propagator = nullptr;
     SyncFileItemPtr _item;
-    QByteArray _folderToken;
-    QByteArray _folderId;
-    bool _folderLocked = false;
     bool _isTaskFailed = false;
     QNetworkReply::NetworkError _networkError = QNetworkReply::NoError;
     QString _errorString;
+    QString _fullFolderRemotePath;
+
+private:
+    QScopedPointer<EncryptedFolderMetadataHandler> _encryptedFolderMetadataHandler;
 };
 
 }

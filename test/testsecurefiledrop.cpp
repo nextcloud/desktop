@@ -1,25 +1,27 @@
 /*
- *    This software is in the public domain, furnished "as is", without technical
- *    support, and with no warranty, express or implied, as to its usefulness for
- *    any purpose.
+ * Copyright (C) 2024 by Oleksandr Zolotov <alex@nextcloud.com>
  *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
  */
-
-#include "updatefiledropmetadata.h"
-#include "syncengine.h"
 #include "syncenginetestutils.h"
-#include "testhelper.h"
-#include "owncloudpropagator_p.h"
-#include "propagatorjobs.h"
 #include "clientsideencryption.h"
-
+#include "foldermetadata.h"
+#include <array>
 #include <QtTest>
 
 namespace
 {
-   constexpr auto fakeE2eeFolderName = "fake_e2ee_folder";
-   const QString fakeE2eeFolderPath = QStringLiteral("/") + fakeE2eeFolderName;
- };
+   const std::array<QString, 2> fakeFiles{"fakefile.txt", "fakefile1.txt"};
+   const std::array<QString, 2> fakeFilesFileDrop{"fakefiledropped.txt", "fakefiledropped1.txt"};
+};
 
 using namespace OCC;
 
@@ -27,165 +29,158 @@ class TestSecureFileDrop : public QObject
 {
     Q_OBJECT
 
-    FakeFolder _fakeFolder{FileInfo()};
-    QSharedPointer<OwncloudPropagator> _propagator;
+    QScopedPointer<FakeQNAM> _fakeQnam;
+    AccountPtr _account;
+
     QScopedPointer<FolderMetadata> _parsedMetadataWithFileDrop;
     QScopedPointer<FolderMetadata> _parsedMetadataAfterProcessingFileDrop;
-
-    int _lockCallsCount = 0;
-    int _unlockCallsCount = 0;
-    int _propFindCallsCount = 0;
-    int _getMetadataCallsCount = 0;
-    int _putMetadataCallsCount = 0;
 
 private slots:
     void initTestCase()
     {
-        _fakeFolder.remoteModifier().mkdir(fakeE2eeFolderName);
-        _fakeFolder.remoteModifier().insert(fakeE2eeFolderName + QStringLiteral("/") + QStringLiteral("fake_e2ee_file"), 100);
+        QVariantMap capabilities;
+        capabilities[QStringLiteral("end-to-end-encryption")] = QVariantMap{{QStringLiteral("enabled"), true}, {QStringLiteral("api-version"), "2.0"}};
+
+        _account = Account::create();
+        const QUrl url("http://example.de");
+        _fakeQnam.reset(new FakeQNAM({}));
+        const auto cred = new FakeCredentials{_fakeQnam.data()};
+        cred->setUserName("test");
+        _account->setCredentials(cred);
+        _account->setUrl(url);
+        _account->setCapabilities(capabilities);
+
+        QSslCertificate cert;
+        QSslKey publicKey;
+        QByteArray privateKey;
 
         {
             QFile e2eTestFakeCert(QStringLiteral("e2etestsfakecert.pem"));
-            if (e2eTestFakeCert.open(QFile::ReadOnly)) {
-                _fakeFolder.syncEngine().account()->e2e()->_certificate = QSslCertificate(e2eTestFakeCert.readAll());
-                e2eTestFakeCert.close();
-            }
+            QVERIFY(e2eTestFakeCert.open(QFile::ReadOnly));
+            cert = QSslCertificate(e2eTestFakeCert.readAll());
         }
         {
             QFile e2etestsfakecertpublickey(QStringLiteral("e2etestsfakecertpublickey.pem"));
-            if (e2etestsfakecertpublickey.open(QFile::ReadOnly)) {
-                _fakeFolder.syncEngine().account()->e2e()->_publicKey = QSslKey(e2etestsfakecertpublickey.readAll(), QSsl::KeyAlgorithm::Rsa, QSsl::EncodingFormat::Pem, QSsl::KeyType::PublicKey);
-                e2etestsfakecertpublickey.close();
-            }
+            QVERIFY(e2etestsfakecertpublickey.open(QFile::ReadOnly));
+            publicKey = QSslKey(e2etestsfakecertpublickey.readAll(), QSsl::KeyAlgorithm::Rsa, QSsl::EncodingFormat::Pem, QSsl::KeyType::PublicKey);
+            e2etestsfakecertpublickey.close();
         }
         {
             QFile e2etestsfakecertprivatekey(QStringLiteral("e2etestsfakecertprivatekey.pem"));
-            if (e2etestsfakecertprivatekey.open(QFile::ReadOnly)) {
-                _fakeFolder.syncEngine().account()->e2e()->_privateKey = e2etestsfakecertprivatekey.readAll();
-                e2etestsfakecertprivatekey.close();
-            }
+            QVERIFY(e2etestsfakecertprivatekey.open(QFile::ReadOnly));
+            privateKey = e2etestsfakecertprivatekey.readAll();
         }
 
-        _fakeFolder.setServerOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
-            Q_UNUSED(device);
-            QNetworkReply *reply = nullptr;
+        QVERIFY(!cert.isNull());
+        QVERIFY(!publicKey.isNull());
+        QVERIFY(!privateKey.isEmpty());
 
-            const auto path = req.url().path();
+        _account->e2e()->_certificate = cert;
+        _account->e2e()->_publicKey = publicKey;
+        _account->e2e()->_privateKey = privateKey;
 
-            if (path.contains(QStringLiteral("/end_to_end_encryption/api/v1/lock/"))) {
-                if (op == QNetworkAccessManager::DeleteOperation) {
-                    reply = new FakePayloadReply(op, req, {}, nullptr);
-                    ++_unlockCallsCount;
-                } else if (op == QNetworkAccessManager::PostOperation) {
-                    QFile fakeJsonReplyFile(QStringLiteral("fake2eelocksucceeded.json"));
-                    if (fakeJsonReplyFile.open(QFile::ReadOnly)) {
-                        const auto jsonDoc = QJsonDocument::fromJson(fakeJsonReplyFile.readAll());
-                        reply = new FakePayloadReply(op, req, jsonDoc.toJson(), nullptr);
-                        ++_lockCallsCount;
-                    } else {
-                        qCritical() << "Could not open fake JSON file!";
-                        reply = new FakePayloadReply(op, req, {}, nullptr);
-                    }
-                }
-            } else if (path.contains(QStringLiteral("/end_to_end_encryption/api/v1/meta-data/"))) {
-                if (op == QNetworkAccessManager::GetOperation) {
-                    QFile fakeJsonReplyFile(QStringLiteral("fakefiledrope2eefoldermetadata.json"));
-                    if (fakeJsonReplyFile.open(QFile::ReadOnly)) {
-                        const auto jsonDoc = QJsonDocument::fromJson(fakeJsonReplyFile.readAll());
-                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), FolderMetadata::RequiredMetadataVersion::Version1_2, jsonDoc.toJson()));
-                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), FolderMetadata::RequiredMetadataVersion::Version1_2, jsonDoc.toJson()));
-                        [[maybe_unused]] const auto result = _parsedMetadataAfterProcessingFileDrop->moveFromFileDropToFiles();
-                        reply = new FakePayloadReply(op, req, jsonDoc.toJson(), nullptr);
-                        ++_getMetadataCallsCount;
-                    } else {
-                        qCritical() << "Could not open fake JSON file!";
-                        reply = new FakePayloadReply(op, req, {}, nullptr);
-                    }
-                } else if (op == QNetworkAccessManager::PutOperation) {
-                    reply = new FakePayloadReply(op, req, {}, nullptr);
-                    ++_putMetadataCallsCount;
-                }
-            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute) == QStringLiteral("PROPFIND") && path.endsWith(fakeE2eeFolderPath)) {
-                auto fileState = _fakeFolder.currentRemoteState();
-                reply = new FakePropfindReply(fileState, op, req, nullptr);
-                ++_propFindCallsCount;
-            }
+        QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, FolderMetadata::FolderType::Root));
+        QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
+        metadataSetupCompleteSpy.wait();
+        QCOMPARE(metadataSetupCompleteSpy.count(), 1);
+        QVERIFY(metadata->isValid());
 
-            return reply;
-        });
+        for (const auto &fakeFileName : fakeFiles) {
+            FolderMetadata::EncryptedFile encryptedFile;
+            encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+            encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
+            encryptedFile.originalFilename = fakeFileName;
+            encryptedFile.mimetype = "application/octet-stream";
+            encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+            metadata->addEncryptedFile(encryptedFile);
+        }
 
-        auto transProgress = connect(&_fakeFolder.syncEngine(), &SyncEngine::transmissionProgress, [&](const ProgressInfo &pi) {
-            Q_UNUSED(pi);
-            _propagator = _fakeFolder.syncEngine().getPropagator();
-        });
+        QJsonObject fakeFileDropPart;
 
-        QVERIFY(_fakeFolder.syncOnce());
+        QJsonArray fileDropUsers;
+        for (const auto &folderUser : metadata->_folderUsers) {
+            QJsonObject fileDropUser;
+            fileDropUser.insert("userId", folderUser.userId);
+            fileDropUser.insert("encryptedFiledropKey", QString::fromUtf8(folderUser.encryptedMetadataKey.toBase64()));
+            fileDropUsers.push_back(fileDropUser);
+        }
 
-        disconnect(transProgress);
-    };
+        for (const auto &fakeFileName : fakeFilesFileDrop) {
+            FolderMetadata::EncryptedFile encryptedFile;
+            encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+            encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
+            encryptedFile.originalFilename = fakeFileName;
+            encryptedFile.mimetype = "application/octet-stream";
+            encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
 
-    void testUpdateFileDropMetadata()
-    {
-        const auto updateFileDropMetadataJob = new UpdateFileDropMetadataJob(_propagator.data(), fakeE2eeFolderPath);
-        connect(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::fileDropMetadataParsedAndAdjusted, this, [this](const FolderMetadata *const metadata) {
-            if (!metadata || metadata->files().isEmpty() || metadata->fileDrop().isEmpty()) {
-                return;
-            }
+            QJsonObject fakeFileDropEntry;
+            fakeFileDropEntry.insert("ciphertext", "");
 
-            if (_parsedMetadataAfterProcessingFileDrop->files().size() != metadata->files().size()) {
-                return;
-            }
+            QJsonObject fakeFileDropMetadataObject;
+            fakeFileDropMetadataObject.insert("filename", encryptedFile.originalFilename);
+            fakeFileDropMetadataObject.insert("mimetype", QString::fromUtf8(encryptedFile.mimetype));
+            fakeFileDropMetadataObject.insert("nonce", QString::fromUtf8(encryptedFile.initializationVector.toBase64()));
+            fakeFileDropMetadataObject.insert("key", QString::fromUtf8(encryptedFile.encryptionKey.toBase64()));
+            fakeFileDropMetadataObject.insert("authenticationTag", QString::fromUtf8(QByteArrayLiteral("123").toBase64()));
+            QJsonDocument fakeFileDropMetadata;
+            fakeFileDropMetadata.setObject(fakeFileDropMetadataObject);
 
-            if (_parsedMetadataAfterProcessingFileDrop->fileDrop() != metadata->fileDrop()) {
-                return;
-            }
 
-            bool isAnyFileDropFileMissing = false;
+            QByteArray authenticationTag;
+            const auto initializationVector = EncryptionHelper::generateRandom(16);
+            const auto cipherTextEncrypted = EncryptionHelper::gzipThenEncryptData(metadata->_metadataKeyForEncryption,
+                                                                                   fakeFileDropMetadata.toJson(QJsonDocument::JsonFormat::Compact),
+                                                                                   initializationVector,
+                                                                                   authenticationTag);
+            fakeFileDropEntry.insert("ciphertext", QString::fromUtf8(cipherTextEncrypted.toBase64()));
+            fakeFileDropEntry.insert("nonce", QString::fromUtf8(initializationVector.toBase64()));
+            fakeFileDropEntry.insert("authenticationTag", QString::fromUtf8(authenticationTag.toBase64()));
+            fakeFileDropEntry.insert("users", fileDropUsers);
 
-            const auto allKeys = metadata->fileDrop().keys();
-            for (const auto &key : allKeys) {
-                if (std::find_if(metadata->files().constBegin(), metadata->files().constEnd(), [&key](const EncryptedFile &encryptedFile) {
-                    return encryptedFile.encryptedFilename == key;
-                }) == metadata->files().constEnd()) {
-                    isAnyFileDropFileMissing = true;
-                }
-            }
+            fakeFileDropPart.insert(encryptedFile.encryptedFilename, fakeFileDropEntry);
+        }
+        metadata->setFileDrop(fakeFileDropPart);
 
-            if (!isAnyFileDropFileMissing) {
-                emit fileDropMetadataParsedAndAdjusted();
-            }
-        });
-        QSignalSpy updateFileDropMetadataJobSpy(updateFileDropMetadataJob, &UpdateFileDropMetadataJob::finished);
-        QSignalSpy fileDropMetadataParsedAndAdjustedSpy(this, &TestSecureFileDrop::fileDropMetadataParsedAndAdjusted);
-        
-        QVERIFY(updateFileDropMetadataJob->scheduleSelfOrChild());
+        auto encryptedMetadata = metadata->encryptedMetadata();
+        encryptedMetadata.replace("\"", "\\\""); 
+        const auto signature = metadata->metadataSignature();
+        QJsonDocument ocsDoc =
+            QJsonDocument::fromJson(QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(encryptedMetadata)).toUtf8());
+        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_account, ocsDoc.toJson(), RootEncryptedFolderInfo::makeDefault(), signature));
 
-        QVERIFY(updateFileDropMetadataJobSpy.wait(3000));
+        QSignalSpy metadataWithFileDropSetupCompleteSpy(_parsedMetadataWithFileDrop.data(), &FolderMetadata::setupComplete);
+        metadataWithFileDropSetupCompleteSpy.wait();
+        QCOMPARE(metadataWithFileDropSetupCompleteSpy.count(), 1);
+        QVERIFY(_parsedMetadataWithFileDrop->isValid());
 
-        QVERIFY(_parsedMetadataWithFileDrop);
-        QVERIFY(_parsedMetadataWithFileDrop->isFileDropPresent());
-
-        QVERIFY(_parsedMetadataAfterProcessingFileDrop);
-
-        QVERIFY(_parsedMetadataAfterProcessingFileDrop->files().size() != _parsedMetadataWithFileDrop->files().size());
-
-        QVERIFY(!updateFileDropMetadataJobSpy.isEmpty());
-        QVERIFY(!updateFileDropMetadataJobSpy.at(0).isEmpty());
-        QCOMPARE(updateFileDropMetadataJobSpy.at(0).first().toInt(), SyncFileItem::Status::Success);
-
-        QVERIFY(!fileDropMetadataParsedAndAdjustedSpy.isEmpty());
-
-        QCOMPARE(_lockCallsCount, 1);
-        QCOMPARE(_unlockCallsCount, 1);
-        QCOMPARE(_propFindCallsCount, 2);
-        QCOMPARE(_getMetadataCallsCount, 1);
-        QCOMPARE(_putMetadataCallsCount, 1);
-
-        updateFileDropMetadataJob->deleteLater();
+        QCOMPARE(_parsedMetadataWithFileDrop->_fileDropEntries.count(), fakeFilesFileDrop.size());
     }
 
-signals:
-    void fileDropMetadataParsedAndAdjusted();
+    void testMoveFileDropMetadata()
+    {
+        QVERIFY(_parsedMetadataWithFileDrop->isFileDropPresent());
+        QVERIFY(_parsedMetadataWithFileDrop->moveFromFileDropToFiles());
+
+        auto encryptedMetadata = _parsedMetadataWithFileDrop->encryptedMetadata();
+        encryptedMetadata.replace("\"", "\\\"");
+        const auto signature = _parsedMetadataWithFileDrop->metadataSignature();
+        QJsonDocument ocsDoc =
+            QJsonDocument::fromJson(QStringLiteral("{\"ocs\": {\"data\": {\"meta-data\": \"%1\"}}}").arg(QString::fromUtf8(encryptedMetadata)).toUtf8());
+        
+        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_account, ocsDoc.toJson(), RootEncryptedFolderInfo::makeDefault(), signature));
+
+        QSignalSpy metadataAfterProcessingFileDropSetupCompleteSpy(_parsedMetadataAfterProcessingFileDrop.data(), &FolderMetadata::setupComplete);
+        metadataAfterProcessingFileDropSetupCompleteSpy.wait();
+        QCOMPARE(metadataAfterProcessingFileDropSetupCompleteSpy.count(), 1);
+        QVERIFY(_parsedMetadataAfterProcessingFileDrop->isValid());
+
+        for (const auto &fakeFileName : fakeFilesFileDrop) {
+            const auto foundInEncryptedFiles = std::find_if(std::cbegin(_parsedMetadataAfterProcessingFileDrop->_files), std::cend(_parsedMetadataAfterProcessingFileDrop->_files), [fakeFileName](const auto &encryptedFile) {
+                return encryptedFile.originalFilename == fakeFileName;
+            });
+            QVERIFY(foundInEncryptedFiles != std::cend(_parsedMetadataAfterProcessingFileDrop->_files));
+        }
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSecureFileDrop)

@@ -147,6 +147,8 @@ class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
 public:
     explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray &fileId, SyncJournalDb *journalDb, const QSslKey publicKey, QObject *parent = nullptr);
 
+    void setCounter(const quint64 counter);
+
 public slots:
     void start() override;
 
@@ -163,6 +165,7 @@ private:
     QByteArray _fileId;
     QPointer<SyncJournalDb> _journalDb;
     QSslKey _publicKey;
+    quint64 _counter = 0;
 };
 
 
@@ -177,8 +180,11 @@ public:
         SyncJournalDb *journalDb,
         QObject *parent = nullptr);
 
+    [[nodiscard]] bool shouldRollbackMetadataChanges() const;
+
 public slots:
     void start() override;
+    void setShouldRollbackMetadataChanges(bool shouldRollbackMetadataChanges);
 
 protected:
     bool finished() override;
@@ -195,6 +201,7 @@ private:
     QByteArray _token;
     QBuffer *_tokenBuf = nullptr;
     QPointer<SyncJournalDb> _journalDb;
+    bool _shouldRollbackMetadataChanges = false;
 };
 
 
@@ -205,7 +212,9 @@ public:
     explicit StoreMetaDataApiJob (
         const AccountPtr &account,
         const QByteArray& fileId,
+        const QByteArray &token,
         const QByteArray& b64Metadata,
+        const QByteArray &signature,
         QObject *parent = nullptr);
 
 public slots:
@@ -220,7 +229,9 @@ signals:
 
 private:
     QByteArray _fileId;
+    QByteArray _token;
     QByteArray _b64Metadata;
+    QByteArray _signature;
 };
 
 class OWNCLOUDSYNC_EXPORT UpdateMetadataApiJob : public AbstractNetworkJob
@@ -232,6 +243,7 @@ public:
         const QByteArray& fileId,
         const QByteArray& b64Metadata,
         const QByteArray& lockedToken,
+        const QByteArray &signature,
         QObject *parent = nullptr);
 
 public slots:
@@ -248,6 +260,7 @@ private:
     QByteArray _fileId;
     QByteArray _b64Metadata;
     QByteArray _token;
+    QByteArray _signature;
 };
 
 
@@ -259,6 +272,8 @@ public:
         const AccountPtr &account,
         const QByteArray& fileId,
         QObject *parent = nullptr);
+
+    [[nodiscard]] const QByteArray &signature() const;
 
 public slots:
     void start() override;
@@ -272,6 +287,7 @@ signals:
 
 private:
     QByteArray _fileId;
+    QByteArray _signature;
 };
 
 class OWNCLOUDSYNC_EXPORT DeleteMetadataApiJob : public AbstractNetworkJob
@@ -281,6 +297,7 @@ public:
     explicit DeleteMetadataApiJob (
         const AccountPtr &account,
         const QByteArray& fileId,
+        const QByteArray& token,
         QObject *parent = nullptr);
 
 public slots:
@@ -295,6 +312,7 @@ signals:
 
 private:
     QByteArray _fileId;
+    QByteArray _token;
 };
 
 }

@@ -159,7 +159,7 @@ bool Capabilities::clientSideEncryptionAvailable() const
         return false;
     }
 
-    const auto capabilityAvailable = (major == 1 && minor >= 1);
+    const auto capabilityAvailable = (major >= 1 && minor >= 0);
     if (!capabilityAvailable) {
         qCInfo(lcServerCapabilities) << "Incompatible E2EE API version:" << version;
     }
@@ -176,10 +176,10 @@ double Capabilities::clientSideEncryptionVersion() const
     const auto properties = (*foundEndToEndEncryptionInCaps).toMap();
     const auto enabled = properties.value(QStringLiteral("enabled"), false).toBool();
     if (!enabled) {
-        return false;
+        return 0.0;
     }
 
-    return properties.value(QStringLiteral("api-version"), 1.0).toDouble();
+    return properties.value(QStringLiteral("api-version"), "1.0").toDouble();
 }
 
 bool Capabilities::notificationsAvailable() const

@@ -25,6 +25,8 @@
 #include "folderman.h"
 #include "sharepermissions.h"
 #include "theme.h"
+#include "updatee2eefolderusersmetadatajob.h"
+#include "wordlist.h"
 
 namespace {
 
@@ -180,6 +182,7 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
                 || (share->getShareType() == Share::TypeLink && _accountState->account()->capabilities().sharePublicLinkEnforcePassword()));
     case EditingAllowedRole:
         return share->getPermissions().testFlag(SharePermissionUpdate);
+
     case ResharingAllowedRole:
         return share->getPermissions().testFlag(SharePermissionShare);
 
@@ -204,7 +207,7 @@ void ShareModel::resetData()
 {
     beginResetModel();
 
-    _folder = nullptr;
+    _synchronizationFolder = nullptr;
     _sharePath.clear();
     _maxSharingPermissions = {};
     _numericFileId.clear();
@@ -238,9 +241,9 @@ void ShareModel::updateData()
         return;
     }
 
-    _folder = FolderMan::instance()->folderForPath(_localPath);
+    _synchronizationFolder = FolderMan::instance()->folderForPath(_localPath);
 
-    if (!_folder) {
+    if (!_synchronizationFolder) {
         qCWarning(lcShareModel) << "Could not update share model data for" << _localPath << "no responsible folder found";
         resetData();
         return;
@@ -248,13 +251,13 @@ void ShareModel::updateData()
 
     qCDebug(lcShareModel) << "Updating share model data now.";
 
-    const auto relPath = _localPath.mid(_folder->cleanPath().length() + 1);
-    _sharePath = _folder->remotePathTrailingSlash() + relPath;
+    const auto relPath = _localPath.mid(_synchronizationFolder->cleanPath().length() + 1);
+    _sharePath = _synchronizationFolder->remotePathTrailingSlash() + relPath;
 
     SyncJournalFileRecord fileRecord;
     auto resharingAllowed = true; // lets assume the good
 
-    if (_folder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid() && !fileRecord._remotePerm.isNull()
+    if (_synchronizationFolder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid() && !fileRecord._remotePerm.isNull()
         && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         qCInfo(lcShareModel) << "File record says resharing not allowed";
         resharingAllowed = false;
@@ -273,6 +276,14 @@ void ShareModel::updateData()
         }
     } else {
         _sharedItemType = fileRecord.isE2eEncrypted() ? SharedItemType::SharedItemTypeEncryptedFile : SharedItemType::SharedItemTypeFile;
+    }
+
+    const auto prevIsShareDisabledEncryptedFolder = _isShareDisabledEncryptedFolder;
+    _isShareDisabledEncryptedFolder = fileRecord.isE2eEncrypted()
+        && (_sharedItemType != SharedItemType::SharedItemTypeEncryptedTopLevelFolder
+            || fileRecord._e2eEncryptionStatus < SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0);
+    if (prevIsShareDisabledEncryptedFolder != _isShareDisabledEncryptedFolder) {
+        emit isShareDisabledEncryptedFolderChanged();
     }
 
     // Will get added when shares are fetched if no link shares are fetched
@@ -435,14 +446,14 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
     }
 
     const auto privateLinkUrl = result["privatelink"].toString();
-    const auto numericFileId = result["fileid"].toByteArray();
+    _fileRemoteId = result["fileid"].toByteArray();
 
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcShareModel) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;
-    } else if (!numericFileId.isEmpty()) {
-        qCInfo(lcShareModel) << "Received numeric file id for" << _sharePath << numericFileId;
-        _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
+    } else if (!_fileRemoteId.isEmpty()) {
+        qCInfo(lcShareModel) << "Received numeric file id for" << _sharePath << _fileRemoteId;
+        _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(_fileRemoteId).toString(QUrl::FullyEncoded);
     }
 
     setupInternalLinkShare();
@@ -825,6 +836,44 @@ void ShareModel::slotShareExpireDateSet(const QString &shareId)
     Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { ExpireDateEnabledRole, ExpireDateRole });
 }
 
+void ShareModel::slotDeleteE2EeShare(const SharePtr &share) const
+{
+    const auto account = accountState()->account();
+    QString folderAlias;
+    for (const auto &f : FolderMan::instance()->map()) {
+        if (f->accountState()->account() != account) {
+            continue;
+        }
+        const auto folderPath = f->remotePath();
+        if (share->path().startsWith(folderPath) && (share->path() == folderPath || folderPath.endsWith('/') || share->path()[folderPath.size()] == '/')) {
+            folderAlias = f->alias();
+        }
+    }
+
+    auto folder = FolderMan::instance()->folder(folderAlias);
+    if (!folder || !folder->journalDb()) {
+        emit serverError(404, tr("Could not find local folder for %1").arg(share->path()));
+        return;
+    }
+
+    const auto removeE2eeShareJob = new UpdateE2eeFolderUsersMetadataJob(account,
+                                                                         folder->journalDb(),
+                                                                         folder->remotePath(),
+                                                                         UpdateE2eeFolderUsersMetadataJob::Remove,
+                                                                         share->path(),
+                                                                         share->getShareWith()->shareWith());
+    removeE2eeShareJob->setParent(_manager.data());
+    removeE2eeShareJob->start();
+    connect(removeE2eeShareJob, &UpdateE2eeFolderUsersMetadataJob::finished, this, [share, this](int code, const QString &message) {
+        if (code != 200) {
+            qCWarning(lcShareModel) << "Could not remove share from E2EE folder's metadata!";
+            emit serverError(code, message);
+            return;
+        }
+        share->deleteShare();
+    });
+}
+
 // ----------------------- Shares modification slots ----------------------- //
 
 void ShareModel::toggleShareAllowEditing(const SharePtr &share, const bool enable)
@@ -1099,11 +1148,15 @@ void ShareModel::createNewUserGroupShare(const ShareePtr &sharee)
         return;
     }
 
-    _manager->createShare(_sharePath,
-                          Share::ShareType(sharee->type()),
-                          sharee->shareWith(),
-                          _maxSharingPermissions,
-                          {});
+    if (isSecureFileDropSupportedFolder()) {
+        if (!_synchronizationFolder) {
+            qCWarning(lcShareModel) << "Could not share an E2EE folder" << _localPath << "no responsible folder found";
+            return;
+        }
+        _manager->createE2EeShareJob(_sharePath, sharee, _maxSharingPermissions, {});
+    } else {
+        _manager->createShare(_sharePath, Share::ShareType(sharee->type()), sharee->shareWith(), _maxSharingPermissions, {});
+    }
 }
 
 void ShareModel::createNewUserGroupShareWithPassword(const ShareePtr &sharee, const QString &password) const
@@ -1137,7 +1190,11 @@ void ShareModel::deleteShare(const SharePtr &share) const
         return;
     }
 
-    share->deleteShare();
+    if (isEncryptedItem() && Share::isShareTypeUserGroupEmailRoomOrRemote(share->getShareType())) {
+        slotDeleteE2EeShare(share);
+    } else {
+        share->deleteShare();
+    }
 }
 
 void ShareModel::deleteShareFromQml(const QVariant &share) const
@@ -1252,6 +1309,11 @@ bool ShareModel::serverAllowsResharing() const
 {
     return _accountState && _accountState->account() && _accountState->account()->capabilities().isValid()
         && _accountState->account()->capabilities().shareResharing();
+}
+
+bool ShareModel::isShareDisabledEncryptedFolder() const
+{
+    return _isShareDisabledEncryptedFolder;
 }
 
 QVariantList ShareModel::sharees() const

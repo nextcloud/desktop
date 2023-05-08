@@ -23,13 +23,24 @@ Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "nextcloud.sync.networkjob.sendcsr", Q
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "nextcloud.sync.networkjob.storeprivatekey", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseJob, "nextcloud.sync.networkjob.clientsideencrypt", QtInfoMsg)
 
+namespace
+{
+constexpr auto e2eeSignatureHeaderName = "X-NC-E2EE-SIGNATURE";
+}
+
 namespace OCC {
 
 GetMetadataApiJob::GetMetadataApiJob(const AccountPtr& account,
                                     const QByteArray& fileId,
                                     QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent)
+    , _fileId(fileId)
 {
+}
+
+const QByteArray &GetMetadataApiJob::signature() const
+{
+    return _signature;
 }
 
 void GetMetadataApiJob::start()
@@ -54,6 +65,9 @@ bool GetMetadataApiJob::finished()
         emit error(_fileId, retCode);
         return true;
     }
+    if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
+        _signature = reply()->rawHeader(e2eeSignatureHeaderName);
+    }
     QJsonParseError error{};
     const auto replyData = reply()->readAll();
     auto json = QJsonDocument::fromJson(replyData, &error);
@@ -64,9 +78,15 @@ bool GetMetadataApiJob::finished()
 
 StoreMetaDataApiJob::StoreMetaDataApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
+                                                 const QByteArray &token,
                                                  const QByteArray& b64Metadata,
+                                                 const QByteArray &signature,
                                                  QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId), _b64Metadata(b64Metadata)
+: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent),
+_fileId(fileId),
+_token(token),
+_b64Metadata(b64Metadata),
+_signature(signature)
 {
 }
 
@@ -75,8 +95,18 @@ void StoreMetaDataApiJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
+    if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
+        if (!_signature.isEmpty()) {
+            req.setRawHeader(e2eeSignatureHeaderName, _signature);
+        }
+    }
     QUrlQuery query;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    if (_account->capabilities().clientSideEncryptionVersion() < 2.0) {
+        query.addQueryItem(QStringLiteral("e2e-token"), _token);
+    } else {
+        req.setRawHeader(QByteArrayLiteral("e2e-token"), _token);
+    }
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(query);
 
@@ -95,8 +125,8 @@ bool StoreMetaDataApiJob::finished()
 		if (retCode != 200) {
 			qCInfo(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
 			emit error(_fileId, retCode);
+            return false;
 		}
-
 		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
@@ -106,11 +136,13 @@ UpdateMetadataApiJob::UpdateMetadataApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& b64Metadata,
                                                  const QByteArray& token,
+                                                 const QByteArray& signature,
                                                  QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent)
+: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent)
 , _fileId(fileId),
 _b64Metadata(b64Metadata),
-_token(token)
+_token(token),
+_signature(signature)
 {
 }
 
@@ -120,16 +152,26 @@ void UpdateMetadataApiJob::start()
     req.setRawHeader("OCS-APIREQUEST", "true");
     req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
 
+    if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
+        if (!_signature.isEmpty()) {
+            req.setRawHeader(e2eeSignatureHeaderName, _signature);
+        }
+    }
+
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("format"), QStringLiteral("json"));
-    urlQuery.addQueryItem(QStringLiteral("e2e-token"), _token);
+
+    if (_account->capabilities().clientSideEncryptionVersion() < 2.0) {
+        urlQuery.addQueryItem(QStringLiteral("e2e-token"), _token);
+    } else {
+        req.setRawHeader(QByteArrayLiteral("e2e-token"), _token);
+    }
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(urlQuery);
 
     QUrlQuery params;
     params.addQueryItem("metaData",QUrl::toPercentEncoding(_b64Metadata));
-    params.addQueryItem("e2e-token", _token);
 
     QByteArray data = params.query().toLocal8Bit();
     auto buffer = new QBuffer(this);
@@ -146,6 +188,7 @@ bool UpdateMetadataApiJob::finished()
 		if (retCode != 200) {
 			qCInfo(lcCseJob()) << "error updating the metadata" << path() << errorString() << retCode;
 			emit error(_fileId, retCode);
+            return false;
 		}
 
 		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
@@ -158,7 +201,7 @@ UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
                                                  const QByteArray& token,
                                                  SyncJournalDb *journalDb,
                                                  QObject* parent)
-    : AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("lock/") + fileId, parent)
     , _fileId(fileId)
     , _token(token)
     , _journalDb(journalDb)
@@ -172,12 +215,29 @@ void UnlockEncryptFolderApiJob::start()
     req.setRawHeader("e2e-token", _token);
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
+
+    if (shouldRollbackMetadataChanges()) {
+        QUrlQuery query(url);
+        query.addQueryItem(QLatin1String("abort"), QLatin1String("true"));
+        url.setQuery(query);
+    }
+
     sendRequest("DELETE", url, req);
 
     AbstractNetworkJob::start();
     qCInfo(lcCseJob()) << "Starting the request to unlock.";
 
     qCInfo(lcCseJob()) << "unlock folder started for:" << path() << " for fileId: " << _fileId;
+}
+
+void UnlockEncryptFolderApiJob::setShouldRollbackMetadataChanges(bool shouldRollbackMetadataChanges)
+{
+    _shouldRollbackMetadataChanges = shouldRollbackMetadataChanges;
+}
+
+[[nodiscard]] bool UnlockEncryptFolderApiJob::shouldRollbackMetadataChanges() const
+{
+    return _shouldRollbackMetadataChanges;
 }
 
 bool UnlockEncryptFolderApiJob::finished()
@@ -198,15 +258,16 @@ bool UnlockEncryptFolderApiJob::finished()
         emit error(_fileId, retCode, errorString());
         return true;
     }
+
     emit success(_fileId);
     return true;
 }
 
 
-DeleteMetadataApiJob::DeleteMetadataApiJob(const AccountPtr& account,
-                                                  const QByteArray& fileId,
-                                                 QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
+DeleteMetadataApiJob::DeleteMetadataApiJob(const AccountPtr& account, const QByteArray& fileId, const QByteArray &token, QObject* parent)
+: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("meta-data/") + fileId, parent), 
+_fileId(fileId),
+_token(token)
 {
 }
 
@@ -214,6 +275,7 @@ void DeleteMetadataApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    req.setRawHeader(QByteArrayLiteral("e2e-token"), _token);
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     sendRequest("DELETE", url, req);
@@ -240,7 +302,7 @@ LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr &account,
                                                  SyncJournalDb *journalDb,
                                                  const QSslKey publicKey,
                                                  QObject *parent)
-    : AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent)
+    : AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("lock/") + fileId, parent)
     , _fileId(fileId)
     , _journalDb(journalDb)
     , _publicKey(publicKey)
@@ -255,6 +317,7 @@ void LockEncryptFolderApiJob::start()
         qCInfo(lcCseJob()) << "lock folder started for:" << path() << " for fileId: " << _fileId << " but we need to first lift the previous lock";
         const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, folderTokenEncrypted);
         const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, folderToken, _journalDb, this);
+        unlockJob->setShouldRollbackMetadataChanges(true);
         connect(unlockJob, &UnlockEncryptFolderApiJob::done, this, [this]() {
             this->start();
         });
@@ -264,12 +327,18 @@ void LockEncryptFolderApiJob::start()
 
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
+        if (_counter > 0) {
+            req.setRawHeader("X-NC-E2EE-COUNTER", QByteArray::number(_counter));
+        }
+    }
     QUrlQuery query;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(query);
 
     qCInfo(lcCseJob()) << "locking the folder with id" << _fileId << "as encrypted";
+
     sendRequest("POST", url, req);
     AbstractNetworkJob::start();
 
@@ -305,8 +374,13 @@ bool LockEncryptFolderApiJob::finished()
     return true;
 }
 
+void LockEncryptFolderApiJob::setCounter(quint64 counter)
+{
+    _counter = counter;
+}
+
 SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, FlagAction flagAction, QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
+: AbstractNetworkJob(account, e2eeBaseUrl(account) + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
 {
 }
 

@@ -1030,6 +1030,108 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     return {};
 }
 
+bool SyncJournalDb::getRootE2eFolderRecord(const QString &remoteFolderPath, SyncJournalFileRecord *rec)
+{
+    Q_ASSERT(rec);
+    rec->_path.clear();
+    Q_ASSERT(!rec->isValid());
+
+    Q_ASSERT(!remoteFolderPath.isEmpty());
+
+    Q_ASSERT(!remoteFolderPath.isEmpty() && remoteFolderPath != QStringLiteral("/"));
+    if (remoteFolderPath.isEmpty() || remoteFolderPath == QStringLiteral("/")) {
+        qCWarning(lcDb) << "Invalid folder path!";
+        return false;
+    }
+
+    auto remoteFolderPathSplit = remoteFolderPath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+
+    if (remoteFolderPathSplit.isEmpty()) {
+        qCWarning(lcDb) << "Invalid folder path!";
+        return false;
+    }
+
+    while (!remoteFolderPathSplit.isEmpty()) {
+        const auto result = getFileRecord(remoteFolderPathSplit.join(QLatin1Char('/')), rec);
+        if (!result) {
+            return false;
+        }
+        if (rec->isE2eEncrypted() && rec->_e2eMangledName.isEmpty()) {
+            // it's a toplevel folder record
+            return true;
+        }
+        remoteFolderPathSplit.removeLast();
+    }
+
+    return true;
+}
+
+bool SyncJournalDb::listAllE2eeFoldersWithEncryptionStatusLessThan(const int status, const std::function<void(const SyncJournalFileRecord &)> &rowCallback)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (_metadataTableIsEmpty)
+        return true;
+
+    if (!checkConnect())
+        return false;
+    const auto query = _queryManager.get(PreparedSqlQueryManager::ListAllTopLevelE2eeFoldersStatusLessThanQuery,
+                                         QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE type == 2 AND isE2eEncrypted >= ?1 AND isE2eEncrypted < ?2 ORDER BY path||'/' ASC"),
+                                         _db);
+    if (!query) {
+        return false;
+    }
+    query->bindValue(1, SyncJournalFileRecord::EncryptionStatus::Encrypted);
+    query->bindValue(2, status);
+
+    if (!query->exec())
+        return false;
+
+    forever {
+        auto next = query->next();
+        if (!next.ok)
+            return false;
+        if (!next.hasData)
+            break;
+
+        SyncJournalFileRecord rec;
+        fillFileRecordFromGetQuery(rec, *query);
+
+        if (rec._type == ItemTypeSkip) {
+            continue;
+        }
+
+        rowCallback(rec);
+    }
+
+    return true;
+}
+
+bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, SyncJournalFileRecord *rec)
+{
+    Q_ASSERT(rec);
+    rec->_path.clear();
+    Q_ASSERT(!rec->isValid());
+
+    const auto slashPosition = filename.lastIndexOf(QLatin1Char('/'));
+    const auto parentPath = slashPosition >= 0 ? filename.left(slashPosition) : QString();
+
+    auto pathComponents = parentPath.split(QLatin1Char('/'));
+    while (!pathComponents.isEmpty()) {
+        const auto pathCompontentsJointed = pathComponents.join(QLatin1Char('/'));
+        if (!getFileRecord(pathCompontentsJointed, rec)) {
+            qCDebug(lcDb) << "could not get file from local DB" << pathCompontentsJointed;
+            return false;
+        }
+
+        if (rec->isValid() && rec->isE2eEncrypted()) {
+            break;
+        }
+        pathComponents.removeLast();
+    }
+    return true;
+}
+
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
 {
     QMutexLocker locker(&_mutex);

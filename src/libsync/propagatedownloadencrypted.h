@@ -7,11 +7,12 @@
 #include "syncfileitem.h"
 #include "owncloudpropagator.h"
 #include "clientsideencryption.h"
+#include "foldermetadata.h"
 
 class QJsonDocument;
 
 namespace OCC {
-
+class EncryptedFolderMetadataHandler;
 class PropagateDownloadEncrypted : public QObject {
   Q_OBJECT
 public:
@@ -20,11 +21,8 @@ public:
   bool decryptFile(QFile& tmpFile);
   [[nodiscard]] QString errorString() const;
 
-public slots:
-  void checkFolderId(const QStringList &list);
-  void checkFolderEncryptedMetadata(const QJsonDocument &json);
-  void folderIdError();
-  void folderEncryptedMetadataError(const QByteArray &fileId, int httpReturnCode);
+private slots:
+  void slotFetchMetadataJobFinished(int statusCode, const QString &message);
 
 signals:
   void fileMetadataFound();
@@ -37,8 +35,12 @@ private:
   QString _localParentPath;
   SyncFileItemPtr _item;
   QFileInfo _info;
-  EncryptedFile _encryptedInfo;
+  FolderMetadata::EncryptedFile _encryptedInfo;
   QString _errorString;
+  QString _remoteParentPath;
+  QString _parentPathInDb;
+
+  QScopedPointer<EncryptedFolderMetadataHandler> _encryptedFolderMetadataHandler;
 };
 
 }

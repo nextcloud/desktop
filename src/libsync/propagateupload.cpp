@@ -438,8 +438,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
 
 void PropagateUploadFileCommon::slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode)
 {
-    qDebug() << "Failed to unlock encrypted folder" << folderId;
     if (_uploadStatus.status == SyncFileItem::NoStatus && httpReturnCode != 200) {
+        qDebug() << "Failed to unlock encrypted folder" << folderId;
         done(SyncFileItem::FatalError, tr("Failed to unlock encrypted folder."));
     } else {
         done(_uploadStatus.status, _uploadStatus.message);

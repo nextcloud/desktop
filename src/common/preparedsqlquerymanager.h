@@ -107,6 +107,7 @@ public:
         GetE2EeLockedFolderQuery,
         GetE2EeLockedFoldersQuery,
         DeleteE2EeLockedFolderQuery,
+        ListAllTopLevelE2eeFoldersStatusLessThanQuery,
 
         PreparedQueryCount
     };

@@ -27,6 +27,7 @@
 #include "gui/systray.h"
 #include <pushnotifications.h>
 #include <syncengine.h>
+#include "updatee2eefolderusersmetadatajob.h"
 
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
@@ -1534,17 +1535,67 @@ void FolderMan::setDirtyNetworkLimits()
 
 void FolderMan::leaveShare(const QString &localFile)
 {
-    if (const auto folder = FolderMan::instance()->folderForPath(localFile)) {
-        const auto filePathRelative = QString(localFile).remove(folder->path());
+    const auto localFileNoTrailingSlash = localFile.endsWith('/') ? localFile.chopped(1) : localFile;
+    if (const auto folder = FolderMan::instance()->folderForPath(localFileNoTrailingSlash)) {
+        const auto filePathRelative = QString(localFileNoTrailingSlash).remove(folder->path());
 
-        const auto leaveShareJob = new SimpleApiJob(folder->accountState()->account(), folder->accountState()->account()->davPath() + filePathRelative);
-        leaveShareJob->setVerb(SimpleApiJob::Verb::Delete);
-        connect(leaveShareJob, &SimpleApiJob::resultReceived, this, [this, folder](int statusCode) {
-            Q_UNUSED(statusCode)
-            scheduleFolder(folder);
-        });
-        leaveShareJob->start();
+        SyncJournalFileRecord rec;
+        if (folder->journalDb()->getFileRecord(filePathRelative, &rec)
+            && rec.isValid() && rec.isE2eEncrypted()) {
+
+            if (_removeE2eeShareJob) {
+                _removeE2eeShareJob->deleteLater();
+            }
+
+            _removeE2eeShareJob = new UpdateE2eeFolderUsersMetadataJob(folder->accountState()->account(),
+                                                                                 folder->journalDb(),
+                                                                                 folder->remotePath(),
+                                                                                 UpdateE2eeFolderUsersMetadataJob::Remove,
+                //TODO: Might need to add a slash to "filePathRelative" once the server is working
+                                                                                 filePathRelative,
+                                                                                 folder->accountState()->account()->davUser());
+            _removeE2eeShareJob->setParent(this);
+            _removeE2eeShareJob->start(true);
+            connect(_removeE2eeShareJob, &UpdateE2eeFolderUsersMetadataJob::finished, this, [localFileNoTrailingSlash, this](int code, const QString &message) {   
+                if (code != 200) {
+                    qCDebug(lcFolderMan) << "Could not remove share from E2EE folder's metadata!" << code << message;
+                    return;
+                }
+                slotLeaveShare(localFileNoTrailingSlash, _removeE2eeShareJob->folderToken());
+            });
+
+            return;
+        }
+        slotLeaveShare(localFileNoTrailingSlash);
     }
+}
+
+void FolderMan::slotLeaveShare(const QString &localFile, const QByteArray &folderToken)
+{
+    const auto folder = FolderMan::instance()->folderForPath(localFile);
+
+    if (!folder) {
+        qCWarning(lcFolderMan) << "Could not find a folder for localFile:" << localFile;
+        return;
+    }
+
+    const auto filePathRelative = QString(localFile).remove(folder->path());
+    const auto leaveShareJob = new SimpleApiJob(folder->accountState()->account(), folder->accountState()->account()->davPath() + filePathRelative);
+    leaveShareJob->setVerb(SimpleApiJob::Verb::Delete);
+    leaveShareJob->addRawHeader("e2e-token", folderToken);
+    connect(leaveShareJob, &SimpleApiJob::resultReceived, this, [this, folder, localFile](int statusCode) {
+        qCDebug(lcFolderMan) << "slotLeaveShare callback statusCode" << statusCode;
+        Q_UNUSED(statusCode);
+        if (_removeE2eeShareJob) {
+            _removeE2eeShareJob->unlockFolder(EncryptedFolderMetadataHandler::UnlockFolderWithResult::Success);
+            connect(_removeE2eeShareJob.data(), &UpdateE2eeFolderUsersMetadataJob::folderUnlocked, this, [this, folder] {
+                scheduleFolder(folder);
+            });
+            return;
+        }
+        scheduleFolder(folder);
+    });
+    leaveShareJob->start();
 }
 
 void FolderMan::trayOverallStatus(const QList<Folder *> &folders,

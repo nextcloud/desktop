@@ -58,6 +58,7 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item);
 class SyncJournalDb;
 class OwncloudPropagator;
 class PropagatorCompositeJob;
+class FolderMetadata;
 
 /**
  * @brief the base class of propagator jobs
@@ -448,6 +449,8 @@ public:
                               QVector<PropagatorJob *> &directoriesToRemove,
                               QString &removedDirectory,
                               QString &maybeConflictDirectory);
+
+    void processE2eeMetadataMigration(const SyncFileItemPtr &item, QStack<QPair<QString, PropagateDirectory *>> &directories);
 
     [[nodiscard]] const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);

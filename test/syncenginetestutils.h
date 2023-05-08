@@ -497,10 +497,11 @@ protected:
 class FakeCredentials : public OCC::AbstractCredentials
 {
     QNetworkAccessManager *_qnam;
+    QString _userName = "admin";
 public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
     [[nodiscard]] QString authType() const override { return "test"; }
-    [[nodiscard]] QString user() const override { return "admin"; }
+    [[nodiscard]] QString user() const override { return _userName; }
     [[nodiscard]] QString password() const override { return "password"; }
     [[nodiscard]] QNetworkAccessManager *createQNAM() const override { return _qnam; }
     [[nodiscard]] bool ready() const override { return true; }
@@ -510,6 +511,10 @@ public:
     void persist() override { }
     void invalidateToken() override { }
     void forgetSensitiveData() override { }
+    void setUserName(const QString &userName)
+    {
+        _userName = userName;
+    }
 };
 
 class FakeFolder

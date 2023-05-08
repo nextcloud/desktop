@@ -1,6 +1,8 @@
 #ifndef CLIENTSIDEENCRYPTION_H
 #define CLIENTSIDEENCRYPTION_H
 
+#include "clientsideencryptionprimitives.h"
+
 #include <QString>
 #include <QObject>
 #include <QJsonDocument>
@@ -24,10 +26,10 @@ class ReadPasswordJob;
 
 namespace OCC {
 
-QString e2eeBaseUrl();
+QString e2eeBaseUrl(const OCC::AccountPtr &account);
 
 namespace EncryptionHelper {
-    QByteArray generateRandomFilename();
+    OWNCLOUDSYNC_EXPORT QByteArray generateRandomFilename();
     OWNCLOUDSYNC_EXPORT QByteArray generateRandom(int size);
     QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
     OWNCLOUDSYNC_EXPORT QByteArray encryptPrivateKey(
@@ -68,6 +70,12 @@ namespace EncryptionHelper {
 
     OWNCLOUDSYNC_EXPORT bool fileDecryption(const QByteArray &key, const QByteArray &iv,
                                QFile *input, QFile *output);
+
+    OWNCLOUDSYNC_EXPORT bool dataEncryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output, QByteArray &returnTag);
+    OWNCLOUDSYNC_EXPORT bool dataDecryption(const QByteArray &key, const QByteArray &iv, const QByteArray &input, QByteArray &output);
+
+    OWNCLOUDSYNC_EXPORT QByteArray gzipThenEncryptData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv, QByteArray &returnTag);
+    OWNCLOUDSYNC_EXPORT QByteArray decryptThenUnGzipData(const QByteArray &key, const QByteArray &inputData, const QByteArray &iv);
 
 //
 // Simple classes for safe (RAII) handling of OpenSSL
@@ -119,8 +127,6 @@ private:
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
-    class PKey;
-
     ClientSideEncryption();
 
     QByteArray _privateKey;
@@ -136,10 +142,20 @@ signals:
     void certificateDeleted();
     void mnemonicDeleted();
     void publicKeyDeleted();
+    void certificateFetchedFromKeychain(QSslCertificate certificate);
+    void certificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
+    void certificateWriteComplete(const QSslCertificate &certificate);
+
+public:
+    [[nodiscard]] QByteArray generateSignatureCryptographicMessageSyntax(const QByteArray &data) const;
+    [[nodiscard]] bool verifySignatureCryptographicMessageSyntax(const QByteArray &cmsContent, const QByteArray &data, const QVector<QByteArray> &certificatePems) const;
 
 public slots:
     void initialize(const OCC::AccountPtr &account);
     void forgetSensitiveData(const OCC::AccountPtr &account);
+    void getUsersPublicKeyFromServer(const AccountPtr &account, const QStringList &userIds);
+    void fetchCertificateFromKeyChain(const OCC::AccountPtr &account, const QString &userId);
+    void writeCertificate(const AccountPtr &account, const QString &userId, const QSslCertificate &certificate);
 
 private slots:
     void generateKeyPair(const OCC::AccountPtr &account);
@@ -147,6 +163,7 @@ private slots:
 
     void publicCertificateFetched(QKeychain::Job *incoming);
     void publicKeyFetched(QKeychain::Job *incoming);
+    void publicKeyFetchedForUserId(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
@@ -211,79 +228,5 @@ private:
 
     bool isInitialized = false;
 };
-
-/* Generates the Metadata for the folder */
-struct EncryptedFile {
-    QByteArray encryptionKey;
-    QByteArray mimetype;
-    QByteArray initializationVector;
-    QByteArray authenticationTag;
-    QString encryptedFilename;
-    QString originalFilename;
-};
-
-class OWNCLOUDSYNC_EXPORT FolderMetadata {
-public:
-    enum class RequiredMetadataVersion {
-        Version1,
-        Version1_2,
-    };
-
-    explicit FolderMetadata(AccountPtr account);
-
-    explicit FolderMetadata(AccountPtr account,
-                            RequiredMetadataVersion requiredMetadataVersion,
-                            const QByteArray& metadata,
-                            int statusCode = -1);
-
-    [[nodiscard]] QByteArray encryptedMetadata() const;
-    void addEncryptedFile(const EncryptedFile& f);
-    void removeEncryptedFile(const EncryptedFile& f);
-    void removeAllEncryptedFiles();
-    [[nodiscard]] QVector<EncryptedFile> files() const;
-    [[nodiscard]] bool isMetadataSetup() const;
-
-    [[nodiscard]] bool isFileDropPresent() const;
-
-    [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
-
-    [[nodiscard]] bool moveFromFileDropToFiles();
-
-    [[nodiscard]] QJsonObject fileDrop() const;
-
-private:
-    /* Use std::string and std::vector internally on this class
-     * to ease the port to Nlohmann Json API
-     */
-    void setupEmptyMetadata();
-    void setupExistingMetadata(const QByteArray& metadata);
-
-    [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
-    [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
-    [[nodiscard]] QByteArray decryptDataUsingKey(const QByteArray &data,
-                                                 const QByteArray &key,
-                                                 const QByteArray &authenticationTag,
-                                                 const QByteArray &initializationVector) const;
-
-    [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
-    [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
-
-    [[nodiscard]] bool checkMetadataKeyChecksum(const QByteArray &metadataKey, const QByteArray &metadataKeyChecksum) const;
-
-    [[nodiscard]] QByteArray computeMetadataKeyChecksum(const QByteArray &metadataKey) const;
-
-    QByteArray _metadataKey;
-
-    QVector<EncryptedFile> _files;
-    AccountPtr _account;
-    RequiredMetadataVersion _requiredMetadataVersion = RequiredMetadataVersion::Version1_2;
-    QVector<QPair<QString, QString>> _sharing;
-    QJsonObject _fileDrop;
-    // used by unit tests, must get assigned simultaneously with _fileDrop and not erased
-    QJsonObject _fileDropFromServer;
-    bool _isMetadataSetup = false;
-    bool _encryptedMetadataNeedUpdate = false;
-};
-
 } // namespace OCC
 #endif

@@ -56,6 +56,8 @@ OCSYNC_EXPORT QByteArray parseChecksumHeaderType(const QByteArray &header);
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 OCSYNC_EXPORT bool uploadChecksumEnabled();
 
+OCSYNC_EXPORT QByteArray calcSha256(const QByteArray &data);
+
 /**
  * Computes the checksum of a file.
  * \ingroup libsync
