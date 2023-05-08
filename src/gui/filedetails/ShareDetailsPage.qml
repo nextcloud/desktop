@@ -778,6 +778,11 @@ Page {
                     contentItem: NCInputTextField {
                         id: expireDateSpinBoxTextField
 
+                        validInput: {
+                            const value = expireDateSpinBox.valueFromText(text);
+                            return value >= expireDateSpinBox.from && value <= expireDateSpinBox.to;
+                        }
+
                         text: expireDateSpinBox.textFromValue(expireDateSpinBox.value, expireDateSpinBox.locale)
                         readOnly: !expireDateSpinBox.editable
                         validator: expireDateSpinBox.validator
