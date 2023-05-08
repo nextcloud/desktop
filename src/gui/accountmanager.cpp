@@ -41,6 +41,7 @@ constexpr auto caCertsKeyC = "CaCertificates";
 constexpr auto accountsC = "Accounts";
 constexpr auto versionC = "version";
 constexpr auto serverVersionC = "serverVersion";
+constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
 constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -286,6 +287,11 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
     settings.setValue(QLatin1String(displayNameC), acc->_displayName);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
+    if (!acc->_skipE2eeMetadataChecksumValidation) {
+        settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
+    } else {
+        settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), acc->_skipE2eeMetadataChecksumValidation);
+    }
 
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -385,6 +391,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
+    acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC), "").toString();
 
     // We want to only restore settings for that auth type and the user value
