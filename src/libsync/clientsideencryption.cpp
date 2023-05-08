@@ -1643,9 +1643,14 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
     if (!migratedMetadata && !checkMetadataKeyChecksum(metadataKey, metadataKeyChecksum)) {
         qCInfo(lcCseMetadata) << "checksum comparison failed" << "server value" << metadataKeyChecksum << "client value" << computeMetadataKeyChecksum(metadataKey);
-        _metadataKey.clear();
-        _files.clear();
-        return;
+        if (_account->shouldSkipE2eeMetadataChecksumValidation()) {
+            qCDebug(lcCseMetadata) << "shouldSkipE2eeMetadataChecksumValidation is set. Allowing invalid checksum until next sync.";
+            _encryptedMetadataNeedUpdate = true;
+        } else {
+            _metadataKey.clear();
+            _files.clear();
+            return;
+        }
     }
 
     // decryption finished, create new metadata key to be used for encryption
@@ -1721,13 +1726,6 @@ bool FolderMetadata::checkMetadataKeyChecksum(const QByteArray &metadataKey,
 {
     const auto referenceMetadataKeyValue = computeMetadataKeyChecksum(metadataKey);
 
-    if (referenceMetadataKeyValue != metadataKeyChecksum) {
-        if (recoverMetadataKeyChecksum(metadataKeyChecksum, metadataKey)) {
-            qCInfo(lcCseMetadata) << "Checksum recovery done";
-            return true;
-        }
-    }
-
     return referenceMetadataKeyValue == metadataKeyChecksum;
 }
 
@@ -1746,31 +1744,6 @@ QByteArray FolderMetadata::computeMetadataKeyChecksum(const QByteArray &metadata
     hashAlgorithm.addData(metadataKey);
 
     return hashAlgorithm.result().toHex();
-}
-
-bool FolderMetadata::recoverMetadataKeyChecksum(const QByteArray &expectedChecksum,
-                                                const QByteArray &metadataKey) const
-{
-    const auto sortLambda = [] (const auto &first, const auto &second) {
-        return first.encryptedFilename < second.encryptedFilename;
-    };
-    auto sortedFiles = _files;
-
-    std::sort(sortedFiles.begin(), sortedFiles.end(), sortLambda);
-
-    do {
-        auto hashAlgorithm = QCryptographicHash{QCryptographicHash::Sha256};
-        hashAlgorithm.addData(_account->e2e()->_mnemonic.remove(' ').toUtf8());
-        for (const auto &singleFile : sortedFiles) {
-            hashAlgorithm.addData(singleFile.encryptedFilename.toUtf8());
-        }
-        hashAlgorithm.addData(metadataKey);
-        if (hashAlgorithm.result().toHex() == expectedChecksum) {
-            return true;
-        }
-    } while (std::next_permutation(sortedFiles.begin(), sortedFiles.end(), sortLambda));
-
-    return false;
 }
 
 bool FolderMetadata::isMetadataSetup() const

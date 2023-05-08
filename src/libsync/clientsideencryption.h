@@ -233,8 +233,6 @@ private:
     [[nodiscard]] bool checkMetadataKeyChecksum(const QByteArray &metadataKey, const QByteArray &metadataKeyChecksum) const;
 
     [[nodiscard]] QByteArray computeMetadataKeyChecksum(const QByteArray &metadataKey) const;
-    [[nodiscard]] bool recoverMetadataKeyChecksum(const QByteArray &expectedChecksum,
-                                                  const QByteArray &metadataKey) const;
 
     QByteArray _metadataKey;
 
