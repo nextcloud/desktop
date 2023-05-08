@@ -105,7 +105,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
 
 #ifdef Q_OS_WIN
     if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(-1, _ui.lVirtualFileSync);
+        _ui.wSyncStrategy->addLayout(_ui.lVirtualFileSync);
         setRadioChecked(_ui.rVirtualFileSync);
     }
 #endif
