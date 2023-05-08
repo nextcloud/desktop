@@ -676,7 +676,10 @@ Page {
                     readonly property int dayInMSecs: 24 * 60 * 60 * 1000
                     readonly property int expireDateReduced: Math.floor(root.expireDate / dayInMSecs)
                     // Reset the model data after binding broken on user interact
-                    onExpireDateReducedChanged: value = expireDateReduced
+                    onExpireDateReducedChanged: {
+                        value = expireDateReduced;
+                        expireDateSpinBoxTextField.text = textFromValue(value, locale);
+                    }
 
                     // We can't use JS's convenient Infinity or Number.MAX_VALUE as
                     // JS Number type is 64 bits, whereas QML's int type is only 32 bits
@@ -758,6 +761,8 @@ Page {
                     padding: 0
                     background: null
                     contentItem: NCInputTextField {
+                        id: expireDateSpinBoxTextField
+
                         text: expireDateSpinBox.textFromValue(expireDateSpinBox.value, expireDateSpinBox.locale)
                         readOnly: !expireDateSpinBox.editable
                         validator: expireDateSpinBox.validator
