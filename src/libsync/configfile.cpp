@@ -104,6 +104,8 @@ static constexpr char moveToTrashC[] = "moveToTrash";
 
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
+
+static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
 }
 
 namespace OCC {
@@ -692,11 +694,27 @@ QString ConfigFile::updateChannel() const
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
+    const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
+    if (!validUpdateChannels.contains(channel)) {
+        qCWarning(lcConfigFile()) << "Received invalid update channel from confog:"
+                                  << channel
+                                  << "defaulting to:"
+                                  << defaultUpdateChannel;
+        return defaultUpdateChannel;
+    }
+
+    return channel;
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
 {
+    if (!validUpdateChannels.contains(channel)) {
+        qCWarning(lcConfigFile()) << "Received invalid update channel:"
+                                  << channel
+                                  << "can only accept 'stable' or 'beta'. Ignoring.";
+        return;
+    }
+
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(updateChannelC), channel);
 }
