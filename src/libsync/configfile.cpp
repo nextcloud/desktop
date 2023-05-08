@@ -114,8 +114,8 @@ namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
-QString ConfigFile::_confDir = QString();
-bool ConfigFile::_askedUser = false;
+QString ConfigFile::_confDir = {};
+QString ConfigFile::_discoveredLegacyConfigPath = {};
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -1156,4 +1156,19 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
         excludedFiles.addExcludeFilePath(userList);
     }
 }
+
+QString ConfigFile::discoveredLegacyConfigPath()
+{
+    return _discoveredLegacyConfigPath;
+}
+
+void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath)
+{
+    if (_discoveredLegacyConfigPath == discoveredLegacyConfigPath) {
+        return;
+    }
+
+    _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
+}
+
 }
