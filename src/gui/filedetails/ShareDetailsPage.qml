@@ -111,7 +111,18 @@ Page {
     }
 
     function resetExpireDateField() {
-        // Expire date changing is handled by the expireDateSpinBox
+        // Expire date changing is handled through expireDateChanged listening in the expireDateSpinBox.
+        //
+        // When the user edits the expire date field they are changing the text, but the expire date
+        // value is only changed according to updates from the server.
+        //
+        // Sometimes the new expire date is the same -- say, because we were on the maximum allowed
+        // expire date already and we tried to push it beyond this, leading the server to just return
+        // the maximum allowed expire date.
+        //
+        // So to ensure that the text of the spin box is correctly updated, force an update of the
+        // contents of the expire date text field.
+        expireDateSpinBox.updateText();
         waitingForExpireDateChange = false;
     }
 
@@ -671,6 +682,10 @@ Page {
                 SpinBox {
                     id: expireDateSpinBox
 
+                    function updateText() {
+                        expireDateSpinBoxTextField.text = textFromValue(value, locale);
+                    }
+
                     // Work arounds the limitations of QML's 32 bit integer when handling msecs from epoch
                     // Instead, we handle everything as days since epoch
                     readonly property int dayInMSecs: 24 * 60 * 60 * 1000
@@ -678,7 +693,7 @@ Page {
                     // Reset the model data after binding broken on user interact
                     onExpireDateReducedChanged: {
                         value = expireDateReduced;
-                        expireDateSpinBoxTextField.text = textFromValue(value, locale);
+                        updateText();
                     }
 
                     // We can't use JS's convenient Infinity or Number.MAX_VALUE as
