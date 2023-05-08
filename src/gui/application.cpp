@@ -77,28 +77,28 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
-        "  --help, -h           : show this help screen.\n"
-        "  --version, -v        : show version information.\n"
-        "  -q --quit            : quit the running instance\n"
-        "  --logwindow, -l      : open a window to show log output.\n"
-        "  --logfile <filename> : write log output to file <filename>.\n"
-        "  --logdir <name>      : write each sync log output in a new file\n"
-        "                         in folder <name>.\n"
-        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-        "                         (to be used with --logdir)\n"
-        "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.\n"
-        "  --background         : launch the application in the background.\n"
-        "  --overrideserverurl  : specify a server URL to use for the force override to be used in the account setup wizard.\n"
-        "  --overridelocaldir   : specify a local dir to be used in the account setup wizard.\n"
-        "  --userid             : userId (username as on the server) to pass when creating an account via command-line.\n"
-        "  --apppassword        : appPassword to pass when creating an account via command-line.\n"
-        "  --localdirpath       : (optional) path where to create a local sync folder when creating an account via command-line.\n"
-        "  --isvfsenabled       : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
-        "  --remotedirpath      : (optional) path to a remote subfolder when creating an account via command-line.\n"
-        "  --serverurl          : a server URL to use when creating an account via command-line.\n"
-        "  --forcelegacyimport  : forcefully import account configurations from legacy clients (if available).\n";
+        "  --help, -h                 : show this help screen.\n"
+        "  --version, -v              : show version information.\n"
+        "  -q --quit                  : quit the running instance\n"
+        "  --logwindow, -l            : open a window to show log output.\n"
+        "  --logfile <filename>       : write log output to file <filename>.\n"
+        "  --logdir <name>            : write each sync log output in a new file\n"
+        "                               in folder <name>.\n"
+        "  --logexpire <hours>        : removes logs older than <hours> hours.\n"
+        "                               (to be used with --logdir)\n"
+        "  --logflush                 : flush the log file after every write.\n"
+        "  --logdebug                 : also output debug-level messages in the log.\n"
+        "  --confdir <dirname>        : Use the given configuration folder.\n"
+        "  --background               : launch the application in the background.\n"
+        "  --overrideserverurl        : specify a server URL to use for the force override to be used in the account setup wizard.\n"
+        "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
+        "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
+        "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
+        "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
+        "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
+        "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
+        "  --serverurl                : a server URL to use when creating an account via command-line.\n"
+        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n";
 
     QString applicationTrPath()
     {
@@ -756,7 +756,7 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
-        } else if (option == QStringLiteral("--forcelegacyimport")) {
+        } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
             AccountManager::instance()->setForceLegacyImport(true);
         } else {
             QString errorMessage;
