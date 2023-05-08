@@ -5722,7 +5722,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="394"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Dépôt de fichiers (envoi uniquement)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="421"/>
