@@ -23,15 +23,16 @@
 #include <QSvgRenderer>
 
 namespace {
+
 QString findSvgFilePath(const QString &fileName, const QStringList &possibleColors)
 {
-    QString result;
-    result = QString{OCC::Theme::themePrefix} + fileName;
+    auto result = QString{OCC::Theme::themePrefix + fileName};
+
     if (QFile::exists(result)) {
         return result;
     } else {
         for (const auto &color : possibleColors) {
-            result = QString{OCC::Theme::themePrefix} + color + QStringLiteral("/") + fileName;
+            result = QString{OCC::Theme::themePrefix + color + QStringLiteral("/") + fileName};
 
             if (QFile::exists(result)) {
                 return result;
@@ -42,6 +43,7 @@ QString findSvgFilePath(const QString &fileName, const QStringList &possibleColo
 
     return result;
 }
+
 }
 
 namespace OCC {
