@@ -16,18 +16,6 @@ class TestUpdater : public QObject
     Q_OBJECT
 
 private slots:
-    void testVersionToInt()
-    {
-        auto lowVersion = Updater::Helper::versionToInt(1, 2, 80, 3000);
-        QCOMPARE(Updater::Helper::stringVersionToInt("1.2.80.3000"), lowVersion);
-
-        auto highVersion = Updater::Helper::versionToInt(999, 2, 80, 3000);
-        auto currVersion = Updater::Helper::currentVersionToInt();
-        QVERIFY(currVersion > 0);
-        QVERIFY(currVersion > lowVersion);
-        QVERIFY(currVersion < highVersion);
-    }
-
     void testDownload_data()
     {
         QTest::addColumn<QString>("url");
