@@ -36,6 +36,19 @@ constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 }
 
 namespace OCC {
+    
+TrayFolderInfo::TrayFolderInfo(const QString &name, const QString &parentPath, const QString &fullPath, FolderType folderType)
+    : _name(name)
+    , _parentPath(parentPath)
+    , _fullPath(fullPath)
+    , _folderType(folderType)
+{
+}
+
+bool TrayFolderInfo::isGroupFolder() const
+{
+    return _folderType == GroupFolder;
+}
 
 User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     : QObject(parent)
@@ -75,6 +88,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerTextColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
+
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
     
@@ -297,6 +312,36 @@ void User::slotCheckExpiredActivities()
     if (_activityModel->errorsList().size() == 0) {
         _expiredActivitiesCheckTimer.stop();
     }
+}
+
+void User::parseNewGroupFolderPath(const QString &mountPoint)
+{
+    if (mountPoint.isEmpty()) {
+        return;
+    }
+    auto mountPointSplit = mountPoint.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+
+    if (mountPointSplit.isEmpty()) {
+        return;
+    }
+
+    const auto groupFolderName = mountPointSplit.takeLast();
+    const auto parentPath = mountPointSplit.join(QLatin1Char('/'));
+    _trayFolderInfos.push_back(QVariant::fromValue(TrayFolderInfo{groupFolderName, parentPath, mountPoint, TrayFolderInfo::GroupFolder}));
+}
+
+void User::prePendGroupFoldersWithLocalFolder()
+{
+    if (!_trayFolderInfos.isEmpty() && !_trayFolderInfos.first().value<TrayFolderInfo>().isGroupFolder()) {
+        return;
+    }
+    const auto localFolderName = getFolder()->shortGuiLocalPath();
+    auto localFolderPathSplit = getFolder()->path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (!localFolderPathSplit.isEmpty()) {
+        localFolderPathSplit.removeLast();
+    }
+    const auto localFolderParentPath = !localFolderPathSplit.isEmpty() ? localFolderPathSplit.join(QLatin1Char('/')) : "/";
+    _trayFolderInfos.push_front(QVariant::fromValue(TrayFolderInfo{localFolderName, localFolderParentPath, getFolder()->path(), TrayFolderInfo::Folder}));
 }
 
 void User::connectPushNotifications() const
@@ -747,6 +792,11 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
     }
 }
 
+const QVariantList &User::groupFolders() const
+{
+    return _trayFolderInfos;
+}
+
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -802,6 +852,42 @@ void User::openLocalFolder()
     if (folder) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
     }
+}
+
+void User::openFolderLocallyOrInBrowser(const QString &fullRemotePath)
+{
+    const auto folder = getFolder();
+
+    if (!folder) {
+        return;
+    }
+
+    // remove remote path prefix and leading slash
+    auto fullRemotePathToPathInDb = folder->remotePath() != QStringLiteral("/") ? fullRemotePath.mid(folder->remotePathTrailingSlash().size()) : fullRemotePath;
+    if (fullRemotePathToPathInDb.startsWith("/")) {
+        fullRemotePathToPathInDb = fullRemotePathToPathInDb.mid(1);
+    }
+
+    SyncJournalFileRecord rec;
+    if (folder->journalDb()->getFileRecord(fullRemotePathToPathInDb, &rec) && rec.isValid()) {
+        // found folder locally, going to open
+        qCInfo(lcActivity) << "Opening locally a folder" << fullRemotePath;
+        QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path() + rec.path()));
+        return;
+    }
+
+    // try to open it in browser
+    auto folderUrlForBrowser = Utility::concatUrlPath(_account->account()->url(), QStringLiteral("/index.php/apps/files/"));
+    QUrlQuery urlQuery;
+    urlQuery.addQueryItem(QStringLiteral("dir"), fullRemotePath);
+    folderUrlForBrowser.setQuery(urlQuery);
+    if (!folderUrlForBrowser.scheme().startsWith(QStringLiteral("http"))) {
+        folderUrlForBrowser.setScheme(QStringLiteral("https"));
+    }
+    // open https://server.com/index.php/apps/files/?dir=/group_folder/path
+    qCInfo(lcActivity) << "Opening in browser a folder" << fullRemotePath;
+    Utility::openBrowser(folderUrlForBrowser);
+    return;
 }
 
 void User::login() const
@@ -943,6 +1029,99 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
 void User::forceSyncNow() const
 {
     FolderMan::instance()->forceSyncForFolder(getFolder());
+}
+
+void User::slotAccountCapabilitiesChangedRefreshGroupFolders()
+{
+    if (!_account->account()->capabilities().groupFoldersAvailable()) {
+        if (!_trayFolderInfos.isEmpty()) {
+            _trayFolderInfos.clear();
+            emit groupFoldersChanged();
+        }
+        return;
+    }
+
+    slotFetchGroupFolders();
+}
+
+void User::slotFetchGroupFolders()
+{
+    QNetworkRequest req;
+    req.setRawHeader(QByteArrayLiteral("OCS-APIREQUEST"), QByteArrayLiteral("true"));
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    query.addQueryItem(QLatin1String("applicable"), QLatin1String("1"));
+    QUrl groupFolderListUrl = Utility::concatUrlPath(_account->account()->url(), QStringLiteral("/index.php/apps/groupfolders/folders"));
+    groupFolderListUrl.setQuery(query);
+
+    const auto groupFolderListJob = _account->account()->sendRequest(QByteArrayLiteral("GET"), groupFolderListUrl, req);
+    connect(groupFolderListJob, &SimpleNetworkJob::finishedSignal, this, &User::slotGroupFoldersFetched);
+}
+
+void User::slotGroupFoldersFetched(QNetworkReply *reply)
+{
+    Q_ASSERT(reply);
+    if (!reply) {
+        qCWarning(lcActivity) << "Group folders fetch error";
+        return;
+    }
+
+    const auto oldSize = _trayFolderInfos.size();
+    const auto oldTrayFolderInfos = _trayFolderInfos;
+    _trayFolderInfos.clear();
+
+    const auto replyData = reply->readAll();
+    if (reply->error() != QNetworkReply::NoError) {
+        if (oldSize != _trayFolderInfos.size()) {
+            emit groupFoldersChanged();
+        }
+        qCWarning(lcActivity) << "Group folders fetch error" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << replyData;
+        return;
+    }
+
+    QJsonParseError jsonParseError{};
+    const auto json = QJsonDocument::fromJson(replyData, &jsonParseError);
+
+    if (jsonParseError.error != QJsonParseError::NoError) {
+        qCWarning(lcActivity) << "Group folders JSON parse error" << jsonParseError.error << jsonParseError.errorString();
+        if (oldSize != _trayFolderInfos.size()) {
+            emit groupFoldersChanged();
+        }
+        return;
+    }
+
+    const auto obj = json.object().toVariantMap();
+    const auto groupFolders = obj["ocs"].toMap()["data"].toMap();
+
+    for (const auto &groupFolder : groupFolders.values()) {
+        const auto groupFolderInfo = groupFolder.toMap();
+        const auto mountPoint = groupFolderInfo.value(QStringLiteral("mount_point"), {}).toString();
+        parseNewGroupFolderPath(mountPoint);
+    }
+    std::sort(std::begin(_trayFolderInfos), std::end(_trayFolderInfos), [](const auto &leftVariant, const auto &rightVariant) {
+        const auto folderInfoA = leftVariant.template value<TrayFolderInfo>();
+        const auto folderInfoB = rightVariant.template value<TrayFolderInfo>();
+        return folderInfoA._fullPath < folderInfoB._fullPath;
+    });
+
+    if (!_trayFolderInfos.isEmpty()) {
+        if (hasLocalFolder()) {
+            prePendGroupFoldersWithLocalFolder();
+        }
+    }
+
+    if (oldSize != _trayFolderInfos.size()) {
+        emit groupFoldersChanged();
+    } else {
+        for (int i = 0; i < oldTrayFolderInfos.size(); ++i) {
+            const auto oldFolderInfo = oldTrayFolderInfos.at(i).template value<TrayFolderInfo>();
+            const auto newFolderInfo = _trayFolderInfos.at(i).template value<TrayFolderInfo>();
+            if (oldFolderInfo._folderType != newFolderInfo._folderType || oldFolderInfo._fullPath != newFolderInfo._fullPath) {
+                break;
+                emit groupFoldersChanged();
+            }
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -1103,6 +1282,15 @@ void UserModel::openCurrentAccountServer()
     }
 
     QDesktopServices::openUrl(url);
+}
+
+void UserModel::openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath)
+{
+    if (_currentUserId < 0 || _currentUserId >= _users.size()) {
+        return;
+    }
+
+    _users[_currentUserId]->openFolderLocallyOrInBrowser(fullRemotePath);
 }
 
 void UserModel::setCurrentUserId(const int id)
@@ -1296,7 +1484,6 @@ int UserModel::findUserIdForAccount(AccountState *account) const
     const auto id = std::distance(std::cbegin(_users), it);
     return id;
 }
-
 /*-------------------------------------------------------------------------------------*/
 
 ImageProvider::ImageProvider()

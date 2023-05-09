@@ -19,6 +19,28 @@
 namespace OCC {
 class UnifiedSearchResultsListModel;
 
+
+class TrayFolderInfo
+{
+    Q_GADGET
+
+    Q_PROPERTY(QString name MEMBER _name)
+    Q_PROPERTY(QString parentPath MEMBER _parentPath)
+    Q_PROPERTY(QString fullPath MEMBER _fullPath)
+    Q_PROPERTY(bool isGroupFolder READ isGroupFolder CONSTANT)
+public:
+    enum FolderType { Folder, GroupFolder };
+
+    TrayFolderInfo(const QString &name, const QString &parentPath, const QString &fullPath, FolderType folderType);
+    TrayFolderInfo() = default;
+    [[nodiscard]] bool isGroupFolder() const;
+
+    QString _name;
+    QString _parentPath;
+    QString _fullPath;
+    FolderType _folderType = Folder;
+};
+
 class User : public QObject
 {
     Q_OBJECT
@@ -37,6 +59,7 @@ class User : public QObject
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
+    Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
 
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
@@ -51,6 +74,7 @@ public:
     ActivityListModel *getActivityModel();
     [[nodiscard]] UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
     void openLocalFolder();
+    void openFolderLocallyOrInBrowser(const QString &fullRemotePath);
     [[nodiscard]] QString name() const;
     [[nodiscard]] QString server(bool shortened = true) const;
     [[nodiscard]] bool hasLocalFolder() const;
@@ -73,6 +97,7 @@ public:
     [[nodiscard]] QUrl statusIcon() const;
     [[nodiscard]] QString statusEmoji() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
+    [[nodiscard]] const QVariantList &groupFolders() const;
 
 signals:
     void nameChanged();
@@ -86,6 +111,7 @@ signals:
     void headerTextColorChanged();
     void accentColorChanged();
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
+    void groupFoldersChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
@@ -109,6 +135,8 @@ public slots:
     void slotRebuildNavigationAppList();
     void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void forceSyncNow() const;
+    void slotAccountCapabilitiesChangedRefreshGroupFolders();
+    void slotFetchGroupFolders();
 
 private slots:
     void slotPushNotificationsReady();
@@ -116,7 +144,7 @@ private slots:
     void slotReceivedPushNotification(OCC::Account *account);
     void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
-
+    void slotGroupFoldersFetched(QNetworkReply *reply);
     void checkNotifiedNotifications();
     void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
     void showDesktopNotification(const OCC::Activity &activity);
@@ -124,6 +152,8 @@ private slots:
     void showDesktopTalkNotification(const OCC::Activity &activity);
 
 private:
+    void prePendGroupFoldersWithLocalFolder();
+    void parseNewGroupFolderPath(const QString &path);
     void connectPushNotifications() const;
     [[nodiscard]] bool checkPushNotificationsAreReady() const;
 
@@ -138,6 +168,8 @@ private:
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     ActivityList _blacklistedNotifications;
+    
+    QVariantList _trayFolderInfos;
 
     QTimer _expiredActivitiesCheckTimer;
     QTimer _notificationCheckTimer;
@@ -158,6 +190,7 @@ class UserModel : public QAbstractListModel
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
 public:
+
     static UserModel *instance();
     ~UserModel() override = default;
 
@@ -208,6 +241,7 @@ public slots:
     void openCurrentAccountLocalFolder();
     void openCurrentAccountTalk();
     void openCurrentAccountServer();
+    void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);

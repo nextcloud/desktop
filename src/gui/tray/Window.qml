@@ -83,6 +83,7 @@ ApplicationWindow {
             if(Systray.isOpen) {
                 accountMenu.close();
                 appsMenu.close();
+                openLocalFolderButton.closeMenu()
             }
         }
 
@@ -466,25 +467,25 @@ ApplicationWindow {
                                 id: currentAccountStatusIndicatorBackground
                                 visible: UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
-                                width: Style.accountAvatarStateIndicatorSize + 2
+                                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
                                 color: Style.currentUserHeaderColor
-                                radius: width*0.5
+                                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorMouseHover
                                 visible: UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
-                                width: Style.accountAvatarStateIndicatorSize + 2
+                                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
                                 color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
-                                opacity: 0.2
-                                radius: width*0.5
+                                opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
+                                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
 
                             Image {
@@ -586,62 +587,18 @@ ApplicationWindow {
                     Layout.fillWidth: true
                 }
 
-                RowLayout {
-                    id: openLocalFolderRowLayout
-                    spacing: 0
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                TrayFoldersMenuButton {
+                    id: openLocalFolderButton
 
-                    Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open local folder of current account")
+                    visible: currentUser.hasLocalFolder
+                    currentUser: UserModel.currentUser
 
-                    HeaderButton {
-                        id: openLocalFolderButton
-                        visible: UserModel.currentUser.hasLocalFolder
-                        icon.source: "qrc:///client/theme/white/folder.svg"
-                        icon.color: Style.currentUserHeaderTextColor
-                        onClicked: UserModel.openCurrentAccountLocalFolder()
+                    Layout.preferredWidth:  Style.iconButtonWidth * Style.trayFolderListButtonWidthScaleFactor
+                    Layout.alignment: Qt.AlignHCenter
 
-                        Image {
-                            id: folderStateIndicator
-                            visible: UserModel.currentUser.hasLocalFolder
-                            source: UserModel.currentUser.isConnected
-                                    ? Style.stateOnlineImageSource
-                                    : Style.stateOfflineImageSource
-                            cache: false
+                    onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
 
-                            anchors.top: openLocalFolderButton.verticalCenter
-                            anchors.left: openLocalFolderButton.horizontalCenter
-                            sourceSize.width: Style.folderStateIndicatorSize
-                            sourceSize.height: Style.folderStateIndicatorSize
-
-                            Accessible.role: Accessible.Indicator
-                            Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
-                            z: 1
-
-                            Rectangle {
-                                id: folderStateIndicatorBackground
-                                width: Style.folderStateIndicatorSize + 2
-                                height: width
-                                anchors.centerIn: parent
-                                color: Style.currentUserHeaderColor
-                                radius: width*0.5
-                                z: -2
-                            }
-
-                            Rectangle {
-                                id: folderStateIndicatorBackgroundMouseHover
-                                width: Style.folderStateIndicatorSize + 2
-                                height: width
-                                anchors.centerIn: parent
-                                color: openLocalFolderButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
-                                opacity: 0.2
-                                radius: width*0.5
-                                z: -1
-                            }
-                        }
-                    }
+                    onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
                 }
 
                 HeaderButton {
@@ -678,9 +635,9 @@ ApplicationWindow {
 
                     Menu {
                         id: appsMenu
-                        x: -2
-                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                        width: Style.trayWindowWidth * 0.35
+                        x: Style.trayWindowMenuOffsetX
+                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + Style.trayWindowMenuOffsetY)
+                        width: Style.trayWindowWidth * Style.trayWindowMenuWidthFactor
                         height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 

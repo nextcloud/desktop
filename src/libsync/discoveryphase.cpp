@@ -368,6 +368,7 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
           << "http://owncloud.org/ns:checksums";
+
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
