@@ -1194,10 +1194,12 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
     const auto deletePrivateKeyJob = createDeleteJob(user + e2e_private);
     const auto deleteCertJob = createDeleteJob(user + e2e_cert);
     const auto deleteMnemonicJob = createDeleteJob(user + e2e_mnemonic);
+    const auto deletePublicKeyJob = createDeleteJob(user + e2e_public);
 
     connect(deletePrivateKeyJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handlePrivateKeyDeleted);
     connect(deleteCertJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handleCertificateDeleted);
     connect(deleteMnemonicJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handleMnemonicDeleted);
+    connect(deletePublicKeyJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handlePublicKeyDeleted);
     deletePrivateKeyJob->start();
     deleteCertJob->start();
     deleteMnemonicJob->start();
@@ -1242,6 +1244,20 @@ void ClientSideEncryption::handleMnemonicDeleted(const QKeychain::Job* const inc
     qCDebug(lcCse) << "Mnemonic successfully deleted from keychain. Clearing.";
     _mnemonic = QString();
     Q_EMIT mnemonicDeleted();
+    checkAllSensitiveDataDeleted();
+}
+
+void ClientSideEncryption::handlePublicKeyDeleted(const QKeychain::Job * const incoming)
+{
+    const auto error = incoming->error();
+    if (error != QKeychain::NoError && error != QKeychain::EntryNotFound) {
+        qCWarning(lcCse) << "Public key could not be deleted:" << incoming->errorString();
+        return;
+    }
+
+    qCDebug(lcCse) << "Public key successfully deleted from keychain. Clearing.";
+    _publicKey = QByteArray();
+    Q_EMIT publicKeyDeleted();
     checkAllSensitiveDataDeleted();
 }
 
@@ -1478,19 +1494,9 @@ void ClientSideEncryption::writeKeyPair(AccountPtr account,
 void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
 {
     const auto keyIsNotOnServer = [account, this] () {
-        qCInfo(lcCse) << "server is missing keys. upload is necessary";
+        qCInfo(lcCse) << "server is missing keys. deleting local keys";
 
-        Bio publicKeyBio;
-        const auto publicKeyData = _publicKey.toPem();
-        BIO_write(publicKeyBio, publicKeyData.constData(), publicKeyData.size());
-        auto publicKey = PKey::readPublicKey(publicKeyBio);
-
-        Bio privateKeyBio;
-        BIO_write(privateKeyBio, _privateKey.constData(), _privateKey.size());
-        auto privateKey = PKey::readPrivateKey(privateKeyBio);
-
-        auto csrData = generateCSR(account, std::move(publicKey), std::move(privateKey));
-        sendSignRequestCSR(account, std::move(csrData.second), std::move(csrData.first));
+        forgetSensitiveData(account);
     };
 
     const auto privateKeyOnServerIsValid = [this] () {

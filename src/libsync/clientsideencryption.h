@@ -135,6 +135,7 @@ signals:
     void privateKeyDeleted();
     void certificateDeleted();
     void mnemonicDeleted();
+    void publicKeyDeleted();
 
 public slots:
     void initialize(const OCC::AccountPtr &account);
@@ -152,6 +153,7 @@ private slots:
     void handlePrivateKeyDeleted(const QKeychain::Job* const incoming);
     void handleCertificateDeleted(const QKeychain::Job* const incoming);
     void handleMnemonicDeleted(const QKeychain::Job* const incoming);
+    void handlePublicKeyDeleted(const QKeychain::Job* const incoming);
     void checkAllSensitiveDataDeleted();
 
     void getPrivateKeyFromServer(const OCC::AccountPtr &account);
