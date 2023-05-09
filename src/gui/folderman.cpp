@@ -178,11 +178,11 @@ int FolderMan::setupFolders()
     auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
-        int r = setupFoldersMigration();
-        if (r > 0) {
+        const auto migratedFoldersCount = setupFoldersMigration();
+        if (migratedFoldersCount > 0) {
             AccountManager::instance()->save(false); // don't save credentials, they had not been loaded from keychain
         }
-        return r;
+        return migratedFoldersCount;
     }
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
@@ -197,7 +197,7 @@ int FolderMan::setupFolders()
 
         // The "backwardsCompatible" flag here is related to migrating old
         // database locations
-        auto process = [&](const QString &groupName, bool backwardsCompatible, bool foldersWithPlaceholders) {
+        auto process = [&](const QString &groupName, const bool backwardsCompatible, const bool foldersWithPlaceholders) {
             settings->beginGroup(groupName);
             if (skipSettingsKeys.contains(settings->group())) {
                 // Should not happen: bad container keys should have been deleted
@@ -284,8 +284,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                     qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
                 }
 
-                Folder *f = addFolderInternal(folderDefinition, account.data(), std::move(vfs));
-                f->saveToSettings();
+                const auto folder = addFolderInternal(folderDefinition, account.data(), std::move(vfs));
+                folder->saveToSettings();
 
                 continue;
             }
@@ -316,26 +316,25 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 qFatal("Could not load plugin");
             }
 
-            Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
-            if (f) {
+            if (const auto folder = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs))) {
                 if (switchToVfs) {
-                    f->switchToVirtualFiles();
+                    folder->switchToVirtualFiles();
                 }
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
                 if (settings.value(QLatin1String(settingsVersionC), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
                     qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
-                    f->setRootPinState(PinState::OnlineOnly);
+                    folder->setRootPinState(PinState::OnlineOnly);
                 }
 
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
                 if (backwardsCompatible)
-                    f->setSaveBackwardsCompatible(true);
+                    folder->setSaveBackwardsCompatible(true);
                 if (foldersWithPlaceholders)
-                    f->setSaveInFoldersWithPlaceholders();
+                    folder->setSaveInFoldersWithPlaceholders();
 
-                scheduleFolder(f);
-                emit folderSyncStateChange(f);
+                scheduleFolder(folder);
+                emit folderSyncStateChange(folder);
             }
         }
         settings.endGroup();
@@ -348,20 +347,24 @@ int FolderMan::setupFoldersMigration()
     QDir storageDir(cfg.configPath());
     _folderConfigPath = cfg.configPath();
 
-    qCInfo(lcFolderMan) << "Setup folders from " << _folderConfigPath << "(migration)";
+    const auto legacyConfigPath = ConfigFile::discoveredLegacyConfigPath();
+    const auto configPath = legacyConfigPath.isEmpty() ? _folderConfigPath : legacyConfigPath;
 
-    QDir dir(_folderConfigPath);
+    qCInfo(lcFolderMan) << "Setup folders from " << configPath << "(migration)";
+
+    QDir dir(configPath);
     //We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
-    const auto list = dir.entryList();
+    const auto dirFiles = dir.entryList();
 
-    // Normally there should be only one account when migrating.
-    AccountState *accountState = AccountManager::instance()->accounts().value(0).data();
-    for (const auto &alias : list) {
-        Folder *f = setupFolderFromOldConfigFile(alias, accountState);
-        if (f) {
-            scheduleFolder(f);
-            emit folderSyncStateChange(f);
+    // Normally there should be only one account when migrating. TODO: Change
+    const auto accountState = AccountManager::instance()->accounts().value(0).data();
+    for (const auto &fileName : dirFiles) {
+        const auto fullFilePath = dir.filePath(fileName);
+        const auto folder = setupFolderFromOldConfigFile(fullFilePath, accountState);
+        if (folder) {
+            scheduleFolder(folder);
+            emit folderSyncStateChange(folder);
         }
     }
 
@@ -377,11 +380,11 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
 
     auto processSubgroup = [&](const QString &name) {
         settings->beginGroup(name);
-        const int foldersVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
+        const auto foldersVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
         if (foldersVersion <= maxFoldersVersion) {
-            foreach (const auto &folderAlias, settings->childGroups()) {
+            for (const auto &folderAlias : settings->childGroups()) {
                 settings->beginGroup(folderAlias);
-                const int folderVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
+                const auto folderVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
                 if (folderVersion > FolderDefinition::maxSettingsVersion()) {
                     ignoreKeys->append(settings->group());
                 }
@@ -478,31 +481,27 @@ QString FolderMan::unescapeAlias(const QString &alias)
     return a;
 }
 
-// filename is the name of the file only, it does not include
-// the configuration directory path
 // WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
-Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState)
+Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, AccountState *accountState)
 {
-    Folder *folder = nullptr;
-
-    qCInfo(lcFolderMan) << "  ` -> setting up:" << file;
-    QString escapedAlias(file);
+    qCInfo(lcFolderMan) << "  ` -> setting up:" << fileNamePath;
+    QString escapedFileNamePath(fileNamePath);
     // check the unescaped variant (for the case when the filename comes out
     // of the directory listing). If the file does not exist, escape the
     // file and try again.
-    QFileInfo cfgFile(_folderConfigPath, file);
+    QFileInfo cfgFile(fileNamePath);
 
     if (!cfgFile.exists()) {
         // try the escaped variant.
-        escapedAlias = escapeAlias(file);
-        cfgFile.setFile(_folderConfigPath, escapedAlias);
+        escapedFileNamePath = escapeAlias(fileNamePath);
+        cfgFile.setFile(_folderConfigPath, escapedFileNamePath);
     }
     if (!cfgFile.isReadable()) {
         qCWarning(lcFolderMan) << "Cannot read folder definition for alias " << cfgFile.filePath();
-        return folder;
+        return nullptr;
     }
 
-    QSettings settings(_folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
+    QSettings settings(escapedFileNamePath, QSettings::IniFormat);
     qCInfo(lcFolderMan) << "    -> file path: " << settings.fileName();
 
     // Check if the filename is equal to the group setting. If not, use the group
@@ -510,7 +509,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     const auto groups = settings.childGroups();
     if (groups.isEmpty()) {
         qCWarning(lcFolderMan) << "empty file:" << cfgFile.filePath();
-        return folder;
+        return nullptr;
     }
 
     if (!accountState) {
@@ -566,8 +565,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
             folderDefinition.paused = paused;
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
-            folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>());
-            if (folder) {
+            if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
                 const auto blackList = settings.value(QLatin1String("blackList")).toStringList();
                 if (!blackList.empty()) {
                     //migrate settings
@@ -578,11 +576,10 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
                 }
 
                 folder->saveToSettings();
-            }
-            qCInfo(lcFolderMan) << "Migrated!" << folder;
-            settings.sync();
 
-            if (folder) {
+                qCInfo(lcFolderMan) << "Migrated!" << folder;
+                settings.sync();
+
                 return folder;
             }
 
@@ -592,7 +589,8 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
         settings.endGroup();
         settings.endGroup();
     }
-    return folder;
+
+    return nullptr;
 }
 
 void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
