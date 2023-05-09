@@ -772,7 +772,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
                     return true;
                 }());
 
-                return; // probably a spurious notification
+                continue; // probably a spurious notification
             }
         }
         warnOnNewExcludedItem(record, relativePath);
