@@ -7,9 +7,13 @@
 
 #include <QtTest>
 
+#include "common/chronoelapsedtimer.h"
 #include "common/utility.h"
 #include "folderwatcher.h"
 #include "testutils/testutils.h"
+
+using namespace std::chrono_literals;
+
 namespace {
 class FolderWatcherForTests : public OCC::FolderWatcher
 {
@@ -92,9 +96,10 @@ class TestFolderWatcher : public QObject
 
     bool waitForPathChanged(const QString &path)
     {
-        QElapsedTimer t;
-        t.start();
-        while (t.elapsed() < 5000) {
+        Utility::ChronoElapsedTimer t;
+        // Current interval is 10s, if we didn't get a change in 15s something did not work
+        // https://github.com/owncloud/client/blob/82b5a1e1bb2b05503e0774d3be5e328c4cd207e2/src/gui/folderwatcher.cpp#L40-L40
+        while (t.duration() < 15s) {
             // Check if it was already reported as changed by the watcher
             for (int i = 0; i < _pathChangedSpy->size(); ++i) {
                 const auto &args = _pathChangedSpy->at(i);
@@ -102,7 +107,7 @@ class TestFolderWatcher : public QObject
                     return true;
             }
             // Wait a bit and test again (don't bother checking if we timed out or not)
-            _pathChangedSpy->wait(200);
+            _pathChangedSpy->wait(1000);
         }
         return false;
     }

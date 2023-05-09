@@ -1,0 +1,7 @@
+Enhancement: Reduce how often file changes are handled
+
+We no longer handle file changes every 1s but gather them for 10s and handle them then.
+
+This should reduce the amount of unnecessary checksum computations and attempted syncs.
+
+https://github.com/owncloud/client/pull/10825 

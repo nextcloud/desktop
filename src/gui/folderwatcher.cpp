@@ -37,7 +37,7 @@
 using namespace std::chrono_literals;
 
 namespace {
-constexpr auto notificationTimeoutC = 1s;
+constexpr auto notificationTimeoutC = 10s;
 }
 
 namespace OCC {
@@ -134,7 +134,7 @@ void FolderWatcher::startNotificationTestWhenReady()
         f.open(QIODevice::WriteOnly | QIODevice::Append);
     }
 
-    QTimer::singleShot(5s, this, [this]() {
+    QTimer::singleShot(notificationTimeoutC + 5s, this, [this]() {
         if (!_testNotificationPath.isEmpty())
             emit becameUnreliable(tr("The watcher did not receive a test notification."));
         _testNotificationPath.clear();
