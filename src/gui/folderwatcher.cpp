@@ -19,9 +19,8 @@
 
 #include <QFileInfo>
 #include <QFlags>
-#include <QDir>
-#include <QMutexLocker>
 #include <QStringList>
+#include <QThread>
 #include <QTimer>
 
 #if defined(Q_OS_WIN)
@@ -53,7 +52,7 @@ FolderWatcher::FolderWatcher(Folder *folder)
     connect(&_timer, &QTimer::timeout, this, [this] {
         auto paths = std::move(_changeSet);
         // ------- handle ignores:
-        auto it = paths.begin();
+        auto it = paths.cbegin();
         while (it != paths.cend()) {
             // we cause a file change from time to time to check whether the folder watcher works as expected
             if (!_testNotificationPath.isEmpty() && Utility::fileNamesEqual(*it, _testNotificationPath)) {
@@ -83,10 +82,8 @@ void FolderWatcher::init(const QString &root)
 
 bool FolderWatcher::pathIsIgnored(const QString &path) const
 {
-    if (path.isEmpty())
-        return true;
-    if (!_folder)
-        return false;
+    Q_ASSERT(!path.isEmpty());
+    Q_ASSERT(_folder);
     if (_folder->isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
         qCDebug(lcFolderWatcher) << "* Ignoring file" << path;
         return true;
@@ -156,6 +153,7 @@ int FolderWatcher::testLinuxWatchCount() const
 
 void FolderWatcher::changeDetected(const QSet<QString> &paths)
 {
+    Q_ASSERT(thread() == QThread::currentThread());
     _changeSet.unite(paths);
     if (!_timer.isActive()) {
         _timer.start();

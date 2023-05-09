@@ -10,6 +10,15 @@
 #include "common/utility.h"
 #include "folderwatcher.h"
 #include "testutils/testutils.h"
+namespace {
+class FolderWatcherForTests : public OCC::FolderWatcher
+{
+    Q_OBJECT
+public:
+    using OCC::FolderWatcher::FolderWatcher;
+
+    bool pathIsIgnored(const QString &path) const override { return false; }
+};
 
 void touch(const QString &file)
 {
@@ -68,6 +77,7 @@ void mv(const QString &file1, const QString &file2)
     system(cmd.toLocal8Bit().constData());
 #endif
 }
+}
 
 using namespace OCC;
 
@@ -77,7 +87,7 @@ class TestFolderWatcher : public QObject
 
     const QTemporaryDir _root = TestUtils::createTempDir();
     QString _rootPath;
-    QScopedPointer<FolderWatcher> _watcher;
+    QScopedPointer<FolderWatcherForTests> _watcher;
     QScopedPointer<QSignalSpy> _pathChangedSpy;
 
     bool waitForPathChanged(const QString &path)
@@ -119,7 +129,7 @@ public:
         TestUtils::writeRandomFile(_rootPath + QStringLiteral("/a2/renamefile"));
         TestUtils::writeRandomFile(_rootPath + QStringLiteral("/a1/movefile"));
 
-        _watcher.reset(new FolderWatcher);
+        _watcher.reset(new FolderWatcherForTests);
         _watcher->init(_rootPath);
         _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), &FolderWatcher::pathChanged));
     }

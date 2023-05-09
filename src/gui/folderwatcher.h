@@ -58,7 +58,7 @@ public:
     void init(const QString &root);
 
     /* Check if the path is ignored. */
-    bool pathIsIgnored(const QString &path) const;
+    virtual bool pathIsIgnored(const QString &path) const;
 
     /**
      * Returns false if the folder watcher can't be trusted to capture all

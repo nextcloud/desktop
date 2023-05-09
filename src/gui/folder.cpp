@@ -687,10 +687,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
 {
     Q_ASSERT(isReady());
     for (const auto &path : paths) {
-        if (!FileSystem::isChildPathOf(path, this->path())) {
-            qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
-            return;
-        }
+        Q_ASSERT(FileSystem::isChildPathOf(path, this->path()));
 
         const QString relativePath = path.mid(this->path().size());
         if (reason == ChangeReason::UnLock) {
