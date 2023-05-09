@@ -106,6 +106,7 @@ def setUpClient(username, displayName, space="Personal"):
     0/Folders/1/virtualFilesMode=off
     0/dav_user={davUserName}
     0/display-name={displayUserName}
+    0/http_CredentialVersion=1
     0/http_oauth={oauth}
     0/http_user={davUserName}
     0/url={local_server}
