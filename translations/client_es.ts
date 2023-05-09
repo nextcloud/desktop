@@ -457,7 +457,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
         <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Agregar un espacio</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
@@ -469,7 +469,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Reconectar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="373"/>
@@ -581,7 +581,7 @@ Por favor, autentiquese usando su navegador.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Pulse este botón para añadir un espacio.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="857"/>
@@ -591,7 +591,7 @@ Por favor, autentiquese usando su navegador.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="862"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Tú necesita conectar para agregar una carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
@@ -882,7 +882,7 @@ Cliente de escritorio para la sincronización de archivos.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Lists available translations, see --language.</source>
-        <translation type="unfinished"/>
+        <translation>Lista de traducciones disponible, muestra el idioma</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
@@ -1310,7 +1310,7 @@ Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados
     <message>
         <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Fuera de linea</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1129"/>
@@ -2552,7 +2552,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Este espacio no se actualmente disponible</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
@@ -2879,7 +2879,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>La suma de comprobación ha fallado</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
@@ -4086,22 +4086,22 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Reiniciar todas las sincronizaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Reiniciar la sincronización </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Parar todas las sincroniaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Detener la sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="825"/>

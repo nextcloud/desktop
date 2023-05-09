@@ -8,6 +8,7 @@ COMMIT_SHA_SHORT=${DRONE_COMMIT:0:8}
 SERVERS=("oc10" "ocis")
 BUILD_STATUS=":white_check_mark:**Success**"
 TEST_LOGS=""
+BRANCH_NAME="${DRONE_BRANCH}"
 
 if [ "${DRONE_BUILD_STATUS}" == "failure" ]; then
     BUILD_STATUS=":x:**Failure**"
@@ -47,4 +48,8 @@ for server in "${SERVERS[@]}"; do
     fi
 done
 
-echo -e "$BUILD_STATUS [${DRONE_REPO}#${COMMIT_SHA_SHORT}](${DRONE_BUILD_LINK}) (${DRONE_BRANCH}) by **${DRONE_COMMIT_AUTHOR}** $TEST_LOGS" >"$1"/template.md
+if [ "${DRONE_BUILD_EVENT}" == "tag" ]; then
+    BRANCH_NAME="Tag: \`${DRONE_TAG}\`"
+fi
+
+echo -e "$BUILD_STATUS [${DRONE_REPO}#${COMMIT_SHA_SHORT}](${DRONE_BUILD_LINK}) (${BRANCH_NAME}) by **${DRONE_COMMIT_AUTHOR}** $TEST_LOGS" >"$1"/template.md

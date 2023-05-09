@@ -833,7 +833,8 @@ Die Aktualisierung wird im Hintergrund durchgeführt und überschreibt die aktue
         <location filename="../src/gui/application.cpp" line="594"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 version %2&lt;byte value=&quot;xd&quot;/&gt;
+Datei Synchronisations-Applikation.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -849,7 +850,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="614"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Die laufende Instanz beenden.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="615"/>
@@ -859,7 +860,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="616"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Schreibe die Log-Ausgaben pro Sync-Lauf in eine neue Datei im Verzeichnis.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="617"/>
@@ -879,12 +880,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Lists available translations, see --language.</source>
-        <translation type="unfinished"/>
+        <translation>Listet die verfügbaren Ubersetzungen, siehe --language.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>Verwende den angegebenen Konfigurationsordner</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="622"/>
@@ -904,7 +905,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="641"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile und --logdir schließen sich gegenseitig aus</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="655"/>

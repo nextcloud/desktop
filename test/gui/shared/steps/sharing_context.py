@@ -52,9 +52,14 @@ def createPublicShareWithRole(resource, role):
 
 
 def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0):
-    resource = getResourcePath(resource)
-    socketConnect = getSocketConnection()
-    socketConnect.sendCommand("SHARE:" + resource + "\n")
+    openSharingDialog(resource)
+
+    checkCollaboratorAndPremissions(receiver, permissions, receiverCount)
+
+    SharingDialog.closeSharingDialog()
+
+
+def checkCollaboratorAndPremissions(receiver, permissions, receiverCount=0):
     permissionsList = permissions.split(',')
 
     # findAllObjects: This functionfinds and returns a list of object references identified by the symbolic or real (multi-property) name objectName.
@@ -74,7 +79,6 @@ def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0)
         SharingDialog.hasSharePermission(),
         ('share' in permissionsList),
     )
-    SharingDialog.closeSharingDialog()
 
 
 @When(
@@ -329,6 +333,7 @@ def step(context, publicLinkName, password):
     'the following users should be listed in as collaborators for file "|any|" on the client-UI'
 )
 def step(context, resource):
+    openSharingDialog(resource)
     #     Here we are trying to verify if the user added in when step are listed in the client-UI or not
     #     We now have a variable name receiverCount which is used in collaboratorShouldBeListed function call
     receiverCount = 0
@@ -336,8 +341,10 @@ def step(context, resource):
         receiver = row[0]
         permissions = row[1]
 
-        collaboratorShouldBeListed(receiver, resource, permissions, receiverCount)
+        checkCollaboratorAndPremissions(receiver, permissions, receiverCount)
         receiverCount += 1
+
+    SharingDialog.closeSharingDialog()
 
 
 @When('the user searches for collaborator "|any|" using the client-UI')
