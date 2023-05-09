@@ -207,6 +207,8 @@ private:
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     [[nodiscard]] bool sensitiveDataRemaining() const;
 
+    void failedToInitialize(const AccountPtr &account);
+
     bool isInitialized = false;
 };
 
