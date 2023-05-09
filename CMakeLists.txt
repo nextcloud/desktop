@@ -95,9 +95,6 @@ option(BUILD_SHELL_INTEGRATION "BUILD_SHELL_INTEGRATION" ON)
 # this option builds/installs the generic shell integration icons
 option(BUILD_SHELL_INTEGRATION_ICONS "BUILD_SHELL_INTEGRATION_ICONS" ON)
 
-# this options builds the dolphin integration plugin
-option(BUILD_SHELL_INTEGRATION_DOLPHIN "BUILD_SHELL_INTEGRATION_DOLPHIN" ON)
-
 # this options builds the nautilus (like) integration plugins
 option(BUILD_SHELL_INTEGRATION_NAUTILUS "BUILD_SHELL_INTEGRATION_NAUTILUS" ON)
 
