@@ -102,9 +102,11 @@ RowLayout {
     }
 
     CustomButton {
+        id: syncNowButton
+
         FontMetrics {
             id: syncNowFm
-            font: parent.contentsFont
+            font: syncNowButton.contentsFont
         }
 
         Layout.preferredWidth: syncNowFm.boundingRect(text).width +
