@@ -4,6 +4,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.1] - 2023-04-19
+
+### Added
+
+### Changed
+* Do not display error status and messages when aborting a sync during hydration request in VFS mode by @allexzander in https://github.com/nextcloud/desktop/pull/5579
+* In case server has no private key, let e2ee init fail by @mgallien in https://github.com/nextcloud/desktop/pull/5566
+* Edit locally: restart current folder sync immediately after file opened by @allexzander in https://github.com/nextcloud/desktop/pull/5588
+
+### Fixed
+* Sort encrypted files by their id to compute checksum by @mgallien in https://github.com/nextcloud/desktop/pull/5568
+* Try different permutation to recover the broken checksum by @mgallien in https://github.com/nextcloud/desktop/pull/5572
+* Fix secure file drop unit tests by @allexzander in https://github.com/nextcloud/desktop/pull/5574
+* Always add the item at the end of the layout by @camilasan in https://github.com/nextcloud/desktop/pull/5595
+* Properly preserve the format of E2EE metadata during DB operations by @mgallien in https://github.com/nextcloud/desktop/pull/5577
+
+## [3.8.0] - 2023-03-31
+
+### Added
+* Secure file drop by @allexzander in https://github.com/nextcloud/desktop/pull/5327
+* Multiple bug fixes in E2EE by @mgallien in https://github.com/nextcloud/desktop/pull/5560
+* Add Ubuntu Lunar by @ivaradi in https://github.com/nextcloud/desktop/pull/5520
+
+### Changed
+* Log to stdout when built in Debug config by @claucambra in https://github.com/nextcloud/desktop/pull/5410
+
+### Fixed
+* E2EE cut extra zeroes from derypted byte array by @allexzander in https://github.com/nextcloud/desktop/pull/5534
+* Prevent ShareModel crash from accessing bad pointers by @claucambra in https://github.com/nextcloud/desktop/pull/5391
+* Show server name in tray main window by @Alkl58 in https://github.com/nextcloud/desktop/pull/5513
+* Enter next log file if the current log file is larger than 512 KB by @claucambra in https://github.com/nextcloud/desktop/pull/5580
+* Debian build classification 'beta' cannot override 'release' by @ivaradi in https://github.com/nextcloud/desktop/pull/5521
+* Follow shouldNotify flag to hide notifications when needed by @mgallien in https://github.com/nextcloud/desktop/pull/5530
+* Only accept folder setup page if --overridelocaldir option is set by @camilasan in https://github.com/nextcloud/desktop/pull/5385
+* Exit after creating config file when using --overrideserverurl option by @mgallien in https://github.com/nextcloud/desktop/pull/5532
+* Respect --overridelocaldir option by @mgallien in https://github.com/nextcloud/desktop/pull/5546
+* L10n: Correct word by @Valdnet in https://github.com/nextcloud/desktop/pull/5378
+* L10n: Added dot to end of sentence by @rakekniven in https://github.com/nextcloud/desktop/pull/5427
+* L10n: Fixed grammar by @rakekniven in https://github.com/nextcloud/desktop/pull/5430
+
 ## [3.7.4] - 2023-03-09
 
 ### Changed
@@ -14,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Check German translation for wrong wording by @tobiasKaminsky in https://github.com/nextcloud/desktop/pull/5351
 * Fix "Create new folder" menu entries in settings not working correctly on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5435
 * Fix share dialog infinite loading by @claucambra in https://github.com/nextcloud/desktop/pull/5442
-* Fix edit loc ally job not finding the user account: wrong user id by @mgallien in https://github.com/nextcloud/desktop/pull/5444
+* Fix edit locally job not finding the user account: wrong user id by @mgallien in https://github.com/nextcloud/desktop/pull/5444
 * Skip e2e encrypted files with empty filename in metadata by @mgallien in https://github.com/nextcloud/desktop/pull/5448
 * Always discover blacklisted folders to avoid data loss when modifying selectivesync list by @allexzander in https://github.com/nextcloud/desktop/pull/5459
 * Use new connect syntax by @mgallien in https://github.com/nextcloud/desktop/pull/5451
@@ -206,7 +246,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Revert "Merge pull request #5366 from nextcloud/bugfix/remove-mono-icons-setting" by @claucambra in https://github.com/nextcloud/desktop/pull/5372
 * Open calendar notifications in the browser. by @camilasan in https://github.com/nextcloud/desktop/pull/4684
 * Migrate old configs by @camilasan in https://github.com/nextcloud/desktop/pull/5362
-* Fix displaying of file details button for local syncfileitem activities by @claucambra in https://github.com/nextcloud/desktop/pull/5379
 * Fix displaying of file details button for local syncfileitem activities by @claucambra in https://github.com/nextcloud/desktop/pull/5379
 
 ### Security
