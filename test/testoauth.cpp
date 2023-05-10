@@ -21,8 +21,10 @@ class DesktopServiceHook : public QObject
     Q_OBJECT
 signals:
     void hooked(const QUrl &);
+
 public:
     DesktopServiceHook() { QDesktopServices::setUrlHandler(QStringLiteral("oauthtest"), this, "hooked"); }
+    ~DesktopServiceHook() { QDesktopServices::unsetUrlHandler(QStringLiteral("oauthtest")); }
 };
 
 static const QUrl sOAuthTestServer(QStringLiteral("oauthtest://someserver/owncloud"));
