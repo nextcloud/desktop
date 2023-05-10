@@ -860,6 +860,7 @@ Page {
                 clipboardHelper.clear();
 
                 shareLinkCopied = true;
+                shareLinkCopyTimer.start();
             }
 
             property bool shareLinkCopied: false
@@ -882,6 +883,12 @@ Page {
             TextEdit {
                 id: clipboardHelper
                 visible: false
+            }
+
+            Timer {
+                id: shareLinkCopyTimer
+                interval: 3000
+                onTriggered: copyShareLinkButton.shareLinkCopied = false
             }
         }
     }
