@@ -880,6 +880,14 @@ Page {
 
             onClicked: copyShareLink()
 
+            Behavior on bgColor {
+                ColorAnimation { duration: 200 }
+            }
+
+            Behavior on bgHoverOpacity {
+                NumberAnimation { duration: 200 }
+            }
+
             TextEdit {
                 id: clipboardHelper
                 visible: false
