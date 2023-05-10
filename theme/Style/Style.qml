@@ -147,6 +147,10 @@ QtObject {
 
     readonly property int trayWindowMenuEntriesMargin: 6
 
+    // animation durations
+    readonly property int shortAnimationDuration: 200
+    readonly property int veryLongAnimationDuration: 3000
+
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));
     }

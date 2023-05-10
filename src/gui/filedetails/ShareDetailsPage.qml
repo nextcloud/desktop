@@ -881,11 +881,11 @@ Page {
             onClicked: copyShareLink()
 
             Behavior on bgColor {
-                ColorAnimation { duration: 200 }
+                ColorAnimation { duration: Style.shortAnimationDuration }
             }
 
             Behavior on bgHoverOpacity {
-                NumberAnimation { duration: 200 }
+                NumberAnimation { duration: Style.shortAnimationDuration }
             }
 
             TextEdit {
@@ -895,7 +895,7 @@ Page {
 
             Timer {
                 id: shareLinkCopyTimer
-                interval: 3000
+                interval: Style.veryLongAnimationDuration
                 onTriggered: copyShareLinkButton.shareLinkCopied = false
             }
         }
