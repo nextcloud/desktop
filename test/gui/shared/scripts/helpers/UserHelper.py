@@ -1,8 +1,19 @@
 import os
 import requests
+from base64 import b64encode
 from helpers.ConfigHelper import get_config
 
 createdUsers = {}
+
+
+def basic_auth_header(user=None):
+    # default admin auth
+    token = b64encode(b"admin:admin").decode()
+    if user:
+        password = getPasswordForUser(user)
+        token = b64encode(("%s:%s" % (user, password)).encode()).decode()
+    return {"Authorization": "Basic " + token}
+
 
 # gets all users information created in a test scenario
 def getCreatedUsersFromMiddleware():
