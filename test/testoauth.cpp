@@ -173,7 +173,10 @@ public:
     }
 
     virtual QNetworkReply *createBrowserReply(const QNetworkRequest &request) {
-        browserReply = realQNAM.get(request);
+        auto r = request;
+        // don't follow the redirect to owncloud://success
+        r.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
+        browserReply = realQNAM.get(r);
         QObject::connect(browserReply, &QNetworkReply::finished, this, &OAuthTestCase::browserReplyFinished);
         return browserReply;
     }
