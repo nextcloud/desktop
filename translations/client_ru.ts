@@ -967,7 +967,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="389"/>
+        <location filename="../src/gui/application.cpp" line="393"/>
         <source>Error accessing the configuration file</source>
         <translation>Ошибка при доступе к файлу конфигурации</translation>
     </message>
@@ -977,12 +977,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Ошибка при обращении к файлу конфигурации «%1», убедитесь, что файл доступен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="390"/>
+        <location filename="../src/gui/application.cpp" line="394"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ошибка при обращении к файлу конфигурации «%1», убедитесь, что файл доступен для системной учётной записи.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="393"/>
+        <location filename="../src/gui/application.cpp" line="397"/>
         <source>Quit %1</source>
         <translation>Выйти из %1</translation>
     </message>
@@ -1948,22 +1948,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="411"/>
+        <location filename="../src/gui/folderman.cpp" line="414"/>
         <source>Could not reset folder state</source>
         <translation>Невозможно сбросить состояние папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="412"/>
+        <location filename="../src/gui/folderman.cpp" line="415"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Найден старый журнал синхронизации «%1», но он не может быть удалён. Убедитесь, что файл журнала не открыт в другом приложении.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1339"/>
+        <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source> (backup)</source>
         <translation>(резервная копия)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source> (backup %1)</source>
         <translation>(резервная копия %1)</translation>
     </message>
@@ -1973,27 +1973,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1606"/>
+        <location filename="../src/gui/folderman.cpp" line="1604"/>
         <source>Undefined state.</source>
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1609"/>
+        <location filename="../src/gui/folderman.cpp" line="1607"/>
         <source>Waiting to start syncing.</source>
         <translation>Ожидание запуска синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1612"/>
+        <location filename="../src/gui/folderman.cpp" line="1610"/>
         <source>Preparing for sync.</source>
         <translation>Подготовка к синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1615"/>
+        <location filename="../src/gui/folderman.cpp" line="1613"/>
         <source>Sync is running.</source>
         <translation>Идет синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Синхронизация завершена с неразрешенными конфликтами.</translation>
     </message>
@@ -2013,62 +2013,62 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Отмена пользователем.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1622"/>
+        <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>Last sync was successful.</source>
         <translation>Последняя синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1628"/>
+        <location filename="../src/gui/folderman.cpp" line="1626"/>
         <source>Setup error.</source>
         <translation>Ошибка установки.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1631"/>
+        <location filename="../src/gui/folderman.cpp" line="1629"/>
         <source>Sync request was cancelled.</source>
         <translation>Запрос синхронизации был отменён.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1634"/>
+        <location filename="../src/gui/folderman.cpp" line="1632"/>
         <source>Sync is paused.</source>
         <translation>Синхронизация приостановлена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1640"/>
+        <location filename="../src/gui/folderman.cpp" line="1638"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (синхронизация приостановлена)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1648"/>
+        <location filename="../src/gui/folderman.cpp" line="1646"/>
         <source>No valid folder selected!</source>
         <translation>Не выбрана допустимая папка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1660"/>
+        <location filename="../src/gui/folderman.cpp" line="1658"/>
         <source>The selected path does not exist!</source>
         <translation>Выбранный путь не существует</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1664"/>
+        <location filename="../src/gui/folderman.cpp" line="1662"/>
         <source>The selected path is not a folder!</source>
         <translation>Выбранный путь не является папкой.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1668"/>
+        <location filename="../src/gui/folderman.cpp" line="1666"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Отсутствуют права записи в выбранную папку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1720"/>
+        <location filename="../src/gui/folderman.cpp" line="1718"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка «%1» уже содержит вложенную папку, которая синхронизируется с сервером. Выберите другую папку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1728"/>
+        <location filename="../src/gui/folderman.cpp" line="1726"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка «%1» является вложенной в папку, которая уже синхронизируется с сервером. Выберите другую папку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1742"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Синхронизация этой локальной папки с сервером уже настроена.  Выберите другую локальную папку.</translation>
     </message>
@@ -2527,7 +2527,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Create Debug Archive</source>
         <translation>Создать архив с отладочными данными</translation>
     </message>
@@ -2547,12 +2547,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Автоматический запуск не может быть отключен, т.к. он настроен на уровне системы.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="344"/>
         <source>Change update channel?</source>
         <translation>Сменить канал обновлений?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2561,27 +2561,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Обратите внимание, что смена канала возможна переход только при увеличения внутренней версии приложения: переход со стабильного на бета-канал происходит моментально, а переход с бета-канала на стабильный потребует времени, пока стабильная версия станет новее установленной бета-версии.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="369"/>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Change update channel</source>
         <translation>Сменить канал обновлений</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Zip Archives</source>
         <translation>Zip архивы</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Debug Archive Created</source>
         <translation>Создан архив с отладочными данными</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Debug archive is created at %1</source>
         <translation>Архив с отладочными данными создан: «%1»</translation>
     </message>
@@ -5803,7 +5803,7 @@ Server replied with error: %2</source>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="116"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="118"/>
         <source>Sync now</source>
         <translation>Синхронизировать</translation>
     </message>
@@ -5819,6 +5819,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="53"/>
         <source>Send reply to chat message</source>
         <translation>Отправить ответ на сообщение</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
+        <source>Open local folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
+        <source>Connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
+        <source>Disconnected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="110"/>
+        <source>Group folder button</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
+        <source>Open groupfolder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>
+        <source>Open %1 in file explorer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="202"/>
+        <source>User group and local folders menu</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6143,6 +6191,11 @@ Server replied with error: %2</source>
         <translation>Текущее изображение учётной записи</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="597"/>
+        <source>Open local folder of current account</source>
+        <translation>Открыть локальную папку текущей учетной записи</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
         <source>Current account status is online</source>
         <translation>Текущий статус пользователя: в сети</translation>
@@ -6161,11 +6214,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Account switcher and settings menu</source>
         <translation>Переключение уч. записей и настройки</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="597"/>
-        <source>Open local folder of current account</source>
-        <translation>Открыть локальную папку текущей учетной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="620"/>

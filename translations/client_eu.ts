@@ -968,7 +968,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Jarraitu</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="389"/>
+        <location filename="../src/gui/application.cpp" line="393"/>
         <source>Error accessing the configuration file</source>
         <translation>Errorea ezarpen fitxategia atzitzean</translation>
     </message>
@@ -978,12 +978,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>% 1 konfigurazio fitxategian sartzean akats bat gertatu da. Egiaztatu zure erabiltzaileak fitxategi hau atzitzeko baimena duela.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="390"/>
+        <location filename="../src/gui/application.cpp" line="394"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Errorea gertatu da %1 konfigurazio fitxategian sartzean. Egiaztatu zure sistemaren kontuak fitxategi hau atzitzeko baimena duela.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="393"/>
+        <location filename="../src/gui/application.cpp" line="397"/>
         <source>Quit %1</source>
         <translation>Irten %1(e)tik</translation>
     </message>
@@ -1950,22 +1950,22 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="411"/>
+        <location filename="../src/gui/folderman.cpp" line="414"/>
         <source>Could not reset folder state</source>
         <translation>Ezin izan da karpetaren egoera berrezarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="412"/>
+        <location filename="../src/gui/folderman.cpp" line="415"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>&quot;% 1&quot; sinkronizazio egunkari zahar bat aurkitu da, baina ezin izan da kendu. Ziurtatu ez dela aplikaziorik erabiltzen ari.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1339"/>
+        <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source> (backup)</source>
         <translation> (backup)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1344"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source> (backup %1)</source>
         <translation> (backup %1)</translation>
     </message>
@@ -1975,27 +1975,27 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1606"/>
+        <location filename="../src/gui/folderman.cpp" line="1604"/>
         <source>Undefined state.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1609"/>
+        <location filename="../src/gui/folderman.cpp" line="1607"/>
         <source>Waiting to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1612"/>
+        <location filename="../src/gui/folderman.cpp" line="1610"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1615"/>
+        <location filename="../src/gui/folderman.cpp" line="1613"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinkronizazioa burutu da, ebatzi gabeko gatazka batzuekin.</translation>
     </message>
@@ -2015,62 +2015,62 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Erabiltzaileak bertan behera utzi du.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1622"/>
+        <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>Last sync was successful.</source>
         <translation>Azkeneko sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1628"/>
+        <location filename="../src/gui/folderman.cpp" line="1626"/>
         <source>Setup error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1631"/>
+        <location filename="../src/gui/folderman.cpp" line="1629"/>
         <source>Sync request was cancelled.</source>
         <translation>Sinkronizazio eskaera bertan behera utzi da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1634"/>
+        <location filename="../src/gui/folderman.cpp" line="1632"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1640"/>
+        <location filename="../src/gui/folderman.cpp" line="1638"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1648"/>
+        <location filename="../src/gui/folderman.cpp" line="1646"/>
         <source>No valid folder selected!</source>
         <translation>Ez da baliozko karpetarik hautatu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1660"/>
+        <location filename="../src/gui/folderman.cpp" line="1658"/>
         <source>The selected path does not exist!</source>
         <translation>Hautatutako bidea ez da existitzen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1664"/>
+        <location filename="../src/gui/folderman.cpp" line="1662"/>
         <source>The selected path is not a folder!</source>
         <translation>Hautatutako bidea ez da karpeta bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1668"/>
+        <location filename="../src/gui/folderman.cpp" line="1666"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ez daukazu hautatutako karpetan idazteko baimenik!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1720"/>
+        <location filename="../src/gui/folderman.cpp" line="1718"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Tokiko &apos;%1&apos; karpetak badu dagoeneko sinkronizatutako karpeta bat. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1728"/>
+        <location filename="../src/gui/folderman.cpp" line="1726"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Tokiko &apos;%1&apos; karpeta dagoeneko sinkronizatutako karpeta batean dago. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1744"/>
+        <location filename="../src/gui/folderman.cpp" line="1742"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Dagoeneko sinkronizazio bat dago zerbitzaritik karpeta lokal honetara. Aukeratu tokiko beste karpeta bat!</translation>
     </message>
@@ -2529,7 +2529,7 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Create Debug Archive</source>
         <translation>Sortu arazketa fitxategia</translation>
     </message>
@@ -2549,12 +2549,12 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Ezin da abiarazte automatikoa desgaitu sistema osoaren abiarazte automatikoa gaituta dagoelako.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="344"/>
         <source>Change update channel?</source>
         <translation>Eguneratze kanala aldatu nahi duzu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2563,27 +2563,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Kontuan izan honek bertsio berriak nondik hartu bakarrik hautatzen duela, ezin dela bertsio zaharretara itzuli: beraz, beta kanaletik batzuetan ezin da automatikoki kanal egonkorrera itzuli, jarrita dagoena baino berriagoa den bertsio egonkor bati itxaron behar zaio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="369"/>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Change update channel</source>
         <translation>Aldatu eguneratze kanala</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="474"/>
+        <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Zip Archives</source>
         <translation>Zip fitxategiak</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Debug Archive Created</source>
         <translation>Arazketa fitxategia sortu da</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="480"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Debug archive is created at %1</source>
         <translation>Arazketa fitxategia sortuta dago, hemen: %1</translation>
     </message>
@@ -5808,7 +5808,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="116"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="118"/>
         <source>Sync now</source>
         <translation>Sinkronizatu orain</translation>
     </message>
@@ -5824,6 +5824,54 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="53"/>
         <source>Send reply to chat message</source>
         <translation>Bidali erantzuna txat-mezuari</translation>
+    </message>
+</context>
+<context>
+    <name>TrayFoldersMenuButton</name>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
+        <source>Open local folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
+        <source>Connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
+        <source>Disconnected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="110"/>
+        <source>Group folder button</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
+        <source>Open local folder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
+        <source>Open groupfolder &quot;%1&quot;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>
+        <source>Open %1 in file explorer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="202"/>
+        <source>User group and local folders menu</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6148,6 +6196,11 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Uneko kontuaren avatarra</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="597"/>
+        <source>Open local folder of current account</source>
+        <translation>Ireki uneko kontuaren karpeta lokala</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
         <source>Current account status is online</source>
         <translation>Uneko kontua linean dago</translation>
@@ -6166,11 +6219,6 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Account switcher and settings menu</source>
         <translation>Kontu txandakatze eta ezarpenen menua</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="597"/>
-        <source>Open local folder of current account</source>
-        <translation>Ireki uneko kontuaren karpeta lokala</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
