@@ -52,7 +52,7 @@
 
 using namespace std::chrono;
 namespace {
-auto &RFC1123PatternC()
+auto RFC1123PatternC()
 {
     return QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'");
 }
