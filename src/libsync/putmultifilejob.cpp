@@ -71,14 +71,21 @@ void PutMultiFileJob::start()
 
 bool PutMultiFileJob::finished()
 {
-    for(const auto &oneDevice : _devices) {
-        oneDevice._device->close();
-    }
-
     qCInfo(lcPutMultiFileJob) << "POST of" << reply()->request().url().toString() << path() << "FINISHED WITH STATUS"
                               << replyStatusString()
                               << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                               << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+
+    for(const auto &oneDevice : _devices) {
+        Q_ASSERT(oneDevice._device);
+
+        if (oneDevice._device->isOpen()) {
+            oneDevice._device->close();
+        } else {
+            qCWarning(lcPutMultiFileJob) << "Did not close device" << oneDevice._device.get()
+                                         << "as it was not open";
+        }
+    }
 
     emit finishedSignal();
     return true;
