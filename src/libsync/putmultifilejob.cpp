@@ -79,6 +79,10 @@ bool PutMultiFileJob::finished()
     for(const auto &oneDevice : _devices) {
         Q_ASSERT(oneDevice._device);
 
+        if (!oneDevice._device->errorString().isEmpty()) {
+            qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
+        }
+
         if (oneDevice._device->isOpen()) {
             oneDevice._device->close();
         } else {
