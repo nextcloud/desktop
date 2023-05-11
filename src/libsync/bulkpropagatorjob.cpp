@@ -33,12 +33,6 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
-namespace OCC {
-
-Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "nextcloud.sync.propagator.bulkupload", QtInfoMsg)
-
-}
-
 namespace {
 
 QByteArray getEtagFromJsonReply(const QJsonObject &reply)
@@ -65,14 +59,15 @@ QByteArray getHeaderFromJsonReply(const QJsonObject &reply, const QByteArray &he
 }
 
 constexpr auto batchSize = 100;
-
 constexpr auto parallelJobsMaximumCount = 1;
+
 }
 
 namespace OCC {
 
-BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator,
-                                     const std::deque<SyncFileItemPtr> &items)
+Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "nextcloud.sync.propagator.bulkupload", QtInfoMsg)
+
+BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator, const std::deque<SyncFileItemPtr> &items)
     : PropagatorJob(propagator)
     , _items(items)
 {
@@ -230,6 +225,7 @@ void BulkPropagatorJob::triggerUpload()
     adjustLastJobTimeout(job, timeout);
     _jobs.append(job);
     job->start();
+
     if (parallelism() == PropagatorJob::JobParallelism::FullParallelism && _jobs.size() < parallelJobsMaximumCount) {
         scheduleSelfOrChild();
     }
