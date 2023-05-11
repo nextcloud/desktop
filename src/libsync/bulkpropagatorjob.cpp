@@ -260,20 +260,16 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
                                                         UploadFileInfo fileToUpload)
 {
     // Compute the transmission checksum.
-    auto computeChecksum = std::make_unique<ComputeChecksum>(this);
-    if (uploadChecksumEnabled()) {
-        computeChecksum->setChecksumType("MD5" /*propagator()->account()->capabilities().uploadChecksumType()*/);
-    } else {
-        computeChecksum->setChecksumType(QByteArray());
-    }
+    const auto computeChecksum = new ComputeChecksum(this);
+    const auto checksumType = uploadChecksumEnabled() ? "MD5" : "";
+    computeChecksum->setChecksumType(checksumType);
 
-    connect(computeChecksum.get(), &ComputeChecksum::done,
-            this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
+    connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
         slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);
     });
-    connect(computeChecksum.get(), &ComputeChecksum::done,
-            computeChecksum.get(), &QObject::deleteLater);
-    computeChecksum.release()->start(fileToUpload._path);
+    connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
+
+    computeChecksum->start(fileToUpload._path);
 }
 
 void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
