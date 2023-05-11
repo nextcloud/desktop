@@ -20,18 +20,35 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPutMultiFileJob, "nextcloud.sync.networkjob.put.multi", QtInfoMsg)
 
+PutMultiFileJob::PutMultiFileJob(AccountPtr account,
+                                 const QUrl &url,
+                                 std::vector<SingleUploadFileData> devices,
+                                 QObject *parent)
+    : AbstractNetworkJob(account, {}, parent)
+    , _devices(std::move(devices))
+    , _url(url)
+{
+    _body.setContentType(QHttpMultiPart::RelatedType);
+
+    for(const auto &singleDevice : _devices) {
+        singleDevice._device->setParent(this);
+        connect(this, &PutMultiFileJob::uploadProgress,
+                singleDevice._device.get(), &UploadDevice::slotJobUploadProgress);
+    }
+}
+
 PutMultiFileJob::~PutMultiFileJob() = default;
 
 void PutMultiFileJob::start()
 {
     QNetworkRequest req;
 
-    for(auto &oneDevice : _devices) {
+    for(const auto &oneDevice : _devices) {
         auto onePart = QHttpPart{};
 
         onePart.setBodyDevice(oneDevice._device.get());
 
-        for (QMap<QByteArray, QByteArray>::const_iterator it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
+        for (auto it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
             onePart.setRawHeader(it.key(), it.value());
         }
 
@@ -65,6 +82,16 @@ bool PutMultiFileJob::finished()
 
     emit finishedSignal();
     return true;
+}
+
+QString PutMultiFileJob::errorString() const
+{
+    return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
+}
+
+std::chrono::milliseconds PutMultiFileJob::msSinceStart() const
+{
+    return std::chrono::milliseconds(_requestTimer.elapsed());
 }
 
 }

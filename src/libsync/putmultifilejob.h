@@ -49,19 +49,10 @@ class OWNCLOUDSYNC_EXPORT PutMultiFileJob : public AbstractNetworkJob
     Q_OBJECT
 
 public:
-    explicit PutMultiFileJob(AccountPtr account, const QUrl &url,
-                             std::vector<SingleUploadFileData> devices, QObject *parent = nullptr)
-        : AbstractNetworkJob(account, {}, parent)
-        , _devices(std::move(devices))
-        , _url(url)
-    {
-        _body.setContentType(QHttpMultiPart::RelatedType);
-        for(auto &singleDevice : _devices) {
-            singleDevice._device->setParent(this);
-            connect(this, &PutMultiFileJob::uploadProgress,
-                    singleDevice._device.get(), &UploadDevice::slotJobUploadProgress);
-        }
-    }
+    explicit PutMultiFileJob(AccountPtr account,
+                             const QUrl &url,
+                             std::vector<SingleUploadFileData> devices,
+                             QObject *parent = nullptr);
 
     ~PutMultiFileJob() override;
 
@@ -69,15 +60,8 @@ public:
 
     bool finished() override;
 
-    [[nodiscard]] QString errorString() const override
-    {
-        return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
-    }
-
-    [[nodiscard]] std::chrono::milliseconds msSinceStart() const
-    {
-        return std::chrono::milliseconds(_requestTimer.elapsed());
-    }
+    [[nodiscard]] QString errorString() const override;
+    [[nodiscard]] std::chrono::milliseconds msSinceStart() const;
 
 signals:
     void finishedSignal();
