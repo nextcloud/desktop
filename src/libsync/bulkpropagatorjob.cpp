@@ -219,19 +219,18 @@ void BulkPropagatorJob::triggerUpload()
     }
 
     const auto bulkUploadUrl = Utility::concatUrlPath(propagator()->account()->url(), QStringLiteral("/remote.php/dav/bulk"));
-    auto job = std::make_unique<PutMultiFileJob>(propagator()->account(), bulkUploadUrl, std::move(uploadParametersData), this);
-    connect(job.get(), &PutMultiFileJob::finishedSignal, this, &BulkPropagatorJob::slotPutFinished);
+    auto job = new PutMultiFileJob(propagator()->account(), bulkUploadUrl, std::move(uploadParametersData), this);
+    connect(job, &PutMultiFileJob::finishedSignal, this, &BulkPropagatorJob::slotPutFinished);
 
     for(auto &singleFile : _filesToUpload) {
-        connect(job.get(), &PutMultiFileJob::uploadProgress,
-                this, [this, singleFile] (qint64 sent, qint64 total) {
+        connect(job, &PutMultiFileJob::uploadProgress, this, [this, singleFile] (const qint64 sent, const qint64 total) {
             slotUploadProgress(singleFile._item, sent, total);
         });
     }
 
-    adjustLastJobTimeout(job.get(), timeout);
-    _jobs.append(job.get());
-    job.release()->start();
+    adjustLastJobTimeout(job, timeout);
+    _jobs.append(job);
+    job->start();
     if (parallelism() == PropagatorJob::JobParallelism::FullParallelism && _jobs.size() < parallelJobsMaximumCount) {
         scheduleSelfOrChild();
     }
