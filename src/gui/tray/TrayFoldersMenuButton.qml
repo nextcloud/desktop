@@ -182,7 +182,7 @@ HeaderButton {
                         property bool isGroupFolder: model.modelData.isGroupFolder
 
                         text: model.modelData.name
-                        toolTipText: !isGroupFolder ? qsTr("Open local folder \"%1\"").arg(model.modelData.fullPath) : qsTr("Open groupfolder \"%1\"").arg(model.modelData.fullPath)
+                        toolTipText: !isGroupFolder ? qsTr("Open local folder \"%1\"").arg(model.modelData.fullPath) : qsTr("Open group folder \"%1\"").arg(model.modelData.fullPath)
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
