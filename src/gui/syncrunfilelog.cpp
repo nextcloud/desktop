@@ -90,7 +90,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     const QChar L = QLatin1Char('|');
     QString tmp;
     {
-        QDebug(&tmp).noquote() << dateTimeStr(QDateTime::fromString(QString::fromUtf8(item._responseTimeStamp), Qt::RFC2822Date)) << L
+        QDebug(&tmp).noquote() << dateTimeStr(Utility::parseRFC1123Date(QString::fromUtf8(item._responseTimeStamp))) << L
                                << ((item._instruction != CSYNC_INSTRUCTION_RENAME) ? item.destination()
                                                                                    : item._file + QStringLiteral(" -> ") + item._renameTarget)
                                << L << item._instruction << L << item._direction << L << L << item._modtime << L << item._etag << L << item._size << L

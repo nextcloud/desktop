@@ -51,7 +51,12 @@
 #include <stdarg.h>
 
 using namespace std::chrono;
-
+namespace {
+auto &RFC1123PatternC()
+{
+    return QStringLiteral("ddd, dd MMM yyyy HH:mm:ss 'GMT'");
+}
+}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUtility, "sync.utility")
@@ -647,6 +652,18 @@ bool Utility::runningInAppImage()
 #else
     return false;
 #endif
+}
+
+QDateTime Utility::parseRFC1123Date(const QString &date)
+{
+    const auto out = QDateTime::fromString(date, RFC1123PatternC());
+    Q_ASSERT(out.isValid());
+    return out;
+}
+
+QString Utility::formatRFC1123Date(const QDateTime &date)
+{
+    return date.toString(RFC1123PatternC());
 }
 
 } // namespace OCC

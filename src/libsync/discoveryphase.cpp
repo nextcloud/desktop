@@ -379,7 +379,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         result.isDirectory = it->value().contains(QStringLiteral("collection"));
     }
     if (auto it = Utility::optionalFind(map, QStringLiteral("getlastmodified"))) {
-        const auto date = QDateTime::fromString(**it, Qt::RFC2822Date);
+        const auto date = Utility::parseRFC1123Date(**it);
         Q_ASSERT(date.isValid());
         result.modtime = date.toSecsSinceEpoch();
     }
@@ -474,7 +474,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         deleteLater();
         return;
     }
-    emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_proFindJob->responseTimestamp()), Qt::RFC2822Date));
+    emit etag(_firstEtag, _proFindJob->responseQTimeStamp());
     emit finished(_results);
     deleteLater();
 }

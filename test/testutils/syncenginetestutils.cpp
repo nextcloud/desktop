@@ -382,7 +382,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
         auto gmtDate = fileInfo.lastModifiedInUtc();
-        xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), gmtDate.toString(Qt::RFC2822Date));
+        xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), OCC::Utility::formatRFC1123Date(gmtDate));
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.contentSize));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromUtf8(fileInfo.etag)));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW")
@@ -1172,7 +1172,7 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
 FakeReply::FakeReply(QObject *parent)
     : QNetworkReply(parent)
 {
-    setRawHeader(QByteArrayLiteral("Date"), QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date).toUtf8());
+    setRawHeader(QByteArrayLiteral("Date"), OCC::Utility::formatRFC1123Date(QDateTime::currentDateTimeUtc()).toUtf8());
 }
 
 FakeReply::~FakeReply()

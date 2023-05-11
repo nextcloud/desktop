@@ -397,6 +397,9 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
     OCSYNC_EXPORT QString appImageLocation();
     OCSYNC_EXPORT bool runningInAppImage();
+
+    OCSYNC_EXPORT QDateTime parseRFC1123Date(const QString &date);
+    OCSYNC_EXPORT QString formatRFC1123Date(const QDateTime &date);
 } // Utility namespace
 /** @} */ // \addtogroup
 

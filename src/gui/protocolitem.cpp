@@ -35,7 +35,7 @@ ProtocolItem::ProtocolItem(Folder *folder, const SyncFileItemPtr &item)
     , _sizeIsRelevant(ProgressInfo::isSizeDependent(*item))
 {
     if (!item->_responseTimeStamp.isEmpty()) {
-        _timestamp = QDateTime::fromString(QString::fromUtf8(item->_responseTimeStamp), Qt::RFC2822Date);
+        _timestamp = Utility::parseRFC1123Date(QString::fromUtf8(item->_responseTimeStamp));
     } else {
         _timestamp = QDateTime::currentDateTimeUtc();
     }

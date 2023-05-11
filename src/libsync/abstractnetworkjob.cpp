@@ -246,7 +246,7 @@ QByteArray AbstractNetworkJob::responseTimestamp() const
 
 QDateTime OCC::AbstractNetworkJob::responseQTimeStamp() const
 {
-    return QDateTime::fromString(QString::fromUtf8(responseTimestamp()), Qt::RFC2822Date);
+    return Utility::parseRFC1123Date(QString::fromUtf8(responseTimestamp()));
 }
 
 QByteArray AbstractNetworkJob::requestId()
