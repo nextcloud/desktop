@@ -1,14 +1,6 @@
-include(CheckIncludeFile)
-include(CheckSymbolExists)
 include(CheckFunctionExists)
 include(CheckLibraryExists)
-include(CheckTypeSize)
-include(CheckCXXSourceCompiles)
 
-set(PACKAGE ${APPLICATION_NAME})
-set(VERSION ${APPLICATION_VERSION})
-set(DATADIR ${KDE_INSTALL_DATADIR})
-set(LIBDIR ${LIB_INSTALL_DIR})
 set(SYSCONFDIR ${CMAKE_INSTALL_SYSCONFDIR})
 
 # FUNCTIONS
