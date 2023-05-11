@@ -20,8 +20,8 @@ if (UNIX AND NOT APPLE)
         endif()
     endif()
 
-    include(ECMQueryQmake)
-    query_qmake(_qt_plugin_dir QT_INSTALL_PLUGINS TRY)
+    include(ECMQueryQt)
+    ecm_query_qt(_qt_plugin_dir QT_INSTALL_PLUGINS TRY)
     # any sub dir of _qt_plugin_dir is sufficient
     IS_SUBDIR("${_qt_plugin_dir}" "${OC_PLUGIN_DIR}" _is_subdir)
     if (_is_subdir)
