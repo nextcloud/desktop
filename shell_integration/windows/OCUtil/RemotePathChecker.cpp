@@ -107,7 +107,7 @@ void RemotePathChecker::workerThreadLoop()
                     // Remove any item from the cache
                     for (auto it = _cache.begin(); it != _cache.end() ; ) {
                         if (StringUtil::isDescendantOf(it->first, responsePath)) {
-                            removedPaths.emplace_back(move(it->first));
+                            removedPaths.emplace_back(std::move(it->first));
                             it = _cache.erase(it);
                         } else {
                             ++it;

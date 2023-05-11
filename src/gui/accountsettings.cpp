@@ -107,9 +107,9 @@ protected:
 AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
+    , _delegate(new FolderStatusDelegate(this))
     , _wasDisabledBefore(false)
     , _accountState(accountState)
-    , _delegate(new FolderStatusDelegate(this))
 {
     ui->setupUi(this);
 

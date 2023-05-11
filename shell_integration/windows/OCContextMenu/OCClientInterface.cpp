@@ -142,7 +142,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
                 if (!StringUtil::extractChunks(response, stringName, stringValue))
                     continue;
                 if (stringName == L"CONTEXT_MENU_TITLE")
-                    info.contextMenuTitle = move(stringValue);
+                    info.contextMenuTitle = std::move(stringValue);
             } else if (StringUtil::begins_with(response, wstring(L"MENU_ITEM:"))) {
                 wstring commandName, flags, title;
                 if (!StringUtil::extractChunks(response, commandName, flags, title))
