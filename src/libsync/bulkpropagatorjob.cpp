@@ -93,6 +93,13 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
             fileToUpload._file = currentItem->_file;
             fileToUpload._size = currentItem->_size;
             fileToUpload._path = propagator()->fullLocalPath(fileToUpload._file);
+
+            qCDebug(lcBulkPropagatorJob) << "Scheduling bulk propagator job:" << this
+                                         << "and starting upload of item"
+                                         << "with file:" << fileToUpload._file
+                                         << "with size:" << fileToUpload._size
+                                         << "with path:" << fileToUpload._path;
+
             startUploadFile(currentItem, fileToUpload);
         }); // We could be in a different thread (neon jobs)
     }
@@ -491,6 +498,8 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
 
 void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
 {
+    qCDebug(lcBulkPropagatorJob) << "Received a full reply" << fullReply;
+
     for(auto singleFileIt = std::begin(_filesToUpload); singleFileIt != std::end(_filesToUpload); ) {
         const auto &singleFile = *singleFileIt;
 

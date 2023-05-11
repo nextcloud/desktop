@@ -76,9 +76,9 @@ bool PutMultiFileJob::finished()
     }
 
     qCInfo(lcPutMultiFileJob) << "POST of" << reply()->request().url().toString() << path() << "FINISHED WITH STATUS"
-                     << replyStatusString()
-                     << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-                     << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+                              << replyStatusString()
+                              << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+                              << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
     emit finishedSignal();
     return true;
