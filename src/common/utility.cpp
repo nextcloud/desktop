@@ -656,9 +656,12 @@ bool Utility::runningInAppImage()
 
 QDateTime Utility::parseRFC1123Date(const QString &date)
 {
-    const auto out = QDateTime::fromString(date, RFC1123PatternC());
-    Q_ASSERT(out.isValid());
-    return out;
+    if (!date.isEmpty()) {
+        const auto out = QDateTime::fromString(date, RFC1123PatternC());
+        Q_ASSERT(out.isValid());
+        return out;
+    }
+    return {};
 }
 
 QString Utility::formatRFC1123Date(const QDateTime &date)
