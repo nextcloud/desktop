@@ -24,32 +24,31 @@ class TestUtility : public QObject
 private slots:
     void testFormatFingerprint()
     {
-        QVERIFY2(formatFingerprint("68ac906495480a3404beee4874ed853a037a7a8f")
-                 == "68:ac:90:64:95:48:0a:34:04:be:ee:48:74:ed:85:3a:03:7a:7a:8f",
-		"Utility::formatFingerprint() is broken");
+        QVERIFY2(formatFingerprint("68ac906495480a3404beee4874ed853a037a7a8f") == QStringLiteral("68:ac:90:64:95:48:0a:34:04:be:ee:48:74:ed:85:3a:03:7a:7a:8f"),
+            "Utility::formatFingerprint() is broken");
     }
     void testOctetsToString()
     {
         QLocale::setDefault(QLocale(QStringLiteral("en")));
-        QCOMPARE(octetsToString(999) , QString("999 B"));
-        QCOMPARE(octetsToString(1024) , QString("1 KB"));
-        QCOMPARE(octetsToString(1364) , QString("1 KB"));
+        QCOMPARE(octetsToString(999), QString::fromLatin1("999 B"));
+        QCOMPARE(octetsToString(1024), QString::fromLatin1("1 KB"));
+        QCOMPARE(octetsToString(1364), QString::fromLatin1("1 KB"));
 
-        QCOMPARE(octetsToString(9110) , QString("9 KB"));
-        QCOMPARE(octetsToString(9910) , QString("10 KB"));
-        QCOMPARE(octetsToString(10240) , QString("10 KB"));
+        QCOMPARE(octetsToString(9110), QString::fromLatin1("9 KB"));
+        QCOMPARE(octetsToString(9910), QString::fromLatin1("10 KB"));
+        QCOMPARE(octetsToString(10240), QString::fromLatin1("10 KB"));
 
-        QCOMPARE(octetsToString(123456) , QString("121 KB"));
-        QCOMPARE(octetsToString(1234567) , QString("1.2 MB"));
-        QCOMPARE(octetsToString(12345678) , QString("12 MB"));
-        QCOMPARE(octetsToString(123456789) , QString("118 MB"));
-        QCOMPARE(octetsToString(1000LL*1000*1000 * 5) , QString("4.7 GB"));
+        QCOMPARE(octetsToString(123456), QString::fromLatin1("121 KB"));
+        QCOMPARE(octetsToString(1234567), QString::fromLatin1("1.2 MB"));
+        QCOMPARE(octetsToString(12345678), QString::fromLatin1("12 MB"));
+        QCOMPARE(octetsToString(123456789), QString::fromLatin1("118 MB"));
+        QCOMPARE(octetsToString(1000LL * 1000 * 1000 * 5), QString::fromLatin1("4.7 GB"));
 
-        QCOMPARE(octetsToString(1), QString("1 B"));
-        QCOMPARE(octetsToString(2), QString("2 B"));
-        QCOMPARE(octetsToString(1024), QString("1 KB"));
-        QCOMPARE(octetsToString(1024*1024), QString("1 MB"));
-        QCOMPARE(octetsToString(1024LL*1024*1024), QString("1 GB"));
+        QCOMPARE(octetsToString(1), QString::fromLatin1("1 B"));
+        QCOMPARE(octetsToString(2), QString::fromLatin1("2 B"));
+        QCOMPARE(octetsToString(1024), QString::fromLatin1("1 KB"));
+        QCOMPARE(octetsToString(1024 * 1024), QString::fromLatin1("1 MB"));
+        QCOMPARE(octetsToString(1024LL * 1024 * 1024), QString::fromLatin1("1 GB"));
     }
 
     void testLaunchOnStartup()
@@ -76,36 +75,33 @@ private slots:
 
         QDateTime current = QDateTime::currentDateTimeUtc();
 
-        QCOMPARE(durationToDescriptiveString2(0), QString("0 second(s)") );
-        QCOMPARE(durationToDescriptiveString2(5), QString("0 second(s)") );
-        QCOMPARE(durationToDescriptiveString2(1000), QString("1 second(s)") );
-        QCOMPARE(durationToDescriptiveString2(1005), QString("1 second(s)") );
-        QCOMPARE(durationToDescriptiveString2(56123), QString("56 second(s)") );
-        QCOMPARE(durationToDescriptiveString2(90*sec), QString("1 minute(s) 30 second(s)") );
-        QCOMPARE(durationToDescriptiveString2(3*hour), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString2(3*hour + 20*sec), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString2(3*hour + 70*sec), QString("3 hour(s) 1 minute(s)") );
-        QCOMPARE(durationToDescriptiveString2(3*hour + 100*sec), QString("3 hour(s) 2 minute(s)") );
-        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23*60*60))),
-                 QString("4 year(s) 5 month(s)") );
-        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addDays(2).addSecs(23*60*60))),
-                 QString("2 day(s) 23 hour(s)") );
+        QCOMPARE(durationToDescriptiveString2(0), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(5), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(1000), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(1005), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(56123), QString::fromLatin1("56 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(90 * sec), QString::fromLatin1("1 minute(s) 30 second(s)"));
+        QCOMPARE(durationToDescriptiveString2(3 * hour), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString2(3 * hour + 20 * sec), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString2(3 * hour + 70 * sec), QString::fromLatin1("3 hour(s) 1 minute(s)"));
+        QCOMPARE(durationToDescriptiveString2(3 * hour + 100 * sec), QString::fromLatin1("3 hour(s) 2 minute(s)"));
+        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60))),
+            QString::fromLatin1("4 year(s) 5 month(s)"));
+        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("2 day(s) 23 hour(s)"));
 
-        QCOMPARE(durationToDescriptiveString1(0), QString("0 second(s)") );
-        QCOMPARE(durationToDescriptiveString1(5), QString("0 second(s)") );
-        QCOMPARE(durationToDescriptiveString1(1000), QString("1 second(s)") );
-        QCOMPARE(durationToDescriptiveString1(1005), QString("1 second(s)") );
-        QCOMPARE(durationToDescriptiveString1(56123), QString("56 second(s)") );
-        QCOMPARE(durationToDescriptiveString1(90*sec), QString("2 minute(s)") );
-        QCOMPARE(durationToDescriptiveString1(3*hour), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString1(3*hour + 20*sec), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString1(3*hour + 70*sec), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString1(3*hour + 100*sec), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23*60*60))),
-                 QString("4 year(s)") );
-        QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addDays(2).addSecs(23*60*60))),
-                 QString("3 day(s)") );
-
+        QCOMPARE(durationToDescriptiveString1(0), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(5), QString::fromLatin1("0 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(1000), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(1005), QString::fromLatin1("1 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(56123), QString::fromLatin1("56 second(s)"));
+        QCOMPARE(durationToDescriptiveString1(90 * sec), QString::fromLatin1("2 minute(s)"));
+        QCOMPARE(durationToDescriptiveString1(3 * hour), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(3 * hour + 20 * sec), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(3 * hour + 70 * sec), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(durationToDescriptiveString1(3 * hour + 100 * sec), QString::fromLatin1("3 hour(s)"));
+        QCOMPARE(
+            durationToDescriptiveString1(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("4 year(s)"));
+        QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("3 day(s)"));
     }
 
     void testVersionOfInstalledBinary()
@@ -118,7 +114,7 @@ private slots:
         qDebug() << "Version of installed ownCloud Binary: " << ver;
         QVERIFY(!ver.isEmpty());
 
-        QRegularExpression rx(APPLICATION_SHORTNAME "cmd ownCloud \\d+\\.\\d+\\.\\d+.*", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpression rx(QStringLiteral(APPLICATION_SHORTNAME "cmd ownCloud \\d+\\.\\d+\\.\\d+.*"), QRegularExpression::CaseInsensitiveOption);
         qDebug() << rx.pattern();
         QVERIFY(rx.match(ver).isValid());
     }
@@ -163,25 +159,25 @@ private slots:
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
-        QVERIFY(dir2.mkpath("test"));
+        QVERIFY(dir2.mkpath(QStringLiteral("1")));
         if( !fsCasePreserving() ) {
-        QVERIFY(dir2.mkpath("TEST"));
+            QVERIFY(dir2.mkpath(QStringLiteral("TEST")));
         }
-        QVERIFY(dir2.mkpath("test/TESTI"));
-        QVERIFY(dir2.mkpath("TESTI"));
+        QVERIFY(dir2.mkpath(QStringLiteral("test/TESTI")));
+        QVERIFY(dir2.mkpath(QStringLiteral("TESTI")));
 
         QString a = dir.path();
         QString b = dir.path();
 
         QVERIFY(fileNamesEqual(a, b));
 
-        QVERIFY(fileNamesEqual(a+"/test", b+"/test")); // both exist
-        QVERIFY(fileNamesEqual(a+"/test/TESTI", b+"/test/../test/TESTI")); // both exist
+        QVERIFY(fileNamesEqual(a + QStringLiteral("/test"), b + QStringLiteral("/test"))); // both exist
+        QVERIFY(fileNamesEqual(a + QStringLiteral("/test/TESTI"), b + QStringLiteral("/test/../test/TESTI"))); // both exist
 
         QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override, true);
-        QVERIFY(fileNamesEqual(a+"/test", b+"/TEST")); // both exist
+        QVERIFY(fileNamesEqual(a + QStringLiteral("/test"), b + QStringLiteral("/TEST"))); // both exist
 
-        QVERIFY(!fileNamesEqual(a+"/test", b+"/test/TESTI")); // both are different
+        QVERIFY(!fileNamesEqual(a + QStringLiteral("/test"), b + QStringLiteral("/test/TESTI"))); // both are different
 
         dir.remove();
     }

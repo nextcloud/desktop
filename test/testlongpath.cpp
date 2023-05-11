@@ -123,7 +123,7 @@ private Q_SLOTS:
 
         const auto data = QByteArrayLiteral("hello");
         qDebug() << longPath;
-        QVERIFY(longPath.dir().mkpath("."));
+        QVERIFY(longPath.dir().mkpath(QStringLiteral(".")));
 
         QFile file(longPath.filePath());
         QVERIFY(file.open(QFile::WriteOnly));

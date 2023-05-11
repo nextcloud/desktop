@@ -75,7 +75,7 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.uploadState().children.count(), 1); // the transfer was done with chunking
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
 
         // Check that another upload of the same file also work.
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
@@ -102,7 +102,7 @@ private slots:
 
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::DeleteOperation) {
-                Q_ASSERT(request.url().path().endsWith("/10000"));
+                Q_ASSERT(request.url().path().endsWith(QStringLiteral("/10000")));
             }
             return nullptr;
         });
@@ -110,7 +110,7 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
@@ -152,7 +152,7 @@ private slots:
         for (const auto& toDelete : chunksToDelete) {
             bool wasDeleted = false;
             for (const auto& deleted : deletedPaths) {
-                if (deleted.mid(deleted.lastIndexOf('/') + 1) == toDelete) {
+                if (deleted.mid(deleted.lastIndexOf(QLatin1Char('/')) + 1) == toDelete) {
                     wasDeleted = true;
                     break;
                 }
@@ -161,7 +161,7 @@ private slots:
         }
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
@@ -181,8 +181,7 @@ private slots:
         QVERIFY(uploadedSize > 5_mb); // at least 5 MB
 
         // Add a chunk that makes the file completely uploaded
-        fakeFolder.uploadState().children.first().insert(
-            QString::number(uploadedSize).rightJustified(16, '0'), size - uploadedSize);
+        fakeFolder.uploadState().children.first().insert(QString::number(uploadedSize).rightJustified(16, QLatin1Char('0')), size - uploadedSize);
 
         bool sawPut = false;
         bool sawDelete = false;
@@ -204,7 +203,7 @@ private slots:
         QVERIFY(!sawDelete);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
@@ -225,13 +224,12 @@ private slots:
         QVERIFY(uploadedSize > 5_mb); // at least 5 MB
 
         // Add a chunk that makes the file more than completely uploaded
-        fakeFolder.uploadState().children.first().insert(
-            QString::number(uploadedSize).rightJustified(16, '0'), size - uploadedSize + 100);
+        fakeFolder.uploadState().children.first().insert(QString::number(uploadedSize).rightJustified(16, QLatin1Char('0')), size - uploadedSize + 100);
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
     }
 
@@ -274,14 +272,14 @@ private slots:
             it++;
             QCOMPARE(it->get()->_file, QLatin1String("A/a0"));
             QCOMPARE(it->get()->_instruction, CSYNC_INSTRUCTION_UPDATE_METADATA);
-            QCOMPARE(it->get()->_etag, fakeFolder.remoteModifier().find("A/a0")->etag);
+            QCOMPARE(it->get()->_etag, QString::fromUtf8(fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->etag));
         };
         auto checkEtagUpdated = [&](const SyncFileItemPtr &item) {
             if (item->_file == QLatin1String("A/a0")) {
                 SyncJournalFileRecord record;
                 QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
-                QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag);
-                QCOMPARE(item->_etag, fakeFolder.remoteModifier().find("A/a0")->etag);
+                QCOMPARE(record._etag, fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->etag);
+                QCOMPARE(item->_etag, QString::fromUtf8(fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->etag));
             }
         };
         auto connection1 = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkIsUpdateMetaData);
@@ -313,7 +311,7 @@ private slots:
 
         // Set the remote checksum -- the test setup doesn't do it automatically
         QVERIFY(!moveChecksumHeader.isEmpty());
-        fakeFolder.remoteModifier().find("A/a0")->checksums = moveChecksumHeader;
+        fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->checksums = moveChecksumHeader;
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nGET, 0); // no new download, just a metadata update!
@@ -328,7 +326,7 @@ private slots:
         // bug: in this case we must expect a re-download of A/A3
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nGET, 1);
-        QVERIFY(fakeFolder.currentLocalState().find("A/a3"));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3")));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
@@ -373,14 +371,14 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
 
-        const auto a0size = fakeFolder.currentLocalState().find("A/a0")->contentSize;
+        const auto a0size = fakeFolder.currentLocalState().find(QStringLiteral("A/a0"))->contentSize;
         fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), a0size, 'B');
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"), 'B');
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size + 1);
         // A different chunk id was used, and the previous one is removed
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
@@ -439,11 +437,11 @@ private slots:
         auto localState = fakeFolder.currentLocalState();
 
         // A0 is the one from the server
-        QCOMPARE(localState.find("A/a0")->contentSize, size);
-        QCOMPARE(localState.find("A/a0")->contentChar, 'C');
+        QCOMPARE(localState.find(QStringLiteral("A/a0"))->contentSize, size);
+        QCOMPARE(localState.find(QStringLiteral("A/a0"))->contentChar, 'C');
 
         // There is a conflict file with our version
-        auto &stateAChildren = localState.find("A")->children;
+        auto &stateAChildren = localState.find(QStringLiteral("A"))->children;
         auto it = std::find_if(stateAChildren.cbegin(), stateAChildren.cend(), [&](const FileInfo &fi) {
             return fi.name.startsWith(QLatin1String("a0 (conflicted copy"));
         });
@@ -452,7 +450,7 @@ private slots:
         QCOMPARE(it->contentSize, size + 1);
 
         // Remove the conflict file so the comparison works!
-        fakeFolder.localModifier().remove("A/" + it->name);
+        fakeFolder.localModifier().remove(QStringLiteral("A/") + it->name);
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -494,7 +492,7 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size + 1);
 
         // A different chunk id was used, and the previous one is removed
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -516,7 +514,7 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
 
         // A different chunk id was used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -546,8 +544,7 @@ private slots:
         // This will perform the operation on the server, but the reply will not come to the client
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
             if (!chunking) {
-                Q_ASSERT(!request.url().path().contains("/uploads/")
-                    && "Should not touch uploads endpoint when not chunking");
+                Q_ASSERT(!request.url().path().contains(QStringLiteral("/uploads/")) && "Should not touch uploads endpoint when not chunking");
             }
             if (!chunking && op == QNetworkAccessManager::PutOperation) {
                 checksumHeader = request.rawHeader("OC-Checksum");
@@ -566,7 +563,7 @@ private slots:
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // timeout!
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState()); // but the upload succeeded
         QVERIFY(!checksumHeader.isEmpty());
-        fakeFolder.remoteModifier().find("A/a0")->checksums = checksumHeader; // The test system don't do that automatically
+        fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->checksums = checksumHeader; // The test system don't do that automatically
         // Should be resolved properly
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nGET, 0);
@@ -576,12 +573,12 @@ private slots:
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // timeout!
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState()); // but the upload succeeded
-        fakeFolder.remoteModifier().find("A/a0")->checksums = checksumHeader;
+        fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->checksums = checksumHeader;
         // modify again, should not cause conflict
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // now it's trying to upload the modified file
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        fakeFolder.remoteModifier().find("A/a0")->checksums = checksumHeader;
+        fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->checksums = checksumHeader;
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nGET, 0);
     }
@@ -591,12 +588,12 @@ private slots:
         const auto size = 5_mb;
         setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
-        fakeFolder.localModifier().insert("A/file % \u20ac", size);
+        fakeFolder.localModifier().insert(QString::fromLatin1("A/file % \u20ac"), size);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Only the second upload contains an "If" header
-        fakeFolder.localModifier().appendByte("A/file % \u20ac");
+        fakeFolder.localModifier().appendByte(QString::fromLatin1("A/file % \u20ac"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
@@ -614,7 +611,7 @@ private slots:
         // Now resume
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size);
 
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -625,7 +622,7 @@ private slots:
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize, size + 1);
     }
 
     // the final move fails but the succeeding sync recovers and finishes the upload

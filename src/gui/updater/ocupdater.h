@@ -210,7 +210,7 @@ public:
 
 private:
     void versionInfoArrived(const UpdateInfo &info) override;
-    QByteArray _runningAppVersion;
+    QString _runningAppVersion;
 };
 }
 

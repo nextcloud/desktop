@@ -19,7 +19,7 @@ void touch(const QString &file)
     QString cmd;
     cmd = QStringLiteral("touch %1").arg(file);
     qDebug() << "Command: " << cmd;
-    system(cmd.toLocal8Bit());
+    system(cmd.toLocal8Bit().constData());
 #endif
 }
 
@@ -31,7 +31,7 @@ void mkdir(const QString &file)
 #else
     QString cmd = QStringLiteral("mkdir %1").arg(file);
     qDebug() << "Command: " << cmd;
-    system(cmd.toLocal8Bit());
+    system(cmd.toLocal8Bit().constData());
 #endif
 }
 
@@ -43,7 +43,7 @@ void rmdir(const QString &file)
 #else
     QString cmd = QStringLiteral("rmdir %1").arg(file);
     qDebug() << "Command: " << cmd;
-    system(cmd.toLocal8Bit());
+    system(cmd.toLocal8Bit().constData());
 #endif
 }
 
@@ -54,7 +54,7 @@ void rm(const QString &file)
 #else
     QString cmd = QStringLiteral("rm %1").arg(file);
     qDebug() << "Command: " << cmd;
-    system(cmd.toLocal8Bit());
+    system(cmd.toLocal8Bit().constData());
 #endif
 }
 
@@ -65,7 +65,7 @@ void mv(const QString &file1, const QString &file2)
 #else
     QString cmd = QStringLiteral("mv %1 %2").arg(file1, file2);
     qDebug() << "Command: " << cmd;
-    system(cmd.toLocal8Bit());
+    system(cmd.toLocal8Bit().constData());
 #endif
 }
 
@@ -114,10 +114,10 @@ public:
         rootDir.mkpath(QStringLiteral("a1/b2/c1"));
         rootDir.mkpath(QStringLiteral("a1/b3/c3"));
         rootDir.mkpath(QStringLiteral("a2/b3/c3"));
-        TestUtils::writeRandomFile(_rootPath + "/a1/random.bin");
-        TestUtils::writeRandomFile(_rootPath + "/a1/b2/todelete.bin");
-        TestUtils::writeRandomFile(_rootPath + "/a2/renamefile");
-        TestUtils::writeRandomFile(_rootPath + "/a1/movefile");
+        TestUtils::writeRandomFile(_rootPath + QStringLiteral("/a1/random.bin"));
+        TestUtils::writeRandomFile(_rootPath + QStringLiteral("/a1/b2/todelete.bin"));
+        TestUtils::writeRandomFile(_rootPath + QStringLiteral("/a2/renamefile"));
+        TestUtils::writeRandomFile(_rootPath + QStringLiteral("/a1/movefile"));
 
         _watcher.reset(new FolderWatcher);
         _watcher->init(_rootPath);
@@ -129,7 +129,7 @@ public:
         int n = 0;
         const auto &entryList = QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
         for (const auto &sub : entryList)
-            n += 1 + countFolders(path + '/' + sub);
+            n += 1 + countFolders(path + QLatin1Char('/') + sub);
         return n;
     }
 
@@ -146,40 +146,40 @@ private slots:
     }
 
     void testACreate() { // create a new file
-        QString file(_rootPath + "/foo.txt");
+        QString file(_rootPath + QStringLiteral("/foo.txt"));
         QString cmd;
         cmd = QStringLiteral("echo \"xyz\" > %1").arg(file);
         qDebug() << "Command: " << cmd;
-        system(cmd.toLocal8Bit());
+        system(cmd.toLocal8Bit().constData());
 
         QVERIFY(waitForPathChanged(file));
     }
 
     void testATouch() { // touch an existing file.
-        QString file(_rootPath + "/a1/random.bin");
+        QString file(_rootPath + QStringLiteral("/a1/random.bin"));
         touch(file);
         QVERIFY(waitForPathChanged(file));
     }
 
     void testCreateADir() {
-        QString file(_rootPath+"/a1/b1/new_dir");
+        QString file(_rootPath + QStringLiteral("/a1/b1/new_dir"));
         mkdir(file);
         QVERIFY(waitForPathChanged(file));
 
         // Notifications from that new folder arrive too
-        QString file2(_rootPath + "/a1/b1/new_dir/contained");
+        QString file2(_rootPath + QStringLiteral("/a1/b1/new_dir/contained"));
         touch(file2);
         QVERIFY(waitForPathChanged(file2));
     }
 
     void testRemoveADir() {
-        QString file(_rootPath+"/a1/b3/c3");
+        QString file(_rootPath + QStringLiteral("/a1/b3/c3"));
         rmdir(file);
         QVERIFY(waitForPathChanged(file));
     }
 
     void testRemoveAFile() {
-        QString file(_rootPath+"/a1/b2/todelete.bin");
+        QString file(_rootPath + QStringLiteral("/a1/b2/todelete.bin"));
         QVERIFY(QFile::exists(file));
         rm(file);
         QVERIFY(!QFile::exists(file));
@@ -188,8 +188,8 @@ private slots:
     }
 
     void testRenameAFile() {
-        QString file1(_rootPath+"/a2/renamefile");
-        QString file2(_rootPath+"/a2/renamefile.renamed");
+        QString file1(_rootPath + QStringLiteral("/a2/renamefile"));
+        QString file2(_rootPath + QStringLiteral("/a2/renamefile.renamed"));
         QVERIFY(QFile::exists(file1));
         mv(file1, file2);
         QVERIFY(QFile::exists(file2));
@@ -199,8 +199,8 @@ private slots:
     }
 
     void testMoveAFile() {
-        QString old_file(_rootPath+"/a1/movefile");
-        QString new_file(_rootPath+"/a2/movefile.renamed");
+        QString old_file(_rootPath + QStringLiteral("/a1/movefile"));
+        QString new_file(_rootPath + QStringLiteral("/a2/movefile.renamed"));
         QVERIFY(QFile::exists(old_file));
         mv(old_file, new_file);
         QVERIFY(QFile::exists(new_file));
@@ -210,8 +210,8 @@ private slots:
     }
 
     void testRenameDirectorySameBase() {
-        QString old_file(_rootPath+"/a1/b1");
-        QString new_file(_rootPath+"/a1/brename");
+        QString old_file(_rootPath + QStringLiteral("/a1/b1"));
+        QString new_file(_rootPath + QStringLiteral("/a1/brename"));
         QVERIFY(QFile::exists(old_file));
         mv(old_file, new_file);
         QVERIFY(QFile::exists(new_file));
@@ -221,18 +221,18 @@ private slots:
 
         // Verify that further notifications end up with the correct paths
 
-        QString file(_rootPath+"/a1/brename/c1/random.bin");
+        QString file(_rootPath + QStringLiteral("/a1/brename/c1/random.bin"));
         touch(file);
         QVERIFY(waitForPathChanged(file));
 
-        QString dir(_rootPath+"/a1/brename/newfolder");
+        QString dir(_rootPath + QStringLiteral("/a1/brename/newfolder"));
         mkdir(dir);
         QVERIFY(waitForPathChanged(dir));
     }
 
     void testRenameDirectoryDifferentBase() {
-        QString old_file(_rootPath+"/a1/brename");
-        QString new_file(_rootPath+"/bren");
+        QString old_file(_rootPath + QStringLiteral("/a1/brename"));
+        QString new_file(_rootPath + QStringLiteral("/bren"));
         QVERIFY(QFile::exists(old_file));
         mv(old_file, new_file);
         QVERIFY(QFile::exists(new_file));
@@ -242,11 +242,11 @@ private slots:
 
         // Verify that further notifications end up with the correct paths
 
-        QString file(_rootPath+"/bren/c1/random.bin");
+        QString file(_rootPath + QStringLiteral("/bren/c1/random.bin"));
         touch(file);
         QVERIFY(waitForPathChanged(file));
 
-        QString dir(_rootPath+"/bren/newfolder2");
+        QString dir(_rootPath + QStringLiteral("/bren/newfolder2"));
         mkdir(dir);
         QVERIFY(waitForPathChanged(dir));
     }

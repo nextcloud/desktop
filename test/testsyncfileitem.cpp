@@ -37,8 +37,8 @@ private slots:
         QTest::newRow("a3") << createItem(QStringLiteral("ABCD")) << createItem(QStringLiteral("abcd")) << createItem(QStringLiteral("zzzz"));
 
         SyncFileItem movedItem1;
-        movedItem1._file = QLatin1String("folder/source/file.f");
-        movedItem1._renameTarget = QLatin1String("folder/destination/file.f");
+        movedItem1._file = QStringLiteral("folder/source/file.f");
+        movedItem1._renameTarget = QStringLiteral("folder/destination/file.f");
         movedItem1._instruction = CSYNC_INSTRUCTION_RENAME;
 
         QTest::newRow("move1") << createItem(QStringLiteral("folder/destination")) << movedItem1 << createItem(QStringLiteral("folder/destination-2"));

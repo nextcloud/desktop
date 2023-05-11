@@ -364,7 +364,7 @@ void Utility::crash()
 //
 // This version only delivers output on linux, as Mac and Win get their
 // restarting from the installer.
-QByteArray Utility::versionOfInstalledBinary(const QString &command)
+QString Utility::versionOfInstalledBinary(const QString &command)
 {
     QString binary(command);
     if (binary.isEmpty()) {
@@ -381,7 +381,7 @@ QByteArray Utility::versionOfInstalledBinary(const QString &command)
     if (newline > 0) {
         re.truncate(newline);
     }
-    return re.trimmed();
+    return QString::fromUtf8(re.trimmed());
 }
 
 QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)

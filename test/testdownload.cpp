@@ -106,8 +106,8 @@ private slots:
             QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // The sync should succeed, because there are no downloads, and only the placeholders get created
         } else {
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // The sync should fail because not all the files were downloaded
-            QCOMPARE(getItem(completeSpy, "A/a0")->_status, SyncFileItem::SoftError);
-            QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QString("The file could not be downloaded completely."));
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/a0"))->_status, SyncFileItem::SoftError);
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/a0"))->_errorString, QStringLiteral("The file could not be downloaded completely."));
             QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
 
             // Now, we need to restart, this time, it should resume.
@@ -117,7 +117,7 @@ private slots:
 
             fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
                 counter.serverOverride(op, request, device);
-                if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a0")) {
+                if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/a0"))) {
                     rangeRequest = request.rawHeader("Range");
                     auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, this);
                     connect(reply, &FakeGetReply::metaDataChanged, reply, [&, reply] {
@@ -164,13 +164,13 @@ private slots:
             QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // The sync should succeed, because there are no downloads, and only the placeholders get created
         } else {
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // The sync should fail because not all the files were downloaded
-            QCOMPARE(getItem(completeSpy, "A/a0")->_status, SyncFileItem::SoftError);
-            QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QString("The file could not be downloaded completely."));
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/a0"))->_status, SyncFileItem::SoftError);
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/a0"))->_errorString, QStringLiteral("The file could not be downloaded completely."));
             QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
 
             QByteArray ranges;
             fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-                if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a0")) {
+                if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/a0"))) {
                     ranges = request.rawHeader("Range");
                 }
                 return nullptr;
@@ -196,7 +196,7 @@ private slots:
         const auto size = 3_mb + 500_kb;
         fakeFolder.remoteModifier().insert(QStringLiteral("A/broken"), size);
 
-        QByteArray serverMessage = "The file was not downloaded because the tests wants so!";
+        QString serverMessage = QStringLiteral("The file was not downloaded because the tests wants so!");
 
         // First, download only the first 3 MB of the file
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
@@ -205,8 +205,10 @@ private slots:
                     "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
                     "<s:exception>Sabre\\DAV\\Exception\\Forbidden</s:exception>\n"
-                    "<s:message>"+serverMessage+"</s:message>\n"
-                    "</d:error>");
+                    "<s:message>"
+                        + serverMessage.toUtf8()
+                        + "</s:message>\n"
+                          "</d:error>");
             }
             return nullptr;
         });
@@ -218,8 +220,8 @@ private slots:
         } else {
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // Fail because A/broken
             QVERIFY(!timedOut);
-            QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::NormalError);
-            QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains(serverMessage));
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/broken"))->_status, SyncFileItem::NormalError);
+            QVERIFY(getItem(completeSpy, QStringLiteral("A/broken"))->_errorString.contains(serverMessage));
         }
     }
 
@@ -249,8 +251,8 @@ private slots:
         } else {
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // Fail because A/broken
             // FatalError means the sync was aborted, which is what we want
-            QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::FatalError);
-            QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains("System in maintenance mode"));
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/broken"))->_status, SyncFileItem::FatalError);
+            QVERIFY(getItem(completeSpy, QStringLiteral("A/broken"))->_errorString.contains(QStringLiteral("System in maintenance mode")));
         }
     }
 
@@ -293,9 +295,9 @@ private slots:
                 }
                 if (!conflictFile.isEmpty()) {
                     // Check that the temporary file is still there
-                    QCOMPARE(QDir(fakeFolder.localPath() + "A/").entryList({"*.~*"}, QDir::Files | QDir::Hidden).count(), 1);
+                    QCOMPARE(QDir(fakeFolder.localPath() + QStringLiteral("A/")).entryList({QStringLiteral("*.~*")}, QDir::Files | QDir::Hidden).count(), 1);
                     // Set the permission to read only on the folder, so the rename of the temporary file will fail
-                    QFile folderA(fakeFolder.localPath() + "A/");
+                    QFile folderA(fakeFolder.localPath() + QStringLiteral("A/"));
                     QVERIFY(folderA.setPermissions(QFile::Permissions(0x5555)));
                     // For some reason, on some linux system the setPermissions above succeeds, but the directory is still 755.
                     // So double check it here, otherwise the move will succeed, and the sync will succeed (while it should fail).
@@ -308,7 +310,7 @@ private slots:
         QVERIFY(!conflictFile.isEmpty());
 
         // restore permissions
-        QFile(fakeFolder.localPath() + "A/").setPermissions(QFile::Permissions(0x7777));
+        QFile(fakeFolder.localPath() + QStringLiteral("A/")).setPermissions(QFile::Permissions(0x7777));
 
         QObject::disconnect(transProgress);
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) -> QNetworkReply * {
@@ -320,8 +322,8 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         // The a1 file is still tere and have the right content
-        QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(fakeFolder.currentRemoteState().find("A/a1")->contentChar, 'A');
+        QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1"))->contentChar, 'A');
 
         QVERIFY(QFile::remove(conflictFile)); // So the comparison succeeds;
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -335,7 +337,7 @@ private slots:
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.remoteModifier().insert(QStringLiteral("A/resendme"), 300_b);
 
-        QByteArray serverMessage = "Needs to be resend on a new connection!";
+        QString serverMessage = QStringLiteral("Needs to be resend on a new connection!");
         int resendActual = 0;
         int resendExpected = 2;
 
@@ -366,8 +368,8 @@ private slots:
             QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
             QCOMPARE(resendActual, 6); // AbstractNetworkJob::MaxRetryCount + 1
-            QCOMPARE(getItem(completeSpy, "A/resendme")->_status, SyncFileItem::NormalError);
-            QVERIFY(getItem(completeSpy, "A/resendme")->_errorString.contains(serverMessage));
+            QCOMPARE(getItem(completeSpy, QStringLiteral("A/resendme"))->_status, SyncFileItem::NormalError);
+            QVERIFY(getItem(completeSpy, QStringLiteral("A/resendme"))->_errorString.contains(serverMessage));
         }
     }
 };

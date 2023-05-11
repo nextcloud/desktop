@@ -62,20 +62,20 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("B/newSmallDir/subDir/smallFile"), 10_b);
 
         // Because the test system don't do that automatically
-        fakeFolder.remoteModifier().find("A/newBigDir")->extraDavProperties = "<oc:size>20020</oc:size>";
-        fakeFolder.remoteModifier().find("A/newBigDir/subDir")->extraDavProperties = "<oc:size>20020</oc:size>";
-        fakeFolder.remoteModifier().find("B/newSmallDir")->extraDavProperties = "<oc:size>10</oc:size>";
-        fakeFolder.remoteModifier().find("B/newSmallDir/subDir")->extraDavProperties = "<oc:size>10</oc:size>";
+        fakeFolder.remoteModifier().find(QStringLiteral("A/newBigDir"))->extraDavProperties = "<oc:size>20020</oc:size>";
+        fakeFolder.remoteModifier().find(QStringLiteral("A/newBigDir/subDir"))->extraDavProperties = "<oc:size>20020</oc:size>";
+        fakeFolder.remoteModifier().find(QStringLiteral("B/newSmallDir"))->extraDavProperties = "<oc:size>10</oc:size>";
+        fakeFolder.remoteModifier().find(QStringLiteral("B/newSmallDir/subDir"))->extraDavProperties = "<oc:size>10</oc:size>";
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(newBigFolder.count(), 1);
-        QCOMPARE(newBigFolder.first()[0].toString(), QString("A/newBigDir"));
+        QCOMPARE(newBigFolder.first()[0].toString(), QString::fromLatin1("A/newBigDir"));
         QCOMPARE(newBigFolder.first()[1].toBool(), false);
         newBigFolder.clear();
 
         QCOMPARE(sizeRequests.count(), 2); // "A/newBigDir" and "B/newSmallDir";
-        QCOMPARE(sizeRequests.filter("/subDir").count(), 0); // at no point we should request the size of the subdirs
+        QCOMPARE(sizeRequests.filter(QStringLiteral("/subDir")).count(), 0); // at no point we should request the size of the subdirs
         sizeRequests.clear();
 
         auto oldSync = fakeFolder.currentLocalState();

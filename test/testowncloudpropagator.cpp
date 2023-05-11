@@ -7,8 +7,9 @@
 #include <QtTest>
 #include <QDebug>
 
-#include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
+#include "propagatedownload.h"
+#include "qchar.h"
 
 using namespace OCC;
 namespace OCC {
@@ -33,30 +34,30 @@ private slots:
         for (int i = 1; i <= 1000; i++) {
             fn += QLatin1String("F");
             QString tmpFileName = createDownloadTmpFileName(fn);
-            if (tmpFileName.contains('/')) {
-                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
+            if (tmpFileName.contains(QLatin1Char('/'))) {
+                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf(QLatin1Char('/')) + 1);
             }
             QVERIFY( tmpFileName.length() > 0);
             QVERIFY( tmpFileName.length() <= 254);
         }
         // with absolute dir
-        fn = QLatin1String("/Users/guruz/ownCloud/rocks/GPL");
+        fn = QStringLiteral("/Users/guruz/ownCloud/rocks/GPL");
         for (int i = 1; i < 1000; i++) {
-            fn += QLatin1String("F");
+            fn += QLatin1Char('F');
             QString tmpFileName = createDownloadTmpFileName(fn);
-            if (tmpFileName.contains('/')) {
-                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
+            if (tmpFileName.contains(QLatin1Char('/'))) {
+                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf(QLatin1Char('/')) + 1);
             }
             QVERIFY( tmpFileName.length() > 0);
             QVERIFY( tmpFileName.length() <= 254);
         }
         // with relative dir
-        fn = QLatin1String("rocks/GPL");
+        fn = QStringLiteral("rocks/GPL");
         for (int i = 1; i < 1000; i++) {
             fn += QLatin1String("F");
             QString tmpFileName = createDownloadTmpFileName(fn);
-            if (tmpFileName.contains('/')) {
-                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
+            if (tmpFileName.contains(QLatin1Char('/'))) {
+                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf(QLatin1Char('/')) + 1);
             }
             QVERIFY( tmpFileName.length() > 0);
             QVERIFY( tmpFileName.length() <= 254);

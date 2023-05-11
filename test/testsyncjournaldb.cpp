@@ -21,7 +21,7 @@ class TestSyncJournalDB : public QObject
 
 public:
     TestSyncJournalDB()
-        : _db((_tempDir.path() + "/sync.db"))
+        : _db((_tempDir.path() + QStringLiteral("/sync.db")))
     {
         QVERIFY(_tempDir.isValid());
     }
@@ -85,7 +85,7 @@ private slots:
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
-        QVERIFY(_db.deleteFileRecord("foo"));
+        QVERIFY(_db.deleteFileRecord(QStringLiteral("foo")));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &record));
         QVERIFY(!record.isValid());
     }
@@ -137,7 +137,7 @@ private slots:
         record._errorCount = 5;
         record._etag = "ABCDEF";
         record._valid = true;
-        record._tmpfile = QLatin1String("/tmp/foo");
+        record._tmpfile = QStringLiteral("/tmp/foo");
         _db.setDownloadInfo(QStringLiteral("foo"), record);
 
         Info storedRecord = _db.getDownloadInfo(QStringLiteral("foo"));

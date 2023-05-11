@@ -166,7 +166,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     // If command is empty, the function calls the running application which, on
     // Linux, might have changed while this one is running.
     // For Mac and Windows, it returns QString()
-    OCSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString &command = QString());
+    OCSYNC_EXPORT QString versionOfInstalledBinary(const QString &command = QString());
 
     OCSYNC_EXPORT QString fileNameForGuiUse(const QString &fName);
 

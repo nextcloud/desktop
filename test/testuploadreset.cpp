@@ -48,7 +48,7 @@ private slots:
         auto httpErrorCodesThatResetFailingChunkedUploadsCapabilities = [](const QVariantList &codes) {
             auto cap = TestUtils::testCapabilities();
             auto dav = cap[QStringLiteral("dav")].toMap();
-            dav.insert({ { "httpErrorCodesThatResetFailingChunkedUploads", codes } });
+            dav.insert({{QStringLiteral("httpErrorCodesThatResetFailingChunkedUploads"), codes}});
             cap[QStringLiteral("dav")] = dav;
             return cap;
         };

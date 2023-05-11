@@ -16,11 +16,6 @@
 
 using namespace std::chrono_literals;
 
-PathComponents::PathComponents(const char *path)
-    : PathComponents { QString::fromUtf8(path) }
-{
-}
-
 PathComponents::PathComponents(const QString &path)
     : QStringList { path.split(QLatin1Char('/'), Qt::SkipEmptyParts) }
 {
@@ -107,7 +102,7 @@ public:
             });
 
         qDebug() << "Starting helper:" << TEST_HELPER_EXE << processArguments;
-        start(TEST_HELPER_EXE, processArguments);
+        start(QStringLiteral(TEST_HELPER_EXE), processArguments);
     }
 
 public:
@@ -389,7 +384,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         auto gmtDate = fileInfo.lastModifiedInUtc();
         xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), gmtDate.toString(Qt::RFC2822Date));
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.contentSize));
-        xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
+        xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromUtf8(fileInfo.etag)));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW")
                                                                                                                                                                  : QStringLiteral("RDNVCKW"));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));

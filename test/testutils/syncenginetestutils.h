@@ -65,7 +65,6 @@ inline QByteArray generateFileId()
 class PathComponents : public QStringList
 {
 public:
-    PathComponents(const char *path);
     PathComponents(const QString &path);
     PathComponents(const QStringList &pathComponents);
 
@@ -215,6 +214,7 @@ public:
 
     /// Return a pointer to the FileInfo, or a nullptr if it doesn't exist
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
+    FileInfo *find(const QString &pathComponents, const bool invalidateEtags = false) { return find(PathComponents{pathComponents}, invalidateEtags); }
 
     FileInfo *createDir(const QString &relativePath);
 

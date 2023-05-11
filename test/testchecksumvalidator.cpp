@@ -54,7 +54,7 @@ using namespace OCC::Utility;
         QProcess md5;
         QStringList args;
         args.append(file);
-        md5.start(cmd, args);
+        md5.start(QString::fromUtf8(cmd), args);
         QByteArray sumShell;
         qDebug() << "File: "<< file;
 
@@ -69,13 +69,13 @@ using namespace OCC::Utility;
     private slots:
 
     void initTestCase() {
-        _testfile = _root.path()+"/csFile";
+        _testfile = _root.path() + QStringLiteral("/csFile");
         TestUtils::writeRandomFile(_testfile);
     }
 
     void testMd5Calc()
     {
-        QString file( _root.path() + "/file_a.bin");
+        QString file(_root.path() + QStringLiteral("/file_a.bin"));
         QVERIFY(TestUtils::writeRandomFile(file));
         QFileInfo fi(file);
         QVERIFY(fi.exists());
@@ -95,7 +95,7 @@ using namespace OCC::Utility;
 
     void testSha1Calc()
     {
-        QString file( _root.path() + "/file_b.bin");
+        QString file(_root.path() + QStringLiteral("/file_b.bin"));
         TestUtils::writeRandomFile(file);
         QFileInfo fi(file);
         QVERIFY(fi.exists());

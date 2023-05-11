@@ -20,7 +20,7 @@ class TestOwnSql : public QObject
 
 private slots:
     void testOpenDb() {
-        QFileInfo fi( _tempDir.path() + "/testdb.sqlite" );
+        QFileInfo fi(_tempDir.path() + QStringLiteral("/testdb.sqlite"));
         QVERIFY( !fi.exists() ); // must not exist
         _db.openOrCreateReadWrite(fi.filePath());
         fi.refresh();
@@ -59,8 +59,8 @@ private slots:
         SqlQuery q(_db);
         q.prepare(sql);
         q.bindValue(1, 2);
-        q.bindValue(2, "Brucely Lafayette");
-        q.bindValue(3, "Nurderway5, New York");
+        q.bindValue(2, QStringLiteral("Brucely Lafayette"));
+        q.bindValue(3, QStringLiteral("Nurderway5, New York"));
         q.bindValue(4, 1403101224);
         QVERIFY(q.exec());
     }

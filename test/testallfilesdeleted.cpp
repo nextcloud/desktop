@@ -51,7 +51,7 @@ private slots:
 
         //Just set a blacklist so we can check it is still there. This directory does not exists but
         // that does not matter for our purposes.
-        QSet<QString> selectiveSyncBlackList = {"Q/"};
+        QSet<QString> selectiveSyncBlackList = {QStringLiteral("Q/")};
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 selectiveSyncBlackList);
 
@@ -237,8 +237,8 @@ private slots:
         QCOMPARE(fingerprintRequests, 1);
         // First sync, we did not change the finger print, so the file should be downloaded as normal
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentRemoteState().find("C/c1")->contentChar, 'N');
-        QVERIFY(!fakeFolder.currentRemoteState().find("C/c2"));
+        QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("C/c1"))->contentChar, 'N');
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("C/c2")));
 
         /* Simulate a backup restoration */
 
@@ -263,16 +263,16 @@ private slots:
         QCOMPARE(fingerprintRequests, 2);
         auto currentState = fakeFolder.currentLocalState();
         // Altough the local file is kept as a conflict, the server file is downloaded
-        QCOMPARE(currentState.find("A/a1")->contentChar, 'O');
+        QCOMPARE(currentState.find(QStringLiteral("A/a1"))->contentChar, 'O');
         auto conflict = findConflict(currentState, QStringLiteral("A/a1"));
         QVERIFY(conflict);
         QCOMPARE(conflict->contentChar, 'W');
         fakeFolder.localModifier().remove(conflict->path());
         // b1 was restored (re-uploaded)
-        QVERIFY(currentState.find("B/b1"));
+        QVERIFY(currentState.find(QStringLiteral("B/b1")));
 
         // b2 has the new content (was not restored), since its mode time goes forward in time
-        QCOMPARE(currentState.find("B/b2")->contentChar, 'N');
+        QCOMPARE(currentState.find(QStringLiteral("B/b2"))->contentChar, 'N');
         conflict = findConflict(currentState, QStringLiteral("B/b2"));
         QVERIFY(conflict); // Just to be sure, we kept the old file in a conflict
         QCOMPARE(conflict->contentChar, 'W');
@@ -280,8 +280,8 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // We actually do not remove files that technically should have been removed (we don't want data-loss)
-        QVERIFY(currentState.find("C/c3_removed"));
-        QVERIFY(currentState.find("C/old_a2_location"));
+        QVERIFY(currentState.find(QStringLiteral("C/c3_removed")));
+        QVERIFY(currentState.find(QStringLiteral("C/old_a2_location")));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }

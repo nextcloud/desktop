@@ -59,14 +59,17 @@ private slots:
         QTest::addColumn<QStringList>("journalPaths");
         QTest::addColumn<QString>("url");
 
-        QTest::newRow("2.4") << QStringList { "._sync_2215dfc5505b.db" } << "https://demo.owncloud.com";
-        QTest::newRow("2.4 url") << QStringList { "._sync_2215dfc5505b.db" } << "https://demo.owncloud.com/";
-        QTest::newRow("2.6") << QStringList { ".sync_2215dfc5505b.db" } << "https://demo.owncloud.com";
-        QTest::newRow("2.6 url") << QStringList { ".sync_2215dfc5505b.db" } << "https://demo.owncloud.com/";
-        QTest::newRow("2.6 multi") << QStringList { ".sync_2215dfc5505b.db", "._sync_2215dfc5505b.db" } << "https://demo.owncloud.com";
-        QTest::newRow("2.9") << QStringList { ".sync_journal.db" } << "https://demo.owncloud.com";
-        QTest::newRow("2.9 url") << QStringList { ".sync_journal.db" } << "https://demo.owncloud.com/";
-        QTest::newRow("2.9 multi") << QStringList { ".sync_journal.db", ".sync_2215dfc5505b.db", "._sync_2215dfc5505b.db" } << "https://demo.owncloud.com";
+        QTest::newRow("2.4") << QStringList{QStringLiteral("._sync_2215dfc5505b.db")} << QStringLiteral("https://demo.owncloud.com");
+        QTest::newRow("2.4 url") << QStringList{QStringLiteral("._sync_2215dfc5505b.db")} << QStringLiteral("https://demo.owncloud.com/");
+        QTest::newRow("2.6") << QStringList{QStringLiteral(".sync_2215dfc5505b.db")} << QStringLiteral("https://demo.owncloud.com");
+        QTest::newRow("2.6 url") << QStringList{QStringLiteral(".sync_2215dfc5505b.db")} << QStringLiteral("https://demo.owncloud.com/");
+        QTest::newRow("2.6 multi") << QStringList{QStringLiteral(".sync_2215dfc5505b.db"), QStringLiteral("._sync_2215dfc5505b.db")}
+                                   << QStringLiteral("https://demo.owncloud.com");
+        QTest::newRow("2.9") << QStringList{QStringLiteral(".sync_journal.db")} << QStringLiteral("https://demo.owncloud.com");
+        QTest::newRow("2.9 url") << QStringList{QStringLiteral(".sync_journal.db")} << QStringLiteral("https://demo.owncloud.com/");
+        QTest::newRow("2.9 multi") << QStringList{QStringLiteral(".sync_journal.db"), QStringLiteral(".sync_2215dfc5505b.db"),
+            QStringLiteral("._sync_2215dfc5505b.db")}
+                                   << "https://demo.owncloud.com";
     }
 
     void testFolderMigrationMissingJurnalPath()
@@ -77,7 +80,7 @@ private slots:
         const auto settings = writeSettings(tmp, Settings_2_4());
         settings->setValue(QStringLiteral("0/url"), url);
         settings->remove(QStringLiteral("0/Folders/1/journalPath"));
-        QVERIFY(!settings->value("0/Folders/1/journalPath").isValid());
+        QVERIFY(!settings->value(QStringLiteral("0/Folders/1/journalPath")).isValid());
 
         for (const auto &journalPath : journalPaths) {
             QFile syncDb(tmp.filePath(journalPath));
@@ -92,7 +95,7 @@ private slots:
         TestUtils::folderMan()->setupFoldersHelper(*settings.get(), AccountManager::instance()->accounts().first(), {}, true, false);
         settings->endGroup();
 
-        QCOMPARE(journalPaths.first(), settings->value("0/Folders/1/journalPath"));
+        QCOMPARE(journalPaths.first(), settings->value(QStringLiteral("0/Folders/1/journalPath")));
         delete TestUtils::folderMan();
     }
 };

@@ -564,7 +564,7 @@ void PassiveUpdateNotifier::backgroundCheckForUpdate()
     if (Utility::isLinux()) {
         // on linux, check if the installed binary is still the same version
         // as the one that is running. If not, restart if possible.
-        const QByteArray fsVersion = Utility::versionOfInstalledBinary();
+        const QString fsVersion = Utility::versionOfInstalledBinary();
         if (!(fsVersion.isEmpty() || _runningAppVersion.isEmpty()) && fsVersion != _runningAppVersion) {
             emit requestRestart();
         }

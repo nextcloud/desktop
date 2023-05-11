@@ -74,7 +74,7 @@ private slots:
                                                                "olonglonglonglong/file🐷.txt");
         {
             // use a long file path to ensure we handle that correctly
-            QVERIFY(QFileInfo(tmpFile).dir().mkpath("."));
+            QVERIFY(QFileInfo(tmpFile).dir().mkpath(QStringLiteral(".")));
             QFile tmp(tmpFile);
             QVERIFY(tmp.open(QFile::WriteOnly));
             QVERIFY(tmp.write("ownCLoud"));
@@ -131,7 +131,7 @@ private slots:
         // This test can only work when the file is locally available...
         if (filesAreDehydrated) {
             // ... so force hydration in case of dehydrated vfs
-            fakeFolder.localModifier().appendByte("A/a1");
+            fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
             QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         }
 
@@ -144,24 +144,24 @@ private slots:
         connect(&fakeFolder.syncEngine(), &SyncEngine::finished, &tracker, &LocalDiscoveryTracker::slotSyncFinished);
         auto hasLocalDiscoveryPath = [&](const QString &path) {
             auto &paths = tracker.localDiscoveryPaths();
-            return paths.find(path.toUtf8()) != paths.end();
+            return paths.find(path) != paths.end();
         };
 
         //
         // Local change, attempted upload, but file is locked!
         //
-        fakeFolder.localModifier().appendByte("A/a1");
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
-        tracker.addTouchedPath("A/a1");
-        auto h1 = makeHandle(fakeFolder.localPath() + "A/a1", 0);
+        tracker.addTouchedPath(QStringLiteral("A/a1"));
+        auto h1 = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
         tracker.startSyncPartialDiscovery();
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(seenLockedFiles.contains(fakeFolder.localPath() + "A/a1"));
+        QVERIFY(seenLockedFiles.contains(fakeFolder.localPath() + QStringLiteral("A/a1")));
         QVERIFY(seenLockedFiles.size() == 1);
-        QVERIFY(hasLocalDiscoveryPath("A/a1"));
+        QVERIFY(hasLocalDiscoveryPath(QStringLiteral("A/a1")));
 
         CloseHandle(h1);
 
@@ -177,15 +177,15 @@ private slots:
         //
         // Remote change, attempted download, but file is locked!
         //
-        fakeFolder.remoteModifier().appendByte("A/a1");
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
-        auto h2 = makeHandle(fakeFolder.localPath() + "A/a1", 0);
+        auto h2 = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
         tracker.startSyncPartialDiscovery();
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(seenLockedFiles.contains(fakeFolder.localPath() + "A/a1"));
+        QVERIFY(seenLockedFiles.contains(fakeFolder.localPath() + QStringLiteral("A/a1")));
         QVERIFY(seenLockedFiles.size() == 1);
 
         CloseHandle(h2);
