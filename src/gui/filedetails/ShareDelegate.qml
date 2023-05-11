@@ -209,6 +209,18 @@ GridLayout {
 
             onClicked: copyShareLink()
 
+            Behavior on bgColor {
+                ColorAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on bgNormalOpacity {
+                NumberAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on Layout.preferredWidth {
+                SmoothedAnimation { duration: Style.shortAnimationDuration }
+            }
+
             TextEdit {
                 id: clipboardHelper
                 visible: false
