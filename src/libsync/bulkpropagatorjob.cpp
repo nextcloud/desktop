@@ -82,19 +82,18 @@ BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator,
 
 bool BulkPropagatorJob::scheduleSelfOrChild()
 {
-    if (_items.empty()) {
-        return false;
-    }
-    if (!_pendingChecksumFiles.empty()) {
+    if (_items.empty() || !_pendingChecksumFiles.empty()) {
         return false;
     }
 
     _state = Running;
-    for(int i = 0; i < batchSize && !_items.empty(); ++i) {
-        auto currentItem = _items.front();
+
+    for(auto i = 0; i < batchSize && !_items.empty(); ++i) {
+        const auto currentItem = _items.front();
         _items.pop_front();
         _pendingChecksumFiles.insert(currentItem->_file);
-        QMetaObject::invokeMethod(this, [this, currentItem] () {
+
+        QMetaObject::invokeMethod(this, [this, currentItem] {
             UploadFileInfo fileToUpload;
             fileToUpload._file = currentItem->_file;
             fileToUpload._size = currentItem->_size;
