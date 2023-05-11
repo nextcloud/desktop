@@ -25,9 +25,9 @@ if( UNIX AND NOT APPLE )
                     ERROR_VARIABLE errors OUTPUT_VARIABLE out)
 
                                         
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate.py DESTINATION ${DATA_INSTALL_DIR}/nautilus-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate_nemo.py DESTINATION ${DATA_INSTALL_DIR}/nemo-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate_caja.py DESTINATION ${DATA_INSTALL_DIR}/caja-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate.py DESTINATION ${KDE_INSTALL_DATADIR}/nautilus-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate_nemo.py DESTINATION ${KDE_INSTALL_DATADIR}/nemo-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate_caja.py DESTINATION ${KDE_INSTALL_DATADIR}/caja-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
     
     
 

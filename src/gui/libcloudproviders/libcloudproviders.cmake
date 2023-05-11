@@ -31,7 +31,7 @@ if(WITH_LIBCLOUDPROVIDERS)
     configure_file(libcloudproviders/cloud-provider.ini.in ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_CLOUDPROVIDERS_DBUS_NAME}.ini)
     install(
         FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_CLOUDPROVIDERS_DBUS_NAME}.ini
-        DESTINATION "${DATA_INSTALL_DIR}/cloud-providers")
+        DESTINATION "${KDE_INSTALL_DATADIR}/cloud-providers")
 
     message("Building with libcloudproviders")
 elseif(UNIX AND NOT APPLE)

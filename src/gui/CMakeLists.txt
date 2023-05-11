@@ -188,7 +188,7 @@ if(NOT APPLE)
         foreach(_file ${_icons})
             string(REPLACE "${OEM_THEME_DIR}/theme/colored/" "" _res ${_file})
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
-            install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${DATA_INSTALL_DIR}/icons/hicolor/${_res}x${_res}/apps)
+            install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${KDE_INSTALL_DATADIR}/icons/hicolor/${_res}x${_res}/apps)
         endforeach(_file)
     endif()
 
@@ -212,13 +212,13 @@ if(UNIX AND NOT APPLE)
 
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
-    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATA_INSTALL_DIR}/applications )
+    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications )
 
     configure_file(owncloud.xml.in ${APPLICATION_EXECUTABLE}.xml)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.xml DESTINATION ${DATA_INSTALL_DIR}/mime/packages )
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.xml DESTINATION ${KDE_INSTALL_DATADIR}/mime/packages )
 
     find_package(SharedMimeInfo)
     if(SharedMimeInfo_FOUND)
-        update_xdg_mimetypes( ${DATA_INSTALL_DIR}/mime/packages )
+        update_xdg_mimetypes( ${KDE_INSTALL_DATADIR}/mime/packages )
     endif(SharedMimeInfo_FOUND)
 endif()
