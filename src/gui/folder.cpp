@@ -911,8 +911,7 @@ void Folder::startSync(const QStringList &pathList)
         fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
         && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
 
-    if (!singleItemDiscoveryOptions.filePathRelative.isEmpty()
-        && singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isEmpty()) {
+    if (singleItemDiscoveryOptions.isValid() && singleItemDiscoveryOptions.discoveryPath != QStringLiteral("/")) {
         qCInfo(lcFolder) << "Going to sync just one file";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {singleItemDiscoveryOptions.discoveryPath});
         _localDiscoveryTracker->startSyncPartialDiscovery();
