@@ -31,7 +31,10 @@ void setActivationPolicy(ActivationPolicy policy)
         mode = NSApplicationActivationPolicyProhibited;
         break;
     }
-    if (![NSApp setActivationPolicy:mode]) {
-        qWarning() << "setActivationPolicy" << static_cast<int>(policy) << "failed";
+
+    if (mode != NSApp.activationPolicy) {
+        if (![NSApp setActivationPolicy:mode]) {
+            qWarning() << "setActivationPolicy" << static_cast<int>(policy) << "failed";
+        }
     }
 }
