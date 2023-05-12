@@ -3,7 +3,31 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v3.2.1...master
+[unreleased]: https://github.com/owncloud/client/compare/v4.0.0...master
+
+Summary
+-------
+
+* Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
+
+Details
+-------
+
+* Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
+
+   Instead of relying on an old copy of QtSingleApplication we use
+   https://github.com/KDAB/KDSingleApplication
+
+   https://github.com/owncloud/client/issues/8432
+   https://github.com/owncloud/client/pull/10754
+   https://github.com/owncloud/client/pull/10758
+
+Changelog for ownCloud Desktop Client [4.0.0] (2023-05-11)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 4.0.0 relevant to
+ownCloud admins and users.
+
+[4.0.0]: https://github.com/owncloud/client/compare/v3.2.1...v4.0.0
 
 Summary
 -------
@@ -23,7 +47,6 @@ Summary
 * Bugfix - Ensure the account state is properly persisted: [#10648](https://github.com/owncloud/client/issues/10648)
 * Bugfix - Reconnect got stuck if the server supports app providers: [#10666](https://github.com/owncloud/client/issues/10666)
 * Change - Implement server guided migration to spaces: [#9945](https://github.com/owncloud/client/issues/9945)
-* Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
@@ -133,15 +156,6 @@ Details
 
    https://github.com/owncloud/client/issues/9945
    https://github.com/owncloud/ocis/issues/3574
-
-* Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
-
-   Instead of relying on an old copy of QtSingleApplication we use
-   https://github.com/KDAB/KDSingleApplication
-
-   https://github.com/owncloud/client/issues/8432
-   https://github.com/owncloud/client/pull/10754
-   https://github.com/owncloud/client/pull/10758
 
 * Enhancement - Display `This space is either disabled or deleted` for gone spaces: [#9700](https://github.com/owncloud/client/issues/9700)
 
