@@ -82,7 +82,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     ActivityList list;
     ActivityList callList;
 
-
     foreach (auto element, notifies) {
         auto json = element.toObject();
         auto a = Activity::fromActivityJson(json, ai->account());
@@ -145,7 +144,15 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             }
 
             a._links.insert(al._primary? 0 : a._links.size(), al);
-        } 
+        }
+
+        if (a._links.isEmpty()) {
+            ActivityLink dismissLink;
+            dismissLink._label = tr("Dismiss");
+            dismissLink._verb = "DELETE";
+            dismissLink._primary = false;
+            a._links.insert(0, dismissLink);
+        }
 
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
