@@ -299,7 +299,7 @@ private slots:
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
-    void slotServerVersionChanged(OCC::Account *account);
+    void slotServerVersionChanged(const OCC::AccountPtr &account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -319,7 +319,7 @@ private slots:
 
     void slotSetupPushNotifications(const OCC::Folder::Map &);
     void slotProcessFilesPushNotification(OCC::Account *account);
-    void slotConnectToPushNotifications(OCC::Account *account);
+    void slotConnectToPushNotifications(const OCC::AccountPtr &account);
 
 private:
     /** Adds a new folder, does not add it to the account settings and
@@ -349,7 +349,7 @@ private:
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
 
-    bool pushNotificationsFilesReady(Account *account);
+    bool pushNotificationsFilesReady(const OCC::AccountPtr &account);
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
 

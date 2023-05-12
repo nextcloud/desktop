@@ -113,7 +113,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     if (_account->url() != url) {
         qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
         _account->setUrl(url);
-        emit _account->wantsAccountSaved(_account.data());
+        emit _account->wantsAccountSaved(_account);
     }
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {

@@ -246,8 +246,8 @@ private slots:
 
         QCOMPARE(connectionLostSpy.count(), 1);
 
-        auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::Account *>();
-        QCOMPARE(accountSent, account.data());
+        const auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::AccountPtr>();
+        QCOMPARE(accountSent.data(), account.data());
     }
 
     void testAccount_web_socket_authenticationFailed_emitNotificationsDisabled()
@@ -261,8 +261,8 @@ private slots:
 
         // Now the pushNotificationsDisabled Signal should be emitted
         QCOMPARE(pushNotificationsDisabledSpy.count(), 1);
-        auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::Account *>();
-        QCOMPARE(accountSent, account.data());
+        const auto accountSent = pushNotificationsDisabledSpy.at(0).at(0).value<OCC::AccountPtr>();
+        QCOMPARE(accountSent.data(), account.data());
     }
 
     void testPingTimeout_pingTimedOut_reconnect()

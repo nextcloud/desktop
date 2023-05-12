@@ -98,7 +98,7 @@ public:
 
 private:
     // saving and loading Account to settings
-    void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
+    void saveAccountHelper(const AccountPtr &account, QSettings &settings, bool saveCredentials = true);
     AccountPtr loadAccountHelper(QSettings &settings);
 
     bool restoreFromLegacySettings();
@@ -116,7 +116,7 @@ private:
 
 public slots:
     /// Saves account data, not including the credentials
-    void saveAccount(OCC::Account *a);
+    void saveAccount(const OCC::AccountPtr &account);
 
     /// Saves account state data, not including the account
     void saveAccountState(OCC::AccountState *a);

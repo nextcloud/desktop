@@ -94,7 +94,7 @@ public slots:
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
-    void slotTrayMessageIfServerUnsupported(OCC::Account *account);
+    void slotTrayMessageIfServerUnsupported(const OCC::AccountPtr &account);
 
 
     /**
