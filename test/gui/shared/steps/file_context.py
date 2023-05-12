@@ -4,6 +4,7 @@ from os.path import isfile, join, isdir
 import re
 import builtins
 import shutil
+import zipfile
 
 from pageObjects.AccountSetting import AccountSetting
 
@@ -75,6 +76,18 @@ def waitAndTryToWriteFile(resource, content):
         writeFile(resource, content)
     except:
         pass
+
+
+def createZip(resources, zip_file_name, cwd=""):
+    os.chdir(cwd)
+    with zipfile.ZipFile(zip_file_name, 'w') as zippedFile:
+        for resource in resources:
+            zippedFile.write(resource)
+
+
+def extractZip(zip_file_path, destination_dir):
+    with zipfile.ZipFile(zip_file_path, 'r') as zipFile:
+        zipFile.extractall(destination_dir)
 
 
 @When(
@@ -262,9 +275,12 @@ def step(context, foldername, filenumber, filesize):
         createFileWithSize(join(foldername, filename), filesize, True)
 
 
-@When('user "|any|" moves folder "|any|" from the temp folder into the sync folder')
-def step(context, username, foldername):
-    source_dir = join(get_config('tempFolderPath'), foldername)
+@When(
+    r'user "([^"]*)" moves (folder|file) "([^"]*)" from the temp folder into the sync folder',
+    regexp=True,
+)
+def step(context, username, resource_type, resource_name):
+    source_dir = join(get_config('tempFolderPath'), resource_name)
     destination_dir = getResourcePath('/', username)
     shutil.move(source_dir, destination_dir)
 
@@ -299,3 +315,29 @@ def step(context, user, file_name, content):
 def step(context, user, file_name):
     file_path = getResourcePath(file_name, user)
     test.compare(not can_write(file_path), True, "File should not be writable")
+
+
+@Given(
+    'the user has created a zip file "|any|" with the following resources in the temp folder'
+)
+def step(context, zip_file_name):
+    resource_list = []
+
+    for row in context.table[1:]:
+        resource_list.append(row[0])
+        resource = join(get_config('tempFolderPath'), row[0])
+        if row[1] == 'folder':
+            os.makedirs(resource)
+        elif row[1] == 'file':
+            content = ""
+            if len(row) > 2 and row[2]:
+                content = row[2]
+            writeFile(resource, content)
+    createZip(resource_list, zip_file_name, get_config('tempFolderPath'))
+
+
+@When('user "|any|" unzips the zip file "|any|" inside the sync root')
+def step(context, username, zip_file_name):
+    destination_dir = getResourcePath('/', username)
+    zip_file_path = join(destination_dir, zip_file_name)
+    extractZip(zip_file_path, destination_dir)
