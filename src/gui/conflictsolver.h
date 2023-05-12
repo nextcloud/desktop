@@ -32,6 +32,7 @@ public:
         KeepRemoteVersion,
         KeepBothVersions
     };
+    Q_ENUM(Solution);
 
     explicit ConflictSolver(QWidget *parent = nullptr);
 

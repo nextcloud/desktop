@@ -17,6 +17,8 @@
 
 #include "tray/activitydata.h"
 
+#include "conflictsolver.h"
+
 #include <QAbstractListModel>
 #include <QMimeDatabase>
 #include <QLocale>
@@ -43,6 +45,11 @@ class SyncConflictsModel : public QAbstractListModel
         QUrl mConflictPreviewUrl;
         bool mExistingSelected = false;
         bool mConflictSelected = false;
+        QString mExistingFilePath;
+        QString mConflictingFilePath;
+
+        [[nodiscard]] ConflictSolver::Solution solution() const;
+        [[nodiscard]] bool isValid() const;
     };
 
 public:
@@ -84,6 +91,8 @@ public slots:
     void selectAllExisting(bool selected);
 
     void selectAllConflicting(bool selected);
+
+    void applyResolution();
 
 signals:
     void conflictActivitiesChanged();

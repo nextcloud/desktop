@@ -13,6 +13,7 @@
  */
 
 #include "syncconflictsmodel.h"
+
 #include "folderman.h"
 
 #include <QLoggingCategory>
@@ -221,6 +222,19 @@ void SyncConflictsModel::selectAllConflicting(bool selected)
     }
 }
 
+void SyncConflictsModel::applyResolution()
+{
+    for(const auto &syncConflict : qAsConst(mConflictData)) {
+        if (syncConflict.isValid()) {
+            qCInfo(lcSyncConflictsModel) << syncConflict.mExistingFilePath << syncConflict.mConflictingFilePath << syncConflict.solution();
+            ConflictSolver solver;
+            solver.setLocalVersionFilename(syncConflict.mConflictingFilePath);
+            solver.setRemoteVersionFilename(syncConflict.mExistingFilePath);
+            solver.exec(syncConflict.solution());
+        }
+    }
+}
+
 void SyncConflictsModel::updateConflictsData()
 {
     mConflictData.clear();
@@ -260,6 +274,8 @@ void SyncConflictsModel::updateConflictsData()
             QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + conflictFileInfo.filePath()},
             false,
             false,
+            existingFileInfo.filePath(),
+            conflictFileInfo.filePath(),
         };
 
         mConflictData.push_back(std::move(newConflictData));
@@ -314,6 +330,26 @@ void SyncConflictsModel::setConflictingSelected(bool value,
             Q_EMIT allConflictingSelectedChanged();
         }
     }
+}
+
+ConflictSolver::Solution SyncConflictsModel::ConflictInfo::solution() const
+{
+    auto result = ConflictSolver::Solution{};
+
+    if (mConflictSelected && mExistingSelected) {
+        result = ConflictSolver::KeepBothVersions;
+    } else if (!mConflictSelected && mExistingSelected) {
+        result = ConflictSolver::KeepLocalVersion;
+    } else if (mConflictSelected && !mExistingSelected) {
+        result = ConflictSolver::KeepRemoteVersion;
+    }
+
+    return result;
+}
+
+bool SyncConflictsModel::ConflictInfo::isValid() const
+{
+    return mConflictSelected || mExistingSelected;
 }
 
 }

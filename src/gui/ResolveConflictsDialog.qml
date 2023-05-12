@@ -156,12 +156,11 @@ QtWindow.Window {
             }
 
             onAccepted: function() {
-                console.log("Ok clicked")
+                realModel.applyResolution()
                 Systray.destroyDialog(conflictsDialog)
             }
 
             onRejected: function() {
-                console.log("Cancel clicked")
                 Systray.destroyDialog(conflictsDialog)
             }
         }
