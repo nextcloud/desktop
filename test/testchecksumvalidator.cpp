@@ -11,6 +11,8 @@
 
 #include "common/checksums.h"
 #include "networkjobs.h"
+#include "common/checksumcalculator.h"
+#include "common/checksumconsts.h"
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
@@ -84,10 +86,10 @@ using namespace OCC::Utility;
         QFileInfo fi(file);
         QVERIFY(fi.exists());
 
-        QFile fileDevice(file);
-        fileDevice.open(QIODevice::ReadOnly);
-        QByteArray sum = calcMd5(&fileDevice);
-        fileDevice.close();
+        auto sharedFile(QSharedPointer<QFile>::create(file));
+        ChecksumCalculator checksumCalculator(sharedFile, OCC::checkSumMD5C);
+
+        const auto sum = checksumCalculator.calculate();
 
         QByteArray sSum = shellSum("md5sum", file);
         if (sSum.isEmpty())
@@ -104,10 +106,10 @@ using namespace OCC::Utility;
         QFileInfo fi(file);
         QVERIFY(fi.exists());
 
-        QFile fileDevice(file);
-        fileDevice.open(QIODevice::ReadOnly);
-        QByteArray sum = calcSha1(&fileDevice);
-        fileDevice.close();
+        auto sharedFile(QSharedPointer<QFile>::create(file));
+        ChecksumCalculator checksumCalculator(sharedFile, OCC::checkSumSHA1C);
+
+        const auto sum = checksumCalculator.calculate();
 
         QByteArray sSum = shellSum("sha1sum", file);
         if (sSum.isEmpty())
@@ -127,9 +129,11 @@ using namespace OCC::Utility;
 
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = calcAdler32(file);
+        auto sharedFile(QSharedPointer<QFile>::create(_testfile));
+        ChecksumCalculator checksumCalculator(sharedFile, OCC::checkSumAdlerC);
+
+        _expected = checksumCalculator.calculate();
+
         qDebug() << "XX Expected Checksum: " << _expected;
         vali->start(_testfile);
 
@@ -148,9 +152,10 @@ using namespace OCC::Utility;
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = calcMd5(file);
+        auto sharedFile(QSharedPointer<QFile>::create(_testfile));
+        ChecksumCalculator checksumCalculator(sharedFile, OCC::checkSumMD5C);
+
+        _expected = checksumCalculator.calculate();
         vali->start(_testfile);
 
         QEventLoop loop;
@@ -167,9 +172,9 @@ using namespace OCC::Utility;
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = calcSha1(file);
+        auto sharedFile(QSharedPointer<QFile>::create(_testfile));
+        ChecksumCalculator checksumCalculator(sharedFile, OCC::checkSumSHA1C);
+        _expected = checksumCalculator.calculate();
 
         vali->start(_testfile);
 
@@ -188,15 +193,16 @@ using namespace OCC::Utility;
         connect(vali, &ValidateChecksumHeader::validated, this, &TestChecksumValidator::slotDownValidated);
         connect(vali, &ValidateChecksumHeader::validationFailed, this, &TestChecksumValidator::slotDownError);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = calcAdler32(file);
+        auto sharedFile(QSharedPointer<QFile>::create(_testfile));
+        ChecksumCalculator checksumCalculator(sharedFile, OCC::checkSumAdlerC);
+        _expected = checksumCalculator.calculate();
 
         QByteArray adler = checkSumAdlerC;
         adler.append(":");
         adler.append(_expected);
 
-        file->seek(0);
+        sharedFile->open(QIODevice::ReadOnly);
+        sharedFile->seek(0);
         _successDown = false;
         vali->start(_testfile, adler);
 
@@ -205,14 +211,14 @@ using namespace OCC::Utility;
         _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. \"543345\" != \"%1\"").arg(QString::fromUtf8(_expected));
         _expectedFailureReason = ValidateChecksumHeader::FailureReason::ChecksumMismatch;
         _errorSeen = false;
-        file->seek(0);
+        sharedFile->seek(0);
         vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
         _expectedError = QLatin1String("The checksum header contained an unknown checksum type \"Klaas32\"");
         _expectedFailureReason = ValidateChecksumHeader::FailureReason::ChecksumTypeUnknown;
         _errorSeen = false;
-        file->seek(0);
+        sharedFile->seek(0);
         vali->start(_testfile, "Klaas32:543345");
         QTRY_VERIFY(_errorSeen);
 
