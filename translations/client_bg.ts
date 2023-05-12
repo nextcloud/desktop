@@ -33,11 +33,6 @@
         <source>Open file details</source>
         <translation>Отваряне на подробности за файл</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
-        <source>Open share dialog</source>
-        <translation>Отваряне на диалоговия прозорец за споделяне</translation>
-    </message>
 </context>
 <context>
     <name>ActivityList</name>
@@ -399,16 +394,6 @@
         <translation>Потвърди ръчните промени</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="92"/>
-        <source>End-to-End Encryption with Virtual Files</source>
-        <translation>Цялостно Криптиране с виртуални файлове</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Изглежда, че функцията за виртуални файлове е активирана в тази папка. В момента не е възможно имплицитно изтегляне на виртуални файлове, които са криптирани цялостно. За да получите най-доброто изживяване с виртуални файлове и цялостно криптиране, уверете се, че криптираната папка е маркирана с „Нека винаги е достъпна локално“.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation>Цялостно Криптиране с виртуални файлове</translation>
@@ -417,11 +402,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Изглежда, че функцията за виртуални файлове е активирана в тази папка. В момента не е възможно имплицитно изтегляне на виртуални файлове, които са криптирани цялостно. За да получите най-доброто изживяване с виртуални файлове и цялостно криптиране, уверете се, че криптираната папка е маркирана с „Нека винаги е достъпна локално“.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Да не се се криптира папка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -454,11 +434,6 @@
         <translation>Цялостното криптиране беше активирано за този профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
-        <source>Enable encryption</source>
-        <translation>Активиране на криптирането</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Warning</source>
         <translation>Внимание</translation>
@@ -476,12 +451,6 @@ Would you like to set up end-to-end encryption?</source>
 Wait for the new sync, then encrypt it.</source>
         <translation>Не можете да криптирате папка със съдържание, моля премахнете файловете.
 Изчакайте новата синхронизация и след това я  криптирайте.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="249"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1458"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation>Този профил поддържа цялостно криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -616,11 +585,6 @@ This action will abort any currently running synchronization.</source>
         <translation>Деактивирне на поддръжката </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="979"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>Цялостно мнемонично криптиране</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Мнемонично криптиране от край до край</translation>
@@ -751,21 +715,6 @@ This action will abort any currently running synchronization.</source>
         <translation>Този профил поддържа цялостно криптиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1398"/>
-        <source>Confirm Account Removal</source>
-        <translation>Потвърждение за премахване на профил</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1399"/>
-        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Наистина ли желаете да премахнете връзката към профила &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Бележка:&lt;/b&gt; Дейтствието &lt;b&gt;няма&lt;/b&gt; да предизвика изтриване на файлове.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1404"/>
-        <source>Remove connection</source>
-        <translation>Премахни връзката</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1569"/>
         <source>Set up encryption</source>
         <translation>Настройки за криптиране</translation>
@@ -850,11 +799,6 @@ This action will abort any currently running synchronization.</source>
         <translation>За повече дейности, моля, отворете приложението Дейност.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities…</source>
-        <translation>Извличане на активности...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="509"/>
         <source>Fetching activities …</source>
         <translation>Извличане на активности ...</translation>
@@ -911,21 +855,6 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
-        <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation>Продължаването ще означава &lt;b&gt;изтриване на тези настройки&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="152"/>
-        <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation>Продължаването ще означава &lt;b&gt;игнориране на тези настройки&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="158"/>
-        <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Някои настройки са били конфигурирани в по-нови версии на този клиент и използват функции, които не са налични в тази версия.&lt;br&gt;&lt;br&gt;% 1&lt;br&gt;&lt;br&gt;Текущият конфигурационен файл вече е архивиран до% 2.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Някои настройки са конфигурирани в %1 версии на този клиент и използват функции, които не са налични в тази версия.&lt;br&gt;&lt;br&gt;Продължаването ще означава &lt;b&gt;%2 от тези настройки&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Текущият конфигурационен файл вече е архивиран до&lt;i&gt;%3&lt;/i&gt;.</translation>
@@ -973,11 +902,6 @@ This action will abort any currently running synchronization.</source>
         <translation>Грешка при опита за отваряне на конфигурационния файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
-        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че вашият потребител има достъп до файла.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="394"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че файлът е достъпен от вашият системен профил.</translation>
@@ -1004,11 +928,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
         <translation>&amp;Потребителско име:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
-        <source>&amp;User:</source>
-        <translation>Потребител:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1083,11 +1002,6 @@ This action will abort any currently running synchronization.</source>
         <translation>Не може да се преименува файл, защото на сървъра, вече съществува файл със същото име. Моля, изберете друго име.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
-        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Не може да се преименува файл, защото на сървъра, вече съществува файл със същото име. Моля, изберете друго име.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Файлът не можа да се преименува. Моля, уверете се, че сте свързани със сървъра. </translation>
@@ -1146,11 +1060,6 @@ This action will abort any currently running synchronization.</source>
         <translation>файл А</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
-        <source>fileA</source>
-        <translation>файл А</translation>
-    </message>
-    <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
@@ -1176,11 +1085,6 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation>файл Б</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
-        <source>fileB</source>
         <translation>файл Б</translation>
     </message>
     <message>
@@ -1250,16 +1154,6 @@ This action will abort any currently running synchronization.</source>
 </context>
 <context>
     <name>OCC::ClientSideEncryption</name>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
-        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Моля, въведете паролата си за цялостно шифроване:&lt;br&gt;&lt;br&gt; Потребител:% 2&lt;br&gt;Профил:% 3&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Моля, въведете паролата си за цялостно шифроване:&lt;br&gt;&lt;br&gt; Потребител:% 2Профил:% 3&lt;br&gt;</translation>
-    </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
@@ -1970,11 +1864,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>(архивиране %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Неопределено състояние.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1604"/>
         <source>Undefined state.</source>
         <translation>Неопределено състояние.</translation>
@@ -1998,21 +1887,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Синхронизирането приключи с неразрешени конфликти.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
-        <source>Last Sync was successful.</source>
-        <translation>Последното синхронизиране завърши успешно.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
-        <source>Setup Error.</source>
-        <translation>Грешка при Настройката.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
-        <source>User Abort.</source>
-        <translation>Прекъсване от потребителя.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1620"/>
@@ -2623,11 +2497,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>Моля въведете %1 парола:&lt;br&gt;&lt;br&gt;Потребител: %2&lt;br&gt;Профил: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
-        <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Моля въведете %1 парола:&lt;br&gt;&lt;br&gt;Потребител: %2&lt;br&gt;Профил: %3&lt;br&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
         <translation>Четенето от ключодържател беше неуспешно с грешка: „%1“</translation>
@@ -2771,11 +2640,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Следните знаци не са разрешени в системата: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; водещи/ крайни интервали</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
-        <source>Checking rename permissions...</source>
-        <translation>Проверка на права за преименуване...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>Checking rename permissions …</source>
         <translation>Проверка на права за преименуване ...</translation>
@@ -2850,11 +2714,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>&lt;p&gt;Авторски права 2017-2023 Nextcloud GmbH&lt;br /&gt; Авторски права 2012-2023 собственост наCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/legalnotice.cpp" line="55"/>
-        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Авторски права 2017-2021 Nextcloud GmbH&lt;br /&gt; Авторски права 2012-2021 собственост наCloud GmbH&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Лицензиран GNU Общ публичен лиценз (GPL) Версия 2.0 или друга по-нова версия.&lt;/p&gt;</translation>
@@ -2918,12 +2777,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Налична е нова версия на клиента %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; може да бъде свалена. В момента е инсталирана версия %3.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="426"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
-        <source>Skip this version</source>
-        <translation>Пропусни версията</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
@@ -3100,11 +2953,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Грешен профил&lt;/h1&gt;&lt;p&gt;Вписахте се с профил &lt;em&gt;%1&lt;/em&gt;, но трябва да се впишете, като профил &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Моля, да се отпишете от %3, в друг раздел, след което &lt;a href=&apos;%4&apos;&gt;кликнете тук&lt;/a&gt; и се впишете, като %2.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
-        <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Грешен потребител&lt;/h1&gt;&lt;p&gt;Вписахте се като потребител &lt;em&gt;%1&lt;/em&gt;, но трябва да се спишете като &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Моля, да се отпишете се %3, в друг таб, след което &lt;a href=&apos;%4&apos;&gt;кликнете тук&lt;/a&gt; и се впишете като %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3776,12 +3624,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="626"/>
-        <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation>Файл % 1 не може да бъде изтеглен поради сблъсък с името на локален файл!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Файл % 1 не може да бъде изтеглен поради сблъсък с името на локален файл!</translation>
@@ -3810,11 +3652,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>Изтегленият файл е празен, но сървърът обяви, че е трябвало да бъде % 1.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1119"/>
-        <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>Файл % 1 не може да бъде записан поради сблъсък с името на локален файл!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
@@ -3859,11 +3696,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>не можа да се изтрие файл % 1, грешка:% 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
-        <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>Внимание, възможен сблъсък с чувствителността към големи и малки букви с% 1 </translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>Папка %1 не може да бъде създадена поради сблъсък с имена на локални файлове или папки!</translation>
@@ -3899,11 +3731,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
-        <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation> Файл % 1 не може да бъде преименуван на %2 поради сблъсък с името на локален файл!</translation>
-    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
@@ -4220,11 +4047,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Reply</source>
         <translation>Отговор</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
-        <source>Dismiss</source>
-        <translation>Отхвърли</translation>
-    </message>
 </context>
 <context>
     <name>OCC::SettingsDialog</name>
@@ -4268,6 +4090,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Споделяне на връзката</translation>
     </message>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="638"/>
+        <source>Secure filedrop link</source>
+        <translation>Връзка за защитено пускане на файлове</translation>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="646"/>
         <source>Link share</source>
         <translation>Споделяне на връзка</translation>
@@ -4276,11 +4103,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="648"/>
         <source>Internal link</source>
         <translation>Вътрешна връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="638"/>
-        <source>Secure filedrop link</source>
-        <translation>Връзка за защитено пускане на файлове</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="650"/>
@@ -4319,46 +4141,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
         <translation>Изтича:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
-        <source>Can reshare</source>
-        <translation>Може да споделя повторно</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
-        <source>Note to recipient</source>
-        <translation>Бележка за получателя</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
-        <source>Set expiration date</source>
-        <translation>Задаване на дата на изтичане</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="529"/>
-        <source>Unshare</source>
-        <translation>Прекратяване на споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="538"/>
-        <source>Can create</source>
-        <translation>Може да създава</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="544"/>
-        <source>Can change</source>
-        <translation>Може да променя</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="550"/>
-        <source>Can delete</source>
-        <translation>Може да изтрива</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
-        <source>Password protect</source>
-        <translation>Защита с парола</translation>
     </message>
 </context>
 <context>
@@ -4458,12 +4240,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
         <translation>Изпращане на частната връзката по имейл…</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
-        <source>Expire in %1 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Ще изтече след %1 минута/и</numerusform><numerusform>Ще изтече след %1 минута/и</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
@@ -4843,11 +4619,6 @@ Server replied with error: %2</source>
         <translation>Не може да се отвори дневника за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>Синхронизацията ще се възобнови скоро.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1214"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Дисковото пространство е малко: Пропуснати са изтегляния, които биха намалили свободното място под% 1.</translation>
@@ -4999,11 +4770,6 @@ Server replied with error: %2</source>
         <translation>&lt;p&gt;&lt;small&gt;Използване на добавка за виртуални файлове: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
-        <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Това издание е предоставено от % 1&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Това издание е предоставено от % 1.&lt;/p&gt;</translation>
@@ -5077,34 +4843,9 @@ Server replied with error: %2</source>
         <translation>Не можаха да се извлекът предварително дефинирани състояния. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
-        <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation>Не можа да се извлече потребителски статус. Уверете се, че сте свързани със сървъра.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
-        <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation>Функцията за потребителско състояние не се поддържа. Няма да можете да зададете потребителското си състояние.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
-        <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation>Функцията за емотикони не се поддържа. Някои функции за състоянието на потребителя може да не работят.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
-        <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation>Не можа да се зададе потребителски статус. Уверете се, че сте свързани със сървъра.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>Не можа да се извлече статус. Уверете се, че сте свързани със сървъра.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
-        <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation>Съобщението за състоянието на потребителя не можа да бъде изчистено. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
@@ -5238,19 +4979,9 @@ Server replied with error: %2</source>
         <translation>Излязохте от вашият профил % 1 в % 2. Моля да влезте отново.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
-        <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>Излязохте от % 1 като потребител % 2. Моля да влезте отново.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
         <translation>Моля, влезте с профил: % 1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
-        <source>Please login with the user: %1</source>
-        <translation>Моля, влезте с /като/ потребител: % 1</translation>
     </message>
 </context>
 <context>
@@ -5266,20 +4997,9 @@ Server replied with error: %2</source>
         <translation>Вписване</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
-        <source>Log in to your %1</source>
-        <translation>Вписване във вашия % 1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
         <translation>Абониране при доставчик</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
-        <source>Create account with Provider</source>
-        <translation>Създаване на профил при Доставчик</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
@@ -5447,11 +5167,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
         <translation>Локална папка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
-        <source>User name</source>
-        <translation>Потребителско име</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
@@ -5658,11 +5373,6 @@ Server replied with error: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
-        <source>Mark as read</source>
-        <translation>Маркиране като прочетено</translation>
-    </message>
 </context>
 <context>
     <name>ShareDelegate</name>
@@ -5709,11 +5419,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>Allow upload and editing</source>
         <translation>Разрешаване на качване и редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
-        <source>Allow editing</source>
-        <translation>Разрешаване на редактиране</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="359"/>
@@ -5860,7 +5565,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
-        <source>Open groupfolder &quot;%1&quot;</source>
+        <source>Open group folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5925,11 +5630,6 @@ Server replied with error: %2</source>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>Въвеждане на Профил</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="19"/>
         <source>Switch to account</source>
         <translation>Превключване към профил</translation>
@@ -5943,16 +5643,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>Текущият статус на профил е: не безпокойте</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
-        <source>Current user status is online</source>
-        <translation>Текущият потребителски статус е на линия</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
-        <source>Current user status is do not disturb</source>
-        <translation>Текущият потребителски статус е не безпокойте</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
@@ -6151,11 +5841,6 @@ Server replied with error: %2</source>
         <translation>Пауза в синхронизирането за всички</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="219"/>
-        <source>Set user status</source>
-        <translation>Задаване на потребителско състояние</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="347"/>
         <source>Add account</source>
         <translation>Добавяне на регистрация</translation>
@@ -6176,29 +5861,9 @@ Server replied with error: %2</source>
         <translation>Изход </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="373"/>
-        <source>Current user avatar</source>
-        <translation>Текущ потребителски аватар</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
-        <source>Current user status is online</source>
-        <translation>Текущият потребителски статус е на линия</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
-        <source>Current user status is do not disturb</source>
-        <translation>Текущият потребителски статус е не безпокойте</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Current account avatar</source>
         <translation>Текущ аватар на профил</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="597"/>
-        <source>Open local folder of current account</source>
-        <translation>Отворяне на локалната папка на текущия профил</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
@@ -6211,14 +5876,19 @@ Server replied with error: %2</source>
         <translation>Текущият статус на профил е: не безпокойте</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 - Файлова активност</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Account switcher and settings menu</source>
         <translation>Меню за превключване на профил и настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="597"/>
+        <source>Open local folder of current account</source>
+        <translation>Отворяне на локалната папка на текущия профил</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="656"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>Отваряне на Nextcloud Разговор в браузъра</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
@@ -6229,11 +5899,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
         <source>Disconnected</source>
         <translation>Без връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="656"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>Отваряне на Nextcloud Разговор в браузъра</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="676"/>
@@ -6480,228 +6145,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Освобождаване на локално място</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Цялостно мнемонично криптиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="407"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>За да защитим вашата Криптографска идентичност, ние я криптираме мнемонично  с 12 думи от речника. Моля, запишете ги и ги пазете на сигурно място. Те ще са необходими, за да добавите други устройства към вашия профил (като вашия мобилен телефон или лаптоп).</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>Вътрешна връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation>Работи само за потребители, които имат достъп до тази папка</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareDialog</name>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="69"/>
-        <source>share label</source>
-        <translation> споделяне на етикет</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="124"/>
-        <source>Nextcloud Path:</source>
-        <translation>Път в Nextcloud</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="155"/>
-        <source>Icon</source>
-        <translation>Икона</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="96"/>
-        <source>%1</source>
-        <translation>%1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
-        <source>Locked by %1 - Expire in %2 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Ще изтече след %2 минути</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="106"/>
-        <source>Locked by %1 - Expires in %2 minutes</source>
-        <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
-        <source>Folder: %2</source>
-        <translation>Папка: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="130"/>
-        <source>%1 Sharing</source>
-        <translation>%1 Споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
-        <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation>Файлът не може да бъде споделен, защото е без право за споделяне.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="417"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Моля, въведете парола за споделяне на вашата връзка:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="418"/>
-        <source>Password for share required</source>
-        <translation>Нужна е парола за споделяне</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareLinkWidget</name>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
-        <source>Share link</source>
-        <translation>Връзка за споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
-        <source>Note</source>
-        <translation>Бележка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
-        <source>Set password</source>
-        <translation>Задаване на парола</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
-        <source>Expires</source>
-        <translation>Изтича</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Allow editing</source>
-        <translation>Разреши редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>View only</source>
-        <translation>Само изглед</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
-        <source>Allow upload and editing</source>
-        <translation>За качване и редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>File drop (upload only)</source>
-        <translation>Само за качване</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
-        <source>Link name</source>
-        <translation>Име на връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
-        <source>Note to recipient</source>
-        <translation>Бележка за получателя</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
-        <source>Password protect</source>
-        <translation>Защита с парола</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
-        <source>Set expiration date</source>
-        <translation>Срок на валидност</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
-        <source>Delete link</source>
-        <translation>Изтриване на връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
-        <source>Add another link</source>
-        <translation>Добавя още една връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
-        <source>Confirm Link Share Deletion</source>
-        <translation>Потвърждава Изтриването на Споделяне на Връзки</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
-        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Наистина ли желаете да изтриете споделеното с публична връзка &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Бележка: Изтриването е необратима операция.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
-        <source>Delete</source>
-        <translation>Изтрий</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
-        <source>Cancel</source>
-        <translation>Отказ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
-        <source>Public link</source>
-        <translation>Публична връзка</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
-        <source>Share with users or groups …</source>
-        <translation>Споделяне с потребители или групи...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
-        <source>Search globally</source>
-        <translation>Глобално търсене </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
-        <source>Copy link</source>
-        <translation>Копирай връзката</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
-        <source>No results for &quot;%1&quot;</source>
-        <translation>Няма резултати за „%1“</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
-        <source>Password for share required</source>
-        <translation>Нужна е парола за споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
-        <source>Please enter a password for your email share:</source>
-        <translation>Моля, въведете парола за споделяне на вашият имейл:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
-        <source>I shared something with you</source>
-        <translation>Споделих нещо с вас</translation>
     </message>
 </context>
 </TS>

@@ -33,11 +33,6 @@
         <source>Open file details</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
-        <source>Open share dialog</source>
-        <translation>공유 대화 상자 열기</translation>
-    </message>
 </context>
 <context>
     <name>ActivityList</name>
@@ -399,16 +394,6 @@
         <translation>수동 변경 사항 적용</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="92"/>
-        <source>End-to-End Encryption with Virtual Files</source>
-        <translation>가상 파일과 종단간 암호화</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>이 폴더에 가상 파일 기능이 활성화된 것 같습니다. 종단간 암호화 된 가상 파일은 다운로드 할 수 없습니다. 종단간 암호화와 가상 파일 기능의 원활한 동작을 위해 암호화된 폴더가 &quot;로컬에서 항상 사용 가능&quot;한지 확인하십시오.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation>가상 파일과 종단간 암호화</translation>
@@ -417,11 +402,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>폴더를 암호화하지 마십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -454,11 +434,6 @@
         <translation>이 계정에 종단간 암호화가 활성화됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
-        <source>Enable encryption</source>
-        <translation>암호화 사용</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Warning</source>
         <translation>경고</translation>
@@ -475,12 +450,6 @@ Would you like to set up end-to-end encryption?</source>
 Wait for the new sync, then encrypt it.</source>
         <translation>내용물이 있는 폴더는 암호화할 수 없습니다. 파일을 삭제하십시오.
 새로운 동기화를 기다린 후 암호화하십시오.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="249"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1458"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation>이 계정은 종단간 암호화를 지원합니다</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -615,11 +584,6 @@ This action will abort any currently running synchronization.</source>
         <translation>지원 비활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="979"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>종단간 암호화 연상 기호</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>종단간 암호화 연상 기호</translation>
@@ -750,21 +714,6 @@ This action will abort any currently running synchronization.</source>
         <translation>이 계정은 종단간 암호화를 지원합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1398"/>
-        <source>Confirm Account Removal</source>
-        <translation>계정 삭제 확인</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1399"/>
-        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;계정 &lt;i&gt;%1&lt;/i&gt;과 연결을 삭제합니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;참고:&lt;/b&gt; 어떤 파일도 &lt;/b&gt;삭제하지 않습니다.&lt;/b&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1404"/>
-        <source>Remove connection</source>
-        <translation>연결 삭제</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1569"/>
         <source>Set up encryption</source>
         <translation type="unfinished"/>
@@ -849,11 +798,6 @@ This action will abort any currently running synchronization.</source>
         <translation>더 많은 활동을 보려면 액티비티 앱을 여십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities…</source>
-        <translation>활동 불러오는 중...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="509"/>
         <source>Fetching activities …</source>
         <translation>활동 불러오는 중...</translation>
@@ -910,21 +854,6 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
-        <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation>계속 진행할 경우 &lt;b&gt;본 설정이 삭제됩니다&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="152"/>
-        <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation>계속 진행할 경우 &lt;b&gt;본 설정이 무시됩니다&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="158"/>
-        <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>일부 항목은 더 높은 버전에서 설정되었으며 이 버전에서 사용 가능하지 않는 기능을 이용합니다. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; 현재 설정은 &lt;i&gt;%2&lt;/i&gt;에 백업되었습니다.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation type="unfinished"/>
@@ -972,11 +901,6 @@ This action will abort any currently running synchronization.</source>
         <translation>설정 파일 액세스 오류</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
-        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>설정 파일%1을 액세스하는 중 오류가 발생했습니다. 사용자가 파일에 액세스 할 수 있는지 확인하십시오.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="394"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>%1의 구성 파일에 액세스하는 동안 오류가 발생했습니다. 시스템 계정으로 파일에 액세스할 수 있는지 확인하십시오.</translation>
@@ -1003,11 +927,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
-        <source>&amp;User:</source>
-        <translation>사용자:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1082,11 +1001,6 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
-        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation type="unfinished"/>
@@ -1145,11 +1059,6 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
-        <source>fileA</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
@@ -1175,11 +1084,6 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
-        <source>fileB</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1249,16 +1153,6 @@ This action will abort any currently running synchronization.</source>
 </context>
 <context>
     <name>OCC::ClientSideEncryption</name>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
-        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>종단간의 암호화 암구호를 입력하십시오: &lt;br&gt;&lt;br&gt;사용자: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>종단간의 암호화 암구호를 입력하십시오: &lt;br&gt;&lt;br&gt;사용자: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
-    </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
@@ -1969,11 +1863,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>(백업 %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>정의되지 않은 상태</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1604"/>
         <source>Undefined state.</source>
         <translation>정의되지 않은 상태입니다.</translation>
@@ -1997,21 +1886,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>동기화 성공. 해결되지 않은 충돌이 있습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
-        <source>Last Sync was successful.</source>
-        <translation>최근 동기화에 성공</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
-        <source>Setup Error.</source>
-        <translation>설치 오류</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
-        <source>User Abort.</source>
-        <translation>사용자 중단</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1620"/>
@@ -2623,11 +2497,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>%1 암호를 입력하십시오:&lt;br&gt;&lt;br&gt;사용자 이름: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
-        <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>%1 암호를 입력하십시오: &lt;br&gt;&lt;br&gt;사용자: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
         <translation>키 체인에서 읽는데 오류가 발생했습니다: &quot;%1&quot;</translation>
@@ -2771,11 +2640,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>다음 문자들은 시스템에서 허용되지 않습니다. * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; 선행/후행 공백</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
-        <source>Checking rename permissions...</source>
-        <translation>이름 변경 권한 확인 중...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>Checking rename permissions …</source>
         <translation>이름 변경 권한 확인 중…</translation>
@@ -2850,11 +2714,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/legalnotice.cpp" line="55"/>
-        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</translation>
@@ -2918,12 +2777,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 클라이언트의 새 버전을 사용할 수 있습니다.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;를 다운로드 할 수 있습니다. 설치된 버전은 %3입니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="426"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
-        <source>Skip this version</source>
-        <translation>이 버전 건너뛰기</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
@@ -3101,11 +2954,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;잘못된 계정&lt;/h1&gt;&lt;p&gt;귀하는 계정 &lt;em&gt;%1&lt;/em&gt;(으)로 로그인을 시도하였으나, 계정 &lt;em&gt;%2&lt;/em&gt;(으)로 로그인 해야합니다. &lt;br&gt;다른 탭에서 %3을(를) 로그아웃 한 후, &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 클릭하여 %2(으)로 로그인 하십시오.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
-        <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;잘못된 사용자&lt;/h1&gt; &lt;p&gt;사용자 &lt;em&gt;%1&lt;/em&gt;로 로그인했지만 사용자 &lt;em&gt;%2&lt;/em&gt;로 로그인해야합니다. &lt;br&gt;다른 탭에서 %3을 로그아웃 한 후 &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 클릭하고 %2 사용자로 로그인하십시오.</translation>
     </message>
 </context>
 <context>
@@ -3778,12 +3626,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 제거할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="626"/>
-        <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
@@ -3812,11 +3654,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>서버는 %1였으나 다운로드한 파일이 비어 있음.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1119"/>
-        <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>로컬 파일 이름 충돌로 인해 %1 파일을 저장할 수 없습니다!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
@@ -3861,11 +3698,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 %1을 삭제하지 못했습니다, 오류: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
-        <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>주의, 대소 문자 구분이 %1과 충돌</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation type="unfinished"/>
@@ -3901,11 +3733,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
-        <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation>로컬 파일 이름 충돌로 인해 파일 %1의 이름을 %2로 바꿀 수 없습니다.</translation>
-    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
@@ -4222,11 +4049,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Reply</source>
         <translation>답장</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
-        <source>Dismiss</source>
-        <translation>무시</translation>
-    </message>
 </context>
 <context>
     <name>OCC::SettingsDialog</name>
@@ -4270,6 +4092,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>링크 공유</translation>
     </message>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="638"/>
+        <source>Secure filedrop link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="646"/>
         <source>Link share</source>
         <translation>링크 공유</translation>
@@ -4277,11 +4104,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="648"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="638"/>
-        <source>Secure filedrop link</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4321,46 +4143,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
         <translation>만료:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
-        <source>Can reshare</source>
-        <translation>재공유 가능</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
-        <source>Note to recipient</source>
-        <translation>받는 사람에게 메모</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
-        <source>Set expiration date</source>
-        <translation>만료기한 설정</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="529"/>
-        <source>Unshare</source>
-        <translation>공유 해제</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="538"/>
-        <source>Can create</source>
-        <translation>생성 가능</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="544"/>
-        <source>Can change</source>
-        <translation>변경 가능</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="550"/>
-        <source>Can delete</source>
-        <translation>삭제 가능</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
-        <source>Password protect</source>
-        <translation>암호 보호</translation>
     </message>
 </context>
 <context>
@@ -4458,12 +4240,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
         <translation>이메일로 개인 링크 보내기 ...</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
-        <source>Expire in %1 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>%1분 내에 만료됨</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
@@ -4843,11 +4619,6 @@ Server replied with error: %2</source>
         <translation>동기화 저널을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>동기화가 곧 재개됩니다.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1214"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>디스크 공간이 부족합니다. 여유 공간이 %1 미만으로 남으면 다운로드를 건너 뜁니다.</translation>
@@ -4999,11 +4770,6 @@ Server replied with error: %2</source>
         <translation>&lt;small&gt;&lt;p&gt;가상 파일 플러그인 사용: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
-        <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation>&lt;p&gt;이 릴리스는 %1에 의해 제공되었습니다.&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation type="unfinished"/>
@@ -5077,34 +4843,9 @@ Server replied with error: %2</source>
         <translation>사전에 정의된 상태를 불러올 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
-        <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation>사용자 상태를 불러올 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
-        <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation>사용자 상태 기능은 지원되지 않습니다. 사용자 상태를 설정할 수 없습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
-        <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation>이모티콘 기능은 지원되지 않습니다. 일부 사용자 상태 기능이 작동하지 않을 수 있습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
-        <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation>사용자 상태를 설정할 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>상태를 불러올 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
-        <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation>사용자 상태 메시지를 지울 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
@@ -5238,19 +4979,9 @@ Server replied with error: %2</source>
         <translation>귀하의 계정 %1이(가) %2에서 로그아웃 했습니다. 다시 로그인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
-        <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>사용자 %2로 %1에서 로그아웃 했습니다. 다시 로그인하십시오.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
         <translation>다음 계정으로 로그인하십시오: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
-        <source>Please login with the user: %1</source>
-        <translation>다음 사용자로 로그인 해주십시오: %1</translation>
     </message>
 </context>
 <context>
@@ -5266,20 +4997,9 @@ Server replied with error: %2</source>
         <translation>로그인</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
-        <source>Log in to your %1</source>
-        <translation>내 %1로 로그인</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
         <translation>공급자로 가입</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
-        <source>Create account with Provider</source>
-        <translation>공급자로 계정 생성</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
@@ -5447,11 +5167,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
         <translation>로컬 폴더</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
-        <source>User name</source>
-        <translation>사용자 이름</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
@@ -5658,11 +5373,6 @@ Server replied with error: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
-        <source>Mark as read</source>
-        <translation>읽은 상태로 표시</translation>
-    </message>
 </context>
 <context>
     <name>ShareDelegate</name>
@@ -5708,11 +5418,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="326"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
-        <source>Allow editing</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5860,7 +5565,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
-        <source>Open groupfolder &quot;%1&quot;</source>
+        <source>Open group folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5925,11 +5630,6 @@ Server replied with error: %2</source>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>계정 목록</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="19"/>
         <source>Switch to account</source>
         <translation>계정으로 전환</translation>
@@ -5943,16 +5643,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>현재 계정 상태는 방해 금지 상태입니다</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
-        <source>Current user status is online</source>
-        <translation>현재 사용자 상태가 오프라인임</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
-        <source>Current user status is do not disturb</source>
-        <translation>현재 사용자 상태가 방해 금지임</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
@@ -6151,11 +5841,6 @@ Server replied with error: %2</source>
         <translation>전체 동기화 일시 정지</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="219"/>
-        <source>Set user status</source>
-        <translation>사용자 상태 설정</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="347"/>
         <source>Add account</source>
         <translation>계정 추가</translation>
@@ -6176,29 +5861,9 @@ Server replied with error: %2</source>
         <translation>끝내기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="373"/>
-        <source>Current user avatar</source>
-        <translation>현재 사용자 아바타</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
-        <source>Current user status is online</source>
-        <translation>현재 사용자 상태가 접속 중임</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
-        <source>Current user status is do not disturb</source>
-        <translation>현재 사용자 상태가 방해 금지임</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Current account avatar</source>
         <translation>현재 계정 아바타</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="597"/>
-        <source>Open local folder of current account</source>
-        <translation>현재 계정의 로컬 폴더 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
@@ -6211,14 +5876,19 @@ Server replied with error: %2</source>
         <translation>현재 계정 상태가 방해 금지 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 - 파일 활동</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="597"/>
+        <source>Open local folder of current account</source>
+        <translation>현재 계정의 로컬 폴더 열기</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="656"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>브라우저에서 Nextcloud Talk 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
@@ -6229,11 +5899,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
         <source>Disconnected</source>
         <translation>연결이 끊어졌습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="656"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>브라우저에서 Nextcloud Talk 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="676"/>
@@ -6480,228 +6145,6 @@ Server replied with error: %2</source>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>로컬 저장공간 확보</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>종단간 암호화 연상 기호</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="407"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>암호화 신원을 보호하기 위해 12개의 사전 단어를 사용하여 암호화합니다. 이 내용을 기록하고 안전하게 보관하십시오. 휴대 전화 나 노트북과 같은 다른 기기를 계정에 추가해야합니다.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>내부 링크</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation>이 폴더에 대한 액세스 권한이 있는 사용자에게만 작동합니다.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareDialog</name>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="69"/>
-        <source>share label</source>
-        <translation>공유 라벨</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="124"/>
-        <source>Nextcloud Path:</source>
-        <translation>Nextcloud 경로:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="155"/>
-        <source>Icon</source>
-        <translation>아이콘</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="96"/>
-        <source>%1</source>
-        <translation>%1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
-        <source>Locked by %1 - Expire in %2 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>%1에 의해 잠김 - %2분 후에 만료됨</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="106"/>
-        <source>Locked by %1 - Expires in %2 minutes</source>
-        <comment>remaining time before lock expires</comment>
-        <translation><numerusform>%1에 의해 잠김 - %2분 후에 만료됨</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
-        <source>Folder: %2</source>
-        <translation>폴더: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="130"/>
-        <source>%1 Sharing</source>
-        <translation>%1 공유</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
-        <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation>파일에 공유 권한이 없으므로 파일을 공유할 수 없습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="417"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>내 링크 공유를 위한 암호를 입력하십시오:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="418"/>
-        <source>Password for share required</source>
-        <translation>공유를 위한 암호가 필요함</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareLinkWidget</name>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
-        <source>Share link</source>
-        <translation>링크 공유</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
-        <source>Note</source>
-        <translation>메모</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
-        <source>Set password</source>
-        <translation>암호 설정</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
-        <source>Expires</source>
-        <translation>만료</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Allow editing</source>
-        <translation>Allow editing</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>View only</source>
-        <translation>보기 전용</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
-        <source>Allow upload and editing</source>
-        <translation>Allow upload and editing</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>File drop (upload only)</source>
-        <translation>File drop (upload only)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
-        <source>Link name</source>
-        <translation>링크 이름</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
-        <source>Note to recipient</source>
-        <translation>받는 사람 메모</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
-        <source>Password protect</source>
-        <translation>암호 보호</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
-        <source>Set expiration date</source>
-        <translation>만료기한 설정</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
-        <source>Delete link</source>
-        <translation>링크 삭제</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
-        <source>Add another link</source>
-        <translation>다른 링크 추가</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
-        <source>Confirm Link Share Deletion</source>
-        <translation>링크 공유 삭제 확인</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
-        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;공개 링크 공유 &lt;i&gt;%1&lt;/i&gt;를 정말로 삭제 하시겠습니까?&lt;/p&gt;&lt;p&gt;메모: 이 작업은 되돌릴 수 없습니다.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
-        <source>Delete</source>
-        <translation>삭제</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
-        <source>Cancel</source>
-        <translation>취소</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
-        <source>Public link</source>
-        <translation>공개 링크</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
-        <source>Share with users or groups …</source>
-        <translation>사용자 또는 그룹과 공유: ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
-        <source>Search globally</source>
-        <translation>전역 검색</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
-        <source>Copy link</source>
-        <translation>링크 복사</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
-        <source>No results for &quot;%1&quot;</source>
-        <translation>&quot;%1&quot;에 대한 결과 없음</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
-        <source>Password for share required</source>
-        <translation>공유를 위한 암호가 필요함</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
-        <source>Please enter a password for your email share:</source>
-        <translation>내 이메일 공유를 위한 암호 입력:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
-        <source>I shared something with you</source>
-        <translation>당신과 공유합니다.</translation>
     </message>
 </context>
 </TS>

@@ -33,11 +33,6 @@
         <source>Open file details</source>
         <translation>Abrir detalhes do arquivo</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
-        <source>Open share dialog</source>
-        <translation>Abrir caixa de diálogo compartilhada</translation>
-    </message>
 </context>
 <context>
     <name>ActivityList</name>
@@ -399,16 +394,6 @@
         <translation>Aplicar alterações manuais</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="92"/>
-        <source>End-to-End Encryption with Virtual Files</source>
-        <translation>Criptografia Ponta a Ponta com Arquivos Virtuais </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que o recurso Arquivos Virtuais está ativado nesta pasta. No momento, não é possível baixar implicitamente arquivos virtuais criptografados de ponta a ponta. Para obter a melhor experiência com arquivos virtuais e criptografia de ponta a ponta, certifique-se de que a pasta criptografada esteja marcada com &quot;Tornar sempre disponível localmente&quot;. </translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation>Criptografia Ponta a Ponta com Arquivos Virtuais </translation>
@@ -417,11 +402,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Parece que o recurso Arquivos virtuais está ativado nesta pasta. No momento, não é possível baixar implicitamente arquivos virtuais criptografados de ponta a ponta. Para obter a melhor experiência com arquivos virtuais e criptografia de ponta a ponta, certifique-se de que a pasta criptografada esteja marcada com &quot;Tornar sempre disponível localmente&quot;. </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Não criptografar pasta </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -454,11 +434,6 @@
         <translation>Criptografia Ponta a Ponta foi habilitado para essa conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
-        <source>Enable encryption</source>
-        <translation>Ativar criptografia</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Warning</source>
         <translation>Aviso</translation>
@@ -476,12 +451,6 @@ Você gostaria de configurar a criptografia ponta a ponta?</translation>
 Wait for the new sync, then encrypt it.</source>
         <translation>Você não pode criptografar uma pasta com o conteúdo. Remova os arquivos.
 Aguarde a nova sincronização e criptografe-a.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="249"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1458"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation>Esta conta é compatível com criptografia de ponta a ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -616,11 +585,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Desativar suporte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="979"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>Mnemônico de criptografia de ponta a ponta</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Mnemônico da criptografia ponta a ponta</translation>
@@ -751,21 +715,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Esta conta suporta criptografia de ponta-a-ponta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1398"/>
-        <source>Confirm Account Removal</source>
-        <translation>Confirmar a Remoção da Conta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1399"/>
-        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Deseja realmente remover a conexão desta conta&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isto &lt;b&gt;não&lt;/b&gt; irá excluir nenhum arquivo.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1404"/>
-        <source>Remove connection</source>
-        <translation>Remover conexão</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1569"/>
         <source>Set up encryption</source>
         <translation>Configurar criptografia</translation>
@@ -850,11 +799,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Para mais atividades, abra o aplicativo Atividade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities…</source>
-        <translation>Buscando atividades…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="509"/>
         <source>Fetching activities …</source>
         <translation>Buscando atividades…</translation>
@@ -911,21 +855,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
-        <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation>Continuar significa &lt;b&gt;excluir essas configuracões&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="152"/>
-        <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation>Continuar significa &lt;b&gt;ignorar essas configuraçães&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="158"/>
-        <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Algumas configurações foram definidas em versões mais recentes deste cliente e usam recursos que não estão disponíveis nesta versão. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;O arquivo de configuração atual já foi copiado para  &lt;i&gt;%2&lt;/i&gt;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation type="unfinished"/>
@@ -973,11 +902,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Erro acessando o arquivo de configuração</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
-        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>Houve um erro ao acessar o arquivo de configuração em % 1. Certifique-se que o arquivo pode ser acessado pelo seu usuário.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="394"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ocorreu um erro ao acessar o arquivo de configuração em %1. Certifique-se de que o arquivo pode ser acessado por sua conta do sistema.</translation>
@@ -1004,11 +928,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
         <translation>&amp;Nome do Usuário:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
-        <source>&amp;User:</source>
-        <translation>&amp;Usuário:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1083,11 +1002,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
-        <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Não é possível renomear o arquivo porque já existe um arquivo com o mesmo nome no servidor. Escolha outro nome.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Não foi possível renomear o arquivo. Verifique se você está conectado ao servidor.</translation>
@@ -1146,11 +1060,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>arquivo A</translation>
     </message>
     <message>
-        <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
-        <source>fileA</source>
-        <translation>arquivoA</translation>
-    </message>
-    <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
@@ -1177,11 +1086,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
         <translation>arquivo B</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
-        <source>fileB</source>
-        <translation>arquivoB</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
@@ -1250,16 +1154,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 </context>
 <context>
     <name>OCC::ClientSideEncryption</name>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
-        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Insira sua senha de criptografia de ponta a ponta:&lt;br&gt;&lt;br&gt;Nome do usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Insira a senha da criptografia de ponta-a-ponta:&lt;br&gt;&lt;br&gt;Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
-    </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
@@ -1968,11 +1862,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation> (backup %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Estado indefinido.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1604"/>
         <source>Undefined state.</source>
         <translation>Estado indefinido.</translation>
@@ -1996,21 +1885,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sincronização concluída com conflitos não resolvidos. </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
-        <source>Last Sync was successful.</source>
-        <translation>A última sincronização foi finalizada.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
-        <source>Setup Error.</source>
-        <translation>Erro de Configuração.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
-        <source>User Abort.</source>
-        <translation>Interrompido pelo Usuário.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1620"/>
@@ -2621,11 +2495,6 @@ Observe que isso seleciona apenas quais upgrades de pool são retirados, e que n
         <translation>Por favor, digite %1 senha:&lt;br&gt;&lt;br&gt;Nome de Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
-        <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Por favor entre com a senha %1:&lt;br&gt;&lt;br&gt;Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
         <translation>A leitura das chaves falhou com o erro: &quot;%1&quot; </translation>
@@ -2769,11 +2638,6 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
         <translation>Os seguintes caracteres não são permitidos no sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espaços à esquerda/à direita</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
-        <source>Checking rename permissions...</source>
-        <translation>Verificando permissões de renomeação...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
         <source>Checking rename permissions …</source>
         <translation>Verificando renomeação de permissões…</translation>
@@ -2848,11 +2712,6 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
         <translation>&lt;p&gt;Direitos Autorais 2017-2023 Nextcloud GmbH&lt;br /&gt;Direitos Autorais 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/legalnotice.cpp" line="55"/>
-        <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Direito autoral 2017-2021 Nextcloud GmbH&lt;br /&gt;Direito autoral 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Licenciado sob a GNU General Public License (GPL) Versão 2.0 ou qualquer versão posterior.&lt;/p&gt;</translation>
@@ -2915,12 +2774,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Uma nova versão do Cliente %1 está disponível.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para baixar. A versão instalada é a %3.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="426"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
-        <source>Skip this version</source>
-        <translation>Pular esta versão</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
@@ -3097,11 +2950,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Conta errada&lt;/h1&gt;&lt;p&gt;Você fez login com a conta &lt;em&gt;%1&lt;/em&gt;, mas deve fazer login com a conta &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Por favor, saia de %3 em outra guia, então&lt;a href=&apos;%4&apos;&gt;click aqui&lt;/a&gt; e inicie sessão com %2.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
-        <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Usuário incorreto&lt;/h1&gt;&lt;p&gt;Você fez logon com o usuário &lt;em&gt;%1&lt;/em&gt;, mas deve fazer com o usuário &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Faça o logout de %3 em outra guia, então&lt;a href=&apos;%4&apos;&gt;clique aqui&lt;/a&gt; e faça o login como o usuário %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3774,12 +3622,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Não foi possível excluir o registro de arquivo %1 do BD local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="626"/>
-        <source>File %1 cannot be downloaded because of a local file name clash!</source>
-        <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
@@ -3808,11 +3650,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>O arquivo baixado está vazio, mas o servidor disse que deveria ser %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1119"/>
-        <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>O arquivo %1 não pôde ser salvo devido a um conflito com um nome de arquivo local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
@@ -3857,11 +3694,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>não foi possível excluir o arquivo %1, erro: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="175"/>
-        <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>Atenção, possível caso de conflito de minúscula/maiúscula com %1</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>A pasta %1 não pode ser criado devido a um conflito de nome de pasta ou arquivo local!</translation>
@@ -3897,11 +3729,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
-        <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
-        <translation>O arquivo %1 não pode ser renomeada para %2 devido a um conflito com o nome de um arquivo local</translation>
-    </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
@@ -4218,11 +4045,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <source>Reply</source>
         <translation>Responder</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
-        <source>Dismiss</source>
-        <translation>Dispensar</translation>
-    </message>
 </context>
 <context>
     <name>OCC::SettingsDialog</name>
@@ -4266,6 +4088,11 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Compartilhar link</translation>
     </message>
     <message>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="638"/>
+        <source>Secure filedrop link</source>
+        <translation>Secure filedrop link</translation>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="646"/>
         <source>Link share</source>
         <translation>Link para compartilhar</translation>
@@ -4274,11 +4101,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="648"/>
         <source>Internal link</source>
         <translation>Link interno</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="638"/>
-        <source>Secure filedrop link</source>
-        <translation>Secure filedrop link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="650"/>
@@ -4317,46 +4139,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
         <translation>Expira em:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
-        <source>Can reshare</source>
-        <translation>Pode recompartilhar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
-        <source>Note to recipient</source>
-        <translation>Nota para o destinatário</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
-        <source>Set expiration date</source>
-        <translation>Definir data de validade </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="529"/>
-        <source>Unshare</source>
-        <translation>Descompartilhar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="538"/>
-        <source>Can create</source>
-        <translation>Pode criar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="544"/>
-        <source>Can change</source>
-        <translation>Pode alterar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="550"/>
-        <source>Can delete</source>
-        <translation>Pode excluir</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
-        <source>Password protect</source>
-        <translation>Proteger com senha</translation>
     </message>
 </context>
 <context>
@@ -4456,12 +4238,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
         <translation>Enviar link privado por e-mail...</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
-        <source>Expire in %1 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Expira em %1 minutos</numerusform><numerusform>Expira em %1 minuto</numerusform><numerusform>Expira em %1 minuto</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
@@ -4841,11 +4617,6 @@ Servidor respondeu com erro: %2</translation>
         <translation>Não é possível abrir o arquivo de sincronização</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>A sincronização será retomada em breve.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1214"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>O espaço em disco é pequeno: Os downloads que reduziriam o espaço livre abaixo de %1 foram ignorados.</translation>
@@ -4997,11 +4768,6 @@ Servidor respondeu com erro: %2</translation>
         <translation>&lt;p&gt;&lt;small&gt;Usando o plugin de arquivos virtuais:  %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="571"/>
-        <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Esta versão foi fornecida por %1&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
         <translation>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</translation>
@@ -5075,34 +4841,9 @@ Servidor respondeu com erro: %2</translation>
         <translation>Não foi possível buscar status predefinidos. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
-        <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation>Não foi possível buscar o status do usuário. Certifique-se de estar conectado ao servidor.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
-        <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation>O recurso de status do usuário não é compatível. Você não poderá definir seu status de usuário.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
-        <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation>O recurso emojis não é compatível. Algumas funcionalidades de status do usuário podem não funcionar.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
-        <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation>Não foi possível definir o status do usuário. Certifique-se de estar conectado ao servidor.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation>Não foi possível verificar o status. Verifique se você está conectado ao servidor.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
-        <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation>Não foi possível limpar a mensagem de status do usuário. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
@@ -5236,19 +4977,9 @@ Servidor respondeu com erro: %2</translation>
         <translation>Você foi desconectado de sua conta %1 em %2. Por favor faça login novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
-        <source>You have been logged out of %1 as user %2. Please login again.</source>
-        <translation>Você foi desconectado de %1 como usuário %2. Por favor faça login novamente.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
         <translation>Faça login com a conta: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
-        <source>Please login with the user: %1</source>
-        <translation>Por favor, faça o login com o usuário: %1</translation>
     </message>
 </context>
 <context>
@@ -5264,20 +4995,9 @@ Servidor respondeu com erro: %2</translation>
         <translation>Entrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
-        <source>Log in to your %1</source>
-        <translation>Faça login no seu %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
         <translation>Conecte-se com um provedor</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
-        <source>Create account with Provider</source>
-        <translation>Criar conta com o provedor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
@@ -5445,11 +5165,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
         <translation>Pasta Local</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
-        <source>User name</source>
-        <translation>Nome do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
@@ -5656,11 +5371,6 @@ Servidor respondeu com erro: %2</translation>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
     </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
-        <source>Mark as read</source>
-        <translation>Marcar como Lido</translation>
-    </message>
 </context>
 <context>
     <name>ShareDelegate</name>
@@ -5707,11 +5417,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>Allow upload and editing</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
-        <source>Allow editing</source>
-        <translation>Permitir edição</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="359"/>
@@ -5858,7 +5563,7 @@ Servidor respondeu com erro: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
-        <source>Open groupfolder &quot;%1&quot;</source>
+        <source>Open group folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5923,11 +5628,6 @@ Servidor respondeu com erro: %2</translation>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>Entrada de conta</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="19"/>
         <source>Switch to account</source>
         <translation>Mudar para a conta</translation>
@@ -5941,16 +5641,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>O status da conta atual é não perturbe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
-        <source>Current user status is online</source>
-        <translation>Online é o status atual do usuário</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
-        <source>Current user status is do not disturb</source>
-        <translation>Não Perturbe é o status atual do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
@@ -6149,11 +5839,6 @@ Servidor respondeu com erro: %2</translation>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="219"/>
-        <source>Set user status</source>
-        <translation>Definir o status do usuário</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="347"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
@@ -6174,29 +5859,9 @@ Servidor respondeu com erro: %2</translation>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="373"/>
-        <source>Current user avatar</source>
-        <translation>Avatar do usuário atual</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
-        <source>Current user status is online</source>
-        <translation>Online é o status atual do usuário</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
-        <source>Current user status is do not disturb</source>
-        <translation>Não Perturbe é o status atual do usuário</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Current account avatar</source>
         <translation>Avatar da conta atual</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="597"/>
-        <source>Open local folder of current account</source>
-        <translation>Abrir pasta local da conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="502"/>
@@ -6209,14 +5874,19 @@ Servidor respondeu com erro: %2</translation>
         <translation>O status da conta atual é não perturbe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 - Atividade de arquivo</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Account switcher and settings menu</source>
         <translation>Alternador de conta e menu de configurações</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="597"/>
+        <source>Open local folder of current account</source>
+        <translation>Abrir pasta local da conta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="656"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>Abrir o Nextcloud Talk no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
@@ -6227,11 +5897,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/tray/Window.qml" line="620"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="656"/>
-        <source>Open Nextcloud Talk in browser</source>
-        <translation>Abrir o Nextcloud Talk no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="676"/>
@@ -6478,228 +6143,6 @@ Servidor respondeu com erro: %2</translation>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Libere espaço local </translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Mnemônico da criptografia de ponta-a-ponta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="407"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Para proteger sua Identidade Criptográfica, nós criptografamos com um mnemônico de 12 palavras de dicionário. Anote e mantenha-os em segurança. Eles serão necessários para adicionar outros dispositivos à sua conta (como seu celular ou laptop).</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>Link interno</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation>Funciona apenas para usuários com acesso a esta pasta</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareDialog</name>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="69"/>
-        <source>share label</source>
-        <translation>compartilhar rótulo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="124"/>
-        <source>Nextcloud Path:</source>
-        <translation>Caminho Nextcloud:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="155"/>
-        <source>Icon</source>
-        <translation>Ícone</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="96"/>
-        <source>%1</source>
-        <translation>%1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
-        <source>Locked by %1 - Expire in %2 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Bloqueados por %1 - Expira em %2 minuto</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="106"/>
-        <source>Locked by %1 - Expires in %2 minutes</source>
-        <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
-        <source>Folder: %2</source>
-        <translation>Pasta: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="130"/>
-        <source>%1 Sharing</source>
-        <translation>Compartilhamento %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
-        <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation>O arquivo não pode ser compartilhado porque não tem permissão de compartilhamento.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="417"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Digite uma senha para seu link de compartilhamento:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="418"/>
-        <source>Password for share required</source>
-        <translation>É necessária uma senha de compartilhamento</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareLinkWidget</name>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
-        <source>Share link</source>
-        <translation>Compartilhar link</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
-        <source>Note</source>
-        <translation>Nota</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
-        <source>Set password</source>
-        <translation>Definir senha</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
-        <source>Expires</source>
-        <translation>Expira</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Allow editing</source>
-        <translation>Permitir edição</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>View only</source>
-        <translation>Somente visualização</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
-        <source>Allow upload and editing</source>
-        <translation>Permitir envio e edição</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>File drop (upload only)</source>
-        <translation>Depósito de arquivos (somente envios)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
-        <source>Link name</source>
-        <translation>Nome do link</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
-        <source>Note to recipient</source>
-        <translation>Observação ao destinatário</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
-        <source>Password protect</source>
-        <translation>Proteger com senha</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
-        <source>Set expiration date</source>
-        <translation>Definir data de vencimento</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
-        <source>Delete link</source>
-        <translation>Excluir link</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
-        <source>Add another link</source>
-        <translation>Adicionar outro link</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
-        <source>Confirm Link Share Deletion</source>
-        <translation>Confirmar o Link de Eliminação de Compartilhamento</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
-        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Quer mesmo excluir o link de compartilhamento público &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Nota: Esta ação não pode ser desfeita.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
-        <source>Delete</source>
-        <translation>Excluir</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
-        <source>Public link</source>
-        <translation>Link público</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
-        <source>Share with users or groups …</source>
-        <translation>Compartilhar com usuários ou grupos...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
-        <source>Search globally</source>
-        <translation>Pesquisar globalmente</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
-        <source>Copy link</source>
-        <translation>Copiar link</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
-        <source>No results for &quot;%1&quot;</source>
-        <translation>Nenhum resultado para &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
-        <source>Password for share required</source>
-        <translation>É necessária uma senha de compartilhamento</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
-        <source>Please enter a password for your email share:</source>
-        <translation>Digite uma senha para seu compartilhamento por e-mail:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
-        <source>I shared something with you</source>
-        <translation>Eu compartilhei algo com você</translation>
     </message>
 </context>
 </TS>
