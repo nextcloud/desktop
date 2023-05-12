@@ -106,6 +106,10 @@ static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
 static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
+
+#ifdef Q_OS_MACOS
+static constexpr auto macFileProviderModuleEnabledC = "macFileProviderModuleEnabled";
+#endif
 }
 
 namespace OCC {
@@ -1170,5 +1174,21 @@ void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyCo
 
     _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
 }
+
+#ifdef Q_OS_MACOS
+
+bool ConfigFile::macFileProviderModuleEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(macFileProviderModuleEnabledC, false).toBool();
+}
+
+void ConfigFile::setMacFileProviderModuleEnabled(const bool moduleEnabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(macFileProviderModuleEnabledC), moduleEnabled);
+}
+
+#endif
 
 }
