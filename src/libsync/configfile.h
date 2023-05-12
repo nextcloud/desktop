@@ -223,10 +223,8 @@ public:
     [[nodiscard]] static QString discoveredLegacyConfigPath();
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
 
-#ifdef Q_OS_MACOS
     [[nodiscard]] bool macFileProviderModuleEnabled() const;
     void setMacFileProviderModuleEnabled(const bool moduleEnabled);
-#endif
 
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
