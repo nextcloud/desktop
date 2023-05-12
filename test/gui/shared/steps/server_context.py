@@ -2,6 +2,7 @@ import urllib.request
 import json
 from os import path
 from helpers.ConfigHelper import get_config
+from helpers.api.Provisioning import setup_app
 
 
 def executeStepThroughMiddleware(context, step):
@@ -47,3 +48,8 @@ def step(context, stepPart1, stepPart2):
 @Then(r"^(.*) on the server$", regexp=True)
 def step(context, stepPart1):
     executeStepThroughMiddleware(context, "Then " + stepPart1)
+
+
+@Given('app "|any|" has been "|any|" in the server')
+def step(context, app_name, action):
+    setup_app(app_name, action)

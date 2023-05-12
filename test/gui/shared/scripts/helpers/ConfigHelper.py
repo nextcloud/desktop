@@ -29,7 +29,7 @@ CONFIG = {
     'middlewareUrl': 'http://localhost:3000/',
     'clientLogFile': '-',
     'clientRootSyncPath': '/tmp/client-bdd/',
-    'tempFolderPath': gettempdir(),
+    'tempFolderPath': gettempdir() + '/client-bdd/temp/',
     'clientConfigDir': '/tmp/owncloud-client/',
     'guiTestReportDir': os.path.abspath('../reports/'),
     'ocis': False,
