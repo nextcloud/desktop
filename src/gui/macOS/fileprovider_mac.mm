@@ -16,6 +16,8 @@
 
 #include <QLoggingCategory>
 
+#include "configfile.h"
+
 #include "fileprovider.h"
 
 namespace OCC {
@@ -32,11 +34,16 @@ FileProvider::FileProvider(QObject * const parent)
     Q_ASSERT(!_instance);
 
     if (!fileProviderAvailable()) {
-        qCDebug(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
+        qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
+        deleteLater();
+        return;
+    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
+        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
+        deleteLater();
         return;
     }
 
-    qCDebug(lcMacFileProvider) << "Initialising file provider domain manager.";
+    qCInfo(lcMacFileProvider) << "Initialising file provider domain manager.";
     _domainManager = std::make_unique<FileProviderDomainManager>(new FileProviderDomainManager(this));
 
     if (_domainManager) {
@@ -54,6 +61,10 @@ FileProvider::FileProvider(QObject * const parent)
 FileProvider *FileProvider::instance()
 {
     if (!fileProviderAvailable()) {
+        qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
+        return nullptr;
+    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
+        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
         return nullptr;
     }
 
