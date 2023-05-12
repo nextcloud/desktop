@@ -79,16 +79,14 @@ bool AppProvider::open(const AccountPtr &account, const QString &localPath, cons
     if (a.isValid()) {
         SimpleNetworkJob::UrlQuery query { { QStringLiteral("file_id"), QString::fromUtf8(fileId) } };
         auto *job = new JsonJob(account, account->url(), account->capabilities().appProviders().openWebUrl, "POST", query);
-        QObject::connect(job, &JsonJob::finishedSignal, [job, localPath] {
+        QObject::connect(job, &JsonJob::finishedSignal, [account, job, localPath] {
             if (job->httpStatusCode() == 200) {
                 const auto url = QUrl(job->data().value(QStringLiteral("uri")).toString());
                 const auto result = QDesktopServices::openUrl(url);
                 qCDebug(lcAppProvider) << "start browser" << url << result;
             } else {
-                // TODO: we no longer inherit QApplication
-                QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
-                    Q_ARG(QString, QCoreApplication::translate("AppProvider", "Error")),
-                    Q_ARG(QString, QCoreApplication::translate("AppProvider", "Failed to open %1 in web. Error: %2.").arg(localPath, job->reply()->errorString())));
+                Q_EMIT account->appProviderErrorOccured(
+                    QCoreApplication::translate("AppProvider", "Failed to open %1 in web. Error: %2.").arg(localPath, job->reply()->errorString()));
             }
         });
         job->start();

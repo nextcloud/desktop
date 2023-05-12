@@ -117,6 +117,13 @@ AccountState::AccountState(AccountPtr account)
     if (FolderMan::instance()) {
         FolderMan::instance()->socketApi()->registerAccount(account);
     }
+
+    connect(account.data(), &Account::appProviderErrorOccured, this, [](const QString &error) {
+        QMessageBox *msgBox = new QMessageBox(QMessageBox::Information, Theme::instance()->appNameGUI(), error, {}, ocApp()->gui()->settingsDialog());
+        msgBox->setAttribute(Qt::WA_DeleteOnClose);
+        msgBox->open();
+        ocApp()->gui()->raiseDialog(msgBox);
+    });
 }
 
 AccountState::~AccountState()

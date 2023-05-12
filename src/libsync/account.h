@@ -238,6 +238,9 @@ signals:
 
     void requestUrlUpdate(const QUrl &newUrl);
 
+    // the signal exists on the Account object as the Approvider itself can change during runtime
+    void appProviderErrorOccured(const QString &error);
+
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
