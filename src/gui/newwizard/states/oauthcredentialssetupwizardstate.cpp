@@ -63,6 +63,10 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
                 Q_EMIT evaluationFailed(tr("Server reports that OAuth2 is not supported."));
                 break;
             }
+            case OAuth::Result::ErrorInsecureUrl: {
+                Q_EMIT evaluationFailed(tr("Oauth2 authentication requires a secured connection."));
+                break;
+            }
             }
         };
 

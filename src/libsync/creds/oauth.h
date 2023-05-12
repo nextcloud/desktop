@@ -53,9 +53,7 @@ class OWNCLOUDSYNC_EXPORT OAuth : public QObject
 {
     Q_OBJECT
 public:
-    enum Result { NotSupported,
-        LoggedIn,
-        Error };
+    enum Result { NotSupported, LoggedIn, Error, ErrorInsecureUrl };
     Q_ENUM(Result);
 
     OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent);

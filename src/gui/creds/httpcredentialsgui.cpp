@@ -85,6 +85,10 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
     case OAuth::NotSupported:
         showDialog();
         return;
+    case OAuth::ErrorInsecureUrl:
+        // should not happen after the initial setup
+        Q_ASSERT(false);
+        [[fallthrough]];
     case OAuth::Error:
         Q_EMIT oAuthErrorOccurred();
         return;
