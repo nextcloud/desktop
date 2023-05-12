@@ -1124,18 +1124,6 @@ void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
     }
 }
 
-void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)
-{
-    QMessageBox *msgBox = new QMessageBox(settingsDialog());
-    msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setText(message);
-    msgBox->setWindowTitle(title);
-    msgBox->setIcon(QMessageBox::Information);
-    msgBox->open();
-    raiseDialog(msgBox);
-}
-
 void ownCloudGui::slotShowSettings()
 {
     raiseDialog(_settingsDialog);

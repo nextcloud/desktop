@@ -65,7 +65,6 @@ public:
      * For normal widgets we call showNormal.
      */
     static void raiseDialog(QWidget *raiseWidget);
-    void setupOverlayIcons();
 
     /// Whether the tray menu is visible
     bool contextMenuVisible() const;
@@ -91,7 +90,6 @@ public slots:
     void slotFolderOpenAction(Folder *f);
     void slotRebuildRecentMenus();
     void slotUpdateProgress(Folder *folder, const ProgressInfo &progress);
-    void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();

@@ -1297,15 +1297,21 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, QStringV
 void Folder::slotWatcherUnreliable(const QString &message)
 {
     qCWarning(lcFolder) << "Folder watcher for" << path() << "became unreliable:" << message;
-    auto fullMessage =
+
+    QMessageBox *msgBox = new QMessageBox(QMessageBox::Information, Theme::instance()->appNameGUI(),
         tr("Changes in synchronized folders could not be tracked reliably.\n"
            "\n"
            "This means that the synchronization client might not upload local changes "
            "immediately and will instead only scan for local changes and upload them "
            "occasionally (every two hours by default).\n"
            "\n"
-           "%1").arg(message);
-    ocApp()->gui()->slotShowGuiMessage(Theme::instance()->appNameGUI(), fullMessage);
+           "%1")
+            .arg(message),
+        {}, ocApp()->gui()->settingsDialog());
+
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->open();
+    ocApp()->gui()->raiseDialog(msgBox);
 }
 
 void Folder::scheduleThisFolderSoon()
