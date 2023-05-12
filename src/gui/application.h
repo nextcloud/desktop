@@ -62,7 +62,6 @@ public slots:
     void slotCrash();
     void slotCrashEnforce();
     void slotCrashFatal();
-    void slotShowGuiMessage(const QString &title, const QString &message);
     /**
      * Will download a virtual file, and open the result.
      * The argument is the filename of the virtual file (including the extension)

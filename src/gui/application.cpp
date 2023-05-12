@@ -351,12 +351,6 @@ void Application::slotCrashFatal()
     qFatal("la Qt fatale");
 }
 
-void Application::slotShowGuiMessage(const QString &title, const QString &message)
-{
-    gui()->slotShowGuiMessage(title, message);
-}
-
-
 AccountStatePtr Application::addNewAccount(AccountPtr newAccount)
 {
     auto *accountMan = AccountManager::instance();
