@@ -26,8 +26,6 @@
 #include "common/asserts.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/version.h"
-#include "config.h"
-#include "configfile.h"
 #include "filesystem.h"
 #include "folder.h"
 #include "folderman.h"

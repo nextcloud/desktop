@@ -17,9 +17,6 @@
 
 #include "translations.h"
 
-#include "config.h"
-#include "theme.h"
-
 #include <QApplication>
 #include <QLoggingCategory>
 #include <QDir>

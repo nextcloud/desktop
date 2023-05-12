@@ -19,7 +19,6 @@
 #include "asserts.h"
 #include "common/chronoelapsedtimer.h"
 #include "common/utility.h"
-#include "config.h"
 #include "filesystembase.h"
 
 #include <QCoreApplication>

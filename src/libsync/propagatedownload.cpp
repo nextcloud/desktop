@@ -14,7 +14,6 @@
 
 #include "propagatedownload.h"
 #include "account.h"
-#include "config.h"
 #include "filesystem.h"
 #include "networkjobs.h"
 #include "owncloudpropagator_p.h"

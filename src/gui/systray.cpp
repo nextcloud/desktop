@@ -14,7 +14,6 @@
 
 #include "systray.h"
 #include "theme.h"
-#include "config.h"
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>

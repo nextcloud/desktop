@@ -7,8 +7,10 @@
 
 #include "testutils/syncenginetestutils.h"
 #include "testutils/testutils.h"
+
 #include <QtTest>
 #include <syncengine.h>
+#include <theme.h>
 
 using namespace OCC;
 
@@ -994,7 +996,7 @@ private slots:
         {
             if (vfsMode == Vfs::WithSuffix)
             {
-                return QStringLiteral("%1" APPLICATION_DOTVIRTUALFILE_SUFFIX).arg(s);
+                return QStringLiteral("%1%2").arg(s, Theme::instance()->appDotVirtualFileSuffix());
             }
             return s;
         };

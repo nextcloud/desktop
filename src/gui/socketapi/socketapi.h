@@ -20,8 +20,6 @@
 #include "sharedialog.h" // for the ShareDialogStartPage
 #include "common/syncjournalfilerecord.h"
 
-#include "config.h"
-
 #if defined(Q_OS_MAC)
 #include "socketapisocket_mac.h"
 #else

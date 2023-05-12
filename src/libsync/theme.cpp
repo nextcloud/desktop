@@ -138,6 +138,16 @@ QString Theme::appName() const
     return QStringLiteral(APPLICATION_SHORTNAME);
 }
 
+QString Theme::appDotVirtualFileSuffix() const
+{
+    return QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+}
+
+QString Theme::orgDomainName() const
+{
+    return QStringLiteral(APPLICATION_REV_DOMAIN);
+}
+
 QString Theme::configFileName() const
 {
     return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");

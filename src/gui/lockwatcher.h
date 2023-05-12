@@ -14,7 +14,6 @@
 
 #pragma once
 
-#include "config.h"
 #include "filesystem.h"
 
 #include <QList>

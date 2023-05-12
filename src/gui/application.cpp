@@ -40,8 +40,6 @@
 #include "updater/ocupdater.h"
 #endif
 
-#include "config.h"
-
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
@@ -486,7 +484,7 @@ void Application::setupTranslations()
 
 void Application::openVirtualFile(const QString &filename)
 {
-    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    QString virtualFileExt = Theme::instance()->appDotVirtualFileSuffix();
     if (!filename.endsWith(virtualFileExt)) {
         qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
         return;

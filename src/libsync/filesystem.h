@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include "config.h"
-
 #include <QString>
 #include <ctime>
 #include <functional>

@@ -12,8 +12,6 @@
  * for more details.
  */
 
-#include "config.h"
-
 #include <cerrno>
 #include <sys/inotify.h>
 #include <unistd.h>

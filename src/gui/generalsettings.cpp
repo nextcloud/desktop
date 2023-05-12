@@ -34,7 +34,6 @@
 
 #include "ignorelisteditor.h"
 
-#include "config.h"
 #include "translations.h"
 
 #include <QDir>

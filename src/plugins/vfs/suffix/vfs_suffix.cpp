@@ -19,6 +19,7 @@
 #include "common/syncjournaldb.h"
 #include "filesystem.h"
 #include "syncfileitem.h"
+#include "theme.h"
 
 namespace OCC {
 
@@ -38,7 +39,7 @@ Vfs::Mode VfsSuffix::mode() const
 
 QString VfsSuffix::fileSuffix() const
 {
-    return QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    return Theme::instance()->appDotVirtualFileSuffix();
 }
 
 void VfsSuffix::startImpl(const VfsSetupParams &params)
@@ -48,7 +49,7 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
     // files that were synced before vfs was enabled.
     QByteArrayList toWipe;
     params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
-        if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
+        if (!rec.isVirtualFile() && rec._path.endsWith(Theme::instance()->appDotVirtualFileSuffix().toUtf8()))
             toWipe.append(rec._path);
     });
     for (const auto &path : toWipe) {

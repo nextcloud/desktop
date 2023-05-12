@@ -11,9 +11,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "config.h"
 
-#include "folder.h"
 #include "folderwatcher.h"
 #include "folderwatcher_mac.h"
 

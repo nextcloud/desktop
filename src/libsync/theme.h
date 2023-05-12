@@ -84,6 +84,10 @@ public:
      */
     virtual QString appName() const;
 
+    virtual QString appDotVirtualFileSuffix() const;
+
+    virtual QString orgDomainName() const;
+
     /**
      * @brief configFileName
      * @return the name of the config file.
