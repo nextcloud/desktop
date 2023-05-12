@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#import "LineProcessor.h"
+#import <NCDesktopClientSocketKit/LineProcessor.h>
 
 #ifndef LocalSocketClient_h
 #define LocalSocketClient_h
@@ -37,26 +37,20 @@
 
 @interface LocalSocketClient : NSObject
 
-@property NSString* socketPath;
-@property LineProcessor* lineProcessor;
-@property int sock;
-@property dispatch_queue_t localSocketQueue;
-@property dispatch_source_t readSource;
-@property dispatch_source_t writeSource;
-@property NSMutableData* inBuffer;
-@property NSMutableData* outBuffer;
+- (instancetype)initWithSocketPath:(NSString*)socketPath
+                     lineProcessor:(id<LineProcessor>)lineProcessor;
 
-- (instancetype)init:(NSString*)socketPath lineProcessor:(LineProcessor*)lineProcessor;
-- (BOOL)isConnected;
+@property (readonly) BOOL isConnected;
+
 - (void)start;
 - (void)restart;
 - (void)closeConnection;
-- (NSString*)strErr;
-- (void)askOnSocket:(NSString*)path query:(NSString*)verb;
-- (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDirectory;
-- (void)readFromSocket;
-- (void)writeToSocket;
-- (void)processInBuffer;
+
+- (void)sendMessage:(NSString*)message;
+- (void)askOnSocket:(NSString*)path
+              query:(NSString*)verb;
+- (void)askForIcon:(NSString*)path
+       isDirectory:(BOOL)isDirectory;
 
 @end
 #endif /* LocalSocketClient_h */
