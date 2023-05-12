@@ -28,10 +28,11 @@ namespace OCC {
  * @brief The Platform is the baseclass for all platform classes, which in turn implement platform
  *        specific functionality for the GUI.
  */
-class OWNCLOUDSYNC_EXPORT Platform
+class OWNCLOUDSYNC_EXPORT Platform : public QObject
 {
+    Q_OBJECT
 public:
-    virtual ~Platform() = 0;
+    using QObject::QObject;
 
     static std::unique_ptr<Platform> create();
 
@@ -40,6 +41,9 @@ public:
     virtual void setApplication(QCoreApplication *application);
 
     virtual void startServices();
+
+Q_SIGNALS:
+    void requestAttention();
 };
 
 } // OCC namespace

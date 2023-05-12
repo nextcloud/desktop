@@ -34,6 +34,8 @@ Q_LOGGING_CATEGORY(lcPlatform, "platform.macos")
 
 @interface OwnAppDelegate : NSObject <NSApplicationDelegate>
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag;
+
+@property (readwrite) OCC::MacPlatform *platform;
 @end
 
 @implementation OwnAppDelegate {
@@ -41,12 +43,7 @@ Q_LOGGING_CATEGORY(lcPlatform, "platform.macos")
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
-    if (auto *app = QApplication::instance()) {
-        // TODO: we no longer inherit QApplication
-        QMetaObject::invokeMethod(app, "showSettingsWindow", Qt::QueuedConnection);
-    } else {
-        qCDebug(OCC::lcPlatform) << "Failed to call showSettingsWindow slot";
-    }
+    Q_EMIT _platform->requestAttention();
     return YES;
 }
 
@@ -170,6 +167,7 @@ MacPlatform::MacPlatform()
 
     NSApplicationLoad();
     d->appDelegate = [[OwnAppDelegate alloc] init];
+    d->appDelegate.platform = this;
     [[NSApplication sharedApplication] setDelegate:d->appDelegate];
 
     signal(SIGPIPE, SIG_IGN);

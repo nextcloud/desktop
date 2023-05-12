@@ -23,10 +23,6 @@
 
 namespace OCC {
 
-Platform::~Platform()
-{
-}
-
 void Platform::migrate()
 {
 }

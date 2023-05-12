@@ -512,11 +512,6 @@ void Application::setupTranslations()
     }
 }
 
-void Application::showSettingsDialog()
-{
-    _gui->slotShowSettings();
-}
-
 void Application::openVirtualFile(const QString &filename)
 {
     QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);

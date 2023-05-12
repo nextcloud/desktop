@@ -52,8 +52,6 @@ public:
 
     bool debugMode();
 
-    Q_INVOKABLE void showSettingsDialog();
-
     ownCloudGui *gui() const;
 
     QString displayLanguage() const;

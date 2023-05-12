@@ -260,6 +260,8 @@ int main(int argc, char **argv)
         platform->setApplication(&app);
 
         auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
+        QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
+
         QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {
             const QString msg = QString::fromUtf8(message);
             qCInfo(lcMain) << Q_FUNC_INFO << msg;
@@ -267,7 +269,7 @@ int main(int argc, char **argv)
                 const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
                 CommandLineOptions options = parseOptions(optionsStrings);
                 if (options.showSettings) {
-                    ocApp->showSettingsDialog();
+                    ocApp->gui()->slotShowSettings();
                 }
                 if (options.quitInstance) {
                     qApp->quit();
@@ -279,7 +281,7 @@ int main(int argc, char **argv)
         });
 
         if (options.showSettings) {
-            ocApp->showSettingsDialog();
+            ocApp->gui()->slotShowSettings();
         }
         if (!options.fileToOpen.isEmpty()) {
             QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
