@@ -404,7 +404,7 @@ void UploadDevice::giveBandwidthQuota(qint64 bwq)
 {
     if (!atEnd()) {
         _bandwidthQuota = bwq;
-        QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection); // tell QNAM that we have quota
+        QMetaObject::invokeMethod(this, &UploadDevice::readyRead, Qt::QueuedConnection); // tell QNAM that we have quota
     }
 }
 
@@ -412,7 +412,7 @@ void UploadDevice::setBandwidthLimited(bool b)
 {
     if (_bandwidthLimited != b) {
         _bandwidthLimited = b;
-        QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &UploadDevice::readyRead, Qt::QueuedConnection);
     }
 }
 
@@ -420,7 +420,7 @@ void UploadDevice::setChoked(bool b)
 {
     _choked = b;
     if (!_choked) {
-        QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &UploadDevice::readyRead, Qt::QueuedConnection);
     }
 }
 

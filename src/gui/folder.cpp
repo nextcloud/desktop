@@ -1011,7 +1011,8 @@ void Folder::startSync()
 
     if (!reloadExcludes()) {
         slotSyncError(tr("Could not read system exclude file"));
-        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
+        QMetaObject::invokeMethod(
+            this, [this] { slotSyncFinished(false); }, Qt::QueuedConnection);
         return;
     }
 

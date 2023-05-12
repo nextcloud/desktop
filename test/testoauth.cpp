@@ -46,7 +46,7 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
         payload->open(QIODevice::ReadOnly);
-        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &FakePostReply::respond, Qt::QueuedConnection);
     }
 
     Q_INVOKABLE virtual void respond() {

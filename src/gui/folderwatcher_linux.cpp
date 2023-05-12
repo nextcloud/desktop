@@ -40,7 +40,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
         qCWarning(lcFolderWatcher) << "notify_init() failed: " << strerror(errno);
     }
 
-    QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, path));
+    QMetaObject::invokeMethod(this, [path, this] { slotAddFolderRecursive(path); });
 }
 
 // attention: result list passed by reference!

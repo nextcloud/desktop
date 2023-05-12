@@ -568,6 +568,7 @@ void OAuth::openBrowser()
 
     if (!isUrlValid(authorisationLink())) {
         qCWarning(lcOauth) << "URL validation failed";
+        // TODO: we no longer inherit QApplication
         QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
             Q_ARG(QString, tr("Oauth2 Error")),
             Q_ARG(QString, tr("Oauth2 authentication requires a secured connection.")));

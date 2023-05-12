@@ -352,7 +352,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     Q_ASSERT(!fileName.isNull()); // for root, it should be empty
     const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
     if (!fileInfo) {
-        QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &FakePropfindReply::respond404, Qt::QueuedConnection);
         return;
     }
     const QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
@@ -407,7 +407,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     xml.writeEndElement(); // multistatus
     xml.writeEndDocument();
 
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakePropfindReply::respond, Qt::QueuedConnection);
 }
 
 void FakePropfindReply::respond()
@@ -451,7 +451,7 @@ FakePutReply::FakePutReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::
     setOperation(op);
     open(QIODevice::ReadOnly);
     fileInfo = perform(remoteRootFileInfo, request, putPayload);
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakePutReply::respond, Qt::QueuedConnection);
 }
 
 FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload)
@@ -506,7 +506,7 @@ FakeMkcolReply::FakeMkcolReply(FileInfo &remoteRootFileInfo, QNetworkAccessManag
         abort();
         return;
     }
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakeMkcolReply::respond, Qt::QueuedConnection);
 }
 
 void FakeMkcolReply::respond()
@@ -528,7 +528,7 @@ FakeDeleteReply::FakeDeleteReply(FileInfo &remoteRootFileInfo, QNetworkAccessMan
     QString fileName = getFilePathFromUrl(request.url());
     Q_ASSERT(!fileName.isEmpty());
     remoteRootFileInfo.remove(fileName);
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakeDeleteReply::respond, Qt::QueuedConnection);
 }
 
 void FakeDeleteReply::respond()
@@ -551,7 +551,7 @@ FakeMoveReply::FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager
     QString dest = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
     Q_ASSERT(!dest.isEmpty());
     remoteRootFileInfo.rename(fileName, dest);
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakeMoveReply::respond, Qt::QueuedConnection);
 }
 
 void FakeMoveReply::respond()

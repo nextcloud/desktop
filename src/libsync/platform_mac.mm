@@ -42,6 +42,7 @@ Q_LOGGING_CATEGORY(lcPlatform, "platform.macos")
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
     if (auto *app = QApplication::instance()) {
+        // TODO: we no longer inherit QApplication
         QMetaObject::invokeMethod(app, "showSettingsWindow", Qt::QueuedConnection);
     } else {
         qCDebug(OCC::lcPlatform) << "Failed to call showSettingsWindow slot";

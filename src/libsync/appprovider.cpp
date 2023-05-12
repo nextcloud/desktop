@@ -85,6 +85,7 @@ bool AppProvider::open(const AccountPtr &account, const QString &localPath, cons
                 const auto result = QDesktopServices::openUrl(url);
                 qCDebug(lcAppProvider) << "start browser" << url << result;
             } else {
+                // TODO: we no longer inherit QApplication
                 QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
                     Q_ARG(QString, QCoreApplication::translate("AppProvider", "Error")),
                     Q_ARG(QString, QCoreApplication::translate("AppProvider", "Failed to open %1 in web. Error: %2.").arg(localPath, job->reply()->errorString())));
