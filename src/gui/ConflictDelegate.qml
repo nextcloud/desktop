@@ -32,6 +32,7 @@ Item {
     required property bool conflictSelected
     required property url existingPreviewUrl
     required property url conflictPreviewUrl
+    required property var model
 
     EnforcedPlainTextLabel {
         id: existingFileNameLabel
@@ -66,6 +67,10 @@ Item {
                 spacing: 0
 
                 checked: root.existingSelected
+
+                onToggled: function() {
+                    model.existingSelected = checked
+                }
             }
 
             Image {
@@ -139,6 +144,10 @@ Item {
                 spacing: 0
 
                 checked: root.conflictSelected
+
+                onToggled: function() {
+                    model.conflictSelected = checked
+                }
             }
 
             Image {

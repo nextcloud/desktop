@@ -82,6 +82,50 @@ QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
     return result;
 }
 
+bool SyncConflictsModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    auto result = false;
+
+    Q_ASSERT(checkIndex(index, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid));
+
+    if (index.parent().isValid()) {
+        return result;
+    }
+
+    if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)) {
+        auto convertedRole = static_cast<SyncConflictRoles>(role);
+
+        switch(convertedRole) {
+        case SyncConflictRoles::ExistingFileName:
+            break;
+        case SyncConflictRoles::ExistingSize:
+            break;
+        case SyncConflictRoles::ConflictSize:
+            break;
+        case SyncConflictRoles::ExistingDate:
+            break;
+        case SyncConflictRoles::ConflictDate:
+            break;
+        case SyncConflictRoles::ExistingSelected:
+            setExistingSelected(value.toBool(), index, role);
+            result = true;
+            break;
+        case SyncConflictRoles::ConflictSelected:
+            setConflictingSelected(value.toBool(), index, role);
+            result = true;
+            break;
+        case SyncConflictRoles::ExistingPreviewUrl:
+            break;
+        case SyncConflictRoles::ConflictPreviewUrl:
+            break;
+        }
+
+        result = false;
+    }
+
+    return result;
+}
+
 QHash<int, QByteArray> SyncConflictsModel::roleNames() const
 {
     auto result = QAbstractListModel::roleNames();
@@ -99,9 +143,32 @@ QHash<int, QByteArray> SyncConflictsModel::roleNames() const
     return result;
 }
 
+Qt::ItemFlags SyncConflictsModel::flags(const QModelIndex &index) const
+{
+    auto result = Qt::ItemFlags{};
+
+    if (!index.parent().isValid()) {
+        result = QAbstractListModel::flags(index);
+        return result;
+    }
+
+    result = Qt::ItemIsSelectable | Qt::ItemIsEditable;
+    return result;
+}
+
 ActivityList SyncConflictsModel::conflictActivities() const
 {
     return mData;
+}
+
+bool SyncConflictsModel::allExistingsSelected() const
+{
+    return mAllExistingsSelected;
+}
+
+bool SyncConflictsModel::allConflictingSelected() const
+{
+    return mAllConflictingsSelected;
 }
 
 void SyncConflictsModel::setConflictActivities(ActivityList conflicts)
@@ -118,6 +185,40 @@ void SyncConflictsModel::setConflictActivities(ActivityList conflicts)
     updateConflictsData();
 
     endResetModel();
+}
+
+void SyncConflictsModel::selectAllExisting(bool selected)
+{
+    for (auto &singleConflict : mConflictData) {
+        singleConflict.mExistingSelected = selected;
+    }
+
+    Q_EMIT dataChanged(index(0), index(rowCount() - 1), {static_cast<int>(SyncConflictRoles::ExistingSelected)});
+
+    if (selected && !mAllExistingsSelected) {
+        mAllExistingsSelected = true;
+        Q_EMIT allExistingsSelectedChanged();
+    } else if (!selected && mAllExistingsSelected) {
+        mAllExistingsSelected = false;
+        Q_EMIT allExistingsSelectedChanged();
+    }
+}
+
+void SyncConflictsModel::selectAllConflicting(bool selected)
+{
+    for (auto &singleConflict : mConflictData) {
+        singleConflict.mConflictSelected = selected;
+    }
+
+    Q_EMIT dataChanged(index(0), index(rowCount() - 1), {static_cast<int>(SyncConflictRoles::ConflictSelected)});
+
+    if (selected && !mAllConflictingsSelected) {
+        mAllConflictingsSelected = true;
+        Q_EMIT allConflictingSelectedChanged();
+    } else if (!selected && mAllConflictingsSelected) {
+        mAllConflictingsSelected = false;
+        Q_EMIT allConflictingSelectedChanged();
+    }
 }
 
 void SyncConflictsModel::updateConflictsData()
@@ -162,6 +263,56 @@ void SyncConflictsModel::updateConflictsData()
         };
 
         mConflictData.push_back(std::move(newConflictData));
+    }
+}
+
+void SyncConflictsModel::setExistingSelected(bool value,
+                                             const QModelIndex &index,
+                                             int role)
+{
+    mConflictData[index.row()].mExistingSelected = value;
+    Q_EMIT dataChanged(index, index, {role});
+
+    if (!mConflictData[index.row()].mExistingSelected && mAllExistingsSelected) {
+        mAllExistingsSelected = false;
+        Q_EMIT allExistingsSelectedChanged();
+    } else if (mConflictData[index.row()].mExistingSelected && !mAllExistingsSelected) {
+        auto allSelected = true;
+        for (const auto &singleConflict : qAsConst(mConflictData)) {
+            if (!singleConflict.mExistingSelected) {
+                allSelected = false;
+                break;
+            }
+        }
+        if (allSelected) {
+            mAllExistingsSelected = true;
+            Q_EMIT allExistingsSelectedChanged();
+        }
+    }
+}
+
+void SyncConflictsModel::setConflictingSelected(bool value,
+                                                const QModelIndex &index,
+                                                int role)
+{
+    mConflictData[index.row()].mConflictSelected = value;
+    Q_EMIT dataChanged(index, index, {role});
+
+    if (!mConflictData[index.row()].mConflictSelected && mAllConflictingsSelected) {
+        mAllConflictingsSelected = false;
+        Q_EMIT allConflictingSelectedChanged();
+    } else if (mConflictData[index.row()].mConflictSelected && !mAllConflictingsSelected) {
+        auto allSelected = true;
+        for (const auto &singleConflict : qAsConst(mConflictData)) {
+            if (!singleConflict.mConflictSelected) {
+                allSelected = false;
+                break;
+            }
+        }
+        if (allSelected) {
+            mAllConflictingsSelected = true;
+            Q_EMIT allConflictingSelectedChanged();
+        }
     }
 }
 

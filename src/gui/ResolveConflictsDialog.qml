@@ -80,6 +80,11 @@ QtWindow.Window {
                 implicitWidth: 100
 
                 font.pixelSize: 15
+
+                checked: realModel.allExistingsSelected
+                onToggled: function() {
+                    realModel.selectAllExisting(checked)
+                }
             }
 
             CheckBox {
@@ -93,6 +98,11 @@ QtWindow.Window {
                 implicitWidth: 100
 
                 font.pixelSize: 15
+
+                checked: realModel.allConflictingSelected
+                onToggled: function() {
+                    realModel.selectAllConflicting(checked)
+                }
             }
         }
 

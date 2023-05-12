@@ -29,6 +29,10 @@ class SyncConflictsModel : public QAbstractListModel
 
     Q_PROPERTY(OCC::ActivityList conflictActivities READ conflictActivities WRITE setConflictActivities NOTIFY conflictActivitiesChanged)
 
+    Q_PROPERTY(bool allExistingsSelected READ allExistingsSelected NOTIFY allExistingsSelectedChanged)
+
+    Q_PROPERTY(bool allConflictingSelected READ allConflictingSelected NOTIFY allConflictingSelectedChanged)
+
     struct ConflictInfo {
         QString mExistingFileName;
         QString mExistingSize;
@@ -62,18 +66,42 @@ public:
 
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    [[nodiscard]] bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+
     [[nodiscard]] QHash<int,QByteArray> roleNames() const override;
 
+    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &index) const override;
+
     [[nodiscard]] OCC::ActivityList conflictActivities() const;
+
+    [[nodiscard]] bool allExistingsSelected() const;
+
+    [[nodiscard]] bool allConflictingSelected() const;
 
 public slots:
     void setConflictActivities(OCC::ActivityList conflicts);
 
+    void selectAllExisting(bool selected);
+
+    void selectAllConflicting(bool selected);
+
 signals:
     void conflictActivitiesChanged();
 
+    void allExistingsSelectedChanged();
+
+    void allConflictingSelectedChanged();
+
 private:
     void updateConflictsData();
+
+    void setExistingSelected(bool value,
+                             const QModelIndex &index,
+                             int role);
+
+    void setConflictingSelected(bool value,
+                                const QModelIndex &index,
+                                int role);
 
     OCC::ActivityList mData;
 
@@ -82,6 +110,10 @@ private:
     QMimeDatabase mMimeDb;
 
     QLocale mLocale;
+
+    bool mAllExistingsSelected = false;
+
+    bool mAllConflictingsSelected = false;
 };
 
 }
