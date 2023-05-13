@@ -856,13 +856,13 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <name>OCC::Application</name>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Ezarpen batzuk bezero honen %1 bertsioetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden eginbideak erabiltzen dituzte. &lt;br&gt;&lt;br&gt;Jarraitzeak esan nahi du &lt;/b&gt;%2 ezarpen hauek&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Oraingo konfigurazio-fitxategiaren babeskopia &lt;i&gt;%3&lt;/i&gt;-n egin da.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Ezarpen batzuk bezero honen %1 bertsioetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden eginbideak erabiltzen dituzte. &lt;br&gt;&lt;br&gt;Jarraitzeak esan nahi du &lt;b&gt;%2 ezarpen hauek&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Oraingo konfigurazio-fitxategiaren babeskopia &lt;i&gt;%3&lt;/i&gt;-n egin da.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="178"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Ezarpen batzuk bezero honen %1 bertsioetan konfiguratu ziren eta bertsio honetan erabilgarri ez dauden eginbideak erabiltzen dituzte. &lt;br&gt;&lt;br&gt;Jarraitzeak esan nahi du &lt;/b&gt;%2 ezarpen hauek&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Oraingo konfigurazio-fitxategiaren babeskopia &lt;i&gt;%3&lt;/i&gt;-n egin da.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>

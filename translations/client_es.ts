@@ -856,13 +856,13 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <name>OCC::Application</name>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Algunos ajustes fueron configurados en %1 versiones de este cliente y utilizan características que no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;Continuar implica &lt;b&gt;%2 estos ajustes&lt;/b&gt;.&lt;br&gt;&lt;br&gt;El archivo de configuración actual ya fue respaldado a &lt;i&gt;%3&lt;/i&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Algunos ajustes fueron configurados en %1 versiones de este cliente y utilizan características que no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;Continuar implica &lt;b&gt;%2 estos ajustes&lt;/b&gt;&lt;br&gt;&lt;br&gt;El archivo de configuración actual ya fue respaldado a &lt;i&gt;%3&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="178"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Algunos ajustes fueron configurados en %1 versiones de este cliente y utilizan características que no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;Continuar implica &lt;b&gt;%2 estos ajustes&lt;/b&gt;.&lt;br&gt;&lt;br&gt;El archivo de configuración actual ya fue respaldado a &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
@@ -5567,7 +5567,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Abrir carpeta de grupo &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>

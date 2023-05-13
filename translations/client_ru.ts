@@ -855,13 +855,13 @@ This action will abort any currently running synchronization.</source>
     <name>OCC::Application</name>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Некоторые параметры были настроены в %1 версиях этого клиента и используют функции, недоступные в этой версии.&lt;br&gt;&lt;br&gt;Продолжение будет означать &lt;b&gt;%2 этих параметров&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Текущий файл конфигурации уже был скопирован до &lt;i&gt;%3&lt;/i&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Некоторые параметры были настроены в %1 версиях этого клиента и используют функции, недоступные в этой версии.&lt;br&gt;&lt;br&gt;Продолжение будет означать &lt;b&gt;%2 этих параметров&lt;/b&gt;&lt;br&gt;&lt;br&gt;Текущий файл конфигурации уже был скопирован до &lt;i&gt;%3&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="178"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Некоторые параметры были настроены в %1 версиях этого клиента и используют функции, недоступные в этой версии.&lt;br&gt;&lt;br&gt;Продолжение будет означать &lt;b&gt;%2 этих параметров&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Текущий файл конфигурации уже был скопирован до &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
