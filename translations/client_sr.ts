@@ -856,12 +856,12 @@ This action will abort any currently running synchronization.</source>
     <name>OCC::Application</name>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Нека подешавања су конфигурисана у %1 верзијама овог клијента и користе могућности које нису доступне у овој верзији.&lt;br&gt;&lt;br&gt;Настављање значи &lt;b&gt;%2 ових подешавања&lt;/b&gt;&lt;br&gt;&lt;br&gt;Већ је направљена резервна копија текућег конфигурационог фајла &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <location filename="../src/gui/application.cpp" line="178"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Нека подешавања су конфигурисана у %1 верзијама овог клијента и користе могућности које нису доступне у овој верзији.&lt;br&gt;&lt;br&gt;Настављање значи &lt;b&gt;%2 ових подешавања&lt;/b&gt;&lt;br&gt;&lt;br&gt;Већ је направљена резервна копија текућег конфигурационог фајла &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
@@ -5566,7 +5566,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Отвори фолдер групе „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>

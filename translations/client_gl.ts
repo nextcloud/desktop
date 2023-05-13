@@ -856,13 +856,13 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <name>OCC::Application</name>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Algunhas opcións configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñibles nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Algunhas opcións configuráronse en %1 versións deste cliente e usan funcións que non están dispoñibles nesta versión.&lt;br&gt;&lt;br&gt; Continuar significará &lt;b&gt;%2 destas opcións&lt;/b&gt;&lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="178"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Algunhas opcións configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñibles nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>

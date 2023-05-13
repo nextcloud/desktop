@@ -856,13 +856,13 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <name>OCC::Application</name>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
-        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Vissa inställningar har konfigurerats i %1 versioner av den här klienten och använder funktioner som inte är tillgängliga i den här versionen.&lt;br&gt;&lt;br&gt;Att fortsätta kommer att betyda &lt;b&gt;%2 dessa inställningar&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuella konfigurationsfilen har redan säkerhetskopierats till &lt;i&gt;%3&lt;/i&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Vissa inställningar har konfigurerats i %1 versioner av den här klienten och använder funktioner som inte är tillgängliga i den här versionen.&lt;br&gt;&lt;br&gt;Att fortsätta kommer att betyda &lt;b&gt;%2 dessa inställningar&lt;/b&gt;&lt;br&gt;&lt;br&gt;Den aktuella konfigurationsfilen har redan säkerhetskopierats till &lt;i&gt;%3&lt;/i&gt;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="178"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation>Vissa inställningar har konfigurerats i %1 versioner av den här klienten och använder funktioner som inte är tillgängliga i den här versionen.&lt;br&gt;&lt;br&gt;Att fortsätta kommer att betyda &lt;b&gt;%2 dessa inställningar&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuella konfigurationsfilen har redan säkerhetskopierats till &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
@@ -5566,7 +5566,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Öppna gruppmappen &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>
