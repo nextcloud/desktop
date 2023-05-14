@@ -5535,47 +5535,47 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Yerel ya da grup klasörlerini aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörü aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı kuruldu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı kesildi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="110"/>
         <source>Group folder button</source>
-        <translation type="unfinished"/>
+        <translation>Grup klasörü düğmesi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; yerel klasörünü aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; grup klasörünü aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>Dosya gezgininde %1 aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="202"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı grup ve yerel klasörler menüsü</translation>
     </message>
 </context>
 <context>
