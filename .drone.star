@@ -154,8 +154,8 @@ def unit_test_pipeline(ctx):
             "arch": "amd64",
         },
         "steps": skipIfUnchanged(ctx, "unit-tests") +
-                 build_client() +
-                 unit_tests(),
+                 build_client(OC_CI_CLIENT_FEDORA) +
+                 unit_tests(OC_CI_CLIENT_FEDORA),
         "trigger": {
             "ref": trigger_ref,
         },
@@ -250,10 +250,10 @@ def build_client(image = OC_CI_CLIENT, ctest = True):
         },
     ]
 
-def unit_tests():
+def unit_tests(image = OC_CI_CLIENT):
     return [{
         "name": "ctest",
-        "image": OC_CI_CLIENT,
+        "image": image,
         "environment": {
             "LC_ALL": "C.UTF-8",
         },
