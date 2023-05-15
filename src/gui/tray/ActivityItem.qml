@@ -18,7 +18,6 @@ ItemDelegate {
     readonly property bool isTalkReplyPossible: model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
 
-    enabled: (model.path !== "" || model.link !== "" || model.links.length > 0 ||  model.isCurrentUserFileActivity === true)
     padding: Style.standardSpacing
 
     Accessible.role: Accessible.ListItem
