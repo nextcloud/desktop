@@ -220,18 +220,21 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
     _relativeUploadDeviceList.pop_front();
     _relativeUploadDeviceList.push_back(_relativeLimitCurrentMeasuredDevice);
 
-    _relativeUploadLimitProgressAtMeasuringRestart = (_relativeLimitCurrentMeasuredDevice->_readWithProgress
-                                                         + _relativeLimitCurrentMeasuredDevice->_read)
-        / 2;
+    const auto currentReadWithProgress = _relativeLimitCurrentMeasuredDevice->_readWithProgress;
+    const auto currentRead =  _relativeLimitCurrentMeasuredDevice->_read;
+    _relativeUploadLimitProgressAtMeasuringRestart = (currentReadWithProgress + currentRead) / 2;
+
     _relativeLimitCurrentMeasuredDevice->setBandwidthLimited(false);
     _relativeLimitCurrentMeasuredDevice->setChoked(false);
 
     // choke all other UploadDevices
-    Q_FOREACH (UploadDevice *ud, _relativeUploadDeviceList) {
-        if (ud != _relativeLimitCurrentMeasuredDevice) {
-            ud->setBandwidthLimited(true);
-            ud->setChoked(true);
+    for (const auto uploadDevice : _relativeUploadDeviceList) {
+        if (uploadDevice == _relativeLimitCurrentMeasuredDevice) {
+            continue;
         }
+
+        uploadDevice->setBandwidthLimited(true);
+        uploadDevice->setChoked(true);
     }
 
     // now we're in measuring state
