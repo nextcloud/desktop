@@ -389,19 +389,24 @@ void BandwidthManager::switchingTimerExpired()
 void BandwidthManager::absoluteLimitTimerExpired()
 {
     if (usingAbsoluteUploadLimit() && !_absoluteUploadDeviceList.empty()) {
-        qint64 quotaPerDevice = _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
+        const auto quotaPerDevice = _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
+
         qCDebug(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.size() << _currentUploadLimit;
-        Q_FOREACH (UploadDevice *device, _absoluteUploadDeviceList) {
+
+        for (const auto device : _absoluteUploadDeviceList) {
             device->giveBandwidthQuota(quotaPerDevice);
             qCDebug(lcBandwidthManager) << "Gave " << quotaPerDevice / 1024.0 << " kB to" << device;
         }
     }
+
     if (usingAbsoluteDownloadLimit() && !_downloadJobList.empty()) {
-        qint64 quotaPerJob = _currentDownloadLimit / qMax((std::list<GETFileJob *>::size_type)1, _downloadJobList.size());
+        const auto quotaPerJob = _currentDownloadLimit / qMax((std::list<GETFileJob *>::size_type)1, _downloadJobList.size());
+
         qCDebug(lcBandwidthManager) << quotaPerJob << _downloadJobList.size() << _currentDownloadLimit;
-        Q_FOREACH (GETFileJob *j, _downloadJobList) {
-            j->giveBandwidthQuota(quotaPerJob);
-            qCDebug(lcBandwidthManager) << "Gave " << quotaPerJob / 1024.0 << " kB to" << j;
+
+        for (const auto job : _downloadJobList) {
+            job->giveBandwidthQuota(quotaPerJob);
+            qCDebug(lcBandwidthManager) << "Gave " << quotaPerJob / 1024.0 << " kB to" << job;
         }
     }
 }
