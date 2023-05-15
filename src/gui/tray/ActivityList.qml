@@ -42,6 +42,8 @@ ScrollView {
 
             color: Style.lightHover
             visible: activityList.activeFocus
+
+            radius: Style.mediumRoundedButtonRadius
         }
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
