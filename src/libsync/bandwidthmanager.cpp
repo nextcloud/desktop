@@ -332,37 +332,44 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
 
 void BandwidthManager::switchingTimerExpired()
 {
-    qint64 newUploadLimit = _propagator->_uploadLimit;
+    const auto newUploadLimit = _propagator->_uploadLimit;
     if (newUploadLimit != _currentUploadLimit) {
         qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
         _currentUploadLimit = newUploadLimit;
-        Q_FOREACH (UploadDevice *ud, _relativeUploadDeviceList) {
-            if (newUploadLimit == 0) {
-                ud->setBandwidthLimited(false);
-                ud->setChoked(false);
-            } else if (newUploadLimit > 0) {
-                ud->setBandwidthLimited(true);
-                ud->setChoked(false);
-            } else if (newUploadLimit < 0) {
-                ud->setBandwidthLimited(true);
-                ud->setChoked(true);
+
+        for (const auto uploadDevice : _relativeUploadDeviceList) {
+            Q_ASSERT(uploadDevice);
+
+            if (usingAbsoluteUploadLimit()) {
+                uploadDevice->setBandwidthLimited(true);
+                uploadDevice->setChoked(false);
+            } else if (usingRelativeUploadLimit()) {
+                uploadDevice->setBandwidthLimited(true);
+                uploadDevice->setChoked(true);
+            } else {
+                uploadDevice->setBandwidthLimited(false);
+                uploadDevice->setChoked(false);
             }
         }
     }
-    qint64 newDownloadLimit = _propagator->_downloadLimit;
+
+    const auto newDownloadLimit = _propagator->_downloadLimit;
     if (newDownloadLimit != _currentDownloadLimit) {
         qCInfo(lcBandwidthManager) << "Download Bandwidth limit changed" << _currentDownloadLimit << newDownloadLimit;
         _currentDownloadLimit = newDownloadLimit;
-        Q_FOREACH (GETFileJob *j, _downloadJobList) {
+
+        for (const auto getJob : _downloadJobList) {
+            Q_ASSERT(getJob);
+
             if (usingAbsoluteDownloadLimit()) {
-                j->setBandwidthLimited(true);
-                j->setChoked(false);
+                getJob->setBandwidthLimited(true);
+                getJob->setChoked(false);
             } else if (usingRelativeDownloadLimit()) {
-                j->setBandwidthLimited(true);
-                j->setChoked(true);
+                getJob->setBandwidthLimited(true);
+                getJob->setChoked(true);
             } else {
-                j->setBandwidthLimited(false);
-                j->setChoked(false);
+                getJob->setBandwidthLimited(false);
+                getJob->setChoked(false);
             }
         }
     }
