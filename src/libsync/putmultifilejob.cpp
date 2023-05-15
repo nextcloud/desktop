@@ -20,18 +20,42 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPutMultiFileJob, "nextcloud.sync.networkjob.put.multi", QtInfoMsg)
 
+PutMultiFileJob::PutMultiFileJob(AccountPtr account,
+                                 const QUrl &url,
+                                 std::vector<SingleUploadFileData> devices,
+                                 QObject *parent)
+    : AbstractNetworkJob(account, {}, parent)
+    , _devices(std::move(devices))
+    , _url(url)
+{
+    _body.setContentType(QHttpMultiPart::RelatedType);
+
+    for(const auto &singleDevice : _devices) {
+        singleDevice._device->setParent(this);
+        connect(this, &PutMultiFileJob::uploadProgress,
+                singleDevice._device.get(), &UploadDevice::slotJobUploadProgress);
+    }
+}
+
 PutMultiFileJob::~PutMultiFileJob() = default;
 
 void PutMultiFileJob::start()
 {
     QNetworkRequest req;
 
-    for(auto &oneDevice : _devices) {
+    for(const auto &oneDevice : _devices) {
+        // Our rate limits in UploadDevice::readData will cause an application freeze if used here.
+        // QHttpMultiPart's internal QHttpMultiPartIODevice::readData will loop over and over trying
+        // to read data from our UploadDevice while there is data left to be read; this will cause
+        // a deadlock as we will never have a chance to progress the data read
+        oneDevice._device->setChoked(false);
+        oneDevice._device->setBandwidthLimited(false);
+
         auto onePart = QHttpPart{};
 
         onePart.setBodyDevice(oneDevice._device.get());
 
-        for (QMap<QByteArray, QByteArray>::const_iterator it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
+        for (auto it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
             onePart.setRawHeader(it.key(), it.value());
         }
 
@@ -54,17 +78,38 @@ void PutMultiFileJob::start()
 
 bool PutMultiFileJob::finished()
 {
-    for(const auto &oneDevice : _devices) {
-        oneDevice._device->close();
-    }
-
     qCInfo(lcPutMultiFileJob) << "POST of" << reply()->request().url().toString() << path() << "FINISHED WITH STATUS"
-                     << replyStatusString()
-                     << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-                     << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+                              << replyStatusString()
+                              << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+                              << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+
+    for(const auto &oneDevice : _devices) {
+        Q_ASSERT(oneDevice._device);
+
+        if (!oneDevice._device->errorString().isEmpty()) {
+            qCWarning(lcPutMultiFileJob) << "oneDevice has error:" << oneDevice._device->errorString();
+        }
+
+        if (oneDevice._device->isOpen()) {
+            oneDevice._device->close();
+        } else {
+            qCWarning(lcPutMultiFileJob) << "Did not close device" << oneDevice._device.get()
+                                         << "as it was not open";
+        }
+    }
 
     emit finishedSignal();
     return true;
+}
+
+QString PutMultiFileJob::errorString() const
+{
+    return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
+}
+
+std::chrono::milliseconds PutMultiFileJob::msSinceStart() const
+{
+    return std::chrono::milliseconds(_requestTimer.elapsed());
 }
 
 }
