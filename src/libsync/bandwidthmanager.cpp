@@ -327,11 +327,13 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
     _relativeLimitCurrentMeasuredJob->setChoked(false);
 
     // choke all other download jobs
-    Q_FOREACH (GETFileJob *gfj, _downloadJobList) {
-        if (gfj != _relativeLimitCurrentMeasuredJob) {
-            gfj->setBandwidthLimited(true);
-            gfj->setChoked(true);
+    for (const auto getFileJob : _downloadJobList) {
+        if (getFileJob == _relativeLimitCurrentMeasuredJob) {
+            continue;
         }
+
+        getFileJob->setBandwidthLimited(true);
+        getFileJob->setChoked(true);
     }
 
     // now we're in measuring state
