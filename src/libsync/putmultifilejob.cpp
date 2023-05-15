@@ -44,6 +44,13 @@ void PutMultiFileJob::start()
     QNetworkRequest req;
 
     for(const auto &oneDevice : _devices) {
+        // Our rate limits in UploadDevice::readData will cause an application freeze if used here.
+        // QHttpMultiPart's internal QHttpMultiPartIODevice::readData will loop over and over trying
+        // to read data from our UploadDevice while there is data left to be read; this will cause
+        // a deadlock as we will never have a chance to progress the data read
+        oneDevice._device->setChoked(false);
+        oneDevice._device->setBandwidthLimited(false);
+
         auto onePart = QHttpPart{};
 
         onePart.setBodyDevice(oneDevice._device.get());
