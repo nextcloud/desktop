@@ -258,22 +258,22 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
 
     qCDebug(lcBandwidthManager) << _downloadJobList.size() << "Starting Delay";
 
-    qint64 relativeLimitProgressMeasured = _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
-    qint64 relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeDownloadLimitProgressAtMeasuringRestart;
+    const auto relativeLimitProgressMeasured = _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
+    const auto relativeLimitProgressDifference = relativeLimitProgressMeasured - _relativeDownloadLimitProgressAtMeasuringRestart;
+
     qCDebug(lcBandwidthManager) << _relativeDownloadLimitProgressAtMeasuringRestart
                                 << relativeLimitProgressMeasured << relativeLimitProgressDifference;
 
-    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
+    const auto speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
+
     qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
                                 << _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
 
-    qint64 downloadLimitPercent = -_currentDownloadLimit;
-    // don't use too extreme values
-    downloadLimitPercent = qMin(downloadLimitPercent, qint64(90));
-    downloadLimitPercent = qMax(qint64(10), downloadLimitPercent);
-    qint64 wholeTimeMsec = (100.0 / downloadLimitPercent) * relativeLimitMeasuringTimerIntervalMsec;
-    qint64 waitTimeMsec = wholeTimeMsec - relativeLimitMeasuringTimerIntervalMsec;
-    qint64 realWaitTimeMsec = waitTimeMsec + wholeTimeMsec;
+    const auto downloadLimitPercent = qMax( qMin(-_currentDownloadLimit, qint64(90)), qint64(10));
+    const auto wholeTimeMsec = (100.0 / downloadLimitPercent) * relativeLimitMeasuringTimerIntervalMsec;
+    const auto waitTimeMsec = wholeTimeMsec - relativeLimitMeasuringTimerIntervalMsec;
+    const auto realWaitTimeMsec = waitTimeMsec + wholeTimeMsec;
+
     qCDebug(lcBandwidthManager) << waitTimeMsec << " - " << realWaitTimeMsec << " msec for " << downloadLimitPercent << "%";
 
     // We want to wait twice as long since we want to give all
@@ -282,18 +282,21 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     _relativeDownloadDelayTimer.setInterval(realWaitTimeMsec);
     _relativeDownloadDelayTimer.start();
 
-    auto jobCount = _downloadJobList.size();
-    qint64 quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
+    const auto jobCount = _downloadJobList.size();
+    auto quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
+
     if (quota > 20 * 1024) {
         qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
         quota -= 20 * 1024;
     }
-    qint64 quotaPerJob = quota / jobCount + 1;
-    Q_FOREACH (GETFileJob *gfj, _downloadJobList) {
-        gfj->setBandwidthLimited(true);
-        gfj->setChoked(false);
-        gfj->giveBandwidthQuota(quotaPerJob);
-        qCDebug(lcBandwidthManager) << "Gave" << quotaPerJob / 1024.0 << "kB to" << gfj;
+
+    const auto quotaPerJob = quota / jobCount + 1;
+    for (const auto getFileJob : _downloadJobList) {
+        getFileJob->setBandwidthLimited(true);
+        getFileJob->setChoked(false);
+        getFileJob->giveBandwidthQuota(quotaPerJob);
+
+        qCDebug(lcBandwidthManager) << "Gave" << quotaPerJob / 1024.0 << "kB to" << getFileJob;
     }
     _relativeLimitCurrentMeasuredDevice = nullptr;
 }
