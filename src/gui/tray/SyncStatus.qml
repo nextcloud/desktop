@@ -151,8 +151,6 @@ RowLayout {
                  NC.UserModel.currentUser.hasLocalFolder &&
                  NC.UserModel.currentUser.isConnected
         enabled: visible
-        onClicked: {
-            NC.Systray.createResolveConflictsDialog(activityModel.allConflicts);
-        }
+        onClicked: NC.Systray.createResolveConflictsDialog(activityModel.allConflicts);
     }
 }
