@@ -156,7 +156,7 @@ QtWindow.Window {
             }
 
             onAccepted: function() {
-                realModel.applyResolution()
+                realModel.applySolution()
                 Systray.destroyDialog(conflictsDialog)
             }
 

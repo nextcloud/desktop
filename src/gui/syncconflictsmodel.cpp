@@ -33,7 +33,7 @@ int SyncConflictsModel::rowCount(const QModelIndex &parent) const
         return 0;
     }
 
-    return mData.size();
+    return _data.size();
 }
 
 QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
@@ -47,35 +47,35 @@ QVariant SyncConflictsModel::data(const QModelIndex &index, int role) const
     }
 
     if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)) {
-        auto convertedRole = static_cast<SyncConflictRoles>(role);
+        const auto convertedRole = static_cast<SyncConflictRoles>(role);
 
         switch (convertedRole) {
         case SyncConflictRoles::ExistingFileName:
-            result = mConflictData[index.row()].mExistingFileName;
+            result = _conflictData[index.row()].mExistingFileName;
             break;
         case SyncConflictRoles::ExistingSize:
-            result = mConflictData[index.row()].mExistingSize;
+            result = _conflictData[index.row()].mExistingSize;
             break;
         case SyncConflictRoles::ConflictSize:
-            result = mConflictData[index.row()].mConflictSize;
+            result = _conflictData[index.row()].mConflictSize;
             break;
         case SyncConflictRoles::ExistingDate:
-            result = mConflictData[index.row()].mExistingDate;
+            result = _conflictData[index.row()].mExistingDate;
             break;
         case SyncConflictRoles::ConflictDate:
-            result = mConflictData[index.row()].mConflictDate;
+            result = _conflictData[index.row()].mConflictDate;
             break;
         case SyncConflictRoles::ExistingSelected:
-            result = mConflictData[index.row()].mExistingSelected;
+            result = _conflictData[index.row()].mExistingSelected == ConflictInfo::ConflictSolution::SolutionSelected;
             break;
         case SyncConflictRoles::ConflictSelected:
-            result = mConflictData[index.row()].mConflictSelected;
+            result = _conflictData[index.row()].mConflictSelected == ConflictInfo::ConflictSolution::SolutionSelected;
             break;
         case SyncConflictRoles::ExistingPreviewUrl:
-            result = mConflictData[index.row()].mExistingPreviewUrl;
+            result = _conflictData[index.row()].mExistingPreviewUrl;
             break;
         case SyncConflictRoles::ConflictPreviewUrl:
-            result = mConflictData[index.row()].mConflictPreviewUrl;
+            result = _conflictData[index.row()].mConflictPreviewUrl;
             break;
         }
     }
@@ -94,7 +94,7 @@ bool SyncConflictsModel::setData(const QModelIndex &index, const QVariant &value
     }
 
     if (role >= static_cast<int>(SyncConflictRoles::ExistingFileName) && role <= static_cast<int>(SyncConflictRoles::ConflictPreviewUrl)) {
-        auto convertedRole = static_cast<SyncConflictRoles>(role);
+        const auto convertedRole = static_cast<SyncConflictRoles>(role);
 
         switch(convertedRole) {
         case SyncConflictRoles::ExistingFileName:
@@ -159,28 +159,28 @@ Qt::ItemFlags SyncConflictsModel::flags(const QModelIndex &index) const
 
 ActivityList SyncConflictsModel::conflictActivities() const
 {
-    return mData;
+    return _data;
 }
 
 bool SyncConflictsModel::allExistingsSelected() const
 {
-    return mAllExistingsSelected;
+    return _allExistingsSelected;
 }
 
 bool SyncConflictsModel::allConflictingSelected() const
 {
-    return mAllConflictingsSelected;
+    return _allConflictingsSelected;
 }
 
 void SyncConflictsModel::setConflictActivities(ActivityList conflicts)
 {
-    if (mData == conflicts) {
+    if (_data == conflicts) {
         return;
     }
 
     beginResetModel();
 
-    mData = conflicts;
+    _data = conflicts;
     emit conflictActivitiesChanged();
 
     updateConflictsData();
@@ -190,41 +190,41 @@ void SyncConflictsModel::setConflictActivities(ActivityList conflicts)
 
 void SyncConflictsModel::selectAllExisting(bool selected)
 {
-    for (auto &singleConflict : mConflictData) {
-        singleConflict.mExistingSelected = selected;
+    for (auto &singleConflict : _conflictData) {
+        singleConflict.mExistingSelected = selected ? ConflictInfo::ConflictSolution::SolutionSelected : ConflictInfo::ConflictSolution::SolutionDeselected;
     }
 
     Q_EMIT dataChanged(index(0), index(rowCount() - 1), {static_cast<int>(SyncConflictRoles::ExistingSelected)});
 
-    if (selected && !mAllExistingsSelected) {
-        mAllExistingsSelected = true;
+    if (selected && !_allExistingsSelected) {
+        _allExistingsSelected = true;
         Q_EMIT allExistingsSelectedChanged();
-    } else if (!selected && mAllExistingsSelected) {
-        mAllExistingsSelected = false;
+    } else if (!selected && _allExistingsSelected) {
+        _allExistingsSelected = false;
         Q_EMIT allExistingsSelectedChanged();
     }
 }
 
 void SyncConflictsModel::selectAllConflicting(bool selected)
 {
-    for (auto &singleConflict : mConflictData) {
-        singleConflict.mConflictSelected = selected;
+    for (auto &singleConflict : _conflictData) {
+        singleConflict.mConflictSelected = selected ? ConflictInfo::ConflictSolution::SolutionSelected : ConflictInfo::ConflictSolution::SolutionDeselected;
     }
 
     Q_EMIT dataChanged(index(0), index(rowCount() - 1), {static_cast<int>(SyncConflictRoles::ConflictSelected)});
 
-    if (selected && !mAllConflictingsSelected) {
-        mAllConflictingsSelected = true;
+    if (selected && !_allConflictingsSelected) {
+        _allConflictingsSelected = true;
         Q_EMIT allConflictingSelectedChanged();
-    } else if (!selected && mAllConflictingsSelected) {
-        mAllConflictingsSelected = false;
+    } else if (!selected && _allConflictingsSelected) {
+        _allConflictingsSelected = false;
         Q_EMIT allConflictingSelectedChanged();
     }
 }
 
-void SyncConflictsModel::applyResolution()
+void SyncConflictsModel::applySolution()
 {
-    for(const auto &syncConflict : qAsConst(mConflictData)) {
+    for(const auto &syncConflict : qAsConst(_conflictData)) {
         if (syncConflict.isValid()) {
             qCInfo(lcSyncConflictsModel) << syncConflict.mExistingFilePath << syncConflict.mConflictingFilePath << syncConflict.solution();
             ConflictSolver solver;
@@ -237,25 +237,19 @@ void SyncConflictsModel::applyResolution()
 
 void SyncConflictsModel::updateConflictsData()
 {
-    mConflictData.clear();
-    mConflictData.reserve(mData.size());
+    _conflictData.clear();
+    _conflictData.reserve(_data.size());
 
-    for (const auto &oneConflict : qAsConst(mData)) {
-        if (!FolderMan::instance()) {
-            qCWarning(lcSyncConflictsModel) << "no FolderMan instance";
-            mConflictData.push_back({});
-            continue;
-        }
+    for (const auto &oneConflict : qAsConst(_data)) {
         const auto folder = FolderMan::instance()->folder(oneConflict._folder);
         if (!folder) {
             qCWarning(lcSyncConflictsModel) << "no Folder instance for" << oneConflict._folder;
-            mConflictData.push_back({});
+            _conflictData.push_back({});
             continue;
         }
 
         const auto conflictedRelativePath = oneConflict._file;
-        const auto dbRecord = folder->journalDb();
-        const auto baseRelativePath = dbRecord ? dbRecord->conflictFileBaseName(conflictedRelativePath.toUtf8()) : QString{};
+        const auto baseRelativePath = folder->journalDb() ? folder->journalDb()->conflictFileBaseName(conflictedRelativePath.toUtf8()) : QString{};
 
         const auto dir = QDir(folder->path());
         const auto conflictedPath = dir.filePath(conflictedRelativePath);
@@ -266,19 +260,19 @@ void SyncConflictsModel::updateConflictsData()
 
         auto newConflictData = ConflictInfo{
             existingFileInfo.fileName(),
-            mLocale.formattedDataSize(existingFileInfo.size()),
-            mLocale.formattedDataSize(conflictFileInfo.size()),
+            _locale.formattedDataSize(existingFileInfo.size()),
+            _locale.formattedDataSize(conflictFileInfo.size()),
             existingFileInfo.lastModified().toString(),
             conflictFileInfo.lastModified().toString(),
             QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + existingFileInfo.filePath()},
             QUrl{QStringLiteral("image://tray-image-provider/:/fileicon") + conflictFileInfo.filePath()},
-            false,
-            false,
+            ConflictInfo::ConflictSolution::SolutionDeselected,
+            ConflictInfo::ConflictSolution::SolutionDeselected,
             existingFileInfo.filePath(),
             conflictFileInfo.filePath(),
         };
 
-        mConflictData.push_back(std::move(newConflictData));
+        _conflictData.push_back(std::move(newConflictData));
     }
 }
 
@@ -286,22 +280,19 @@ void SyncConflictsModel::setExistingSelected(bool value,
                                              const QModelIndex &index,
                                              int role)
 {
-    mConflictData[index.row()].mExistingSelected = value;
+    _conflictData[index.row()].mExistingSelected = value ? ConflictInfo::ConflictSolution::SolutionSelected : ConflictInfo::ConflictSolution::SolutionDeselected;
     Q_EMIT dataChanged(index, index, {role});
 
-    if (!mConflictData[index.row()].mExistingSelected && mAllExistingsSelected) {
-        mAllExistingsSelected = false;
+    if (_conflictData[index.row()].mExistingSelected == ConflictInfo::ConflictSolution::SolutionDeselected && _allExistingsSelected) {
+        _allExistingsSelected = false;
         Q_EMIT allExistingsSelectedChanged();
-    } else if (mConflictData[index.row()].mExistingSelected && !mAllExistingsSelected) {
-        auto allSelected = true;
-        for (const auto &singleConflict : qAsConst(mConflictData)) {
-            if (!singleConflict.mExistingSelected) {
-                allSelected = false;
-                break;
-            }
-        }
+    } else if (_conflictData[index.row()].mExistingSelected == ConflictInfo::ConflictSolution::SolutionSelected && !_allExistingsSelected) {
+        const auto deselectedConflictIt = std::find_if(_conflictData.constBegin(), _conflictData.constEnd(), [] (const auto singleConflict) {
+            return singleConflict.mExistingSelected == ConflictInfo::ConflictSolution::SolutionDeselected;
+        });
+        const auto allSelected = (deselectedConflictIt == _conflictData.constEnd());
         if (allSelected) {
-            mAllExistingsSelected = true;
+            _allExistingsSelected = true;
             Q_EMIT allExistingsSelectedChanged();
         }
     }
@@ -311,22 +302,19 @@ void SyncConflictsModel::setConflictingSelected(bool value,
                                                 const QModelIndex &index,
                                                 int role)
 {
-    mConflictData[index.row()].mConflictSelected = value;
+    _conflictData[index.row()].mConflictSelected = value ? ConflictInfo::ConflictSolution::SolutionSelected : ConflictInfo::ConflictSolution::SolutionDeselected;
     Q_EMIT dataChanged(index, index, {role});
 
-    if (!mConflictData[index.row()].mConflictSelected && mAllConflictingsSelected) {
-        mAllConflictingsSelected = false;
+    if (_conflictData[index.row()].mConflictSelected == ConflictInfo::ConflictSolution::SolutionDeselected && _allConflictingsSelected) {
+        _allConflictingsSelected = false;
         Q_EMIT allConflictingSelectedChanged();
-    } else if (mConflictData[index.row()].mConflictSelected && !mAllConflictingsSelected) {
-        auto allSelected = true;
-        for (const auto &singleConflict : qAsConst(mConflictData)) {
-            if (!singleConflict.mConflictSelected) {
-                allSelected = false;
-                break;
-            }
-        }
+    } else if (_conflictData[index.row()].mConflictSelected == ConflictInfo::ConflictSolution::SolutionSelected && !_allConflictingsSelected) {
+        const auto deselectedConflictIt = std::find_if(_conflictData.constBegin(), _conflictData.constEnd(), [] (const auto singleConflict) {
+            return singleConflict.mConflictSelected == ConflictInfo::ConflictSolution::SolutionDeselected;
+        });
+        const auto allSelected = (deselectedConflictIt == _conflictData.constEnd());
         if (allSelected) {
-            mAllConflictingsSelected = true;
+            _allConflictingsSelected = true;
             Q_EMIT allConflictingSelectedChanged();
         }
     }
@@ -336,11 +324,11 @@ ConflictSolver::Solution SyncConflictsModel::ConflictInfo::solution() const
 {
     auto result = ConflictSolver::Solution{};
 
-    if (mConflictSelected && mExistingSelected) {
+    if (mConflictSelected == ConflictSolution::SolutionSelected && mExistingSelected == ConflictSolution::SolutionSelected) {
         result = ConflictSolver::KeepBothVersions;
-    } else if (!mConflictSelected && mExistingSelected) {
+    } else if (mConflictSelected == ConflictSolution::SolutionDeselected && mExistingSelected == ConflictSolution::SolutionSelected) {
         result = ConflictSolver::KeepLocalVersion;
-    } else if (mConflictSelected && !mExistingSelected) {
+    } else if (mConflictSelected == ConflictSolution::SolutionSelected && mExistingSelected == ConflictSolution::SolutionDeselected) {
         result = ConflictSolver::KeepRemoteVersion;
     }
 
@@ -349,7 +337,7 @@ ConflictSolver::Solution SyncConflictsModel::ConflictInfo::solution() const
 
 bool SyncConflictsModel::ConflictInfo::isValid() const
 {
-    return mConflictSelected || mExistingSelected;
+    return mConflictSelected == ConflictInfo::ConflictSolution::SolutionSelected || mExistingSelected == ConflictInfo::ConflictSolution::SolutionSelected;
 }
 
 }

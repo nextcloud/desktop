@@ -12,8 +12,7 @@
  * for more details.
  */
 
-#ifndef SYNCCONFLICTSMODEL_H
-#define SYNCCONFLICTSMODEL_H
+#pragma once
 
 #include "tray/activitydata.h"
 
@@ -36,6 +35,12 @@ class SyncConflictsModel : public QAbstractListModel
     Q_PROPERTY(bool allConflictingSelected READ allConflictingSelected NOTIFY allConflictingSelectedChanged)
 
     struct ConflictInfo {
+        enum class ConflictSolution  : bool{
+            SolutionSelected = true,
+            SolutionDeselected = false,
+        };
+
+
         QString mExistingFileName;
         QString mExistingSize;
         QString mConflictSize;
@@ -43,8 +48,8 @@ class SyncConflictsModel : public QAbstractListModel
         QString mConflictDate;
         QUrl mExistingPreviewUrl;
         QUrl mConflictPreviewUrl;
-        bool mExistingSelected = false;
-        bool mConflictSelected = false;
+        ConflictSolution mExistingSelected = ConflictSolution::SolutionDeselected;
+        ConflictSolution mConflictSelected = ConflictSolution::SolutionDeselected;
         QString mExistingFilePath;
         QString mConflictingFilePath;
 
@@ -92,7 +97,7 @@ public slots:
 
     void selectAllConflicting(bool selected);
 
-    void applyResolution();
+    void applySolution();
 
 signals:
     void conflictActivitiesChanged();
@@ -112,19 +117,15 @@ private:
                                 const QModelIndex &index,
                                 int role);
 
-    OCC::ActivityList mData;
+    OCC::ActivityList _data;
 
-    QVector<ConflictInfo> mConflictData;
+    QVector<ConflictInfo> _conflictData;
 
-    QMimeDatabase mMimeDb;
+    QLocale _locale;
 
-    QLocale mLocale;
+    bool _allExistingsSelected = false;
 
-    bool mAllExistingsSelected = false;
-
-    bool mAllConflictingsSelected = false;
+    bool _allConflictingsSelected = false;
 };
 
 }
-
-#endif // SYNCCONFLICTSMODEL_H
