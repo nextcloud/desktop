@@ -3,7 +3,6 @@ import QtQuick.Controls 2.15
 
 import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
-import Style 1.0
 
 ScrollView {
     id: controlRoot
