@@ -51,7 +51,7 @@ QtWindow.Window {
         z: 2
 
         EnforcedPlainTextLabel {
-            text: qsTr("%1 files in conflict").arg(delegateModel.count)
+            text: qsTr("%1 files in conflict", 'indicate the number of conflicts to resolve', delegateModel.count).arg(delegateModel.count)
             font.bold: true
             font.pixelSize: Style.bigFontPixelSizeResolveConflictsDialog
             Layout.fillWidth: true
