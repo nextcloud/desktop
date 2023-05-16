@@ -853,27 +853,51 @@ Page {
         CustomButton {
             id: copyShareLinkButton
 
-            height: Style.standardPrimaryButtonHeight
-
-            imageSource: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
-            text: qsTr("Copy share link")
-            textColor: Style.ncHeaderTextColor
-            contentsFont.bold: true
-            bgColor: Style.ncBlue
-            bgNormalOpacity: 1.0
-            bgHoverOpacity: Style.hoverOpacity
-
-            visible: root.isLinkShare
-            enabled: visible
-
-            onClicked: {
+            function copyShareLink() {
                 clipboardHelper.text = root.link;
                 clipboardHelper.selectAll();
                 clipboardHelper.copy();
                 clipboardHelper.clear();
+
+                shareLinkCopied = true;
+                shareLinkCopyTimer.start();
             }
 
-            TextEdit { id: clipboardHelper; visible: false }
+            property bool shareLinkCopied: false
+
+            height: Style.standardPrimaryButtonHeight
+
+            imageSource: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
+            text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
+            textColor: Style.ncHeaderTextColor
+            contentsFont.bold: true
+            bgColor: shareLinkCopied ? Style.positiveColor : Style.ncBlue
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: shareLinkCopied ? 1.0 : Style.hoverOpacity
+
+            visible: root.isLinkShare
+            enabled: visible
+
+            onClicked: copyShareLink()
+
+            Behavior on bgColor {
+                ColorAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on bgHoverOpacity {
+                NumberAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            TextEdit {
+                id: clipboardHelper
+                visible: false
+            }
+
+            Timer {
+                id: shareLinkCopyTimer
+                interval: Style.veryLongAnimationDuration
+                onTriggered: copyShareLinkButton.shareLinkCopied = false
+            }
         }
     }
 }

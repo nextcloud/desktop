@@ -17,6 +17,7 @@ QtObject {
     readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
+    readonly property color positiveColor: Qt.rgba(0.38, 0.74, 0.38, 1)
 
     readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
     readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
@@ -145,6 +146,10 @@ QtObject {
     readonly property int trayWindowMenuOffsetY: 2
 
     readonly property int trayWindowMenuEntriesMargin: 6
+
+    // animation durations
+    readonly property int shortAnimationDuration: 200
+    readonly property int veryLongAnimationDuration: 3000
 
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));

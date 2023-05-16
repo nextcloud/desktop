@@ -175,30 +175,62 @@ GridLayout {
         CustomButton {
             id: copyLinkButton
 
+            function copyShareLink() {
+                clipboardHelper.text = root.link;
+                clipboardHelper.selectAll();
+                clipboardHelper.copy();
+                clipboardHelper.clear();
+
+                shareLinkCopied = true;
+                shareLinkCopyTimer.start();
+            }
+
+            property bool shareLinkCopied: false
+
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: Style.iconButtonWidth
-            Layout.preferredHeight: width
+            Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.iconButtonWidth
+            Layout.preferredHeight: Style.iconButtonWidth
 
             toolTipText: qsTr("Copy share link location")
 
-            bgColor: Style.lightHover
-            bgNormalOpacity: 0
+            text: shareLinkCopied ? qsTr("Copied!") : ""
+            textColor: Style.ncHeaderTextColor
+            contentsFont.bold: true
+            bgColor: shareLinkCopied ? Style.positiveColor : Style.lightHover
+            bgNormalOpacity: shareLinkCopied ? 1 : 0
 
-            imageSource: "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
+            imageSource: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor :
+                                           "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
             icon.width: 16
             icon.height: 16
 
             visible: root.isLinkShare || root.isInternalLinkShare
             enabled: visible
 
-            onClicked: {
-                clipboardHelper.text = root.link;
-                clipboardHelper.selectAll();
-                clipboardHelper.copy();
-                clipboardHelper.clear();
+            onClicked: copyShareLink()
+
+            Behavior on bgColor {
+                ColorAnimation { duration: Style.shortAnimationDuration }
             }
 
-            TextEdit { id: clipboardHelper; visible: false}
+            Behavior on bgNormalOpacity {
+                NumberAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on Layout.preferredWidth {
+                SmoothedAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            TextEdit {
+                id: clipboardHelper
+                visible: false
+            }
+
+            Timer {
+                id: shareLinkCopyTimer
+                interval: Style.veryLongAnimationDuration
+                onTriggered: copyLinkButton.shareLinkCopied = false
+            }
         }
 
         CustomButton {
