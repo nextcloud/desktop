@@ -74,7 +74,7 @@ ItemDelegate {
         ActivityItemActions {
             id: activityActions
 
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
+            visible: !root.isFileActivityList && model.linksForActionButtons.length > 1 && !isTalkReplyOptionVisible
 
             Layout.fillWidth: true
             Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
