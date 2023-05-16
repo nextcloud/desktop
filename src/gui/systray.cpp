@@ -287,38 +287,32 @@ void Systray::destroyEditFileLocallyLoadingDialog()
 
 void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts)
 {
-    const auto conflictsDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
+    const auto conflictsDialog = std::make_unique<QQmlComponent>(_trayEngine, QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
     const QVariantMap initialProperties{
                                         {"allConflicts", QVariant::fromValue(allConflicts)},
     };
 
     if(conflictsDialog->isError()) {
         qCWarning(lcSystray) << conflictsDialog->errorString();
-        delete conflictsDialog;
         return;
     }
 
     // This call dialog gets deallocated on close conditions
     // by a call from the QML side to the destroyDialog slot
-    auto dialog = conflictsDialog->createWithInitialProperties(initialProperties);
+    auto dialog = QScopedPointer(conflictsDialog->createWithInitialProperties(initialProperties));
     if (!dialog) {
-        delete dialog;
-        delete conflictsDialog;
         return;
     }
     dialog->setParent(QGuiApplication::instance());
 
-    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog);
+    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog.data());
     if (!dialogWindow) {
-        delete dialog;
-        delete conflictsDialog;
         return;
     }
     dialogWindow->show();
     dialogWindow->raise();
     dialogWindow->requestActivate();
-
-    delete conflictsDialog;
+    dialog.take();
 }
 
 bool Systray::raiseDialogs()
