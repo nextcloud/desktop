@@ -147,7 +147,7 @@ void EditLocallyJob::proceedWithSetup()
         return;
     }
 
-    if (_relPathParent != QStringLiteral("/") && (!_fileParentItem || _fileParentItem->isEmpty())) {
+    if (!isFileParentItemValid()) {
         showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
         return;
     }
@@ -269,14 +269,24 @@ void EditLocallyJob::startSyncBeforeOpening()
 
     // connect to a SyncEngine::itemDiscovered so we can complete the job as soon as the file in question is discovered
     QObject::connect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
-    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent, _relativePathToRemoteRoot, _fileParentItem});
+    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent, _relativePathToRemoteRoot, _fileParentItem});
     FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
 bool EditLocallyJob::eraseBlacklistRecordForItem()
 {
-    if (!_folderForFile || !_fileParentItem) {
+    if (!_folderForFile || !isFileParentItemValid()) {
         qCWarning(lcEditLocallyJob) << "_folderForFile or _fileParentItem is invalid!";
+        return false;
+    }
+
+    if (!_fileParentItem && _relPathParent == QStringLiteral("/")) {
+        return true;
+    }
+
+    Q_ASSERT(_fileParentItem);
+    if (!_fileParentItem) {
+        qCWarning(lcEditLocallyJob) << "_fileParentItem is invalid!";
         return false;
     }
 
@@ -622,9 +632,7 @@ void EditLocallyJob::lockFile()
     };
 
     const auto runSingleFileDiscovery = [this] {
-        const SyncEngine::SingleItemDiscoveryOptions singleItemDiscoveryOptions = {(_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent),
-                                                                                   _relativePathToRemoteRoot,
-                                                                                   _fileParentItem};
+        const SyncEngine::SingleItemDiscoveryOptions singleItemDiscoveryOptions = {_relPathParent, _relativePathToRemoteRoot, _fileParentItem};
         _folderForFile->syncEngine().setSingleItemDiscoveryOptions(singleItemDiscoveryOptions);
         FolderMan::instance()->forceSyncForFolder(_folderForFile);
     };
@@ -702,6 +710,11 @@ int EditLocallyJob::fileLockTimeRemainingMinutes(const qint64 lockTime, const qi
     const auto remainingTimeInMinutes = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
 
     return remainingTimeInMinutes;
+}
+
+bool EditLocallyJob::isFileParentItemValid() const
+{
+    return (_fileParentItem && !_fileParentItem->isEmpty()) || _relPathParent == QStringLiteral("/");
 }
 
 }

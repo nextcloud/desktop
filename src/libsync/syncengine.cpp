@@ -123,6 +123,12 @@ SyncEngine::~SyncEngine()
     _excludedFiles.reset();
 }
 
+bool SyncEngine::SingleItemDiscoveryOptions::isValid() const
+{
+    return !filePathRelative.isEmpty() && !discoveryPath.isEmpty()
+        && ((discoveryDirItem && !discoveryDirItem->isEmpty()) || discoveryPath == QStringLiteral("/"));
+}
+
 /**
  * Check if the item is in the blacklist.
  * If it should not be sync'ed because of the blacklist, update the item with the error instruction
@@ -658,12 +664,12 @@ void SyncEngine::startSync()
 
     ProcessDirectoryJob *discoveryJob = nullptr;
 
-    if (!singleItemDiscoveryOptions().filePathRelative.isEmpty()) {
+    if (singleItemDiscoveryOptions().isValid()) {
         _discoveryPhase->_listExclusiveFiles.clear();
         _discoveryPhase->_listExclusiveFiles.push_back(singleItemDiscoveryOptions().filePathRelative);
     }
 
-    if (!singleItemDiscoveryOptions().discoveryPath.isEmpty() && singleItemDiscoveryOptions().discoveryDirItem) {
+    if (singleItemDiscoveryOptions().isValid() && singleItemDiscoveryOptions().discoveryDirItem) {
         ProcessDirectoryJob::PathTuple path = {};
         path._local = path._original = path._server = path._target = singleItemDiscoveryOptions().discoveryPath;
 
