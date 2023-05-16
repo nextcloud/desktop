@@ -4,9 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.8.1] - 2023-04-19
+## [3.8.2] - 2023-05-16
 
 ### Added
+* Implement missing share settings by @allexzander in https://github.com/nextcloud/desktop/pull/5622
+
+### Changed
+* Edit locally: elide loading dialog filename label in the middle by @allexzander in https://github.com/nextcloud/desktop/pull/5612
+* Properly handle all fatal errors during edit locally setup procedure by by @claucambra in https://github.com/nextcloud/desktop/pull/5583
+* Parse sharees 'lookup' key to include federated sharees by @allexzander in https://github.com/nextcloud/desktop/pull/5613
+* No longer override the pixman default version by @mgallien in https://github.com/nextcloud/desktop/pull/5630
+* Remove some SQL debug logs to unclutter the output by @allexzander in https://github.com/nextcloud/desktop/pull/5634
+* Attempt sign in when an account state is added in AccountManager by @claucambra in https://github.com/nextcloud/desktop/pull/5493
+
+### Fixed
+* Fix crash on entering new log file after file size of 512kb reached by @claucambra in https://github.com/nextcloud/desktop/pull/5603
+* Fix MacOS UTF-8 normalization issue by @xavi-b in https://github.com/nextcloud/desktop/pull/4957
+* Edit locally: fix crash on _chekTokenJob pointer deref by @allexzander in https://github.com/nextcloud/desktop/pull/5637
+* E2EE: Fix freeze on metadata checksum validation by @allexzander in https://github.com/nextcloud/desktop/pull/5655
+* Fix folder progress bar positioning in account settings on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5645
+* Use addLayout to insert the VFS option when setting account by @camilasan in https://github.com/nextcloud/desktop/pull/5665
+* Fix update request channel being set to wrong localised string by @claucambra in https://github.com/nextcloud/desktop/pull/5462
+* Fix setting [undefined] to QFont in 'Sync now' button by @claucambra in https://github.com/nextcloud/desktop/pull/5628
+* Fix account migration from legacy desktop clients (again) by @claucambra in https://github.com/nextcloud/desktop/pull/5640
+* Fix unrecoverable freezing when PutMultiFileJob is used with upload rate limits enabled by @claucambra in https://github.com/nextcloud/desktop/pull/5680
+
+## [3.8.1] - 2023-04-19
 
 ### Changed
 * Do not display error status and messages when aborting a sync during hydration request in VFS mode by @allexzander in https://github.com/nextcloud/desktop/pull/5579
@@ -616,6 +639,9 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.8.2]: https://github.com/nextcloud/desktop/compare/v3.8.1...v3.8.2
+[3.8.1]: https://github.com/nextcloud/desktop/compare/v3.8.0...v3.8.1
+[3.8.0]: https://github.com/nextcloud/desktop/compare/v3.7.4...v3.8.0
 [3.7.4]: https://github.com/nextcloud/desktop/compare/v3.7.1...v3.7.4
 [3.7.1]: https://github.com/nextcloud/desktop/compare/v3.7.0...v3.7.1
 [3.7.0]: https://github.com/nextcloud/desktop/compare/v3.6.6...v3.7.0
