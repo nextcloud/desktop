@@ -58,5 +58,6 @@
         <file>src/gui/tray/TrayFolderListItem.qml</file>
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
+        <file>src/gui/ConflictItemFileInfo.qml</file>
     </qresource>
 </RCC>

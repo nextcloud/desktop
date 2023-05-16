@@ -53,156 +53,33 @@ Item {
         anchors.right: parent.right
         anchors.bottomMargin: 8
 
-        Item {
+        ConflictItemFileInfo {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            CheckBox {
-                id: selectExisting
+            itemSelected: root.existingSelected
+            itemPreviewUrl: root.existingPreviewUrl
+            itemVersionLabel: qsTr('Local version')
+            itemDateLabel: root.existingDate
+            itemFileSizeLabel: root.existingSize
 
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-
-                leftPadding: 0
-                spacing: 0
-
-                checked: root.existingSelected
-
-                onToggled: function() {
-                    model.existingSelected = checked
-                }
-            }
-
-            Image {
-                id: existingPreview
-
-                anchors.left: selectExisting.right
-                anchors.verticalCenter: parent.verticalCenter
-
-                source: root.existingPreviewUrl
-                width: 48
-                height: 48
-                sourceSize.width: 48
-                sourceSize.height: 48
-            }
-
-            ColumnLayout {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: existingPreview.right
-                anchors.right: parent.right
-                anchors.leftMargin: 10
-
-                spacing: 0
-
-                Item {
-                    Layout.fillHeight: true
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: qsTr('Local version')
-
-                    font.pixelSize: 15
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: root.existingDate
-
-                    font.pixelSize: 15
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: existingSize
-
-                    font.pixelSize: 15
-                }
-
-                Item {
-                    Layout.fillHeight: true
-                }
+            onSelectedChanged: function() {
+                model.existingSelected = itemSelected
             }
         }
 
-        Item {
+        ConflictItemFileInfo {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            CheckBox {
-                id: selectConflict
+            itemSelected: root.conflictSelected
+            itemPreviewUrl: root.conflictPreviewUrl
+            itemVersionLabel: qsTr('Server version')
+            itemDateLabel: root.conflictDate
+            itemFileSizeLabel: root.conflictSize
 
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 0
-
-                leftPadding: 0
-                spacing: 0
-
-                checked: root.conflictSelected
-
-                onToggled: function() {
-                    model.conflictSelected = checked
-                }
-            }
-
-            Image {
-                id: conflictPreview
-
-                anchors.left: selectConflict.right
-                anchors.verticalCenter: parent.verticalCenter
-
-                source: root.conflictPreviewUrl
-                width: 48
-                height: 48
-                sourceSize.width: 48
-                sourceSize.height: 48
-            }
-
-            ColumnLayout {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: conflictPreview.right
-                anchors.right: parent.right
-                anchors.leftMargin: 10
-
-                spacing: 0
-
-                Item {
-                    Layout.fillHeight: true
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: qsTr('Server version')
-
-                    font.pixelSize: 15
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: root.conflictDate
-
-                    font.pixelSize: 15
-                }
-
-                EnforcedPlainTextLabel {
-                    Layout.fillWidth: true
-
-                    text: conflictSize
-
-                    font.pixelSize: 15
-                }
-
-                Item {
-                    Layout.fillHeight: true
-                }
+            onSelectedChanged: function() {
+                model.conflictSelected = itemSelected
             }
         }
     }
