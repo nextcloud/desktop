@@ -57,10 +57,12 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    struct SingleItemDiscoveryOptions {
+    struct OWNCLOUDSYNC_EXPORT SingleItemDiscoveryOptions {
         QString discoveryPath;
         QString filePathRelative;
         SyncFileItemPtr discoveryDirItem;
+
+        [[nodiscard]] bool isValid() const;
     };
 
     SyncEngine(AccountPtr account,

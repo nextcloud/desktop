@@ -90,6 +90,8 @@ private:
 
     [[nodiscard]] static int fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut);
 
+    [[nodiscard]] bool isFileParentItemValid() const;
+
     bool _tokenVerified = false;
 
     bool _shouldScheduleFolderSyncAfterFileIsOpened = false;
