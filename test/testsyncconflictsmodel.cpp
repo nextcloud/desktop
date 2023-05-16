@@ -53,7 +53,7 @@ private slots:
     {
     }
 
-    void testSuccessfulFetchShares()
+    void testSettingConflicts()
     {
         auto dir = QTemporaryDir {};
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
@@ -109,7 +109,6 @@ private slots:
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingSelected)), false);
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSelected)), false);
     }
-
 };
 
 QTEST_GUILESS_MAIN(TestSyncConflictsModel)
