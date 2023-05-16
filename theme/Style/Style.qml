@@ -133,6 +133,8 @@ QtObject {
 
     readonly property int bigFontPixelSizeResolveConflictsDialog: 20
     readonly property int fontPixelSizeResolveConflictsDialog: 15
+    readonly property int minimumWidthResolveConflictsDialog: 600
+    readonly property int minimumHeightResolveConflictsDialog: 800
 
     readonly property int activityContentSpace: 4
 

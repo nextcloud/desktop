@@ -30,10 +30,10 @@ QtWindow.Window {
     flags: Qt.Window | Qt.Dialog
     visible: true
 
-    width: 600
-    height: 800
-    minimumWidth: 600
-    minimumHeight: 800
+    width: Style.minimumWidthResolveConflictsDialog
+    height: Style.minimumHeightResolveConflictsDialog
+    minimumWidth: Style.minimumWidthResolveConflictsDialog
+    minimumHeight: Style.minimumHeightResolveConflictsDialog
     title: qsTr('Solve sync conflicts')
 
     onClosing: function(close) {
