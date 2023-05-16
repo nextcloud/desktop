@@ -43,7 +43,7 @@ Item {
         text: root.existingFileName
 
         font.weight: Font.Bold
-        font.pixelSize: 15
+        font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
     }
 
     RowLayout {

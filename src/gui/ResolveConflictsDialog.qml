@@ -53,14 +53,14 @@ QtWindow.Window {
         EnforcedPlainTextLabel {
             text: qsTr("%1 files in conflict").arg(delegateModel.count)
             font.bold: true
-            font.pixelSize: 20
+            font.pixelSize: Style.bigFontPixelSizeResolveConflictsDialog
             Layout.fillWidth: true
         }
 
         EnforcedPlainTextLabel {
             text: qsTr("Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.")
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            font.pixelSize: 15
+            font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
             Layout.fillWidth: true
             Layout.topMargin: -15
         }
@@ -79,7 +79,7 @@ QtWindow.Window {
                 leftPadding: 0
                 implicitWidth: 100
 
-                font.pixelSize: 15
+                font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
 
                 checked: realModel.allExistingsSelected
                 onToggled: function() {
@@ -97,7 +97,7 @@ QtWindow.Window {
                 leftPadding: 0
                 implicitWidth: 100
 
-                font.pixelSize: 15
+                font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
 
                 checked: realModel.allConflictingSelected
                 onToggled: function() {

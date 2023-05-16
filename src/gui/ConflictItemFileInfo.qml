@@ -72,7 +72,7 @@ Item {
 
             Layout.fillWidth: true
 
-            font.pixelSize: 15
+            font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
         }
 
         EnforcedPlainTextLabel {
@@ -80,7 +80,7 @@ Item {
 
             Layout.fillWidth: true
 
-            font.pixelSize: 15
+            font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
         }
 
         EnforcedPlainTextLabel {
@@ -88,7 +88,7 @@ Item {
 
             Layout.fillWidth: true
 
-            font.pixelSize: 15
+            font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
         }
 
         Item {
