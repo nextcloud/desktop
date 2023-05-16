@@ -11,6 +11,7 @@
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
         <file>src/gui/filedetails/FileDetailsView.qml</file>
         <file>src/gui/filedetails/FileDetailsWindow.qml</file>
+        <file>src/gui/filedetails/FileTag.qml</file>
         <file>src/gui/filedetails/NCInputTextEdit.qml</file>
         <file>src/gui/filedetails/NCInputTextField.qml</file>
         <file>src/gui/filedetails/NCTabButton.qml</file>

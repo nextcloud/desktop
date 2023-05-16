@@ -88,6 +88,8 @@ set(client_SRCS
     editlocallyjob.cpp
     editlocallymanager.h
     editlocallymanager.cpp
+    filetagmodel.h
+    filetagmodel.cpp
     folder.h
     folder.cpp
     foldercreationdialog.h

@@ -23,14 +23,14 @@
 #include <QSslCipher>
 #include <QBuffer>
 #include <QXmlStreamReader>
+#include <QDomDocument>
 #include <QStringList>
 #include <QStack>
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
-#include <QJsonDocument>
 #include <QJsonObject>
-#include <qloggingcategory.h>
+#include <QLoggingCategory>
 #ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
 #include <QPainterPath>
@@ -58,7 +58,13 @@ Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSimpleApiJob, "nextcloud.sync.networkjob.simpleapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
-const int notModifiedStatusCode = 304;
+
+constexpr auto notModifiedStatusCode = 304;
+constexpr auto propfindPropElementTagName = "prop";
+constexpr auto propfindFileTagElementTagName = "tag";
+constexpr auto propfindFileTagsContainerElementTagName = "tags";
+constexpr auto propfindSystemFileTagElementTagName = "system-tag";
+constexpr auto propfindSystemFileTagsContainerElementTagName = "system-tags";
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -555,7 +561,7 @@ PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *paren
 
 void PropfindJob::start()
 {
-    QList<QByteArray> properties = _properties;
+    const auto properties = _properties;
 
     if (properties.isEmpty()) {
         qCWarning(lcLsColJob) << "Propfind with no properties!";
@@ -567,21 +573,21 @@ void PropfindJob::start()
     req.setPriority(QNetworkRequest::HighPriority);
     req.setRawHeader("Depth", "0");
     QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
+    for (const auto &prop : properties) {
         if (prop.contains(':')) {
-            int colIdx = prop.lastIndexOf(":");
+            const auto colIdx = prop.lastIndexOf(":");
             propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
         } else {
             propStr += "    <d:" + prop + " />\n";
         }
     }
-    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
-                     "<d:propfind xmlns:d=\"DAV:\">\n"
-                     "  <d:prop>\n"
-        + propStr + "  </d:prop>\n"
-                    "</d:propfind>\n";
+    const auto xml = QByteArray("<?xml version=\"1.0\" ?>\n"
+                                "<d:propfind xmlns:d=\"DAV:\">\n"
+                                "  <d:prop>\n"
+                    + propStr + "  </d:prop>\n"
+                                "</d:propfind>\n");
 
-    auto *buf = new QBuffer(this);
+    const auto buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
@@ -604,44 +610,135 @@ bool PropfindJob::finished()
     qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS"
                           << replyStatusString();
 
-    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (http_result_code == 207) {
         // Parse DAV response
-        QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+        auto domDocument = QDomDocument();
+        auto errorMsg = QString();
+        auto errorLine = -1;
+        auto errorColumn = -1;
 
-        QVariantMap items;
-        // introduced to nesting is ignored
-        QStack<QString> curElement;
-
-        while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement) {
-                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
-                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
-                } else {
-                    curElement.push(reader.name().toString());
-                }
-            }
-            if (type == QXmlStreamReader::EndElement) {
-                if (curElement.top() == reader.name()) {
-                    curElement.pop();
-                }
-            }
-        }
-        if (reader.hasError()) {
-            qCWarning(lcPropfindJob) << "XML parser error: " << reader.errorString();
+        if (!domDocument.setContent(reply(), true, &errorMsg, &errorLine, &errorColumn)) {
+            qCWarning(lcPropfindJob) << "XML parser error: " << errorMsg << errorLine << errorColumn;
             emit finishedWithError(reply());
+
         } else {
-            emit result(items);
+            const auto parsedItems = processPropfindDomDocument(domDocument);
+            emit result(parsedItems);
         }
+
     } else {
         qCWarning(lcPropfindJob) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
         emit finishedWithError(reply());
     }
+
     return true;
+}
+
+QVariantMap PropfindJob::processPropfindDomDocument(const QDomDocument &domDocument)
+{
+    if (!domDocument.hasChildNodes()) {
+        return {};
+    }
+
+    auto items = QVariantMap();
+
+    const auto rootElement = domDocument.documentElement();
+    const auto propNodes = rootElement.elementsByTagName(propfindPropElementTagName);
+
+    for (auto i = 0; i < propNodes.count(); ++i) {
+        const auto propNode = propNodes.at(i);
+        const auto propElement = propNode.toElement();
+
+        if (propElement.isNull() || propElement.tagName() != propfindPropElementTagName) {
+            continue;
+        }
+
+        auto propChildNode = propElement.firstChild();
+
+        while (!propChildNode.isNull()) {
+            const auto propChildElement = propChildNode.toElement();
+
+            if (!propChildElement.isNull()) {
+                const auto propChildElementTagName = propChildElement.tagName();
+
+                if (propChildElementTagName == propfindFileTagsContainerElementTagName) {
+                    const auto tagList = processTagsInPropfindDomDocument(domDocument);
+                    items.insert(propChildElementTagName, tagList);
+                } else if (propChildElementTagName == propfindSystemFileTagsContainerElementTagName) {
+                    const auto systemTagList = processSystemTagsInPropfindDomDocument(domDocument);
+                    items.insert(propChildElementTagName, systemTagList);
+                } else {
+                    items.insert(propChildElementTagName, propChildElement.text());
+                }
+            }
+
+            propChildNode = propChildNode.nextSibling();
+        }
+    }
+
+    return items;
+}
+
+QStringList PropfindJob::processTagsInPropfindDomDocument(const QDomDocument &domDocument)
+{
+    const auto tagNodes = domDocument.elementsByTagName(propfindFileTagElementTagName);
+    if (tagNodes.isEmpty()) {
+        return {};
+    }
+
+    const auto tagCount = tagNodes.count();
+    auto tagList = QStringList();
+    tagList.reserve(tagCount);
+
+    for (auto i = 0; i < tagCount; ++i) {
+        const auto tagNode = tagNodes.at(i);
+        const auto tagElement = tagNode.toElement();
+
+        if (tagElement.isNull()) {
+            continue;
+        }
+
+        tagList.append(tagElement.text());
+    }
+
+    return tagList;
+}
+
+QVariantList PropfindJob::processSystemTagsInPropfindDomDocument(const QDomDocument &domDocument)
+{
+    const auto systemTagNodes = domDocument.elementsByTagName(propfindSystemFileTagElementTagName);
+    if (systemTagNodes.isEmpty()) {
+        return {};
+    }
+
+    const auto systemTagCount = systemTagNodes.count();
+    auto systemTagsList = QVariantList();
+
+    for (auto i = 0; i < systemTagCount; ++i) {
+        const auto systemTagNode = systemTagNodes.at(i);
+        const auto systemTagElem = systemTagNode.toElement();
+
+        if (systemTagElem.isNull()) {
+            continue;
+        }
+
+        auto systemTagMap = QVariantMap{ { QStringLiteral("tag"), systemTagElem.text() } };
+
+        const auto systemTagElemAttrs = systemTagElem.attributes();
+        for (auto i = 0; i < systemTagElemAttrs.count(); ++i) {
+            const auto systemTagElemAttrNode = systemTagElemAttrs.item(i);
+            const auto systemTagElemAttr = systemTagElemAttrNode.toAttr();
+
+            systemTagMap.insert(systemTagElemAttr.name(), systemTagElemAttr.value());
+        }
+
+        systemTagsList.append(systemTagMap);
+    }
+
+    return systemTagsList;
 }
 
 /*********************************************************************************************/

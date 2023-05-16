@@ -21,7 +21,11 @@
 
 #include "common/syncjournalfilerecord.h"
 
+#include "gui/filetagmodel.h"
+
 namespace OCC {
+
+class Folder;
 
 class FileDetails : public QObject
 {
@@ -33,6 +37,7 @@ class FileDetails : public QObject
     Q_PROPERTY(QString iconUrl READ iconUrl NOTIFY fileChanged)
     Q_PROPERTY(QString lockExpireString READ lockExpireString NOTIFY lockExpireStringChanged)
     Q_PROPERTY(bool isFolder READ isFolder NOTIFY isFolderChanged)
+    Q_PROPERTY(FileTagModel* fileTagModel READ fileTagModel NOTIFY fileTagModelChanged)
 
 public:
     explicit FileDetails(QObject *parent = nullptr);
@@ -44,6 +49,7 @@ public:
     [[nodiscard]] QString iconUrl() const;
     [[nodiscard]] QString lockExpireString() const;
     [[nodiscard]] bool isFolder() const;
+    [[nodiscard]] FileTagModel *fileTagModel() const;
 
 public slots:
     void setLocalPath(const QString &localPath);
@@ -53,10 +59,12 @@ signals:
     void fileChanged();
     void lockExpireStringChanged();
     void isFolderChanged();
+    void fileTagModelChanged();
 
 private slots:
     void refreshFileDetails();
     void updateLockExpireString();
+    void updateFileTagModel(const OCC::Folder * const folder);
 
 private:
     QString _localPath;
@@ -70,6 +78,8 @@ private:
     QTimer _filelockStateUpdateTimer;
 
     QLocale _locale;
+
+    std::unique_ptr<FileTagModel> _fileTagModel;
 };
 
 } // namespace OCC
