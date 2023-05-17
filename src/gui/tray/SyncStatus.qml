@@ -109,13 +109,11 @@ RowLayout {
             font: syncNowButton.contentsFont
         }
 
-        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
-                               leftPadding +
-                               rightPadding +
-                               Style.standardSpacing * 2
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Sync now")
+
+        padding: Style.smallSpacing
         textColor: Style.adjustedCurrentUserHeaderColor
         textColorHovered: Style.currentUserHeaderTextColor
         contentsFont.bold: true
