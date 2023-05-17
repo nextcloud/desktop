@@ -22,9 +22,10 @@
 #include "plugin.h"
 #include "syncjournaldb.h"
 
+#include <QCoreApplication>
 #include <QDir>
-#include <QPluginLoader>
 #include <QLoggingCategory>
+#include <QPluginLoader>
 
 using namespace OCC;
 
@@ -173,7 +174,7 @@ bool OCC::VfsPluginManager::isVfsPluginAvailable(Vfs::Mode mode) const
 
         auto basemeta = loader.metaData();
         if (basemeta.isEmpty() || !basemeta.contains(QStringLiteral("IID"))) {
-            qCDebug(lcPlugin) << "Plugin doesn't exist" << loader.fileName();
+            qCDebug(lcPlugin) << "Plugin doesn't exist:" << loader.fileName() << "LibraryPath:" << QCoreApplication::libraryPaths();
             return false;
         }
         if (basemeta[QStringLiteral("IID")].toString() != QLatin1String("org.owncloud.PluginFactory")) {
