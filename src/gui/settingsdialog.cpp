@@ -13,6 +13,7 @@
  */
 
 #include "settingsdialog.h"
+#include "macOS/fileprovider.h"
 #include "ui_settingsdialog.h"
 
 #include "folderman.h"
@@ -39,6 +40,7 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
+#include <QQuickView>
 
 namespace {
 const QString TOOLBAR_CSS()
@@ -132,7 +134,25 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     auto *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    connect(_ui->stack, &QStackedWidget::currentChanged, this, &SettingsDialog::currentPageChanged);
+#ifdef BUILD_FILE_PROVIDER_MODULE
+
+    if (Mac::FileProvider::fileProviderAvailable()) {
+        const auto macVfsAction = createColorAwareAction(QStringLiteral(":/client/theme/files.svg"), tr("Virtual files"));
+        _actionGroup->addAction(macVfsAction);
+        _toolBar->addAction(macVfsAction);
+        const auto macVfsSettingsView = new QQuickView;
+        const auto macVfsSettingsContainer = QWidget::createWindowContainer(macVfsSettingsView);
+        _ui->stack->addWidget(macVfsSettingsContainer);
+
+        //macVfsSettingsView->setSource()
+
+        connect(_ui->stack, &QStackedWidget::currentChanged,
+                this, &SettingsDialog::currentPageChanged);
+
+        _actionGroupWidgets.insert(macVfsAction, macVfsSettingsContainer);
+    }
+
+#endif
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
