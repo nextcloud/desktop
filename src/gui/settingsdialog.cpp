@@ -144,7 +144,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         const auto macVfsSettingsContainer = QWidget::createWindowContainer(macVfsSettingsView);
         _ui->stack->addWidget(macVfsSettingsContainer);
 
-        //macVfsSettingsView->setSource()
+        const auto qmlSourceUrl = QUrl("qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml");
+        macVfsSettingsView->setSource(qmlSourceUrl);
 
         connect(_ui->stack, &QStackedWidget::currentChanged,
                 this, &SettingsDialog::currentPageChanged);
