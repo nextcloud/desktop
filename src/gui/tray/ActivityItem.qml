@@ -30,8 +30,6 @@ ItemDelegate {
     }
 
     contentItem: ColumnLayout {
-        id: contentLayout
-
         spacing: Style.activityContentSpace
 
         ActivityItemContent {
@@ -57,7 +55,7 @@ ItemDelegate {
 
             Layout.preferredWidth: Style.talkReplyTextFieldPreferredWidth
             Layout.preferredHeight: Style.talkReplyTextFieldPreferredHeight
-            Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
+            Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
 
             sourceComponent: TalkReplyTextField {
                 onSendReply: {
@@ -65,29 +63,6 @@ ItemDelegate {
                     talkReplyTextFieldLoader.visible = false;
                 }
             }
-        }
-
-        ActivityItemActions {
-            id: activityActions
-
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
-
-            Layout.fillWidth: true
-            Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
-            Layout.preferredHeight: Style.standardPrimaryButtonHeight
-
-            displayActions: model.displayActions
-            objectType: model.objectType
-            linksForActionButtons: model.linksForActionButtons
-            linksContextMenu: model.linksContextMenu
-
-            maxActionButtons: activityModel.maxActionButtons
-
-            flickable: root.flickable
-
-            onTriggerAction: activityModel.slotTriggerAction(model.activityIndex, actionIndex)
-
-            onShowReplyField: root.isTalkReplyOptionVisible = true
         }
     }
 }

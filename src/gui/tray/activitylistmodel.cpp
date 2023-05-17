@@ -801,13 +801,13 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
 {
     QVariantList customList;
 
-    if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
-        customList << ActivityListModel::convertLinkToActionButton(activity._links.first());
-        return customList;
-    }
-
     for (const auto &activityLink : activity._links) {
+        if (!activityLink._primary) {
+            continue;
+        }
+
         customList << ActivityListModel::convertLinkToActionButton(activityLink);
+        break;
     }
 
     return customList;

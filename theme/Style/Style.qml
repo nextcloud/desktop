@@ -84,6 +84,8 @@ QtObject {
     property int addAccountButtonHeight: 50
 
     property int headerButtonIconSize: 32
+    property int dismissButtonSize: 16
+    property int minimumActivityItemHeight: 24
 
     property int activityLabelBaseWidth: 240
 

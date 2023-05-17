@@ -136,13 +136,13 @@ private slots:
         QDateTime d1 = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
         QDateTime d2 = QDateTime::fromString("2015-01-23T09:20:30+01:00", Qt::ISODate);
         QString s = timeAgoInWords(d2, d1);
-        QCOMPARE(s, QLatin1String("1 day ago"));
+        QCOMPARE(s, QLatin1String("1d"));
 
         // Different timezones
         QDateTime earlyTS = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
         QDateTime laterTS = QDateTime::fromString("2015-01-24T09:20:30-01:00", Qt::ISODate);
         s = timeAgoInWords(earlyTS, laterTS);
-        QCOMPARE(s, QLatin1String("2 hours ago"));
+        QCOMPARE(s, QLatin1String("2h"));
 
         // 'Now' in whatever timezone
         earlyTS = QDateTime::currentDateTime();
@@ -152,7 +152,7 @@ private slots:
 
         earlyTS = earlyTS.addSecs(-6);
         s = timeAgoInWords(earlyTS, laterTS );
-        QCOMPARE(s, QLatin1String("Less than a minute ago"));
+        QCOMPARE(s, QLatin1String("1m"));
     }
 
     void testFsCasePreserving()

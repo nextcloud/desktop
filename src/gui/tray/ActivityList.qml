@@ -57,10 +57,7 @@ ScrollView {
         }
 
         delegate: ActivityItem {
-            anchors.left: if (parent) parent.left
-            anchors.right: if (parent) parent.right
-            anchors.leftMargin: controlRoot.delegateHorizontalPadding
-            anchors.rightMargin: controlRoot.delegateHorizontalPadding
+            width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
             iconSize: controlRoot.iconSize

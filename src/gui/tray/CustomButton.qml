@@ -52,6 +52,7 @@ Button {
 
     contentItem: NCButtonContents {
         id: contents
+        display: root.display
         hovered: root.hovered
         imageSourceHover: root.imageSourceHover
         imageSource: root.icon.source
