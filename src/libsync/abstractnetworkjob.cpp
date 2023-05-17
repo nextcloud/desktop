@@ -157,6 +157,9 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     _verb = verb;
 
     _request = req;
+    // we don't follow redirects, if we receive one the ConnectionValidor is triggered
+    _request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
+
     _request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, _storeInCache);
 
     if (_cacheLoadControl.has_value()) {
