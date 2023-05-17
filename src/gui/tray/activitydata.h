@@ -178,6 +178,7 @@ using ActivityList = QList<Activity>;
 }
 
 Q_DECLARE_METATYPE(OCC::Activity)
+Q_DECLARE_METATYPE(OCC::ActivityList)
 Q_DECLARE_METATYPE(OCC::Activity::Type)
 Q_DECLARE_METATYPE(OCC::ActivityLink)
 Q_DECLARE_METATYPE(OCC::PreviewData)

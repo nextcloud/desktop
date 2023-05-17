@@ -32,7 +32,7 @@
 #include <QWidget>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <qloggingcategory.h>
+#include <QLoggingCategory>
 
 namespace OCC {
 
@@ -428,6 +428,8 @@ void ActivityListModel::startFetchJob()
 void ActivityListModel::setFinalList(const ActivityList &finalList)
 {
     _finalList = finalList;
+
+    emit allConflictsChanged();
 }
 
 const ActivityList &ActivityListModel::finalList() const
@@ -548,6 +550,13 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
         _finalList.append(activity);
     }
     endInsertRows();
+
+    const auto deselectedConflictIt = std::find_if(_finalList.constBegin(), _finalList.constEnd(), [] (const auto activity) {
+        return activity._syncFileItemStatus == SyncFileItem::Conflict;
+    });
+    const auto conflictsFound = (deselectedConflictIt != _finalList.constEnd());
+
+    setHasSyncConflicts(conflictsFound);
 }
 
 void ActivityListModel::addErrorToActivityList(const Activity &activity)
@@ -640,34 +649,8 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
 
     const auto activity = _finalList.at(activityIndex);
     if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
-        Q_ASSERT(!activity._file.isEmpty());
-        Q_ASSERT(!activity._folder.isEmpty());
-        Q_ASSERT(Utility::isConflictFile(activity._file));
+        displaySingleConflictDialog(activity);
 
-        const auto folder = FolderMan::instance()->folder(activity._folder);
-
-        const auto conflictedRelativePath = activity._file;
-        const auto baseRelativePath = folder->journalDb()->conflictFileBaseName(conflictedRelativePath.toUtf8());
-
-        const auto dir = QDir(folder->path());
-        const auto conflictedPath = dir.filePath(conflictedRelativePath);
-        const auto basePath = dir.filePath(baseRelativePath);
-
-        const auto baseName = QFileInfo(basePath).fileName();
-
-        if (!_currentConflictDialog.isNull()) {
-            _currentConflictDialog->close();
-        }
-        _currentConflictDialog = new ConflictDialog;
-        _currentConflictDialog->setBaseFilename(baseName);
-        _currentConflictDialog->setLocalVersionFilename(conflictedPath);
-        _currentConflictDialog->setRemoteVersionFilename(basePath);
-        _currentConflictDialog->setAttribute(Qt::WA_DeleteOnClose);
-        connect(_currentConflictDialog, &ConflictDialog::accepted, folder, [folder]() {
-            folder->scheduleThisFolderSoon();
-        });
-        _currentConflictDialog->open();
-        ownCloudGui::raiseDialog(_currentConflictDialog);
         return;
     } else if (activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
         triggerCaseClashAction(activity);
@@ -728,6 +711,46 @@ void ActivityListModel::triggerCaseClashAction(Activity activity)
     });
     _currentCaseClashFilenameDialog->open();
     ownCloudGui::raiseDialog(_currentCaseClashFilenameDialog);
+}
+
+void ActivityListModel::displaySingleConflictDialog(const Activity &activity)
+{
+    Q_ASSERT(!activity._file.isEmpty());
+    Q_ASSERT(!activity._folder.isEmpty());
+    Q_ASSERT(Utility::isConflictFile(activity._file));
+
+    const auto folder = FolderMan::instance()->folder(activity._folder);
+
+    const auto conflictedRelativePath = activity._file;
+    const auto baseRelativePath = folder->journalDb()->conflictFileBaseName(conflictedRelativePath.toUtf8());
+
+    const auto dir = QDir(folder->path());
+    const auto conflictedPath = dir.filePath(conflictedRelativePath);
+    const auto basePath = dir.filePath(baseRelativePath);
+
+    const auto baseName = QFileInfo(basePath).fileName();
+
+    if (!_currentConflictDialog.isNull()) {
+        _currentConflictDialog->close();
+    }
+    _currentConflictDialog = new ConflictDialog;
+    _currentConflictDialog->setBaseFilename(baseName);
+    _currentConflictDialog->setLocalVersionFilename(conflictedPath);
+    _currentConflictDialog->setRemoteVersionFilename(basePath);
+    _currentConflictDialog->setAttribute(Qt::WA_DeleteOnClose);
+    connect(_currentConflictDialog, &ConflictDialog::accepted, folder, [folder]() {
+        folder->scheduleThisFolderSoon();
+    });
+    _currentConflictDialog->open();
+    ownCloudGui::raiseDialog(_currentConflictDialog);
+}
+
+void ActivityListModel::setHasSyncConflicts(bool conflictsFound)
+{
+    if (_hasSyncConflicts != conflictsFound) {
+        _hasSyncConflicts = conflictsFound;
+        emit hasSyncConflictsChanged();
+    }
 }
 
 void ActivityListModel::slotTriggerAction(const int activityIndex, const int actionIndex)
@@ -885,4 +908,23 @@ QString ActivityListModel::replyMessageSent(const Activity &activity) const
 {
     return activity._talkNotificationData.messageSent;
 }
+
+bool ActivityListModel::hasSyncConflicts() const
+{
+    return _hasSyncConflicts;
+}
+
+ActivityList ActivityListModel::allConflicts() const
+{
+    auto result = ActivityList{};
+
+    for(const auto &activity : _finalList) {
+        if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
+            result.push_back(activity);
+        }
+    }
+
+    return result;
+}
+
 }

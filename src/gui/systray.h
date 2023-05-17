@@ -121,6 +121,7 @@ public slots:
     void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
+    void createResolveConflictsDialog(const OCC::ActivityList &allConflicts);
 
     void slotCurrentUserChanged();
 

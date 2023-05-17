@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     // the platformtheme plugin won't try to force qqc2-desktops-style
     // anymore.
     // Can be removed once the bug in qqc2-desktop-style is gone.
-    QQuickStyle::setStyle("Default");
+    QQuickStyle::setStyle("Fusion");
 
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 

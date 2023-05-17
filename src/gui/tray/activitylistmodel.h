@@ -42,6 +42,8 @@ class ActivityListModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
     Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
+    Q_PROPERTY(bool hasSyncConflicts READ hasSyncConflicts NOTIFY hasSyncConflictsChanged)
+    Q_PROPERTY(OCC::ActivityList allConflicts READ allConflicts NOTIFY allConflictsChanged)
 
 public:
     enum DataRole {
@@ -105,6 +107,10 @@ public:
 
     [[nodiscard]] QString replyMessageSent(const Activity &activity) const;
 
+    [[nodiscard]] bool hasSyncConflicts() const;
+
+    [[nodiscard]] OCC::ActivityList allConflicts() const;
+
 public slots:
     void slotRefreshActivity();
     void slotRefreshActivityInitial();
@@ -126,6 +132,8 @@ public slots:
 
 signals:
     void accountStateChanged();
+    void hasSyncConflictsChanged();
+    void allConflictsChanged();
 
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
@@ -162,6 +170,9 @@ private:
     void insertOrRemoveDummyFetchingActivity();
     void triggerCaseClashAction(Activity activity);
 
+    void displaySingleConflictDialog(const Activity &activity);
+    void setHasSyncConflicts(bool conflictsFound);
+
     Activity _notificationIgnoredFiles;
     Activity _dummyFetchingActivities;
 
@@ -189,6 +200,8 @@ private:
     bool _currentlyFetching = false;
     bool _doneFetching = false;
     bool _hideOldActivities = true;
+
+    bool _hasSyncConflicts = false;
 
     static constexpr quint32 MaxActionButtons = 3;
 };

@@ -186,6 +186,8 @@ set(client_SRCS
     userstatusselectormodel.cpp
     emojimodel.h
     emojimodel.cpp
+    syncconflictsmodel.h
+    syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
     filedetails/filedetails.h
