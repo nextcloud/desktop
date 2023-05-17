@@ -1,10 +1,24 @@
-import QtQml 2.1
-import QtQml.Models 2.1
-import QtQuick 2.9
-import QtQuick.Window 2.3
-import QtQuick.Controls 2.2
-import QtQuick.Layouts 1.2
-import QtGraphicalEffects 1.0
+/*
+ * Copyright (C) 2020 by Nicolas Fella <nicolas.fella@gmx.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+import QtQml 2.15
+import QtQml.Models 2.15
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0

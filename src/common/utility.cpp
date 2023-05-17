@@ -478,10 +478,8 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
         now = from;
     }
 
-    if (dt.daysTo(now) == 1) {
-        return QObject::tr("%n day ago", "", dt.daysTo(now));
-    } else if (dt.daysTo(now) > 1) {
-        return QObject::tr("%n days ago", "", dt.daysTo(now));
+    if (dt.daysTo(now) >= 1) {
+        return QObject::tr("%nd", "delay in days after an activity", dt.daysTo(now));
     } else {
         qint64 secs = dt.secsTo(now);
         if (secs < 0) {
@@ -490,11 +488,7 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
 
         if (floor(secs / 3600.0) > 0) {
             int hours = floor(secs / 3600.0);
-            if (hours == 1) {
-                return (QObject::tr("%n hour ago", "", hours));
-            } else {
-                return (QObject::tr("%n hours ago", "", hours));
-            }
+            return (QObject::tr("%nh", "delay in hours after an activity", hours));
         } else {
             int minutes = qRound(secs / 60.0);
 
@@ -502,13 +496,10 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
                 if (secs < 5) {
                     return QObject::tr("now");
                 } else {
-                    return QObject::tr("Less than a minute ago");
+                    return QObject::tr("1m", "one minute after activity date and time");
                 }
-
-            } else if (minutes == 1) {
-                return (QObject::tr("%n minute ago", "", minutes));
             } else {
-                return (QObject::tr("%n minutes ago", "", minutes));
+                return (QObject::tr("%nm", "delay in minutes after an activity", minutes));
             }
         }
     }

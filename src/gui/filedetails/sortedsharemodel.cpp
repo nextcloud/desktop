@@ -21,40 +21,7 @@ Q_LOGGING_CATEGORY(lcSortedShareModel, "com.nextcloud.sortedsharemodel")
 SortedShareModel::SortedShareModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
-}
-
-void SortedShareModel::sortModel()
-{
-    sort(0);
-}
-
-ShareModel *SortedShareModel::shareModel() const
-{
-    return qobject_cast<ShareModel*>(sourceModel());
-}
-
-void SortedShareModel::setShareModel(ShareModel *shareModel)
-{
-    const auto currentSetModel = sourceModel();
-
-    if(currentSetModel) {
-        disconnect(currentSetModel, &ShareModel::rowsInserted, this, &SortedShareModel::sortModel);
-        disconnect(currentSetModel, &ShareModel::rowsMoved, this, &SortedShareModel::sortModel);
-        disconnect(currentSetModel, &ShareModel::rowsRemoved, this, &SortedShareModel::sortModel);
-        disconnect(currentSetModel, &ShareModel::dataChanged, this, &SortedShareModel::sortModel);
-        disconnect(currentSetModel, &ShareModel::modelReset, this, &SortedShareModel::sortModel);
-    }
-
-    // Re-sort model when any changes take place
-    connect(shareModel, &ShareModel::rowsInserted, this, &SortedShareModel::sortModel);
-    connect(shareModel, &ShareModel::rowsMoved, this, &SortedShareModel::sortModel);
-    connect(shareModel, &ShareModel::rowsRemoved, this, &SortedShareModel::sortModel);
-    connect(shareModel, &ShareModel::dataChanged, this, &SortedShareModel::sortModel);
-    connect(shareModel, &ShareModel::modelReset, this, &SortedShareModel::sortModel);
-
-    setSourceModel(shareModel);
-    sortModel();
-    Q_EMIT shareModelChanged();
+    sort(0, Qt::AscendingOrder);
 }
 
 bool SortedShareModel::lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const

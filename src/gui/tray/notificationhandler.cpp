@@ -94,13 +94,13 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             const auto richParamsKeys = richParams.keys();
             for(const auto &key : richParamsKeys) {
                 const auto parameterJsonObject = richParams.value(key).toObject();
-                a._subjectRichParameters.insert(key, Activity::RichSubjectParameter{
+                a._subjectRichParameters.insert(key, QVariant::fromValue(Activity::RichSubjectParameter{
                                                     parameterJsonObject.value(QStringLiteral("type")).toString(),
                                                     parameterJsonObject.value(QStringLiteral("id")).toString(),
                                                     parameterJsonObject.value(QStringLiteral("name")).toString(),
                                                     QString(),
                                                     QUrl()
-                                                });
+                                                     }));
             }
         }
 
@@ -135,7 +135,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
                     al._primary = false;
                 }
 
-                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].id + QStringLiteral("/128");
+                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].value<Activity::RichSubjectParameter>().id + QStringLiteral("/128");
             }
 
             // We want to serve incoming call dialogs to the user for calls that

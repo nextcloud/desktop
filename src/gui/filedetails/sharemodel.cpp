@@ -199,7 +199,6 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         return {};
     }
 
-    qCWarning(lcShareModel) << "Got unknown role" << role << "for share of type" << share->getShareType() << "so returning null value.";
     return {};
 }
 

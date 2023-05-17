@@ -25,6 +25,7 @@ RowLayout {
     property string imageSourceHover: ""
     property string imageSource: ""
     property string text: ""
+    property var display
 
     property color textColor: Style.ncTextColor
     property color textColorHovered: textColor
@@ -39,7 +40,7 @@ RowLayout {
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignHCenter
         verticalAlignment: Image.AlignVCenter
-        visible: root.hovered ? root.imageSourceHover !== "" : root.imageSource !== ""
+        visible: root.display === Button.TextOnly ? false : root.hovered ? root.imageSourceHover !== "" : root.imageSource !== ""
     }
 
     EnforcedPlainTextLabel {

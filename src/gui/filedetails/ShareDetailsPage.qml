@@ -230,7 +230,7 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: root.padding
 
-                imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
                 bgColor: Style.lightHover
                 bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
@@ -806,7 +806,7 @@ Page {
             CustomButton {
                 height: Style.standardPrimaryButtonHeight
 
-                imageSource: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
+                icon.source: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
                 imageSourceHover: "image://svgimage-custom-color/close.svg/" + Style.ncHeaderTextColor
                 text: qsTr("Unshare")
                 textColor: Style.errorBoxBackgroundColor
@@ -823,7 +823,7 @@ Page {
             CustomButton {
                 height: Style.standardPrimaryButtonHeight
 
-                imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncBlue
+                icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncBlue
                 imageSourceHover: "image://svgimage-custom-color/add.svg/" + Style.ncHeaderTextColor
                 text: qsTr("Add another link")
                 textColor: Style.ncBlue
@@ -867,7 +867,7 @@ Page {
 
             height: Style.standardPrimaryButtonHeight
 
-            imageSource: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
+            icon.source: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
             textColor: Style.ncHeaderTextColor
             contentsFont.bold: true

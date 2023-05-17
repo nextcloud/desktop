@@ -130,12 +130,9 @@ void ActivityListModel::setDisplayActions(bool value)
 
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
-    Activity a;
+    Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
-    if (!index.isValid())
-        return QVariant();
-
-    a = _finalList.at(index.row());
+    const auto a = _finalList.at(index.row());
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
     if (!ast && _accountState != ast.data())
         return QVariant();
@@ -804,13 +801,13 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
 {
     QVariantList customList;
 
-    if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
-        customList << ActivityListModel::convertLinkToActionButton(activity._links.first());
-        return customList;
-    }
-
     for (const auto &activityLink : activity._links) {
+        if (!activityLink._primary) {
+            continue;
+        }
+
         customList << ActivityListModel::convertLinkToActionButton(activityLink);
+        break;
     }
 
     return customList;

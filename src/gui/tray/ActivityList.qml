@@ -3,12 +3,10 @@ import QtQuick.Controls 2.15
 
 import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
-import Style 1.0
 
 ScrollView {
     id: controlRoot
-    property alias model: sortedActivityList.activityListModel
-
+    property alias model: sortedActivityList.sourceModel
     property bool isFileActivityList: false
     property int iconSize: Style.trayListItemIconSize
     property int delegateHorizontalPadding: 0
@@ -44,6 +42,8 @@ ScrollView {
 
             color: Style.lightHover
             visible: activityList.activeFocus
+
+            radius: Style.mediumRoundedButtonRadius
         }
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
@@ -54,14 +54,10 @@ ScrollView {
 
         model: NC.SortedActivityListModel {
             id: sortedActivityList
-            activityListModel: controlRoot.model
         }
 
         delegate: ActivityItem {
-            anchors.left: if (parent) parent.left
-            anchors.right: if (parent) parent.right
-            anchors.leftMargin: controlRoot.delegateHorizontalPadding
-            anchors.rightMargin: controlRoot.delegateHorizontalPadding
+            width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
             iconSize: controlRoot.iconSize

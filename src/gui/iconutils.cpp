@@ -67,7 +67,7 @@ QImage createSvgImageWithCustomColor(const QString &fileName, const QColor &cust
     QImage result{};
 
     if (fileName.isEmpty() || !customColor.isValid()) {
-        qWarning(lcIconUtils) << "invalid fileName or customColor";
+        qCWarning(lcIconUtils) << "invalid fileName or customColor";
         return result;
     }
 
@@ -106,7 +106,7 @@ QImage createSvgImageWithCustomColor(const QString &fileName, const QColor &cust
 
     Q_ASSERT(!sourceSvg.isEmpty());
     if (sourceSvg.isEmpty()) {
-        qWarning(lcIconUtils) << "Failed to find base SVG file for" << fileName;
+        qCWarning(lcIconUtils) << "Failed to find base SVG file for" << fileName;
         return result;
     }
 
@@ -114,7 +114,7 @@ QImage createSvgImageWithCustomColor(const QString &fileName, const QColor &cust
 
     Q_ASSERT(!result.isNull());
     if (result.isNull()) {
-        qWarning(lcIconUtils) << "Failed to load pixmap for" << fileName;
+        qCWarning(lcIconUtils) << "Failed to load pixmap for" << fileName;
     }
 
     return result;
@@ -155,7 +155,10 @@ QImage drawSvgWithCustomFillColor(
         return {};
     }
 
-    const auto reqSize = requestedSize.isValid() ? requestedSize : svgRenderer.defaultSize();
+    const auto reqSize = (requestedSize.isValid() && requestedSize.height() && requestedSize.height()) ? requestedSize : svgRenderer.defaultSize();
+    if (!reqSize.isValid() || !reqSize.height() || !reqSize.height()) {
+        return {};
+    }
 
     if (originalSize) {
         *originalSize = svgRenderer.defaultSize();

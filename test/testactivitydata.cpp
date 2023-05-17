@@ -321,7 +321,7 @@ private slots:
             QCOMPARE(activity._link, eventLink);
             QCOMPARE(activity._subjectDisplay, QStringLiteral("%1 updated event %2 in calendar %3").arg(account->displayName(),
                                                                                                         eventName,
-                                                                                                        richParams[calendarC].name));
+                                                                                                        richParams[calendarC].value<OCC::Activity::RichSubjectParameter>().name));
             QCOMPARE(activity._icon, iconExpected);
         }
     }

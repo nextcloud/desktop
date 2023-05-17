@@ -1,14 +1,12 @@
 import QtQml 2.15
 import QtQuick 2.15
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
-RowLayout {
+Repeater {
     id: root
-
-    spacing: 20
 
     property string objectType: ""
     property variant linksForActionButtons: []
@@ -24,71 +22,29 @@ RowLayout {
     signal triggerAction(int actionIndex)
     signal showReplyField()
 
-    Repeater {
-        id: actionsRepeater
-        // a max of maxActionButtons will get dispayed as separate buttons
-        model: root.linksForActionButtons
+    model: root.linksForActionButtons
 
-        ActivityActionButton {
-            id: activityActionButton
+    CustomButton {
+        id: activityActionButton
 
-            Layout.minimumWidth: primaryButton ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
-            Layout.preferredHeight: parent.height
-            Layout.preferredWidth: primaryButton ? -1 : parent.height
+        property string verb: model.modelData.verb
+        property bool isTalkReplyButton: verb === "REPLY"
 
-            verb: model.modelData.verb
-            primaryButton: (model.index === 0 && verb !== "DELETE") || model.modelData.primary
-            isTalkReplyButton: verb === "REPLY"
+        Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-            text: model.modelData.label
+        hoverEnabled: true
+        padding: Style.smallSpacing
+        display: Button.TextOnly
 
-            adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
+        text: model.modelData.label
 
-            imageSource: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
-            imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + Style.currentUserHeaderTextColor : ""
+        icon.source: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
 
-            onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
-        }
-    }
+        onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
 
-    Loader {
-        // actions that do not fit maxActionButtons limit, must be put into a context menu
-        id: moreActionsButtonContainer
-
-        Layout.preferredWidth: parent.height
-        Layout.topMargin: Style.roundedButtonBackgroundVerticalMargins
-        Layout.bottomMargin: Style.roundedButtonBackgroundVerticalMargins
-        Layout.fillHeight: true
-
-        active: root.displayActions && (root.linksContextMenu.length > 0)
-
-        sourceComponent: Button {
-            id: moreActionsButton
-
-            icon.source: "qrc:///client/theme/more.svg"
-            icon.color: Style.ncTextColor
-
-            background: Rectangle {
-                color: parent.hovered ? Style.lightHover : root.moreActionsButtonColor
-                radius: width / 2
-            }
-
-            NCToolTip {
-                visible: parent.hovered
-                text: qsTr("Show more actions")
-            }
-
-            Accessible.name: qsTr("Show more actions")
-
-            onClicked:  moreActionsButtonContextMenu.popup(moreActionsButton.x, moreActionsButton.y);
-
-            Connections {
-                target: root.flickable
-
-                function onMovementStarted() {
-                    moreActionsButtonContextMenu.close();
-                }
-            }
-        }
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        contentsFont.bold: true
+        bgColor: Style.currentUserHeaderColor
     }
 }
