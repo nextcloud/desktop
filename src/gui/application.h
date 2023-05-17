@@ -77,7 +77,6 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected slots:
-    void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
     void slotCleanup();
     void slotAccountStateAdded(AccountStatePtr accountState) const;
@@ -96,10 +95,7 @@ private:
     QString _userEnforcedLanguage;
     QString _displayLanguage;
 
-    QTimer _checkConnectionTimer;
-
     QScopedPointer<FolderMan> _folderManager;
-
 
     static Application *_instance;
     friend Application *ocApp();

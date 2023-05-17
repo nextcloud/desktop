@@ -59,6 +59,10 @@
 #include <QPushButton>
 #include <QTranslator>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+#include <QNetworkInformation>
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcApplication, "gui.application", QtInfoMsg)
@@ -238,13 +242,6 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived, _gui.data(), &ownCloudGui::slotShowShareDialog);
 
-    // startup procedure.
-    connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
-    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingInterval);
-    _checkConnectionTimer.start();
-    // Also check immediately
-    QTimer::singleShot(0, this, &Application::slotCheckConnection);
-
 #ifdef WITH_AUTO_UPDATER
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
@@ -256,6 +253,15 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
     // Cleanup at Quit.
     connect(qApp, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
     qApp->installEventFilter(this);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    if (!QNetworkInformation::loadDefaultBackend()) {
+        qCWarning(lcApplication) << "Failed to load QNetworkInformation";
+    } else {
+        connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this,
+            [this](QNetworkInformation::Reachability reachability) { qCInfo(lcApplication) << "Connection Status changed to:" << reachability; });
+    }
+#endif
 }
 
 Application::~Application()
@@ -294,8 +300,7 @@ void Application::slotAccountStateAdded(AccountStatePtr accountState) const
         _folderManager.data(), [account = accountState->account().data()] {
             FolderMan::instance()->slotServerVersionChanged(account);
         });
-
-    _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
+    accountState->checkConnectivity();
 }
 
 void Application::slotCleanup()
@@ -309,29 +314,6 @@ void Application::slotCleanup()
 
     // Remove the account from the account manager so it can be deleted.
     AccountManager::instance()->shutdown();
-}
-
-void Application::slotCheckConnection()
-{
-    const auto &list = AccountManager::instance()->accounts();
-    for (const auto &accountState : list) {
-        AccountState::State state = accountState->state();
-
-        // Don't check if we're manually signed out or
-        // when the error is permanent.
-        if (state != AccountState::SignedOut
-            && state != AccountState::ConfigurationError
-            && state != AccountState::AskingCredentials) {
-            accountState->checkConnectivity();
-        }
-    }
-
-    if (list.isEmpty()) {
-        // let gui open the setup wizard
-        _gui->slotOpenSettingsDialog();
-
-        _checkConnectionTimer.stop(); // don't popup the wizard on interval;
-    }
 }
 
 void Application::slotCrash()
@@ -356,10 +338,6 @@ AccountStatePtr Application::addNewAccount(AccountPtr newAccount)
 
     // first things first: we need to add the new account
     auto accountStatePtr = accountMan->addAccount(newAccount);
-
-    // check connectivity of the newly created account
-    _checkConnectionTimer.start();
-    slotCheckConnection();
 
     // if one account is configured: enable autostart
     bool shouldSetAutoStart = (accountMan->accounts().size() == 1);

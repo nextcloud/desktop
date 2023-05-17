@@ -35,6 +35,9 @@
 #include <QRandomGenerator>
 #include <QSettings>
 #include <QTimer>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+#include <QNetworkInformation>
+#endif
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -109,6 +112,31 @@ AccountState::AccountState(AccountPtr account)
             checkConnectivity(false);
         },
         Qt::QueuedConnection);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    if (QNetworkInformation::instance()) {
+        connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability reachability) {
+            switch (reachability) {
+            case QNetworkInformation::Reachability::Online:
+                [[fallthrough]];
+            case QNetworkInformation::Reachability::Site:
+                [[fallthrough]];
+            case QNetworkInformation::Reachability::Unknown:
+                checkConnectivity(false);
+                break;
+            case QNetworkInformation::Reachability::Disconnected:
+                [[fallthrough]];
+            case QNetworkInformation::Reachability::Local:
+                break;
+            }
+        });
+    }
+    // as a fallback and to recover after server issues we also poll
+    auto timer = new QTimer(this);
+    timer->setInterval(ConnectionValidator::DefaultCallingInterval);
+    connect(timer, &QTimer::timeout, this, [this] { checkConnectivity(false); });
+    timer->start();
+#endif
 
     connect(account->credentials(), &AbstractCredentials::requestLogout, this, [this] {
         setState(State::SignedOut);
