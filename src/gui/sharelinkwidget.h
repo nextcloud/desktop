@@ -16,10 +16,13 @@
 #ifndef SHARELINKWIDGET_H
 #define SHARELINKWIDGET_H
 
-#include "accountfwd.h"
-#include "sharepermissions.h"
+#include "libsync/accountfwd.h"
+
+#include "gui/sharemanager.h"
+#include "gui/sharepermissions.h"
+
 #include "QProgressIndicator.h"
-#include "sharepermissions.h"
+
 #include <QDialog>
 #include <QSharedPointer>
 #include <QList>
@@ -36,7 +39,6 @@ namespace Ui {
 class AbstractCredentials;
 class SyncResult;
 class LinkShare;
-class Share;
 class ShareManager;
 
 /**
