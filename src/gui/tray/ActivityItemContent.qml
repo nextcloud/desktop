@@ -238,7 +238,7 @@ Item {
                 Layout.preferredHeight: Style.headerButtonIconSize
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-                icon.source: "image://svgimage-custom-color/more.svg" + "/" + Style.adjustedCurrentUserHeaderColor
+                icon.source: "image://svgimage-custom-color/more.svg"
 
                 NCToolTip {
                     text: qsTr("Open file details")
