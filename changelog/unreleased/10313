@@ -1,0 +1,6 @@
+Enhancement: Log http request when it is send
+
+We now log the http request when it is send, not when it is created.
+This will elable us to print more headers set by the platform and messaure the request time more accurately.
+
+https://github.com/owncloud/client/issues/10313

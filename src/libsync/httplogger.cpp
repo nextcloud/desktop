@@ -17,10 +17,12 @@
 #include "common/chronoelapsedtimer.h"
 #include "common/utility.h"
 
-#include <QRegularExpression>
-#include <QLoggingCategory>
 #include <QBuffer>
+#include <QLoggingCategory>
+#include <QPointer>
+#include <QRegularExpression>
 
+#include <memory>
 
 using namespace std::chrono;
 
@@ -29,7 +31,8 @@ Q_LOGGING_CATEGORY(lcNetworkHttp, "sync.httplogger", QtWarningMsg)
 
 const qint64 PeekSize = 1024 * 1024;
 
-const QByteArray XRequestId(){
+const QByteArray XRequestId()
+{
     return QByteArrayLiteral("X-Request-ID");
 }
 
@@ -110,30 +113,30 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     if (!lcNetworkHttp().isInfoEnabled()) {
         return;
     }
-    const auto timer = Utility::ChronoElapsedTimer();
-    const auto request = reply->request();
+    auto timer = std::make_unique<Utility::ChronoElapsedTimer>();
 
-    const auto keys = request.rawHeaderList();
-    QList<QNetworkReply::RawHeaderPair> header;
-    header.reserve(keys.size());
-    for (const auto &key : keys) {
-        header << qMakePair(key, request.rawHeader(key));
-    }
-    logHttp(requestVerb(operation, request),
-        request.url().toString(),
-        request.rawHeader(XRequestId()),
-        request.header(QNetworkRequest::ContentTypeHeader).toString(),
-        header,
-        device);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // device should still exist, lets still use a qpointer to ensure we have valid data
+    QObject::connect(
+        reply, &QNetworkReply::requestSent, reply, [timer = timer.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
+            Q_ASSERT(!deviceRaw || device);
+            timer->reset();
 
-    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer] {
-        logHttp(requestVerb(*reply),
-            reply->url().toString(),
-            reply->request().rawHeader(XRequestId()),
-            reply->header(QNetworkRequest::ContentTypeHeader).toString(),
-            reply->rawHeaderPairs(),
-            reply,
-            timer.duration());
+            const auto request = reply->request();
+            const auto keys = request.rawHeaderList();
+            QList<QNetworkReply::RawHeaderPair> header;
+            header.reserve(keys.size());
+            for (const auto &key : keys) {
+                header << qMakePair(key, request.rawHeader(key));
+            }
+            logHttp(requestVerb(operation, request), request.url().toString(), request.rawHeader(XRequestId()),
+                request.header(QNetworkRequest::ContentTypeHeader).toString(), header, device);
+        });
+#endif
+
+    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer = std::move(timer)] {
+        logHttp(requestVerb(*reply), reply->url().toString(), reply->request().rawHeader(XRequestId()),
+            reply->header(QNetworkRequest::ContentTypeHeader).toString(), reply->rawHeaderPairs(), reply, timer->duration());
     });
 }
 
