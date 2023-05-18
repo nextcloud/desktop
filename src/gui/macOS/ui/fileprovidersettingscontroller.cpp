@@ -14,13 +14,25 @@
 
 #include "fileprovidersettingscontroller.h"
 
+namespace {
+
+constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
+
+}
+
 namespace OCC {
 
 namespace Mac {
 
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
+    , _settingsView(QUrl(fpSettingsQmlPath))
 {
+}
+
+QQuickView* FileProviderSettingsController::settingsView()
+{
+    return &_settingsView;
 }
 
 } // Mac
