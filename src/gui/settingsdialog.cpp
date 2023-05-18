@@ -13,7 +13,6 @@
  */
 
 #include "settingsdialog.h"
-#include "macOS/fileprovider.h"
 #include "ui_settingsdialog.h"
 
 #include "folderman.h"
@@ -25,6 +24,10 @@
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 #include "accountmanager.h"
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#endif
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -137,20 +140,18 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 #ifdef BUILD_FILE_PROVIDER_MODULE
 
     if (Mac::FileProvider::fileProviderAvailable()) {
+        const auto fpSettingsView = _fpSettingsController.settingsView();
+        const auto fpSettingsViewWrapper = QWidget::createWindowContainer(fpSettingsView);
+
         const auto macVfsAction = createColorAwareAction(QStringLiteral(":/client/theme/files.svg"), tr("Virtual files"));
         _actionGroup->addAction(macVfsAction);
         _toolBar->addAction(macVfsAction);
-        const auto macVfsSettingsView = new QQuickView;
-        const auto macVfsSettingsContainer = QWidget::createWindowContainer(macVfsSettingsView);
-        _ui->stack->addWidget(macVfsSettingsContainer);
-
-        const auto qmlSourceUrl = QUrl("qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml");
-        macVfsSettingsView->setSource(qmlSourceUrl);
+        _ui->stack->addWidget(fpSettingsViewWrapper);
 
         connect(_ui->stack, &QStackedWidget::currentChanged,
                 this, &SettingsDialog::currentPageChanged);
 
-        _actionGroupWidgets.insert(macVfsAction, macVfsSettingsContainer);
+        _actionGroupWidgets.insert(macVfsAction, fpSettingsViewWrapper);
     }
 
 #endif
