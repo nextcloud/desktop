@@ -17,9 +17,9 @@ jobs:
         pre-build-command: pip install -r requirements.txt
         build-command: make gettext
     - uses: actions/checkout@v2
-      - name: Commit report
-        run: |
-          git config --global user.name 'Nextcloud Bot'
-          git config --global user.email 'bot@nextcloud.com'
-          git commit -am "Updates catalog templates (POT files fetched automatically by transifex)"
-          git push
+    - name: Commit report
+      run: |
+        git config --global user.name 'Nextcloud Bot'
+        git config --global user.email 'bot@nextcloud.com'
+        git commit -am "Updates catalog templates (POT files fetched automatically by transifex)"
+        git push
