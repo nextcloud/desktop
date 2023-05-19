@@ -143,7 +143,7 @@ RowLayout {
 
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
-                maximumLineCount: 1
+                maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
                 color: Style.ncTextColor
                 visible: text !== ""
@@ -164,12 +164,8 @@ RowLayout {
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                 height: (text === "") ? 0 : implicitHeight
-                width: parent.width
 
                 text: root.activityData.dateTime
-                elide: Text.ElideRight
-                wrapMode: Text.Wrap
-                maximumLineCount: 2
                 font.pixelSize: Style.subLinePixelSize
                 color: Style.ncSecondaryTextColor
                 visible: text !== ""
