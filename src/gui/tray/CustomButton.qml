@@ -56,6 +56,8 @@ Button {
         hovered: root.hovered
         imageSourceHover: root.imageSourceHover
         imageSource: root.icon.source
+        imageSourceWidth: root.icon.width
+        imageSourceHeight: root.icon.height
         text: root.text
         textColor: root.textColor
         textColorHovered: root.textColorHovered
