@@ -175,7 +175,7 @@ RowLayout {
                 visible: text !== ""
             }
 
-            RoundButton {
+            CustomButton {
                 id: dismissActionButton
 
                 Layout.preferredWidth: Style.dismissButtonSize
@@ -184,12 +184,12 @@ RowLayout {
 
                 visible: root.showDismissButton && !fileDetailsButton.visible
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+                icon.source: "image://svgimage-custom-color/clear.svg/" + Style.ncTextColor
 
-                flat: true
                 display: Button.IconOnly
-                hoverEnabled: true
                 padding: 0
+                bgColor: Style.lightHover
+                bgNormalOpacity: 0
 
                 NCToolTip {
                     text: qsTr("Dismiss")
