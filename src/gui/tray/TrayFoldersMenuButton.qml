@@ -102,7 +102,7 @@ HeaderButton {
         Image {
             id: openLocalFolderButtonIcon
             cache: false
-            source: "qrc:///client/theme/white/folder.svg"
+            source: "image://svgimage-custom-color/folder.svg/" + Style.currentUserHeaderTextColor
 
             verticalAlignment: Qt.AlignCenter
 
