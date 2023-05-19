@@ -14,6 +14,7 @@ QtObject {
     readonly property color ncSecondaryTextColor: "#808080"
     readonly property color ncHeaderTextColor: "white"
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
+    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
     readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
