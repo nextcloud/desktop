@@ -176,6 +176,30 @@ RowLayout {
             }
 
             CustomButton {
+                id: fileDetailsButton
+
+                Layout.preferredWidth: Style.dismissButtonSize
+                Layout.preferredHeight: Style.dismissButtonSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+
+                icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
+
+                NCToolTip {
+                    text: qsTr("Open file details")
+                    visible: parent.hovered
+                }
+
+                display: Button.IconOnly
+                padding: 0
+                bgColor: Style.lightHover
+                bgNormalOpacity:  0
+
+                visible: model.showFileDetails
+
+                onClicked: Systray.presentShareViewInTray(model.openablePath)
+            }
+
+            CustomButton {
                 id: dismissActionButton
 
                 Layout.preferredWidth: Style.dismissButtonSize
@@ -206,7 +230,7 @@ RowLayout {
             Layout.minimumHeight: Style.minimumActivityItemHeight
             Layout.maximumWidth: root.width - thumbnailItem.width
             spacing: Style.trayHorizontalMargin
-            visible: activityTextInfo.visible || fileDetailsButton.visible || talkReplyMessageSent.visible || activityActions.visible
+            visible: activityTextInfo.visible || talkReplyMessageSent.visible || activityActions.visible
 
             EnforcedPlainTextLabel {
                 id: activityTextInfo
@@ -230,30 +254,6 @@ RowLayout {
 
             Item {
                 Layout.fillWidth: true
-            }
-
-            CustomButton {
-                id: fileDetailsButton
-
-                Layout.preferredWidth: Style.headerButtonIconSize
-                Layout.preferredHeight: Style.headerButtonIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-
-                icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
-
-                NCToolTip {
-                    text: qsTr("Open file details")
-                    visible: parent.hovered
-                }
-
-                display: Button.IconOnly
-                padding: 0
-                bgColor: Style.lightHover
-                bgNormalOpacity:  0
-
-                visible: model.showFileDetails
-
-                onClicked: Systray.presentShareViewInTray(model.openablePath)
             }
 
             EnforcedPlainTextLabel {
