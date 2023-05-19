@@ -32,8 +32,6 @@ RowLayout {
         readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
         readonly property int thumbnailRadius: model.thumbnail && model.thumbnail.isUserAvatar ? width / 2 : 3
 
-        Layout.fillHeight: true
-
         implicitWidth: root.iconSize
         implicitHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? root.iconSize * 0.9 : root.iconSize
 
@@ -127,18 +125,14 @@ RowLayout {
 
         RowLayout {
             Layout.fillWidth: true
-            Layout.maximumWidth: activityContentLayout.width
 
             spacing: Style.trayHorizontalMargin
 
             EnforcedPlainTextLabel {
                 id: activityTextTitle
                 text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
-                height: (text === "") ? 0 : implicitHeight
 
-                Layout.maximumWidth: activityContentLayout.width - Style.trayHorizontalMargin -
-                                     (activityTextDateTime.visible ? activityTextDateTime.width + Style.trayHorizontalMargin : 0) -
-                                     (dismissActionButton.visible ? dismissActionButton.width + Style.trayHorizontalMargin : 0)
+                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
                 elide: Text.ElideRight
@@ -186,7 +180,8 @@ RowLayout {
                 }
 
                 display: Button.IconOnly
-                padding: 0
+                leftPadding: 0
+                rightPadding: 0
                 bgColor: Style.lightHover
                 bgNormalOpacity:  0
 
@@ -207,7 +202,8 @@ RowLayout {
                 icon.source: "image://svgimage-custom-color/clear.svg/" + Style.ncTextColor
 
                 display: Button.IconOnly
-                padding: 0
+                leftPadding: 0
+                rightPadding: 0
                 bgColor: Style.lightHover
                 bgNormalOpacity: 0
 
@@ -223,8 +219,6 @@ RowLayout {
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumHeight: Style.minimumActivityItemHeight
-            Layout.maximumWidth: root.width - thumbnailItem.width
             spacing: Style.trayHorizontalMargin
             visible: activityTextInfo.visible || talkReplyMessageSent.visible || activityActions.visible
 
