@@ -123,7 +123,7 @@ HeaderButton {
                 cached: true
                 color: Style.currentUserHeaderTextColor
                 source: Image {
-                    source: "qrc:///client/theme/white/caret-down.svg"
+                    source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
                     sourceSize.width: Style.accountDropDownCaretSize
                     sourceSize.height: Style.accountDropDownCaretSize
 
