@@ -239,7 +239,7 @@ RowLayout {
                 Layout.preferredHeight: Style.headerButtonIconSize
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-                icon.source: "image://svgimage-custom-color/more.svg"
+                icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
 
                 NCToolTip {
                     text: qsTr("Open file details")
