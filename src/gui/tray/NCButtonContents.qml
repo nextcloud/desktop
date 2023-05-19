@@ -35,6 +35,7 @@ RowLayout {
         id: icon
 
         Layout.fillWidth: !buttonLabel.visible
+        Layout.maximumHeight: root.height
 
         source: root.hovered ? root.imageSourceHover : root.imageSource
         fillMode: Image.PreserveAspectFit
