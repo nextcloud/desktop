@@ -24,6 +24,8 @@ RowLayout {
     property bool hovered: false
     property string imageSourceHover: ""
     property string imageSource: ""
+    property int imageSourceWidth: 64
+    property int imageSourceHeight: 64
     property string text: ""
     property var display
 
@@ -38,6 +40,12 @@ RowLayout {
         Layout.maximumHeight: root.height
 
         source: root.hovered ? root.imageSourceHover : root.imageSource
+
+        sourceSize {
+            width: root.imageSourceWidth
+            height: root.imageSourceHeight
+        }
+
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignHCenter
         verticalAlignment: Image.AlignVCenter
