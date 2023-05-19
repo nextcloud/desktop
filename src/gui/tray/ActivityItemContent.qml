@@ -206,6 +206,7 @@ RowLayout {
             Layout.minimumHeight: Style.minimumActivityItemHeight
             Layout.maximumWidth: root.width - thumbnailItem.width
             spacing: Style.trayHorizontalMargin
+            visible: activityTextInfo.visible || fileDetailsButton.visible || talkReplyMessageSent.visible || activityActions.visible
 
             EnforcedPlainTextLabel {
                 id: activityTextInfo
