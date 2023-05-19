@@ -36,8 +36,9 @@ RowLayout {
     Image {
         id: icon
 
-        Layout.fillWidth: !buttonLabel.visible
+        Layout.maximumWidth: root.height
         Layout.maximumHeight: root.height
+        Layout.alignment: Qt.AlignCenter
 
         source: root.hovered ? root.imageSourceHover : root.imageSource
 
