@@ -232,7 +232,7 @@ RowLayout {
                 Layout.fillWidth: true
             }
 
-            Button {
+            CustomButton {
                 id: fileDetailsButton
 
                 Layout.preferredWidth: Style.headerButtonIconSize
@@ -246,10 +246,10 @@ RowLayout {
                     visible: parent.hovered
                 }
 
-                flat: true
                 display: Button.IconOnly
-                hoverEnabled: true
                 padding: 0
+                bgColor: Style.lightHover
+                bgNormalOpacity:  0
 
                 visible: model.showFileDetails
 
