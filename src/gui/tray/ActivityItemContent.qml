@@ -139,7 +139,7 @@ RowLayout {
                 Layout.maximumWidth: activityContentLayout.width - Style.trayHorizontalMargin -
                                      (activityTextDateTime.visible ? activityTextDateTime.width + Style.trayHorizontalMargin : 0) -
                                      (dismissActionButton.visible ? dismissActionButton.width + Style.trayHorizontalMargin : 0)
-                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
