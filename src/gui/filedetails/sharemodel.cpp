@@ -17,10 +17,11 @@
 #include <QFileInfo>
 #include <QTimeZone>
 
+#include <openssl/rand.h>
+
 #include "account.h"
 #include "folderman.h"
 #include "theme.h"
-#include "wordlist.h"
 
 namespace {
 
@@ -28,16 +29,32 @@ static const auto placeholderLinkShareId = QStringLiteral("__placeholderLinkShar
 static const auto internalLinkShareId = QStringLiteral("__internalLinkShareId__");
 static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secureFileDropPlaceholderLinkShareId__");
 
+constexpr auto asciiMin = 33;
+constexpr auto asciiMax = 126;
+
 QString createRandomPassword()
 {
-    const auto words = OCC::WordList::getRandomWords(10);
+    constexpr auto numChars = 24;
+    QString passwd;
 
-    const auto addFirstLetter = [](const QString &current, const QString &next) -> QString {
-        return current + next.at(0);
-    };
+    while(passwd.length() < numChars) {
+        const auto remainingChars = numChars - passwd.length();
+        unsigned char unsignedCharArray[remainingChars];
+        RAND_bytes(unsignedCharArray, remainingChars);
 
-    return std::accumulate(std::cbegin(words), std::cend(words), QString(), addFirstLetter);
+        for (auto i = 0; i < remainingChars; i++) {
+            auto byte = unsignedCharArray[i];
+            byte %= asciiMax;
+
+            if (byte >= asciiMin) {
+                passwd.append(byte);
+            }
+        }
+    }
+
+    return passwd;
 }
+
 }
 
 namespace OCC
