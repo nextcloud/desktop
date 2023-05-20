@@ -31,30 +31,56 @@ static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secur
 
 constexpr auto asciiMin = 33;
 constexpr auto asciiMax = 126;
+constexpr auto asciiRange = asciiMax - asciiMin;
 
 QString createRandomPassword()
 {
-    constexpr auto numChars = 24;
-    QString passwd;
+    static constexpr auto numChars = 24;
 
+    static constexpr std::string_view lowercaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+    static constexpr std::string_view uppercaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    static constexpr std::string_view numbers = "0123456789";
+    static constexpr std::string_view specialChars = R"(ªº\\/|"'*+-_´¨{}·#$%&()=\[\]<>;:@~)";
+
+    static const QRegularExpression lowercaseMatch("[a-z]");
+    static const QRegularExpression uppercaseMatch("[A-Z]");
+    static const QRegularExpression numberMatch("[0-9]");
+    static const QRegularExpression specialCharMatch(QString("[%1]").arg(specialChars.data()));
+
+    static const std::map<std::string_view, QRegularExpression> matchMap {
+        { lowercaseAlphabet, lowercaseMatch },
+        { uppercaseAlphabet, uppercaseMatch },
+        { numbers, numberMatch },
+        { specialChars, specialCharMatch },
+    };
+
+    QString passwd;
     unsigned char unsignedCharArray[numChars];
+
     RAND_bytes(unsignedCharArray, numChars);
 
     for (auto i = 0; i < numChars; i++) {
         auto byte = unsignedCharArray[i];
-        byte %= asciiRange;
+        byte %= asciiRange + 1;
         byte += asciiMin;
         passwd.append(byte);
     }
 
-        for (auto i = 0; i < remainingChars; i++) {
-            auto byte = unsignedCharArray[i];
-            byte %= asciiMax;
+    for (const auto &charsWithMatcher : matchMap) {
+        const auto selectionChars = charsWithMatcher.first;
+        const auto matcher = charsWithMatcher.second;
+        Q_ASSERT(matcher.isValid());
 
-            if (byte >= asciiMin) {
-                passwd.append(byte);
-            }
+        if (matcher.match(passwd).hasMatch()) {
+            continue;
         }
+
+        // add random required character at random position
+        const auto passwdInsertIndex = std::rand() % passwd.length();
+        const auto charToInsertIndex = std::rand() % selectionChars.length();
+        const auto charToInsert = selectionChars.at(charToInsertIndex);
+
+        passwd.insert(passwdInsertIndex, charToInsert);
     }
 
     return passwd;
