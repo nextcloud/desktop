@@ -37,10 +37,15 @@ QString createRandomPassword()
     constexpr auto numChars = 24;
     QString passwd;
 
-    while(passwd.length() < numChars) {
-        const auto remainingChars = numChars - passwd.length();
-        unsigned char unsignedCharArray[remainingChars];
-        RAND_bytes(unsignedCharArray, remainingChars);
+    unsigned char unsignedCharArray[numChars];
+    RAND_bytes(unsignedCharArray, numChars);
+
+    for (auto i = 0; i < numChars; i++) {
+        auto byte = unsignedCharArray[i];
+        byte %= asciiRange;
+        byte += asciiMin;
+        passwd.append(byte);
+    }
 
         for (auto i = 0; i < remainingChars; i++) {
             auto byte = unsignedCharArray[i];
