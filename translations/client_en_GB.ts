@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Local version</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Server version</translation>
     </message>
 </context>
 <context>
@@ -359,24 +359,25 @@
         <location filename="../src/gui/accountmanager.cpp" line="182"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation type="unfinished"/>
+        <translation>An existing configuration from a legacy desktop client was detected.
+Should an account import be attempted?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
         <location filename="../src/gui/accountmanager.cpp" line="252"/>
         <location filename="../src/gui/accountmanager.cpp" line="260"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Legacy import</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="253"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation type="unfinished"/>
+        <translation>Successfully imported account from legacy client: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="261"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Could not import accounts from legacy client configuration.</translation>
     </message>
 </context>
 <context>
@@ -5345,7 +5346,7 @@ Server replied with error: %2</translation>
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
@@ -5356,7 +5357,7 @@ Server replied with error: %2</translation>
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nh</numerusform><numerusform>%nh</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
@@ -5367,13 +5368,13 @@ Server replied with error: %2</translation>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1m</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nm</numerusform><numerusform>%nm</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
@@ -5392,38 +5393,38 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Solve sync conflicts</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="54"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 files in conflict</numerusform><numerusform>%1 files in conflict</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="61"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="77"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>All local versions</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="95"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>All server versions</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="150"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolve conflicts</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="154"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -5441,7 +5442,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="196"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>Copied!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="243"/>
@@ -5520,7 +5521,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>Share link copied!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
@@ -5582,7 +5583,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="141"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolve conflicts</translation>
     </message>
 </context>
 <context>
@@ -5633,7 +5634,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Open group folder &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>
