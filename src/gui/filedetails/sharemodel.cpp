@@ -17,6 +17,7 @@
 #include <QFileInfo>
 #include <QTimeZone>
 
+#include <random>
 #include <openssl/rand.h>
 
 #include "account.h"
@@ -54,6 +55,9 @@ QString createRandomPassword()
         { specialChars, specialCharMatch },
     };
 
+    std::random_device rand_dev;
+    std::mt19937 rng(rand_dev());
+
     QString passwd;
     unsigned char unsignedCharArray[numChars];
 
@@ -76,8 +80,11 @@ QString createRandomPassword()
         }
 
         // add random required character at random position
-        const auto passwdInsertIndex = std::rand() % passwd.length();
-        const auto charToInsertIndex = std::rand() % selectionChars.length();
+        std::uniform_int_distribution<std::mt19937::result_type> passwdDist(0, passwd.length() - 1);
+        std::uniform_int_distribution<std::mt19937::result_type> charsDist(0, selectionChars.length() - 1);
+
+        const auto passwdInsertIndex = passwdDist(rng);
+        const auto charToInsertIndex = charsDist(rng);
         const auto charToInsert = selectionChars.at(charToInsertIndex);
 
         passwd.insert(passwdInsertIndex, charToInsert);
