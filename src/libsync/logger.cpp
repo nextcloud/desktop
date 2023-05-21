@@ -312,9 +312,8 @@ void Logger::enterNextLogFileNoLock()
         QString newLogName = now.toString("yyyyMMdd_HHmm") + "_nextcloud.log";
 
         // Expire old log files and deal with conflicts
-        const auto files = dir.entryList(QStringList("*owncloud.log.*"), QDir::Files, QDir::Name) +
-                           dir.entryList(QStringList("*nextcloud.log.*"), QDir::Files, QDir::Name);
-        static const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*(next|own)cloud\.log\.(\d+).*)"));
+        const auto files = dir.entryList(QStringList("*nextcloud.log.*"), QDir::Files, QDir::Name);
+        static const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*nextcloud\.log\.(\d+).*)"));
         auto maxNumber = -1;
 
         for (const auto &fileName : files) {
