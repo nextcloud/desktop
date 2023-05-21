@@ -304,20 +304,23 @@ void Logger::enterNextLogFileNoLock()
         return;
     }
 
+    static constexpr auto compressedFileExt = ".gz";
+    static constexpr auto fileNameSuffix = "nextcloud.log";
+
     // Tentative new log name, will be adjusted if one like this already exists
     const auto now = QDateTime::currentDateTime();
-    const QString dateString = now.toString("yyyy-MM-dd_HH-mm_ss-zzz");
+    const auto dateString = now.toString("yyyy-MM-dd_HH-mm_ss-zzz");
 
     auto logNum = 0;
     QString newLogName;
 
     do {
-        newLogName = dateString + QString("_log%1_nextcloud.log").arg(logNum);
+        newLogName = dateString + QString("_log%1_%2").arg(logNum).arg(fileNameSuffix);
         ++logNum;
     } while (QFile::exists(_logDir.absoluteFilePath(newLogName)));
 
     // Expire old log files and deal with conflicts
-    const auto files = _logDir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
+    const auto files = _logDir.entryList({ QString("*%1").arg(fileNameSuffix) }, QDir::Files, QDir::Name);
 
     if (_logExpireSecs > 0) {
         for (const auto &fileName : files) {
@@ -335,17 +338,17 @@ void Logger::enterNextLogFileNoLock()
     // Compress the previous log file. On a restart this can be the most recent
     // log file.
     auto logToCompress = previousLog;
-    if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz")) {
+    if (logToCompress.isEmpty() && files.isEmpty() && !files.last().endsWith(compressedFileExt)) {
         logToCompress = _logDir.absoluteFilePath(files.last());
     }
 
     if (!logToCompress.isEmpty()) {
-        const QString compressedName = logToCompress + ".gz";
+        const QString compressedFileName = logToCompress + compressedFileExt;
 
-        if (compressLog(logToCompress, compressedName)) {
+        if (compressLog(logToCompress, compressedFileName)) {
             QFile::remove(logToCompress);
         } else {
-            QFile::remove(compressedName);
+            QFile::remove(compressedFileName);
         }
     }
 }
