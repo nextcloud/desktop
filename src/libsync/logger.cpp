@@ -317,8 +317,8 @@ void Logger::enterNextLogFileNoLock()
     // Expire old log files and deal with conflicts
     const auto files = dir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
 
-    for (const auto &fileName : files) {
-        if (_logExpire > 0) {
+    if (_logExpire > 0) {
+        for (const auto &fileName : files) {
             QFileInfo fileInfo(dir.absoluteFilePath(fileName));
             if (fileInfo.lastModified().addSecs(logExpireSecs) < now) {
                 dir.remove(fileName);
