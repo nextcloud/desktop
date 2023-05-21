@@ -18,6 +18,7 @@
 #include <QObject>
 #include <QList>
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QTextStream>
 #include <qmutex.h>
@@ -107,7 +108,8 @@ private:
     bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;
     mutable QMutex _mutex;
-    QString _logDirectory;
+    QString _logDirPath;
+    QDir _logDir;
     bool _temporaryFolderLogDir = false;
     QSet<QString> _logRules;
     QVector<QString> _crashLog;

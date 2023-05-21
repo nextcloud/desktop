@@ -16,7 +16,6 @@
 
 #include "config.h"
 
-#include <QDir>
 #include <QRegularExpression>
 #include <QStringList>
 #include <QtGlobal>
@@ -203,12 +202,13 @@ void Logger::setLogExpire(int expire)
 
 QString Logger::logDir() const
 {
-    return _logDirectory;
+    return _logDirPath;
 }
 
 void Logger::setLogDir(const QString &dir)
 {
-    _logDirectory = dir;
+    _logDirPath = dir;
+    _logDir = QDir(_logDirPath);
 }
 
 void Logger::setLogFlush(bool flush)
@@ -280,13 +280,8 @@ void Logger::dumpCrashLog()
 
 void Logger::enterNextLogFileNoLock()
 {
-    if (_logDirectory.isEmpty()) {
+    if (_logDirPath.isEmpty() || _logDir.exists()) {
         return;
-    }
-
-    QDir dir(_logDirectory);
-    if (!dir.exists()) {
-        dir.mkpath(".");
     }
 
     // Tentative new log name, will be adjusted if one like this already exists
@@ -295,25 +290,26 @@ void Logger::enterNextLogFileNoLock()
     QString newLogName = now.toString("yyyyMMdd_HHmm_ss") + "_nextcloud.log";
 
     // Expire old log files and deal with conflicts
-    const auto files = dir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
+    const auto files = _logDir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
 
     if (_logExpire > 0) {
         for (const auto &fileName : files) {
-            QFileInfo fileInfo(dir.absoluteFilePath(fileName));
+            QFileInfo fileInfo(_logDir.absoluteFilePath(fileName));
+
             if (fileInfo.lastModified().addSecs(logExpireSecs) < now) {
-                dir.remove(fileName);
+                _logDir.remove(fileName);
             }
         }
     }
 
     auto previousLog = _logFile.fileName();
-    setLogFileNoLock(dir.filePath(newLogName));
+    setLogFileNoLock(_logDir.filePath(newLogName));
 
     // Compress the previous log file. On a restart this can be the most recent
     // log file.
     auto logToCompress = previousLog;
     if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz")) {
-        logToCompress = dir.absoluteFilePath(files.last());
+        logToCompress = _logDir.absoluteFilePath(files.last());
     }
 
     if (!logToCompress.isEmpty()) {
