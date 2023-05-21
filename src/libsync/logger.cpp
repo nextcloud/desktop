@@ -195,9 +195,9 @@ void Logger::setLogFile(const QString &name)
     setLogFileNoLock(name);
 }
 
-void Logger::setLogExpire(int expire)
+void Logger::setLogExpireHours(const int expire)
 {
-    _logExpire = expire;
+    _logExpireSecs = expire * 60 * 60;
 }
 
 QString Logger::logDir() const
@@ -238,7 +238,7 @@ void Logger::setupTemporaryFolderLogDir()
     if (!QDir().mkpath(dir))
         return;
     setLogDebug(true);
-    setLogExpire(4 /*hours*/);
+    setLogExpireHours(4);
     setLogDir(dir);
     _temporaryFolderLogDir = true;
 }
@@ -286,17 +286,16 @@ void Logger::enterNextLogFileNoLock()
 
     // Tentative new log name, will be adjusted if one like this already exists
     const auto now = QDateTime::currentDateTime();
-    const auto logExpireSecs = 60 * 60 * _logExpire;
     QString newLogName = now.toString("yyyyMMdd_HHmm_ss") + "_nextcloud.log";
 
     // Expire old log files and deal with conflicts
     const auto files = _logDir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
 
-    if (_logExpire > 0) {
+    if (_logExpireSecs > 0) {
         for (const auto &fileName : files) {
             QFileInfo fileInfo(_logDir.absoluteFilePath(fileName));
 
-            if (fileInfo.lastModified().addSecs(logExpireSecs) < now) {
+            if (fileInfo.lastModified().addSecs(_logExpireSecs) < now) {
                 _logDir.remove(fileName);
             }
         }

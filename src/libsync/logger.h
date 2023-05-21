@@ -49,7 +49,7 @@ public:
     QString logFile() const;
     void setLogFile(const QString &name);
 
-    void setLogExpire(int expire);
+    void setLogExpireHours(const int expireHours);
 
     QString logDir() const;
     void setLogDir(const QString &dir);
@@ -104,7 +104,7 @@ private:
 
     QFile _logFile;
     bool _doFileFlush = false;
-    int _logExpire = 0;
+    int _logExpireSecs = 0;
     bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;
     mutable QMutex _mutex;
