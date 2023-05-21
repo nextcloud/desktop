@@ -280,13 +280,21 @@ void Logger::dumpCrashLog()
 
 void Logger::enterNextLogFileNoLock()
 {
-    if (_logDirPath.isEmpty() || _logDir.exists()) {
+    if (_logDirPath.isEmpty()) {
         return;
     }
 
     // Tentative new log name, will be adjusted if one like this already exists
     const auto now = QDateTime::currentDateTime();
-    QString newLogName = now.toString("yyyyMMdd_HHmm_ss") + "_nextcloud.log";
+    const QString dateString = now.toString("yyyy-MM-dd_HH-mm_ss-zzz");
+
+    auto logNum = 0;
+    QString newLogName;
+
+    do {
+        newLogName = dateString + QString("_log%1_nextcloud.log").arg(logNum);
+        ++logNum;
+    } while (QFile::exists(_logDir.absoluteFilePath(newLogName)));
 
     // Expire old log files and deal with conflicts
     const auto files = _logDir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
