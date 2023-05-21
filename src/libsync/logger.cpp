@@ -280,48 +280,49 @@ void Logger::dumpCrashLog()
 
 void Logger::enterNextLogFileNoLock()
 {
-    if (!_logDirectory.isEmpty()) {
+    if (_logDirectory.isEmpty()) {
+        return;
+    }
 
-        QDir dir(_logDirectory);
-        if (!dir.exists()) {
-            dir.mkpath(".");
-        }
+    QDir dir(_logDirectory);
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
 
-        // Tentative new log name, will be adjusted if one like this already exists
-        const auto now = QDateTime::currentDateTime();
-        const auto logExpireSecs = 60 * 60 * _logExpire;
-        QString newLogName = now.toString("yyyyMMdd_HHmm_ss") + "_nextcloud.log";
+    // Tentative new log name, will be adjusted if one like this already exists
+    const auto now = QDateTime::currentDateTime();
+    const auto logExpireSecs = 60 * 60 * _logExpire;
+    QString newLogName = now.toString("yyyyMMdd_HHmm_ss") + "_nextcloud.log";
 
-        // Expire old log files and deal with conflicts
-        const auto files = dir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
+    // Expire old log files and deal with conflicts
+    const auto files = dir.entryList(QStringList("*nextcloud.log"), QDir::Files, QDir::Name);
 
-        for (const auto &fileName : files) {
-            if (_logExpire > 0) {
-                QFileInfo fileInfo(dir.absoluteFilePath(fileName));
-                if (fileInfo.lastModified().addSecs(logExpireSecs) < now) {
-                    dir.remove(fileName);
-                }
+    for (const auto &fileName : files) {
+        if (_logExpire > 0) {
+            QFileInfo fileInfo(dir.absoluteFilePath(fileName));
+            if (fileInfo.lastModified().addSecs(logExpireSecs) < now) {
+                dir.remove(fileName);
             }
         }
+    }
 
-        auto previousLog = _logFile.fileName();
-        setLogFileNoLock(dir.filePath(newLogName));
+    auto previousLog = _logFile.fileName();
+    setLogFileNoLock(dir.filePath(newLogName));
 
-        // Compress the previous log file. On a restart this can be the most recent
-        // log file.
-        auto logToCompress = previousLog;
-        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz")) {
-            logToCompress = dir.absoluteFilePath(files.last());
-        }
+    // Compress the previous log file. On a restart this can be the most recent
+    // log file.
+    auto logToCompress = previousLog;
+    if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz")) {
+        logToCompress = dir.absoluteFilePath(files.last());
+    }
 
-        if (!logToCompress.isEmpty()) {
-            const QString compressedName = logToCompress + ".gz";
+    if (!logToCompress.isEmpty()) {
+        const QString compressedName = logToCompress + ".gz";
 
-            if (compressLog(logToCompress, compressedName)) {
-                QFile::remove(logToCompress);
-            } else {
-                QFile::remove(compressedName);
-            }
+        if (compressLog(logToCompress, compressedName)) {
+            QFile::remove(logToCompress);
+        } else {
+            QFile::remove(compressedName);
         }
     }
 }
