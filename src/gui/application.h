@@ -153,6 +153,7 @@ private:
 
     QString _overrideServerUrl;
     QString _overrideLocalDir;
+    QThread _loggingThread;
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;
