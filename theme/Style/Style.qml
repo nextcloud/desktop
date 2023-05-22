@@ -50,7 +50,7 @@ QtObject {
                                                     // this amount to properly center the sync status icon to the thumbnail
                                                     // images, which will work so long as the thumbnails are left aligned
 
-    property int standardSpacing: 10
+    property int standardSpacing: trayHorizontalMargin
     property int smallSpacing: 5
     property int extraSmallSpacing: 2
 
