@@ -134,7 +134,7 @@ Feature: Syncing files
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a folder <foldername> inside the sync folder
         And the user waits for folder <foldername> to be synced
-        Then as "Alice" folder <foldername> should exist on the server
+        Then as "Alice" folder <foldername> should exist in the server
         Examples:
             | foldername                                                               |
             | "myFolder"                                                               |
@@ -176,16 +176,16 @@ Feature: Syncing files
             test content
             """
         And the user waits for the files to sync
-        Then as "Alice" folder "parent/subfolderEmpty1" should exist on the server
-        And as "Alice" folder "parent/subfolderEmpty2" should exist on the server
-        And as "Alice" folder "parent/subfolderEmpty3" should exist on the server
-        And as "Alice" folder "parent/subfolderEmpty4" should exist on the server
-        And as "Alice" folder "parent/subfolderEmpty5" should exist on the server
-        And as "Alice" folder "parent/subfolder1" should exist on the server
-        And as "Alice" folder "parent/subfolder2" should exist on the server
-        And as "Alice" folder "parent/subfolder3" should exist on the server
-        And as "Alice" folder "parent/subfolder4" should exist on the server
-        And as "Alice" folder "parent/subfolder5" should exist on the server
+        Then as "Alice" folder "parent/subfolderEmpty1" should exist in the server
+        And as "Alice" folder "parent/subfolderEmpty2" should exist in the server
+        And as "Alice" folder "parent/subfolderEmpty3" should exist in the server
+        And as "Alice" folder "parent/subfolderEmpty4" should exist in the server
+        And as "Alice" folder "parent/subfolderEmpty5" should exist in the server
+        And as "Alice" folder "parent/subfolder1" should exist in the server
+        And as "Alice" folder "parent/subfolder2" should exist in the server
+        And as "Alice" folder "parent/subfolder3" should exist in the server
+        And as "Alice" folder "parent/subfolder4" should exist in the server
+        And as "Alice" folder "parent/subfolder5" should exist in the server
 
 
     Scenario: Both original and copied folders can be synced
@@ -193,8 +193,8 @@ Feature: Syncing files
         When user "Alice" creates a folder "original" inside the sync folder
         And the user copies the folder "original" to "copied"
         And the user waits for folder "copied" to be synced
-        Then as "Alice" folder "original" should exist on the server
-        And as "Alice" folder "copied" should exist on the server
+        Then as "Alice" folder "original" should exist in the server
+        And as "Alice" folder "copied" should exist in the server
 
     @issue-9281
     Scenario: Verify that you can create a subfolder with long name
@@ -203,16 +203,16 @@ Feature: Syncing files
         When user "Alice" creates a folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" inside the sync folder
         And the user waits for folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" to be synced
         Then the folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the file system
-        And as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
+        And as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist in the server
 
     Scenario: Verify pre existing folders in local (Desktop client) are copied over to the server
         Given user "Alice" has created a folder "Folder1" inside the sync folder
         And user "Alice" has created a folder "Folder1/subFolder1" inside the sync folder
         And user "Alice" has created a folder "Folder1/subFolder1/subFolder2" inside the sync folder
         And user "Alice" has set up a client with default settings
-        Then as "Alice" folder "Folder1" should exist on the server
-        And as "Alice" folder "Folder1/subFolder1" should exist on the server
-        And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist on the server
+        Then as "Alice" folder "Folder1" should exist in the server
+        And as "Alice" folder "Folder1/subFolder1" should exist in the server
+        And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist in the server
 
 
     Scenario: Filenames that are rejected by the server are reported
@@ -236,10 +236,10 @@ Feature: Syncing files
         And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>/<foldername>" inside the sync folder
         And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" inside the sync folder
         And the user waits for folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" to be synced
-        Then as "Alice" folder "<foldername>/<foldername>" should exist on the server
-        And as "Alice" folder "<foldername>/<foldername>/<foldername>" should exist on the server
-        And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>" should exist on the server
-        And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" should exist on the server
+        Then as "Alice" folder "<foldername>/<foldername>" should exist in the server
+        And as "Alice" folder "<foldername>/<foldername>/<foldername>" should exist in the server
+        And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>" should exist in the server
+        And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" should exist in the server
         Examples:
             | foldername                                                      |
             | An empty folder which name is obviously more than 59 characters |
@@ -255,10 +255,10 @@ Feature: Syncing files
         And the folder "test%" should exist on the file system
         And the file "PRN" should exist on the file system
         And the file "foo%" should exist on the file system
-        And as "Alice" folder "CON" should exist on the server
-        And as "Alice" folder "test%" should exist on the server
-        And as "Alice" file "/PRN" should exist on the server
-        And as "Alice" file "/foo%" should exist on the server
+        And as "Alice" folder "CON" should exist in the server
+        And as "Alice" folder "test%" should exist in the server
+        And as "Alice" file "/PRN" should exist in the server
+        And as "Alice" file "/foo%" should exist in the server
 
 
     Scenario: various types of files can be synced from server to client
@@ -290,12 +290,12 @@ Feature: Syncing files
             | /test_video.mp4  |
             | /simple.txt      |
         And the user waits for the files to sync
-        Then as "Alice" file "testavatar.png" should exist on the server
-        And as "Alice" file "testavatar.jpg" should exist on the server
-        And as "Alice" file "testavatar.jpeg" should exist on the server
-        And as "Alice" file "testaudio.mp3" should exist on the server
-        And as "Alice" file "test_video.mp4" should exist on the server
-        And as "Alice" file "simple.txt" should exist on the server
+        Then as "Alice" file "testavatar.png" should exist in the server
+        And as "Alice" file "testavatar.jpg" should exist in the server
+        And as "Alice" file "testavatar.jpeg" should exist in the server
+        And as "Alice" file "testaudio.mp3" should exist in the server
+        And as "Alice" file "test_video.mp4" should exist in the server
+        And as "Alice" file "simple.txt" should exist in the server
 
 
     Scenario Outline: File with long name can be synced
@@ -305,7 +305,7 @@ Feature: Syncing files
             test content
             """
         And the user waits for file "<filename>" to be synced
-        Then as "Alice" file "<filename>" should exist on the server
+        Then as "Alice" file "<filename>" should exist in the server
         Examples:
             | filename                                                                                                                                                                                                                     |
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
@@ -329,7 +329,7 @@ Feature: Syncing files
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "newfile.txt" with size "1GB" inside the sync folder
         And the user waits for file "newfile.txt" to be synced
-        Then as "Alice" file "newfile.txt" should exist on the server
+        Then as "Alice" file "newfile.txt" should exist in the server
 
 
     Scenario: File with spaces in the name can sync
@@ -339,7 +339,7 @@ Feature: Syncing files
             test contents
             """
         And the user waits for file "file with space.txt" to be synced
-        Then as "Alice" file "file with space.txt" should exist on the server
+        Then as "Alice" file "file with space.txt" should exist in the server
 
 
     Scenario: Syncing folders each having 500 files
@@ -350,9 +350,9 @@ Feature: Syncing files
         And user "Alice" moves folder "folder2" from the temp folder into the sync folder
         And the user waits for folder "folder1" to be synced
         And the user waits for folder "folder2" to be synced
-        Then as "Alice" folder "folder1" should exist on the server
+        Then as "Alice" folder "folder1" should exist in the server
         And as user "Alice" folder "folder1" should contain "500" items on the server
-        And as "Alice" folder "folder2" should exist on the server
+        And as "Alice" folder "folder2" should exist in the server
         And as user "Alice" folder "folder2" should contain "500" items on the server
 
 
@@ -379,7 +379,7 @@ Feature: Syncing files
         When user "Alice" moves file "archive.zip" from the temp folder into the sync folder
         And user "Alice" unzips the zip file "archive.zip" inside the sync root
         And the user waits for the files to sync
-        Then as "Alice" folder "folder1" should exist on the server
-        And as "Alice" folder "folder2" should exist on the server
+        Then as "Alice" folder "folder1" should exist in the server
+        And as "Alice" folder "folder2" should exist in the server
         And the content of file "file1.txt" for user "Alice" should be "Test file1" on the server
         And the content of file "file2.txt" for user "Alice" should be "Test file2" on the server

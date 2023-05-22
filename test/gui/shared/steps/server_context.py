@@ -3,6 +3,7 @@ import json
 from os import path
 from helpers.ConfigHelper import get_config
 from helpers.api.Provisioning import setup_app
+import helpers.api.webdav_helper as webdav
 
 
 def executeStepThroughMiddleware(context, step):
@@ -53,3 +54,26 @@ def step(context, stepPart1):
 @Given('app "|any|" has been "|any|" in the server')
 def step(context, app_name, action):
     setup_app(app_name, action)
+
+
+@Then(
+    r'^as "([^"].*)" (?:file|folder) "([^"].*)" should not exist in the server',
+    regexp=True,
+)
+def step(context, user_name, resource_name):
+    test.compare(
+        webdav.resource_exists(user_name, resource_name),
+        False,
+        f"Resource '{resource_name}' should not exist, but does",
+    )
+
+
+@Then(
+    r'^as "([^"].*)" (?:file|folder) "([^"].*)" should exist in the server', regexp=True
+)
+def step(context, user_name, resource_name):
+    test.compare(
+        webdav.resource_exists(user_name, resource_name),
+        True,
+        f"Resource '{resource_name}' should exist, but does not",
+    )

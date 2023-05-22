@@ -28,3 +28,7 @@ def delete(url, headers={}, user=None):
 
 def mkcol(url, headers={}, user=None):
     return send_request(url=url, method="MKCOL", headers=headers, user=user)
+
+
+def propfind(url, body=None, headers={}, user=None):
+    return send_request(url, "PROPFIND", body, headers, user)
