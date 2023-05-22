@@ -118,7 +118,7 @@ bool Logger::isLoggingToFile() const
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
-    const QString msg = qFormatLogMessage(type, ctx, message);
+    const auto msg = qFormatLogMessage(type, ctx, message);
 #if defined(Q_OS_WIN) && defined(QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
@@ -198,26 +198,32 @@ void Logger::setLogFile(const QString &name)
 
 void Logger::setLogExpire(int expire)
 {
+    QMutexLocker locker(&_mutex);
     _logExpire = expire;
 }
 
 QString Logger::logDir() const
 {
+    QMutexLocker locker(&_mutex);
     return _logDirectory;
 }
 
 void Logger::setLogDir(const QString &dir)
 {
+    QMutexLocker locker(&_mutex);
     _logDirectory = dir;
 }
 
 void Logger::setLogFlush(bool flush)
 {
+    QMutexLocker locker(&_mutex);
     _doFileFlush = flush;
 }
 
 void Logger::setLogDebug(bool debug)
 {
+    QMutexLocker locker(&_mutex);
+
     const QSet<QString> rules = {debug ? QStringLiteral("nextcloud.*.debug=true") : QString()};
     if (debug) {
         addLogRule(rules);
@@ -229,6 +235,7 @@ void Logger::setLogDebug(bool debug)
 
 QString Logger::temporaryFolderLogDirPath() const
 {
+    QMutexLocker locker(&_mutex);
     return QDir::temp().filePath(QStringLiteral(APPLICATION_SHORTNAME "-logdir"));
 }
 
@@ -255,8 +262,21 @@ void Logger::disableTemporaryFolderLogDir()
     _temporaryFolderLogDir = false;
 }
 
+void Logger::addLogRule(const QSet<QString> &rules)
+{
+    QMutexLocker locker(&_mutex);
+    setLogRules(_logRules + rules);
+}
+
+void Logger::removeLogRule(const QSet<QString> &rules)
+{
+    QMutexLocker locker(&_mutex);
+    setLogRules(_logRules - rules);
+}
+
 void Logger::setLogRules(const QSet<QString> &rules)
 {
+    QMutexLocker locker(&_mutex);
     _logRules = rules;
     QString tmp;
     QTextStream out(&tmp);
