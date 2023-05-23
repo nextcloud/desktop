@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik versioon</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Serveri versioon</translation>
     </message>
 </context>
 <context>
@@ -5355,38 +5355,38 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Lahenda sünkroonimise konfliktid</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="54"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 fail konfliktis</numerusform><numerusform>%1 faili konfliktis</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="61"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Vali, kas soovid talletada kohalikku versiooni, serveri versiooni või mõlemat. Kui valid mõlemat, lisatakse kohaliku faili nime lõppu number.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="77"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>Kõik kohalikud versioonid</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="95"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>Kõik serveri versioonid</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="150"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Lahenda konfliktid</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="154"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Tühista</translation>
     </message>
 </context>
 <context>
@@ -5545,7 +5545,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="141"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Lahenda konfliktid</translation>
     </message>
 </context>
 <context>

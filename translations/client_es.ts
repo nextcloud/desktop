@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Versión local</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Versión del servidor</translation>
     </message>
 </context>
 <context>
@@ -4669,7 +4669,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation>¡Todo sincronizado!</translation>
+        <translation>¡Todo está sincronizado!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
@@ -4764,7 +4764,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync for all</source>
-        <translation>Pausar sincronización a todos</translation>
+        <translation>Pausar sincronización para todo</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
@@ -5348,7 +5348,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%día</numerusform><numerusform>%días</numerusform><numerusform>%días</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
@@ -5359,7 +5359,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%hora</numerusform><numerusform>%horas</numerusform><numerusform>%horas</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
@@ -5370,13 +5370,13 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1m</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%min</numerusform><numerusform>%mins</numerusform><numerusform>%mins</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
@@ -5395,38 +5395,38 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflictos de sincronización</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="54"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 archivo en conflicto</numerusform><numerusform>%1 archivos en conflicto</numerusform><numerusform>%1 archivos en conflicto</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="61"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Escoja si quiere mantener la versión local, la versión del servidor, o ambas. Si escoge ambas, se le añadirá un número al nombre del archivo local.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="77"/>
         <source>All local versions</source>
-        <translation type="unfinished"/>
+        <translation>Todas las versiones locales</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="95"/>
         <source>All server versions</source>
-        <translation type="unfinished"/>
+        <translation>Todas las versiones del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="150"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflictos</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="154"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -5585,7 +5585,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="141"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflictos</translation>
     </message>
 </context>
 <context>
@@ -5908,7 +5908,7 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/tray/Window.qml" line="269"/>
         <location filename="../src/gui/tray/Window.qml" line="404"/>
         <source>Pause sync for all</source>
-        <translation>Pausar sincronización para todos</translation>
+        <translation>Pausar sincronización para todo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="362"/>

@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 未能解锁加密的文件夹  %2&quot;。</translation>
+        <translation>&quot;%1未能解锁加密的文件夹%2&quot;。</translation>
     </message>
 </context>
 <context>
@@ -2212,7 +2212,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="250"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>无法在 %1 处创建文件夹。请自行检查。</translation>
+        <translation>在 %1 处创建文件夹失败。请自行检查。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="268"/>
@@ -3133,7 +3133,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation>设置客户端 TLS 证书</translation>
+        <translation>设置客户端TLS证书</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
@@ -4794,7 +4794,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation>未能获取 &apos;&apos;%1&apos; 的搜索提供商。错误： %2</translation>
+        <translation>获取 &apos;&apos;%1&apos; 的搜索提供商失败。错误： %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
@@ -5554,7 +5554,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
-        <translation>未能连接至数据库</translation>
+        <translation>连接至数据库失败</translation>
     </message>
 </context>
 <context>
