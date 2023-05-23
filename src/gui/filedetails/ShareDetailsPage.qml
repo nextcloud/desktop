@@ -953,6 +953,7 @@ Page {
         rightPadding: root.padding
         leftPadding: root.padding
         alignment: Qt.AlignRight | Qt.AlignVCenter
+        contentWidth: (contentItem as ListView).contentWidth
         visible: copyShareLinkButton.visible
 
         CustomButton {
@@ -970,7 +971,6 @@ Page {
 
             property bool shareLinkCopied: false
 
-            Layout.preferredWidth: implicitWidth
             height: Style.standardPrimaryButtonHeight
 
             icon.source: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
