@@ -257,7 +257,6 @@ ApplicationWindow {
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     display:                AbstractButton.IconOnly
                     flat:                   true
-                    palette: Style.systemPalette
 
                     Accessible.role: Accessible.ButtonMenu
                     Accessible.name: qsTr("Current account")
@@ -285,7 +284,26 @@ ApplicationWindow {
                         width: (Style.currentAccountButtonWidth - 2)
                         height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                        palette: Style.palette
+
+                        // TODO: Rather than setting all these palette colours manually,
+                        // create a custom style and do it for all components globally
+                        palette {
+                            text: Style.ncTextColor
+                            windowText: Style.ncTextColor
+                            buttonText: Style.ncTextColor
+                            brightText: Style.ncTextBrightColor
+                            highlight: Style.lightHover
+                            highlightedText: Style.ncTextColor
+                            light: Style.lightHover
+                            midlight: Style.lightHover
+                            mid: Style.ncSecondaryTextColor
+                            dark: Style.menuBorder
+                            button: Style.menuBorder
+                            window: Style.backgroundColor
+                            base: Style.backgroundColor
+                            toolTipBase: Style.backgroundColor
+                            toolTipText: Style.ncTextColor
+                        }
 
                         background: Rectangle {
                             border.color: Style.menuBorder
@@ -334,7 +352,6 @@ ApplicationWindow {
                             id: addAccountButton
                             height: Style.addAccountButtonHeight
                             hoverEnabled: true
-                            palette: Theme.systemPalette
 
                             background: Item {
                                 height: parent.height
@@ -386,7 +403,6 @@ ApplicationWindow {
                         MenuItem {
                             id: syncPauseButton
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
 
@@ -409,7 +425,6 @@ ApplicationWindow {
                             id: settingsButton
                             text: qsTr("Settings")
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.openSettings()
 
@@ -432,7 +447,6 @@ ApplicationWindow {
                             id: exitButton
                             text: qsTr("Exit");
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.shutdown()
 
@@ -655,6 +669,26 @@ ApplicationWindow {
                         height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
+                        // TODO: Rather than setting all these palette colours manually,
+                        // create a custom style and do it for all components globally
+                        palette {
+                            text: Style.ncTextColor
+                            windowText: Style.ncTextColor
+                            buttonText: Style.ncTextColor
+                            brightText: Style.ncTextBrightColor
+                            highlight: Style.lightHover
+                            highlightedText: Style.ncTextColor
+                            light: Style.lightHover
+                            midlight: Style.lightHover
+                            mid: Style.ncSecondaryTextColor
+                            dark: Style.menuBorder
+                            button: Style.menuBorder
+                            window: Style.backgroundColor
+                            base: Style.backgroundColor
+                            toolTipBase: Style.backgroundColor
+                            toolTipText: Style.ncTextColor
+                        }
+
                         background: Rectangle {
                             border.color: Style.menuBorder
                             color: Style.backgroundColor
@@ -682,7 +716,6 @@ ApplicationWindow {
 
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
-                                    palette.windowText: Style.ncTextColor
                                     icon.source: model.appIconUrl
                                     icon.color: Style.ncTextColor
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
