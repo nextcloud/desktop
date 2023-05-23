@@ -11,6 +11,7 @@ QtObject {
     // Colors
     readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
     readonly property color ncTextColor: Theme.systemPalette.windowText
+    readonly property color ncTextBrightColor: "white"
     readonly property color ncSecondaryTextColor: "#808080"
     readonly property color ncHeaderTextColor: "white"
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)

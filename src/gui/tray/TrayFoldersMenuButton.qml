@@ -44,7 +44,6 @@ HeaderButton {
     visible: currentUser.hasLocalFolder
     display: AbstractButton.IconOnly
     flat: true
-    palette: Style.systemPalette
 
     Accessible.role: root.userHasGroupFolders ? Accessible.ButtonMenu : Accessible.Button
     Accessible.name: tooltip.text

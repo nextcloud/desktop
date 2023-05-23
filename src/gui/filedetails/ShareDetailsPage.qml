@@ -166,6 +166,9 @@ Page {
         text: Style.ncTextColor
         windowText: Style.ncTextColor
         buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
         light: Style.lightHover
         midlight: Style.lightHover
         mid: Style.ncSecondaryTextColor
@@ -173,6 +176,8 @@ Page {
         button: Style.menuBorder
         window: Style.backgroundColor
         base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
     }
 
     background: Rectangle {
