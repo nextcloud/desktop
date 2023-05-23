@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Version locale</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Version du serveur</translation>
     </message>
 </context>
 <context>
@@ -359,7 +359,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="182"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation type="unfinished"/>
+        <translation>Un configuration existante du client d&apos;origine a été détectée
+Est-ce qu&apos;une tentative d&apos;importation du compte doit être lancée ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
