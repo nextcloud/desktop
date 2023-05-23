@@ -83,7 +83,7 @@ RowLayout {
                     mid: Style.ncSecondaryTextColor
                     dark: Style.menuBorder
                     button: Style.menuBorder
-                    window: Style.backgroundColor
+                    window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the progress bar
                     base: Style.backgroundColor
                     toolTipBase: Style.backgroundColor
                     toolTipText: Style.ncTextColor
