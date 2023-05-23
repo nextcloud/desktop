@@ -203,10 +203,10 @@ Feature: Sharing
         And the user waits for file "textfile.txt" to be synced
         And the user overwrites the file "simple-folder/textfile.txt" with content "overwrite file inside a folder"
         And the user waits for file "simple-folder/textfile.txt" to be synced
-        Then as "Brian" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
-        And as "Brian" the file "textfile.txt" on the server should have the content "overwrite file in the root"
-        And as "Alice" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
-        And as "Alice" the file "textfile.txt" on the server should have the content "overwrite file in the root"
+        Then as "Brian" the file "simple-folder/textfile.txt" should have the content "overwrite file inside a folder" in the server
+        And as "Brian" the file "textfile.txt" should have the content "overwrite file in the root" in the server
+        And as "Alice" the file "simple-folder/textfile.txt" should have the content "overwrite file inside a folder" in the server
+        And as "Alice" the file "textfile.txt" should have the content "overwrite file in the root" in the server
 
 
     Scenario: sharee tries to edit content of files shared without write permission
@@ -220,10 +220,10 @@ Feature: Sharing
         When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite file inside a folder"
         And the user tries to overwrite the file "textfile.txt" with content "overwrite file in the root"
         And the user waits for file "textfile.txt" to have sync error
-        Then as "Brian" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
-        And as "Brian" the file "textfile.txt" on the server should have the content "file in the root"
-        And as "Alice" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
-        And as "Alice" the file "textfile.txt" on the server should have the content "file in the root"
+        Then as "Brian" the file "Parent/textfile.txt" should have the content "file inside a folder" in the server
+        And as "Brian" the file "textfile.txt" should have the content "file in the root" in the server
+        And as "Alice" the file "Parent/textfile.txt" should have the content "file inside a folder" in the server
+        And as "Alice" the file "textfile.txt" should have the content "file in the root" in the server
 
 
     Scenario: sharee edits shared files and again try to edit after write permission is revoked
@@ -244,10 +244,10 @@ Feature: Sharing
         And user "Brian" tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
         And user "Brian" tries to overwrite the file "FOLDER/simple.txt" with content "overwrite some content"
         And user "Brian" waits for file "textfile.txt" to have sync error
-        Then as "Brian" the file "textfile.txt" on the server should have the content "ownCloud test text file"
-        And as "Brian" the file "FOLDER/simple.txt" on the server should have the content "some content"
-        And as "Alice" the file "textfile.txt" on the server should have the content "ownCloud test text file"
-        And as "Alice" the file "FOLDER/simple.txt" on the server should have the content "some content"
+        Then as "Brian" the file "textfile.txt" should have the content "ownCloud test text file" in the server
+        And as "Brian" the file "FOLDER/simple.txt" should have the content "some content" in the server
+        And as "Alice" the file "textfile.txt" should have the content "ownCloud test text file" in the server
+        And as "Alice" the file "FOLDER/simple.txt" should have the content "some content" in the server
 
 
     Scenario: sharee creates a file and a folder inside a shared folder

@@ -77,3 +77,13 @@ def step(context, user_name, resource_name):
         True,
         f"Resource '{resource_name}' should exist, but does not",
     )
+
+
+@Then('as "|any|" the file "|any|" should have the content "|any|" in the server')
+def step(context, user_name, file_name, content):
+    text_content = webdav.get_file_content(user_name, file_name)
+    test.compare(
+        text_content,
+        content,
+        f"File '{file_name}' should have content '{content}' but found '{text_content}'",
+    )

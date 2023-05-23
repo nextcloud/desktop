@@ -15,7 +15,7 @@ Feature: Syncing files
             test content
             """
         And the user waits for file "lorem-for-upload.txt" to be synced
-        Then as "Alice" the file "lorem-for-upload.txt" on the server should have the content "test content"
+        Then as "Alice" the file "lorem-for-upload.txt" should have the content "test content" in the server 
 
 
     Scenario: Syncing all files and folders from the server

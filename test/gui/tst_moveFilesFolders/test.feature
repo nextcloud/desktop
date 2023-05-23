@@ -21,7 +21,7 @@ Feature: move file and folder
         When user "Alice" moves file "folder1/folder2/folder3/folder4/folder5/lorem.txt" to "/" in the sync folder
         And user "Alice" moves folder "folder1/folder2/folder3/folder4/folder5/test-folder" to "/" in the sync folder
         And the user waits for the files to sync
-        Then as "Alice" the file "lorem.txt" on the server should have the content "ownCloud"
+        Then as "Alice" the file "lorem.txt" should have the content "ownCloud" in the server 
         And as "Alice" folder "test-folder" should exist in the server
         And as "Alice" file "folder1/folder2/folder3/folder4/folder5/lorem.txt" should not exist in the server
         And as "Alice" folder "folder1/folder2/folder3/folder4/folder5/test-folder" should not exist in the server

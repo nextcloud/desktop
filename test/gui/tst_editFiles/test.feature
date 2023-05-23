@@ -14,4 +14,4 @@ Feature: edit files
         And user "Alice" has set up a client with default settings
         When the user overwrites the file "S@mpleFile!With,$pecial?Characters.txt" with content "overwrite ownCloud test text file"
         And the user waits for file "S@mpleFile!With,$pecial?Characters.txt" to be synced
-        Then as "Alice" the file "S@mpleFile!With,$pecial?Characters.txt" on the server should have the content "overwrite ownCloud test text file"
+        Then as "Alice" the file "S@mpleFile!With,$pecial?Characters.txt" should have the content "overwrite ownCloud test text file" in the server 
