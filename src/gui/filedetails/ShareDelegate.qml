@@ -165,6 +165,8 @@ GridLayout {
             bgNormalOpacity: 0
 
             icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
@@ -201,8 +203,8 @@ GridLayout {
 
             icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor :
                                            "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
-            icon.width: 16
-            icon.height: 16
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: root.isLinkShare || root.isInternalLinkShare
             enabled: visible
@@ -246,6 +248,8 @@ GridLayout {
             bgNormalOpacity: 0
 
             icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible

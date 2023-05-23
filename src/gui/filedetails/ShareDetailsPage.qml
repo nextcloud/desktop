@@ -263,10 +263,10 @@ Page {
         ColumnLayout {
             id: moreMenu
 
-            property int rowIconWidth: 16
-            property int indicatorItemWidth: 20
-            property int indicatorSpacing: Style.standardSpacing
-            property int itemPadding: Style.smallSpacing
+            readonly property int rowIconWidth: Style.smallIconSize
+            readonly property int indicatorItemWidth: 20
+            readonly property int indicatorSpacing: Style.standardSpacing
+            readonly property int itemPadding: Style.smallSpacing
 
             width: parent.width
 
