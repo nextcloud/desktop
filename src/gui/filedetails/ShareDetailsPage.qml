@@ -321,6 +321,26 @@ Page {
                 active: !root.isFolderItem && !root.isEncryptedItem
                 visible: active
                 sourceComponent: CheckBox {
+                    // TODO: Rather than setting all these palette colours manually,
+                    // create a custom style and do it for all components globally
+                    palette {
+                        text: Style.ncTextColor
+                        windowText: Style.ncTextColor
+                        buttonText: Style.ncTextColor
+                        brightText: Style.ncTextBrightColor
+                        highlight: Style.lightHover
+                        highlightedText: Style.ncTextColor
+                        light: Style.lightHover
+                        midlight: Style.lightHover
+                        mid: Style.ncSecondaryTextColor
+                        dark: Style.menuBorder
+                        button: Style.menuBorder
+                        window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                        base: Style.backgroundColor
+                        toolTipBase: Style.backgroundColor
+                        toolTipText: Style.ncTextColor
+                    }
+
                     spacing: moreMenu.indicatorSpacing
                     padding: moreMenu.itemPadding
                     indicator.width: moreMenu.indicatorItemWidth
@@ -418,6 +438,26 @@ Page {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
+                        // TODO: Rather than setting all these palette colours manually,
+                        // create a custom style and do it for all components globally
+                        palette {
+                            text: Style.ncTextColor
+                            windowText: Style.ncTextColor
+                            buttonText: Style.ncTextColor
+                            brightText: Style.ncTextBrightColor
+                            highlight: Style.lightHover
+                            highlightedText: Style.ncTextColor
+                            light: Style.lightHover
+                            midlight: Style.lightHover
+                            mid: Style.ncSecondaryTextColor
+                            dark: Style.menuBorder
+                            button: Style.menuBorder
+                            window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                            base: Style.backgroundColor
+                            toolTipBase: Style.backgroundColor
+                            toolTipText: Style.ncTextColor
+                        }
+
                         spacing: moreMenu.indicatorSpacing
                         padding: moreMenu.itemPadding
                         indicator.width: moreMenu.indicatorItemWidth
@@ -441,6 +481,26 @@ Page {
                 id: passwordProtectEnabledMenuItem
 
                 Layout.fillWidth: true
+
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette {
+                    text: Style.ncTextColor
+                    windowText: Style.ncTextColor
+                    buttonText: Style.ncTextColor
+                    brightText: Style.ncTextBrightColor
+                    highlight: Style.lightHover
+                    highlightedText: Style.ncTextColor
+                    light: Style.lightHover
+                    midlight: Style.lightHover
+                    mid: Style.ncSecondaryTextColor
+                    dark: Style.menuBorder
+                    button: Style.menuBorder
+                    window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    base: Style.backgroundColor
+                    toolTipBase: Style.backgroundColor
+                    toolTipText: Style.ncTextColor
+                }
 
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
@@ -546,6 +606,26 @@ Page {
                 id: expireDateEnabledMenuItem
 
                 Layout.fillWidth: true
+
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette {
+                    text: Style.ncTextColor
+                    windowText: Style.ncTextColor
+                    buttonText: Style.ncTextColor
+                    brightText: Style.ncTextBrightColor
+                    highlight: Style.lightHover
+                    highlightedText: Style.ncTextColor
+                    light: Style.lightHover
+                    midlight: Style.lightHover
+                    mid: Style.ncSecondaryTextColor
+                    dark: Style.menuBorder
+                    button: Style.menuBorder
+                    window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    base: Style.backgroundColor
+                    toolTipBase: Style.backgroundColor
+                    toolTipText: Style.ncTextColor
+                }
 
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
@@ -738,6 +818,26 @@ Page {
 
                 Layout.fillWidth: true
 
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette {
+                    text: Style.ncTextColor
+                    windowText: Style.ncTextColor
+                    buttonText: Style.ncTextColor
+                    brightText: Style.ncTextBrightColor
+                    highlight: Style.lightHover
+                    highlightedText: Style.ncTextColor
+                    light: Style.lightHover
+                    midlight: Style.lightHover
+                    mid: Style.ncSecondaryTextColor
+                    dark: Style.menuBorder
+                    button: Style.menuBorder
+                    window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    base: Style.backgroundColor
+                    toolTipBase: Style.backgroundColor
+                    toolTipText: Style.ncTextColor
+                }
+
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
                 indicator.width: moreMenu.indicatorItemWidth
@@ -870,6 +970,7 @@ Page {
 
             property bool shareLinkCopied: false
 
+            Layout.preferredWidth: implicitWidth
             height: Style.standardPrimaryButtonHeight
 
             icon.source: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
@@ -891,6 +992,10 @@ Page {
 
             Behavior on bgHoverOpacity {
                 NumberAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on Layout.preferredWidth {
+                SmoothedAnimation { duration: Style.shortAnimationDuration }
             }
 
             TextEdit {
