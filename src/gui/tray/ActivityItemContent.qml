@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.15
 import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
-Item {
+RowLayout {
     id: root
 
     property variant activityData: {{}}
@@ -23,6 +23,8 @@ Item {
 
     signal dismissButtonClicked()
 
+    spacing: Style.standardSpacing
+
     Item {
         id: thumbnailItem
 
@@ -30,12 +32,10 @@ Item {
         readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
         readonly property int thumbnailRadius: model.thumbnail && model.thumbnail.isUserAvatar ? width / 2 : 3
 
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
+        Layout.fillHeight: true
 
-        implicitHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? root.iconSize * 0.9 : root.iconSize
         implicitWidth: root.iconSize
+        implicitHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? root.iconSize * 0.9 : root.iconSize
 
         Loader {
             id: thumbnailImageLoader
@@ -118,10 +118,10 @@ Item {
     ColumnLayout {
         id: activityContentLayout
 
-        anchors.left: thumbnailItem.right
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.maximumWidth: root.width - Style.standardSpacing - root.iconSize
+        implicitWidth: root.width - Style.standardSpacing - root.iconSize
 
         spacing: Style.smallSpacing
 
