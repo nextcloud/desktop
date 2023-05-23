@@ -141,11 +141,6 @@ RowLayout {
                 font.pixelSize: Style.topLinePixelSize
                 color: Style.ncTextColor
                 visible: text !== ""
-
-                NCToolTip {
-                    text: parent.text
-                    visible: parent.hovered
-                }
             }
 
             Item {
