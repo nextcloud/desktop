@@ -1,0 +1,54 @@
+name: macOS Build and Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build
+    runs-on: macos-latest
+    env:
+      CRAFT_TARGET: macos-64-clang
+      CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
+      CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ~/cache
+          key: macos-latest-${{ env.CRAFT_TARGET }}
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install Homebrew dependencies
+        run: |
+          brew install inkscape
+
+      - name: Download Craft
+        run: |
+          git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }}
+
+      - name: Add Nextcloud client blueprints
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --add-blueprint-repository https://github.com/nextcloud/desktop-client-blueprints.git
+
+      - name: Setup Craft
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c craft
+
+      - name: Install Craft Nextcloud client dependencies
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --install-deps nextcloud-client
+
+      - name: Build Client
+        run: |
+          python "${{ env.CRAFT_MASTER_LOCATION }}/CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c --src-dir ${{ github.workspace }} nextcloud-client
