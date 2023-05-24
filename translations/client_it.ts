@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="244"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Apri i dettagli del file</translation>
     </message>
 </context>
 <context>
