@@ -175,10 +175,19 @@ bool AccountManager::restoreFromLegacySettings()
                                                       legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
 
         for (const auto &configFile : legacyLocations) {
-            if (const QFileInfo configFileInfo(configFile);
-                    configFileInfo.exists() && configFileInfo.isReadable()) {
-
+            if (const QFileInfo configFileInfo(configFile); configFileInfo.exists() && configFileInfo.isReadable()) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
+
+                if (!forceLegacyImport()) {
+                    const auto importQuestion = tr("An existing configuration from a legacy desktop client was detected.\n"
+                                                   "Should an account import be attempted?");
+                    const auto messageBoxSelection = QMessageBox::question(nullptr, tr("Legacy import"), importQuestion);
+
+                    if (messageBoxSelection == QMessageBox::No) {
+                        // User said don't import, return immediately
+                        return false;
+                    }
+                }
 
                 auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
                 if (oCSettings->status() != QSettings::Status::NoError) {
@@ -239,11 +248,17 @@ bool AccountManager::restoreFromLegacySettings()
             settings->beginGroup(accountId);
             if (const auto acc = loadAccountHelper(*settings)) {
                 addAccount(acc);
-
+                QMessageBox::information(nullptr,
+                                         tr("Legacy import"),
+                                         tr("Successfully imported account from legacy client: %1").arg(acc->prettyName()));
                 return true;
             }
         }
     }
+
+    QMessageBox::information(nullptr,
+                             tr("Legacy import"),
+                             tr("Could not import accounts from legacy client configuration."));
     return false;
 }
 
@@ -544,5 +559,20 @@ void AccountManager::addAccountState(AccountState *accountState)
     _accounts << ptr;
     ptr->trySignIn();
     emit accountAdded(accountState);
+}
+
+bool AccountManager::forceLegacyImport() const
+{
+    return _forceLegacyImport;
+}
+
+void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
+{
+    if (_forceLegacyImport == forceLegacyImport) {
+        return;
+    }
+
+    _forceLegacyImport = forceLegacyImport;
+    Q_EMIT forceLegacyImportChanged();
 }
 }
