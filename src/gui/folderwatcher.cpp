@@ -133,6 +133,7 @@ void FolderWatcher::startNotificationTestWhenReady()
         QFile f(path);
         f.open(QIODevice::WriteOnly | QIODevice::Append);
     }
+    FileSystem::setFileHidden(path, true);
 
     QTimer::singleShot(5000, this, [this]() {
         if (!_testNotificationPath.isEmpty())
