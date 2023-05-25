@@ -51,7 +51,7 @@ RowLayout {
     * one single gradient sweeping over the base color components
     */
 
-    property color baseGradientColor: Style.lightHover
+    property color baseGradientColor: palette.light
     property int animationRectangleWidth: Style.trayWindowWidth
 
     Item {

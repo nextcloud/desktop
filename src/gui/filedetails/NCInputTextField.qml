@@ -22,13 +22,11 @@ import Style 1.0
 TextField {
     id: root
 
-    property color accentColor: Style.ncBlue
-    property color secondaryColor: Style.menuBorder
-    property alias submitButton: submitButton
+    readonly property color accentColor: Style.ncBlue
+    readonly property color secondaryColor: palette.dark
+    readonly property alias submitButton: submitButton
 
     implicitHeight: Style.talkReplyTextFieldPreferredHeight
-    color: Style.ncTextColor
-    placeholderTextColor: secondaryColor
 
     rightPadding: submitButton.width
 
@@ -39,7 +37,7 @@ TextField {
         radius: Style.slightlyRoundedButtonRadius
         border.width: Style.normalBorderWidth
         border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: Style.backgroundColor
+        color: palette.base
     }
 
     Button {

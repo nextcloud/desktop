@@ -245,12 +245,12 @@ ColumnLayout {
                     z: Infinity
 
                     sourceComponent: Rectangle {
-                        color: Style.backgroundColor
+                        color: palette.window
                         opacity: 0.5
 
                         NCBusyIndicator {
                             anchors.centerIn: parent
-                            color: Style.ncSecondaryTextColor
+                            color: palette.midlight
                         }
                     }
                 }
@@ -277,7 +277,7 @@ ColumnLayout {
                 id: sharingDisabledLabel
                 width: parent.width
                 text: qsTr("Sharing is disabled")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -285,7 +285,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("This item cannot be shared.")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -294,7 +294,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("Sharing is disabled.")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter

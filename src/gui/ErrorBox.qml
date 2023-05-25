@@ -59,7 +59,6 @@ Item {
 
         EnforcedPlainTextLabel {
             Layout.fillWidth: true
-            color: Style.ncTextColor
             font.bold: true
             text: qsTr("Error")
             visible: errorBox.showCloseButton
@@ -70,7 +69,7 @@ Item {
             Layout.preferredHeight: Style.iconButtonWidth
 
             background: null
-            icon.color: Style.ncTextColor
+            icon.color: palette.buttonText
             icon.source: "qrc:///client/theme/close.svg"
 
             visible: errorBox.showCloseButton
@@ -86,7 +85,6 @@ Item {
             Layout.fillHeight: true
             Layout.columnSpan: 2
 
-            color: Style.ncTextColor
             wrapMode: Text.WordWrap
             text: errorBox.text
         }

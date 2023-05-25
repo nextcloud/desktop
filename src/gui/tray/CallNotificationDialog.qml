@@ -109,7 +109,7 @@ ApplicationWindow {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         color: Style.backgroundColor
         border.width: Style.trayWindowBorderWidth
-        border.color: Style.menuBorder
+        border.color: palette.dark
         clip: true
 
         Loader {
@@ -184,7 +184,7 @@ ApplicationWindow {
                     cache: true
 
                     source: root.usingUserAvatar ? root.talkNotificationData.userAvatar :
-                                                   Theme.darkMode ? root.talkIcon + Style.ncTextColor : root.talkIcon + Style.ncBlue
+                                                   Theme.darkMode ? root.talkIcon + palette.windowText : root.talkIcon + Style.ncBlue
                     sourceSize.width: Style.accountAvatarSize
                     sourceSize.height: Style.accountAvatarSize
 
@@ -215,7 +215,7 @@ ApplicationWindow {
             EnforcedPlainTextLabel {
                 id: message
                 text: root.subject
-                color: root.usingUserAvatar ? "white" : Style.ncTextColor
+                color: root.usingUserAvatar ? palette.brightText : palette.windowText
                 font.pixelSize: Style.topLinePixelSize
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
@@ -243,10 +243,10 @@ ApplicationWindow {
                         bgColor: Style.ncBlue
                         bgNormalOpacity: 0.8
 
-                        textColor: Style.ncHeaderTextColor
+                        textColor: palette.brightText
 
-                        icon.source: root.talkIcon + Style.ncHeaderTextColor
-                        imageSourceHover: root.talkIcon + Style.ncHeaderTextColor
+                        icon.source: root.talkIcon + palette.brightText
+                        imageSourceHover: root.talkIcon + palette.brightText
 
                         Layout.fillWidth: true
                         Layout.preferredHeight: Style.callNotificationPrimaryButtonMinHeight
@@ -270,7 +270,7 @@ ApplicationWindow {
                     bgColor: Style.errorBoxBackgroundColor
                     bgNormalOpacity: 0.8
 
-                    textColor: Style.ncHeaderTextColor
+                    textColor: palette.brightText
 
                     icon.source: root.deleteIcon + "white"
                     imageSourceHover: root.deleteIcon + "white"

@@ -25,7 +25,7 @@ TextField {
 
     property bool isSearchInProgress: false
 
-    readonly property color textFieldIconsColor: Style.menuBorder
+    readonly property color textFieldIconsColor: palette.dark
 
     readonly property int textFieldIconsOffset: Style.trayHorizontalMargin
 
@@ -42,13 +42,13 @@ TextField {
 
     selectByMouse: true
 
-    palette.text: Style.ncSecondaryTextColor
+    palette.text: palette.midlight
 
     background: Rectangle {
         radius: 5
-        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
+        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
         border.width: 1
-        color: Style.backgroundColor
+        color: palette.window
     }
 
     Image {

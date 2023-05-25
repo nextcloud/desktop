@@ -130,7 +130,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.leftMargin: 5
             Layout.rightMargin: 5
-            color: Style.menuBorder
+            color: palette.dark
             height: 1
         }
 
