@@ -359,7 +359,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="182"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation type="unfinished"/>
+        <translation>Byla zjištěna nastavení z původního desktopového klienta.
+Má se být pokoušeno o jejich naimportování?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
@@ -5402,7 +5403,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="61"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte zda chcete ponechat místní verzi, verzi ze serveru nebo obojí. Pokud zvolíte obojí, k názvu místního souboru bude přidáno číslo.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="77"/>
