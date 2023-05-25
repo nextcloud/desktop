@@ -218,9 +218,6 @@ Page {
             Layout.rightMargin: root.intendedPadding
 
             padding: 0
-            background: Rectangle {
-                color: palette.window
-            }
 
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/activity.svg"

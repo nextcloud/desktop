@@ -40,10 +40,6 @@ AbstractButton {
         delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
         contentItem: EnforcedPlainTextLabel { text: customTextButtonTooltip.text }
-        background: Rectangle {
-            border.color: palette.dark
-            color: palette.toolTipBase
-        }
     }
 
     Component {

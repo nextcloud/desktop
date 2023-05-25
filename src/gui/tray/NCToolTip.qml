@@ -27,8 +27,4 @@ ToolTip {
         wrapMode: Text.Wrap
         color: palette.toolTipText
     }
-    background: Rectangle {
-        border.color: palette.dark
-        color: palette.toolTipBase
-    }
 }
