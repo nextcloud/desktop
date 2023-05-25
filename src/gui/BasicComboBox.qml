@@ -94,8 +94,5 @@ ComboBox {
             verticalAlignment: Text.AlignVCenter
         }
         highlighted: clearComboBox.highlightedIndex === index
-        background: Rectangle {
-           color: clearStatusDelegate.highlighted || clearStatusDelegate.hovered ? palette.highlight : palette.base
-       }
     }
 }

@@ -159,12 +159,6 @@ AbstractButton {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
-                background: Rectangle {
-                    border.color: palette.dark
-                    color: palette.base
-                    radius: 2
-                }
-
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
                     height: visible ? implicitHeight : 0
@@ -173,16 +167,6 @@ AbstractButton {
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? palette.highlight : "transparent"
-                        }
-                    }
                 }
 
                 MenuItem {
