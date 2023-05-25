@@ -20,8 +20,8 @@ Feature: Sharing
         And the user adds "Brian Murphy" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
         Then user "Brian Murphy" should be listed in the collaborators list for file "textfile0.txt" with permissions "edit,share" on the client-UI
         And user "Brian Murphy" should be listed in the collaborators list for file "simple-folder" with permissions "edit,share" on the client-UI
-        And as "Brian" folder "simple-folder" should exist on the server
-        And as "Brian" file "textfile0.txt" should exist on the server
+        And as "Brian" folder "simple-folder" should exist in the server
+        And as "Brian" file "textfile0.txt" should exist in the server
 
 
     Scenario: sharing file and folder with user who has some other shares
@@ -37,10 +37,10 @@ Feature: Sharing
         And the user adds "Brian Murphy" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
         Then user "Brian Murphy" should be listed in the collaborators list for file "textfile.txt" with permissions "edit,share" on the client-UI
         And user "Brian Murphy" should be listed in the collaborators list for file "simple-folder" with permissions "edit,share" on the client-UI
-        And as "Brian" folder "shared" should exist on the server
-        And as "Brian" file "sharedfile.txt" should exist on the server
-        And as "Brian" folder "simple-folder" should exist on the server
-        And as "Brian" file "textfile.txt" should exist on the server
+        And as "Brian" folder "shared" should exist in the server
+        And as "Brian" file "sharedfile.txt" should exist in the server
+        And as "Brian" folder "simple-folder" should exist in the server
+        And as "Brian" file "textfile.txt" should exist in the server
 
 
     Scenario: sharing file/folder with a user that has special characters as username
@@ -53,8 +53,8 @@ Feature: Sharing
         And the user adds "Speci@l_Name-.+" as collaborator of resource "FOLDER" with permissions "edit,share" using the client-UI
         Then user "Speci@l_Name-.+" should be listed in the collaborators list for file "textfile.txt" with permissions "edit,share" on the client-UI
         And user "Speci@l_Name-.+" should be listed in the collaborators list for file "FOLDER" with permissions "edit,share" on the client-UI
-        And as "Speci@l_Name-.+" folder "FOLDER" should exist on the server
-        And as "Speci@l_Name-.+" file "textfile.txt" should exist on the server
+        And as "Speci@l_Name-.+" folder "FOLDER" should exist in the server
+        And as "Speci@l_Name-.+" file "textfile.txt" should exist in the server
 
 
     Scenario: Share files/folders with special characters in their name
@@ -66,8 +66,8 @@ Feature: Sharing
         And the user adds "Brian Murphy" as collaborator of resource "$ample1?.txt" with permissions "edit,share" using the client-UI
         Then user "Brian Murphy" should be listed in the collaborators list for file "SampleFolder,With,$pecial?Characters" with permissions "edit,share" on the client-UI
         And user "Brian Murphy" should be listed in the collaborators list for file "$ample1?.txt" with permissions "edit,share" on the client-UI
-        And as "Brian" folder "SampleFolder,With,$pecial?Characters" should exist on the server
-        And as "Brian" file "$ample1?.txt" should exist on the server
+        And as "Brian" folder "SampleFolder,With,$pecial?Characters" should exist in the server
+        And as "Brian" file "$ample1?.txt" should exist in the server
 
 
     Scenario: try to share a file/folder with a user to whom the file has already been shared
@@ -169,8 +169,8 @@ Feature: Sharing
         Then group "grp1" should be listed in the collaborators list for file "textfile0.txt" with permissions "edit,share" on the client-UI
         When the user adds group "grp1" as collaborator of resource "simple-folder" with permissions "edit,share" using the client-UI
         Then group "grp1" should be listed in the collaborators list for file "simple-folder" with permissions "edit,share" on the client-UI
-        And as "Brian" folder "simple-folder" should exist on the server
-        And as "Brian" file "textfile0.txt" should exist on the server
+        And as "Brian" folder "simple-folder" should exist in the server
+        And as "Brian" file "textfile0.txt" should exist in the server
 
 
     Scenario: User (non-author) can not share to a group to which the file/folder is already shared
@@ -203,10 +203,10 @@ Feature: Sharing
         And the user waits for file "textfile.txt" to be synced
         And the user overwrites the file "simple-folder/textfile.txt" with content "overwrite file inside a folder"
         And the user waits for file "simple-folder/textfile.txt" to be synced
-        Then as "Brian" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
-        And as "Brian" the file "textfile.txt" on the server should have the content "overwrite file in the root"
-        And as "Alice" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
-        And as "Alice" the file "textfile.txt" on the server should have the content "overwrite file in the root"
+        Then as "Brian" the file "simple-folder/textfile.txt" should have the content "overwrite file inside a folder" in the server
+        And as "Brian" the file "textfile.txt" should have the content "overwrite file in the root" in the server
+        And as "Alice" the file "simple-folder/textfile.txt" should have the content "overwrite file inside a folder" in the server
+        And as "Alice" the file "textfile.txt" should have the content "overwrite file in the root" in the server
 
 
     Scenario: sharee tries to edit content of files shared without write permission
@@ -220,10 +220,10 @@ Feature: Sharing
         When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite file inside a folder"
         And the user tries to overwrite the file "textfile.txt" with content "overwrite file in the root"
         And the user waits for file "textfile.txt" to have sync error
-        Then as "Brian" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
-        And as "Brian" the file "textfile.txt" on the server should have the content "file in the root"
-        And as "Alice" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
-        And as "Alice" the file "textfile.txt" on the server should have the content "file in the root"
+        Then as "Brian" the file "Parent/textfile.txt" should have the content "file inside a folder" in the server
+        And as "Brian" the file "textfile.txt" should have the content "file in the root" in the server
+        And as "Alice" the file "Parent/textfile.txt" should have the content "file inside a folder" in the server
+        And as "Alice" the file "textfile.txt" should have the content "file in the root" in the server
 
 
     Scenario: sharee edits shared files and again try to edit after write permission is revoked
@@ -244,10 +244,10 @@ Feature: Sharing
         And user "Brian" tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
         And user "Brian" tries to overwrite the file "FOLDER/simple.txt" with content "overwrite some content"
         And user "Brian" waits for file "textfile.txt" to have sync error
-        Then as "Brian" the file "textfile.txt" on the server should have the content "ownCloud test text file"
-        And as "Brian" the file "FOLDER/simple.txt" on the server should have the content "some content"
-        And as "Alice" the file "textfile.txt" on the server should have the content "ownCloud test text file"
-        And as "Alice" the file "FOLDER/simple.txt" on the server should have the content "some content"
+        Then as "Brian" the file "textfile.txt" should have the content "ownCloud test text file" in the server
+        And as "Brian" the file "FOLDER/simple.txt" should have the content "some content" in the server
+        And as "Alice" the file "textfile.txt" should have the content "ownCloud test text file" in the server
+        And as "Alice" the file "FOLDER/simple.txt" should have the content "some content" in the server
 
 
     Scenario: sharee creates a file and a folder inside a shared folder
@@ -262,10 +262,10 @@ Feature: Sharing
         And user "Brian" creates a folder "Parent/localFolder" inside the sync folder
         And the user waits for file "Parent/localFile.txt" to be synced
         And the user waits for folder "Parent/localFolder" to be synced
-        Then as "Brian" file "Parent/localFile.txt" should exist on the server
-        And as "Brian" folder "Parent/localFolder" should exist on the server
-        And as "Alice" file "Parent/localFile.txt" should exist on the server
-        And as "Alice" folder "Parent/localFolder" should exist on the server
+        Then as "Brian" file "Parent/localFile.txt" should exist in the server
+        And as "Brian" folder "Parent/localFolder" should exist in the server
+        And as "Alice" file "Parent/localFile.txt" should exist in the server
+        And as "Alice" folder "Parent/localFolder" should exist in the server
 
 
     Scenario: sharee tries to create a file and a folder inside a shared folder without write permission
@@ -280,10 +280,10 @@ Feature: Sharing
         And user "Brian" creates a folder "Parent/localFolder" inside the sync folder
         And the user waits for file "Parent/localFile.txt" to have sync error
         And the user waits for folder "Parent/localFolder" to have sync error
-        Then as "Brian" file "Parent/localFile.txt" should not exist on the server
-        And as "Brian" folder "Parent/localFolder" should not exist on the server
-        And as "Alice" file "Parent/localFile.txt" should not exist on the server
-        And as "Alice" folder "Parent/localFolder" should not exist on the server
+        Then as "Brian" file "Parent/localFile.txt" should not exist in the server
+        And as "Brian" folder "Parent/localFolder" should not exist in the server
+        And as "Alice" file "Parent/localFile.txt" should not exist in the server
+        And as "Alice" folder "Parent/localFolder" should not exist in the server
 
 
     Scenario: sharee renames the shared file and folder
@@ -297,15 +297,15 @@ Feature: Sharing
         And the user renames a folder "FOLDER" to "PARENT"
         And the user waits for folder "PARENT" to be synced
         And the user waits for file "lorem.txt" to be synced
-        Then as "Brian" folder "FOLDER" should not exist on the server
-        And as "Brian" file "textfile.txt" should not exist on the server
-        And as "Brian" folder "PARENT" should exist on the server
-        And as "Brian" file "lorem.txt" should exist on the server
+        Then as "Brian" folder "FOLDER" should not exist in the server
+        And as "Brian" file "textfile.txt" should not exist in the server
+        And as "Brian" folder "PARENT" should exist in the server
+        And as "Brian" file "lorem.txt" should exist in the server
         # File/folder will not change for Alice
-        And as "Alice" folder "FOLDER" should exist on the server
-        And as "Alice" file "textfile.txt" should exist on the server
-        And as "Alice" folder "PARENT" should not exist on the server
-        And as "Alice" file "lorem.txt" should not exist on the server
+        And as "Alice" folder "FOLDER" should exist in the server
+        And as "Alice" file "textfile.txt" should exist in the server
+        And as "Alice" folder "PARENT" should not exist in the server
+        And as "Alice" file "lorem.txt" should not exist in the server
 
     @issue-9439
     Scenario: sharee deletes a file and folder shared by sharer
@@ -353,8 +353,8 @@ Feature: Sharing
         And the user adds "Carol King" as collaborator of resource "textfile.txt" with permissions "edit,share" using the client-UI
         Then user "Carol King" should be listed in the collaborators list for file "FOLDER" with permissions "edit,share" on the client-UI
         And user "Carol King" should be listed in the collaborators list for file "textfile.txt" with permissions "edit,share" on the client-UI
-        And as "Carol" folder "FOLDER" should exist on the server
-        And as "Carol" file "textfile.txt" should exist on the server
+        And as "Carol" folder "FOLDER" should exist in the server
+        And as "Carol" file "textfile.txt" should exist in the server
 
 
     Scenario: try to reshare a file/folder shared without share permission

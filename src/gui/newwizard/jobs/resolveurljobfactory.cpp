@@ -42,7 +42,7 @@ ResolveUrlJobFactory::ResolveUrlJobFactory(QNetworkAccessManager *nam)
 CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url, QObject *parent)
 {
     QNetworkRequest req(Utility::concatUrlPath(url, QStringLiteral("status.php")));
-    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
 
     auto *job = new CoreJob(nam()->get(req), parent);
 

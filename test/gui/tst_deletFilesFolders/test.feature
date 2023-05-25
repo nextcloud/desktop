@@ -14,7 +14,7 @@ Feature: deleting files and folders
         And user "Alice" has set up a client with default settings
         When the user deletes the file "<fileName>"
         And the user waits for the files to sync
-        Then as "Alice" file "<fileName>" should not exist on the server
+        Then as "Alice" file "<fileName>" should not exist in the server
         Examples:
             | fileName                                    |
             | textfile0.txt                               |
@@ -26,7 +26,7 @@ Feature: deleting files and folders
         And user "Alice" has set up a client with default settings
         When the user deletes the folder "<folderName>"
         And the user waits for the files to sync
-        Then as "Alice" file "<folderName>" should not exist on the server
+        Then as "Alice" file "<folderName>" should not exist in the server
         Examples:
             | folderName                                      |
             | simple-empty-folder                             |
@@ -42,7 +42,7 @@ Feature: deleting files and folders
         When the user deletes the file "textfile1.txt"
         And the user deletes the folder "test-folder1" 
         And the user waits for the files to sync
-        Then as "Alice" file "textfile1.txt" should not exist on the server
-        And as "Alice" folder "test-folder1" should not exist on the server
-        And as "Alice" file "textfile2.txt" should exist on the server
-        And as "Alice" folder "test-folder2" should exist on the server
+        Then as "Alice" file "textfile1.txt" should not exist in the server
+        And as "Alice" folder "test-folder1" should not exist in the server
+        And as "Alice" file "textfile2.txt" should exist in the server
+        And as "Alice" folder "test-folder2" should exist in the server
