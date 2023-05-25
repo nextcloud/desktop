@@ -1,16 +1,16 @@
-lockfileVersion: 5.4
-
-specifiers:
-  '@playwright/test': ^1.27.1
-  playwright: ^1.27.1
+lockfileVersion: '6.0'
 
 devDependencies:
-  '@playwright/test': 1.27.1
-  playwright: 1.27.1
+  '@playwright/test':
+    specifier: ^1.27.1
+    version: 1.27.1
+  playwright:
+    specifier: ^1.27.1
+    version: 1.27.1
 
 packages:
 
-  /@playwright/test/1.27.1:
+  /@playwright/test@1.27.1:
     resolution: {integrity: sha512-mrL2q0an/7tVqniQQF6RBL2saskjljXzqNcCOVMUjRIgE6Y38nCNaP+Dc2FBW06bcpD3tqIws/HT9qiMHbNU0A==}
     engines: {node: '>=14'}
     hasBin: true
@@ -19,17 +19,17 @@ packages:
       playwright-core: 1.27.1
     dev: true
 
-  /@types/node/18.11.9:
+  /@types/node@18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
     dev: true
 
-  /playwright-core/1.27.1:
+  /playwright-core@1.27.1:
     resolution: {integrity: sha512-9EmeXDncC2Pmp/z+teoVYlvmPWUC6ejSSYZUln7YaP89Z6lpAaiaAnqroUt/BoLo8tn7WYShcfaCh+xofZa44Q==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
 
-  /playwright/1.27.1:
+  /playwright@1.27.1:
     resolution: {integrity: sha512-xXYZ7m36yTtC+oFgqH0eTgullGztKSRMb4yuwLPl8IYSmgBM88QiB+3IWb1mRIC9/NNwcgbG0RwtFlg+EAFQHQ==}
     engines: {node: '>=14'}
     hasBin: true
