@@ -75,8 +75,10 @@ const QString clientVersionC() { return QStringLiteral("clientVersion"); }
 const QString proxyHostC() { return QStringLiteral("Proxy/host"); }
 const QString proxyTypeC() { return QStringLiteral("Proxy/type"); }
 const QString proxyPortC() { return QStringLiteral("Proxy/port"); }
-const QString proxyUserC() { return QStringLiteral("Proxy/user"); }
-const QString proxyPassC() { return QStringLiteral("Proxy/pass"); }
+const QString proxyUserC()
+{
+    return QStringLiteral("Proxy/user");
+}
 const QString proxyNeedsAuthC() { return QStringLiteral("Proxy/needsAuth"); }
 
 const QString useUploadLimitC() { return QStringLiteral("BWLimit/useUploadLimit"); }
@@ -558,11 +560,7 @@ void ConfigFile::setUiLanguage(const QString &uiLanguage)
     settings.setValue(uiLanguageC(), uiLanguage);
 }
 
-void ConfigFile::setProxyType(int proxyType,
-    const QString &host,
-    int port, bool needsAuth,
-    const QString &user,
-    const QString &pass)
+void ConfigFile::setProxyType(QNetworkProxy::ProxyType proxyType, const QString &host, int port, bool needsAuth, const QString &user)
 {
     auto settings = makeQSettings();
 
@@ -573,7 +571,6 @@ void ConfigFile::setProxyType(int proxyType,
         settings.setValue(proxyPortC(), port);
         settings.setValue(proxyNeedsAuthC(), needsAuth);
         settings.setValue(proxyUserC(), user);
-        settings.setValue(proxyPassC(), pass.toUtf8().toBase64());
     }
     settings.sync();
 }
@@ -644,12 +641,6 @@ bool ConfigFile::proxyNeedsAuth() const
 QString ConfigFile::proxyUser() const
 {
     return getValue(proxyUserC()).toString();
-}
-
-QString ConfigFile::proxyPassword() const
-{
-    QByteArray pass = getValue(proxyPassC()).toByteArray();
-    return QString::fromUtf8(QByteArray::fromBase64(pass));
 }
 
 int ConfigFile::useUploadLimit() const

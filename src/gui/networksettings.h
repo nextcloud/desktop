@@ -15,6 +15,8 @@
 #ifndef MIRALL_NETWORKSETTINGS_H
 #define MIRALL_NETWORKSETTINGS_H
 
+#include "libsync/creds/credentialmanager.h"
+
 #include <QWidget>
 
 
@@ -51,6 +53,8 @@ protected:
 private:
     void loadProxySettings();
     void loadBWLimitSettings();
+    CredentialManager *_credentialManager;
+
 
     Ui::NetworkSettings *_ui;
 };

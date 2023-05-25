@@ -18,8 +18,9 @@
 #include "common/result.h"
 #include "owncloudlib.h"
 
-#include <QSharedPointer>
+#include <QNetworkProxy>
 #include <QSettings>
+#include <QSharedPointer>
 #include <QString>
 #include <QVariant>
 
@@ -120,18 +121,14 @@ public:
     bool showExperimentalOptions() const;
 
     // proxy settings
-    void setProxyType(int proxyType,
-        const QString &host = QString(),
-        int port = 0, bool needsAuth = false,
-        const QString &user = QString(),
-        const QString &pass = QString());
+    void setProxyType(
+        QNetworkProxy::ProxyType proxyType, const QString &host = QString(), int port = 0, bool needsAuth = false, const QString &user = QString());
 
     int proxyType() const;
     QString proxyHostName() const;
     int proxyPort() const;
     bool proxyNeedsAuth() const;
     QString proxyUser() const;
-    QString proxyPassword() const;
 
     /** 0: no limit, 1: manual, >0: automatic */
     int useUploadLimit() const;

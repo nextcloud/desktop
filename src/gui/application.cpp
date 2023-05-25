@@ -225,7 +225,6 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
     _gui = new ownCloudGui(this);
 
     FolderMan::instance()->setupFolders();
-    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     // Enable word wrapping of QInputDialog (#4197)
     // TODO:

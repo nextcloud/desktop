@@ -31,20 +31,12 @@ class ConfigFile;
  * @brief The ClientProxy class
  * @ingroup libsync
  */
-class ClientProxy : public QObject
-{
-    Q_OBJECT
-public:
-    explicit ClientProxy(QObject *parent = nullptr);
+namespace ClientProxy {
+    bool isUsingSystemDefault();
+    void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);
+    void setupQtProxyFromConfig(const QString &password);
 
-    static bool isUsingSystemDefault();
-    static void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);
-
-public slots:
-    void setupQtProxyFromConfig();
-
-private:
-    const char *proxyTypeToCStr(QNetworkProxy::ProxyType type);
+    QString printQNetworkProxy(const QNetworkProxy &proxy);
 };
 
 class SystemProxyRunnable : public QObject, public QRunnable
@@ -59,8 +51,6 @@ signals:
 private:
     QUrl _url;
 };
-
-QString printQNetworkProxy(const QNetworkProxy &proxy);
 }
 
 #endif // CLIENTPROXY_H

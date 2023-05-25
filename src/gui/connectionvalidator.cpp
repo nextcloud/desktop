@@ -85,7 +85,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
     }
 
     if (proxy.type() != QNetworkProxy::NoProxy) {
-        qCInfo(lcConnectionValidator) << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+        qCInfo(lcConnectionValidator) << "Setting QNAM proxy to be system proxy" << ClientProxy::printQNetworkProxy(proxy);
     } else {
         qCInfo(lcConnectionValidator) << "No system proxy set by OS";
     }

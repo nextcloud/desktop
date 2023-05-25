@@ -26,11 +26,20 @@
 #include <QString>
 #include <QtGui/QtEvents>
 
+namespace {
+auto proxyPasswordC()
+{
+    return QStringLiteral("Proxy/Password");
+}
+}
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcNetworkSettings, "gui.networksettings.gui", QtInfoMsg)
 
 NetworkSettings::NetworkSettings(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::NetworkSettings)
+    , _credentialManager(new CredentialManager(this))
 {
     _ui->setupUi(this);
 
@@ -124,7 +133,23 @@ void NetworkSettings::loadProxySettings()
     _ui->portSpinBox->setValue(port);
     _ui->authRequiredcheckBox->setChecked(cfgFile.proxyNeedsAuth());
     _ui->userLineEdit->setText(cfgFile.proxyUser());
-    _ui->passwordLineEdit->setText(cfgFile.proxyPassword());
+
+    const QString legacyPasswordKey = QStringLiteral("Proxy/pass");
+    const QString legacyPassword = QString::fromUtf8(QByteArray::fromBase64(ConfigFile().makeQSettings().value(legacyPasswordKey).toByteArray()));
+    if (!legacyPassword.isEmpty()) {
+        qCWarning(lcNetworkSettings) << "Migrating legacy proxy password to keychain";
+        ConfigFile().makeQSettings().remove(legacyPasswordKey);
+        _credentialManager->set(proxyPasswordC(), legacyPassword);
+        _ui->passwordLineEdit->setText(legacyPassword);
+        ClientProxy::setupQtProxyFromConfig(legacyPassword);
+    } else {
+        auto job = _credentialManager->get(proxyPasswordC());
+        connect(job, &CredentialJob::finished, this, [job, this] {
+            const QString password = job->data().toString();
+            _ui->passwordLineEdit->setText(password);
+            ClientProxy::setupQtProxyFromConfig(password);
+        });
+    }
 }
 
 void NetworkSettings::loadBWLimitSettings()
@@ -162,19 +187,15 @@ void NetworkSettings::saveProxySettings()
     } else if (_ui->systemProxyRadioButton->isChecked()) {
         cfgFile.setProxyType(QNetworkProxy::DefaultProxy);
     } else if (_ui->manualProxyRadioButton->isChecked()) {
-        int type = _ui->typeComboBox->itemData(_ui->typeComboBox->currentIndex()).toInt();
-        QString host = _ui->hostLineEdit->text();
-        if (host.isEmpty())
+        auto type = static_cast<QNetworkProxy::ProxyType>(_ui->typeComboBox->itemData(_ui->typeComboBox->currentIndex()).toInt());
+        if (_ui->hostLineEdit->text().isEmpty()) {
             type = QNetworkProxy::NoProxy;
-        bool needsAuth = _ui->authRequiredcheckBox->isChecked();
-        QString user = _ui->userLineEdit->text();
-        QString pass = _ui->passwordLineEdit->text();
-        cfgFile.setProxyType(type, _ui->hostLineEdit->text(),
-            _ui->portSpinBox->value(), needsAuth, user, pass);
+        }
+        _credentialManager->set(proxyPasswordC(), _ui->passwordLineEdit->text());
+        cfgFile.setProxyType(type, _ui->hostLineEdit->text(), _ui->portSpinBox->value(), _ui->authRequiredcheckBox->isChecked(), _ui->userLineEdit->text());
     }
 
-    ClientProxy proxy;
-    proxy.setupQtProxyFromConfig(); // Refresh the Qt proxy settings as the
+    ClientProxy::setupQtProxyFromConfig(_ui->passwordLineEdit->text()); // Refresh the Qt proxy settings as the
     // quota check can happen all the time.
 
     // ...and set the folders dirty, they refresh their proxy next time they

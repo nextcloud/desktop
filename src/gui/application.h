@@ -96,8 +96,6 @@ private:
     QString _userEnforcedLanguage;
     QString _displayLanguage;
 
-    ClientProxy _proxy;
-
     QTimer _checkConnectionTimer;
 
     QScopedPointer<FolderMan> _folderManager;
