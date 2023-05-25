@@ -51,10 +51,11 @@ ComboBox {
         cached: true
         width: source.width
         height: source.height
+
         source: Image {
             horizontalAlignment: Qt.AlignRight
             verticalAlignment: Qt.AlignVCenter
-            source: "qrc:///client/theme/white/caret-down.svg"
+            source: "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
             sourceSize.width: Style.accountDropDownCaretSize
             sourceSize.height: Style.accountDropDownCaretSize
             Accessible.role: Accessible.PopupMenu
