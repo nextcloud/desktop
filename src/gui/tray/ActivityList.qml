@@ -14,26 +14,6 @@ ScrollView {
     signal openFile(string filePath)
     signal activityItemClicked(int index)
 
-    // TODO: Rather than setting all these palette colours manually,
-    // create a custom style and do it for all components globally
-    palette {
-        text: Style.ncTextColor
-        windowText: Style.ncTextColor
-        buttonText: Style.ncTextColor
-        brightText: Style.ncTextBrightColor
-        highlight: Style.lightHover
-        highlightedText: Style.ncTextColor
-        light: Style.lightHover
-        midlight: Style.lightHover
-        mid: Style.ncSecondaryTextColor
-        dark: Style.menuBorder
-        button: Style.menuBorder
-        window: Style.backgroundColor
-        base: Style.backgroundColor
-        toolTipBase: Style.backgroundColor
-        toolTipText: Style.ncTextColor
-    }
-
     contentWidth: availableWidth
     padding: 0
     focus: false
