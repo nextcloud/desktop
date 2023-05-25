@@ -17,7 +17,6 @@ set(client_UI_SRCS
     shareusergroupwidget.ui
     shareuserline.ui
     tlserrordialog.ui
-    proxyauthdialog.ui
     notificationwidget.ui
     logbrowser.ui
 )
@@ -62,8 +61,6 @@ set(client_SRCS
     thumbnailjob.cpp
     quotainfo.cpp
     accountstate.cpp
-    proxyauthhandler.cpp
-    proxyauthdialog.cpp
     tooltipupdater.cpp
     notificationwidget.cpp
     notificationconfirmjob.cpp

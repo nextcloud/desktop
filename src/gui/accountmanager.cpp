@@ -17,7 +17,6 @@
 #include "common/asserts.h"
 #include "configfile.h"
 #include "creds/credentialmanager.h"
-#include "proxyauthhandler.h"
 #include <cookiejar.h>
 #include <creds/httpcredentialsgui.h>
 #include <theme.h>
@@ -393,8 +392,6 @@ void AccountManager::deleteAccount(AccountStatePtr account)
 AccountPtr AccountManager::createAccount(const QUuid &uuid)
 {
     AccountPtr acc = Account::create(uuid);
-    connect(acc.data(), &Account::proxyAuthenticationRequired,
-        ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
     return acc;
 }
 

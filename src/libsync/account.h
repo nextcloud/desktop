@@ -223,9 +223,6 @@ signals:
     void credentialsFetched(AbstractCredentials *credentials);
     void credentialsAsked(AbstractCredentials *credentials);
 
-    /// Forwards from QNetworkAccessManager::proxyAuthenticationRequired().
-    void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
-
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(Account *acc);
 

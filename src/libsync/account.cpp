@@ -197,8 +197,6 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (jar) {
         _am->setCookieJar(jar);
     }
-    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
-        this, &Account::proxyAuthenticationRequired);
     connect(_credentials.data(), &AbstractCredentials::fetched,
         this, &Account::slotCredentialsFetched);
     connect(_credentials.data(), &AbstractCredentials::asked,
