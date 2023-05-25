@@ -30,6 +30,7 @@ ScrollView {
         Accessible.role: Accessible.List
         Accessible.name: qsTr("Activity list")
 
+        keyNavigationEnabled: true
         clip: true
         spacing: 0
         currentIndex: -1
@@ -37,11 +38,10 @@ ScrollView {
 
         highlight: Rectangle {
             id: activityHover
-
             anchors.fill: activityList.currentItem
             color: palette.highlight
-            visible: activityList.activeFocus
             radius: Style.mediumRoundedButtonRadius
+            visible: activityList.activeFocus
         }
 
         highlightFollowsCurrentItem: true
@@ -56,6 +56,7 @@ ScrollView {
         }
 
         delegate: ActivityItem {
+            background: null
             width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
