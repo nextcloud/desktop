@@ -25,7 +25,7 @@ Button {
 
     property string toolTipText: ""
 
-    property color textColor: Style.ncTextColor
+    property color textColor: palette.buttonText
     property color textColorHovered: textColor
 
     property alias contentsFont: contents.font

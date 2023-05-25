@@ -13,8 +13,6 @@ RowLayout {
 
     property variant activity: {{}}
 
-    property color activityTextTitleColor: Style.ncTextColor
-
     property bool showDismissButton: false
 
     property bool childHovered: fileDetailsButton.hovered || dismissActionButton.hovered
@@ -139,7 +137,6 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
-                color: Style.ncTextColor
                 visible: text !== ""
             }
 
@@ -156,7 +153,7 @@ RowLayout {
 
                 text: root.activityData.dateTime
                 font.pixelSize: Style.subLinePixelSize
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 visible: text !== ""
             }
 
@@ -167,7 +164,7 @@ RowLayout {
                 Layout.preferredHeight: Style.dismissButtonSize
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
 
-                icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
+                icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
 
                 NCToolTip {
                     text: qsTr("Open file details")
@@ -177,7 +174,7 @@ RowLayout {
                 display: Button.IconOnly
                 leftPadding: 0
                 rightPadding: 0
-                bgColor: Style.darkerHover
+                bgColor: palette.mid
                 bgNormalOpacity:  0
 
                 visible: model.showFileDetails
@@ -194,12 +191,12 @@ RowLayout {
 
                 visible: root.showDismissButton && !fileDetailsButton.visible
 
-                icon.source: "image://svgimage-custom-color/clear.svg/" + Style.ncTextColor
+                icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
 
                 display: Button.IconOnly
                 leftPadding: 0
                 rightPadding: 0
-                bgColor: Style.darkerHover
+                bgColor: palette.mid
                 bgNormalOpacity: 0
 
                 NCToolTip {
@@ -233,7 +230,6 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.subLinePixelSize
-                color: Style.ncTextColor
                 visible: text !== ""
             }
 
@@ -253,7 +249,7 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 visible: text !== ""
             }
 

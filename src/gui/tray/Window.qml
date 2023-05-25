@@ -82,8 +82,8 @@ ApplicationWindow {
     background: Rectangle {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width: Style.trayWindowBorderWidth
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
+        border.color: palette.dark
+        color: palette.window
     }
 
     Connections {
@@ -158,8 +158,8 @@ ApplicationWindow {
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
+            border.color: palette.dark
+            color: palette.window
         }
 
         property int userIndex: 0
@@ -195,8 +195,8 @@ ApplicationWindow {
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
+            border.color: palette.dark
+            color: palette.window
         }
 
         property var folderAccountState: ({})
@@ -306,8 +306,8 @@ ApplicationWindow {
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
-                            color: Style.backgroundColor
+                            border.color: palette.dark
+                            color: palette.base
                             radius: Style.currentAccountButtonRadius
                         }
 
@@ -359,7 +359,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -377,7 +377,6 @@ ApplicationWindow {
                                 EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14
                                     text: qsTr("Add account")
-                                    color: Style.ncTextColor
                                     font.pixelSize: Style.topLinePixelSize
                                 }
                                 // Filler on the right
@@ -397,7 +396,7 @@ ApplicationWindow {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             implicitHeight: 1
-                            color: Style.menuBorder
+                            color: palette.dark
                         }
 
                         MenuItem {
@@ -412,7 +411,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -434,7 +433,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -456,7 +455,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -670,8 +669,8 @@ ApplicationWindow {
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
-                            color: Style.backgroundColor
+                            border.color: palette.dark
+                            color: palette.base
                             radius: 2
                         }
 
@@ -697,7 +696,7 @@ ApplicationWindow {
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
                                     icon.source: model.appIconUrl
-                                    icon.color: Style.ncTextColor
+                                    icon.color: palette.buttonText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
 
@@ -707,7 +706,7 @@ ApplicationWindow {
                                         Rectangle {
                                             anchors.fill: parent
                                             anchors.margins: 1
-                                            color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                         }
                                     }
 

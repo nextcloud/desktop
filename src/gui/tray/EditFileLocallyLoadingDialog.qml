@@ -52,7 +52,7 @@ ApplicationWindow {
         id: windowBackground
         color: Style.backgroundColor
         radius: Style.trayWindowRadius
-        border.color: Style.ncTextColor
+        border.color: palette.dark
         anchors.fill: parent
     }
 
@@ -63,6 +63,7 @@ ApplicationWindow {
         anchors.leftMargin: Style.standardSpacing
         anchors.rightMargin: Style.standardSpacing
         spacing: Style.standardSpacing
+
         NCBusyIndicator {
             id: busyIndicator
             Layout.topMargin: Style.standardSpacing
@@ -72,7 +73,7 @@ ApplicationWindow {
             imageSourceSizeHeight: root.iconWidth
             imageSourceSizeWidth: root.iconWidth
             padding: 0
-            color: Style.ncTextColor
+            color: palette.windowText
             running: true
         }
         EnforcedPlainTextLabel {
@@ -83,7 +84,6 @@ ApplicationWindow {
             elide: Text.ElideMiddle
             font.bold: true
             font.pixelSize: root.fontPixelSize
-            color: Style.ncTextColor
             horizontalAlignment: Text.AlignHCenter
             visible: root.fileName !== ""
         }
@@ -95,7 +95,6 @@ ApplicationWindow {
             text: qsTr("Opening file for local editing")
             elide: Text.ElideRight
             font.pixelSize: root.fontPixelSize
-            color: Style.ncTextColor
             horizontalAlignment: Text.AlignHCenter
         }
     }

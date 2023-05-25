@@ -161,7 +161,7 @@ Page {
     padding: Style.standardSpacing * 2
 
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         visible: root.backgroundsVisible
     }
 
@@ -202,7 +202,6 @@ Page {
                 Layout.fillWidth: true
 
                 text: qsTr("Edit share")
-                color: Style.ncTextColor
                 font.bold: true
                 elide: Text.ElideRight
             }
@@ -215,8 +214,8 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: root.padding
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
-                bgColor: Style.lightHover
+                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
+                bgColor: palette.highlight
                 bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
@@ -230,7 +229,7 @@ Page {
                 Layout.rightMargin: root.padding
 
                 text: root.fileDetails.name
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
             }
         }
@@ -265,7 +264,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/edit.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -303,7 +302,7 @@ Page {
                 sourceComponent: CheckBox {
                     // TODO: Rather than setting all these palette colours manually,
                     // create a custom style and do it for all components globally
-                    palette.window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                    palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
                     spacing: moreMenu.indicatorSpacing
                     padding: moreMenu.itemPadding
                     indicator.width: moreMenu.indicatorItemWidth
@@ -403,7 +402,7 @@ Page {
 
                         // TODO: Rather than setting all these palette colours manually,
                         // create a custom style and do it for all components globally
-                        palette.window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                        palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
 
                         spacing: moreMenu.indicatorSpacing
                         padding: moreMenu.itemPadding
@@ -431,7 +430,7 @@ Page {
 
                 // TODO: Rather than setting all these palette colours manually,
                 // create a custom style and do it for all components globally
-                palette.window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
 
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
@@ -472,7 +471,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/lock-https.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/lock-https.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -540,7 +539,7 @@ Page {
 
                 // TODO: Rather than setting all these palette colours manually,
                 // create a custom style and do it for all components globally
-                palette.window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
 
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
@@ -580,7 +579,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/calendar.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/calendar.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -735,7 +734,7 @@ Page {
 
                 // TODO: Rather than setting all these palette colours manually,
                 // create a custom style and do it for all components globally
-                palette.window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
 
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
@@ -775,7 +774,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/edit.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -811,12 +810,12 @@ Page {
                 height: Style.standardPrimaryButtonHeight
 
                 icon.source: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
-                imageSourceHover: "image://svgimage-custom-color/close.svg/" + Style.ncHeaderTextColor
+                imageSourceHover: "image://svgimage-custom-color/close.svg/" + palette.brightText
                 text: qsTr("Unshare")
                 textColor: Style.errorBoxBackgroundColor
                 textColorHovered: "white"
                 contentsFont.bold: true
-                bgNormalColor: Style.buttonBackgroundColor
+                bgNormalColor: palette.button
                 bgHoverColor: Style.errorBoxBackgroundColor
                 bgNormalOpacity: 1.0
                 bgHoverOpacity: 1.0
@@ -828,12 +827,12 @@ Page {
                 height: Style.standardPrimaryButtonHeight
 
                 icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncBlue
-                imageSourceHover: "image://svgimage-custom-color/add.svg/" + Style.ncHeaderTextColor
+                imageSourceHover: "image://svgimage-custom-color/add.svg/" + palette.brightText
                 text: qsTr("Add another link")
                 textColor: Style.ncBlue
-                textColorHovered: Style.ncHeaderTextColor
+                textColorHovered: palette.brightText
                 contentsFont.bold: true
-                bgNormalColor: Style.buttonBackgroundColor
+                bgNormalColor: palette.button
                 bgHoverColor: Style.ncBlue
                 bgNormalOpacity: 1.0
                 bgHoverOpacity: 1.0
@@ -872,9 +871,9 @@ Page {
 
             height: Style.standardPrimaryButtonHeight
 
-            icon.source: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
+            icon.source: "image://svgimage-custom-color/copy.svg/" + palette.brightText
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
-            textColor: Style.ncHeaderTextColor
+            textColor: palette.brightText
             contentsFont.bold: true
             bgColor: shareLinkCopied ? Style.positiveColor : Style.ncBlue
             bgNormalOpacity: 1.0

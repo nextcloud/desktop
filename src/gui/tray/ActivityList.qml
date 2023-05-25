@@ -39,12 +39,11 @@ ScrollView {
             id: activityHover
 
             anchors.fill: activityList.currentItem
-
-            color: Style.lightHover
+            color: palette.highlight
             visible: activityList.activeFocus
-
             radius: Style.mediumRoundedButtonRadius
         }
+
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
         highlightResizeDuration: 0
@@ -100,13 +99,13 @@ ScrollView {
                 verticalAlignment: Image.AlignVCenter
                 horizontalAlignment: Image.AlignHCenter
                 fillMode: Image.PreserveAspectFit
-                source: "image://svgimage-custom-color/activity.svg/" + Style.ncSecondaryTextColor
+                source: "image://svgimage-custom-color/activity.svg/" + palette.midlight
             }
 
             EnforcedPlainTextLabel {
                width: parent.width
                text: qsTr("No activities yet")
-               color: Style.ncSecondaryTextColor
+               color: palette.midlight
                font.bold: true
                wrapMode: Text.Wrap
                horizontalAlignment: Text.AlignHCenter

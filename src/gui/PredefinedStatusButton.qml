@@ -35,7 +35,7 @@ AbstractButton {
     property string clearAtText: ""
 
     background: Rectangle {
-        color: root.hovered || root.checked ? Style.lightHover : "transparent"
+        color: root.hovered || root.checked ? palette.highlight : "transparent"
         radius: Style.slightlyRoundedButtonRadius
     }
 
@@ -53,20 +53,17 @@ AbstractButton {
             spacing: Style.smallSpacing
             EnforcedPlainTextLabel {
                 text: root.statusText
-                color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
                 font.bold: true
             }
 
             EnforcedPlainTextLabel {
                 text: "-"
-                color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
             }
 
             EnforcedPlainTextLabel {
                 text: root.clearAtText
-                color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
             }
         }

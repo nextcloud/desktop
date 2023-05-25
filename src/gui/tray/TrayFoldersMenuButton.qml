@@ -185,7 +185,9 @@ HeaderButton {
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
-                        iconSource: !isGroupFolder ? "image://svgimage-custom-color/folder.svg/" + Style.ncTextColor : "image://svgimage-custom-color/folder-group.svg/" + Style.ncTextColor
+                        iconSource: !isGroupFolder ?
+                                        "image://svgimage-custom-color/folder.svg/" + palette.buttonText :
+                                        "image://svgimage-custom-color/folder-group.svg/" + palette.buttonText
 
                         onTriggered: {
                             foldersMenu.close();

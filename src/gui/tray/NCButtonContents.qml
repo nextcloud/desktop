@@ -29,7 +29,7 @@ RowLayout {
     property string text: ""
     property var display
 
-    property color textColor: Style.ncTextColor
+    property color textColor: palette.buttonText
     property color textColorHovered: textColor
     property alias font: buttonLabel.font
 

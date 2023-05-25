@@ -4,8 +4,8 @@ import Style 1.0
 
 Menu {
     background: Rectangle {
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
+        border.color: palette.dark
+        color: palette.base
     }
 
     width: {
