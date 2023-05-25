@@ -22,7 +22,7 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0
 import "./tray"
 
-QtWindow.Window {
+ApplicationWindow {
     id: conflictsDialog
 
     required property var allConflicts
@@ -35,6 +35,26 @@ QtWindow.Window {
     minimumWidth: Style.minimumWidthResolveConflictsDialog
     minimumHeight: Style.minimumHeightResolveConflictsDialog
     title: qsTr('Solve sync conflicts')
+
+    // TODO: Rather than setting all these palette colours manually,
+    // create a custom style and do it for all components globally
+    palette {
+        text: Style.ncTextColor
+        windowText: Style.ncTextColor
+        buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
+        light: Style.lightHover
+        midlight: Style.ncSecondaryTextColor
+        mid: Style.darkerHover
+        dark: Style.menuBorder
+        button: Style.buttonBackgroundColor
+        window: Style.backgroundColor
+        base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
+    }
 
     onClosing: function(close) {
         Systray.destroyDialog(self);
@@ -74,26 +94,6 @@ QtWindow.Window {
 
                 Layout.fillWidth: true
 
-                // TODO: Rather than setting all these palette colours manually,
-                // create a custom style and do it for all components globally
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    brightText: Style.ncTextBrightColor
-                    highlight: Style.lightHover
-                    highlightedText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.lightHover
-                    mid: Style.ncSecondaryTextColor
-                    dark: Style.menuBorder
-                    button: Style.menuBorder
-                    window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
-                    base: Style.backgroundColor
-                    toolTipBase: Style.backgroundColor
-                    toolTipText: Style.ncTextColor
-                }
-
                 text: qsTr('All local versions')
 
                 leftPadding: 0
@@ -111,26 +111,6 @@ QtWindow.Window {
                 id: selectConflict
 
                 Layout.fillWidth: true
-
-                // TODO: Rather than setting all these palette colours manually,
-                // create a custom style and do it for all components globally
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    brightText: Style.ncTextBrightColor
-                    highlight: Style.lightHover
-                    highlightedText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.lightHover
-                    mid: Style.ncSecondaryTextColor
-                    dark: Style.menuBorder
-                    button: Style.menuBorder
-                    window: Style.ncTextColor // NOTE: Fusion theme uses darker window colour for the border of the checkbox
-                    base: Style.backgroundColor
-                    toolTipBase: Style.backgroundColor
-                    toolTipText: Style.ncTextColor
-                }
 
                 text: qsTr('All server versions')
 
@@ -185,26 +165,6 @@ QtWindow.Window {
 
         DialogButtonBox {
             Layout.fillWidth: true
-
-            // TODO: Rather than setting all these palette colours manually,
-            // create a custom style and do it for all components globally
-            palette {
-                text: Style.ncTextColor
-                windowText: Style.ncTextColor
-                buttonText: Style.ncTextColor
-                brightText: Style.ncTextBrightColor
-                highlight: Style.lightHover
-                highlightedText: Style.ncTextColor
-                light: Style.lightHover
-                midlight: Style.lightHover
-                mid: Style.ncSecondaryTextColor
-                dark: Style.menuBorder
-                button: Style.menuBorder
-                window: Style.backgroundColor
-                base: Style.backgroundColor
-                toolTipBase: Style.backgroundColor
-                toolTipText: Style.ncTextColor
-            }
 
             Button {
                 text: qsTr("Resolve conflicts")
