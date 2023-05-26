@@ -48,7 +48,7 @@ if(WITH_APPIMAGEUPDATER)
     )
 
     target_compile_definitions(owncloudCore PRIVATE WITH_APPIMAGEUPDATER)
-    target_link_libraries(owncloudCore PRIVATE libappimageupdate-qt)
+    target_link_libraries(owncloudCore PRIVATE libappimageupdate)
 
     find_package(Threads REQUIRED)
     target_link_libraries(owncloudCore PUBLIC ${CMAKE_THREAD_LIBS_INIT})
