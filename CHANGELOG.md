@@ -8,12 +8,29 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
+* Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 
 Details
 -------
+
+* Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
+
+   We fixed a bug where the client did not follow same site redirects during the setup. If the used
+   url https://test.com/owncloud redirected to https://test.com the new url was not correctly
+   used for the newly created account.
+
+   https://github.com/owncloud/enterprise/issues/5743
+
+* Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
+
+   Whith basic auth the name from the login credentials might not align with the name on the server.
+   We corrected the assumption and no longer change the user name.
+
+   https://github.com/owncloud/client/issues/10856
 
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 
