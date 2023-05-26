@@ -1,3 +1,5 @@
 Change: Remove support for client side system proxy credentials
 
 We removed the support to query and store credentials for the system proxy.
+
+https://github.com/owncloud/client/pull/10866
