@@ -113,7 +113,7 @@ void HttpCredentialsGui::showDialog()
     dialog->setTopLabelText(tr("Please enter your password to log in to your account."));
 
     auto *contentWidget = qobject_cast<BasicLoginWidget *>(dialog->contentWidget());
-    contentWidget->forceUsername(_account->davUser());
+    contentWidget->forceUsername(user());
 
     // in this case, we want to use the login button
     dialog->addLogInButton();
