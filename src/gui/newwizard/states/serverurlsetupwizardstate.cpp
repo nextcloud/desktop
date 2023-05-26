@@ -116,7 +116,7 @@ void ServerUrlSetupWizardState::evaluatePage()
                 // first, we must resolve the actual server URL
                 auto resolveJob = Jobs::ResolveUrlJobFactory(_context->accessManager()).startJob(serverUrl, this);
 
-                connect(resolveJob, &CoreJob::finished, resolveJob, [this, resolveJob, serverUrl]() {
+                connect(resolveJob, &CoreJob::finished, resolveJob, [this, resolveJob]() {
                     resolveJob->deleteLater();
 
                     if (!resolveJob->success()) {
@@ -124,7 +124,7 @@ void ServerUrlSetupWizardState::evaluatePage()
                         return;
                     }
 
-                    const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
+                    const auto resolvedUrl = resolveJob->result().toUrl();
 
                     // classic WebFinger workflow: auth type determination is delegated to whatever server the WebFinger service points us to in a dedicated
                     // step we can skip it here therefore
@@ -135,9 +135,9 @@ void ServerUrlSetupWizardState::evaluatePage()
                     }
 
                     // next, we need to find out which kind of authentication page we have to present to the user
-                    auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(serverUrl, this);
+                    auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(resolvedUrl, this);
 
-                    connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, serverUrl]() {
+                    connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
                         authTypeJob->deleteLater();
 
                         if (authTypeJob->result().isNull()) {
@@ -145,7 +145,7 @@ void ServerUrlSetupWizardState::evaluatePage()
                             return;
                         }
 
-                        _context->accountBuilder().setServerUrl(serverUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
+                        _context->accountBuilder().setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
                         Q_EMIT evaluationSuccessful();
                     });
                 });

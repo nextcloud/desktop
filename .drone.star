@@ -314,25 +314,7 @@ def changelog(ctx):
         "kind": "pipeline",
         "type": "docker",
         "name": "changelog",
-        "clone": {
-            "disable": True,
-        },
         "steps": [
-            {
-                "name": "clone",
-                "image": PLUGINS_GIT_ACTION,
-                "settings": {
-                    "actions": [
-                        "clone",
-                    ],
-                    "remote": "https://github.com/%s" % (repo_slug),
-                    "branch": ctx.build.source if ctx.build.event == "pull_request" else "master",
-                    "path": dir["base"],
-                    "netrc_machine": "github.com",
-                    "netrc_username": from_secret("github_username"),
-                    "netrc_password": from_secret("github_token"),
-                },
-            },
             {
                 "name": "generate",
                 "image": TOOLHIPPIE_CALENS,

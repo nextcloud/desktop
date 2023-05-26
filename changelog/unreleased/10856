@@ -1,0 +1,6 @@
+Bugfix: Use correct user name with basic auth and LDAP
+
+Whith basic auth the name from the login credentials might not align with the name on the server.
+We corrected the assumption and no longer change the user name.
+
+https://github.com/owncloud/client/issues/10856
