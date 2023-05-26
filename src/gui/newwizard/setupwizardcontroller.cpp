@@ -178,13 +178,16 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
                 if (fetchUserInfoJob->success()) {
                     auto result = fetchUserInfoJob->result().value<FetchUserInfoResult>();
                     _context->accountBuilder().setDisplayName(result.displayName());
-                    // with basic auth the login name and the webdav user name might not match
+                    // with basic auth the login name and the webdav username might not match
                     if (_context->accountBuilder().authType() == DetermineAuthTypeJob::AuthType::OAuth) {
                         _context->accountBuilder().authenticationStrategy()->setDavUser(result.userName());
                     }
                     changeStateTo(SetupWizardState::AccountConfiguredState);
+                } else if (fetchUserInfoJob->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 401) {
+                    _context->window()->showErrorMessage(tr("Invalid credentials"));
+                    changeStateTo(_currentState->state());
                 } else {
-                    _context->window()->showErrorMessage(QStringLiteral("Failed to retrieve user information from server"));
+                    _context->window()->showErrorMessage(tr("Failed to retrieve user information from server"));
                     changeStateTo(_currentState->state());
                 }
             });
