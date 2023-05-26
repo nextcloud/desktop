@@ -40,7 +40,7 @@ using namespace std;
 #include <shlwapi.h>
 #include <wrl/client.h>
 
-#include "../3rdparty/nlohmann-json/json.hpp"
+#include "nlohmann/json.hpp"
 
 using Microsoft::WRL::ComPtr;
 

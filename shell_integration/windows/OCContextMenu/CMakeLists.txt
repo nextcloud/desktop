@@ -10,7 +10,9 @@ add_library(OCContextMenu MODULE
 target_link_libraries(OCContextMenu
                       OCUtil
                       crypt32
-                      gdiplus)
+                      gdiplus
+                      nlohmann_json::nlohmann_json
+)
 target_compile_definitions(OCContextMenu PRIVATE JSON_NOEXCEPTION)
 add_windows_version_info(OCContextMenu)
 
