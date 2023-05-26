@@ -49,8 +49,6 @@ if(UNIT_TESTING)
 endif()
 include(CTest)
 
-
-include(OCConfigPluginDir)
 include(OCBundleResources)
 include(OCApplyCommonSettings)
 

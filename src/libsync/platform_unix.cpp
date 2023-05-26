@@ -51,14 +51,5 @@ void UnixPlatform::setLimitsForCoreDumps()
     }
 }
 
-void UnixPlatform::setApplication(QCoreApplication *application)
-{
-    Platform::setApplication(application);
-
-#if defined(OC_PLUGIN_DIR)
-    const QString pluginDirPath = QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
-    application->addLibraryPath(pluginDirPath);
-#endif
-}
 
 } // namespace OCC

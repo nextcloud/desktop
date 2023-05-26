@@ -27,8 +27,6 @@ public:
 
     ~UnixPlatform() override;
 
-    void setApplication(QCoreApplication *application) override;
-
 private:
     void setLimitsForCoreDumps();
 };
