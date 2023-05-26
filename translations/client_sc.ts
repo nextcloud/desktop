@@ -2147,7 +2147,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="139"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="140"/>
         <source>The watcher did not receive a test notification.</source>
         <translation>Su castiadore no at retzidu peruna notìfica de proa.</translation>
     </message>
