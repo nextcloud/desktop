@@ -27,9 +27,6 @@ if(SPARKLE_FOUND)
 endif()
 
 if(WITH_APPIMAGEUPDATER)
-    # needed for set_source_files_properties(... TARGET_DIRECTORY ...)
-    cmake_minimum_required(VERSION 3.18)
-
     message(STATUS "Including built-in libappimageupdate based updater")
 
     set(appimageupdater_sources
