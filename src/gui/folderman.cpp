@@ -1109,6 +1109,7 @@ QString FolderMan::trayTooltipStatusString(
         }
         break;
     case SyncResult::Error:
+        folderMessage = tr("Sync Error.");
         break;
     case SyncResult::SetupError:
         folderMessage = tr("Setup Error.");

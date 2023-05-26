@@ -1,0 +1,8 @@
+Bugfix: Show systray status when a sync error occurred
+
+The systray menu for the ownCloud icon has an entry that shows the sync
+status. However, when a sync error occurred, the entry would have no
+text in it. This has now been fixed.
+
+https://github.com/owncloud/client/issues/10834
+
