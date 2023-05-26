@@ -2150,7 +2150,7 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="139"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="140"/>
         <source>The watcher did not receive a test notification.</source>
         <translation>El vigilante no recibió una notificación de prueba.</translation>
     </message>
