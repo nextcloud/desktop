@@ -1,0 +1,3 @@
+Bugfix: owncloudcmd: Ensure plugin path is initialized on Linux
+
+https://github.com/owncloud/client/issues/10842 

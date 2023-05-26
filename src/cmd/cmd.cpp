@@ -423,11 +423,11 @@ int main(int argc, char **argv)
     auto platform = OCC::Platform::create();
 
     QCoreApplication app(argc, argv);
-    app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
     platform->migrate();
-
     platform->setApplication(&app);
+
+    app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
     SyncCTX ctx { parseOptions(app.arguments()) };
 
