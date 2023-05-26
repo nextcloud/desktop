@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
+* Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
 * Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
@@ -24,6 +25,13 @@ Details
    used for the newly created account.
 
    https://github.com/owncloud/enterprise/issues/5743
+
+* Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
+
+   The systray menu for the ownCloud icon has an entry that shows the sync status. However, when a
+   sync error occurred, the entry would have no text in it. This has now been fixed.
+
+   https://github.com/owncloud/client/issues/10834
 
 * Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
 
