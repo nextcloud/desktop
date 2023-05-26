@@ -120,7 +120,6 @@ void HttpCredentialsGui::showDialog()
 
     connect(dialog, &LoginRequiredDialog::finished, ocApp()->gui()->settingsDialog(), [this, contentWidget](const int result) {
         if (result == QDialog::Accepted) {
-            Q_ASSERT(contentWidget->username() == _account->davUser());
             _password = contentWidget->password();
             _refreshToken.clear();
             _ready = true;
