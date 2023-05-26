@@ -332,9 +332,6 @@ private slots:
                 OC_ASSERT(browserReply);
                 // simulate the fact that the browser is closing the connection
                 browserReply->abort();
-                // don't process network events, as it messes up the execution order and
-                // causes an Qt internal crash
-                QCoreApplication::processEvents(QEventLoop::ExcludeSocketNotifiers);
 
                 OC_ASSERT(state == BrowserOpened);
                 state = TokenAsked;
