@@ -42,40 +42,7 @@ void BasicCredentialsSetupWizardState::evaluatePage()
     if (!_context->accountBuilder().hasValidCredentials()) {
         Q_EMIT evaluationFailed(tr("Invalid credentials"));
     }
-
-    auto strategy = dynamic_cast<HttpBasicAuthenticationStrategy *>(_context->accountBuilder().authenticationStrategy());
-    Q_ASSERT(strategy != nullptr);
-
-    auto checkBasicAuthJob = Jobs::CheckBasicAuthJobFactory(_context->accessManager(), strategy->username(), strategy->password()).startJob(_context->accountBuilder().serverUrl(), this);
-
-    connect(checkBasicAuthJob, &CoreJob::finished, this, [checkBasicAuthJob, this, strategy]() {
-        if (checkBasicAuthJob->success()) {
-            if (checkBasicAuthJob->result().toBool()) {
-                auto fetchUserInfoJob = FetchUserInfoJobFactory::fromBasicAuthCredentials(_context->accessManager(), strategy->username(), strategy->password()).startJob(_context->accountBuilder().serverUrl(), this);
-
-                connect(fetchUserInfoJob, &CoreJob::finished, this, [this, strategy, fetchUserInfoJob] {
-                    if (fetchUserInfoJob->success()) {
-                        auto result = fetchUserInfoJob->result().value<FetchUserInfoResult>();
-
-                        Q_ASSERT(result.userName() == strategy->username());
-
-                        _context->accountBuilder().setDisplayName(result.displayName());
-
-                        Q_EMIT evaluationSuccessful();
-                    } else {
-                        Q_EMIT evaluationFailed(tr("Failed to fetch user display name"));
-                    }
-                });
-
-            } else {
-                Q_EMIT evaluationFailed(tr("Login failed: username and/or password incorrect"));
-            }
-
-
-        } else {
-            Q_EMIT evaluationFailed(tr("Login failed: %1").arg(checkBasicAuthJob->errorMessage()));
-        }
-    });
+    Q_EMIT evaluationSuccessful();
 }
 
 SetupWizardState BasicCredentialsSetupWizardState::state() const
