@@ -8,10 +8,22 @@ ownCloud admins and users.
 Summary
 -------
 
+* Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
+* Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 
 Details
 -------
+
+* Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
+
+   We removed the support to query and store credentials for the system proxy.
+
+   https://github.com/owncloud/client/pull/10866
+
+* Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
+
+   https://github.com/owncloud/client/issues/261
 
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 
