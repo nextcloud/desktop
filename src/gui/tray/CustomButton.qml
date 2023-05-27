@@ -45,6 +45,8 @@ Button {
     rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
+    hoverEnabled: true
+
     NCToolTip {
         text: root.toolTipText
         visible: root.toolTipText !== "" && root.hovered
