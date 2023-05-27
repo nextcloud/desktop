@@ -33,52 +33,59 @@ ColumnLayout {
         id: metrics
     }
 
-    ListView {
-        id: headerLayout
+    ScrollView {
+        property int desiredContentHeight: metrics.height * 2
+
         Layout.fillWidth: true
+        Layout.preferredHeight: ScrollBar.horizontal.visible ?
+                                    desiredContentHeight + ScrollBar.horizontal.height :
+                                    desiredContentHeight
         Layout.margins: 1
-        implicitWidth: contentItem.childrenRect.width
-        implicitHeight: metrics.height * 2
 
-        orientation: ListView.Horizontal
+        contentHeight: availableHeight
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
-        model: emojiModel.emojiCategoriesModel
+        ListView {
+            id: headerLayout
 
-        delegate: ItemDelegate {
-            id: headerDelegate
-            width: metrics.height * 2
-            height: headerLayout.height
+            orientation: ListView.Horizontal
+            model: emojiModel.emojiCategoriesModel
 
-            background: Rectangle {
-                color: Style.lightHover
-                visible: ListView.isCurrentItem || headerDelegate.highlighted || headerDelegate.checked || headerDelegate.down || headerDelegate.hovered
-                radius: Style.slightlyRoundedButtonRadius
-            }
+            delegate: ItemDelegate {
+                id: headerDelegate
+                width: metrics.height * 2
+                height: headerLayout.height
 
-            contentItem: EnforcedPlainTextLabel {
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: emoji
-                color: Style.ncTextColor
-            }
+                background: Rectangle {
+                    color: Style.lightHover
+                    visible: ListView.isCurrentItem || headerDelegate.highlighted || headerDelegate.checked || headerDelegate.down || headerDelegate.hovered
+                    radius: Style.slightlyRoundedButtonRadius
+                }
 
-            Rectangle {
-                anchors.bottom: parent.bottom
+                contentItem: EnforcedPlainTextLabel {
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: emoji
+                    color: Style.ncTextColor
+                }
 
-                width: parent.width
-                height: Style.thickBorderWidth
+                Rectangle {
+                    anchors.bottom: parent.bottom
 
-                visible: ListView.isCurrentItem
+                    width: parent.width
+                    height: Style.thickBorderWidth
 
-                color: Style.menuBorder
-            }
+                    visible: ListView.isCurrentItem
+
+                    color: Style.menuBorder
+                }
 
 
-            onClicked: {
-                emojiModel.setCategory(label)
+                onClicked: {
+                    emojiModel.setCategory(label)
+                }
             }
         }
-
     }
 
     Rectangle {
@@ -87,59 +94,62 @@ ColumnLayout {
         color: Style.menuBorder
     }
 
-    GridView {
-        id: emojiView
+    ScrollView {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.preferredHeight: metrics.height * 8
         Layout.margins: Style.normalBorderWidth
 
-        cellWidth: metrics.height * 2
-        cellHeight: metrics.height * 2
+        contentWidth: availableWidth
 
-        boundsBehavior: Flickable.DragOverBounds
         clip: true
 
-        model: emojiModel.model
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-        delegate: ItemDelegate {
-            id: emojiDelegate
+        GridView {
+            id: emojiView
 
-            width: metrics.height * 2
-            height: metrics.height * 2
+            cellWidth: metrics.height * 2
+            cellHeight: metrics.height * 2
 
-            background: Rectangle {
-                color: Style.lightHover
-                visible: ListView.isCurrentItem || emojiDelegate.highlighted || emojiDelegate.checked || emojiDelegate.down || emojiDelegate.hovered
-                radius: Style.slightlyRoundedButtonRadius
+            model: emojiModel.model
+
+            delegate: ItemDelegate {
+                id: emojiDelegate
+
+                width: metrics.height * 2
+                height: metrics.height * 2
+
+                background: Rectangle {
+                    color: Style.lightHover
+                    visible: ListView.isCurrentItem || emojiDelegate.highlighted || emojiDelegate.checked || emojiDelegate.down || emojiDelegate.hovered
+                    radius: Style.slightlyRoundedButtonRadius
+                }
+
+                contentItem: EnforcedPlainTextLabel {
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: modelData === undefined ? "" : modelData.unicode
+                    color: Style.ncTextColor
+                }
+
+                onClicked: {
+                    chosen(modelData.unicode);
+                    emojiModel.emojiUsed(modelData);
+                }
             }
 
-            contentItem: EnforcedPlainTextLabel {
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: modelData === undefined ? "" : modelData.unicode
-                color: Style.ncTextColor
-            }
-
-            onClicked: {
-                chosen(modelData.unicode);
-                emojiModel.emojiUsed(modelData);
+            EnforcedPlainTextLabel {
+                id: placeholderMessage
+                width: parent.width * 0.8
+                anchors.centerIn: parent
+                text: qsTr("No recent emojis")
+                color: Style.ncSecondaryTextColor
+                wrapMode: Text.Wrap
+                font.bold: true
+                visible: emojiView.count === 0
             }
         }
-
-        EnforcedPlainTextLabel {
-            id: placeholderMessage
-            width: parent.width * 0.8
-            anchors.centerIn: parent
-            text: qsTr("No recent emojis")
-            color: Style.ncSecondaryTextColor
-            wrapMode: Text.Wrap
-            font.bold: true
-            visible: emojiView.count === 0
-        }
-
-        ScrollBar.vertical: ScrollBar {}
-        
     }
 
 }

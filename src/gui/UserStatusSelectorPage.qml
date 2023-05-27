@@ -28,6 +28,7 @@ Page {
         userIndex: page.userIndex
         onFinished: page.finished()
     }
+    readonly property alias emojiPopupOpen: userStatusSelector.emojiPopupOpen
 
     padding: Style.standardSpacing * 2
 

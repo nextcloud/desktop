@@ -23,8 +23,11 @@ import "./tray"
 
 ColumnLayout {
     id: rootLayout
-    spacing: Style.standardSpacing * 2
+
     property NC.UserStatusSelectorModel userStatusSelectorModel
+    readonly property alias emojiPopupOpen: emojiDialog.opened
+
+    spacing: Style.standardSpacing * 2
 
     ColumnLayout {
         id: statusButtonsLayout
@@ -180,9 +183,11 @@ ColumnLayout {
 
             Popup {
                 id: emojiDialog
+
                 padding: 0
                 margins: 0
                 clip: true
+                modal: true
 
                 anchors.centerIn: Overlay.overlay
 
@@ -193,7 +198,7 @@ ColumnLayout {
                     radius: Style.slightlyRoundedButtonRadius
                 }
 
-                EmojiPicker {
+                contentItem: EmojiPicker {
                     id: emojiPicker
 
                     onChosen: {
