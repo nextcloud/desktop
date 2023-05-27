@@ -131,20 +131,19 @@ ColumnLayout {
             Layout.fillWidth: true
             spacing: 0
 
-            UserStatusSelectorButton {
+            AbstractButton {
                 id: fieldButton
+
+                readonly property bool showBorder: hovered || checked || emojiDialog.visible
 
                 Layout.preferredWidth: userStatusMessageTextField.height
                 Layout.preferredHeight: userStatusMessageTextField.height
 
                 text: userStatusSelectorModel.userStatusEmoji
 
-                onClicked: emojiDialog.open()
-                onHeightChanged: topButtonsLayout.maxButtonHeight = Math.max(topButtonsLayout.maxButtonHeight, height)
-
-                primary: true
                 padding: 0
-                z: hovered ? 2 : 0 // Make sure highlight is seen on top of text field
+                z: showBorder ? 2 : 0 // Make sure highlight is seen on top of text field
+                hoverEnabled: true
 
                 property color borderColor: showBorder ? Style.ncBlue : Style.menuBorder
 
@@ -176,6 +175,15 @@ ColumnLayout {
                         color: Style.buttonBackgroundColor
                     }
                 }
+
+                contentItem: Label {
+                    text: fieldButton.text
+                    textFormat: Text.PlainText
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: emojiDialog.open()
             }
 
             Popup {
@@ -317,27 +325,42 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBottom
 
-        UserStatusSelectorButton {
+        CustomButton {
             // Prevent being squashed by the other buttons with larger text
             Layout.minimumWidth: implicitWidth
             Layout.fillHeight: true
-            primary: true
+
             text: qsTr("Cancel")
+            contentsFont.bold: true
+            bgColor: Style.buttonBackgroundColor
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: Style.hoverOpacity
+
             onClicked: finished()
         }
-        UserStatusSelectorButton {
+        CustomButton {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            primary: true
+
             text: qsTr("Clear status message")
+            contentsFont.bold: true
+            bgColor: Style.buttonBackgroundColor
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: Style.hoverOpacity
+
             onClicked: userStatusSelectorModel.clearUserStatus()
         }
-        UserStatusSelectorButton {
+        CustomButton {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            primary: true
-            colored: true
+
             text: qsTr("Set status message")
+            textColor: Style.ncHeaderTextColor
+            contentsFont.bold: true
+            bgColor: Style.ncBlue
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: Style.hoverOpacity
+
             onClicked: userStatusSelectorModel.setUserStatus()
         }
     }
