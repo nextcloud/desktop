@@ -1291,7 +1291,7 @@ Falls dies ein Missgeschick war und du dich zum Behalten der Datei entscheidest,
     <message>
         <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source>Sync Error.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisationsfehler</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1115"/>
@@ -3978,7 +3978,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="190"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Die Userinformationen konnten nicht vom Server geladen werden</translation>
     </message>
 </context>
 <context>
