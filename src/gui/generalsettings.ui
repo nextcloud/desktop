@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>563</height>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,20 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="autostartCheckBox">
+        <property name="text">
+         <string>&amp;Launch on System Startup</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="callNotificationsCheckBox">
+        <property name="text">
+         <string>Show Call Notifications</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="monoIconsCheckBox">
         <property name="toolTip">
@@ -76,10 +90,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="autostartCheckBox">
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="chatNotificationsCheckBox">
         <property name="text">
-         <string>&amp;Launch on System Startup</string>
+         <string>Show Chat Notifications</string>
         </property>
        </widget>
       </item>
@@ -87,13 +101,6 @@
        <widget class="QCheckBox" name="serverNotificationsCheckBox">
         <property name="text">
          <string>Show Server &amp;Notifications</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="callNotificationsCheckBox">
-        <property name="text">
-         <string>Show Call Notifications</string>
         </property>
        </widget>
       </item>
@@ -343,7 +350,6 @@
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
-  <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
