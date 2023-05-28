@@ -2459,7 +2459,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>업데이트 채널은 어떤 종류의 클라이언트 업데이트를 설치할 지 결정합니다.  &quot;안정화(stable)&quot; 채널은 신뢰 가능한 업그레이드만 제공합니다. &quot;베타(beta)&quot; 채널은 새로운 기능과 버그 수정을 포함하지만, 아직 완전히 테스트가 되지 않았습니다.
 
-채널 선택은 무엇으로 업그레이드를 할 지 결정하며 다운그레이드는 없습니다. 따라서, 베타 체널에서 안정화 채널로 변경할 경우 대개 버전을 즉시 변경할 수 없으며  현재 설치된 베타 버전보다 더 최신인 안정화 버전이 출시될 때 까지 기다려야 합니다.</translation>
+채널 선택은 무엇으로 업그레이드를 할 지 결정하며 다운그레이드는 없습니다. 따라서, 베타 체널에서 안정화 채널로 변경할 경우 대개 버전을 즉시 변경할 수 없으며  현재 설치된 베타 버전보다 더 최신인 안정화 버전이 출시될 때까지 기다려야 합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
