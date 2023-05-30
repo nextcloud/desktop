@@ -14,6 +14,7 @@ Summary
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
+* Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
 
 Details
 -------
@@ -58,6 +59,13 @@ Details
    https://github.com/owncloud/client/issues/8432
    https://github.com/owncloud/client/pull/10754
    https://github.com/owncloud/client/pull/10758
+
+* Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
+
+   We now log the http request when it is send, not when it is created. This will elable us to print
+   more headers set by the platform and messaure the request time more accurately.
+
+   https://github.com/owncloud/client/issues/10313
 
 Changelog for ownCloud Desktop Client [4.0.0] (2023-05-11)
 =======================================
