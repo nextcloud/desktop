@@ -30,6 +30,7 @@ ScrollView {
         Accessible.role: Accessible.List
         Accessible.name: qsTr("Activity list")
 
+        keyNavigationEnabled: true
         clip: true
         spacing: 0
         currentIndex: -1
@@ -37,14 +38,12 @@ ScrollView {
 
         highlight: Rectangle {
             id: activityHover
-
             anchors.fill: activityList.currentItem
-
-            color: Style.lightHover
-            visible: activityList.activeFocus
-
+            color: palette.highlight
             radius: Style.mediumRoundedButtonRadius
+            visible: activityList.activeFocus
         }
+
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
         highlightResizeDuration: 0
@@ -57,6 +56,7 @@ ScrollView {
         }
 
         delegate: ActivityItem {
+            background: null
             width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
@@ -100,13 +100,13 @@ ScrollView {
                 verticalAlignment: Image.AlignVCenter
                 horizontalAlignment: Image.AlignHCenter
                 fillMode: Image.PreserveAspectFit
-                source: "image://svgimage-custom-color/activity.svg/" + Style.ncSecondaryTextColor
+                source: "image://svgimage-custom-color/activity.svg/" + palette.midlight
             }
 
             EnforcedPlainTextLabel {
                width: parent.width
                text: qsTr("No activities yet")
-               color: Style.ncSecondaryTextColor
+               color: palette.midlight
                font.bold: true
                wrapMode: Text.Wrap
                horizontalAlignment: Text.AlignHCenter

@@ -22,12 +22,11 @@ import Style 1.0
 TextEdit {
     id: root
 
-    property color accentColor: Style.ncBlue
-    property color secondaryColor: Style.menuBorder
-    property alias submitButton: submitButton
+    readonly property color accentColor: Style.ncBlue
+    readonly property color secondaryColor: palette.dark
+    readonly property alias submitButton: submitButton
 
     clip: true
-    color: Style.ncTextColor
     textMargin: Style.smallSpacing
     wrapMode: TextEdit.Wrap
     selectByMouse: true
@@ -39,7 +38,7 @@ TextEdit {
         radius: Style.slightlyRoundedButtonRadius
         border.width: Style.normalBorderWidth
         border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: Style.backgroundColor
+        color: palette.base
         z: -1
     }
 

@@ -46,7 +46,7 @@ MouseArea {
     Rectangle {
         id: unifiedSearchResultHoverBackground
         anchors.fill: parent
-        color: (parent.containsMouse ? Style.lightHover : "transparent")
+        color: (parent.containsMouse ? palette.highlight : "transparent")
     }
 
     Loader {

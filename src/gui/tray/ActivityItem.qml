@@ -30,7 +30,7 @@ ItemDelegate {
     }
 
     contentItem: ColumnLayout {
-        spacing: Style.activityContentSpace
+        spacing: Style.smallSpacing
 
         ActivityItemContent {
             id: activityContent

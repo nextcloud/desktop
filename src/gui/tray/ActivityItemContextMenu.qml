@@ -20,7 +20,6 @@ AutoSizingMenu {
         delegate: MenuItem {
             id: moreActionsButtonContextMenuEntry
             text: model.modelData.label
-            palette.windowText: Style.ncTextColor
             onTriggered: menuEntryTriggered(model.modelData.actionIndex)
         }
     }

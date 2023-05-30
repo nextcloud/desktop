@@ -37,6 +37,26 @@ ApplicationWindow {
     color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
 
+    // TODO: Rather than setting all these palette colours manually,
+    // create a custom style and do it for all components globally
+    palette {
+        text: Style.ncTextColor
+        windowText: Style.ncTextColor
+        buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
+        light: Style.lightHover
+        midlight: Style.ncSecondaryTextColor
+        mid: Style.darkerHover
+        dark: Style.menuBorder
+        button: Style.buttonBackgroundColor
+        window: Style.backgroundColor
+        base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
+    }
+
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
@@ -62,8 +82,8 @@ ApplicationWindow {
     background: Rectangle {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width: Style.trayWindowBorderWidth
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
+        border.color: palette.dark
+        color: palette.window
     }
 
     Connections {
@@ -138,8 +158,8 @@ ApplicationWindow {
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
+            border.color: palette.dark
+            color: palette.window
         }
 
         property int userIndex: 0
@@ -175,8 +195,8 @@ ApplicationWindow {
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
+            border.color: palette.dark
+            color: palette.window
         }
 
         property var folderAccountState: ({})
@@ -257,7 +277,6 @@ ApplicationWindow {
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     display:                AbstractButton.IconOnly
                     flat:                   true
-                    palette: Style.systemPalette
 
                     Accessible.role: Accessible.ButtonMenu
                     Accessible.name: qsTr("Current account")
@@ -285,11 +304,10 @@ ApplicationWindow {
                         width: (Style.currentAccountButtonWidth - 2)
                         height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                        palette: Style.palette
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
-                            color: Style.backgroundColor
+                            border.color: palette.dark
+                            color: palette.base
                             radius: Style.currentAccountButtonRadius
                         }
 
@@ -334,7 +352,6 @@ ApplicationWindow {
                             id: addAccountButton
                             height: Style.addAccountButtonHeight
                             hoverEnabled: true
-                            palette: Theme.systemPalette
 
                             background: Item {
                                 height: parent.height
@@ -342,7 +359,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -360,7 +377,6 @@ ApplicationWindow {
                                 EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14
                                     text: qsTr("Add account")
-                                    color: Style.ncTextColor
                                     font.pixelSize: Style.topLinePixelSize
                                 }
                                 // Filler on the right
@@ -380,13 +396,12 @@ ApplicationWindow {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             implicitHeight: 1
-                            color: Style.menuBorder
+                            color: palette.dark
                         }
 
                         MenuItem {
                             id: syncPauseButton
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
 
@@ -396,7 +411,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -409,7 +424,6 @@ ApplicationWindow {
                             id: settingsButton
                             text: qsTr("Settings")
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.openSettings()
 
@@ -419,7 +433,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -432,7 +446,6 @@ ApplicationWindow {
                             id: exitButton
                             text: qsTr("Exit");
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.shutdown()
 
@@ -442,7 +455,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -656,8 +669,8 @@ ApplicationWindow {
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
-                            color: Style.backgroundColor
+                            border.color: palette.dark
+                            color: palette.base
                             radius: 2
                         }
 
@@ -682,9 +695,8 @@ ApplicationWindow {
 
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
-                                    palette.windowText: Style.ncTextColor
                                     icon.source: model.appIconUrl
-                                    icon.color: Style.ncTextColor
+                                    icon.color: palette.buttonText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
 
@@ -694,7 +706,7 @@ ApplicationWindow {
                                         Rectangle {
                                             anchors.fill: parent
                                             anchors.margins: 1
-                                            color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                         }
                                     }
 

@@ -24,11 +24,7 @@ ToolTip {
     delay: Qt.styleHints.mousePressAndHoldInterval
     contentItem: EnforcedPlainTextLabel {
         text: toolTip.text
-        color: Style.ncTextColor
         wrapMode: Text.Wrap
-    }
-    background: Rectangle {
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
+        color: palette.toolTipText
     }
 }

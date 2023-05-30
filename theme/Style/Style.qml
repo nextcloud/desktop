@@ -11,9 +11,10 @@ QtObject {
     // Colors
     readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
     readonly property color ncTextColor: Theme.systemPalette.windowText
+    readonly property color ncTextBrightColor: "white"
     readonly property color ncSecondaryTextColor: "#808080"
-    readonly property color ncHeaderTextColor: "white"
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
+    readonly property color darkerHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2.35) : Qt.darker(backgroundColor, 1.25)
     readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
@@ -56,8 +57,9 @@ QtObject {
 
     property int iconButtonWidth: 36
     property int standardPrimaryButtonHeight: 40
+    readonly property int smallIconSize: 16
 
-    property int minActivityHeight: variableSize(40)
+    property int minActivityHeight: variableSize(32)
 
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
@@ -84,7 +86,7 @@ QtObject {
     property int addAccountButtonHeight: 50
 
     property int headerButtonIconSize: 32
-    property int dismissButtonSize: 16
+    property int dismissButtonSize: 26
     property int minimumActivityItemHeight: 24
 
     property int activityLabelBaseWidth: 240
@@ -137,8 +139,6 @@ QtObject {
     readonly property int fontPixelSizeResolveConflictsDialog: 15
     readonly property int minimumWidthResolveConflictsDialog: 600
     readonly property int minimumHeightResolveConflictsDialog: 800
-
-    readonly property int activityContentSpace: 4
 
     readonly property double smallIconScaleFactor: 0.6
 

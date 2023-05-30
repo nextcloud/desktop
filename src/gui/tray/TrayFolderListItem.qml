@@ -21,7 +21,7 @@ MenuItem {
     id: root
 
     property string subline: ""
-    property string iconSource: "image://svgimage-custom-color/folder-group.svg/" + Style.ncTextColor
+    property string iconSource: "image://svgimage-custom-color/folder-group.svg/" + palette.buttonText
     property string toolTipText: root.text
 
     NCToolTip {
@@ -35,7 +35,7 @@ MenuItem {
         Rectangle {
             anchors.fill: parent
             anchors.margins: Style.normalBorderWidth
-            color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
         }
     }
 

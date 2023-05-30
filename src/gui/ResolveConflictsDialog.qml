@@ -22,7 +22,7 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0
 import "./tray"
 
-QtWindow.Window {
+ApplicationWindow {
     id: conflictsDialog
 
     required property var allConflicts
@@ -35,6 +35,26 @@ QtWindow.Window {
     minimumWidth: Style.minimumWidthResolveConflictsDialog
     minimumHeight: Style.minimumHeightResolveConflictsDialog
     title: qsTr('Solve sync conflicts')
+
+    // TODO: Rather than setting all these palette colours manually,
+    // create a custom style and do it for all components globally
+    palette {
+        text: Style.ncTextColor
+        windowText: Style.ncTextColor
+        buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
+        light: Style.lightHover
+        midlight: Style.ncSecondaryTextColor
+        mid: Style.darkerHover
+        dark: Style.menuBorder
+        button: Style.buttonBackgroundColor
+        window: Style.backgroundColor
+        base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
+    }
 
     onClosing: function(close) {
         Systray.destroyDialog(self);
@@ -110,7 +130,7 @@ QtWindow.Window {
             Layout.fillWidth: true
             Layout.leftMargin: 5
             Layout.rightMargin: 5
-            color: Style.menuBorder
+            color: palette.dark
             height: 1
         }
 
@@ -167,7 +187,7 @@ QtWindow.Window {
     }
 
     Rectangle {
-        color: Theme.systemPalette.window
+        color: Style.backgroundColor
         anchors.fill: parent
         z: 1
     }
