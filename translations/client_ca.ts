@@ -278,7 +278,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>&amp;Tria...</translation>
+        <translation>&amp;Tria…</translation>
     </message>
 </context>
 <context>
@@ -553,12 +553,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="643"/>
         <source>Disable virtual file support …</source>
-        <translation>Inhabilita la compatibilitat amb els fitxers virtuals...</translation>
+        <translation>Inhabilita la compatibilitat amb els fitxers virtuals…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>Enable virtual file support %1 …</source>
-        <translation>Habilitar el suport de fitxer virtual % 1...</translation>
+        <translation>Habilitar el suport de fitxer virtual % 1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
@@ -830,7 +830,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="508"/>
         <source>Fetching activities …</source>
-        <translation>S&apos;estan recuperant les activitats...</translation>
+        <translation>S&apos;estan recuperant les activitats…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
@@ -858,7 +858,7 @@ Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>Navega...</translation>
+        <translation>Navega…</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -2125,12 +2125,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>S&apos;està esperant %n carpeta més...</numerusform><numerusform>S&apos;estan esperant %n carpetes més...</numerusform></translation>
+        <translation><numerusform>S&apos;està esperant %n carpeta més…</numerusform><numerusform>S&apos;estan esperant %n carpetes més…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
         <source>Preparing to sync …</source>
-        <translation>S&apos;està preparant la sincronització...</translation>
+        <translation>S&apos;està preparant la sincronització…</translation>
     </message>
 </context>
 <context>
@@ -2977,7 +2977,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>S&apos;està baixant la versió %1. Espereu...</translation>
+        <translation>S&apos;està baixant la versió %1. Espereu…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -3012,7 +3012,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
-        <translation>S&apos;està comprovant el servidor d&apos;actualitzacions...</translation>
+        <translation>S&apos;està comprovant el servidor d&apos;actualitzacions…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
@@ -3224,7 +3224,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>S&apos;està intentant la connexió a %1 a %2...</translation>
+        <translation>S&apos;està intentant la connexió a %1 a %2…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
@@ -4320,12 +4320,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1402"/>
         <source>Move and rename …</source>
-        <translation>Mou i canvia el nom...</translation>
+        <translation>Mou i canvia el nom…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1405"/>
         <source>Move, rename and upload …</source>
-        <translation>Mou, canvia el nom i puja...</translation>
+        <translation>Mou, canvia el nom i puja…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1407"/>
@@ -4335,7 +4335,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1413"/>
         <source>Move and upload …</source>
-        <translation>Mou i puja...</translation>
+        <translation>Mou i puja…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1414"/>
@@ -6112,7 +6112,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
-        <translation>S&apos;està cancel·lant...</translation>
+        <translation>S&apos;està cancel·lant…</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
