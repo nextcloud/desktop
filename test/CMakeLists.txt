@@ -42,7 +42,10 @@ owncloud_add_test(Permissions)
 owncloud_add_test(SelectiveSync)
 owncloud_add_test(DatabaseError)
 owncloud_add_test(LockedFiles)
-owncloud_add_test(Updater)
+
+if (WITH_AUTO_UPDATER)
+    owncloud_add_test(Updater)
+endif()
 
 owncloud_add_test(FolderMigration)
 

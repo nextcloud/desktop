@@ -31,13 +31,23 @@ private slots:
         QFETCH(OCUpdater::DownloadState, result);
         UpdateInfo info;
         info.setDownloadUrl(url);
-        info.setVersionString("ownCloud 2.2.4 (build 6408)");
+        info.setVersionString(QStringLiteral("ownCloud 2.2.4 (build 6408)"));
         // esnure we do the update
-        info.setVersion("100.2.4.6408");
+        info.setVersion(QStringLiteral("100.2.4.6408"));
         auto *updater = new NSISUpdater({});
-        QSignalSpy downloadSpy(updater, &NSISUpdater::slotDownloadFinished);
+        QSignalSpy downloadSpy(updater, &NSISUpdater::downloadStateChanged);
         updater->versionInfoArrived(info);
-        downloadSpy.wait();
+        // we might have multiple state changes allow them to happen
+        for (int i = 0; i <= OCUpdater::UpdateOnlyAvailableThroughSystem; ++i) {
+            // wait up to a minute, we are actually downloading a file
+            if (!downloadSpy.wait(60000)) {
+                // we timed out
+                break;
+            }
+            if (updater->downloadState() == result) {
+                break;
+            }
+        }
         QCOMPARE(updater->downloadState(), result);
         updater->deleteLater();
     }
