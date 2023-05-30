@@ -35,8 +35,8 @@ RowLayout {
     property int titleFontSize: Style.unifiedSearchResultTitleFontSize
     property int sublineFontSize: Style.unifiedSearchResultSublineFontSize
 
-    property color titleColor: Style.ncTextColor
-    property color sublineColor: Style.ncSecondaryTextColor
+    property color titleColor: palette.buttonText
+    property color sublineColor: palette.midlight
 
 
     Accessible.role: Accessible.ListItem

@@ -20,8 +20,8 @@ import Style 1.0
 
 EnforcedPlainTextLabel {
     property bool hovered: false
-    property color textColor: Style.ncTextColor
-    property color textColorHovered: Style.ncSecondaryTextColor
+    property color textColor: palette.windowText
+    property color textColorHovered: palette.midlight
     property bool bold: false
 
     font.underline: true

@@ -45,7 +45,7 @@ ColumnLayout {
             id: placeholderSectionHeaderRectangle
             anchors.fill: parent
             radius: Style.veryRoundedButtonRadius
-            color: Style.lightHover
+            color: palette.light
             clip: true
             visible: false
 

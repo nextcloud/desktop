@@ -13,8 +13,6 @@ RowLayout {
 
     property variant activity: {{}}
 
-    property color activityTextTitleColor: Style.ncTextColor
-
     property bool showDismissButton: false
 
     property bool childHovered: fileDetailsButton.hovered || dismissActionButton.hovered
@@ -31,8 +29,6 @@ RowLayout {
         readonly property int imageWidth: width * (1 - Style.thumbnailImageSizeReduction)
         readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
         readonly property int thumbnailRadius: model.thumbnail && model.thumbnail.isUserAvatar ? width / 2 : 3
-
-        Layout.fillHeight: true
 
         implicitWidth: root.iconSize
         implicitHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? root.iconSize * 0.9 : root.iconSize
@@ -127,31 +123,21 @@ RowLayout {
 
         RowLayout {
             Layout.fillWidth: true
-            Layout.maximumWidth: activityContentLayout.width
 
             spacing: Style.trayHorizontalMargin
 
             EnforcedPlainTextLabel {
                 id: activityTextTitle
                 text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
-                height: (text === "") ? 0 : implicitHeight
 
-                Layout.maximumWidth: activityContentLayout.width - Style.trayHorizontalMargin -
-                                     (activityTextDateTime.visible ? activityTextDateTime.width + Style.trayHorizontalMargin : 0) -
-                                     (dismissActionButton.visible ? dismissActionButton.width + Style.trayHorizontalMargin : 0)
-                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
-                maximumLineCount: 1
+                maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
-                color: Style.ncTextColor
                 visible: text !== ""
-
-                NCToolTip {
-                    text: parent.text
-                    visible: parent.hovered
-                }
             }
 
             Item {
@@ -164,18 +150,39 @@ RowLayout {
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                 height: (text === "") ? 0 : implicitHeight
-                width: parent.width
 
                 text: root.activityData.dateTime
-                elide: Text.ElideRight
-                wrapMode: Text.Wrap
-                maximumLineCount: 2
                 font.pixelSize: Style.subLinePixelSize
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 visible: text !== ""
             }
 
-            RoundButton {
+            CustomButton {
+                id: fileDetailsButton
+
+                Layout.preferredWidth: Style.dismissButtonSize
+                Layout.preferredHeight: Style.dismissButtonSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+
+                icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+
+                NCToolTip {
+                    text: qsTr("Open file details")
+                    visible: parent.hovered
+                }
+
+                display: Button.IconOnly
+                leftPadding: 0
+                rightPadding: 0
+                bgColor: palette.mid
+                bgNormalOpacity:  0
+
+                visible: model.showFileDetails
+
+                onClicked: Systray.presentShareViewInTray(model.openablePath)
+            }
+
+            CustomButton {
                 id: dismissActionButton
 
                 Layout.preferredWidth: Style.dismissButtonSize
@@ -184,12 +191,13 @@ RowLayout {
 
                 visible: root.showDismissButton && !fileDetailsButton.visible
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+                icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
 
-                flat: true
                 display: Button.IconOnly
-                hoverEnabled: true
-                padding: 0
+                leftPadding: 0
+                rightPadding: 0
+                bgColor: palette.mid
+                bgNormalOpacity: 0
 
                 NCToolTip {
                     text: qsTr("Dismiss")
@@ -203,9 +211,8 @@ RowLayout {
         RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.minimumHeight: Style.minimumActivityItemHeight
-            Layout.maximumWidth: root.width - thumbnailItem.width
             spacing: Style.trayHorizontalMargin
+            visible: activityTextInfo.visible || talkReplyMessageSent.visible || activityActions.visible
 
             EnforcedPlainTextLabel {
                 id: activityTextInfo
@@ -223,36 +230,11 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.subLinePixelSize
-                color: Style.ncTextColor
                 visible: text !== ""
             }
 
             Item {
                 Layout.fillWidth: true
-            }
-
-            Button {
-                id: fileDetailsButton
-
-                Layout.preferredWidth: Style.headerButtonIconSize
-                Layout.preferredHeight: Style.headerButtonIconSize
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-
-                icon.source: "image://svgimage-custom-color/more.svg"
-
-                NCToolTip {
-                    text: qsTr("Open file details")
-                    visible: parent.hovered
-                }
-
-                flat: true
-                display: Button.IconOnly
-                hoverEnabled: true
-                padding: 0
-
-                visible: model.showFileDetails
-
-                onClicked: Systray.presentShareViewInTray(model.openablePath)
             }
 
             EnforcedPlainTextLabel {
@@ -267,7 +249,7 @@ RowLayout {
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
                 font.pixelSize: Style.topLinePixelSize
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 visible: text !== ""
             }
 

@@ -21,13 +21,13 @@ EnforcedPlainTextLabel {
     id: internalLabel
 
     background: Rectangle {
-        border.color: Style.lightHover
+        border.color: palette.dark
         border.width: Style.normalBorderWidth
         radius: Style.veryRoundedButtonRadius
         color: "transparent"
     }
 
-    color: Style.ncSecondaryTextColor
+    color: palette.midlight
     elide: Text.ElideRight
     padding: Style.smallSpacing
 }

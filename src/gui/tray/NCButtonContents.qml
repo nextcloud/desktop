@@ -24,19 +24,29 @@ RowLayout {
     property bool hovered: false
     property string imageSourceHover: ""
     property string imageSource: ""
+    property int imageSourceWidth: undefined
+    property int imageSourceHeight: undefined
     property string text: ""
     property var display
 
-    property color textColor: Style.ncTextColor
+    property color textColor: palette.buttonText
     property color textColorHovered: textColor
     property alias font: buttonLabel.font
 
     Image {
         id: icon
 
-        Layout.fillWidth: !buttonLabel.visible
+        Layout.maximumWidth: root.height
+        Layout.maximumHeight: root.height
+        Layout.alignment: Qt.AlignCenter
 
         source: root.hovered ? root.imageSourceHover : root.imageSource
+
+        sourceSize {
+            width: root.imageSourceWidth
+            height: root.imageSourceHeight
+        }
+
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignHCenter
         verticalAlignment: Image.AlignVCenter

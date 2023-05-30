@@ -126,7 +126,6 @@ GridLayout {
         Layout.rowSpan: root.rows
 
         text: root.text
-        color: Style.ncTextColor
         elide: Text.ElideRight
     }
 
@@ -139,7 +138,7 @@ GridLayout {
         Layout.column: 1
 
         text: root.detailText
-        color: Style.ncSecondaryTextColor
+        color: palette.midlight
         elide: Text.ElideRight
         visible: text !== ""
     }
@@ -161,10 +160,12 @@ GridLayout {
 
             toolTipText: qsTr("Create a new share link")
 
-            bgColor: Style.lightHover
+            bgColor: palette.highlight
             bgNormalOpacity: 0
 
-            icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
+            icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
@@ -194,15 +195,15 @@ GridLayout {
             toolTipText: qsTr("Copy share link location")
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
-            textColor: Style.ncHeaderTextColor
+            textColor: palette.brightText
             contentsFont.bold: true
-            bgColor: shareLinkCopied ? Style.positiveColor : Style.lightHover
+            bgColor: shareLinkCopied ? Style.positiveColor : palette.highlight
             bgNormalOpacity: shareLinkCopied ? 1 : 0
 
-            icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor :
-                                           "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
-            icon.width: 16
-            icon.height: 16
+            icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + palette.brightText :
+                                           "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: root.isLinkShare || root.isInternalLinkShare
             enabled: visible
@@ -242,10 +243,12 @@ GridLayout {
 
             toolTipText: qsTr("Share options")
 
-            bgColor: Style.lightHover
+            bgColor: palette.highlight
             bgNormalOpacity: 0
 
-            icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
+            icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible

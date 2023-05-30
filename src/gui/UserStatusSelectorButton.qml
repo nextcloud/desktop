@@ -34,7 +34,7 @@ AbstractButton {
 
     background: Rectangle {
         radius: root.primary ? Style.veryRoundedButtonRadius : Style.mediumRoundedButtonRadius
-        color: root.colored ? Style.ncBlue : Style.buttonBackgroundColor
+        color: root.colored ? Style.ncBlue : palette.button
         opacity: root.colored && root.hovered ? Style.hoverOpacity : 1.0
         border.color: Style.ncBlue
         border.width: root.showBorder ? root.primary ? Style.normalBorderWidth : Style.thickBorderWidth : 0
@@ -71,7 +71,7 @@ AbstractButton {
 
             text: root.text
             wrapMode: Text.Wrap
-            color: root.colored ? Style.ncHeaderTextColor : Style.ncTextColor
+            color: root.colored ? palette.brightText : palette.buttonText
             font.bold: root.primary
         }
 
@@ -85,7 +85,7 @@ AbstractButton {
 
             text: root.secondaryText
             wrapMode: Text.Wrap
-            color: Style.ncSecondaryTextColor
+            color: palette.midlight
             visible: root.secondaryText !== ""
         }
     }

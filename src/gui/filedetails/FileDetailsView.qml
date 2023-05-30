@@ -30,7 +30,7 @@ StackView {
     property bool backgroundsVisible: true
 
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         visible: root.backgroundsVisible
     }
 

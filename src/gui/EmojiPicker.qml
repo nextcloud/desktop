@@ -50,8 +50,12 @@ ColumnLayout {
             height: headerLayout.height
 
             background: Rectangle {
-                color: Style.lightHover
-                visible: ListView.isCurrentItem || headerDelegate.highlighted || headerDelegate.checked || headerDelegate.down || headerDelegate.hovered
+                color: palette.highlight
+                visible: ListView.isCurrentItem ||
+                         headerDelegate.highlighted ||
+                         headerDelegate.checked ||
+                         headerDelegate.down ||
+                         headerDelegate.hovered
                 radius: Style.slightlyRoundedButtonRadius
             }
 
@@ -59,7 +63,6 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: emoji
-                color: Style.ncTextColor
             }
 
             Rectangle {
@@ -70,7 +73,7 @@ ColumnLayout {
 
                 visible: ListView.isCurrentItem
 
-                color: Style.menuBorder
+                color: palette.dark
             }
 
 
@@ -84,7 +87,7 @@ ColumnLayout {
     Rectangle {
         height: Style.normalBorderWidth
         Layout.fillWidth: true
-        color: Style.menuBorder
+        color: palette.dark
     }
 
     GridView {
@@ -109,7 +112,7 @@ ColumnLayout {
             height: metrics.height * 2
 
             background: Rectangle {
-                color: Style.lightHover
+                color: palette.highlight
                 visible: ListView.isCurrentItem || emojiDelegate.highlighted || emojiDelegate.checked || emojiDelegate.down || emojiDelegate.hovered
                 radius: Style.slightlyRoundedButtonRadius
             }
@@ -118,7 +121,6 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: modelData === undefined ? "" : modelData.unicode
-                color: Style.ncTextColor
             }
 
             onClicked: {
@@ -132,7 +134,7 @@ ColumnLayout {
             width: parent.width * 0.8
             anchors.centerIn: parent
             text: qsTr("No recent emojis")
-            color: Style.ncSecondaryTextColor
+            color: palette.midlight
             wrapMode: Text.Wrap
             font.bold: true
             visible: emojiView.count === 0
