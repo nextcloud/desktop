@@ -18,7 +18,7 @@ function(owncloud_add_test test_class)
         owncloudCore syncenginetestutils testutilsloader Qt::Test
     )
     apply_common_target_settings(${OWNCLOUD_TEST_CLASS}Test)
-    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin" SOURCEDIR="${PROJECT_SOURCE_DIR}" QT_FORCE_ASSERTS)
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="$<TARGET_FILE_DIR:owncloud>" SOURCEDIR="${PROJECT_SOURCE_DIR}" QT_FORCE_ASSERTS)
 
     target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE "${CMAKE_SOURCE_DIR}/test/")
     if (UNIX AND NOT APPLE)
