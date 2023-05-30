@@ -262,6 +262,11 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
             [this](QNetworkInformation::Reachability reachability) { qCInfo(lcApplication) << "Connection Status changed to:" << reachability; });
     }
 #endif
+
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        // display the wizard if we don't have an account yet
+        QTimer::singleShot(0, gui(), &ownCloudGui::runNewAccountWizard);
+    }
 }
 
 Application::~Application()
