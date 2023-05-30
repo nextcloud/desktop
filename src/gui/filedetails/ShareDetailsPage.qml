@@ -160,23 +160,8 @@ Page {
 
     padding: Style.standardSpacing * 2
 
-    // TODO: Rather than setting all these palette colours manually,
-    // create a custom style and do it for all components globally
-    palette {
-        text: Style.ncTextColor
-        windowText: Style.ncTextColor
-        buttonText: Style.ncTextColor
-        light: Style.lightHover
-        midlight: Style.lightHover
-        mid: Style.ncSecondaryTextColor
-        dark: Style.menuBorder
-        button: Style.menuBorder
-        window: Style.backgroundColor
-        base: Style.backgroundColor
-    }
-
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         visible: root.backgroundsVisible
     }
 
@@ -217,7 +202,6 @@ Page {
                 Layout.fillWidth: true
 
                 text: qsTr("Edit share")
-                color: Style.ncTextColor
                 font.bold: true
                 elide: Text.ElideRight
             }
@@ -230,8 +214,8 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: root.padding
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
-                bgColor: Style.lightHover
+                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
+                bgColor: palette.highlight
                 bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
@@ -245,7 +229,7 @@ Page {
                 Layout.rightMargin: root.padding
 
                 text: root.fileDetails.name
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
             }
         }
@@ -258,10 +242,10 @@ Page {
         ColumnLayout {
             id: moreMenu
 
-            property int rowIconWidth: 16
-            property int indicatorItemWidth: 20
-            property int indicatorSpacing: Style.standardSpacing
-            property int itemPadding: Style.smallSpacing
+            readonly property int rowIconWidth: Style.smallIconSize
+            readonly property int indicatorItemWidth: 20
+            readonly property int indicatorSpacing: Style.standardSpacing
+            readonly property int itemPadding: Style.smallSpacing
 
             width: parent.width
 
@@ -280,7 +264,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/edit.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -316,6 +300,9 @@ Page {
                 active: !root.isFolderItem && !root.isEncryptedItem
                 visible: active
                 sourceComponent: CheckBox {
+                    // TODO: Rather than setting all these palette colours manually,
+                    // create a custom style and do it for all components globally
+                    palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
                     spacing: moreMenu.indicatorSpacing
                     padding: moreMenu.itemPadding
                     indicator.width: moreMenu.indicatorItemWidth
@@ -413,6 +400,10 @@ Page {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
+                        // TODO: Rather than setting all these palette colours manually,
+                        // create a custom style and do it for all components globally
+                        palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+
                         spacing: moreMenu.indicatorSpacing
                         padding: moreMenu.itemPadding
                         indicator.width: moreMenu.indicatorItemWidth
@@ -436,6 +427,10 @@ Page {
                 id: passwordProtectEnabledMenuItem
 
                 Layout.fillWidth: true
+
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
 
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
@@ -476,7 +471,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/lock-https.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/lock-https.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -542,6 +537,10 @@ Page {
 
                 Layout.fillWidth: true
 
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
                 indicator.width: moreMenu.indicatorItemWidth
@@ -580,7 +579,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/calendar.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/calendar.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -733,6 +732,10 @@ Page {
 
                 Layout.fillWidth: true
 
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+
                 spacing: moreMenu.indicatorSpacing
                 padding: moreMenu.itemPadding
                 indicator.width: moreMenu.indicatorItemWidth
@@ -771,7 +774,7 @@ Page {
                     horizontalAlignment: Image.AlignHCenter
                     fillMode: Image.Pad
 
-                    source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
+                    source: "image://svgimage-custom-color/edit.svg/" + palette.dark
                     sourceSize.width: moreMenu.rowIconWidth
                     sourceSize.height: moreMenu.rowIconWidth
                 }
@@ -807,12 +810,12 @@ Page {
                 height: Style.standardPrimaryButtonHeight
 
                 icon.source: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
-                imageSourceHover: "image://svgimage-custom-color/close.svg/" + Style.ncHeaderTextColor
+                imageSourceHover: "image://svgimage-custom-color/close.svg/" + palette.brightText
                 text: qsTr("Unshare")
                 textColor: Style.errorBoxBackgroundColor
                 textColorHovered: "white"
                 contentsFont.bold: true
-                bgNormalColor: Style.buttonBackgroundColor
+                bgNormalColor: palette.button
                 bgHoverColor: Style.errorBoxBackgroundColor
                 bgNormalOpacity: 1.0
                 bgHoverOpacity: 1.0
@@ -824,12 +827,12 @@ Page {
                 height: Style.standardPrimaryButtonHeight
 
                 icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncBlue
-                imageSourceHover: "image://svgimage-custom-color/add.svg/" + Style.ncHeaderTextColor
+                imageSourceHover: "image://svgimage-custom-color/add.svg/" + palette.brightText
                 text: qsTr("Add another link")
                 textColor: Style.ncBlue
-                textColorHovered: Style.ncHeaderTextColor
+                textColorHovered: palette.brightText
                 contentsFont.bold: true
-                bgNormalColor: Style.buttonBackgroundColor
+                bgNormalColor: palette.button
                 bgHoverColor: Style.ncBlue
                 bgNormalOpacity: 1.0
                 bgHoverOpacity: 1.0
@@ -848,6 +851,7 @@ Page {
         rightPadding: root.padding
         leftPadding: root.padding
         alignment: Qt.AlignRight | Qt.AlignVCenter
+        contentWidth: (contentItem as ListView).contentWidth
         visible: copyShareLinkButton.visible
 
         CustomButton {
@@ -867,9 +871,9 @@ Page {
 
             height: Style.standardPrimaryButtonHeight
 
-            icon.source: "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor
+            icon.source: "image://svgimage-custom-color/copy.svg/" + palette.brightText
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
-            textColor: Style.ncHeaderTextColor
+            textColor: palette.brightText
             contentsFont.bold: true
             bgColor: shareLinkCopied ? Style.positiveColor : Style.ncBlue
             bgNormalOpacity: 1.0
@@ -886,6 +890,10 @@ Page {
 
             Behavior on bgHoverOpacity {
                 NumberAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on Layout.preferredWidth {
+                SmoothedAnimation { duration: Style.shortAnimationDuration }
             }
 
             TextEdit {

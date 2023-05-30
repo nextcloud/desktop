@@ -13,7 +13,6 @@ TextField {
 
     height: Style.talkReplyTextFieldPreferredHeight
     visible: model.messageSent === ""
-    color: Style.ncTextColor
     placeholderText: qsTr("Reply to …")
 
     onAccepted: sendReplyMessage()
@@ -22,8 +21,8 @@ TextField {
         id: replyMessageTextFieldBorder
         radius: width / 2
         border.width: Style.normalBorderWidth
-        border.color: replyMessageTextField.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
-        color: Style.backgroundColor
+        border.color: replyMessageTextField.activeFocus ? UserModel.currentUser.accentColor : palette.dark
+        color: palette.window
     }
 
     Button {
@@ -39,8 +38,8 @@ TextField {
         background: null
 
         icon {
-            source: "image://svgimage-custom-color/send.svg" + "/" + Style.menuBorder
-            color: hovered || !sendReplyMessageButton.enabled ? Style.menuBorder : UserModel.currentUser.accentColor
+            source: "image://svgimage-custom-color/send.svg" + "/" + palette.dark
+            color: hovered || !sendReplyMessageButton.enabled ? palette.dark : UserModel.currentUser.accentColor
         }
 
         anchors {

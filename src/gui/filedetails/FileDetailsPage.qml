@@ -64,7 +64,7 @@ Page {
     bottomPadding: intendedPadding
 
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         visible: root.backgroundsVisible
     }
 
@@ -121,7 +121,6 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.name
-                color: Style.ncTextColor
                 font.bold: true
                 wrapMode: Text.Wrap
             }
@@ -134,8 +133,8 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
-                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
-                bgColor: Style.lightHover
+                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
+                bgColor: palette.highlight
                 bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
@@ -151,7 +150,7 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: `${root.fileDetails.sizeString} · ${root.fileDetails.lastChangedString}`
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
             }
 
@@ -162,7 +161,7 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.lockExpireString
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 visible: headerGridLayout.showFileLockedString
             }
@@ -219,9 +218,6 @@ Page {
             Layout.rightMargin: root.intendedPadding
 
             padding: 0
-            background: Rectangle {
-                color: Style.backgroundColor
-            }
 
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/activity.svg"

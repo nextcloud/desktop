@@ -12,9 +12,9 @@ AbstractButton {
 
     property string imageSourceHover: ""
 
-    property color adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
-    property color textColor: primaryButton ? adjustedHeaderColor : Style.ncTextColor
-    property color textColorHovered: primaryButton ? Style.currentUserHeaderTextColor : Style.ncTextColor
+    readonly property color adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
+    readonly property color textColor: primaryButton ? adjustedHeaderColor : palette.buttonText
+    readonly property color textColorHovered: primaryButton ? Style.currentUserHeaderTextColor : palette.buttonText
 
     property string verb: ""
     property bool isTalkReplyButton: false
@@ -39,14 +39,7 @@ AbstractButton {
         text: root.toolTipText
         delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
-        contentItem: EnforcedPlainTextLabel {
-            text: customTextButtonTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
+        contentItem: EnforcedPlainTextLabel { text: customTextButtonTooltip.text }
     }
 
     Component {

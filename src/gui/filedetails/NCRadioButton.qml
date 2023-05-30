@@ -18,10 +18,10 @@ import Style 1.0
 
 RadioButton {
     id: root
+
     property int indicatorItemWidth: Style.radioButtonIndicatorSize
     property int indicatorItemHeight: Style.radioButtonIndicatorSize
-    property string color: Style.ncTextColor
-    readonly property int radius: Style.radioButtonCustomRadius
+    property int radius: Style.radioButtonCustomRadius
 
     indicator: Rectangle {
         implicitWidth: root.indicatorItemWidth
@@ -30,12 +30,13 @@ RadioButton {
         anchors.left: parent.left
         anchors.leftMargin: Style.radioButtonCustomMarginLeftOuter
         radius: root.radius
-        border.color: root.color
+        border.color: palette.dark
         border.width: Style.normalBorderWidth
+
         Rectangle {
             anchors.fill: parent
             visible: root.checked
-            color: root.color
+            color: palette.buttonText
             radius: root.radius
             anchors.margins: Style.radioButtonCustomMarginLeftInner
         }

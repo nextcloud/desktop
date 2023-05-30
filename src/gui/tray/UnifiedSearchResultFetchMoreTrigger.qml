@@ -26,7 +26,7 @@ ColumnLayout {
 
     property int fontSize: Style.unifiedSearchResultTitleFontSize
 
-    property string textColor: Style.ncSecondaryTextColor
+    property string textColor: palette.midlight
 
     Accessible.role: Accessible.ListItem
     Accessible.name: unifiedSearchResultItemFetchMoreText.text

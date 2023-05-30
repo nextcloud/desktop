@@ -56,7 +56,6 @@ RowLayout {
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Style.topLinePixelSize
             font.bold: true
-            color: Style.ncTextColor
             wrapMode: Text.Wrap
         }
 
@@ -71,19 +70,7 @@ RowLayout {
 
                 // TODO: Rather than setting all these palette colours manually,
                 // create a custom style and do it for all components globally
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.lightHover
-                    mid: Style.ncSecondaryTextColor
-                    dark: Style.menuBorder
-                    button: Style.menuBorder
-                    window: Style.backgroundColor
-                    base: Style.backgroundColor
-                }
-
+                palette.window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the progress bar
                 value: syncStatus.syncProgress
             }
         }
@@ -95,7 +82,7 @@ RowLayout {
 
             text: syncStatus.syncStatusDetailString
             visible: syncStatus.syncStatusDetailString !== ""
-            color: Style.ncSecondaryTextColor
+            color: palette.midlight
             font.pixelSize: Style.subLinePixelSize
             wrapMode: Text.Wrap
         }

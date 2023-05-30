@@ -30,7 +30,7 @@ ComboBox {
 
     background: Rectangle {
         radius: Style.slightlyRoundedButtonRadius
-        color: Style.buttonBackgroundColor
+        color: palette.button
         opacity: clearComboBox.hovered ? Style.hoverOpacity : 1.0
     }
 
@@ -39,7 +39,6 @@ ComboBox {
         rightPadding: clearComboBox.indicator.width + clearComboBox.spacing
 
         text: clearComboBox.displayText
-        color: Style.ncTextColor
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
@@ -50,13 +49,13 @@ ComboBox {
         anchors.verticalCenter: clearComboBox.verticalCenter
 
         cached: true
-        color: Style.ncTextColor
         width: source.width
         height: source.height
+
         source: Image {
             horizontalAlignment: Qt.AlignRight
             verticalAlignment: Qt.AlignVCenter
-            source: "qrc:///client/theme/white/caret-down.svg"
+            source: "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
             sourceSize.width: Style.accountDropDownCaretSize
             sourceSize.height: Style.accountDropDownCaretSize
             Accessible.role: Accessible.PopupMenu
@@ -80,8 +79,8 @@ ComboBox {
         }
 
         background: Rectangle {
-            color: Style.backgroundColor
-            border.color: Style.menuBorder
+            color: palette.toolTipBase
+            border.color: palette.dark
             radius: Style.slightlyRoundedButtonRadius
         }
     }
@@ -92,13 +91,9 @@ ComboBox {
         width: clearComboBox.width
         contentItem: EnforcedPlainTextLabel {
             text: modelData.display
-            color: Style.ncTextColor
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
         highlighted: clearComboBox.highlightedIndex === index
-        background: Rectangle {
-           color: clearStatusDelegate.highlighted || clearStatusDelegate.hovered ? Style.lightHover : Style.backgroundColor
-       }
     }
 }

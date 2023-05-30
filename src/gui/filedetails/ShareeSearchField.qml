@@ -37,7 +37,7 @@ TextField {
     }
 
     readonly property int horizontalPaddingOffset: Style.trayHorizontalMargin
-    readonly property color placeholderColor: Style.menuBorder
+    readonly property color placeholderColor: palette.dark
     readonly property double iconsScaleFactor: 0.6
 
     function triggerSuggestionsVisibility() {
@@ -46,7 +46,6 @@ TextField {
 
     placeholderText: qsTr("Search for users or groups…")
     placeholderTextColor: placeholderColor
-    color: Style.ncTextColor
     enabled: !shareeModel.fetchOngoing
 
     onActiveFocusChanged: triggerSuggestionsVisibility()
@@ -93,9 +92,9 @@ TextField {
 
     background: Rectangle {
         radius: 5
-        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
+        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
         border.width: 1
-        color: Style.backgroundColor
+        color: palette.base
     }
 
     Image {
@@ -172,21 +171,6 @@ TextField {
         height: 100
         y: root.height
 
-        // TODO: Rather than setting all these palette colours manually,
-        // create a custom style and do it for all components globally
-        palette {
-            text: Style.ncTextColor
-            windowText: Style.ncTextColor
-            buttonText: Style.ncTextColor
-            light: Style.lightHover
-            midlight: Style.lightHover
-            mid: Style.ncSecondaryTextColor
-            dark: Style.menuBorder
-            button: Style.menuBorder
-            window: Style.backgroundColor
-            base: Style.backgroundColor
-        }
-
         contentItem: ScrollView {
             id: suggestionsScrollView
 
@@ -203,7 +187,7 @@ TextField {
                 highlight: Rectangle {
                     width: shareeListView.currentItem.width
                     height: shareeListView.currentItem.height
-                    color: Style.lightHover
+                    color: palette.highlight
                 }
                 highlightFollowsCurrentItem: true
                 highlightMoveDuration: 0

@@ -37,7 +37,9 @@ AbstractButton {
     background: Rectangle {
         anchors.fill: parent
         anchors.margins: 1
-        color: (userLine.hovered || userLine.visualFocus) && !(userMoreButton.hovered || userMoreButton.visualFocus) ? Style.lightHover : Style.backgroundColor
+        color: (userLine.hovered || userLine.visualFocus) &&
+               !(userMoreButton.hovered || userMoreButton.visualFocus) ?
+                   palette.highlight : palette.base
     }
 
     contentItem: RowLayout {
@@ -92,7 +94,6 @@ AbstractButton {
                 verticalAlignment: Text.AlignBottom
                 text: name
                 elide: Text.ElideRight
-                color: Style.ncTextColor
                 font.pixelSize: Style.topLinePixelSize
                 font.bold: true
             }
@@ -118,7 +119,6 @@ AbstractButton {
                     visible: model.statusMessage !== ""
                     text: statusMessage
                     elide: Text.ElideRight
-                    color: Style.ncTextColor
                     font.pixelSize: Style.subLinePixelSize
                     leftPadding: Style.accountLabelsSpacing
                 }
@@ -131,7 +131,6 @@ AbstractButton {
                 verticalAlignment: Text.AlignTop
                 text: server
                 elide: Text.ElideRight
-                color: Style.ncTextColor
                 font.pixelSize: Style.subLinePixelSize
             }
         }
@@ -143,7 +142,7 @@ AbstractButton {
             flat: true
 
             icon.source: "qrc:///client/theme/more.svg"
-            icon.color: Style.ncTextColor
+            icon.color: palette.buttonText
 
             Accessible.role: Accessible.ButtonMenu
             Accessible.name: qsTr("Account actions")
@@ -153,18 +152,12 @@ AbstractButton {
             background: Rectangle {
                 anchors.fill: parent
                 anchors.margins: 1
-                color: userMoreButton.hovered || userMoreButton.visualFocus ? Style.lightHover : "transparent"
+                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : "transparent"
             }
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                background: Rectangle {
-                    border.color: Style.menuBorder
-                    color: Style.backgroundColor
-                    radius: 2
-                }
 
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
@@ -174,16 +167,6 @@ AbstractButton {
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
-                        }
-                    }
                 }
 
                 MenuItem {
@@ -202,7 +185,7 @@ AbstractButton {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.parent.hovered ? palette.highlight : "transparent"
                         }
                     }
 
@@ -236,7 +219,7 @@ AbstractButton {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.parent.hovered ? palette.highlight : "transparent"
                         }
                     }
 

@@ -25,7 +25,7 @@ Button {
 
     property string toolTipText: ""
 
-    property color textColor: Style.ncTextColor
+    property color textColor: palette.buttonText
     property color textColorHovered: textColor
 
     property alias contentsFont: contents.font
@@ -45,6 +45,8 @@ Button {
     rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
+    hoverEnabled: true
+
     NCToolTip {
         text: root.toolTipText
         visible: root.toolTipText !== "" && root.hovered
@@ -56,6 +58,8 @@ Button {
         hovered: root.hovered
         imageSourceHover: root.imageSourceHover
         imageSource: root.icon.source
+        imageSourceWidth: root.icon.width
+        imageSourceHeight: root.icon.height
         text: root.text
         textColor: root.textColor
         textColorHovered: root.textColorHovered

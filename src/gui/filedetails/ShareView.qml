@@ -93,21 +93,6 @@ ColumnLayout {
         modal: true
         closePolicy: Popup.NoAutoClose
 
-        // TODO: Rather than setting all these palette colours manually,
-        // create a custom style and do it for all components globally
-        palette {
-            text: Style.ncTextColor
-            windowText: Style.ncTextColor
-            buttonText: Style.ncTextColor
-            light: Style.lightHover
-            midlight: Style.lightHover
-            mid: Style.ncSecondaryTextColor
-            dark: Style.menuBorder
-            button: Style.menuBorder
-            window: Style.backgroundColor
-            base: Style.backgroundColor
-        }
-
         visible: false
 
         onAccepted: {
@@ -260,12 +245,12 @@ ColumnLayout {
                     z: Infinity
 
                     sourceComponent: Rectangle {
-                        color: Style.backgroundColor
+                        color: palette.window
                         opacity: 0.5
 
                         NCBusyIndicator {
                             anchors.centerIn: parent
-                            color: Style.ncSecondaryTextColor
+                            color: palette.midlight
                         }
                     }
                 }
@@ -292,7 +277,7 @@ ColumnLayout {
                 id: sharingDisabledLabel
                 width: parent.width
                 text: qsTr("Sharing is disabled")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -300,7 +285,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("This item cannot be shared.")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -309,7 +294,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("Sharing is disabled.")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
