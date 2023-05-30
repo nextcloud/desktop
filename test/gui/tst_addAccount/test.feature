@@ -47,7 +47,7 @@ Feature: adding accounts
         When the user adds the following wrong user credentials:
             | user     | Alice |
             | password | 12345 |
-        Then error "Login failed: username and/or password incorrect" should be displayed
+        Then error "Invalid credentials" should be displayed
 
 
     Scenario: Adding account with self signed certificate for the first time

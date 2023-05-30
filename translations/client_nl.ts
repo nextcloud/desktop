@@ -457,7 +457,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
         <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Add Space</source>
-        <translation type="unfinished"/>
+        <translation>Space toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
@@ -517,17 +517,17 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>Bezig met synchroniseren.&lt;br/&gt;Wilt u stoppen met synchroniseren?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="822"/>
         <source>Connecting to: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Verbonden met: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="833"/>
         <source>Disconnected from: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Losgekoppeld van: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="736"/>
@@ -581,7 +581,7 @@ Hernieuw de authenticatie met de web browser.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Click this button to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Klik op deze knop om een Space toe te voegen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="857"/>
@@ -591,7 +591,7 @@ Hernieuw de authenticatie met de web browser.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="862"/>
         <source>You need to be connected to add a folder.</source>
-        <translation type="unfinished"/>
+        <translation>U moet verbonden zijn om een map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="959"/>
@@ -882,7 +882,7 @@ Bestandssynchronisatie desktop software tool.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Lists available translations, see --language.</source>
-        <translation type="unfinished"/>
+        <translation>Lijst van beschikbare vertalingen, zie --language.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
@@ -1294,7 +1294,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source>Sync Error.</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseerfout.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1115"/>
@@ -1314,7 +1314,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Offline.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1130"/>
@@ -2560,7 +2560,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Deze Space is op dit moment niet beschikbaar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
@@ -4088,27 +4088,27 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Account %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Herstart alle synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Herstart synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Stop alle synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Stop synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="825"/>

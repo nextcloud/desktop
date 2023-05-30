@@ -1294,7 +1294,7 @@ Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroniseeritakse 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source>Sync Error.</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimise viga.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1115"/>
@@ -3985,7 +3985,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="190"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja info kättesaamine serverist ebaõnnestus</translation>
     </message>
 </context>
 <context>
