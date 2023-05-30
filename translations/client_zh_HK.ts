@@ -521,7 +521,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Availability</source>
-        <translation>可得性</translation>
+        <translation>空閒時間</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
