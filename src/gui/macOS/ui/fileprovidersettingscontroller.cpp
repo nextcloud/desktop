@@ -34,8 +34,8 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
 {
     _settingsViewWidget = std::make_unique<QQuickWidget>(Systray::instance()->trayEngine(), nullptr);
+    _settingsViewWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     _settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
-
 }
 
 QQuickWidget *FileProviderSettingsController::settingsViewWidget()
