@@ -17,8 +17,9 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 import Style 1.0
+import "../../filedetails"
 
-Pane {
+Page {
     // TODO: Rather than setting all these palette colours manually,
     // create a custom style and do it for all components globally.
     palette {
@@ -39,4 +40,23 @@ Pane {
         toolTipText: Style.ncTextColor
     }
 
+    background: Rectangle {
+        color: palette.window
+    }
+
+    header: TabBar {
+        id: accountsBar
+
+        width: parent.width
+        padding: Style.standardSpacing
+
+        Repeater {
+            model: 10
+
+            delegate: NCTabButton {
+                svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
+                text: qsTr("Activity")
+            }
+        }
+    }
 }
