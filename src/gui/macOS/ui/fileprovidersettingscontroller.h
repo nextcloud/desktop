@@ -15,9 +15,7 @@
 #pragma once
 
 #include <QObject>
-#include <QQuickView>
-
-class QQuickView;
+#include <QtQuickWidgets/QtQuickWidgets>
 
 namespace OCC {
 
@@ -27,15 +25,15 @@ class FileProviderSettingsController : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQuickView* settingsView READ settingsView CONSTANT)
+    //Q_PROPERTY(QQuickWidget* settingsViewWidget READ settingsViewWidget CONSTANT)
 
 public:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
 
-    [[nodiscard]] QQuickView* settingsView();
+    [[nodiscard]] QQuickWidget *settingsViewWidget();
 
 private:
-    QQuickView _settingsView;
+    std::unique_ptr<QQuickWidget> _settingsViewWidget;
 };
 
 } // Mac

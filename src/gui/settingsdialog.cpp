@@ -140,18 +140,17 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 #ifdef BUILD_FILE_PROVIDER_MODULE
 
     if (Mac::FileProvider::fileProviderAvailable()) {
-        const auto fpSettingsView = _fpSettingsController.settingsView();
-        const auto fpSettingsViewWrapper = QWidget::createWindowContainer(fpSettingsView);
-
+        const auto fpSettingsWidget = _fpSettingsController.settingsViewWidget();
         const auto macVfsAction = createColorAwareAction(QStringLiteral(":/client/theme/files.svg"), tr("Virtual files"));
+
         _actionGroup->addAction(macVfsAction);
         _toolBar->addAction(macVfsAction);
-        _ui->stack->addWidget(fpSettingsViewWrapper);
+        _ui->stack->addWidget(fpSettingsWidget);
 
         connect(_ui->stack, &QStackedWidget::currentChanged,
                 this, &SettingsDialog::currentPageChanged);
 
-        _actionGroupWidgets.insert(macVfsAction, fpSettingsViewWrapper);
+        _actionGroupWidgets.insert(macVfsAction, fpSettingsWidget);
     }
 
 #endif

@@ -14,6 +14,10 @@
 
 #include "fileprovidersettingscontroller.h"
 
+#include <QQmlApplicationEngine>
+
+#include "gui/systray.h"
+
 namespace {
 
 constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
@@ -24,15 +28,19 @@ namespace OCC {
 
 namespace Mac {
 
+Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprovider.settingscontroller")
+
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
-    , _settingsView(QUrl(fpSettingsQmlPath))
 {
+    _settingsViewWidget = std::make_unique<QQuickWidget>(Systray::instance()->trayEngine(), nullptr);
+    _settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
+
 }
 
-QQuickView* FileProviderSettingsController::settingsView()
+QQuickWidget *FileProviderSettingsController::settingsViewWidget()
 {
-    return &_settingsView;
+    return _settingsViewWidget.get();
 }
 
 } // Mac
