@@ -43,9 +43,9 @@ TextField {
     selectByMouse: true
 
     background: Rectangle {
-        radius: 5
+        radius: Style.slightlyRoundedButtonRadius
         border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
-        border.width: 1
+        border.width: Style.normalBorderWidth
         color: palette.window
     }
 
@@ -77,8 +77,8 @@ TextField {
             left: trayWindowUnifiedSearchTextField.left
             bottom: trayWindowUnifiedSearchTextField.bottom
             leftMargin: trayWindowUnifiedSearchTextField.textFieldIconsOffset - 4
-            topMargin: 4
-            bottomMargin: 4
+            topMargin: Style.smallSpacing
+            bottomMargin: Style.smallSpacing
             verticalCenter: trayWindowUnifiedSearchTextField.verticalCenter
         }
 
