@@ -1293,7 +1293,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source>Sync Error.</source>
-        <translation type="unfinished"/>
+        <translation>Erro de sincronização.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1115"/>
@@ -3985,7 +3985,7 @@ Tem certeza de que deseja continuar?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="190"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao recuperar as informações do usuário do servidor</translation>
     </message>
 </context>
 <context>
