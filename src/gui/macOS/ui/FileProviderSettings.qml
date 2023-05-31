@@ -13,11 +13,30 @@
  */
 
 import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
-Item {
-    Rectangle {
-        color: "red"
-        width: 100
-        height: 100
+import Style 1.0
+
+Pane {
+    // TODO: Rather than setting all these palette colours manually,
+    // create a custom style and do it for all components globally.
+    palette {
+        text: Style.ncTextColor
+        windowText: Style.ncTextColor
+        buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
+        light: Style.lightHover
+        midlight: Style.ncSecondaryTextColor
+        mid: Style.darkerHover
+        dark: Style.menuBorder
+        button: Style.buttonBackgroundColor
+        window: Style.backgroundColor
+        base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
     }
+
 }
