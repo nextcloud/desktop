@@ -46,8 +46,7 @@ if(NOT WITH_CRASHREPORTER)
     message(STATUS "Build of crashreporter disabled.")
 else()
     # obviously, a crash reported without the URL set is pretty pointless and won't work
-    # note: to make the string comparison work, we need to have CMake evaluate the variable using ${...}
-    if("${CRASHREPORTER_SUBMIT_URL}" STREQUAL "")
+    if(NOT DEFINED CRASHREPORTER_SUBMIT_URL)
         message(FATAL_ERROR "No crash reporter submit URL provided")
     endif()
 endif()
