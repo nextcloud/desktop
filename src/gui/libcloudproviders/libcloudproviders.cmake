@@ -21,6 +21,11 @@ if(WITH_LIBCLOUDPROVIDERS)
     target_sources(owncloudCore PRIVATE
         libcloudproviders/libcloudproviders.cpp
     )
+    set_source_files_properties(
+            libcloudproviders/libcloudproviders.cpp
+            PROPERTIES COMPILE_DEFINITIONS
+                "APPLICATION_CLOUDPROVIDERS_DBUS_NAME=\"${APPLICATION_CLOUDPROVIDERS_DBUS_NAME}\";APPLICATION_CLOUDPROVIDERS_DBUS_PATH=\"${APPLICATION_CLOUDPROVIDERS_DBUS_PATH}\""
+    )
     target_link_libraries(owncloudCore PUBLIC
             PkgConfig::CLOUDPROVIDERS
             PkgConfig::GLIB2

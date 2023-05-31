@@ -14,8 +14,9 @@
  */
 
 #include "application.h"
-#include "config.h"
 #include "guiutility.h"
+
+#include "libsync/theme.h"
 
 #include <QProcess>
 
@@ -45,7 +46,8 @@ void Utility::startShellIntegration()
     _system(QStringLiteral("pluginkit"), { QStringLiteral("-a"), QStringLiteral("%1Contents/PlugIns/FinderSyncExt.appex/").arg(bundlePath) });
 
     // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
-    _system(QStringLiteral("pluginkit"), { QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), QStringLiteral(APPLICATION_REV_DOMAIN ".FinderSyncExt") });
+    _system(QStringLiteral("pluginkit"),
+        {QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), Theme::instance()->orgDomainName() + QStringLiteral(".FinderSyncExt")});
 }
 
 QString Utility::socketApiSocketPath()
@@ -53,7 +55,7 @@ QString Utility::socketApiSocketPath()
     // This must match the code signing Team setting of the extension
     // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socketApi"
     // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
-    return QLatin1String(SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi");
+    return QStringLiteral("%1%2.socketApi").arg(QStringLiteral(SOCKETAPI_TEAM_IDENTIFIER_PREFIX), Theme::instance()->orgDomainName());
 }
 
 } // namespace OCC

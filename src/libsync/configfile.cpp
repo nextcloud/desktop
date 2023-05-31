@@ -12,8 +12,6 @@
  * for more details.
  */
 
-#include "config.h"
-
 #include "common/asserts.h"
 #include "common/utility.h"
 #include "common/version.h"
@@ -226,15 +224,14 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
 {
     if (Utility::isWindows()) {
         // check for policies first and return immediately if a value is found.
-        QSettings userPolicy(QStringLiteral("HKEY_CURRENT_USER\\Software\\Policies\\%1\\%2")
-                                 .arg(QStringLiteral(APPLICATION_VENDOR), Theme::instance()->appNameGUI()),
+        QSettings userPolicy(QStringLiteral("HKEY_CURRENT_USER\\Software\\Policies\\%1\\%2").arg(Theme::instance()->vendor(), Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (userPolicy.contains(setting)) {
             return userPolicy.value(setting);
         }
 
-        QSettings machinePolicy(QStringLiteral("HKEY_LOCAL_MACHINE\\Software\\Policies\\%1\\%2")
-                                    .arg(QStringLiteral(APPLICATION_VENDOR), Theme::instance()->appNameGUI()),
+        QSettings machinePolicy(
+            QStringLiteral("HKEY_LOCAL_MACHINE\\Software\\Policies\\%1\\%2").arg(Theme::instance()->vendor(), Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (machinePolicy.contains(setting)) {
             return machinePolicy.value(setting);
@@ -580,7 +577,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
 {
     QVariant systemSetting;
     if (Utility::isMac()) {
-        QSettings systemSettings(QStringLiteral("/Library/Preferences/" APPLICATION_REV_DOMAIN ".plist"), QSettings::NativeFormat);
+        QSettings systemSettings(QStringLiteral("/Library/Preferences/%1.plist").arg(Theme::instance()->orgDomainName()), QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }
@@ -592,9 +589,8 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
         }
         systemSetting = systemSettings.value(param, defaultValue);
     } else { // Windows
-        QSettings systemSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\Software\\" APPLICATION_VENDOR "\\%1")
-                                     .arg(Theme::instance()->appNameGUI()),
-            QSettings::NativeFormat);
+        QSettings systemSettings(
+            QStringLiteral("HKEY_LOCAL_MACHINE\\Software\\%1\\%2").arg(Theme::instance()->vendor(), Theme::instance()->appNameGUI()), QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }

@@ -82,11 +82,13 @@ public:
      *
      * @return QString with app name.
      */
-    virtual QString appName() const;
+    QString appName() const;
 
-    virtual QString appDotVirtualFileSuffix() const;
+    QString appDotVirtualFileSuffix() const;
 
-    virtual QString orgDomainName() const;
+    QString orgDomainName() const;
+
+    QString vendor() const;
 
     /**
      * @brief configFileName

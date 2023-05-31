@@ -148,6 +148,11 @@ QString Theme::orgDomainName() const
     return QStringLiteral(APPLICATION_REV_DOMAIN);
 }
 
+QString Theme::vendor() const
+{
+    return QStringLiteral(APPLICATION_VENDOR);
+}
+
 QString Theme::configFileName() const
 {
     return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");

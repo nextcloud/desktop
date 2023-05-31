@@ -5,17 +5,13 @@
  *
  */
 
-#include <QtTest>
-#include "testutils/syncenginetestutils.h"
 #include "common/vfs.h"
-#include "config.h"
-#include <syncengine.h>
+#include "libsync/syncengine.h"
+#include "libsync/theme.h"
+#include "testutils/syncenginetestutils.h"
+#include <QtTest>
 
 using namespace OCC;
-
-namespace {
-const QString DVSUFFIX = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-}
 
 auto itemInstruction(const ItemCompletedSpy &spy, const QString &path)
 {
@@ -35,7 +31,7 @@ void triggerDownload(FakeFolder &folder, const QString &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    journal.getFileRecord(path + DVSUFFIX, &record);
+    journal.getFileRecord(path + Theme::instance()->appDotVirtualFileSuffix(), &record);
     if (!record.isValid())
         return;
     record._type = ItemTypeVirtualFileDownload;
@@ -104,20 +100,20 @@ private slots:
         fakeFolder.remoteModifier().setModTime(QStringLiteral("A/a1"), someDate);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QString(QStringLiteral("A/a1") + DVSUFFIX)));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + QStringLiteral("A/a1") + DVSUFFIX).lastModified(), someDate);
+        QVERIFY(fakeFolder.currentLocalState().find(QString(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
         cleanup();
 
         // Another sync doesn't actually lead to changes
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QString(QStringLiteral("A/a1") + DVSUFFIX)));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + QStringLiteral("A/a1") + DVSUFFIX).lastModified(), someDate);
+        QVERIFY(fakeFolder.currentLocalState().find(QString(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
@@ -125,10 +121,10 @@ private slots:
         fakeFolder.syncJournal().forceRemoteDiscoveryNextSync();
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QString(QStringLiteral("A/a1") + DVSUFFIX)));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + QStringLiteral("A/a1") + DVSUFFIX).lastModified(), someDate);
+        QVERIFY(fakeFolder.currentLocalState().find(QString(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.findItem(QStringLiteral("A")));
         QVERIFY2(completeSpy.size() == 1, "Only the meta data of A was updated");
         cleanup();
@@ -137,24 +133,24 @@ private slots:
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + DVSUFFIX), CSYNC_INSTRUCTION_UPDATE_METADATA);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._fileSize, 65);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_UPDATE_METADATA);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._fileSize, 65);
         cleanup();
 
         // If the local virtual file file is removed, it'll just be recreated
         if (!doLocalDiscovery)
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {QStringLiteral("A")});
-        fakeFolder.localModifier().remove(QStringLiteral("A/a1") + DVSUFFIX);
+        fakeFolder.localModifier().remove(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix());
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._fileSize, 65);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._fileSize, 65);
         cleanup();
 
         // Remote rename is propagated
@@ -162,45 +158,45 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1m")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1m") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1m")));
-        QVERIFY(itemInstruction(completeSpy, QStringLiteral("A/a1m") + DVSUFFIX) == CSYNC_INSTRUCTION_RENAME
-            || (itemInstruction(completeSpy, QStringLiteral("A/a1m") + DVSUFFIX) == CSYNC_INSTRUCTION_NEW
-                && itemInstruction(completeSpy, QStringLiteral("A/a1") + DVSUFFIX) == CSYNC_INSTRUCTION_REMOVE));
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1m") + DVSUFFIX)._type, ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix()) == CSYNC_INSTRUCTION_RENAME
+            || (itemInstruction(completeSpy, QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix()) == CSYNC_INSTRUCTION_NEW
+                && itemInstruction(completeSpy, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()) == CSYNC_INSTRUCTION_REMOVE));
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
         cleanup();
 
         // Remote remove is propagated
         fakeFolder.remoteModifier().remove(QStringLiteral("A/a1m"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1m") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/a1m")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1m") + DVSUFFIX), CSYNC_INSTRUCTION_REMOVE);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1m") + DVSUFFIX).isValid());
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_REMOVE);
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1m") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
         cleanup();
 
         // Edge case: Local virtual file but no db entry for some reason
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 64_b);
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a3"), 64_b);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
         cleanup();
 
-        fakeFolder.syncEngine().journal()->deleteFileRecord(QStringLiteral("A/a2") + DVSUFFIX);
-        fakeFolder.syncEngine().journal()->deleteFileRecord(QStringLiteral("A/a3") + DVSUFFIX);
+        fakeFolder.syncEngine().journal()->deleteFileRecord(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix());
+        fakeFolder.syncEngine().journal()->deleteFileRecord(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix());
         fakeFolder.remoteModifier().remove(QStringLiteral("A/a3"));
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a2") + DVSUFFIX), CSYNC_INSTRUCTION_UPDATE_METADATA);
-        QVERIFY(dbRecord(fakeFolder, QStringLiteral("A/a2") + DVSUFFIX).isValid());
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + DVSUFFIX));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a3") + DVSUFFIX), CSYNC_INSTRUCTION_REMOVE);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a3") + DVSUFFIX).isValid());
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_UPDATE_METADATA);
+        QVERIFY(dbRecord(fakeFolder, QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_REMOVE);
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
         cleanup();
     }
 
@@ -226,8 +222,8 @@ private slots:
         fakeFolder.remoteModifier().mkdir(QStringLiteral("C"));
         fakeFolder.remoteModifier().insert(QStringLiteral("C/c1"), 64_b);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b2") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b2") + Theme::instance()->appDotVirtualFileSuffix()));
         cleanup();
 
         // A: the correct file and a conflicting file are added, virtual files stay
@@ -237,8 +233,8 @@ private slots:
         fakeFolder.localModifier().insert(QStringLiteral("A/a2"), 30_b);
         fakeFolder.localModifier().insert(QStringLiteral("B/b1"), 64_b);
         fakeFolder.localModifier().insert(QStringLiteral("B/b2"), 30_b);
-        fakeFolder.localModifier().remove(QStringLiteral("B/b1") + DVSUFFIX);
-        fakeFolder.localModifier().remove(QStringLiteral("B/b2") + DVSUFFIX);
+        fakeFolder.localModifier().remove(QStringLiteral("B/b1") + Theme::instance()->appDotVirtualFileSuffix());
+        fakeFolder.localModifier().remove(QStringLiteral("B/b2") + Theme::instance()->appDotVirtualFileSuffix());
         fakeFolder.localModifier().mkdir(QStringLiteral("C/c1"));
         fakeFolder.localModifier().insert(QStringLiteral("C/c1/foo"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -251,11 +247,11 @@ private slots:
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("C/c1")), CSYNC_INSTRUCTION_CONFLICT);
 
         // no virtual file files should remain
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/b2") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("C/c1") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/b2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("C/c1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // conflict files should exist
         QCOMPARE(fakeFolder.syncJournal().conflictRecordPaths().size(), 3);
@@ -266,11 +262,11 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("B/b1"))._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("B/b2"))._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("C/c1"))._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a2") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("B/b1") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("B/b2") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("C/c1") + DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("B/b1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("B/b2") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("C/c1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
 
         cleanup();
     }
@@ -304,10 +300,10 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("A/new"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/new")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/new") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/new") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/new")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/new") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/new") + DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/new") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/new") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
         cleanup();
     }
 
@@ -337,17 +333,17 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("A/b3"));
         fakeFolder.remoteModifier().insert(QStringLiteral("A/b4"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a4") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a5") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a6") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a7") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b2") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b3") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b4") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a4") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a5") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a6") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a7") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/b4") + Theme::instance()->appDotVirtualFileSuffix()));
         cleanup();
 
         // Download by changing the db entry
@@ -359,10 +355,10 @@ private slots:
         triggerDownload(fakeFolder, QStringLiteral("A/a6"));
         triggerDownload(fakeFolder, QStringLiteral("A/a7"));
         // Download by renaming locally
-        fakeFolder.localModifier().rename(QStringLiteral("A/b1") + DVSUFFIX, QStringLiteral("A/b1"));
-        fakeFolder.localModifier().rename(QStringLiteral("A/b2") + DVSUFFIX, QStringLiteral("A/b2"));
-        fakeFolder.localModifier().rename(QStringLiteral("A/b3") + DVSUFFIX, QStringLiteral("A/b3"));
-        fakeFolder.localModifier().rename(QStringLiteral("A/b4") + DVSUFFIX, QStringLiteral("A/b4"));
+        fakeFolder.localModifier().rename(QStringLiteral("A/b1") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("A/b1"));
+        fakeFolder.localModifier().rename(QStringLiteral("A/b2") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("A/b2"));
+        fakeFolder.localModifier().rename(QStringLiteral("A/b3") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("A/b3"));
+        fakeFolder.localModifier().rename(QStringLiteral("A/b4") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("A/b4"));
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         // Remote complications
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
@@ -374,28 +370,28 @@ private slots:
         // Local complications
         fakeFolder.localModifier().insert(QStringLiteral("A/a5"));
         fakeFolder.localModifier().insert(QStringLiteral("A/a6"));
-        fakeFolder.localModifier().remove(QStringLiteral("A/a6") + DVSUFFIX);
-        fakeFolder.localModifier().rename(QStringLiteral("A/a7") + DVSUFFIX, QStringLiteral("A/a7"));
+        fakeFolder.localModifier().remove(QStringLiteral("A/a6") + Theme::instance()->appDotVirtualFileSuffix());
+        fakeFolder.localModifier().rename(QStringLiteral("A/a7") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("A/a7"));
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1")), CSYNC_INSTRUCTION_SYNC);
         QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_type, ItemTypeVirtualFileDownload);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a2")), CSYNC_INSTRUCTION_SYNC);
         QCOMPARE(completeSpy.findItem(QStringLiteral("A/a2"))->_type, ItemTypeVirtualFileDownload);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a3") + DVSUFFIX), CSYNC_INSTRUCTION_REMOVE);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_REMOVE);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a4m")), CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a4") + DVSUFFIX), CSYNC_INSTRUCTION_REMOVE);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a4") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_REMOVE);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a5")), CSYNC_INSTRUCTION_CONFLICT);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a5") + DVSUFFIX), CSYNC_INSTRUCTION_REMOVE);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a5") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_REMOVE);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a6")), CSYNC_INSTRUCTION_CONFLICT);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a7")), CSYNC_INSTRUCTION_SYNC);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/b1")), CSYNC_INSTRUCTION_SYNC);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/b2")), CSYNC_INSTRUCTION_SYNC);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/b3")), CSYNC_INSTRUCTION_REMOVE);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/b4m") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/b4m") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/b4")), CSYNC_INSTRUCTION_REMOVE);
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1"))._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a2"))._type, ItemTypeFile);
         QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a3")).isValid());
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a4m"))._type, ItemTypeFile);
@@ -403,21 +399,21 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a6"))._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a7"))._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/b1"))._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b1") + DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/b2"))._type, ItemTypeFile);
         QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b3")).isValid());
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/b4m") + DVSUFFIX)._type, ItemTypeVirtualFile);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a2") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a3") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a4") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a5") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a6") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a7") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b1") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b2") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b3") + DVSUFFIX).isValid());
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b4") + DVSUFFIX).isValid());
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/b4m") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a4") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a5") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a6") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a7") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b2") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b3") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/b4") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
 
         triggerDownload(fakeFolder, QStringLiteral("A/b4m"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -442,7 +438,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
         cleanup();
 
         // Download by changing the db entry
@@ -450,9 +446,9 @@ private slots:
         fakeFolder.serverErrorPaths().append(QStringLiteral("A/a1"), 500);
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1")), CSYNC_INSTRUCTION_SYNC);
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFileDownload);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFileDownload);
         QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1")).isValid());
         cleanup();
 
@@ -461,7 +457,7 @@ private slots:
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1")), CSYNC_INSTRUCTION_SYNC);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1"))._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
     }
 
     void testNewFilesNotVirtual()
@@ -473,7 +469,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::AlwaysLocal);
 
@@ -481,7 +477,7 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
     }
 
     void testDownloadRecursive()
@@ -506,14 +502,14 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("B/b1"));
         fakeFolder.remoteModifier().insert(QStringLiteral("B/Sub/b2"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a4") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a5") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub2/a6") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/Sub/b2") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a4") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a5") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub2/a6") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/Sub/b2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3")));
@@ -529,14 +525,14 @@ private slots:
         fakeFolder.syncJournal().markVirtualFileForDownloadRecursively("A/Sub");
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a4") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a5") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub2/a6") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/Sub/b2") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a4") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a5") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub2/a6") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/Sub/b2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3")));
@@ -550,21 +546,21 @@ private slots:
         // Currently, this continue to add it as a virtual file.
         fakeFolder.remoteModifier().insert(QStringLiteral("A/Sub/SubSub/a7"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a7") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a7") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a7")));
 
         // Now download all files in "A"
         fakeFolder.syncJournal().markVirtualFileForDownloadRecursively("A");
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a4") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a5") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub2/a6") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a7") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/Sub/b2") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a4") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a5") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub2/a6") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/SubSub/a7") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B/Sub/b2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/Sub/a3")));
@@ -594,31 +590,31 @@ private slots:
         cleanup();
 
         // If a file is renamed to <name>.owncloud, it becomes virtual
-        fakeFolder.localModifier().rename(QStringLiteral("A/a1"), QStringLiteral("A/a1") + DVSUFFIX);
+        fakeFolder.localModifier().rename(QStringLiteral("A/a1"), QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix());
         // If a file is renamed to <random>.owncloud, the rename propagates but the
         // file isn't made virtual the first sync run.
-        fakeFolder.localModifier().rename(QStringLiteral("A/a2"), QStringLiteral("A/rand") + DVSUFFIX);
+        fakeFolder.localModifier().rename(QStringLiteral("A/a2"), QStringLiteral("A/rand") + Theme::instance()->appDotVirtualFileSuffix());
         // dangling virtual files are removed
-        fakeFolder.localModifier().insert(QStringLiteral("A/dangling") + DVSUFFIX, 1_b, ' ');
+        fakeFolder.localModifier().insert(QStringLiteral("A/dangling") + Theme::instance()->appDotVirtualFileSuffix(), 1_b, ' ');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX)->contentSize <= 1);
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())->contentSize <= 1);
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/a1")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + DVSUFFIX), CSYNC_INSTRUCTION_SYNC);
-        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_SYNC);
+        QCOMPARE(dbRecord(fakeFolder, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())._type, ItemTypeVirtualFile);
         QVERIFY(!dbRecord(fakeFolder, QStringLiteral("A/a1")).isValid());
 
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/rand")));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/a2")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("A/rand")));
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/rand")), CSYNC_INSTRUCTION_RENAME);
         QVERIFY(dbRecord(fakeFolder, QStringLiteral("A/rand"))._type == ItemTypeFile);
 
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/dangling") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/dangling") + Theme::instance()->appDotVirtualFileSuffix()));
         cleanup();
     }
 
@@ -639,41 +635,43 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("file3"), 256_b, 'C');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file2") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file3") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file3") + Theme::instance()->appDotVirtualFileSuffix()));
         cleanup();
 
-        fakeFolder.localModifier().rename(QStringLiteral("file1") + DVSUFFIX, QStringLiteral("renamed1") + DVSUFFIX);
-        fakeFolder.localModifier().rename(QStringLiteral("file2") + DVSUFFIX, QStringLiteral("renamed2") + DVSUFFIX);
+        fakeFolder.localModifier().rename(
+            QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("renamed1") + Theme::instance()->appDotVirtualFileSuffix());
+        fakeFolder.localModifier().rename(
+            QStringLiteral("file2") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("renamed2") + Theme::instance()->appDotVirtualFileSuffix());
         triggerDownload(fakeFolder, QStringLiteral("file2"));
         triggerDownload(fakeFolder, QStringLiteral("file3"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("file1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("renamed1") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("renamed1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("file1")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("renamed1")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("renamed1") + DVSUFFIX), CSYNC_INSTRUCTION_RENAME);
-        QVERIFY(dbRecord(fakeFolder, QStringLiteral("renamed1") + DVSUFFIX).isValid());
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("renamed1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_RENAME);
+        QVERIFY(dbRecord(fakeFolder, QStringLiteral("renamed1") + Theme::instance()->appDotVirtualFileSuffix()).isValid());
 
         // file2 has a conflict between the download request and the rename:
         // the rename wins, the download is ignored
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("file2")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("file2") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("renamed2") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("file2") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("renamed2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("renamed2")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("renamed2") + DVSUFFIX), CSYNC_INSTRUCTION_RENAME);
-        QVERIFY(dbRecord(fakeFolder, QStringLiteral("renamed2") + DVSUFFIX)._type == ItemTypeVirtualFile);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("renamed2") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_RENAME);
+        QVERIFY(dbRecord(fakeFolder, QStringLiteral("renamed2") + Theme::instance()->appDotVirtualFileSuffix())._type == ItemTypeVirtualFile);
 
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("file3")), CSYNC_INSTRUCTION_SYNC);
         QVERIFY(dbRecord(fakeFolder, QStringLiteral("file3"))._type == ItemTypeFile);
         cleanup();
 
         // Test rename while adding/removing vfs suffix
-        fakeFolder.localModifier().rename(QStringLiteral("renamed1") + DVSUFFIX, QStringLiteral("R1"));
+        fakeFolder.localModifier().rename(QStringLiteral("renamed1") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("R1"));
         // Contents of file2 could also change at the same time...
-        fakeFolder.localModifier().rename(QStringLiteral("file3"), QStringLiteral("R3") + DVSUFFIX);
+        fakeFolder.localModifier().rename(QStringLiteral("file3"), QStringLiteral("R3") + Theme::instance()->appDotVirtualFileSuffix());
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         cleanup();
     }
@@ -698,9 +696,9 @@ private slots:
         triggerDownload(fakeFolder, QStringLiteral("case6"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case3") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case3") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case4")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case5") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case5") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case6")));
         cleanup();
 
@@ -708,13 +706,14 @@ private slots:
         // Case 2: foo.oc -> bar.oc (tested elsewhere)
 
         // Case 3: foo.oc -> bar (db unchanged)
-        fakeFolder.localModifier().rename(QStringLiteral("case3") + DVSUFFIX, QStringLiteral("case3-rename"));
+        fakeFolder.localModifier().rename(QStringLiteral("case3") + Theme::instance()->appDotVirtualFileSuffix(), QStringLiteral("case3-rename"));
 
         // Case 4: foo -> bar.oc (db unchanged)
-        fakeFolder.localModifier().rename(QStringLiteral("case4"), QStringLiteral("case4-rename") + DVSUFFIX);
+        fakeFolder.localModifier().rename(QStringLiteral("case4"), QStringLiteral("case4-rename") + Theme::instance()->appDotVirtualFileSuffix());
 
         // Case 5: foo.oc -> bar.oc (db hydrate)
-        fakeFolder.localModifier().rename(QStringLiteral("case5") + DVSUFFIX, QStringLiteral("case5-rename") + DVSUFFIX);
+        fakeFolder.localModifier().rename(QStringLiteral("case5") + Theme::instance()->appDotVirtualFileSuffix(),
+            QStringLiteral("case5-rename") + Theme::instance()->appDotVirtualFileSuffix());
         triggerDownload(fakeFolder, QStringLiteral("case5"));
 
         // Case 6: foo -> bar (db dehydrate)
@@ -725,19 +724,19 @@ private slots:
 
         // Case 3: the rename went though, hydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case3")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case3") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case3") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case3-rename")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case3-rename") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case3-rename") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("case3")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("case3-rename")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("case3-rename") + DVSUFFIX), CSYNC_INSTRUCTION_RENAME);
-        QVERIFY(dbRecord(fakeFolder, QStringLiteral("case3-rename") + DVSUFFIX)._type == ItemTypeVirtualFile);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("case3-rename") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_RENAME);
+        QVERIFY(dbRecord(fakeFolder, QStringLiteral("case3-rename") + Theme::instance()->appDotVirtualFileSuffix())._type == ItemTypeVirtualFile);
 
         // Case 4: the rename went though, dehydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case4")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case4") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case4") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case4-rename")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case4-rename") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case4-rename") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("case4")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("case4-rename")));
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("case4-rename")), CSYNC_INSTRUCTION_RENAME);
@@ -745,19 +744,19 @@ private slots:
 
         // Case 5: the rename went though, hydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case5")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case5") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case5") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case5-rename")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case5-rename") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case5-rename") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("case5")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("case5-rename")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("case5-rename") + DVSUFFIX), CSYNC_INSTRUCTION_RENAME);
-        QVERIFY(dbRecord(fakeFolder, QStringLiteral("case5-rename") + DVSUFFIX)._type == ItemTypeVirtualFile);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("case5-rename") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_RENAME);
+        QVERIFY(dbRecord(fakeFolder, QStringLiteral("case5-rename") + Theme::instance()->appDotVirtualFileSuffix())._type == ItemTypeVirtualFile);
 
         // Case 6: the rename went though, dehydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case6")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case6") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case6") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("case6-rename")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case6-rename") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("case6-rename") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("case6")));
         QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("case6-rename")));
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("case6-rename")), CSYNC_INSTRUCTION_RENAME);
@@ -810,27 +809,28 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         auto isDehydrated = [&](const QString &path) {
-            QString placeholder = path + DVSUFFIX;
+            QString placeholder = path + Theme::instance()->appDotVirtualFileSuffix();
             return !fakeFolder.currentLocalState().find(path)
                 && fakeFolder.currentLocalState().find(placeholder);
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord normal, suffix;
             fakeFolder.syncJournal().getFileRecord(path, &normal);
-            fakeFolder.syncJournal().getFileRecord(path + DVSUFFIX, &suffix);
+            fakeFolder.syncJournal().getFileRecord(path + Theme::instance()->appDotVirtualFileSuffix(), &suffix);
             return !normal.isValid() && suffix.isValid() && suffix._type == ItemTypeVirtualFile;
         };
 
         QVERIFY(isDehydrated(QStringLiteral("A/a1")));
         QVERIFY(hasDehydratedDbEntries(QStringLiteral("A/a1")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + DVSUFFIX), CSYNC_INSTRUCTION_SYNC);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_file, QStringLiteral("A/a1"));
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_renameTarget, QStringLiteral("A/a1") + DVSUFFIX);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_SYNC);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())->_file, QStringLiteral("A/a1"));
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix())->_renameTarget,
+            QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix());
         QVERIFY(isDehydrated(QStringLiteral("A/a2")));
         QVERIFY(hasDehydratedDbEntries(QStringLiteral("A/a2")));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a2") + DVSUFFIX), CSYNC_INSTRUCTION_SYNC);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a2") + DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_SYNC);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a2") + Theme::instance()->appDotVirtualFileSuffix())->_type, ItemTypeVirtualFileDehydration);
 
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("B/b1")));
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("B/b1")));
@@ -841,7 +841,7 @@ private slots:
         QVERIFY(isDehydrated(QStringLiteral("B/b3")));
         QVERIFY(hasDehydratedDbEntries(QStringLiteral("B/b3")));
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("B/b2")), CSYNC_INSTRUCTION_REMOVE);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("B/b3") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("B/b3") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
 
         QCOMPARE(fakeFolder.currentRemoteState().find(QStringLiteral("C/c1"))->contentSize, 25);
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("C/c1")), CSYNC_INSTRUCTION_SYNC);
@@ -877,27 +877,27 @@ private slots:
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("f1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/B/b1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("f1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // Make local changes to a3
-        fakeFolder.localModifier().remove(QStringLiteral("A/a3") + DVSUFFIX);
-        fakeFolder.localModifier().insert(QStringLiteral("A/a3") + DVSUFFIX, 100_b);
+        fakeFolder.localModifier().remove(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix());
+        fakeFolder.localModifier().insert(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix(), 100_b);
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // Now wipe the virtuals
         SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
 
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("f1") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/B/b1") + DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("f1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         fakeFolder.switchToVfs(QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(Vfs::Off).release()));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/a3") + DVSUFFIX)); // regular upload
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix())); // regular upload
         QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
     }
 
@@ -928,10 +928,10 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("unspec/file1"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("local/file1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // Test 2: change root to AlwaysLocal
         setPin("", PinState::AlwaysLocal);
@@ -943,17 +943,17 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file2")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file2") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("local/file2")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file2") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file2") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // root file1 was hydrated due to its new pin state
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1")));
 
         // file1 is unchanged in the explicitly pinned subfolders
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("local/file1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // Test 3: change root to OnlineOnly
         setPin("", PinState::OnlineOnly);
@@ -964,18 +964,18 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("unspec/file3"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file3") + DVSUFFIX));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file3") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file3") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file3") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("local/file3")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file3") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file3") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // root file1 was dehydrated due to its new pin state
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix()));
 
         // file1 is unchanged in the explicitly pinned subfolders
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("online/file1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("local/file1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("unspec/file1") + Theme::instance()->appDotVirtualFileSuffix()));
     }
 
     // Check what happens if vfs-suffixed files exist on the server or in the db
@@ -996,36 +996,40 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("A/file1"), 30_b, 'A');
         fakeFolder.remoteModifier().insert(QStringLiteral("A/file2"), 40_b, 'A');
         fakeFolder.remoteModifier().insert(QStringLiteral("A/file3"), 60_b, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file3") + DVSUFFIX, 70_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file3") + Theme::instance()->appDotVirtualFileSuffix(), 70_b, 'A');
         fakeFolder.remoteModifier().insert(QStringLiteral("A/file4"), 80_b, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file4") + DVSUFFIX, 90_b, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file4") + DVSUFFIX + DVSUFFIX, 100_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file4") + Theme::instance()->appDotVirtualFileSuffix(), 90_b, 'A');
+        fakeFolder.remoteModifier().insert(
+            QStringLiteral("A/file4") + Theme::instance()->appDotVirtualFileSuffix() + Theme::instance()->appDotVirtualFileSuffix(), 100_b, 'A');
         fakeFolder.remoteModifier().insert(QStringLiteral("A/file5"), 110_b, 'A');
         fakeFolder.remoteModifier().insert(QStringLiteral("A/file6"), 120_b, 'A');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/file1")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file1") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/file2")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file2") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file2") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/file3")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file3") + DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file3") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/file4")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file4") + DVSUFFIX));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/file4") + DVSUFFIX + DVSUFFIX));
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file1") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file2") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file3") + DVSUFFIX), CSYNC_INSTRUCTION_NEW);
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/file4") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(
+            QStringLiteral("A/file4") + Theme::instance()->appDotVirtualFileSuffix() + Theme::instance()->appDotVirtualFileSuffix()));
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file1") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file2") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file3") + Theme::instance()->appDotVirtualFileSuffix()), CSYNC_INSTRUCTION_NEW);
         cleanup();
 
         // Create odd extra files locally and remotely
         fakeFolder.localModifier().insert(QStringLiteral("A/file1"), 10_b, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("A/file2") + DVSUFFIX + DVSUFFIX, 10_b, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file5") + DVSUFFIX, 10_b, 'A');
+        fakeFolder.localModifier().insert(
+            QStringLiteral("A/file2") + Theme::instance()->appDotVirtualFileSuffix() + Theme::instance()->appDotVirtualFileSuffix(), 10_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file5") + Theme::instance()->appDotVirtualFileSuffix(), 10_b, 'A');
         fakeFolder.localModifier().insert(QStringLiteral("A/file6"), 10_b, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file6") + DVSUFFIX, 10_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file6") + Theme::instance()->appDotVirtualFileSuffix(), 10_b, 'A');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file1")), CSYNC_INSTRUCTION_CONFLICT);
-        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file1") + DVSUFFIX), CSYNC_INSTRUCTION_REMOVE); // it's now a pointless real virtual file
+        QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file1") + Theme::instance()->appDotVirtualFileSuffix()),
+            CSYNC_INSTRUCTION_REMOVE); // it's now a pointless real virtual file
         QCOMPARE(itemInstruction(completeSpy, QStringLiteral("A/file6")), CSYNC_INSTRUCTION_CONFLICT);
         cleanup();
     }
@@ -1061,13 +1065,13 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         // root is unspecified
-        QCOMPARE(*vfs->availability(QStringLiteral("file1") + DVSUFFIX), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability(QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix()), VfsItemAvailability::AllDehydrated);
         QCOMPARE(*vfs->availability(QStringLiteral("local")), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability(QStringLiteral("local/file1")), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability(QStringLiteral("online")), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability(QStringLiteral("online/file1") + DVSUFFIX), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability(QStringLiteral("online/file1") + Theme::instance()->appDotVirtualFileSuffix()), VfsItemAvailability::OnlineOnly);
         QCOMPARE(*vfs->availability(QStringLiteral("unspec")), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability(QStringLiteral("unspec/file1") + DVSUFFIX), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability(QStringLiteral("unspec/file1") + Theme::instance()->appDotVirtualFileSuffix()), VfsItemAvailability::AllDehydrated);
 
         // Subitem pin states can ruin "pure" availabilities
         setPin("local/sub", PinState::OnlineOnly);
@@ -1077,7 +1081,7 @@ private slots:
 
         triggerDownload(fakeFolder, QStringLiteral("unspec/file1"));
         setPin("local/file2", PinState::OnlineOnly);
-        setPin((QStringLiteral("online/file2") + DVSUFFIX).toUtf8(), PinState::AlwaysLocal);
+        setPin((QStringLiteral("online/file2") + Theme::instance()->appDotVirtualFileSuffix()).toUtf8(), PinState::AlwaysLocal);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(*vfs->availability(QStringLiteral("unspec")), VfsItemAvailability::AllHydrated);
@@ -1125,7 +1129,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // root is unspecified
-        QCOMPARE(*vfs->pinState(QStringLiteral("file1") + DVSUFFIX), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState(QStringLiteral("file1") + Theme::instance()->appDotVirtualFileSuffix()), PinState::Unspecified);
         QCOMPARE(*vfs->pinState(QStringLiteral("local/file1")), PinState::AlwaysLocal);
         QCOMPARE(*vfs->pinState(QStringLiteral("online/file1")), PinState::Unspecified);
         QCOMPARE(*vfs->pinState(QStringLiteral("unspec/file1")), PinState::Unspecified);
@@ -1163,10 +1167,10 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("onlinerenamed2/file1rename"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename")), PinState::OnlineOnly);
-        QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename") + DVSUFFIX), PinState::OnlineOnly);
+        QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix()), PinState::OnlineOnly);
 
         // When a file is hydrated or dehydrated due to pin state it retains its pin state
-        vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename") + DVSUFFIX, PinState::AlwaysLocal);
+        vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix(), PinState::AlwaysLocal);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("onlinerenamed2/file1rename")));
         QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename")), PinState::AlwaysLocal);
@@ -1174,8 +1178,8 @@ private slots:
         vfs->setPinState(QStringLiteral("onlinerenamed2"), PinState::Unspecified);
         vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename"), PinState::OnlineOnly);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("onlinerenamed2/file1rename") + DVSUFFIX));
-        QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename") + DVSUFFIX), PinState::OnlineOnly);
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix()));
+        QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix()), PinState::OnlineOnly);
     }
 };
 

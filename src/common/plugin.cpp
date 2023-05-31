@@ -18,8 +18,6 @@
 
 #include "plugin.h"
 
-#include "config.h"
-
 namespace OCC {
 
 PluginFactory::~PluginFactory() = default;

@@ -29,8 +29,6 @@
 #include "configfile.h"
 #include "theme.h"
 
-#include "config.h"
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUpdater, "gui.updater", QtInfoMsg)

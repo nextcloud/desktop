@@ -20,14 +20,15 @@
 #include "libcloudproviders.h"
 #include "libcloudproviders_p.h"
 
-#include <QMap>
-#include "folder.h"
-#include "folderman.h"
-#include "theme.h"
-#include "accountstate.h"
-#include "config.h"
 #include "account.h"
 #include "accountmanager.h"
+#include "accountstate.h"
+#include "folder.h"
+#include "folderman.h"
+
+#include "libsync/theme.h"
+
+#include <QMap>
 
 // These must match the name and path defined in a file in $DATADIR/cloud-providers/
 const gchar dbusName[] = APPLICATION_CLOUDPROVIDERS_DBUS_NAME;
@@ -120,9 +121,9 @@ void LibCloudProvidersPrivate::exportFolder(Folder *folder)
         return;
 
     GError *error = nullptr;
-    auto icon = g_icon_new_for_string(APPLICATION_ICON_NAME, &error);
+    auto icon = g_icon_new_for_string(Theme::instance()->applicationIconName().toUtf8().constData(), &error);
     if (error) {
-        qWarning() << "Could not create icon for" << APPLICATION_ICON_NAME << "error" << error->message;
+        qWarning() << "Could not create icon for" << Theme::instance()->applicationIconName() << "error" << error->message;
         g_error_free(error);
     }
 
