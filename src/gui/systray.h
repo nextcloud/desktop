@@ -60,8 +60,7 @@ double menuBarThickness();
  * @brief The Systray class
  * @ingroup gui
  */
-class Systray
-    : public QSystemTrayIcon
+class Systray : public QSystemTrayIcon
 {
     Q_OBJECT
 
@@ -96,6 +95,8 @@ public:
     [[nodiscard]] bool enableAddAccount() const;
 
     bool raiseDialogs();
+
+    [[nodiscard]] QQmlApplicationEngine* trayEngine() const;
 
 signals:
     void currentUserChanged();
@@ -176,7 +177,7 @@ private:
 
     bool _isOpen = false;
     bool _syncIsPaused = true;
-    QPointer<QQmlApplicationEngine> _trayEngine;
+    std::unique_ptr<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
     QSharedPointer<QQuickWindow> _trayWindow;
 
