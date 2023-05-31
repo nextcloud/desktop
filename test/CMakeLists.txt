@@ -21,6 +21,9 @@ endif()
 owncloud_add_test(ExcludedFiles)
 
 owncloud_add_test(Utility)
+target_compile_definitions(UtilityTest PRIVATE OWNCLOUDCMD_BIN_PATH="$<TARGET_FILE:cmd>")
+
+
 owncloud_add_test(SyncEngine)
 owncloud_add_test(SyncVirtualFiles)
 owncloud_add_test(SyncMove)

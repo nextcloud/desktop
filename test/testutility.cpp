@@ -111,13 +111,12 @@ private slots:
         // this is a bit inaccurate as it does not test the "real thing"
         // but cmd and gui have the same --version handler by now
         // and cmd works without X in CI
-        QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUD_BIN_PATH "/%1cmd").arg(OCC::Theme::instance()->appName()));
+        QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUDCMD_BIN_PATH));
         qDebug() << "Version of installed ownCloud Binary: " << ver;
         QVERIFY(!ver.isEmpty());
 
-        QRegularExpression rx(
-            QStringLiteral("%1cmd ownCloud \\d+\\.\\d+\\.\\d+.*").arg(OCC::Theme::instance()->appName()), QRegularExpression::CaseInsensitiveOption);
-        qDebug() << rx.pattern();
+        QRegularExpression rx(QStringLiteral("ownCloud \\d+\\.\\d+\\.\\d+.*"), QRegularExpression::CaseInsensitiveOption);
+        qDebug() << rx.pattern() << rx.match(ver);
         QVERIFY(rx.match(ver).isValid());
     }
 
