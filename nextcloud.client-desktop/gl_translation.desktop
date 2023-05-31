@@ -22,6 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[gl]=@APPLICATION_ICON_NAME@
-Name[gl]=Escritorio @APPLICATION_NAME@
+Name[gl]=@APPLICATION_NAME@ para o escritorio
 Comment[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio
 GenericName[gl]=Sincronización de cartafol
