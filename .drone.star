@@ -308,8 +308,6 @@ def gui_tests_format():
     }]
 
 def changelog(ctx):
-    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
-
     return [{
         "kind": "pipeline",
         "type": "docker",
@@ -359,6 +357,9 @@ def changelog(ctx):
                             "refs/tags/**",
                         ],
                     },
+                    "branch": [
+                        "master",
+                    ],
                 },
             },
         ],
