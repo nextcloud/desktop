@@ -1,0 +1,5 @@
+Bugfix: Dupplicated sync issues with SelectiveSync
+
+We fixed a bug where the message that a file is not synced was listed multiple times in the not synced list.
+
+https://github.com/owncloud/enterprise/issues/5682

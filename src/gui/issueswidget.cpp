@@ -198,16 +198,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
         });
 
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::excluded, this, [this](Folder *f, const QString &file, CSYNC_EXCLUDE_TYPE reason) {
+        Q_ASSERT(reason == CSYNC_FILE_EXCLUDE_RESERVED);
         auto item = SyncFileItemPtr::create();
-        item->_status = SyncFileItem::FileIgnored;
+        item->_status = SyncFileItem::FilenameReserved;
         item->_file = file;
-        switch (reason) {
-        case CSYNC_FILE_EXCLUDE_RESERVED:
-            item->_errorString = tr("The file %1 was ignored as its name is reserved by %2").arg(file, Theme::instance()->appNameGUI());
-            break;
-        default:
-            Q_UNREACHABLE();
-        }
+        item->_errorString = tr("The file %1 was ignored as its name is reserved by %2").arg(file, Theme::instance()->appNameGUI());
         _model->addProtocolItem(ProtocolItem { f, item });
     });
 
@@ -305,7 +300,7 @@ void IssuesWidget::slotProgressInfo(Folder *folder, const ProgressInfo &progress
             if (item.folder() != folder) {
                 return false;
             }
-            if (item.direction() == SyncFileItem::None && item.status() != SyncFileItem::Excluded && item.status() != SyncFileItem::Conflict) {
+            if (item.direction() == SyncFileItem::None && item.status() == SyncFileItem::FilenameReserved) {
                 // TODO: don't clear syncErrors and excludes for now.
                 // make them either unique or remove them on the next sync?
                 return false;

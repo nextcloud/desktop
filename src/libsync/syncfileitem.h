@@ -99,6 +99,11 @@ public:
          */
         Message,
 
+        /**
+         * See CSYNC_FILE_EXCLUDE_RESERVED
+         */
+        FilenameReserved,
+
         /** For use in an array or vector for the number of items in this enum.
          */
         StatusCount

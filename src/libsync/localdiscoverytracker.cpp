@@ -99,6 +99,8 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
     case OCC::SyncFileItem::BlacklistedError:
         Q_FALLTHROUGH();
     case OCC::SyncFileItem::Excluded:
+        [[fallthrough]];
+    case OCC::SyncFileItem::FilenameReserved:
         break;
     case SyncFileItem::StatusCount:
         Q_UNREACHABLE();

@@ -255,14 +255,19 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     // Blacklist handling
     switch (_item->_status) {
     case SyncFileItem::SoftError:
+        [[fallthrough]];
     case SyncFileItem::FatalError:
+        [[fallthrough]];
     case SyncFileItem::NormalError:
+        [[fallthrough]];
     case SyncFileItem::DetailError:
+        [[fallthrough]];
     case SyncFileItem::Message:
         // Check the blacklist, possibly adjusting the item (including its status)
         blacklistUpdate(propagator()->_journal, *_item);
         break;
     case SyncFileItem::Success:
+        [[fallthrough]];
     case SyncFileItem::Restoration:
         if (_item->_hasBlacklistEntry) {
             // wipe blacklist entry.
@@ -274,10 +279,16 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         }
         break;
     case SyncFileItem::Conflict:
+        [[fallthrough]];
     case SyncFileItem::FileIgnored:
+        [[fallthrough]];
     case SyncFileItem::NoStatus:
+        [[fallthrough]];
     case SyncFileItem::BlacklistedError:
+        [[fallthrough]];
     case SyncFileItem::Excluded:
+        [[fallthrough]];
+    case SyncFileItem::FilenameReserved:
         // nothing
         break;
     case SyncFileItem::StatusCount:
