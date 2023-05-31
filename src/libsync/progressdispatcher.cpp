@@ -40,7 +40,7 @@ QString Progress::asResultString(const SyncFileItem &item)
             return QCoreApplication::translate("progress", "Uploaded");
         }
     case CSYNC_INSTRUCTION_CONFLICT:
-        return QCoreApplication::translate("progress", "Server version downloaded, copied changed local file into conflict file");
+        return QCoreApplication::translate("progress", "Server version downloaded, local copy was backed up as conflict file");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "Deleted");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
