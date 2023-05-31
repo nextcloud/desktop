@@ -42,8 +42,6 @@ TextField {
 
     selectByMouse: true
 
-    palette.text: palette.midlight
-
     background: Rectangle {
         radius: 5
         border.color: parent.activeFocus ? UserModel.currentUser.accentColor : palette.dark
