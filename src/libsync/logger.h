@@ -18,6 +18,7 @@
 #include <QObject>
 #include <QList>
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QTextStream>
 #include <qmutex.h>
@@ -48,7 +49,7 @@ public:
     QString logFile() const;
     void setLogFile(const QString &name);
 
-    void setLogExpire(int expire);
+    void setLogExpireHours(const int expireHours);
 
     QString logDir() const;
     void setLogDir(const QString &dir);
@@ -99,11 +100,12 @@ private:
 
     QFile _logFile;
     bool _doFileFlush = false;
-    int _logExpire = 0;
+    int _logExpireSecs = 0;
     bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;
     mutable QMutex _mutex;
-    QString _logDirectory;
+    QString _logDirPath;
+    QDir _logDir;
     bool _temporaryFolderLogDir = false;
     QSet<QString> _logRules;
     QVector<QString> _crashLog;
