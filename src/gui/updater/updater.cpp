@@ -47,7 +47,7 @@ QUrl Updater::updateUrl()
 {
     QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
     if (updateBaseUrl.isEmpty()) {
-        updateBaseUrl = QUrl(QStringLiteral(APPLICATION_UPDATE_URL));
+        updateBaseUrl = Theme::instance()->updateCheckUrl();
     }
     if (!updateBaseUrl.isValid() || updateBaseUrl.host() == QLatin1String(".")) {
         return QUrl();

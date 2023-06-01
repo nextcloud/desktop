@@ -354,9 +354,9 @@ bool Theme::monoIconsAvailable() const
     return hasTheme(IconType::BrandedIcon, systrayIconFlavor(true));
 }
 
-QString Theme::updateCheckUrl() const
+QUrl Theme::updateCheckUrl() const
 {
-    return QStringLiteral("https://updates.owncloud.com/client/");
+    return QUrl(QStringLiteral(APPLICATION_UPDATE_URL));
 }
 
 qint64 Theme::newBigFolderSizeLimit() const

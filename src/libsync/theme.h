@@ -237,7 +237,7 @@ public:
     /**
      * @brief Where to check for new Updates.
      */
-    virtual QString updateCheckUrl() const;
+    QUrl updateCheckUrl() const;
 
     /**
      * Default option for the newBigFolderSizeLimit.
