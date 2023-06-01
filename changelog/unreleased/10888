@@ -1,0 +1,7 @@
+Enhancement: Allow users to call commandline client from AppImage
+
+When the AppImage is called with the new commandline parameter --cmd, it will
+internally dispatch the call to the contained owncloudcmd binary. Otherwise,
+the call will be forwarded to the regular owncloud GUI binary as before.
+
+https://github.com/owncloud/client/issues/10888
