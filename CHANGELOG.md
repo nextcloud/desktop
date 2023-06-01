@@ -16,6 +16,7 @@ Summary
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
+* Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
 
 Details
 -------
@@ -71,6 +72,14 @@ Details
    more headers set by the platform and messaure the request time more accurately.
 
    https://github.com/owncloud/client/issues/10313
+
+* Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
+
+   We no longer handle file changes every 1s but gather them for 10s and handle them then.
+
+   This should reduce the amount of unnecessary checksum computations and attempted syncs.
+
+   https://github.com/owncloud/client/pull/10825
 
 Changelog for ownCloud Desktop Client [4.0.0] (2023-05-11)
 =======================================
