@@ -15,14 +15,14 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
-        <source>Dismiss</source>
-        <translation>무시</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="244"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="170"/>
         <source>Open file details</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
+        <source>Dismiss</source>
+        <translation>무시</translation>
     </message>
 </context>
 <context>
@@ -41,7 +41,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="63"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="62"/>
         <source>Clear status message menu</source>
         <translation>상태 메시지 메뉴 지우기</translation>
     </message>
@@ -49,22 +49,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
         <translation>Talk 알림 호출 아바타</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
         <translation>Talk 통화 알림에 응답하기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
         <source>Decline</source>
         <translation>거부하다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
         <translation>Talk 통화 알림을 거절하기</translation>
     </message>
@@ -169,7 +169,7 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="95"/>
         <source>Opening file for local editing</source>
         <translation>파일을 로컬 편집으로 열기</translation>
     </message>
@@ -177,7 +177,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="134"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
         <translation>최근 이모지 없음</translation>
     </message>
@@ -185,7 +185,7 @@
 <context>
     <name>ErrorBox</name>
     <message>
-        <location filename="../src/gui/ErrorBox.qml" line="64"/>
+        <location filename="../src/gui/ErrorBox.qml" line="63"/>
         <source>Error</source>
         <translation>오류</translation>
     </message>
@@ -193,17 +193,17 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="140"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="139"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="228"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="224"/>
         <source>Activity</source>
         <translation>활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="235"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="231"/>
         <source>Sharing</source>
         <translation>공유</translation>
     </message>
@@ -5395,33 +5395,33 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="54"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="61"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="77"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="97"/>
         <source>All local versions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="95"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="115"/>
         <source>All server versions</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="150"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="170"/>
         <source>Resolve conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="154"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="174"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
@@ -5429,22 +5429,22 @@ Server replied with error: %2</source>
 <context>
     <name>ShareDelegate</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="162"/>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="194"/>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
         <source>Copy share link location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="196"/>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
         <source>Copied!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="243"/>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
         <translation type="unfinished"/>
     </message>
@@ -5457,73 +5457,73 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="219"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
         <source>Edit share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="236"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="295"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
         <source>Share label</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="326"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="313"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="359"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
         <source>View only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="394"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="381"/>
         <source>File drop (upload only)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="421"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
         <source>Hide download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="447"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="442"/>
         <source>Password protect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="552"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="551"/>
         <source>Set expiration date</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="743"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="746"/>
         <source>Note to recipient</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="811"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="814"/>
         <source>Unshare</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="828"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="831"/>
         <source>Add another link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="875"/>
         <source>Share link copied!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="875"/>
         <source>Copy share link</source>
         <translation type="unfinished"/>
     </message>
@@ -5536,22 +5536,22 @@ Server replied with error: %2</source>
         <translation>새 공유를 위한 암호가 필요합니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
         <translation>공유에 대한 암호</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
         <translation>공유가 비활성화됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="302"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
         <source>This item cannot be shared.</source>
         <translation>이 항목은 공유할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="311"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
         <translation>공유가 비활성화 되었습니다.</translation>
     </message>
@@ -5575,12 +5575,12 @@ Server replied with error: %2</source>
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
         <translation>지금 동기화</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="141"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="128"/>
         <source>Resolve conflicts</source>
         <translation type="unfinished"/>
     </message>
@@ -5588,12 +5588,12 @@ Server replied with error: %2</source>
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="17"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
         <translation>...에 답장</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="53"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
         <translation>채팅 메시지에 답장 보내기</translation>
     </message>
@@ -5601,47 +5601,47 @@ Server replied with error: %2</source>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="56"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Connected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="71"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Disconnected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="110"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
         <source>Group folder button</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="185"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="197"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open %1 in file explorer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="202"/>
+        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
         <source>User group and local folders menu</source>
         <translation type="unfinished"/>
     </message>
@@ -5702,39 +5702,39 @@ Server replied with error: %2</source>
         <translation>계정으로 전환</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="78"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is online</source>
         <translation>현재 계정 상태가 온라인 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="78"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is do not disturb</source>
         <translation>현재 계정 상태는 방해 금지 상태입니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Account actions</source>
         <translation>계정 동작</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="172"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
         <translation>상태 설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="190"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="210"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log out</source>
         <translation>로그아웃</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="190"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="210"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log in</source>
         <translation>로그인</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="207"/>
         <source>Remove account</source>
         <translation>계정 삭제</translation>
     </message>
@@ -5747,62 +5747,62 @@ Server replied with error: %2</source>
         <translation>온라인 상태</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="60"/>
         <source>Online</source>
         <translation>온라인</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="71"/>
         <source>Away</source>
         <translation>자리 비움</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="83"/>
         <source>Do not disturb</source>
         <translation>방해하지 마십시오</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Mute all notifications</source>
         <translation>모든 알림 음소거</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Invisible</source>
         <translation>숨겨짐</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation>오프라인으로 표시</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
         <source>Status message</source>
         <translation>상태 메시지</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="214"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="212"/>
         <source>What is your status?</source>
         <translation>당신의 상태는 무엇입니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="287"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
         <source>Clear status message after</source>
         <translation>이후 상태 메시지 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="325"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="332"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>상태 메시지 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="340"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>상태 메시지 설정</translation>
     </message>
@@ -5886,84 +5886,84 @@ Server replied with error: %2</source>
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="236"/>
+        <location filename="../src/gui/tray/Window.qml" line="256"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud 데스크톱 주 대화상자</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="263"/>
+        <location filename="../src/gui/tray/Window.qml" line="282"/>
         <source>Current account</source>
         <translation>현재 계정</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="269"/>
-        <location filename="../src/gui/tray/Window.qml" line="404"/>
+        <location filename="../src/gui/tray/Window.qml" line="288"/>
+        <location filename="../src/gui/tray/Window.qml" line="419"/>
         <source>Resume sync for all</source>
         <translation>전체 동기화 재개</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="269"/>
-        <location filename="../src/gui/tray/Window.qml" line="404"/>
+        <location filename="../src/gui/tray/Window.qml" line="288"/>
+        <location filename="../src/gui/tray/Window.qml" line="419"/>
         <source>Pause sync for all</source>
         <translation>전체 동기화 일시 정지</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="362"/>
+        <location filename="../src/gui/tray/Window.qml" line="379"/>
         <source>Add account</source>
         <translation>계정 추가</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="375"/>
+        <location filename="../src/gui/tray/Window.qml" line="391"/>
         <source>Add new account</source>
         <translation>새 계정 추가</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="410"/>
+        <location filename="../src/gui/tray/Window.qml" line="425"/>
         <source>Settings</source>
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="433"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Exit</source>
         <translation>끝내기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="478"/>
+        <location filename="../src/gui/tray/Window.qml" line="491"/>
         <source>Current account avatar</source>
         <translation>현재 계정 아바타</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="517"/>
+        <location filename="../src/gui/tray/Window.qml" line="530"/>
         <source>Current account status is online</source>
         <translation>현재 계정 상태가 온라인 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="517"/>
+        <location filename="../src/gui/tray/Window.qml" line="530"/>
         <source>Current account status is do not disturb</source>
         <translation>현재 계정 상태가 방해 금지 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="593"/>
+        <location filename="../src/gui/tray/Window.qml" line="606"/>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="627"/>
+        <location filename="../src/gui/tray/Window.qml" line="640"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>브라우저에서 Nextcloud Talk 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="647"/>
+        <location filename="../src/gui/tray/Window.qml" line="660"/>
         <source>More apps</source>
         <translation>더 많은 앱</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="702"/>
+        <location filename="../src/gui/tray/Window.qml" line="714"/>
         <source>Open %1 in browser</source>
         <translation>브라우저에서 %1 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="808"/>
+        <location filename="../src/gui/tray/Window.qml" line="820"/>
         <source>Unified search results list</source>
         <translation>통합 검색 결과 목록</translation>
     </message>
