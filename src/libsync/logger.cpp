@@ -222,14 +222,14 @@ void Logger::setLogFlush(bool flush)
 
 void Logger::setLogDebug(bool debug)
 {
-    QMutexLocker locker(&_mutex);
-
     const QSet<QString> rules = {debug ? QStringLiteral("nextcloud.*.debug=true") : QString()};
     if (debug) {
         addLogRule(rules);
     } else {
         removeLogRule(rules);
     }
+
+    QMutexLocker locker(&_mutex);
     _logDebug = debug;
 }
 
@@ -264,19 +264,16 @@ void Logger::disableTemporaryFolderLogDir()
 
 void Logger::addLogRule(const QSet<QString> &rules)
 {
-    QMutexLocker locker(&_mutex);
     setLogRules(_logRules + rules);
 }
 
 void Logger::removeLogRule(const QSet<QString> &rules)
 {
-    QMutexLocker locker(&_mutex);
     setLogRules(_logRules - rules);
 }
 
 void Logger::setLogRules(const QSet<QString> &rules)
 {
-    QMutexLocker locker(&_mutex);
     _logRules = rules;
     QString tmp;
     QTextStream out(&tmp);
