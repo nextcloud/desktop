@@ -147,8 +147,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     cout << msg << endl;
 #endif
     {
-        QMutexLocker lock(&_mutex);
-
         if (_logFile.size() >= MaxLogSizeBytes) {
             closeNoLock();
             enterNextLogFileNoLock();
