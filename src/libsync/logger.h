@@ -96,7 +96,7 @@ private:
     bool _doFileFlush = false;
     bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;
-    mutable QMutex _mutex;
+    mutable QRecursiveMutex _mutex;
     QString _logDirectory;
     bool _temporaryFolderLogDir = false;
     QSet<QString> _logRules;

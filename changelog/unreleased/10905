@@ -1,0 +1,5 @@
+Bugfix: Possible deadlock during log setup
+
+If an error occured during the setup of the log file, it was possible that the client got deadlocked.
+
+https://github.com/owncloud/client/pull/10905
