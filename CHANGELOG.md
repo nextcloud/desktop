@@ -12,6 +12,7 @@ Summary
 * Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
 * Bugfix - Owncloudcmd: Ensure plugin path is initialized on Linux: [#10842](https://github.com/owncloud/client/issues/10842)
 * Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
+* Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
@@ -47,6 +48,13 @@ Details
    We corrected the assumption and no longer change the user name.
 
    https://github.com/owncloud/client/issues/10856
+
+* Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
+
+   If an error occured during the setup of the log file, it was possible that the client got
+   deadlocked.
+
+   https://github.com/owncloud/client/pull/10905
 
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 
