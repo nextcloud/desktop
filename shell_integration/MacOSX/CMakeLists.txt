@@ -41,12 +41,12 @@ if(APPLE)
     endif()
 
     if (BUILD_OWNCLOUD_OSX_BUNDLE)
-        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Release/FinderSyncExt.appex
+        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION}/FinderSyncExt.appex
             DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns
             USE_SOURCE_PERMISSIONS)
 
         if (BUILD_FILE_PROVIDER_MODULE)
-            install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Release/FileProviderExt.appex
+            install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION}/FileProviderExt.appex
                 DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns
                 USE_SOURCE_PERMISSIONS)
         endif()
