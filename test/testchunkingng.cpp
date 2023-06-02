@@ -408,7 +408,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // Modify the file localy and start the upload
+        // Modify the file locally and start the upload
         fakeFolder.localModifier().setContents("A/a0", 'B');
         fakeFolder.localModifier().appendByte("A/a0");
 

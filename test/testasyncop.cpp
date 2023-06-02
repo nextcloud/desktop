@@ -157,7 +157,7 @@ private slots:
         insertFile("err/single_error2", 300, waitAndChain(errorCallback));
 
         // First sync should finish by itself.
-        // All the things in "success/" should be transfered, the things in "err/" not
+        // All the things in "success/" should be transferred, the things in "err/" not
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
         QCOMPARE(*fakeFolder.currentLocalState().find("success"),

@@ -282,7 +282,7 @@ void User::slotDisconnectPushNotifications()
 
     disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
 
-    // connection to WebSocket may have dropped or an error occured, so we need to bring back the polling until we have re-established the connection
+    // connection to WebSocket may have dropped or an error occurred, so we need to bring back the polling until we have re-established the connection
     setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
 }
 
@@ -462,7 +462,7 @@ void User::slotNotificationRequestFinished(int statusCode)
         qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
     } else {
         // to do use the model to rebuild the list or remove the item
-        qCWarning(lcActivity) << "Notification Request to Server successed, rebuilding list.";
+        qCWarning(lcActivity) << "Notification Request to Server succeeded, rebuilding list.";
         _activityModel->removeActivityFromActivityList(row);
     }
 }

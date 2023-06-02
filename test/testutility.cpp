@@ -259,7 +259,7 @@ private slots:
         // a single character
         QVERIFY(!isPathWindowsDrivePartitionRoot("a"));
 
-        // a missing second chracter
+        // a missing second character
         QVERIFY(!isPathWindowsDrivePartitionRoot("c/"));
         QVERIFY(!isPathWindowsDrivePartitionRoot("c\\"));
 

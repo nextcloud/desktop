@@ -79,7 +79,7 @@ private slots:
                          const QByteArray &transmissionChecksumType,
                          const QByteArray &transmissionChecksum);
 
-    // invoked on internal error to unlock a folder and faile
+    // invoked on internal error to unlock a folder and failed
     void slotOnErrorStartFolderUnlock(OCC::SyncFileItemPtr item,
                                       const OCC::SyncFileItem::Status status,
                                       const QString &errorString,

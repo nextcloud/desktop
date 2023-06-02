@@ -178,7 +178,7 @@ signals:
     void started();
 
     /**
-     * Emited when the sync engine detects that all the files have been removed or change.
+     * Emitted when the sync engine detects that all the files have been removed or change.
      * This usually happen when the server was reset or something.
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
@@ -211,7 +211,7 @@ private slots:
     void slotItemCompleted(const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
     void slotDiscoveryFinished();
     void slotPropagationFinished(bool success);
-    void slotProgress(const OCC::SyncFileItem &item, qint64 curent);
+    void slotProgress(const OCC::SyncFileItem &item, qint64 current);
     void slotCleanPollsJobAborted(const QString &error, const OCC::ErrorCategory category);
 
     /** Records that a file was touched by a job. */
@@ -313,7 +313,7 @@ private:
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
-    // Must only be acessed during update and reconcile
+    // Must only be accessed during update and reconcile
     QVector<SyncFileItemPtr> _syncItems;
 
     AccountPtr _account;

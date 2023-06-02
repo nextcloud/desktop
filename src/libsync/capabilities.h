@@ -71,7 +71,7 @@ public:
     [[nodiscard]] QColor serverColor() const;
     [[nodiscard]] QColor serverTextColor() const;
 
-    /// Returns which kind of push notfications are available
+    /// Returns which kind of push notifications are available
     [[nodiscard]] PushNotificationTypes availablePushNotifications() const;
 
     /// Websocket url for files push notifications if available

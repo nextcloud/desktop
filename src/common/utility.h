@@ -145,7 +145,7 @@ namespace Utility {
     // if false, the two cases are two different files.
     OCSYNC_EXPORT bool fsCasePreserving();
 
-    // Check if two pathes that MUST exist are equal. This function
+    // Check if two paths that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.
     OCSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
@@ -167,7 +167,7 @@ namespace Utility {
      * Use this to get a string that describes the timespan between the first and
      * the second timestamp in a human readable and understandable form.
      *
-     * If the second parameter is ommitted, the current time is used.
+     * If the second parameter is omitted, the current time is used.
      */
     OCSYNC_EXPORT QString timeAgoInWords(const QDateTime &dt, const QDateTime &from = QDateTime());
 
@@ -276,7 +276,7 @@ namespace Utility {
     {
     public:
         /**
-         * NTFS permissions lookup is diabled by default for performance reasons
+         * NTFS permissions lookup is disabled by default for performance reasons
          * Enable it and disable it again once we leave the scope
          * https://doc.qt.io/Qt-5/qfileinfo.html#ntfs-permissions
          */

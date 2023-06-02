@@ -1,4 +1,4 @@
-# - Check if the protoype we expect is correct.
+# - Check if the prototype we expect is correct.
 # check_prototype_definition(FUNCTION PROTOTYPE RETURN HEADER VARIABLE)
 #  FUNCTION - The name of the function (used to check if prototype exists)
 #  PROTOTYPE- The prototype to check.

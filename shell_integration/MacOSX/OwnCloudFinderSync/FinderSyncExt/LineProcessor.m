@@ -94,8 +94,8 @@
             [self.delegate addMenuItem:item];
         });
     } else {
-        // LOG UNKOWN COMMAND
-        NSLog(@"Unkown command: %@", command);
+        // LOG UNKNOWN COMMAND
+        NSLog(@"Unknown command: %@", command);
     }
 }
 
