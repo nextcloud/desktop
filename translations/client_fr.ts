@@ -5472,58 +5472,58 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Libellé du partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="313"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
         <source>Allow upload and editing</source>
         <translation>Autoriser le téléversement et l&apos;édition</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
         <source>View only</source>
         <translation>Afficher seulement</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="381"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
         <source>File drop (upload only)</source>
         <translation>Dépôt de fichiers (envoi uniquement)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
         <source>Hide download</source>
         <translation>Masquer le téléchargement</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="442"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
         <source>Password protect</source>
         <translation>Protéger par mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="551"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
         <source>Set expiration date</source>
         <translation>Définir une date d&apos;expiration</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="746"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
         <source>Note to recipient</source>
         <translation>Note au destinataire</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="814"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
         <source>Unshare</source>
         <translation>Cesser le partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="831"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
         <source>Add another link</source>
         <translation>Ajouter un autre lien</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="875"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Share link copied!</source>
         <translation>Lien de partage copié !</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="875"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Copy share link</source>
         <translation>Copier le lien de partage</translation>
     </message>

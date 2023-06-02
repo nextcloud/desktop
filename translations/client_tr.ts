@@ -5472,58 +5472,58 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Paylaşım etiketi</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="313"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
         <source>Allow upload and editing</source>
         <translation>Yüklenebilsin ve düzenlenebilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
         <source>View only</source>
         <translation>Yalnızca görüntüleme</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="381"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
         <source>File drop (upload only)</source>
         <translation>Dosya bırakma (yalnızca yükleme)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
         <source>Hide download</source>
         <translation>İndirme gizlensin</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="442"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
         <source>Password protect</source>
         <translation>Parola koruması</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="551"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
         <source>Set expiration date</source>
         <translation>Son kullanma tarihini ayarla</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="746"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
         <source>Note to recipient</source>
         <translation>Alıcıya not</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="814"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
         <source>Unshare</source>
         <translation>Paylaşımdan kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="831"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
         <source>Add another link</source>
         <translation>Başka bir bağlantı ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="875"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Share link copied!</source>
         <translation>Paylaşım bağlantısı kopyalandı!</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="875"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Copy share link</source>
         <translation>Paylaşım bağlantısını kopyala</translation>
     </message>
