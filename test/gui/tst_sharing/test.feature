@@ -423,10 +423,10 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for file "textfile0.txt" without password using the client-UI
         And the user closes the sharing dialog
-        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        Then as user "Alice" the file "textfile0.txt" should have a public link in the server
         And the public should be able to download the file "textfile0.txt" without password from the last created public link by "Alice" on the server
         When the user creates a new public link with permissions "Download / View" for folder "simple-folder" without password using the client-UI
-        Then as user "Alice" the folder "simple-folder" should have a public link on the server
+        Then as user "Alice" the folder "simple-folder" should have a public link in the server
         And the public should be able to download the folder "simple-folder/child" without password from the last created public link by "Alice" on the server
 
 
@@ -436,10 +436,10 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user creates a new public link for file "textfile0.txt" with password "<password>" using the client-UI
         And the user closes the sharing dialog
-        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        Then as user "Alice" the file "textfile0.txt" should have a public link in the server
         And the public should be able to download the file "textfile0.txt" with password "<password>" from the last created public link by "Alice" on the server
         When the user creates a new public link with permissions "Download / View" for folder "simple-folder" with password "<password>" using the client-UI
-        Then as user "Alice" the folder "simple-folder" should have a public link on the server
+        Then as user "Alice" the folder "simple-folder" should have a public link in the server
         And the public should be able to download the folder "simple-folder" with password "<password>" from the last created public link by "Alice" on the server
         Examples:
             | password     |
@@ -454,7 +454,7 @@ Feature: Sharing
             | name     | Public-link   |
         And user "Alice" has set up a client with default settings
         When the user deletes the public link for file "textfile0.txt"
-        Then as user "Alice" the file "/textfile0.txt" should not have any public link on the server
+        Then as user "Alice" the file "/textfile0.txt" should not have any public link in the server
 
 
     Scenario: sharing of a file by public link with password and changing the password
@@ -466,7 +466,7 @@ Feature: Sharing
         And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user changes the password of public link "Public-link" to "password1234" using the client-UI
-        Then as user "Alice" the file "textfile0.txt" should have a public link on the server
+        Then as user "Alice" the file "textfile0.txt" should have a public link in the server
         And the public should be able to download the file "textfile0.txt" with password "password1234" from the last created public link by "Alice" on the server
 
 
@@ -478,7 +478,7 @@ Feature: Sharing
             | expireDate | %default%    |
         And the user closes the sharing dialog
         Then the expiration date of the last public link of file "textfile.txt" should be "%default%"
-        And as user "Alice" the file "textfile.txt" should have a public link on the server
+        And as user "Alice" the file "textfile.txt" should have a public link in the server
 
     @issue-9321
     Scenario: simple sharing of file and folder by public link with expiration date
@@ -488,14 +488,14 @@ Feature: Sharing
         When the user creates a new public link with following settings using the client-UI:
             | path       | textfile.txt |
             | expireDate | 2031-10-14   |
-        Then as user "Alice" the file "textfile.txt" should have a public link on the server
+        Then as user "Alice" the file "textfile.txt" should have a public link in the server
         And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-10-14 |
         When the user closes the sharing dialog
         And the user creates a new public link with following settings using the client-UI:
             | path       | FOLDER     |
             | expireDate | 2031-12-30 |
-        Then as user "Alice" the file "FOLDER" should have a public link on the server
+        Then as user "Alice" the folder "FOLDER" should have a public link in the server
         And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-12-30 |
 
@@ -507,7 +507,7 @@ Feature: Sharing
             | path       | textfile.txt |
             | password   | pass123      |
             | expireDate | 2031-10-14   |
-        Then as user "Alice" the file "textfile.txt" should have a public link on the server
+        Then as user "Alice" the file "textfile.txt" should have a public link in the server
         And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-10-14 |
         And the public should be able to download the file "textfile.txt" with password "pass123" from the last created public link by "Alice" on the server

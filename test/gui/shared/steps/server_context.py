@@ -4,6 +4,7 @@ from os import path
 from helpers.ConfigHelper import get_config
 from helpers.api.Provisioning import setup_app
 import helpers.api.webdav_helper as webdav
+import helpers.api.sharing_helper as sharing_helper
 
 
 def executeStepThroughMiddleware(context, step):
@@ -86,4 +87,28 @@ def step(context, user_name, file_name, content):
         text_content,
         content,
         f"File '{file_name}' should have content '{content}' but found '{text_content}'",
+    )
+
+
+@Then(
+    r'as user "([^"].*)" the (?:file|folder) "([^"].*)" should have a public link in the server',
+    regexp=True,
+)
+def step(context, user_name, resource_name):
+    has_link_share = sharing_helper.has_public_link_share(user_name, resource_name)
+    test.compare(
+        has_link_share,
+        True,
+        f"Resource '{resource_name}' does not have public link share",
+    )
+
+
+@Then(
+    r'as user "([^"].*)" the (?:file|folder) "([^"].*)" should not have any public link in the server',
+    regexp=True,
+)
+def step(context, user_name, resource_name):
+    has_link_share = sharing_helper.has_public_link_share(user_name, resource_name)
+    test.compare(
+        has_link_share, False, f"Resource '{resource_name}' have public link share"
     )

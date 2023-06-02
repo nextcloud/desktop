@@ -1295,7 +1295,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source>Sync Error.</source>
-        <translation type="unfinished"/>
+        <translation>Gabim Njëkohësimi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1115"/>
@@ -3987,7 +3987,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="190"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të merreshin hollësi përdoruesi nga shërbyesi</translation>
     </message>
 </context>
 <context>
