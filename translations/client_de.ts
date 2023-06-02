@@ -1946,7 +1946,7 @@ Objekte, bei denen das Löschen erlaubt ist, werden gelöscht, falls sie die Lö
     <message>
         <location filename="../src/gui/issueswidget.ui" line="22"/>
         <source>List of issues</source>
-        <translation>Liste der Fehler</translation>
+        <translation>Liste der Problemstellungen</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="45"/>
