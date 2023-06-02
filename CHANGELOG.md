@@ -17,6 +17,7 @@ Summary
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
+* Enhancement - Allow users to call commandline client from AppImage: [#10888](https://github.com/owncloud/client/issues/10888)
 
 Details
 -------
@@ -80,6 +81,14 @@ Details
    This should reduce the amount of unnecessary checksum computations and attempted syncs.
 
    https://github.com/owncloud/client/pull/10825
+
+* Enhancement - Allow users to call commandline client from AppImage: [#10888](https://github.com/owncloud/client/issues/10888)
+
+   When the AppImage is called with the new commandline parameter --cmd, it will internally
+   dispatch the call to the contained owncloudcmd binary. Otherwise, the call will be forwarded
+   to the regular owncloud GUI binary as before.
+
+   https://github.com/owncloud/client/issues/10888
 
 Changelog for ownCloud Desktop Client [4.0.0] (2023-05-11)
 =======================================
