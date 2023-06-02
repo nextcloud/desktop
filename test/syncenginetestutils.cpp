@@ -1051,7 +1051,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
 
         auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == QLatin1String("PROPFIND")) {
-            // Ignore outgoingData always returning somethign good enough, works for now.
+            // Ignore outgoingData always returning something good enough, works for now.
             reply = new FakePropfindReply { info, op, newRequest, this };
         } else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation) {
             reply = new FakeGetReply { info, op, newRequest, this };

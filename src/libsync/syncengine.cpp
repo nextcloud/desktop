@@ -296,7 +296,7 @@ void SyncEngine::conflictRecordMaintenance()
     // If so, add them now.
     //
     // This happens when the conflicts table is new or when conflict files
-    // are downlaoded but the server doesn't send conflict headers.
+    // are downloaded but the server doesn't send conflict headers.
     for (const auto &path : qAsConst(_seenConflictFiles)) {
         ASSERT(Utility::isConflictFile(path));
 
@@ -1177,7 +1177,7 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
     });
 
     if (!resGetFilesBelowPath) {
-        qCWarning(lcEngine) << "Faied to get files below path" << localPath;
+        qCWarning(lcEngine) << "Failed to get files below path" << localPath;
     }
 
     journal.forceRemoteDiscoveryNextSync();
@@ -1204,7 +1204,7 @@ void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &j
     });
 
     if (!res) {
-        qCWarning(lcEngine) << "Faied to get files below path" << localPath;
+        qCWarning(lcEngine) << "Failed to get files below path" << localPath;
     }
 }
 

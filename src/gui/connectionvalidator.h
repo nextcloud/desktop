@@ -31,7 +31,7 @@ namespace OCC {
  * checkAuthentication is the quick version that only does the propfind
  * while checkServerAndAuth is doing the 4 calls.
  *
- * We cannot use the capabilites call to test the login and the password because of
+ * We cannot use the capabilities call to test the login and the password because of
  * https://github.com/owncloud/core/issues/12930
  *
  * Here follows the state machine

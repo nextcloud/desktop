@@ -56,7 +56,7 @@ private slots:
     void slotUpdateMetadataError(const QByteArray& fileId, int httpReturnCode);
 
 signals:
-    // Emmited after the file is encrypted and everythign is setup.
+    // Emitted after the file is encrypted and everything is setup.
     void finalized(const QString& path, const QString& filename, quint64 size);
     void error();
     void folderUnlocked(const QByteArray &folderId, int httpStatus);

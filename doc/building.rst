@@ -110,7 +110,7 @@ Then, in Terminal:
 
       % /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-.. note:: Under certain cirumstances, you may get on error along the
+.. note:: Under certain circumstances, you may get on error along the
    lines of ``Permission denied @ apply2files`` when installing certain
    Homebrew packages. This is `a known issue`_ and can be fixed by changing
    the permissions on the affected files with the following command:

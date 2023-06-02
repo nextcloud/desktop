@@ -264,7 +264,7 @@ private slots:
     void slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum);
     // invoked when encrypted folder lock has been released
     void slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode);
-    // invoked on internal error to unlock a folder and faile
+    // invoked on internal error to unlock a folder and failed
     void slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString);
 
 public:
@@ -325,7 +325,7 @@ private:
 /**
  * @ingroup libsync
  *
- * Propagation job, impementing the old chunking agorithm
+ * Propagation job, implementing the old chunking algorithm
  *
  */
 class PropagateUploadFileV1 : public PropagateUploadFileCommon
@@ -372,7 +372,7 @@ private slots:
 /**
  * @ingroup libsync
  *
- * Propagation job, impementing the new chunking agorithm
+ * Propagation job, implementing the new chunking algorithm
  *
  */
 class PropagateUploadFileNG : public PropagateUploadFileCommon

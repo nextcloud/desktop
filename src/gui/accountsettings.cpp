@@ -527,7 +527,7 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
             ac = menu.addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, info] { slotMarkSubfolderEncrypted(info); });
         } else {
-            // Ingore decrypting for now since it only works with an empty folder
+            // Ignore decrypting for now since it only works with an empty folder
             // connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
         }
     }

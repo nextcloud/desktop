@@ -728,7 +728,7 @@ void Application::parseOptions(const QStringList &options)
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
-            // see the section Local file editing of the Architecture page of the user documenation
+            // see the section Local file editing of the Architecture page of the user documentation
             _editFileLocallyUrl = QUrl::fromUserInput(option);
             if (!_editFileLocallyUrl.isValid()) {
                 _editFileLocallyUrl.clear();

@@ -227,7 +227,7 @@ folders larger than [folder size]**.
 Using the Network Window
 ------------------------
 
-.. index:: proxy settings, SOCKS, bandwith, throttling, limiting
+.. index:: proxy settings, SOCKS, bandwidth, throttling, limiting
 
 The Network settings window enables you to define network proxy settings, and
 also to limit download and upload bandwidth.

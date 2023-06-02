@@ -754,7 +754,7 @@ void FolderMan::slotRunOneEtagJob()
         Folder *folder = nullptr;
         for (Folder *f : qAsConst(_folderMap)) {
             if (f->etagJob()) {
-                // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.
+                // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a separate queue.
                 _currentEtagJob = f->etagJob();
                 folder = f;
                 break;
@@ -987,7 +987,7 @@ void FolderMan::runEtagJobIfPossible(Folder *folder)
         return;
     }
     if (_scheduledFolders.contains(folder)) {
-        qCInfo(lcFolderMan) << "Can not run etag job: Folder is alreday scheduled";
+        qCInfo(lcFolderMan) << "Can not run etag job: Folder is already scheduled";
         return;
     }
     if (_disabledFolders.contains(folder)) {
@@ -1727,7 +1727,7 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
             return result;
         }
 
-        // if both pathes are equal, the server url needs to be different
+        // if both paths are equal, the server url needs to be different
         // otherwise it would mean that a new connection from the same local folder
         // to the same account is added which is not wanted. The account must differ.
         if (serverUrl.isValid() && !differentPaths) {

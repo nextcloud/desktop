@@ -279,7 +279,7 @@ void Utility::usleep(int usec)
     QThread::usleep(usec);
 }
 
-// This can be overriden from the tests
+// This can be overridden from the tests
 OCSYNC_EXPORT bool fsCasePreserving_override = []() -> bool {
     QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     if (!env.isEmpty())
@@ -298,7 +298,7 @@ bool Utility::fileNamesEqual(const QString &fn1, const QString &fn2)
     const QDir fd2(fn2);
 
     // Attention: If the path does not exist, canonicalPath returns ""
-    // ONLY use this function with existing pathes.
+    // ONLY use this function with existing paths.
     const QString a = fd1.canonicalPath();
     const QString b = fd2.canonicalPath();
     bool re = !a.isEmpty() && QString::compare(a, b, fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive) == 0;
@@ -673,7 +673,7 @@ bool Utility::isPathWindowsDrivePartitionRoot(const QString &path)
         return false;
     }
 
-    // must mutch a pattern "[A-Za-z]:"
+    // must match a pattern "[A-Za-z]:"
     if (!(path.at(1) == QLatin1Char(':') && path.at(0).isLetter())) {
         return false;
     }
