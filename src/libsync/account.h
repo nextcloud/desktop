@@ -220,7 +220,7 @@ public:
     void setCredentialSetting(const QString &key, const QVariant &value);
 
     /** Assign a client certificate */
-    void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
+    void setCertificate(const QByteArray certificate = QByteArray(), const QString privateKey = QString());
 
     /** Access the server capabilities */
     [[nodiscard]] const Capabilities &capabilities() const;
