@@ -1,5 +1,5 @@
-Bugfix: Dupplicated sync issues with SelectiveSync
+Bugfix: Avoid duplicate notifications when selective sync is enabled
 
-We fixed a bug where the message that a file is not synced was listed multiple times in the not synced list.
+We no longer show multiple messages about files which were excluded from the sync because they were excluded by the users.
 
 https://github.com/owncloud/enterprise/issues/5682
