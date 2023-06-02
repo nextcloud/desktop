@@ -189,7 +189,7 @@ endif()
 
 if (APPLE)
     # build macOS File Provider module
-    option(BUILD_FILE_PROVIDER_MODULE "BUILD_FILE_PROVIDER_MODULE" ON)
+    option(BUILD_FILE_PROVIDER_MODULE "BUILD_FILE_PROVIDER_MODULE" OFF)
 endif()
 
 # When this option is enabled, 5xx errors are not added to the blacklist
