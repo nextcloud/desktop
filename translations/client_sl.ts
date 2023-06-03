@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna različica</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Različica strežnika</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="95"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Odpiranje datoteke za krajevno urejanje</translation>
     </message>
 </context>
 <context>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>Ni nedavnih izraznih ikon</translation>
     </message>
 </context>
 <context>
@@ -366,17 +366,17 @@ Should an account import be attempted?</source>
         <location filename="../src/gui/accountmanager.cpp" line="252"/>
         <location filename="../src/gui/accountmanager.cpp" line="260"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Uvoz opuščenih podatkov</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="253"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation type="unfinished"/>
+        <translation>Podatki opuščenega odjemalca so uspešno uvoženi: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="261"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče uvoziti računov iz opuščenih nastavitev odjemalca.</translation>
     </message>
 </context>
 <context>
@@ -426,17 +426,17 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Celovito šifriranje E2E za navidezne datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kaže, da imate na tej mapi omogočeno možnost navideznih datotek. Trenutno ni mogoče neposredno prejeti tovrstnih datotek, če so šifrirane po protokolu E2E. Za najenostavnejše delo z navideznimi datotekami poskrbite, da je šifrirana mapa označena kot »Vedno na voljo krajevno«.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Ne šifriraj mape</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
@@ -451,7 +451,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči šifriranje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
@@ -461,7 +461,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>Za ta račun je omogočeno celovito šifriranje E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -626,12 +626,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Onemogoči celovito šifriranje E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite onemogočiti celovito šifriranje E2E za %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
