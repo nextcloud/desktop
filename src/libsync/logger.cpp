@@ -36,7 +36,7 @@
 namespace {
 
 constexpr int CrashLogSize = 20;
-constexpr int MaxLogSizeBytes = 1024 * 512;
+constexpr int MaxLogSizeBytes = 1024 * 1024 * 3;
 
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
