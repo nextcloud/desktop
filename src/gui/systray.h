@@ -69,6 +69,7 @@ class Systray
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
     Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
     Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
+    Q_PROPERTY(bool enableAddAccount READ enableAddAccount CONSTANT)
 
 public:
     static Systray *instance();
@@ -91,6 +92,8 @@ public:
 
     Q_REQUIRED_RESULT bool syncIsPaused() const;
     Q_REQUIRED_RESULT bool isOpen() const;
+
+    [[nodiscard]] bool enableAddAccount() const;
 
     bool raiseDialogs();
 
