@@ -18,7 +18,7 @@
                BlueprintIdentifier = "C2B573D61B1CD9CE00303B36"
                BuildableName = "FinderSyncExt.appex"
                BlueprintName = "FinderSyncExt"
-               ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
+               ReferencedContainer = "container:OwnCloudFinderSync.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -32,7 +32,7 @@
                BlueprintIdentifier = "C2B573B01B1CD91E00303B36"
                BuildableName = "desktopclient.app"
                BlueprintName = "desktopclient"
-               ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
+               ReferencedContainer = "container:OwnCloudFinderSync.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,21 +48,10 @@
             BlueprintIdentifier = "C2B573D61B1CD9CE00303B36"
             BuildableName = "FinderSyncExt.appex"
             BlueprintName = "FinderSyncExt"
-            ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
+            ReferencedContainer = "container:OwnCloudFinderSync.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "53903D142956164F00D0B308"
-               BuildableName = "NCDesktopClientSocketKitTests.xctest"
-               BlueprintName = "NCDesktopClientSocketKitTests"
-               ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -84,7 +73,7 @@
             BlueprintIdentifier = "C2B573B01B1CD91E00303B36"
             BuildableName = "desktopclient.app"
             BlueprintName = "desktopclient"
-            ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
+            ReferencedContainer = "container:OwnCloudFinderSync.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -103,7 +92,7 @@
             BlueprintIdentifier = "C2B573B01B1CD91E00303B36"
             BuildableName = "desktopclient.app"
             BlueprintName = "desktopclient"
-            ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
+            ReferencedContainer = "container:OwnCloudFinderSync.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

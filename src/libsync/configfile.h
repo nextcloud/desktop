@@ -223,9 +223,6 @@ public:
     [[nodiscard]] static QString discoveredLegacyConfigPath();
     static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
 
-    [[nodiscard]] bool macFileProviderModuleEnabled() const;
-    void setMacFileProviderModuleEnabled(const bool moduleEnabled);
-
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
@@ -240,6 +237,7 @@ private:
 
     [[nodiscard]] QString keychainProxyPasswordKey() const;
 
+private:
     using SharedCreds = QSharedPointer<AbstractCredentials>;
 
     static QString _confDir;
