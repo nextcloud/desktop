@@ -41,13 +41,19 @@ if(APPLE)
     endif()
 
     if (BUILD_OWNCLOUD_OSX_BUNDLE)
-        install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Release/FinderSyncExt.appex
-            DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns
+        set(OSX_PLUGINS_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/${XCODE_TARGET_CONFIGURATION})
+        set(OSX_PLUGINS_INSTALL_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns)
+
+        install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FinderSyncExt.appex
+            DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
             USE_SOURCE_PERMISSIONS)
 
+        # HACK: Launch Services expects there to be a Library folder within the FinderSyncExt.appex.
+        install(DIRECTORY DESTINATION ${OSX_PLUGINS_INSTALL_DIR}/FinderSyncExt.appex/Contents/Library)
+
         if (BUILD_FILE_PROVIDER_MODULE)
-            install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Release/FileProviderExt.appex
-                DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns
+            install(DIRECTORY ${OSX_PLUGINS_BINARY_DIR}/FileProviderExt.appex
+                DESTINATION ${OSX_PLUGINS_INSTALL_DIR}
                 USE_SOURCE_PERMISSIONS)
         endif()
     endif()
