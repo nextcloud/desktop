@@ -27,13 +27,13 @@
         NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
         // This was added to the bundle's Info.plist to get it from the build system
         NSString *socketApiPrefix = [extBundle objectForInfoDictionaryKey:@"SocketApiPrefix"];
-
+        
         NSImage *ok = [extBundle imageForResource:@"ok.icns"];
         NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
         NSImage *sync = [extBundle imageForResource:@"sync.icns"];
         NSImage *warning = [extBundle imageForResource:@"warning.icns"];
         NSImage *error = [extBundle imageForResource:@"error.icns"];
-
+        
         [syncController setBadgeImage:ok label:@"Up to date" forBadgeIdentifier:@"OK"];
         [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC"];
         [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW"];
@@ -44,7 +44,7 @@
         [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW+SWM"];
         [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
         [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
-
+        
         // The Mach port name needs to:
         // - Be prefixed with the code signing Team ID
         // - Then infixed with the sandbox App Group
@@ -55,22 +55,24 @@
         // the OS doesn't seem to put any restriction on the port name, so we just follow what
         // the sandboxed App Extension needs.
         // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
-
+        
         NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
         NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:NO];
-
+        
         NSLog(@"Socket path: %@", socketPath.path);
-
+        
         if (socketPath.path) {
-            self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
-            self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath.path
-                                                                     lineProcessor:self.lineProcessor];
+            self.lineProcessor = [[LineProcessor alloc] initWithDelegate:self];
+            self.localSocketClient = [[LocalSocketClient alloc] init:socketPath.path
+                                                       lineProcessor:self.lineProcessor];
             [self.localSocketClient start];
-            [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
         } else {
             NSLog(@"No socket path. Not initiating local socket client.");
             self.localSocketClient = nil;
         }
+        _registeredDirectories = [[NSMutableSet alloc] init];
+        _strings = [[NSMutableDictionary alloc] init];
+        _menuIsComplete = [[NSCondition alloc] init];
     }
 
     return self;

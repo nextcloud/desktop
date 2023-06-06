@@ -285,19 +285,6 @@ IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
-    if (BUILD_FILE_PROVIDER_MODULE)
-        list(APPEND client_SRCS
-            macOS/fileprovider.h
-            macOS/fileprovider_mac.mm
-            macOS/fileproviderdomainmanager.h
-            macOS/fileproviderdomainmanager_mac.mm
-            macOS/fileprovidersocketcontroller.h
-            macOS/fileprovidersocketcontroller.cpp
-            macOS/fileprovidersocketserver.h
-            macOS/fileprovidersocketserver.cpp
-            macOS/fileprovidersocketserver_mac.mm)
-    endif()
-
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
         add_definitions(-DHAVE_SPARKLE)
@@ -670,12 +657,7 @@ endif()
 
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
-
-    if (BUILD_FILE_PROVIDER_MODULE)
-        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
-    else()
-        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
-    endif()
+    target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
 endif()
 
 if(WITH_CRASHREPORTER)

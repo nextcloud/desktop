@@ -88,7 +88,6 @@ dlldata.c
 # macOS specific
 xcuserdata/
 **/.DS_Store
-**/Carthage/
 
 # Visual C++ cache files
 ipch/

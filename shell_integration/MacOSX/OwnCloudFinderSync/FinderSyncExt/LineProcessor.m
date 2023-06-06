@@ -13,9 +13,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "FinderSyncSocketLineProcessor.h"
+#import "LineProcessor.h"
 
-@implementation FinderSyncSocketLineProcessor
+@implementation LineProcessor
 
 -(instancetype)initWithDelegate:(id<SyncClientDelegate>)delegate
 {
