@@ -559,8 +559,12 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
 void ActivityListModel::addErrorToActivityList(const Activity &activity, const ErrorType type)
 {
     qCInfo(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
-    addEntriesToActivityList({activity});
-    _notificationErrorsLists.prepend(activity);
+    auto modifiedActivity = activity;
+    if (type == ErrorType::NetworkError) {
+        modifiedActivity._subject = tr("Network error occurred: client will retry syncing.");
+    }
+    addEntriesToActivityList({modifiedActivity});
+    _notificationErrorsLists.prepend(modifiedActivity);
 }
 
 void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
