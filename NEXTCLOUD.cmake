@@ -74,3 +74,7 @@ if(WIN32)
     option( BUILD_WIN_MSI "Build MSI scripts and helper DLL" OFF )
     option( BUILD_WIN_TOOLS "Build Win32 migration tools" OFF )
 endif()
+
+if (APPLE)
+    set( BUILD_FILE_PROVIDER_MODULE OFF )
+endif()
