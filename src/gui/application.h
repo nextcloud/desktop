@@ -140,7 +140,7 @@ private:
     QString _logDir;
     int _logExpire = 0;
     bool _logFlush = false;
-    bool _logDebug = true;
+    bool _logDebug = false;
     bool _userTriggeredConnect = false;
     bool _debugMode = false;
     bool _backgroundMode = false;
