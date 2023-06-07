@@ -595,6 +595,8 @@ void SyncEngine::startSync()
         return;
     }
 
+    processCaseClashConflictsBeforeDiscovery();
+
     _stopWatch.start();
     _progressInfo->_status = ProgressInfo::Starting;
     emit transmissionProgress(*_progressInfo);
@@ -976,6 +978,23 @@ void SyncEngine::finalize(bool success)
 
     _clearTouchedFilesTimer.start();
     _leadingAndTrailingSpacesFilesAllowed.clear();
+}
+
+void SyncEngine::processCaseClashConflictsBeforeDiscovery()
+{
+    QSet<QByteArray> pathsToAppend;
+    const auto caseClashConflictPaths = _journal->caseClashConflictRecordPaths();
+    for (const auto &caseClashConflictPath : caseClashConflictPaths) {
+        auto caseClashPathSplit = caseClashConflictPath.split('/');
+        if (caseClashPathSplit.size() > 1) {
+            caseClashPathSplit.removeLast();
+            pathsToAppend.insert(caseClashPathSplit.join('/'));
+        }
+    }
+
+    for (const auto &pathToAppend : pathsToAppend) {
+        _journal->schedulePathForRemoteDiscovery(pathToAppend);
+    }
 }
 
 void SyncEngine::slotProgress(const SyncFileItem &item, qint64 current)
