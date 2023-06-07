@@ -118,7 +118,7 @@ bool Logger::isLoggingToFile() const
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
-    const QString msg = qFormatLogMessage(type, ctx, message);
+    const auto msg = qFormatLogMessage(type, ctx, message);
 #if defined(Q_OS_WIN) && defined(QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
@@ -144,8 +144,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     }
 #endif
     {
-        QMutexLocker lock(&_mutex);
-
         if (_logFile.size() >= MaxLogSizeBytes) {
             closeNoLock();
             enterNextLogFileNoLock();
@@ -195,21 +193,25 @@ void Logger::setLogFile(const QString &name)
 
 void Logger::setLogExpire(int expire)
 {
+    QMutexLocker locker(&_mutex);
     _logExpire = expire;
 }
 
 QString Logger::logDir() const
 {
+    QMutexLocker locker(&_mutex);
     return _logDirectory;
 }
 
 void Logger::setLogDir(const QString &dir)
 {
+    QMutexLocker locker(&_mutex);
     _logDirectory = dir;
 }
 
 void Logger::setLogFlush(bool flush)
 {
+    QMutexLocker locker(&_mutex);
     _doFileFlush = flush;
 }
 
@@ -221,11 +223,14 @@ void Logger::setLogDebug(bool debug)
     } else {
         removeLogRule(rules);
     }
+
+    QMutexLocker locker(&_mutex);
     _logDebug = debug;
 }
 
 QString Logger::temporaryFolderLogDirPath() const
 {
+    QMutexLocker locker(&_mutex);
     return QDir::temp().filePath(QStringLiteral(APPLICATION_SHORTNAME "-logdir"));
 }
 
@@ -250,6 +255,16 @@ void Logger::disableTemporaryFolderLogDir()
     setLogDebug(false);
     setLogFile(QString());
     _temporaryFolderLogDir = false;
+}
+
+void Logger::addLogRule(const QSet<QString> &rules)
+{
+    setLogRules(_logRules + rules);
+}
+
+void Logger::removeLogRule(const QSet<QString> &rules)
+{
+    setLogRules(_logRules - rules);
 }
 
 void Logger::setLogRules(const QSet<QString> &rules)

@@ -620,6 +620,8 @@ void Application::setupLogging()
                           << "version:" << _theme->version()
                           << "os:" << Utility::platformName();
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
+
+    logger->moveToThread(&_loggingThread);
 }
 
 void Application::slotUseMonoIconsChanged(bool)
