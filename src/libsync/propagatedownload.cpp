@@ -461,7 +461,7 @@ void PropagateDownloadFile::start()
     SyncJournalFileRecord parentRec;
     if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
         qCWarning(lcPropagateDownload) << "could not get file from local DB" << parentPath;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath));
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath), ErrorCategory::GenericError);
         return;
     }
 
@@ -478,7 +478,7 @@ void PropagateDownloadFile::start()
         });
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
           done(SyncFileItem::NormalError,
-               tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
+               tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
         });
         _downloadEncryptedHelper->start();
     }
@@ -496,20 +496,20 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         QString fsPath = propagator()->fullLocalPath(_item->_file);
         if (!FileSystem::verifyFileUnchanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
-            done(SyncFileItem::SoftError, tr("File has changed since discovery"));
+            done(SyncFileItem::SoftError, tr("File has changed since discovery"), ErrorCategory::GenericError);
             return;
         }
 
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
         auto r = vfs->dehydratePlaceholder(*_item);
         if (!r) {
-            done(SyncFileItem::NormalError, r.error());
+            done(SyncFileItem::NormalError, r.error(), ErrorCategory::GenericError);
             return;
         }
 
         if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
             qCWarning(lcPropagateDownload) << "could not delete file from local DB" << _item->_originalFile;
-            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
+            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
             return;
         }
 
@@ -530,12 +530,12 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
         // do a klaas' case clash check.
         if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
             return;
         }
         auto r = vfs->createPlaceholder(*_item);
         if (!r) {
-            done(SyncFileItem::NormalError, r.error());
+            done(SyncFileItem::NormalError, r.error(), ErrorCategory::GenericError);
             return;
         }
         updateMetadata(false);
@@ -675,7 +675,7 @@ void PropagateDownloadFile::startDownload()
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
-        done(SyncFileItem::NormalError, _tmpFile.errorString());
+        done(SyncFileItem::NormalError, _tmpFile.errorString(), ErrorCategory::GenericError);
         return;
     }
     // Hide temporary after creation
@@ -689,11 +689,11 @@ void PropagateDownloadFile::startDownload()
             // tab: instead we'll generate a general "disk space low" message and show
             // these detail errors only in the error view.
             done(SyncFileItem::DetailError,
-                tr("The download would reduce free local disk space below the limit"));
+                tr("The download would reduce free local disk space below the limit"), ErrorCategory::GenericError);
             emit propagator()->insufficientLocalStorage();
         } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
             done(SyncFileItem::FatalError,
-                tr("Free space on disk is less than %1").arg(Utility::octetsToString(criticalFreeSpaceLimit())));
+                tr("Free space on disk is less than %1").arg(Utility::octetsToString(criticalFreeSpaceLimit())), ErrorCategory::GenericError);
         }
 
         // Remove the temporary, if empty.
@@ -832,7 +832,7 @@ void PropagateDownloadFile::slotGetFinished()
                 &propagator()->_anotherSyncNeeded, errorBody);
         }
 
-        done(status, errorString);
+        done(status, errorString, errorCategoryFromNetworkError(err));
         return;
     }
 
@@ -880,14 +880,14 @@ void PropagateDownloadFile::slotGetFinished()
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qCDebug(lcPropagateDownload) << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
         FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::SoftError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
+        done(SyncFileItem::SoftError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"), ErrorCategory::GenericError);
         return;
     }
 
     if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
         qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
         propagator()->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
+        done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."), ErrorCategory::GenericError);
         return;
     }
 
@@ -895,7 +895,7 @@ void PropagateDownloadFile::slotGetFinished()
         FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError,
             tr("The downloaded file is empty, but the server said it should have been %1.")
-                .arg(Utility::octetsToString(_item->_size)));
+                .arg(Utility::octetsToString(_item->_size)), ErrorCategory::GenericError);
         return;
     }
 
@@ -984,7 +984,7 @@ void PropagateDownloadFile::checksumValidateFailedAbortDownload(const QString &e
 {
     FileSystem::remove(_tmpFile.fileName());
     propagator()->_anotherSyncNeeded = true;
-    done(SyncFileItem::SoftError, errMsg); // tr("The file downloaded with a broken checksum, will be redownloaded."));
+    done(SyncFileItem::SoftError, errMsg, ErrorCategory::GenericError); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
 void PropagateDownloadFile::deleteExistingFolder()
@@ -1005,7 +1005,7 @@ void PropagateDownloadFile::deleteExistingFolder()
 
     QString error;
     if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
-        done(SyncFileItem::NormalError, error);
+        done(SyncFileItem::NormalError, error, ErrorCategory::GenericError);
     }
 }
 
@@ -1141,7 +1141,7 @@ void PropagateDownloadFile::finalizeDownload()
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
             downloadFinished();
         } else {
-            done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString());
+            done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString(), ErrorCategory::GenericError);
         }
     } else {
         downloadFinished();
@@ -1155,7 +1155,7 @@ void PropagateDownloadFile::downloadFinished()
 
     if (_item->_modtime <= 0) {
         FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
         return;
     }
     Q_ASSERT(_item->_modtime > 0);
@@ -1168,7 +1168,7 @@ void PropagateDownloadFile::downloadFinished()
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
     if (_item->_modtime <= 0) {
         FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
         return;
     }
     Q_ASSERT(_item->_modtime > 0);
@@ -1193,7 +1193,7 @@ void PropagateDownloadFile::downloadFinished()
         // Make the file a hydrated placeholder if possible
         const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, filename);
         if (!result) {
-            done(SyncFileItem::NormalError, result.error());
+            done(SyncFileItem::NormalError, result.error(), ErrorCategory::GenericError);
             return;
         }
     }
@@ -1210,15 +1210,15 @@ void PropagateDownloadFile::downloadFinished()
             qCInfo(lcPropagateDownload) << "downloading case clashed file" << _item->_file;
             const auto caseClashConflictResult = propagator()->createCaseClashConflict(_item, _tmpFile.fileName());
             if (caseClashConflictResult) {
-                done(SyncFileItem::SoftError, *caseClashConflictResult);
+                done(SyncFileItem::SoftError, *caseClashConflictResult, ErrorCategory::GenericError);
             } else {
-                done(SyncFileItem::FileNameClash, tr("File %1 downloaded but it resulted in a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+                done(SyncFileItem::FileNameClash, tr("File %1 downloaded but it resulted in a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
             }
             return;
         } else {
             QString error;
             if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
-                done(SyncFileItem::SoftError, error);
+                done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
             } else {
                 previousFileExists = false;
             }
@@ -1240,7 +1240,7 @@ void PropagateDownloadFile::downloadFinished()
         const time_t expectedMtime = _item->_previousModtime;
         if (!FileSystem::verifyFileUnchanged(filename, expectedSize, expectedMtime)) {
             propagator()->_anotherSyncNeeded = true;
-            done(SyncFileItem::SoftError, tr("File has changed since discovery"));
+            done(SyncFileItem::SoftError, tr("File has changed since discovery"), ErrorCategory::GenericError);
             return;
         }
     }
@@ -1258,7 +1258,7 @@ void PropagateDownloadFile::downloadFinished()
             propagator()->_anotherSyncNeeded = true;
         }
 
-        done(SyncFileItem::SoftError, error);
+        done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
         return;
     }
 
@@ -1290,7 +1290,7 @@ void PropagateDownloadFile::downloadFinished()
 
             if (!propagator()->_journal->deleteFileRecord(virtualFile)) {
                 qCWarning(lcPropagateDownload) << "could not delete file from local DB" << virtualFile;
-                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(virtualFile));
+                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(virtualFile), ErrorCategory::GenericError);
                 return;
             }
 
@@ -1322,10 +1322,10 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     const QString fn = propagator()->fullLocalPath(_item->_file);
     const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
-        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
         return;
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(_item->_file));
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(_item->_file), ErrorCategory::GenericError);
         return;
     }
 
@@ -1337,7 +1337,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
 
     propagator()->_journal->commit("download file start2");
 
-    done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
+    done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success, {}, ErrorCategory::NoError);
 
     // handle the special recall file
     if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)

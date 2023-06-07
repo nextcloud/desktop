@@ -120,7 +120,7 @@ void BulkPropagatorJob::startUploadFile(SyncFileItemPtr item, UploadFileInfo fil
 
     // Check if the specific file can be accessed
     if (propagator()->hasCaseClashAccessibilityProblem(fileToUpload._file)) {
-        done(item, SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists").arg(QDir::toNativeSeparators(item->_file)));
+        done(item, SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
         return;
     }
 
@@ -160,7 +160,7 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
         const auto renameSuccess = QFile::rename(originalFilePathAbsolute, newFilePathAbsolute);
 
         if (!renameSuccess) {
-            done(item, SyncFileItem::NormalError, "File contains trailing spaces and couldn't be renamed");
+            done(item, SyncFileItem::NormalError, "File contains trailing spaces and couldn't be renamed", ErrorCategory::GenericError);
             return;
         }
 
@@ -172,7 +172,7 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
         item->_modtime = FileSystem::getModTime(newFilePathAbsolute);
         if (item->_modtime <= 0) {
             _pendingChecksumFiles.remove(item->_file);
-            slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
+            slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modified time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
             checkPropagationIsDone();
             return;
         }
@@ -293,7 +293,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
 
     if (!FileSystem::fileExists(fullFilePath)) {
         _pendingChecksumFiles.remove(item->_file);
-        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath), ErrorCategory::GenericError);
         checkPropagationIsDone();
         return;
     }
@@ -305,7 +305,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     item->_modtime = FileSystem::getModTime(originalFilePath);
     if (item->_modtime <= 0) {
         _pendingChecksumFiles.remove(item->_file);
-        slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::NormalError, tr("File %1 has invalid modification time. Do not upload to the server.").arg(QDir::toNativeSeparators(item->_file)), ErrorCategory::GenericError);
         checkPropagationIsDone();
         return;
     }
@@ -317,7 +317,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
                                      << "prevModtime" << prevModtime
                                      << "Curr" << item->_modtime;
 
-        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."), ErrorCategory::GenericError);
         checkPropagationIsDone();
         return;
     }
@@ -331,7 +331,7 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
     if (fileIsStillChanging(*item)) {
         propagator()->_anotherSyncNeeded = true;
         _pendingChecksumFiles.remove(item->_file);
-        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during sync."));
+        slotOnErrorStartFolderUnlock(item, SyncFileItem::SoftError, tr("Local file changed during sync."), ErrorCategory::GenericError);
         checkPropagationIsDone();
         return;
     }
@@ -340,11 +340,12 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
 }
 
 void BulkPropagatorJob::slotOnErrorStartFolderUnlock(SyncFileItemPtr item,
-                                                     SyncFileItem::Status status,
-                                                     const QString &errorString)
+                                                     const SyncFileItem::Status status,
+                                                     const QString &errorString,
+                                                     const ErrorCategory errorCategory)
 {
-    qCInfo(lcBulkPropagatorJob()) << status << errorString;
-    done(item, status, errorString);
+    qCInfo(lcBulkPropagatorJob()) << status << errorString << errorCategory;
+    done(item, status, errorString, errorCategory);
 }
 
 void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
@@ -473,10 +474,10 @@ void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
     // Update the database entry
     const auto result = propagator()->updateMetadata(*oneFile._item);
     if (!result) {
-        done(oneFile._item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+        done(oneFile._item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
         return;
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-        done(oneFile._item, SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(oneFile._item->_file));
+        done(oneFile._item, SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(oneFile._item->_file), ErrorCategory::GenericError);
         return;
     }
 
@@ -511,7 +512,7 @@ void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
             finalizeOneFile(singleFile);
         }
 
-        done(singleFile._item, singleFile._item->_status, {});
+        done(singleFile._item, singleFile._item->_status, {}, ErrorCategory::GenericError);
 
         singleFileIt = _filesToUpload.erase(singleFileIt);
     }
@@ -520,8 +521,9 @@ void BulkPropagatorJob::finalize(const QJsonObject &fullReply)
 }
 
 void BulkPropagatorJob::done(SyncFileItemPtr item,
-                             SyncFileItem::Status status,
-                             const QString &errorString)
+                             const SyncFileItem::Status status,
+                             const QString &errorString,
+                             const ErrorCategory category)
 {
     item->_status = status;
     item->_errorString = errorString;
@@ -548,7 +550,7 @@ void BulkPropagatorJob::done(SyncFileItemPtr item,
 
     handleJobDoneErrors(item, status);
 
-    emit propagator()->itemCompleted(item);
+    emit propagator()->itemCompleted(item, category);
 }
 
 QMap<QByteArray, QByteArray> BulkPropagatorJob::headers(SyncFileItemPtr item) const
@@ -606,7 +608,7 @@ void BulkPropagatorJob::abortWithError(SyncFileItemPtr item,
                                        const QString &error)
 {
     abort(AbortType::Synchronous);
-    done(item, status, error);
+    done(item, status, error, ErrorCategory::GenericError);
 }
 
 void BulkPropagatorJob::checkResettingErrors(SyncFileItemPtr item) const

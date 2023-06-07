@@ -556,11 +556,15 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
     setHasSyncConflicts(conflictsFound);
 }
 
-void ActivityListModel::addErrorToActivityList(const Activity &activity)
+void ActivityListModel::addErrorToActivityList(const Activity &activity, const ErrorType type)
 {
-    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
-    addEntriesToActivityList({activity});
-    _notificationErrorsLists.prepend(activity);
+    qCInfo(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
+    auto modifiedActivity = activity;
+    if (type == ErrorType::NetworkError) {
+        modifiedActivity._subject = tr("Network error occurred: client will retry syncing.");
+    }
+    addEntriesToActivityList({modifiedActivity});
+    _notificationErrorsLists.prepend(modifiedActivity);
 }
 
 void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)

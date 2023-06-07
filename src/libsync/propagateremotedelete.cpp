@@ -45,9 +45,9 @@ void PropagateRemoteDelete::start()
                 if (_deleteEncryptedHelper->networkError() != QNetworkReply::NoError && _deleteEncryptedHelper->networkError() != QNetworkReply::ContentNotFoundError) {
                     status = classifyError(_deleteEncryptedHelper->networkError(), _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
                 }
-                done(status, _deleteEncryptedHelper->errorString());
+                done(status, _deleteEncryptedHelper->errorString(), ErrorCategory::GenericError);
             } else {
-                done(SyncFileItem::Success);
+                done(SyncFileItem::Success, {}, ErrorCategory::NoError);
             }
         });
         _deleteEncryptedHelper->start();
@@ -94,7 +94,8 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
-        done(status, _job->errorString());
+
+        done(status, _job->errorString(), errorCategoryFromNetworkError(err));
         return;
     }
 
@@ -109,18 +110,18 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         done(SyncFileItem::NormalError,
             tr("Wrong HTTP code returned by server. Expected 204, but received \"%1 %2\".")
                 .arg(_item->_httpErrorCode)
-                .arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
+                .arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()), ErrorCategory::GenericError);
         return;
     }
 
     if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
         qCWarning(lcPropagateRemoteDelete) << "could not delete file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
+        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
 
     propagator()->_journal->commit("Remote Remove");
 
-    done(SyncFileItem::Success);
+    done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 }

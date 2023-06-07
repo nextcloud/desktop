@@ -388,12 +388,12 @@ private slots:
 
     /** Adds a error message that's not tied to a specific item.
      */
-    void slotSyncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
+    void slotSyncError(const QString &message, OCC::ErrorCategory category);
 
-    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, OCC::ErrorCategory category);
 
     void slotTransmissionProgress(const OCC::ProgressInfo &pi);
-    void slotItemCompleted(const OCC::SyncFileItemPtr &);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &, OCC::ErrorCategory errorCategory);
 
     void slotRunEtagJob();
     void etagRetrieved(const QByteArray &, const QDateTime &tp);

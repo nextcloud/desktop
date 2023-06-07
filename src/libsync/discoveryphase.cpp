@@ -15,6 +15,7 @@
 #include "discoveryphase.h"
 #include "discovery.h"
 #include "helpers.h"
+#include "progressdispatcher.h"
 
 #include "account.h"
 #include "clientsideencryptionjobs.h"
@@ -187,8 +188,8 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
                 qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
                 qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
                 Q_ASSERT(false);
-                emit addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath);
-                emit fatalError(tr("Error while canceling deletion of %1").arg(originalPath));
+                emit addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath, ErrorCategory::GenericError);
+                emit fatalError(tr("Error while canceling deletion of %1").arg(originalPath), ErrorCategory::GenericError);
             }
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
