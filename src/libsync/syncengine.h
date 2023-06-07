@@ -291,6 +291,8 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
+    void processCaseClashConflictsBeforeDiscovery();
+
     // Aggregate scheduled sync runs into interval buckets. Can be used to
     // schedule a sync run per bucket instead of per file, reducing load.
     //
