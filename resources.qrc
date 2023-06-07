@@ -60,7 +60,7 @@
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
     </qresource>
-	<qresource prefix="/qss">
+    <qresource prefix="/qss">
         <file>theme/Style/style.qss</file>
     </qresource>
 </RCC>

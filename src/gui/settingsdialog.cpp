@@ -41,12 +41,6 @@
 #include <QPainterPath>
 
 namespace {
-
-constexpr auto highlightColor = "color";
-constexpr auto highlightTextColor = "color";
-constexpr auto dark = "color";
-constexpr auto background = "color";
-
 const float buttonSizeRatio = 1.618f; // golden ratio
 
 
@@ -86,10 +80,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    //_toolBar->setProperty(highlightColor, palette().highlight().color().name());
-    //_toolBar->setProperty(highlightTextColor, Theme::defaultColor().name());
-    //_toolBar->setProperty(dark, palette().dark().color().name());
-    //_toolBar->setProperty(background, palette().base().color().name());
     layout()->setMenuBar(_toolBar);
 
     // People perceive this as a Window, so also make Ctrl+W work
@@ -339,12 +329,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
 
 void SettingsDialog::customizeStyle()
 {
-   /* QString highlightColor(palette().highlight().color().name());
-    QString highlightTextColor(palette().highlightedText().color().name());
-    QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));*/
-
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
