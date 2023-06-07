@@ -74,7 +74,7 @@ ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinS
 
 void ProcessDirectoryJob::start()
 {
-    qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
+    qCDebug(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
     if (_queryServer == NormalQuery) {
         _serverJob = startAsyncServerQuery();
@@ -461,19 +461,19 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const char *hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
     const auto serverFileIsLocked = (serverEntry.isValid() ? (serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked")  : "");
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
-    qCInfo(lcDisco).nospace() << "Processing " << path._original
-                              << " | (db/local/remote)"
-                              << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
-                              << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
-                              << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
-                              << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
-                              << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
-                              << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
-                              << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
-                              << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
-                              << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
-                              << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
-                              << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked;
+    qCDebug(lcDisco).nospace() << "Processing " << path._original
+                               << " | (db/local/remote)"
+                               << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
+                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
+                               << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
+                               << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
+                               << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
+                               << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
+                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
+                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
+                               << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
+                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
+                               << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked;
 
     if (localEntry.isValid()
         && !serverEntry.isValid()
