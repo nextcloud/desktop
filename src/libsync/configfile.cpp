@@ -1048,7 +1048,7 @@ void ConfigFile::setLogDir(const QString &dir)
 bool ConfigFile::logDebug() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(logDebugC), true).toBool();
+    return settings.value(QLatin1String(logDebugC), false).toBool();
 }
 
 void ConfigFile::setLogDebug(bool enabled)

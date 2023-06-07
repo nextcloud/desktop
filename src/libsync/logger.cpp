@@ -36,7 +36,7 @@
 namespace {
 
 constexpr int CrashLogSize = 20;
-constexpr int MaxLogSizeBytes = 1024 * 512;
+constexpr int MaxLogSizeBytes = 1024 * 1024 * 3;
 
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
@@ -142,9 +142,6 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         msgW.append(L"\n");
         OutputDebugString(msgW.c_str());
     }
-#elif defined(QT_DEBUG)
-    QTextStream cout(stdout, QIODevice::WriteOnly);
-    cout << msg << endl;
 #endif
     {
         QMutexLocker lock(&_mutex);
