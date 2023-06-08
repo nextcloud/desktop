@@ -295,7 +295,7 @@ void Logger::enterNextLogFileNoLock()
     QString newLogName;
 
     do {
-        newLogName = dateString + QString("_log%1_%2").arg(logNum).arg(fileNameSuffix);
+        newLogName = QString("%1_log%2_%3").arg(dateString, QString::number(logNum), fileNameSuffix);
         ++logNum;
     } while (QFile::exists(_logDir.absoluteFilePath(newLogName)));
 
