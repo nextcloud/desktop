@@ -30,6 +30,7 @@ RadioButton {
         anchors.left: parent.left
         anchors.leftMargin: Style.radioButtonCustomMarginLeftOuter
         radius: root.radius
+        color: palette.base
         border.color: palette.dark
         border.width: Style.normalBorderWidth
 
