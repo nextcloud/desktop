@@ -27,6 +27,8 @@ TextField {
 
     readonly property color textFieldIconsColor: palette.dark
 
+    readonly property color placeholderColor: palette.dark
+
     readonly property int textFieldIconsOffset: Style.trayHorizontalMargin
 
     readonly property double textFieldIconsScaleFactor: 0.6
@@ -39,6 +41,7 @@ TextField {
     rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
 
     placeholderText: qsTr("Search files, messages, events …")
+    placeholderTextColor: placeholderColor
 
     selectByMouse: true
 

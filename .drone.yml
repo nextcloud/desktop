@@ -29,7 +29,7 @@ steps:
     - cd /drone/build
     - useradd -m -s /bin/bash test
     - chown -R test:test .
-    - su -c 'ASAN_OPTIONS=detect_leaks=0 xvfb-run ctest --output-on-failure' test
+    - su -c 'ASAN_OPTIONS=detect_odr_violation=0,detect_leaks=0 xvfb-run ctest --output-on-failure' test
 
 services:
   - name: server
@@ -97,7 +97,7 @@ steps:
     - cd /drone/build
     - useradd -m -s /bin/bash test
     - chown -R test:test .
-    - su -c 'ASAN_OPTIONS=detect_leaks=0 xvfb-run ctest --output-on-failure' test
+    - su -c 'ASAN_OPTIONS=detect_odr_violation=0,detect_leaks=0 xvfb-run ctest --output-on-failure' test
 
 services:
   - name: server

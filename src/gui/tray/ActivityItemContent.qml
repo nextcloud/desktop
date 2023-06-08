@@ -221,7 +221,7 @@ RowLayout {
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 
-                text: (root.activityData.type === "Sync") ? root.activityData.displayPath
+                text: (root.activityData.type === "Sync") ? root.activityData.subject
                                                           : (root.activityData.type === "File") ? root.activityData.subject
                                                                                                 : (root.activityData.type === "Notification") ? root.activityData.message
                                                                                                                                               : ""
