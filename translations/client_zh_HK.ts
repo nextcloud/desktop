@@ -836,6 +836,11 @@ This action will abort any currently running synchronization.</source>
         <translation>正在擷取活動紀錄 ...</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <source>Network error occurred: client will retry syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>略過清單中的檔案以及符號連結不會同步。</translation>
@@ -887,56 +892,56 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="179"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>某些設置是在此客戶端的較新版本中配置的，並使用了此版本中不可用的功能。%1 當前配置檔案已備份到 %2。
 
 某些設置已在此客戶端的 %1 版本中配置，並使用了此版本中不可用的功能。&lt;br&gt;&lt;br&gt;繼續將意味著 &lt;b&gt;%2 這些設置&lt;/b&gt;。&lt;br&gt;&lt;br&gt;目前配置檔案已備份到 &lt;i&gt;%3&lt;/i&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>較新的</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>較舊的</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>不理會</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>結束</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="396"/>
+        <location filename="../src/gui/application.cpp" line="394"/>
         <source>Error accessing the configuration file</source>
         <translation>存取配置文件時錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="397"/>
+        <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取 %1 的配置檔案時出錯。請確保您的系統帳戶可以存取該檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="400"/>
+        <location filename="../src/gui/application.cpp" line="398"/>
         <source>Quit %1</source>
         <translation>離開 %1</translation>
     </message>
@@ -2783,12 +2788,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="352"/>
+        <location filename="../src/libsync/logger.cpp" line="349"/>
         <source>Error</source>
         <translation>錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="353"/>
+        <location filename="../src/libsync/logger.cpp" line="350"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;檔案 &quot;%1&quot; &lt;br/&gt;無法開啟供寫入。&lt;br/&gt;&lt;br/&gt;記錄&lt;b&gt;無法&lt;/b&gt;保存！&lt;/nobr&gt;</translation>
     </message>
