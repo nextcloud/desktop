@@ -59,9 +59,9 @@ QString createRandomPassword()
     std::mt19937 rng(rand_dev());
 
     QString passwd;
-    unsigned char unsignedCharArray[numChars];
+    std::array<unsigned char, numChars> unsignedCharArray;
 
-    RAND_bytes(unsignedCharArray, numChars);
+    RAND_bytes(unsignedCharArray.data(), numChars);
 
     for (auto i = 0; i < numChars; i++) {
         auto byte = unsignedCharArray[i];
