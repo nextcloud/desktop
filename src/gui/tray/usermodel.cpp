@@ -627,12 +627,27 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
             activity._links.append(link);
         }
 
+        auto errorType = ActivityListModel::ErrorType::SyncError;
         // add 'other errors' to activity list
-        _activityModel->addErrorToActivityList(activity);
+        switch (category) {
+        case ErrorCategory::GenericError:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::InsufficientRemoteStorage:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::NetworkError:
+            errorType = ActivityListModel::ErrorType::NetworkError;
+            break;
+        case ErrorCategory::NoError:
+            break;
+        }
+
+        _activityModel->addErrorToActivityList(activity, errorType);
     }
 }
 
-void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
+void User::slotAddErrorToGui(const QString &folderAlias, const SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const ErrorCategory category)
 {
     const auto folderInstance = FolderMan::instance()->folder(folderAlias);
     if (!folderInstance) {
@@ -668,7 +683,24 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
         activity._id = -static_cast<int>(qHash(activity._subject + activity._message));
 
         // add 'other errors' to activity list
-        _activityModel->addErrorToActivityList(activity);
+        auto errorType = ActivityListModel::ErrorType::SyncError;
+        switch (category)
+        {
+        case ErrorCategory::GenericError:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::InsufficientRemoteStorage:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::NetworkError:
+            errorType = ActivityListModel::ErrorType::NetworkError;
+            break;
+        case ErrorCategory::NoError:
+            errorType = {};
+            break;
+        }
+
+        _activityModel->addErrorToActivityList(activity, errorType);
 
         showDesktopNotification(activity);
 
@@ -787,7 +819,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
 
                 activity._links = {buttonActivityLink};
             }
-            _activityModel->addErrorToActivityList(activity);
+            _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
         }
     }
 }

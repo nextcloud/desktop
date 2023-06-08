@@ -629,10 +629,10 @@ void PropagateUploadFileCommon::slotPollFinished()
     finalize();
 }
 
-void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString &errorString)
+void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString &errorString, const ErrorCategory category)
 {
     _finished = true;
-    PropagateItemJob::done(status, errorString);
+    PropagateItemJob::done(status, errorString, category);
 }
 
 void PropagateUploadFileCommon::checkResettingErrors()

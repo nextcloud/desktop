@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-11
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"

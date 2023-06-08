@@ -23,6 +23,7 @@
 #include <QPointer>
 #include <QIODevice>
 #include <QMutex>
+#include <QNetworkReply>
 
 #include "csync.h"
 #include "syncfileitem.h"
@@ -30,6 +31,7 @@
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
 #include "syncoptions.h"
+#include "progressdispatcher.h"
 
 #include <deque>
 
@@ -147,6 +149,8 @@ signals:
 protected:
     [[nodiscard]] OwncloudPropagator *propagator() const;
 
+    static ErrorCategory errorCategoryFromNetworkError(const QNetworkReply::NetworkError error);
+
     /** If this job gets added to a composite job, this will point to the parent.
      *
      * For the PropagateDirectory::_firstJob it will point to
@@ -165,7 +169,7 @@ class PropagateItemJob : public PropagatorJob
 {
     Q_OBJECT
 protected:
-    virtual void done(SyncFileItem::Status status, const QString &errorString = QString());
+    virtual void done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category);
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.
@@ -640,7 +644,7 @@ private slots:
 
 signals:
     void newItem(const OCC::SyncFileItemPtr &);
-    void itemCompleted(const OCC::SyncFileItemPtr &);
+    void itemCompleted(const SyncFileItemPtr &item, OCC::ErrorCategory category);
     void progress(const OCC::SyncFileItem &, qint64 bytes);
     void finished(bool success);
 
@@ -721,7 +725,7 @@ public:
     void start();
 signals:
     void finished();
-    void aborted(const QString &error);
+    void aborted(const QString &error, const ErrorCategory errorCategory);
 private slots:
     void slotPollFinished();
 };
