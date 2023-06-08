@@ -350,8 +350,9 @@ ApplicationWindow {
 
                         MenuItem {
                             id: addAccountButton
-                            height: Style.addAccountButtonHeight
+                            height: Systray.enableAddAccount ? Style.addAccountButtonHeight : 0
                             hoverEnabled: true
+                            visible: Systray.enableAddAccount
 
                             background: Item {
                                 height: parent.height
