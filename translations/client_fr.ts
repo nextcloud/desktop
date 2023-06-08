@@ -367,17 +367,17 @@ Est-ce qu&apos;une tentative d&apos;importation du compte doit être lancée ?</
         <location filename="../src/gui/accountmanager.cpp" line="252"/>
         <location filename="../src/gui/accountmanager.cpp" line="260"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importation de l&apos;héritage</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="253"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation type="unfinished"/>
+        <translation>Importation réussie du compte de l&apos;ancien client : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="261"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;importer des comptes à partir de l&apos;ancienne configuration client.</translation>
     </message>
 </context>
 <context>
@@ -833,6 +833,11 @@ Vous prenez vos propres risques.</translation>
         <translation>Récupération des activités...</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <source>Network error occurred: client will retry syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Les fichiers présents dans la liste d&apos;exclusion ainsi que les liens symboliques ne sont pas synchronisés.</translation>
@@ -884,54 +889,54 @@ Vous prenez vos propres risques.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="179"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Des paramètres ont été configurés dans des versions %1 de ce client et utilisent des fonctionnalités non disponibles dans la version actuelle. &lt;br&gt;&lt;br&gt;Continuer impliquera que &lt;b&gt;ces paramètres seront %2&lt;/b&gt;.&lt;br&gt;&lt;br&gt; Le fichier de configuration actuel a été sauvegardé dans &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>ultérieures</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>antérieures</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>ignorés</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>supprimés</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Continuer</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="396"/>
+        <location filename="../src/gui/application.cpp" line="394"/>
         <source>Error accessing the configuration file</source>
         <translation>Erreur lors de l&apos;accès au fichier de configuration</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="397"/>
+        <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Une erreur est survenue lors de l&apos;accès au fichier de configuration à %1. Merci de vérifier que le fichier est accessible du compte système.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="400"/>
+        <location filename="../src/gui/application.cpp" line="398"/>
         <source>Quit %1</source>
         <translation>Quitter %1</translation>
     </message>
@@ -1469,7 +1474,7 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="558"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur s&apos;est produite lors de la synchronisation du fichier à éditer localement.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="466"/>
@@ -2781,12 +2786,12 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="352"/>
+        <location filename="../src/libsync/logger.cpp" line="349"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="353"/>
+        <location filename="../src/libsync/logger.cpp" line="350"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Le fichier &quot;%1&quot;&lt;br/&gt;ne peut pas être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;Le fichier journal &lt;b&gt;ne peut pas&lt;/b&gt; être sauvegardé !&lt;/nobr&gt;</translation>
     </message>
@@ -5345,7 +5350,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
@@ -5356,7 +5361,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nh</numerusform><numerusform>%nh</numerusform><numerusform>%nh</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
@@ -5367,13 +5372,13 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1m</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nm</numerusform><numerusform>%nm</numerusform><numerusform>%nm</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
@@ -5398,7 +5403,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 fichier en conflit</numerusform><numerusform>%1 fichiers en conflit</numerusform><numerusform>%1 fichiers en conflit</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
@@ -5603,7 +5608,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir des dossiers locaux ou de groupe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
@@ -5643,7 +5648,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu de groupe d&apos;utilisateurs et dossiers locaux</translation>
     </message>
 </context>
 <context>

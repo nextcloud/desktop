@@ -832,6 +832,11 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <source>Network error occurred: client will retry syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Bestanden op de negeerlijst en symbolische links worden niet gesynchroniseerd.</translation>
@@ -883,54 +888,54 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="179"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>recenter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>ouder</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Doorgaan</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="396"/>
+        <location filename="../src/gui/application.cpp" line="394"/>
         <source>Error accessing the configuration file</source>
         <translation>Fout bij benaderen configuratiebestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="397"/>
+        <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="400"/>
+        <location filename="../src/gui/application.cpp" line="398"/>
         <source>Quit %1</source>
         <translation>Afsluiten %1</translation>
     </message>
@@ -2779,12 +2784,12 @@ Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal ove
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="352"/>
+        <location filename="../src/libsync/logger.cpp" line="349"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="353"/>
+        <location filename="../src/libsync/logger.cpp" line="350"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Bestand &quot;%1&quot;&lt;br/&gt;kan niet voor schrijven worden geopend.&lt;br/&gt;&lt;br/&gt;De log output kan &lt;b&gt;niet&lt;/b&gt; opgeslagen worden!&lt;/nobr&gt;</translation>
     </message>

@@ -834,6 +834,11 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Aktivitäten abrufen…</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <source>Network error occurred: client will retry syncing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="573"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Dateien aus der Ignorierliste sowie symbolische Links werden nicht synchronisiert.</translation>
@@ -885,54 +890,54 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="179"/>
+        <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>Einige Einstellungen wurden in %1-Versionen dieses Clients konfiguriert und verwenden Funktionen, die in dieser Version nicht verfügbar sind.&lt;br&gt;&lt;br&gt;Fortfahren bedeutet &lt;b&gt;%2 dieser Einstellungen&lt;/b&gt;&lt;br&gt;&lt;br&gt;Die aktuelle Konfigurationsdatei wurde bereits auf &lt;i&gt;%3&lt;/i&gt; gesichert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>Neuer</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="185"/>
+        <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>Älter</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
         <translation>Ignoriere</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="186"/>
+        <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
         <translation>Lösche</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="396"/>
+        <location filename="../src/gui/application.cpp" line="394"/>
         <source>Error accessing the configuration file</source>
         <translation>Fehler beim Zugriff auf die Konfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="397"/>
+        <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Beim Zugriff auf die Konfigurationsdatei unter %1 ist ein Fehler aufgetreten. Stellen Sie sicher, dass Ihr Systemkonto auf die Datei zugreifen kann.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="400"/>
+        <location filename="../src/gui/application.cpp" line="398"/>
         <source>Quit %1</source>
         <translation>Beende %1</translation>
     </message>
@@ -2781,12 +2786,12 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="352"/>
+        <location filename="../src/libsync/logger.cpp" line="349"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="353"/>
+        <location filename="../src/libsync/logger.cpp" line="350"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datei &quot;%1&quot;&lt;br/&gt;kann nicht zum Schreiben geöffnet werden.&lt;br/&gt;&lt;br/&gt;Die Protokolldatei kann &lt;b&gt;nicht&lt;/b&gt; gespeichert werden!&lt;/nobr&gt;</translation>
     </message>
