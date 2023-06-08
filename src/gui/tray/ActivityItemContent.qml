@@ -256,7 +256,7 @@ RowLayout {
             ActivityItemActions {
                 id: activityActions
 
-                visible: !isFileActivityList && activityData.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
+                visible: !isFileActivityList && activityData.linksForActionButtons.length > 0
 
                 Layout.fillWidth: true
                 Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
@@ -273,6 +273,7 @@ RowLayout {
                 onTriggerAction: activityModel.slotTriggerAction(activityData.activityIndex, actionIndex)
 
                 onShowReplyField: isTalkReplyOptionVisible = true
+                talkReplyButtonVisible: root.activityData.messageSent === "" && !isTalkReplyOptionVisible
             }
         }
     }
