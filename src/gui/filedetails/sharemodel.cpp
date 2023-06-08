@@ -63,10 +63,9 @@ QString createRandomPassword()
 
     RAND_bytes(unsignedCharArray.data(), numChars);
 
-    for (auto i = 0; i < numChars; i++) {
-        auto byte = unsignedCharArray[i];
-        byte %= asciiRange + 1;
-        byte += asciiMin;
+    for (const auto newChar : unsignedCharArray) {
+        // Ensure byte is within asciiRange
+        const auto byte = (newChar % (asciiRange + 1)) + asciiMin;
         passwd.append(byte);
     }
 
