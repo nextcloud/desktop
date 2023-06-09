@@ -44,6 +44,8 @@ option( WITH_PROVIDERS "Build with providers list" ON )
 
 option( ENFORCE_VIRTUAL_FILES_SYNC_FOLDER "Enforce use of virtual files sync folder when available" OFF )
 
+option(ENFORCE_SINGLE_ACCOUNT "Enforce use of a single account in desktop client" OFF)
+
 option( DO_NOT_USE_PROXY "Do not use system wide proxy, instead always do a direct connection to server" OFF )
 
 ## Theming options
