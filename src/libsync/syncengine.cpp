@@ -624,7 +624,7 @@ void SyncEngine::startSync()
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &path) {
         const auto result = shouldDiscoverLocally(path);
-        qCInfo(lcEngine) << "shouldDiscoverLocaly" << path << (result ? "true" : "false");
+        qCDebug(lcEngine) << "shouldDiscoverLocaly" << path << (result ? "true" : "false");
         return result;
     };
     _discoveryPhase->setSelectiveSyncBlackList(selectiveSyncBlackList);
