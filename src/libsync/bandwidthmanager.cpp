@@ -286,7 +286,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     auto quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
 
     if (quota > 20 * 1024) {
-        qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
+        qCDebug(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
         quota -= 20 * 1024;
     }
 

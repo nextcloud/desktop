@@ -316,7 +316,7 @@ void SocketApi::slotNewConnection()
     if (!socket) {
         return;
     }
-    qCInfo(lcSocketApi) << "New connection" << socket;
+    qCDebug(lcSocketApi) << "New connection" << socket;
     connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
@@ -327,7 +327,7 @@ void SocketApi::slotNewConnection()
     for (Folder *f : FolderMan::instance()->map()) {
         if (f->canSync()) {
             QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
+            qCDebug(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
             listener->sendMessage(message);
         }
     }
@@ -366,7 +366,7 @@ void SocketApi::slotReadSocket()
         // Make sure to normalize the input from the socket to
         // make sure that the path will match, especially on OS X.
         const QString line = QString::fromUtf8(socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
-        qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
+        qCDebug(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         const int argPos = line.indexOf(QLatin1Char(':'));
         const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();
         const int indexOfMethod = [&] {
