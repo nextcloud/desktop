@@ -184,8 +184,8 @@ public:
 
     /** The client version that last used this settings file.
         Updated by configVersionMigration() at client startup. */
-    QString clientVersionString() const;
-    void setClientVersionString(const QString &version);
+    QString clientVersionWithBuildNumberString() const;
+    void setClientVersionWithBuildNumberString(const QString &version);
 
     /**  Returns a new settings pre-set in a specific group. */
     static std::unique_ptr<QSettings> settingsWithGroup(const QString &group);

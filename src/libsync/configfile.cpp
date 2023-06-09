@@ -68,6 +68,9 @@ const QString targetChunkUploadDurationC() { return QStringLiteral("targetChunkU
 const QString automaticLogDirC() { return QStringLiteral("logToTemporaryLogDir"); }
 const QString numberOfLogsToKeepC() { return QStringLiteral("numberOfLogsToKeep"); }
 const QString showExperimentalOptionsC() { return QStringLiteral("showExperimentalOptions"); }
+
+// The key `clientVersion` stores the version *with* build number of the config file. It is named
+// this way, because before 5.0, only the version *without* build number was stored.
 const QString clientVersionC() { return QStringLiteral("clientVersion"); }
 
 const QString proxyHostC() { return QStringLiteral("Proxy/host"); }
@@ -327,7 +330,7 @@ QString ConfigFile::excludeFileFromSystem()
 QString ConfigFile::backup() const
 {
     QString baseFile = configFile();
-    auto versionString = clientVersionString();
+    auto versionString = clientVersionWithBuildNumberString();
     if (!versionString.isEmpty())
         versionString.prepend(QLatin1Char('_'));
     const QString backupFile =
@@ -808,13 +811,13 @@ bool ConfigFile::showExperimentalOptions() const
     return settings.value(showExperimentalOptionsC(), false).toBool();
 }
 
-QString ConfigFile::clientVersionString() const
+QString ConfigFile::clientVersionWithBuildNumberString() const
 {
     auto settings = makeQSettings();
     return settings.value(clientVersionC(), QString()).toString();
 }
 
-void ConfigFile::setClientVersionString(const QString &version)
+void ConfigFile::setClientVersionWithBuildNumberString(const QString &version)
 {
     auto settings = makeQSettings();
     settings.setValue(clientVersionC(), version);

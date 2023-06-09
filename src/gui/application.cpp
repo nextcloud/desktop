@@ -75,7 +75,7 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    const bool versionChanged = QVersionNumber::fromString(configFile.clientVersionString()) != OCC::Version::version();
+    const bool versionChanged = QVersionNumber::fromString(configFile.clientVersionWithBuildNumberString()) != OCC::Version::versionWithBuildNumber();
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
@@ -121,7 +121,7 @@ bool Application::configVersionMigration()
             settings->remove(badKey);
     }
 
-    configFile.setClientVersionString(OCC::Version::version().toString());
+    configFile.setClientVersionWithBuildNumberString(OCC::Version::versionWithBuildNumber().toString());
     return true;
 }
 
