@@ -134,6 +134,18 @@ void OcsShareJob::setLabel(const QString &shareId, const QString &label)
     start();
 }
 
+void OcsShareJob::setHideDownload(const QString &shareId, const bool hideDownload)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+
+    const auto value = QString::fromLatin1(hideDownload ? QByteArrayLiteral("true") : QByteArrayLiteral("false"));
+    addParam(QStringLiteral("hideDownload"), value);
+    _value = hideDownload;
+
+    start();
+}
+
 void OcsShareJob::createLinkShare(const QString &path,
     const QString &name,
     const QString &password)
@@ -142,6 +154,26 @@ void OcsShareJob::createLinkShare(const QString &path,
 
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
+
+    if (!name.isEmpty()) {
+        addParam(QString::fromLatin1("name"), name);
+    }
+    if (!password.isEmpty()) {
+        addParam(QString::fromLatin1("password"), password);
+    }
+
+    addPassStatusCode(403);
+
+    start();
+}
+
+void OcsShareJob::createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password)
+{
+    setVerb("POST");
+
+    addParam(QString::fromLatin1("path"), path);
+    addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
+    addParam(QString::fromLatin1("permissions"), QString::number(4));
 
     if (!name.isEmpty()) {
         addParam(QString::fromLatin1("name"), name);

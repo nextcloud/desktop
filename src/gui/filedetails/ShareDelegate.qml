@@ -33,11 +33,13 @@ GridLayout {
     signal resetPasswordField
     signal showPasswordSetError(string errorMessage);
 
+    signal toggleHideDownload(bool enable)
     signal toggleAllowEditing(bool enable)
     signal toggleAllowResharing(bool enable)
     signal togglePasswordProtect(bool enable)
     signal toggleExpirationDate(bool enable)
     signal toggleNoteToRecipient(bool enable)
+    signal permissionModeChanged(int permissionMode)
 
     signal setLinkShareLabel(string label)
     signal setExpireDate(var milliseconds) // Since QML ints are only 32 bits, use a variant
@@ -53,6 +55,7 @@ GridLayout {
 
     readonly property bool isLinkShare: model.shareType === ShareModel.ShareTypeLink
     readonly property bool isPlaceholderLinkShare: model.shareType === ShareModel.ShareTypePlaceholderLink
+    readonly property bool isSecureFileDropPlaceholderLinkShare: model.shareType === ShareModel.ShareTypeSecureFileDropPlaceholderLink
     readonly property bool isInternalLinkShare: model.shareType === ShareModel.ShareTypeInternalLink
 
     readonly property string text: model.display ?? ""
@@ -163,7 +166,7 @@ GridLayout {
 
             imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
 
-            visible: root.isPlaceholderLinkShare && root.canCreateLinkShares
+            visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
 
             onClicked: root.createNewLinkShare()
@@ -212,7 +215,7 @@ GridLayout {
 
             imageSource: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
 
-            visible: !root.isPlaceholderLinkShare && !root.isInternalLinkShare
+            visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible
 
             onClicked: root.rootStackView.push(shareDetailsPageComponent, {}, StackView.PushTransition)
@@ -235,9 +238,11 @@ GridLayout {
 
                     onToggleAllowEditing: root.toggleAllowEditing(enable)
                     onToggleAllowResharing: root.toggleAllowResharing(enable)
+                    onToggleHideDownload: root.toggleHideDownload(enable)
                     onTogglePasswordProtect: root.togglePasswordProtect(enable)
                     onToggleExpirationDate: root.toggleExpirationDate(enable)
                     onToggleNoteToRecipient: root.toggleNoteToRecipient(enable)
+                    onPermissionModeChanged: root.permissionModeChanged(permissionMode)
 
                     onSetLinkShareLabel: root.setLinkShareLabel(label)
                     onSetExpireDate: root.setExpireDate(milliseconds) // Since QML ints are only 32 bits, use a variant

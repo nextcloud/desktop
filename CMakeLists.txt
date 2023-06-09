@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 17)
 cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
+find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+if (CLANG_TIDY_EXE)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -checks=-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast,modernize-use-default-member-init,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-init-variables)
+endif()
+
 project(client)
 
 include(FeatureSummary)
@@ -170,6 +175,17 @@ option(BUILD_GUI "BUILD_GUI" ON)
 
 # build the tests
 option(BUILD_TESTING "BUILD_TESTING" ON)
+
+option(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY" OFF)
+if(ENABLE_CLANG_TIDY)
+    find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+    if (CLANG_TIDY_EXE)
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -checks=-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast,modernize-use-default-member-init,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-init-variables)
+    endif()
+else()
+    unset(CLANG_TIDY_EXE)
+    unset(CMAKE_CXX_CLANG_TIDY)
+endif()
 
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file

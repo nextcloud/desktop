@@ -105,7 +105,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
 
 #ifdef Q_OS_WIN
     if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
+        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(-1, _ui.lVirtualFileSync);
         setRadioChecked(_ui.rVirtualFileSync);
     }
 #endif
@@ -155,7 +155,14 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.lSyncEverythingSizeLabel->clear();
 
     // Update the local folder - this is not guaranteed to find a good one
-    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl());
+    ConfigFile cfg;
+    const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
+
+    auto goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl(), FolderMan::GoodPathStrategy::AllowOnlyNewPath);
+    if (overrideLocalDir) {
+        ConfigFile cfg;
+        goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(cfg.overrideLocalDir(), serverUrl(), FolderMan::GoodPathStrategy::AllowOverrideExistingPath);
+    }
     wizard()->setProperty("localFolder", goodLocalFolder);
 
     // call to init label

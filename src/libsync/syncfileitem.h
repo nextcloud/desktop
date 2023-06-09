@@ -46,6 +46,8 @@ public:
     };
     Q_ENUM(Direction)
 
+    using EncryptionStatus = EncryptionStatusEnums::ItemEncryptionStatus;
+
     // Note: the order of these statuses is used for ordering in the SortedActivityListModel
     enum Status { // stored in 4 bits
         NoStatus,
@@ -138,7 +140,6 @@ public:
         , _status(NoStatus)
         , _isRestoration(false)
         , _isSelectiveSync(false)
-        , _isEncrypted(false)
     {
     }
 
@@ -228,6 +229,8 @@ public:
             && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
 
+    [[nodiscard]] bool isEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
+
     // Variables useful for everybody
 
     /** The syncfolder-relative filesystem path that the operation is about
@@ -273,7 +276,7 @@ public:
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
-    bool _isEncrypted BITFIELD(1); // The file is E2EE or the content of the directory should be E2EE
+    EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted; // The file is E2EE or the content of the directory should be E2EE
     quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
@@ -317,6 +320,10 @@ public:
     time_t _lastShareStateFetchedTimestamp = 0;
 
     bool _sharedByMe = false;
+
+    bool _isFileDropDetected = false;
+
+    bool _isEncryptedMetadataNeedUpdate = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

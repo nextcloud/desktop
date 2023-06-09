@@ -60,7 +60,7 @@ Window {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             text: root.fileName
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             font.bold: true
             font.pixelSize: root.fontPixelSize
             color: Style.ncTextColor

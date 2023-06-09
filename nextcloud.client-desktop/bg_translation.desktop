@@ -1,0 +1,27 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Exec=@APPLICATION_EXECUTABLE@ %u
+Name=@APPLICATION_NAME@ Desktop
+Comment=@APPLICATION_NAME@ desktop synchronization client
+GenericName=Folder Sync
+Icon=@APPLICATION_ICON_NAME@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3
+MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_URI_HANDLER_SCHEME@;
+Actions=Quit;
+
+# Translations
+
+
+[Desktop Action Quit]
+Exec=@APPLICATION_EXECUTABLE@ --quit
+Name=Quit @APPLICATION_NAME@
+Icon=@APPLICATION_EXECUTABLE@
+
+
+# Translations
+Icon[bg_BG]=@APPLICATION_ICON_NAME@
+Name[bg_BG]=@APPLICATION_NAME@ десктоп клиент за синхронизиране
+Comment[bg_BG]=@APPLICATION_NAME@ десктоп клиент за синхронизиране 
+GenericName[bg_BG]=Синхронизиране на папка

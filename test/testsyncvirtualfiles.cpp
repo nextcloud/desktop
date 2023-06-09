@@ -1880,6 +1880,32 @@ private slots:
         conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
         QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
     }
+
+    void testDataFingerPrint()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().mkdir("a/b/d");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+
+        //Server support finger print, but none is set.
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().remove("a/b/d");
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)

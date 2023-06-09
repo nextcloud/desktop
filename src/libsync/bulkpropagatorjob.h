@@ -64,7 +64,7 @@ public:
 
     bool scheduleSelfOrChild() override;
 
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
 
 private slots:
     void startUploadFile(OCC::SyncFileItemPtr item, OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);

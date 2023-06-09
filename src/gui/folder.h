@@ -342,6 +342,11 @@ public slots:
        */
     void slotWatchedPathChanged(const QString &path, OCC::Folder::ChangeReason reason);
 
+    /*
+    * Triggered when lock files were removed
+    */
+    void slotFilesLockReleased(const QSet<QString> &files);
+
     /**
      * Mark a virtual file as being requested for download, and start a sync.
      *
@@ -427,6 +432,8 @@ private slots:
 
     /** Unblocks normal sync operation */
     void slotHydrationDone();
+
+    void slotCapabilitiesChanged();
 
 private:
     void connectSyncRoot();
@@ -533,6 +540,9 @@ private:
      * The vfs mode instance (created by plugin) to use. Never null.
      */
     QSharedPointer<Vfs> _vfs;
+
+    QMetaObject::Connection _officeFileLockReleaseUnlockSuccess;
+    QMetaObject::Connection _officeFileLockReleaseUnlockFailure;
 };
 }
 

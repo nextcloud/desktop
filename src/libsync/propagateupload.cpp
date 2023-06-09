@@ -219,7 +219,7 @@ void PropagateUploadFileCommon::start()
 
     if (!account->capabilities().clientSideEncryptionAvailable() ||
         !parentRec.isValid() ||
-        !parentRec._isE2eEncrypted) {
+        !parentRec.isE2eEncrypted()) {
         setupUnencryptedFile();
         return;
     }
@@ -255,6 +255,8 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
 }
 
 void PropagateUploadFileCommon::startUploadFile() {
+    Q_ASSERT(_item->_type != CSyncEnums::ItemTypeVirtualFile);
+
     if (propagator()->_abortRequested) {
         return;
     }

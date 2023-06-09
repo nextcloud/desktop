@@ -22,6 +22,7 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "bulkpropagatorjob.h"
+#include "updatefiledropmetadata.h"
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "common/utility.h"
@@ -325,7 +326,7 @@ bool PropagateItemJob::hasEncryptedAncestor() const
             qCWarning(lcPropagator) << "could not get file from local DB" << pathCompontentsJointed;
         }
 
-        if (rec.isValid() && rec._isE2eEncrypted) {
+        if (rec.isValid() && rec.isE2eEncrypted()) {
             return true;
         }
         pathComponents.removeLast();
@@ -584,7 +585,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                                       directoriesToRemove,
                                       removedDirectory,
                                       items);
-        } else {
+        } else if (!directories.top().second->_item->_isFileDropDetected) {
             startFilePropagation(item,
                                  directories,
                                  directoriesToRemove,
@@ -645,6 +646,24 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         const auto currentDirJob = directories.top().second;
         currentDirJob->appendJob(directoryPropagationJob.get());
     }
+    if (item->_isFileDropDetected) {
+        directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+        item->_instruction = CSYNC_INSTRUCTION_NONE;
+        _anotherSyncNeeded = true;
+    } else if (item->_isEncryptedMetadataNeedUpdate) {
+        SyncJournalFileRecord record;
+        if (_journal->getFileRecord(item->_file, &record) && record._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2) {
+            qCDebug(lcPropagator) << "could have upgraded metadata";
+            item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_ERROR;
+            item->_errorString = tr("Error with the metadata. Getting unexpected metadata format.");
+            item->_status = SyncFileItem::NormalError;
+            emit itemCompleted(item);
+        } else {
+            directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+            item->_instruction = CSYNC_INSTRUCTION_NONE;
+            _anotherSyncNeeded = true;
+        }
+    }
     directories.push(qMakePair(item->destination() + "/", directoryPropagationJob.release()));
 }
 
@@ -703,7 +722,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
         }
 #elif defined(Q_OS_WIN)
         WIN32_FIND_DATA FindFileData;
-        HANDLE hFind;
+        HANDLE hFind = nullptr;
 
         hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(file).utf16()), &FindFileData);
         if (hFind == INVALID_HANDLE_VALUE) {
@@ -738,7 +757,7 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
     bool result = false;
     const QString file(_localDir + relfile);
     WIN32_FIND_DATA FindFileData;
-    HANDLE hFind;
+    HANDLE hFind = nullptr;
 
     hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(file).utf16()), &FindFileData);
     if (hFind != INVALID_HANDLE_VALUE) {
@@ -1015,14 +1034,14 @@ bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 
         if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
             !parentRec.isValid() ||
-            !parentRec._isE2eEncrypted) {
+            !parentRec.isE2eEncrypted()) {
             return false;
         }
 
         return true;
     };
 
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->isEncrypted() && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
@@ -1066,7 +1085,7 @@ OwncloudPropagator *PropagatorJob::propagator() const
 
 // ================================================================================
 
-PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism()
+PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism() const
 {
     // If any of the running sub jobs is not parallel, we have to wait
     for (int i = 0; i < _runningJobs.count(); ++i) {
@@ -1215,7 +1234,7 @@ PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const Syn
     connect(&_subJobs, &PropagatorJob::finished, this, &PropagateDirectory::slotSubJobsFinished);
 }
 
-PropagatorJob::JobParallelism PropagateDirectory::parallelism()
+PropagatorJob::JobParallelism PropagateDirectory::parallelism() const
 {
     // If any of the non-finished sub jobs is not parallel, we have to wait
     if (_firstJob && _firstJob->parallelism() != FullParallelism) {
@@ -1330,7 +1349,7 @@ PropagateRootDirectory::PropagateRootDirectory(OwncloudPropagator *propagator)
     connect(&_dirDeletionJobs, &PropagatorJob::finished, this, &PropagateRootDirectory::slotDirDeletionJobsFinished);
 }
 
-PropagatorJob::JobParallelism PropagateRootDirectory::parallelism()
+PropagatorJob::JobParallelism PropagateRootDirectory::parallelism() const
 {
     // the root directory parallelism isn't important
     return WaitForFinished;

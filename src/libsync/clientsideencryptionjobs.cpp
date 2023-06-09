@@ -55,7 +55,9 @@ bool GetMetadataApiJob::finished()
         return true;
     }
     QJsonParseError error{};
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    const auto replyData = reply()->readAll();
+    auto json = QJsonDocument::fromJson(replyData, &error);
+    qCInfo(lcCseJob) << "metadata received for file id" << _fileId << json.toJson(QJsonDocument::Compact);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
@@ -293,8 +295,10 @@ bool LockEncryptFolderApiJob::finished()
 
     qCInfo(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;
 
-    const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
-    _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    if (!_publicKey.isNull()) {
+        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
+        _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    }
 
     //TODO: Parse the token and submit.
     emit success(_fileId, token);

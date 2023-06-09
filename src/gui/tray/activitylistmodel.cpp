@@ -159,7 +159,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 if (!folder->journalDb()->getFileRecord(fileName.mid(1), &rec)) {
                     qCWarning(lcActivity) << "could not get file from local DB" << fileName.mid(1);
                 }
-                if (rec.isValid() && (rec._isE2eEncrypted || !rec._e2eMangledName.isEmpty())) {
+                if (rec.isValid() && (rec.isE2eEncrypted() || !rec._e2eMangledName.isEmpty())) {
                     return QString();
                 }
             }

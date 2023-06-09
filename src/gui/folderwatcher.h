@@ -88,6 +88,11 @@ signals:
      *  of the contained files is changed. */
     void pathChanged(const QString &path);
 
+    /*
+    * Emitted when lock files were removed
+    */
+    void filesLockReleased(const QSet<QString> &files);
+
     /**
      * Emitted if some notifications were lost.
      *
@@ -108,6 +113,7 @@ protected slots:
     // called from the implementations to indicate a change in path
     void changeDetected(const QString &path);
     void changeDetected(const QStringList &paths);
+    void folderAccountCapabilitiesChanged();
 
 private slots:
     void startNotificationTestWhenReady();
@@ -122,7 +128,12 @@ private:
     Folder *_folder;
     bool _isReliable = true;
 
+    bool _shouldWatchForFileUnlocking = false;
+
     void appendSubPaths(QDir dir, QStringList& subPaths);
+
+    QString possiblyAddUnlockedFilePath(const QString &path);
+    QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName);
 
     /** Path of the expected test notification */
     QString _testNotificationPath;

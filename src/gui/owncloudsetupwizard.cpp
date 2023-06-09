@@ -73,6 +73,8 @@ void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *
     if (!cfg.overrideServerUrl().isEmpty()) {
         Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
         Theme::instance()->setForceOverrideServerUrl(true);
+        Theme::instance()->setVfsEnabled(cfg.isVfsEnabled());
+
         Theme::instance()->setStartLoginFlowAutomatically(true);
     }
     if (!wiz.isNull()) {

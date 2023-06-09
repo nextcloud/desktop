@@ -1549,7 +1549,6 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         int goodSeen = 0;
         int abortOrPausedSeen = 0;
         int runSeen = 0;
-        int various = 0;
 
         for (const Folder *folder : qAsConst(folders)) {
             SyncResult folderResult = folder->syncResult();
@@ -1561,7 +1560,6 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
                 switch (syncStatus) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
-                    various++;
                     break;
                 case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
@@ -1751,7 +1749,7 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
     return result;
 }
 
-QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl, GoodPathStrategy allowExisting) const
 {
     QString folder = basePath;
 
@@ -1768,9 +1766,8 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
 
     int attempt = 1;
     forever {
-        const bool isGood =
-            !QFileInfo(folder).exists()
-            && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).second.isEmpty();
+        const auto isGood = FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).second.isEmpty() &&
+            (allowExisting == GoodPathStrategy::AllowOverrideExistingPath || !QFileInfo::exists(folder));
         if (isGood) {
             break;
         }

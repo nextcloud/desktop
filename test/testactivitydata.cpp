@@ -50,7 +50,7 @@ public:
         const auto fileName = QStringLiteral("test.").append(fileFormat);
         const auto activityType = QStringLiteral("file");
         const auto activityId = 90000;
-        const auto message = QStringLiteral();
+        const auto message = QString();
         const auto objectName = QStringLiteral("test.").append(fileFormat);
         const auto link = account->url().toString().append(QStringLiteral("/f/")).append(activityId);
         const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
@@ -114,8 +114,8 @@ public:
             {{
                 {objectType, {{
                     {typeC, objectType},
-                    {idC, QStringLiteral()},
-                    {linkC,  QStringLiteral()},
+                    {idC, QString()},
+                    {linkC,  QString()},
                     {nameC, calendar},
                 }}},
                 {eventC, {{
@@ -127,7 +127,7 @@ public:
                 {QStringLiteral("actor"), {{
                     {typeC, QStringLiteral("user")},
                     {idC, QStringLiteral("username")},
-                    {linkC,  QStringLiteral()},
+                    {linkC,  QString()},
                     {nameC, name},
                 }}},
             }},
@@ -138,13 +138,13 @@ public:
             {QStringLiteral("subject"), subject},
             {typeC, activityType},
             {QStringLiteral("activity_id"), activityId},
-            {QStringLiteral("object_name"), QStringLiteral()},
+            {QStringLiteral("object_name"), QString()},
             {QStringLiteral("datetime"), datetime},
             {QStringLiteral("icon"), icon},
             {QStringLiteral("subject_rich"), subjectRichData},
         });
 
-        QTest::addRow("data") << testData << QStringLiteral() << QStringLiteral() << objectType << subject << QStringLiteral() << QStringLiteral() << activityType << activityId << QStringLiteral() << QStringLiteral() << QStringLiteral() << datetime << icon << subjectRichString << subjectRichData << QStringLiteral();
+        QTest::addRow("data") << testData << QString() << QString() << objectType << subject << QString() << QString() << activityType << activityId << QString() << QString() << QString() << datetime << icon << subjectRichString << subjectRichData << QString();
     }
 
     // We always "use" event. What you are observing comes from the event merging, e.g. if a user creates two events,
@@ -166,8 +166,8 @@ public:
             {{
               {objectType, {{
                   {typeC, objectType},
-                  {idC, QStringLiteral()},
-                  {linkC,  QStringLiteral()},
+                  {idC, QString()},
+                  {linkC,  QString()},
                   {nameC, calendar},
               }}},
               {QStringLiteral("event%1").arg(mergedEvent), {{
@@ -179,7 +179,7 @@ public:
               {QStringLiteral("actor"), {{
                   {typeC, QStringLiteral("user")},
                   {idC, QStringLiteral("username")},
-                  {linkC,  QStringLiteral()},
+                  {linkC,  QString()},
                   {nameC, name},
               }}},
            }},
@@ -190,13 +190,13 @@ public:
             {QStringLiteral("subject"), subject},
             {typeC, activityType},
             {QStringLiteral("activity_id"), activityId},
-            {QStringLiteral("object_name"), QStringLiteral()},
+            {QStringLiteral("object_name"), QString()},
             {QStringLiteral("datetime"), datetime},
             {QStringLiteral("icon"), icon},
             {QStringLiteral("subject_rich"), subjectRichData},
         });
 
-        QTest::addRow("data") << testData << QStringLiteral() << QStringLiteral() << objectType << subject << QStringLiteral() << QStringLiteral() << activityType << activityId << QStringLiteral() << QStringLiteral() << QStringLiteral() << datetime << icon << subjectRichString << subjectRichData << QStringLiteral();
+        QTest::addRow("data") << testData << QString() << QString() << objectType << subject << QString() << QString() << activityType << activityId << QString() << QString() << QString() << datetime << icon << subjectRichString << subjectRichData << QString();
     }
 
     QScopedPointer<FakeQNAM> fakeQnam;

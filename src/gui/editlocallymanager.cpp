@@ -79,14 +79,9 @@ void EditLocallyManager::createJob(const QString &userId,
     _jobs.insert(token, job);
 
     const auto removeJob = [this, token] { _jobs.remove(token); };
-    const auto setupJob = [job] { job->startEditLocally(); };
 
-    connect(job.data(), &EditLocallyJob::error,
-            this, removeJob);
-    connect(job.data(), &EditLocallyJob::finished,
-            this, removeJob);
-    connect(job.data(), &EditLocallyJob::setupFinished,
-            job.data(), setupJob);
+    connect(job.data(), &EditLocallyJob::error, this, removeJob);
+    connect(job.data(), &EditLocallyJob::finished, this, removeJob);
 
     job->startSetup();
 }

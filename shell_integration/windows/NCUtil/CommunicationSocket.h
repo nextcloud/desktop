@@ -42,7 +42,7 @@ public:
 private:    
     HANDLE _pipe;
     std::vector<char> _buffer;
-    bool _connected;
+    bool _connected = false;
 };
 
 #endif

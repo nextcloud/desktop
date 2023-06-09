@@ -984,8 +984,8 @@ private slots:
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::Mixed);
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::Mixed);
 
-        vfs->setPinState("local", PinState::AlwaysLocal);
-        vfs->setPinState("online", PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState("local", PinState::AlwaysLocal));
+        QVERIFY(vfs->setPinState("online", PinState::OnlineOnly));
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
@@ -1061,13 +1061,13 @@ private slots:
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
 
         // When a file is hydrated or dehydrated due to pin state it retains its pin state
-        vfs->setPinState("onlinerenamed2/file1rename", PinState::AlwaysLocal);
+        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename", PinState::AlwaysLocal));
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename"));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::AlwaysLocal);
 
-        vfs->setPinState("onlinerenamed2", PinState::Unspecified);
-        vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState("onlinerenamed2", PinState::Unspecified));
+        QVERIFY(vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly));
         QVERIFY(fakeFolder.syncOnce());
 
         CFVERIFY_VIRTUAL(fakeFolder, "onlinerenamed2/file1rename");
@@ -1217,6 +1217,32 @@ private slots:
         } else {
             CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
         }
+    }
+
+    void testDataFingerPrint()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().mkdir("a/b/d");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+
+        //Server support finger print, but none is set.
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().remove("a/b/d");
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };
 

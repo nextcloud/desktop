@@ -267,8 +267,8 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (proxy.type() != QNetworkProxy::DefaultProxy) {
         _am->setProxy(proxy);
     }
-    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-        SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    connect(_am.data(), &QNetworkAccessManager::sslErrors,
+        this, &Account::slotHandleSslErrors);
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
         this, &Account::proxyAuthenticationRequired);
     connect(_credentials.data(), &AbstractCredentials::fetched,
@@ -376,8 +376,8 @@ void Account::resetNetworkAccessManager()
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     _am->setProxy(proxy);   // Remember proxy (issue #2108)
 
-    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-        SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    connect(_am.data(), &QNetworkAccessManager::sslErrors,
+        this, &Account::slotHandleSslErrors);
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
         this, &Account::proxyAuthenticationRequired);
 }
@@ -694,6 +694,17 @@ bool Account::serverVersionUnsupported() const
     }
     return serverVersionInt() < makeServerVersion(NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MAJOR,
                NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_MINOR, NEXTCLOUD_SERVER_VERSION_MIN_SUPPORTED_PATCH);
+}
+
+bool Account::secureFileDropSupported() const
+{
+    if (serverVersionInt() == 0) {
+        // not detected yet, assume it is fine.
+        return true;
+    }
+    return serverVersionInt() >= makeServerVersion(NEXTCLOUD_SERVER_VERSION_SECURE_FILEDROP_MIN_SUPPORTED_MAJOR,
+                                                   NEXTCLOUD_SERVER_VERSION_SECURE_FILEDROP_MIN_SUPPORTED_MINOR,
+                                                   NEXTCLOUD_SERVER_VERSION_SECURE_FILEDROP_MIN_SUPPORTED_PATCH);
 }
 
 bool Account::isUsernamePrefillSupported() const

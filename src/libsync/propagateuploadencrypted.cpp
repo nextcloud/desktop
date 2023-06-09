@@ -111,8 +111,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray
     Q_UNUSED(fileId);
     Q_UNUSED(httpReturnCode);
     qCDebug(lcPropagateUploadEncrypted()) << "Error Getting the encrypted metadata. Pretend we got empty metadata.";
-    FolderMetadata emptyMetadata(_propagator->account());
-    emptyMetadata.encryptedMetadata();
+    const FolderMetadata emptyMetadata(_propagator->account());
     auto json = QJsonDocument::fromJson(emptyMetadata.encryptedMetadata());
     slotFolderEncryptedMetadataReceived(json, httpReturnCode);
 }
@@ -122,7 +121,9 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   // Encrypt File!
-  _metadata.reset(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode));
+  _metadata.reset(new FolderMetadata(_propagator->account(),
+                                     _item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                                     json.toJson(QJsonDocument::Compact), statusCode));
 
   if (!_metadata->isMetadataSetup()) {
       if (_isFolderLocked) {
@@ -155,8 +156,6 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   if (!found) {
       encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
       encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
-      encryptedFile.fileVersion = 1;
-      encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = fileName;
 
       QMimeDatabase mdb;
@@ -172,7 +171,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
 
   _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
-  _item->_isEncrypted = true;
+  _item->_e2eEncryptionStatus = SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 

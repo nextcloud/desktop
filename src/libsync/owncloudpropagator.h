@@ -62,7 +62,7 @@ class PropagatorCompositeJob;
  *
  * @ingroup libsync
  */
-class PropagatorJob : public QObject
+class OWNCLOUDSYNC_EXPORT PropagatorJob : public QObject
 {
     Q_OBJECT
 
@@ -98,7 +98,7 @@ public:
 
     Q_ENUM(JobParallelism)
 
-    virtual JobParallelism parallelism() { return FullParallelism; }
+    [[nodiscard]] virtual JobParallelism parallelism() const { return FullParallelism; }
 
     /**
      * For "small" jobs
@@ -199,7 +199,7 @@ public:
         // TODO: In fact, we must make sure Lock/Unlock are not colliding and always wait for each other to complete. So, we could refactor this "_parallelism" later
         // so every "PropagateItemJob" that will potentially execute Lock job on E2EE folder will get executed sequentially.
         // As an alternative, we could optimize Lock/Unlock calls, so we do a batch-write on one folder and only lock and unlock a folder once per batch.
-        _parallelism = (_item->_isEncrypted || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
+        _parallelism = (_item->isEncrypted() || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
     }
     ~PropagateItemJob() override;
 
@@ -215,7 +215,7 @@ public:
         return true;
     }
 
-    JobParallelism parallelism() override { return _parallelism; }
+    [[nodiscard]] JobParallelism parallelism() const override { return _parallelism; }
 
     SyncFileItemPtr _item;
 
@@ -254,7 +254,7 @@ public:
     }
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
 
     /*
      * Abort synchronously or asynchronously - some jobs
@@ -320,7 +320,7 @@ public:
     }
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override
     {
         if (_firstJob)
@@ -366,7 +366,7 @@ public:
     explicit PropagateRootDirectory(OwncloudPropagator *propagator);
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override;
 
     [[nodiscard]] qint64 committedDiskSpace() const override;
@@ -538,7 +538,7 @@ public:
                                       Q_ARG(PropagatorJob::AbortType, PropagatorJob::AbortType::Asynchronous));
 
             // Give asynchronous abort 5000 msec to finish on its own
-            QTimer::singleShot(5000, this, SLOT(abortTimeout()));
+            QTimer::singleShot(5000, this, &OwncloudPropagator::abortTimeout);
         } else {
             // No root job, call emitFinished
             emitFinished(SyncFileItem::NormalError);

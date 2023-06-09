@@ -57,6 +57,7 @@ RowLayout {
             font.pixelSize: Style.topLinePixelSize
             font.bold: true
             color: Style.ncTextColor
+            wrapMode: Text.Wrap
         }
 
         Loader {
@@ -96,6 +97,7 @@ RowLayout {
             visible: syncStatus.syncStatusDetailString !== ""
             color: Style.ncSecondaryTextColor
             font.pixelSize: Style.subLinePixelSize
+            wrapMode: Text.Wrap
         }
     }
 

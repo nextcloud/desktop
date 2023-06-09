@@ -20,7 +20,7 @@
 long dllReferenceCount = 0;
 long dllObjectsCount = 0;
 
-HINSTANCE instanceHandle = NULL;
+HINSTANCE instanceHandle = nullptr;
 
 HRESULT CustomStateProvider_CreateInstance(REFIID riid, void **ppv);
 HRESULT ThumbnailProvider_CreateInstance(REFIID riid, void **ppv);

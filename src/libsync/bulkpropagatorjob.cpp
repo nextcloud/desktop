@@ -106,7 +106,7 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
     return _items.empty() && _filesToUpload.empty();
 }
 
-PropagatorJob::JobParallelism BulkPropagatorJob::parallelism()
+PropagatorJob::JobParallelism BulkPropagatorJob::parallelism() const
 {
     return PropagatorJob::JobParallelism::FullParallelism;
 }

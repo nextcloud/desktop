@@ -120,7 +120,7 @@ namespace {
 #ifdef Q_OS_WIN
 class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
 public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override {
         const auto msg = static_cast<MSG *>(message);
         if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
             if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
@@ -176,7 +176,7 @@ bool Application::configVersionMigration()
             tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "Continuing will mean <b>%2 these settings</b><br>"
+               "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
                 .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
@@ -187,7 +187,7 @@ bool Application::configVersionMigration()
 
         box.exec();
         if (box.clickedButton() != continueBtn) {
-            QTimer::singleShot(0, qApp, SLOT(quit()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return false;
         }
 
@@ -332,13 +332,25 @@ Application::Application(int &argc, char **argv)
     ConfigFile cfg;
 
     {
+        auto shouldExit = false;
+
         // these config values will always be empty after the first client run
         if (!_overrideServerUrl.isEmpty()) {
-             cfg.setOverrideServerUrl(_overrideServerUrl);
+            cfg.setOverrideServerUrl(_overrideServerUrl);
+            shouldExit = true;
         }
 
         if (!_overrideLocalDir.isEmpty()) {
             cfg.setOverrideLocalDir(_overrideLocalDir);
+            shouldExit = true;
+        }
+
+        if (AccountSetupCommandLineManager::instance()) {
+            cfg.setVfsEnabled(AccountSetupCommandLineManager::instance()->isVfsEnabled());
+        }
+
+        if (shouldExit) {
+            std::exit(0);
         }
     }
 
@@ -379,7 +391,7 @@ Application::Application(int &argc, char **argv)
                    "file at %1. Please make sure the file can be accessed by your system account.")
                     .arg(ConfigFile().configFile()),
                 tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-            QTimer::singleShot(0, qApp, SLOT(quit()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return;
         }
     }
@@ -765,7 +777,7 @@ static inline void toHtml(QString &t)
 static void displayHelpText(QString t) // No console on Windows.
 {
     toHtml(t);
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+    QMessageBox::information(nullptr, Theme::instance()->appNameGUI(), t);
 }
 
 #else

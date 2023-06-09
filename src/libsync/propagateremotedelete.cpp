@@ -33,7 +33,7 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested)
         return;
 
-    if (!_item->_encryptedFileName.isEmpty() || _item->_isEncrypted) {
+    if (!_item->_encryptedFileName.isEmpty() || _item->isEncrypted()) {
         if (!_item->_encryptedFileName.isEmpty()) {
             _deleteEncryptedHelper = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
         } else {
