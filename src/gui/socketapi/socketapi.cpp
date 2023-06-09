@@ -1180,7 +1180,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
         if (canCreateDefaultPublicLink) {
             if (isSecureFileDropSupported) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:COPY_SECUREFILEDROP_LINK") + QLatin1String("::") + tr("Copy secure filedrop link"));
+                listener->sendMessage(QLatin1String("MENU_ITEM:COPY_SECUREFILEDROP_LINK") + QLatin1String("::") + tr("Copy secure file drop link"));
             } else {
                 listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PUBLIC_LINK") + flagString + tr("Copy public link"));
             }

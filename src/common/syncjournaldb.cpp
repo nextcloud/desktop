@@ -66,7 +66,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
-    rec._isE2eEncrypted = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
+    rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
     rec._lockstate._locked = query.intValue(12) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(13);
     rec._lockstate._lockOwnerId = query.stringValue(14);
@@ -882,10 +882,15 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
-    qint64 h = 0;
-    int len = file.length();
+    QByteArray bytes = file;
+#ifdef Q_OS_MAC
+    bytes = QString::fromUtf8(file).normalized(QString::NormalizationForm_C).toUtf8();
+#endif
 
-    h = c_jhash64((uint8_t *)file.data(), len, 0);
+    qint64 h = 0;
+    int len = bytes.length();
+
+    h = c_jhash64((uint8_t *)bytes.data(), len, 0);
     return h;
 }
 
@@ -968,7 +973,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(15, checksum);
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
-    query->bindValue(18, static_cast<int>(record._isE2eEncrypted));
+    query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
     query->bindValue(19, record._lockstate._locked ? 1 : 0);
     query->bindValue(20, record._lockstate._lockOwnerType);
     query->bindValue(21, record._lockstate._lockOwnerDisplayName);

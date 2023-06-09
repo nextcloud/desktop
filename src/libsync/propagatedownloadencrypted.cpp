@@ -74,7 +74,7 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
                                         << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const QString filename = _info.fileName();
   const FolderMetadata metadata(_propagator->account(),
-                                _item->_isEncrypted == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                                _item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
                                 json.toJson(QJsonDocument::Compact));
   if (metadata.isMetadataSetup()) {
       const QVector<EncryptedFile> files = metadata.files();

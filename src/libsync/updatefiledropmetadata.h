@@ -51,7 +51,7 @@ private slots:
 signals:
     void folderUnlocked(const QByteArray &folderId, int httpStatus);
 
-    void fileDropMetadataParsedAndAdjusted(const FolderMetadata *const metadata);
+    void fileDropMetadataParsedAndAdjusted(const OCC::FolderMetadata *const metadata);
 
 private:
     QString _path;

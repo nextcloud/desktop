@@ -26,6 +26,53 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileItem, "nextcloud.sync.fileitem", QtInfoMsg)
 
+namespace EncryptionStatusEnums {
+
+ItemEncryptionStatus fromDbEncryptionStatus(JournalDbEncryptionStatus encryptionStatus)
+{
+    auto result = ItemEncryptionStatus::NotEncrypted;
+
+    switch (encryptionStatus)
+    {
+    case JournalDbEncryptionStatus::Encrypted:
+        result = ItemEncryptionStatus::Encrypted;
+        break;
+    case JournalDbEncryptionStatus::EncryptedMigratedV1_2:
+        result = ItemEncryptionStatus::EncryptedMigratedV1_2;
+        break;
+    case JournalDbEncryptionStatus::EncryptedMigratedV1_2Invalid:
+        result = ItemEncryptionStatus::Encrypted;
+        break;
+    case JournalDbEncryptionStatus::NotEncrypted:
+        result = ItemEncryptionStatus::NotEncrypted;
+        break;
+    }
+
+    return result;
+}
+
+JournalDbEncryptionStatus toDbEncryptionStatus(ItemEncryptionStatus encryptionStatus)
+{
+    auto result = JournalDbEncryptionStatus::NotEncrypted;
+
+    switch (encryptionStatus)
+    {
+    case ItemEncryptionStatus::Encrypted:
+        result = JournalDbEncryptionStatus::Encrypted;
+        break;
+    case ItemEncryptionStatus::EncryptedMigratedV1_2:
+        result = JournalDbEncryptionStatus::EncryptedMigratedV1_2;
+        break;
+    case ItemEncryptionStatus::NotEncrypted:
+        result = JournalDbEncryptionStatus::NotEncrypted;
+        break;
+    }
+
+    return result;
+}
+
+}
+
 SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QString &localFileName) const
 {
     SyncJournalFileRecord rec;
@@ -49,7 +96,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
-    rec._isE2eEncrypted = isEncrypted() ? SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2 : SyncJournalFileRecord::EncryptionStatus::NotEncrypted;
+    rec._e2eEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(_e2eEncryptionStatus);
     rec._lockstate._locked = _locked == LockStatus::LockedItem;
     rec._lockstate._lockOwnerDisplayName = _lockOwnerDisplayName;
     rec._lockstate._lockOwnerId = _lockOwnerId;
@@ -86,7 +133,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_serverHasIgnoredFiles = rec._serverHasIgnoredFiles;
     item->_checksumHeader = rec._checksumHeader;
     item->_encryptedFileName = rec.e2eMangledName();
-    item->_isEncrypted = static_cast<SyncFileItem::EncryptionStatus>(rec._isE2eEncrypted);
+    item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(rec._e2eEncryptionStatus);
     item->_locked = rec._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
     item->_lockOwnerDisplayName = rec._lockstate._lockOwnerDisplayName;
     item->_lockOwnerId = rec._lockstate._lockOwnerId;
@@ -123,7 +170,7 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     item->_isShared = item->_remotePerm.hasPermission(RemotePermissions::IsShared);
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
-    item->_isEncrypted = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 : SyncFileItem::EncryptionStatus::NotEncrypted);
+    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 : SyncFileItem::EncryptionStatus::NotEncrypted);
     item->_locked =
         properties.value(QStringLiteral("lock")) == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem;
     item->_lockOwnerDisplayName = properties.value(QStringLiteral("lock-owner-displayname"));

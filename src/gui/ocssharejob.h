@@ -103,6 +103,11 @@ public:
     void setLabel(const QString &shareId, const QString &label);
 
     /**
+     * Set share hideDownload flag
+     */
+    void setHideDownload(const QString &shareId, const bool hideDownload);
+
+    /**
      * Create a new link share
      *
      * @param path The path of the file/folder to share

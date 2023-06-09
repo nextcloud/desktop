@@ -118,7 +118,7 @@ private slots:
 
 private slots:
     void displayMnemonic(const QString &mnemonic);
-    void disableEncryptionForAccount(const AccountPtr &account) const;
+    void disableEncryptionForAccount(const OCC::AccountPtr &account) const;
     void showConnectionLabel(const QString &message, QStringList errors = QStringList());
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();

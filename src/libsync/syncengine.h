@@ -128,7 +128,7 @@ public:
     [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
 
 public slots:
-    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
+    void setSingleItemDiscoveryOptions(const OCC::SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
 
     void startSync();
 
@@ -165,7 +165,7 @@ signals:
 
     void transmissionProgress(const OCC::ProgressInfo &progress);
 
-    void itemDiscovered(const SyncFileItemPtr &);
+    void itemDiscovered(const OCC::SyncFileItemPtr &);
 
     /// We've produced a new sync error of a type.
     void syncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);

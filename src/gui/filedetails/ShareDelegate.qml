@@ -33,11 +33,13 @@ GridLayout {
     signal resetPasswordField
     signal showPasswordSetError(string errorMessage);
 
+    signal toggleHideDownload(bool enable)
     signal toggleAllowEditing(bool enable)
     signal toggleAllowResharing(bool enable)
     signal togglePasswordProtect(bool enable)
     signal toggleExpirationDate(bool enable)
     signal toggleNoteToRecipient(bool enable)
+    signal permissionModeChanged(int permissionMode)
 
     signal setLinkShareLabel(string label)
     signal setExpireDate(var milliseconds) // Since QML ints are only 32 bits, use a variant
@@ -236,9 +238,11 @@ GridLayout {
 
                     onToggleAllowEditing: root.toggleAllowEditing(enable)
                     onToggleAllowResharing: root.toggleAllowResharing(enable)
+                    onToggleHideDownload: root.toggleHideDownload(enable)
                     onTogglePasswordProtect: root.togglePasswordProtect(enable)
                     onToggleExpirationDate: root.toggleExpirationDate(enable)
                     onToggleNoteToRecipient: root.toggleNoteToRecipient(enable)
+                    onPermissionModeChanged: root.permissionModeChanged(permissionMode)
 
                     onSetLinkShareLabel: root.setLinkShareLabel(label)
                     onSetExpireDate: root.setExpireDate(milliseconds) // Since QML ints are only 32 bits, use a variant

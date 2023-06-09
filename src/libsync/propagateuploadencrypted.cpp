@@ -122,7 +122,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
   // Encrypt File!
   _metadata.reset(new FolderMetadata(_propagator->account(),
-                                     _item->_isEncrypted == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                                     _item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
                                      json.toJson(QJsonDocument::Compact), statusCode));
 
   if (!_metadata->isMetadataSetup()) {
@@ -171,7 +171,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
 
   _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
-  _item->_isEncrypted = SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2;
+  _item->_e2eEncryptionStatus = SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 

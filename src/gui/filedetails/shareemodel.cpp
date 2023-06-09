@@ -228,7 +228,7 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
 
     QVector<ShareePtr> newSharees;
 
-    const QStringList shareeTypes {"users", "groups", "emails", "remotes", "circles", "rooms"};
+    const QStringList shareeTypes{"users", "groups", "emails", "remotes", "circles", "rooms", "lookup"};
 
     const auto appendSharees = [this, &shareeTypes, &newSharees](const QJsonObject &data) {
         for (const auto &shareeType : shareeTypes) {

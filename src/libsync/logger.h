@@ -96,8 +96,10 @@ private:
     Logger(QObject *parent = nullptr);
     ~Logger() override;
 
-    void close();
+    void closeNoLock();
     void dumpCrashLog();
+    void enterNextLogFileNoLock();
+    void setLogFileNoLock(const QString &name);
 
     QFile _logFile;
     bool _doFileFlush = false;

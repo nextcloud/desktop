@@ -122,6 +122,11 @@ QtObject {
     readonly property int unifiedSearchResultSectionItemVerticalPadding: 8
     readonly property int unifiedSearchResultNothingFoundHorizontalMargin: 10
 
+    readonly property int radioButtonCustomMarginLeftInner: 4
+    readonly property int radioButtonCustomMarginLeftOuter: 5
+    readonly property int radioButtonCustomRadius: 9
+    readonly property int radioButtonIndicatorSize: 16
+
     readonly property var fontMetrics: FontMetrics {}
 
     readonly property int activityContentSpace: 4

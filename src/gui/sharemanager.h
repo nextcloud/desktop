@@ -132,6 +132,7 @@ signals:
     void shareDeleted();
     void serverError(int code, const QString &message);
     void passwordSet();
+    void hideDownloadSet();
     void passwordSetError(int statusCode, const QString &message);    
 
 public slots:
@@ -197,6 +198,7 @@ class LinkShare : public Share
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSet)
     Q_PROPERTY(QString note READ getNote WRITE setNote NOTIFY noteSet)
     Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelSet)
+    Q_PROPERTY(bool hideDownload READ getHideDownload WRITE setHideDownload NOTIFY hideDownloadSet)
     Q_PROPERTY(QDate expireDate READ getExpireDate WRITE setExpireDate NOTIFY expireDateSet)
     Q_PROPERTY(QString token READ getToken CONSTANT)
 
@@ -213,7 +215,8 @@ public:
         const QUrl &url,
         const QDate &expireDate,
         const QString &note,
-        const QString &label);
+        const QString &label,
+        const bool hideDownload);
 
     /*
      * Get the share link
@@ -249,6 +252,11 @@ public:
      * Returns the label of the link share.
      */
     [[nodiscard]] QString getLabel() const;
+
+    /*
+     * Returns if the link share's hideDownload is true or false
+     */
+    [[nodiscard]] bool getHideDownload() const;
 
     /*
      * Returns the token of the link share.
@@ -291,18 +299,25 @@ public slots:
      * Set the label of the share link.
      */
     void setLabel(const QString &label);
+
+    /*
+     * Set the hideDownload flag of the share link.
+     */
+    void setHideDownload(const bool hideDownload);
     
 signals:
     void expireDateSet();
     void noteSet();
     void nameSet();
     void labelSet();
+    void hideDownloadSet();
 
 private slots:
     void slotNoteSet(const QJsonDocument &, const QVariant &value);
     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
     void slotNameSet(const QJsonDocument &, const QVariant &value);
     void slotLabelSet(const QJsonDocument &, const QVariant &value);
+    void slotHideDownloadSet(const QJsonDocument &jsonDoc, const QVariant &hideDownload);
 
 private:
     QString _name;
@@ -311,6 +326,7 @@ private:
     QDate _expireDate;
     QUrl _url;
     QString _label;
+    bool _hideDownload = false;
 };
 
 class UserGroupShare : public Share

@@ -47,7 +47,7 @@ private slots:
 
     void accountSetupFromCommandLinePropfindHandleFailure();
 
-    void setupLocalSyncFolder(AccountState *accountState);
+    void setupLocalSyncFolder(OCC::AccountState *accountState);
 
     void printAccountSetupFromCommandLineStatusAndExit(const QString &status, bool isFailure);
 

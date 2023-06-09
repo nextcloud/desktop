@@ -176,7 +176,7 @@ bool Application::configVersionMigration()
             tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "Continuing will mean <b>%2 these settings</b><br>"
+               "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
                 .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
