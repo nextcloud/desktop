@@ -835,7 +835,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur de réseau est survenue : le client va réessayer la synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="577"/>
