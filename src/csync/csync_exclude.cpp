@@ -442,7 +442,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
             addExcludeFilePath(absolutePath);
             reloadExcludeFiles();
         } else {
+#if !defined QT_NO_DEBUG
             qWarning() << "System exclude list file could not be read:" << absolutePath;
+#endif
         }
     }
 

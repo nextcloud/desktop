@@ -430,7 +430,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
                               << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
-                              << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
                               << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
@@ -553,7 +552,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_lockEditorApp = serverEntry.lockEditorApp;
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
-    qCInfo(lcDisco()) << item->_locked << item->_lockOwnerDisplayName << item->_lockOwnerId << item->_lockOwnerType << item->_lockEditorApp << item->_lockTime << item->_lockTimeout;
+    qCDebug(lcDisco()) << item->_locked << item->_lockOwnerDisplayName << item->_lockOwnerId << item->_lockOwnerType << item->_lockEditorApp << item->_lockTime << item->_lockTimeout;
 
     // Check for missing server data
     {
@@ -582,7 +581,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
         const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
 
-        qCInfo(lcDisco) << "File:" << path._original << "is locked."
+        qCDebug(lcDisco) << "File:" << path._original << "is locked."
                         << "Lock expires in:" << lockExpirationTimeout << "seconds."
                         << "A sync run will be scheduled for around that time.";
 
@@ -952,7 +951,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Not modified locally (ParentNotChanged)
             if (noServerEntry) {
                 // not on the server: Removed on the server, delete locally
+#if !defined QT_NO_DEBUG
                 qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
+#endif
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
@@ -980,7 +981,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else if (!serverModified) {
             // Removed locally: also remove on the server.
             if (!dbEntry._serverHasIgnoredFiles) {
+#if !defined QT_NO_DEBUG
                 qCInfo(lcDisco) << "File" << item->_file << "was deleted locally. Going to delete it on the server.";
+#endif
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Up;
             }
@@ -1019,7 +1022,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else if (!typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || localEntry.isDirectory)) {
             // Local file unchanged.
             if (noServerEntry) {
+#if !defined QT_NO_DEBUG
                 qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
+#endif
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
@@ -1538,7 +1543,7 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_direction = _dirItem->_direction;
     }
 
-    qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
+    qCDebug(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
