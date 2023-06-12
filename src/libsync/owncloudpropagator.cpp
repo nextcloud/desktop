@@ -274,6 +274,7 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
     case SyncFileItem::BlacklistedError:
     case SyncFileItem::FileLocked:
     case SyncFileItem::FileNameInvalid:
+    case SyncFileItem::FileNameInvalidOnServer:
     case SyncFileItem::FileNameClash:
         // nothing
         break;

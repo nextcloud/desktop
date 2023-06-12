@@ -101,6 +101,7 @@ bool Progress::isWarningKind(SyncFileItem::Status kind)
         || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
         || kind == SyncFileItem::DetailError || kind == SyncFileItem::BlacklistedError
         || kind == SyncFileItem::FileLocked || kind == SyncFileItem::FileNameInvalid
+        || kind == SyncFileItem::FileNameInvalidOnServer
         || kind == SyncFileItem::FileNameClash;
 }
 
