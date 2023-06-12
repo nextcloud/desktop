@@ -552,7 +552,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_lockEditorApp = serverEntry.lockEditorApp;
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
-    qCInfo(lcDisco()) << item->_locked << item->_lockOwnerDisplayName << item->_lockOwnerId << item->_lockOwnerType << item->_lockEditorApp << item->_lockTime << item->_lockTimeout;
+    qCDebug(lcDisco()) << item->_locked << item->_lockOwnerDisplayName << item->_lockOwnerId << item->_lockOwnerType << item->_lockEditorApp << item->_lockTime << item->_lockTimeout;
 
     // Check for missing server data
     {
@@ -581,7 +581,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
         const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
 
-        qCInfo(lcDisco) << "File:" << path._original << "is locked."
+        qCDebug(lcDisco) << "File:" << path._original << "is locked."
                         << "Lock expires in:" << lockExpirationTimeout << "seconds."
                         << "A sync run will be scheduled for around that time.";
 
