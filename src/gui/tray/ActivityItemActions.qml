@@ -19,6 +19,8 @@ Repeater {
 
     property Flickable flickable
 
+    property bool talkReplyButtonVisible: true
+
     signal triggerAction(int actionIndex)
     signal showReplyField()
 
@@ -46,5 +48,7 @@ Repeater {
         textColorHovered: Style.currentUserHeaderTextColor
         contentsFont.bold: true
         bgColor: Style.currentUserHeaderColor
+
+        visible: verb !== "REPLY" || (verb === "REPLY" && root.talkReplyButtonVisible)
     }
 }

@@ -490,6 +490,15 @@ bool Systray::isOpen() const
     return _isOpen;
 }
 
+bool Systray::enableAddAccount() const
+{
+#if defined ENFORCE_SINGLE_ACCOUNT
+    return AccountManager::instance()->accounts().isEmpty();
+#else
+    return true;
+#endif
+}
+
 void Systray::setIsOpen(const bool isOpen)
 {
     _isOpen = isOpen;

@@ -554,6 +554,11 @@ void ownCloudGui::slotLogout()
 
 void ownCloudGui::slotNewAccountWizard()
 {
+#if defined ENFORCE_SINGLE_ACCOUNT
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        return;
+    }
+#endif
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
 }
 
