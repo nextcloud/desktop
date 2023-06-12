@@ -36,7 +36,7 @@
 namespace {
 
 constexpr int CrashLogSize = 20;
-constexpr int MaxLogSizeBytes = 1024 * 1024 * 30;
+constexpr auto MaxLogLinesCount = 50000;
 
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
@@ -118,7 +118,8 @@ bool Logger::isLoggingToFile() const
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
-    const QString msg = qFormatLogMessage(type, ctx, message);
+    static long long int linesCounter = 0;
+    const auto &msg = qFormatLogMessage(type, ctx, message);
 #if defined(Q_OS_WIN) && defined(QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
@@ -146,10 +147,12 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     {
         QMutexLocker lock(&_mutex);
 
-        if (_logFile.size() >= MaxLogSizeBytes) {
+        if (linesCounter >= MaxLogLinesCount) {
+            linesCounter = 0;
             closeNoLock();
             enterNextLogFileNoLock();
         }
+        ++linesCounter;
 
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
