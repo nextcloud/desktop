@@ -230,6 +230,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._syncFileItemStatus == SyncFileItem::Restoration
                 || a._syncFileItemStatus == SyncFileItem::FileLocked
                 || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
+                || a._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
                 || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
                 colorIconPath.append("state-warning.svg");
                 return colorIconPath;
@@ -348,7 +349,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return !a._links.isEmpty() &&
                 a._syncFileItemStatus != SyncFileItem::FileNameClash &&
                 a._syncFileItemStatus != SyncFileItem::Conflict &&
-                a._syncFileItemStatus != SyncFileItem::FileNameInvalid;
+                a._syncFileItemStatus != SyncFileItem::FileNameInvalid &&
+                a._syncFileItemStatus != SyncFileItem::FileNameInvalidOnServer;
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
     case ThumbnailRole: {
@@ -656,15 +658,20 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
     } else if (activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
         triggerCaseClashAction(activity);
         return;
-    } else if (activity._syncFileItemStatus == SyncFileItem::FileNameInvalid) {
+    } else if (activity._syncFileItemStatus == SyncFileItem::FileNameInvalid
+               || activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer) {
         if (!_currentInvalidFilenameDialog.isNull()) {
             _currentInvalidFilenameDialog->close();
         }
 
         auto folder = FolderMan::instance()->folder(activity._folder);
         const auto folderDir = QDir(folder->path());
+        const auto fileLocation = activity._syncFileItemStatus == SyncFileItem::FileNameInvalidOnServer
+            ? InvalidFilenameDialog::FileLocation::NewLocalFile
+            : InvalidFilenameDialog::FileLocation::Default;
+
         _currentInvalidFilenameDialog = new InvalidFilenameDialog(_accountState->account(), folder,
-            folderDir.filePath(activity._file));
+            folderDir.filePath(activity._file), fileLocation);
         connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
             folder->scheduleThisFolderSoon();
         });
