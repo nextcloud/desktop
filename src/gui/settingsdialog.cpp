@@ -199,15 +199,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
 
 
-    if (Theme::instance()->multiAccount()) {
-        _addAccountAction = new ToolButtonAction(QStringLiteral("plus-solid"), tr("Add account"), this);
-        _addAccountAction->setCheckable(false);
-        connect(_addAccountAction, &QAction::triggered, this, []{
-            // don't directly connect here, ocApp might not be defined yet
-            ocApp()->gui()->runNewAccountWizard();
-        });
-        _ui->toolBar->addAction(_addAccountAction);
-    }
+    _addAccountAction = new ToolButtonAction(QStringLiteral("plus-solid"), tr("Add account"), this);
+    _addAccountAction->setCheckable(false);
+    connect(_addAccountAction, &QAction::triggered, this, [] {
+        // don't directly connect here, ocApp might not be defined yet
+        ocApp()->gui()->runNewAccountWizard();
+    });
+    _ui->toolBar->addAction(_addAccountAction);
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
@@ -375,6 +373,10 @@ void SettingsDialog::accountAdded(AccountStatePtr s)
 {
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
+    if (brandingSingleAccount) {
+        _ui->toolBar->removeAction(_addAccountAction);
+    }
+
     QAction *accountAction;
     const QPixmap avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
@@ -441,6 +443,10 @@ void SettingsDialog::slotAccountDisplayNameChanged()
 
 void SettingsDialog::accountRemoved(AccountStatePtr s)
 {
+    if (!Theme::instance()->multiAccount()) {
+        _ui->toolBar->insertAction(_activityAction, _addAccountAction);
+    }
+
     for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
         auto as = qobject_cast<AccountSettings *>(*it);
         if (!as) {
