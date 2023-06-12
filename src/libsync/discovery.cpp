@@ -421,7 +421,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const char *hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
     const auto serverFileIsLocked = (serverEntry.isValid() ? (serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked")  : "");
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
-    qCDebug(lcDisco).nospace() << "Processing " << path._original
+    qCInfo(lcDisco).nospace() << "Processing " << path._original
                               << " | (db/local/remote)"
                               << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
@@ -430,7 +430,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
                               << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
-                              << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
                               << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
