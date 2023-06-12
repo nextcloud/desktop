@@ -426,12 +426,12 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Cifrado de Extremo-a-Extremo con Ficheiros Virtuais</translation>
+        <translation>Cifrado de extremo-a-extremo con ficheiros virtuais</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que tes a función de Ficheiros Virtuais activada neste cartafol. Polo momento, non é posible descargar implícitamente Ficheiros Virtuais cifrados de Extremo-a-Extremo. Para obter a mellor experiencia cos Ficheiros Virtuais e o cifrado de Extremo-a-Extremo, asegúrate de que o cartafol cifrado estea marcado con &quot;Facer sempre dispoñible localmente&quot;.</translation>
+        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo-a-extremo. Para obter a mellor experiencia cos ficheiros virtuais e o cifrado de extremo-a-extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -1613,7 +1613,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de inicio de sesión comezou con HTTPS. Non será posible iniciar sesión porque isto pode ser un problema de seguridade. Póñase en contacto co seu administrador.</translation>
+        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de inicio de sesión comezou con HTTPS. Non será posíbel iniciar sesión porque isto pode ser un problema de seguridade. Póñase en contacto co seu administrador.</translation>
     </message>
 </context>
 <context>
@@ -2826,7 +2826,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Hai unha nova versión do cliente %1 dispoñible pero o proceso de actualización fallou.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; descargouse. A versión instalada é %3. Se confirmas o reinicio e a actualización, é posible que o teu ordenador se reinicie para completar a instalación.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Hai unha nova versión do cliente %1 dispoñíbel mais o proceso de actualización fallou.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; descargouse. A versión instalada é %3. Se confirma o reinicio e a actualización, é posíbel que o seu computador se reinicie para completar a instalación.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
@@ -3025,12 +3025,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>O novo %1 está dispoñible. Abre %2 para descargar a actualización.</translation>
+        <translation>Xa está dispoñíbel o novo %1. Abra &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; para descargar a actualización.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>O novo %1 está dispoñible. Abre %2 para descargar a actualización.</translation>
+        <translation>Xa está dispoñíbel o novo %1. Abra %2 para descargar a actualización.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
@@ -4610,7 +4610,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation>Non se puido establecer o rexistro do ficheiro na base de datos local: %1</translation>
+        <translation>Non foi posíbel estabelecer o rexistro do ficheiro na base de datos local: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
@@ -4880,22 +4880,22 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>A función de estado non é compatible. Non poderás establecer o teu estado.</translation>
+        <translation>A función de estado non é compatíbel. Non poderá estabelecer o seu estado.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Non se admiten emojis. É posible que algunhas funcións de estado non funcionen.</translation>
+        <translation>Non se admiten «emojis». É posíbel que algunhas funcións de estado non funcionen.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Non se puido establecer o estado. Asegúrate de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel estabelecer o estado. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Non se puido borrar a mensaxe de estado. Asegúrate de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel borrar a mensaxe de estado. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
@@ -5460,7 +5460,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="95"/>
         <source>An error occurred setting the share password.</source>
-        <translation>Produciuse un erro ao establecer o contrasinal de uso compartido.</translation>
+        <translation>Produciuse un erro ao estabelecer o contrasinal de uso compartido.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
@@ -5725,7 +5725,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation>Establecer estado</translation>
+        <translation>Estabelecer o estado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
@@ -5810,7 +5810,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation>Establecer a mensaxe de estado</translation>
+        <translation>Estabelecer a mensaxe de estado</translation>
     </message>
 </context>
 <context>
