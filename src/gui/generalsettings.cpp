@@ -139,6 +139,19 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
+    const auto settingsWidgetVisible = ConfigFile().isNcSettingsWidgetsVisible();
+    _ui->callNotificationsCheckBox->setVisible(settingsWidgetVisible);
+    _ui->newExternalStorage->setVisible(settingsWidgetVisible);
+    _ui->showInExplorerNavigationPaneCheckBox->setVisible(settingsWidgetVisible);
+    _ui->ignoredFilesButton->setVisible(settingsWidgetVisible);
+    _ui->debugArchiveButton->setVisible(settingsWidgetVisible);
+    _ui->aboutGroupBox->setVisible(settingsWidgetVisible);
+    _ui->updateChannelLabel->setVisible(settingsWidgetVisible);
+    _ui->updateChannel->setVisible(settingsWidgetVisible);
+    _ui->updateStateLabel->setVisible(settingsWidgetVisible);
+    _ui->restartButton->setVisible(settingsWidgetVisible);
+    _ui->updateButton->setVisible(settingsWidgetVisible);
+
     connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
@@ -266,6 +279,9 @@ void GeneralSettings::slotUpdateInfo()
     if (ConfigFile().skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesGroupBox->setVisible(false);
+        const auto settingsWidgetVisible = ConfigFile().isNcSettingsWidgetsVisible();
+        _ui->restartButton->setVisible(settingsWidgetVisible);
+        _ui->updateButton->setVisible(settingsWidgetVisible);
         return;
     }
 
@@ -493,6 +509,9 @@ void GeneralSettings::customizeStyle()
     slotUpdateInfo();
 #else
     _ui->updatesGroupBox->setVisible(false);
+    const auto widgetVisible = ConfigFile().isWidgetVisible();
+    _ui->restartButton->setVisible(widgetVisible);
+    _ui->updateButton->setVisible(widgetVisible);
 #endif
 }
 
