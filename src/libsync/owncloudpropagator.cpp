@@ -766,8 +766,6 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
         return false;
     }
 
-    emit touchedFile(fn);
-    emit touchedFile(conflictFilePath);
     if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
         // If the rename fails, don't replace it.
         if (error)

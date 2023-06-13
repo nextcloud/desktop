@@ -92,8 +92,6 @@ public:
     /* Returns whether another sync is needed to complete the sync */
     AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
-    bool wasFileTouched(const QString &fn) const;
-
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
     QString localPath() const { return _localPath; }
@@ -203,12 +201,6 @@ private slots:
     void slotProgress(const SyncFileItem &item, qint64 curent);
     void updateFileTotal(const SyncFileItem &item, qint64 newSize);
 
-    /** Records that a file was touched by a job. */
-    void slotAddTouchedFile(const QString &fn);
-
-    /** Wipes the _touchedFiles hash */
-    void slotClearTouchedFiles();
-
     /** Emit a summary error, unless it was seen before */
     void slotSummaryError(const QString &message);
 
@@ -286,13 +278,7 @@ private:
 
     AnotherSyncNeeded _anotherSyncNeeded;
 
-    /** Stores the time since a job touched a file. */
-    std::multimap<QElapsedTimer, QString> _touchedFiles;
-
     QElapsedTimer _lastUpdateProgressCallbackCall;
-
-    /** For clearing the _touchedFiles variable after sync finished */
-    QTimer _clearTouchedFilesTimer;
 
     /** List of unique errors that occurred in a sync run. */
     QSet<QString> _uniqueErrors;
@@ -308,4 +294,3 @@ private:
     bool _goingDown = false;
 };
 }
-

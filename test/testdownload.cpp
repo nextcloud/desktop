@@ -287,7 +287,8 @@ private slots:
             if (pi.status() != ProgressInfo::Propagation || propConnected || !propagator)
                 return;
             propConnected = true;
-            connect(propagator.data(), &OwncloudPropagator::touchedFile, [&](const QString &s) {
+            connect(propagator.data(), &OwncloudPropagator::itemCompleted, [&](SyncFileItemPtr item) {
+                const QString s = item->_file;
                 if (s.contains(QLatin1String("conflicted copy"))) {
                     QCOMPARE(conflictFile, QString());
                     conflictFile = s;

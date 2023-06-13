@@ -565,13 +565,6 @@ signals:
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName, FileSystem::LockMode mode);
 
-    /** Emitted when propagation touches a file.
-     *
-     * Used to track our own file modifications such that notifications
-     * from the file watcher about these can be ignored.
-     */
-    void touchedFile(const QString &fileName);
-
     void insufficientLocalStorage();
     void insufficientRemoteStorage();
 

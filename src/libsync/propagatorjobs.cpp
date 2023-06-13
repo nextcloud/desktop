@@ -176,7 +176,6 @@ void PropagateLocalMkdir::start()
         done(SyncFileItem::NormalError, tr("Can not create local folder %1 because of a local file name clash with %2").arg(newDirStr, QDir::toNativeSeparators(clash.get())));
         return;
     }
-    emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
         done(SyncFileItem::NormalError, tr("could not create folder %1").arg(newDirStr));
@@ -243,8 +242,6 @@ void PropagateLocalRename::start()
             done(SyncFileItem::SoftError, tr("Could not rename %1 to %2, the file is currently in use").arg(existingFile, targetFile));
             return;
         }
-        emit propagator()->touchedFile(existingFile);
-        emit propagator()->touchedFile(targetFile);
         QString renameError;
         if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
             done(SyncFileItem::NormalError, renameError);

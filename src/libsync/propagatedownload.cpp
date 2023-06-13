@@ -516,7 +516,6 @@ void PropagateDownloadFile::conflictChecksumComputed(CheckSums::Algorithm checks
         auto fn = propagator()->fullLocalPath(_item->_file);
         if (_item->_modtime != _item->_previousModtime) {
             FileSystem::setModTime(fn, _item->_modtime);
-            emit propagator()->touchedFile(fn);
         }
         _item->_modtime = FileSystem::getModTime(fn);
         updateMetadata(/*isConflict=*/false);
@@ -961,7 +960,6 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     QString error;
-    emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
         qCWarning(lcPropagateDownload) << "Rename failed:" << _tmpFile.fileName() << "=>" << fn << "with error:" << error;

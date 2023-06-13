@@ -59,21 +59,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
 
-/** When the client touches a file, block change notifications for this duration (ms)
- *
- * On Linux and Windows the file watcher can't distinguish a change that originates
- * from the client (like a download during a sync operation) and an external change.
- * To work around that, all files the client touches are recorded and file change
- * notifications for these are blocked for some time. This value controls for how
- * long.
- *
- * Reasons this delay can't be very small:
- * - it takes time for the change notification to arrive and to be processed by the client
- * - some time could pass between the client recording that a file will be touched
- *   and its filesystem operation finishing, triggering the notification
- */
-static const std::chrono::milliseconds s_touchedFilesMaxAgeMs(3 * 1000);
-
 // doc in header
 std::chrono::milliseconds SyncEngine::minimumFileAgeForUpload(2000);
 
@@ -106,10 +91,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &l
     _excludedFiles.reset(new ExcludedFiles);
 
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
-
-    _clearTouchedFilesTimer.setSingleShot(true);
-    _clearTouchedFilesTimer.setInterval(30s);
-    connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
 }
 
 SyncEngine::~SyncEngine()
@@ -366,7 +347,6 @@ void SyncEngine::startSync()
 
     _syncRunning = true;
     _anotherSyncNeeded = NoFollowUpSync;
-    _clearTouchedFilesTimer.stop();
 
     _hasNoneFiles = false;
     _hasRemoveFile = false;
@@ -654,7 +634,6 @@ void SyncEngine::slotDiscoveryFinished()
             this, &SyncEngine::updateFileTotal);
         connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotPropagationFinished, Qt::QueuedConnection);
         connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
-        connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
         connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
         connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
         connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
@@ -791,8 +770,6 @@ void SyncEngine::finalize(bool success)
     _uniqueErrors.clear();
     _localDiscoveryPaths.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
-
-    _clearTouchedFilesTimer.start();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem &item, qint64 current)
@@ -837,49 +814,6 @@ void SyncEngine::restoreOldFiles(SyncFileItemSet &syncItems)
             break;
         }
     }
-}
-
-void SyncEngine::slotAddTouchedFile(const QString &fn)
-{
-    QElapsedTimer now;
-    now.start();
-    const QString file = QDir::cleanPath(fn);
-
-    // Iterate from the oldest and remove anything older than 15 seconds.
-    while (true) {
-        // don't use a loop as we do erase in here
-        // don't use remove_if as we can stop as soon as we find the first new item
-        auto start = _touchedFiles.cbegin();
-        if (start == _touchedFiles.cend()) {
-            break;
-        }
-        // Compare to our new QElapsedTimer instead of using elapsed().
-        // This avoids querying the current time from the OS for every loop.
-        const auto elapsed = std::chrono::milliseconds(now.msecsSinceReference() - start->first.msecsSinceReference());
-        if (elapsed <= s_touchedFilesMaxAgeMs) {
-            // We found the first path younger than the maximum age, keep the rest.
-            break;
-        }
-        _touchedFiles.erase(start);
-    }
-
-    // This should be the largest QElapsedTimer yet, use constEnd() as hint.
-    _touchedFiles.insert(_touchedFiles.cend(), { now, file });
-}
-
-void SyncEngine::slotClearTouchedFiles()
-{
-    _touchedFiles.clear();
-}
-
-bool SyncEngine::wasFileTouched(const QString &fn) const
-{
-    // Start from the end (most recent) and look for our path. Check the time just in case.
-    for (auto it = _touchedFiles.crbegin(); it != _touchedFiles.crend(); ++it) {
-        if (it->second == fn)
-            return std::chrono::milliseconds(it->first.elapsed()) <= s_touchedFilesMaxAgeMs;
-    }
-    return false;
 }
 
 AccountPtr SyncEngine::account() const
