@@ -654,14 +654,17 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListen
 
 void SocketApi::command_OPEN_PRIVATE_LINK_VERSIONS(const QString &localFile, SocketListener *)
 {
-    auto openVersionsLink = [](const QUrl &link) {
-        QUrl url(link);
-        QUrlQuery query(url);
-        query.addQueryItem(QStringLiteral("details"), QStringLiteral("versionsTabView"));
-        url.setQuery(query);
-        Utility::openBrowser(url, nullptr);
-    };
-    fetchPrivateLinkUrlHelper(localFile, openVersionsLink);
+    const auto fileData = FileData::get(localFile);
+    if (fileData.isValid() && fileData.folder->accountState()->account()->capabilities().filesSharing().sharing_roles) {
+        fetchPrivateLinkUrl(fileData.folder->accountState()->account(), fileData.folder->webDavUrl(), fileData.serverRelativePath, this, [](const QUrl &url) {
+            const auto queryUrl = Utility::concatUrlPath(url, QString(), {{QStringLiteral("details"), QStringLiteral("versions")}});
+            Utility::openBrowser(queryUrl, nullptr);
+        });
+    } else {
+        fetchPrivateLinkUrlHelper(localFile, [this](const QUrl &link) {
+            Utility::openBrowser(Utility::concatUrlPath(link, {}, {{QStringLiteral("details"), QStringLiteral("versionsTabView")}}), nullptr);
+        });
+    }
 }
 
 void SocketApi::copyUrlToClipboard(const QUrl &link)
@@ -989,8 +992,10 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                     listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + CommonStrings::showInWebBrowser());
                 }
                 // Add link to versions pane if possible
-                if (capabilities.versioningEnabled() && capabilities.privateLinkDetailsParamAvailable() && isOnTheServer && !record.isDirectory()) {
-                    listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
+                if (capabilities.versioningEnabled() && isOnTheServer && !record.isDirectory()) {
+                    if (capabilities.privateLinkDetailsParamAvailable() || capabilities.filesSharing().sharing_roles) {
+                        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
+                    }
                 }
 
                 // Conflict files get conflict resolution actions
