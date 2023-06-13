@@ -994,7 +994,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                 // Add link to versions pane if possible
                 if (capabilities.versioningEnabled() && isOnTheServer && !record.isDirectory()) {
                     if (capabilities.privateLinkDetailsParamAvailable() || capabilities.filesSharing().sharing_roles) {
-                        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
+                        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in web browser"));
                     }
                 }
 
