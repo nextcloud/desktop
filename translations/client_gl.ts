@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="122"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation>Comprobando cambios en &quot;%1&quot;</translation>
+        <translation>Comprobando os cambios en «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="127"/>
@@ -892,7 +892,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Algunhas opcións configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñibles nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation>Algúns axustes configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñíbeis nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguridade do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
@@ -1029,22 +1029,22 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation>Non se pode cambiar o nome do ficheiro porque xa existe un ficheiro co mesmo nome no servidor. Escolle outro nome.</translation>
+        <translation>Non é posíbel cambiar o nome do ficheiro porque xa existe un ficheiro co mesmo nome no servidor. Escolla outro nome.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Non se puido cambiar o nome do ficheiro. Asegúrate de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel cambiar o nome do ficheiro. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Non tes permiso para cambiar o nome deste ficheiro. Pídalle ao autor do ficheiro que o cambie.</translation>
+        <translation>Non ten permisos para cambiar o nome deste ficheiro. Pídalle ao autor do ficheiro que o cambie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>Non se puideron obter os permisos co erro %1</translation>
+        <translation>Produciuse un fallo ao obter os permisos co erro %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
@@ -1087,7 +1087,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation>arquivo A</translation>
+        <translation>ficheiro A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
@@ -1099,29 +1099,29 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation>0 byte</translation>
+        <translation>0 bytes</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation>Abre o ficheiro existente</translation>
+        <translation>Abrir ficheiro existente</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Arquivo de conflito de casos</translation>
+        <translation>Ficheiro de conflito de casos</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation>arquivo B</translation>
+        <translation>ficheiro B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation>Abrir ficheiro de conflito</translation>
+        <translation>Abrir ficheiro en conflito</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
@@ -1454,7 +1454,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Non se puido atopar un ficheiro para a edición local. Asegúrate de que a súa ruta sexa válida e que se sincronice localmente.</translation>
+        <translation>Non foi posíbel atopar un ficheiro para a edición local. Asegúrese de que a ruta sexa a correcta e de que se sincronice localmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
@@ -1462,7 +1462,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="181"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Non se puido atopar un ficheiro para a edición local. Asegúrate de que non se exclúa mediante a sincronización selectiva.</translation>
+        <translation>Non foi posíbel atopar un ficheiro para a edición local. Asegúrese de que non se exclúa mediante a sincronización selectiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="205"/>
@@ -1490,12 +1490,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation>Non se puido atopar unha información de ficheiro remoto para a edición local. Asegúrate de que a súa ruta sexa válida.</translation>
+        <translation>Non foi posíbel atopar unha información de ficheiro remoto para a edición local. Asegúrese de que a súa ruta sexa correcta.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
         <source>Invalid local file path.</source>
-        <translation>Ruta do ficheiro local non válida.</translation>
+        <translation>A ruta do ficheiro local non é correcta.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
@@ -1596,7 +1596,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="234"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao &quot;testemuño&quot; do punto final: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Produciuse un erro ao acceder ao «testemuño» do punto final: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="119"/>
@@ -1813,19 +1813,19 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Todos os ficheiros do cartafol de sincronización &quot;%1&quot; foron borrados do servidor.
-Estes borrados sincronizaranse co teu cartafol de sincronización local, polo que tales ficheiros non estarán dispoñibles a non ser que teñas dereito a restauralos.
-Se decides restaurar os ficheiros, volveranse sincronizar co servidor se tes dereitos para facelo.
-Se decides borrar os ficheiros, non estarán dispoñibles para ti, a non ser que sexas o propietario.</translation>
+        <translation>Todos os ficheiros no cartafol de sincronización «%1» foron eliminados no servidor.
+Estas eliminacións sincronizarse co seu cartafol  local sincronizado, facendo que estes ficheiros non estean dispoñíbeis a menos que teña permisos para restauralos. 
+Se decide restaurar os ficheiros, volveranse sincronizar co servidor se ten permisos para facelo.
+Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o propietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1366"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Borráronse todos os ficheiros do cartafol de sincronización local &quot;%1&quot;. Estes borrados sincronizaranse co teu servidor, polo que tales ficheiros non estarán dispoñibles a non ser que se restauren.
-Estás seguro de que queres sincronizar esas accións co servidor?
-Se isto foi un accidente e decides manter os teus ficheiros, volveranse sincronizar desde o servidor.</translation>
+        <translation>Elimináronse todos os ficheiros do cartafol de sincronización local «%1». Estes ficheiros eliminados sincronizaranse co seu servidor, polo que tales ficheiros non estarán dispoñíbeis a non ser que sexan restaurados.
+Confirma que quere sincronizar esas accións co servidor?
+Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincronizar dende o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1370"/>
@@ -1881,7 +1881,7 @@ Se isto foi un accidente e decides manter os teus ficheiros, volveranse sincroni
     <message>
         <location filename="../src/gui/folderman.cpp" line="415"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Atopouse un diario de sincronización antigo &quot;%1&quot;, pero non se puido eliminar. Asegúrate de que ningunha aplicación o estea usando actualmente.</translation>
+        <translation>Atopouse un diario de sincronización antigo «%1», mais non foi posíbel eliminalo. Asegúrese de que ningunha aplicación estea a usalo actualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1337"/>
@@ -2529,7 +2529,7 @@ Teña en conta que isto só selecciona de que grupo se toman as actualizacións 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation>Produciuse un erro ao ler do chaveiro: &quot;%1&quot;</translation>
+        <translation>Produciuse un fallo ao ler do chaveiro: «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
@@ -2567,7 +2567,7 @@ Teña en conta que isto só selecciona de que grupo se toman as actualizacións 
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation>Esta entrada é proporcionada polo sistema en &quot;%1&quot; e non se pode modificar nesta vista.</translation>
+        <translation>Esta entrada é fornecida polo sistema en «%1» e non se pode modificar nesta vista.</translation>
     </message>
 </context>
 <context>
@@ -2614,7 +2614,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation>Non se poden escribir cambios en &quot;%1&quot;.</translation>
+        <translation>Non é posíbel escribir os cambios en «%1».</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -2662,7 +2662,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation>Non se puido sincronizar o ficheiro &quot;%1&quot; porque o nome contén caracteres que non están permitidos neste sistema.</translation>
+        <translation>Non foi posíbel sincronizar o ficheiro «%1» porque o nome contén caracteres que non están permitidos neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
@@ -2712,7 +2712,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Non se puido cambiar o nome do ficheiro. Asegúrate de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel cambiar o nome do ficheiro. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
@@ -2786,14 +2786,14 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="349"/>
+        <location filename="../src/libsync/logger.cpp" line="352"/>
         <source>Error</source>
         <translation>Produciuse un erro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="350"/>
+        <location filename="../src/libsync/logger.cpp" line="353"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Non se pode abrir o ficheiro &quot;%1&quot;&lt;br/&gt; para escribir. &lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non se pode&lt;/b&gt; gardar!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;O ficheiro «%1»&lt;br/&gt; non se pode abrir para escritura.&lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non se pode&lt;/n&gt; gardar!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2957,7 +2957,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao &quot;testemuño&quot; do punto final: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Produciuse un erro ao acceder ao «testemuño» do punto final: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
@@ -3080,7 +3080,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>O cartafol %1 &quot;%2&quot; está sincronizado co cartafol local &quot;%3&quot;</translation>
+        <translation>O cartafol %1 «%2» está sincronizado co cartafol local «%3»</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="298"/>
@@ -3252,7 +3252,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>A solicitude autenticada ao servidor foi redirixida a &quot;%1&quot;. O URL é incorrecto, o servidor está mal configurado.</translation>
+        <translation>A solicitude autenticada ao servidor foi redirixida a «%1». O URL é incorrecto, o servidor está mal configurado.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
@@ -3359,7 +3359,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Non se pode eliminar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Pecha o cartafol ou ficheiro e preme reintentar ou cancela a configuración.</translation>
+        <translation>Non é posíbel eliminar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Peche o cartafol ou ficheiro e prema en reintentar ou cancele a configuración.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="698"/>
@@ -3458,7 +3458,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="343"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>Os nomes de ficheiros que conteñan o carácter &quot;%1&quot; non son compatibles neste sistema de ficheiros.</translation>
+        <translation>Os nomes de ficheiros que conteñen o carácter «%1» non son compatíbeis neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="345"/>
@@ -3521,89 +3521,89 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O nome do ficheiro está na lista de bloqueo no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="476"/>
+        <location filename="../src/libsync/discovery.cpp" line="475"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>O ficheiro ten a extensión reservada para ficheiros virtuais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="562"/>
+        <location filename="../src/libsync/discovery.cpp" line="561"/>
         <source>size</source>
         <translation>tamaño</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="564"/>
+        <location filename="../src/libsync/discovery.cpp" line="563"/>
         <source>permission</source>
         <translation>permiso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="568"/>
+        <location filename="../src/libsync/discovery.cpp" line="567"/>
         <source>file id</source>
         <translation>ID do ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="572"/>
+        <location filename="../src/libsync/discovery.cpp" line="571"/>
         <source>Server reported no %1</source>
         <translation>O servidor non informou de %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="942"/>
+        <location filename="../src/libsync/discovery.cpp" line="941"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Non se pode sincronizar debido a unha hora de modificación non válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="968"/>
+        <location filename="../src/libsync/discovery.cpp" line="969"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1218"/>
+        <location filename="../src/libsync/discovery.cpp" line="1223"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Conflito ao cargar un cartafol. Vaise aclarar!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1221"/>
+        <location filename="../src/libsync/discovery.cpp" line="1226"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Conflito ao cargar un ficheiro. Vai ser eliminado!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1590"/>
+        <location filename="../src/libsync/discovery.cpp" line="1595"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista de bloqueo de «escolla que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1624"/>
+        <location filename="../src/libsync/discovery.cpp" line="1629"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque vostede non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1629"/>
+        <location filename="../src/libsync/discovery.cpp" line="1634"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque vostede non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1642"/>
+        <location filename="../src/libsync/discovery.cpp" line="1647"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1664"/>
+        <location filename="../src/libsync/discovery.cpp" line="1669"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Moveuse a un destino non válido, restaurándo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1678"/>
+        <location filename="../src/libsync/discovery.cpp" line="1683"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1817"/>
+        <location filename="../src/libsync/discovery.cpp" line="1822"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1883"/>
+        <location filename="../src/libsync/discovery.cpp" line="1888"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation>O servidor respondeu cun erro ao ler o directorio &quot;%1&quot; : %2</translation>
+        <translation>O servidor respondeu cun erro ao ler o directorio «%1» : %2</translation>
     </message>
 </context>
 <context>
@@ -4180,7 +4180,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation>Busca globalmente</translation>
+        <translation>Buscar globalmente</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
@@ -4204,7 +4204,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation>Produciuse un erro ao cifrar o cartafol en &quot;%1&quot;</translation>
+        <translation>Produciuse un fallo ao cifrar o cartafol en «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
@@ -4233,7 +4233,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>O seguinte cartafol cifrause correctamente: &quot;%1&quot;</translation>
+        <translation>O seguinte cartafol foi cifrado correctamente: «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
@@ -4870,12 +4870,12 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation>Non se puideron obter os estados predefinidos. Asegúrate de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel recuperar os estados predefinidos. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Non se puido recuperar o estado. Asegúrate de estar conectado ao servidor.</translation>
+        <translation>Non foi posíbel recuperar o estado. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
@@ -5148,12 +5148,12 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="465"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Comprobando cambios no remoto &quot;%1&quot;</translation>
+        <translation>Comprobando os cambios no «%1» remoto</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="468"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Comprobando cambios no local &quot;%1&quot;</translation>
+        <translation>Comprobando os cambios no cartafol local «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
@@ -5437,7 +5437,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
-        <translation>Crea unha nova ligazón para compartir</translation>
+        <translation>Crear unha nova ligazón para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
@@ -5567,7 +5567,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Busca usuarios ou grupos...</translation>
+        <translation>Buscar usuarios ou grupos...</translation>
     </message>
 </context>
 <context>
@@ -5583,12 +5583,12 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
-        <translation>Sincroniza agora</translation>
+        <translation>Sincronizar agora</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="128"/>
         <source>Resolve conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflitos</translation>
     </message>
 </context>
 <context>
@@ -5657,7 +5657,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="43"/>
         <source>Search files, messages, events …</source>
-        <translation>Busca ficheiros, mensaxes, eventos ...</translation>
+        <translation>Buscar ficheiros, mensaxes, eventos ...</translation>
     </message>
 </context>
 <context>
@@ -5881,12 +5881,12 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="380"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation>A cabeceira da suma de verificación contiña un tipo de suma de verificación descoñecido &quot;%1&quot;</translation>
+        <translation>A cabeceira da suma de comprobación contiña un tipo de suma de comprobación descoñecido «%1»</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="385"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>O ficheiro descargado non coincide coa suma de verificación, retomarase. &quot;%1&quot; != &quot;%2&quot;</translation>
+        <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase. «%1» != «%2»</translation>
     </message>
 </context>
 <context>
@@ -5984,7 +5984,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="46"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 require unha bandexa do sistema que funcione. Se está a executar XFCE, siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;stas instrucións&lt;/a&gt;. En caso contrario, instale unha aplicación da bandexa do sistema como &quot;bandexa&quot; e ténteo de novo.</translation>
+        <translation>%1 necesita dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale unha aplicación de área de notificación como «trayer» e ténteo de novo.</translation>
     </message>
 </context>
 <context>
@@ -6172,7 +6172,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="71"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Produciuse un erro ao iniciar o cliente de correo electrónico para crear unha nova mensaxe. Quizais non estea configurado ningún cliente de correo electrónico predeterminado?</translation>
+        <translation>Produciuse un erro ao iniciar o cliente de correo para crear unha nova mensaxe. Quizais non estea configurado ningún cliente predeterminado de correo?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
