@@ -694,6 +694,13 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
         status = SyncFileItem::DetailError;
         errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
         emit propagator()->insufficientRemoteStorage();
+    } else if (_item->_httpErrorCode == 400) {
+        const auto exception = job->errorStringParsingBodyException(replyContent);
+
+        if (exception.endsWith(QStringLiteral("\\InvalidPath"))) {
+            errorString = tr("Unable to upload an item with invalid characters");
+            status = SyncFileItem::FileNameInvalidOnServer;
+        }
     }
 
     abortWithError(status, errorString);

@@ -35,7 +35,12 @@ class InvalidFilenameDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit InvalidFilenameDialog(AccountPtr account, Folder *folder, QString filePath, QWidget *parent = nullptr);
+    enum class FileLocation {
+        Default = 0,
+        NewLocalFile,
+    };
+
+    explicit InvalidFilenameDialog(AccountPtr account, Folder *folder, QString filePath, FileLocation fileLocation = FileLocation::Default, QWidget *parent = nullptr);
 
     ~InvalidFilenameDialog() override;
 
@@ -53,6 +58,7 @@ private:
     QString _relativeFilePath;
     QString _originalFileName;
     QString _newFilename;
+    FileLocation _fileLocation = FileLocation::Default;
 
     void onFilenameLineEditTextChanged(const QString &text);
     void onMoveJobFinished();
@@ -65,6 +71,7 @@ private:
     bool processLeadingOrTrailingSpacesError(const QString &fileName);
     void onPropfindPermissionSuccess(const QVariantMap &values);
     void onPropfindPermissionError(QNetworkReply *reply = nullptr);
+    void allowRenaming();
 private slots:
     void useInvalidName();
 };

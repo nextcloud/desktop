@@ -274,6 +274,7 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
     case SyncFileItem::BlacklistedError:
     case SyncFileItem::FileLocked:
     case SyncFileItem::FileNameInvalid:
+    case SyncFileItem::FileNameInvalidOnServer:
     case SyncFileItem::FileNameClash:
         // nothing
         break;
@@ -1507,6 +1508,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         case SyncFileItem::FileLocked:
         case SyncFileItem::Restoration:
         case SyncFileItem::FileNameInvalid:
+        case SyncFileItem::FileNameInvalidOnServer:
         case SyncFileItem::DetailError:
         case SyncFileItem::Success:
             break;
