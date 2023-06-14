@@ -19,7 +19,7 @@ if test "${DRONE_TARGET_BRANCH}" = "stable-2.6"; then
     DEBIAN_DISTRIBUTIONS="buster stretch testing"
 else
     UBUNTU_DISTRIBUTIONS="jammy kinetic lunar"
-    DEBIAN_DISTRIBUTIONS="bullseye testing"
+    DEBIAN_DISTRIBUTIONS="bullseye bookworm testing"
 fi
 
 pull_request=${DRONE_PULL_REQUEST:=master}
