@@ -426,12 +426,12 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Cifrado de extremo-a-extremo con ficheiros virtuais</translation>
+        <translation>Cifrado de extremo a extremo con ficheiros virtuais</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo-a-extremo. Para obter a mellor experiencia cos ficheiros virtuais e o cifrado de extremo-a-extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
+        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo a extremo. Para obter a mellor experiencia cos ficheiros virtuais e o cifrado de extremo a extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -461,7 +461,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Activouse o cifrado de Extremo-a-Extremo para esta conta</translation>
+        <translation>Activouse o cifrado de extremo a extremo para esta conta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
@@ -472,8 +472,8 @@ Should an account import be attempted?</source>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>O cifrado de Extremo-a-Extremo non está configurado neste dispositivo. Unha vez configurado, poderás cifrar este cartafol.
-Queres configurar o cifrado de Extremo-a-Extremo?</translation>
+        <translation>O cifrado de extremo a extremo non está configurado neste dispositivo. Unha vez configurado, poderá cifrar este cartafol.
+Quere configurar o cifrado de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -617,7 +617,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Mnemónico de cifrado de Extremo-a-Extremo</translation>
+        <translation>Mnemónico de cifrado de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
@@ -627,17 +627,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Desactivar o cifrado de Extremo-a-Extremo</translation>
+        <translation>Desactivar o cifrado de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Desactivar o cifrado de Extremo-a-Extremo para %1?</translation>
+        <translation>Desactivar o cifrado de extremo a extremo para %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Ao eliminar o cifrado de extremo a extremo, eliminaranse os ficheiros sincronizados localmente que están cifrados.&lt;br&gt;Os  ficheiros cifrados permanecerán no servidor.</translation>
+        <translation>Ao retirar o cifrado de extremo a extremo, retiraranse os ficheiros sincronizados localmente que están cifrados.&lt;br&gt;Os  ficheiros cifrados permanecerán no servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
@@ -760,12 +760,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>A solicitude autenticada ao servidor foi redirixida a &quot;%1&quot;. A URL é incorrecta, o servidor está mal configurado.</translation>
+        <translation>A solicitude autenticada ao servidor foi redirixida a «%1». O URL é incorrecto, o servidor está mal configurado.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Acceso prohibido polo servidor. Para verificar que tes o acceso adecuado, fai &lt;a href=&quot;%1&quot;&gt;clic aquí&lt;/a&gt; para acceder ao servizo co teu navegador.</translation>
+        <translation>Acceso prohibido polo servidor. Para comprobar que dispón do acceso axeitado, &lt;a href=&quot;%1&quot;&gt;prema aquí&lt;/a&gt; para acceder ao servizo co seu navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
@@ -1067,12 +1067,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Conflito de Casos</translation>
+        <translation>Conflito de capitalización</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Non se puido sincronizar o ficheiro porque xera un conflito de casos cun ficheiro existente neste sistema.</translation>
+        <translation>Non foi posíbel sincronizar o ficheiro porque xera un conflito de capitalización cun ficheiro existente neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1141,7 +1141,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Non se puido sincronizar o ficheiro &quot;%1&quot; por mor dun conflito de casos cun ficheiro existente neste sistema.</translation>
+        <translation>Non foi posíbel sincronizar o ficheiro «%1» por mor dun conflito de capitalización cun ficheiro existente neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
@@ -2604,7 +2604,7 @@ Teña en conta que isto só selecciona de que grupo se toman as actualizacións 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Os ficheiros ou cartafoles que coincidan cun patrón non se sincronizarán.
 
-Os elementos onde se permite a eliminación eliminaranse se impiden que se elimine un directorio. Isto é útil para os metadatos.</translation>
+Os elementos onde se permite a eliminación eliminaranse se impiden que se retire un directorio. Isto é útil para os metadatos.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -3015,7 +3015,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation>Non se puido descargar a actualización. Abre %1 para descargar a actualización manualmente.</translation>
+        <translation>Non foi posíbel descargar a actualización. Abra %1 para descargar a actualización manualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
@@ -3359,7 +3359,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Non é posíbel eliminar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Peche o cartafol ou ficheiro e prema en reintentar ou cancele a configuración.</translation>
+        <translation>Non é posíbel retirar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Peche o cartafol ou ficheiro e prema en reintentar ou cancele a configuración.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="698"/>
@@ -3508,7 +3508,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="379"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation>Conflito de choque de casos: Conflito de casos: Ficheiro do servidor descargado e renomeado para evitar conflitos.</translation>
+        <translation>Conflito de capitalización: Descargado e renomeado o ficheiro do servidor para evitar o conflito.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
@@ -4221,9 +4221,9 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation>Non se puido cifrar o seguinte cartafol: &quot;%1&quot;.
+        <translation>Non foi posíbel  cifrar o seguinte cartafol: «%1».
 
-O servidor respondeu cun erro: %2</translation>
+O servidor respondeu co erro: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
@@ -4385,7 +4385,7 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
-        <translation>Nome común (CN):</translation>
+        <translation>Nome común (NC):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
@@ -5024,12 +5024,12 @@ O servidor respondeu cun erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation>Iniciar sesión</translation>
+        <translation>Acceder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation>Rexístrate co provedor</translation>
+        <translation>Rexistrarse cun provedor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
