@@ -1,0 +1,29 @@
+/*
+ *    This software is in the public domain, furnished "as is", without technical
+ *    support, and with no warranty, express or implied, as to its usefulness for
+ *    any purpose.
+ *
+ */
+
+#include <QQmlApplicationEngine>
+#include <qqmlengine.h>
+#include <QQmlContext>
+#include <QQuickItem>
+#include <QtTest>
+
+#include "tray/UserModel.h"
+#include "systray.h"
+#include "theme.h"
+
+using namespace OCC;
+
+class TestWindow: public QObject
+{
+    Q_OBJECT
+
+public:
+
+};
+
+QTEST_MAIN(TestWindow)
+#include "testwindow.moc"

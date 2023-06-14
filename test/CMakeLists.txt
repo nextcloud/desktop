@@ -114,6 +114,24 @@ nextcloud_add_test(RemoteWipe)
 
 nextcloud_add_test(OAuth)
 
+nextcloud_add_test(UserModel)
+nextcloud_add_test(ConfigFile)
+nextcloud_add_test(FolderWizard)
+nextcloud_add_test(OwncloudWizard)
+nextcloud_add_test(SettingsDialog)
+nextcloud_add_test(Flow2AuthWidget)
+nextcloud_add_test(AccountSettings)
+nextcloud_add_test(GeneralSettings)
+nextcloud_add_test(FolderStatusModel)
+nextcloud_add_test(OwncloudSetupPage)
+nextcloud_add_test(FolderStatusDelegate)
+nextcloud_add_test(OwncloudAdvancedSetupPage)
+
+nextcloud_add_test(Window)
+nextcloud_add_test(Welcome)
+nextcloud_add_test(UserLine)
+nextcloud_add_test(HeaderButton)
+
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 
 find_package(CMocka)
