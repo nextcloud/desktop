@@ -73,6 +73,11 @@ public:
         FileNameInvalid,
 
         /**
+         * The filename contains invalid characters and can not be uploaded to the server
+         */
+        FileNameInvalidOnServer,
+
+        /**
          * There is a file name clash (e.g. attempting to download test.txt when TEST.TXT already exists
          * on a platform where the filesystem is case-insensitive
          */

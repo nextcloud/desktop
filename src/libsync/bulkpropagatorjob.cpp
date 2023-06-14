@@ -733,6 +733,7 @@ void BulkPropagatorJob::handleJobDoneErrors(SyncFileItemPtr item,
     case SyncFileItem::FileIgnored:
     case SyncFileItem::FileLocked:
     case SyncFileItem::FileNameInvalid:
+    case SyncFileItem::FileNameInvalidOnServer:
     case SyncFileItem::FileNameClash:
     case SyncFileItem::NoStatus:
     case SyncFileItem::NormalError:

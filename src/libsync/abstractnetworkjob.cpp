@@ -342,6 +342,11 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
     return base;
 }
 
+QString AbstractNetworkJob::errorStringParsingBodyException(const QByteArray &body) const
+{
+    return extractException(body);
+}
+
 AbstractNetworkJob::~AbstractNetworkJob()
 {
     setReply(nullptr);
@@ -421,6 +426,23 @@ QString extractErrorMessage(const QByteArray &errorResponse)
     }
     // Fallback, if message could not be found
     return exception;
+}
+
+QString extractException(const QByteArray &errorResponse)
+{
+    QXmlStreamReader reader(errorResponse);
+    reader.readNextStartElement();
+    if (reader.name() != QLatin1String("error")) {
+        return {};
+    }
+
+    while (!reader.atEnd() && !reader.hasError()) {
+        reader.readNextStartElement();
+        if (reader.name() == QLatin1String("exception")) {
+            return reader.readElementText();
+        }
+    }
+    return {};
 }
 
 QString errorMessage(const QString &baseError, const QByteArray &body)
