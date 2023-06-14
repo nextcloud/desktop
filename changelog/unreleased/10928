@@ -1,0 +1,8 @@
+Enhancement: Persist filter settings for Not Synced tab
+
+We now store the filter settings in the Not Synced tab. So after a
+restart of the client, the filter will still be the same as the last
+time.
+
+https://github.com/owncloud/client/pull/10928
+https://github.com/owncloud/client/issues/10884

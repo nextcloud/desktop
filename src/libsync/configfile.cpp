@@ -91,7 +91,12 @@ const QString newBigFolderSizeLimitC() { return QStringLiteral("newBigFolderSize
 const QString useNewBigFolderSizeLimitC() { return QStringLiteral("useNewBigFolderSizeLimit"); }
 const QString confirmExternalStorageC() { return QStringLiteral("confirmExternalStorage"); }
 const QString moveToTrashC() { return QStringLiteral("moveToTrash"); }
+
+const QString issuesWidgetFilterC()
+{
+    return QStringLiteral("issuesWidgetFilter");
 }
+} // anonymous namespace
 
 QString ConfigFile::_confDir = QString();
 const std::chrono::seconds DefaultRemotePollInterval { 30 };
@@ -143,6 +148,19 @@ void ConfigFile::setShowInExplorerNavigationPane(bool show)
 {
     auto settings = makeQSettings();
     settings.setValue(showInExplorerNavigationPaneC(), show);
+    settings.sync();
+}
+
+QStringList ConfigFile::issuesWidgetFilter() const
+{
+    auto settings = makeQSettings();
+    return settings.value(issuesWidgetFilterC()).toStringList();
+}
+
+void ConfigFile::setIssuesWidgetFilter(const QStringList &checked)
+{
+    auto settings = makeQSettings();
+    settings.setValue(issuesWidgetFilterC(), checked);
     settings.sync();
 }
 

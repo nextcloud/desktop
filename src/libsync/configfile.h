@@ -158,6 +158,9 @@ public:
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
+    QStringList issuesWidgetFilter() const;
+    void setIssuesWidgetFilter(const QStringList &checked);
+
     std::chrono::seconds timeout() const;
     qint64 chunkSize() const;
     qint64 maxChunkSize() const;
