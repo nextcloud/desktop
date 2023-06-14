@@ -61,7 +61,7 @@ public:
     qint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
 
     /** The maximum chunk size in bytes for chunked uploads */
-    qint64 _maxChunkSize = 1000 * 1000 * 1000; // 1000MB
+    qint64 _maxChunkSize = 99 * 1000 * 1000; // 99MB
 
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
