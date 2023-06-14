@@ -994,57 +994,6 @@ QString FolderMan::getBackupName(QString fullPathName) const
     return newName;
 }
 
-bool FolderMan::startFromScratch(const QString &localFolder)
-{
-    if (localFolder.isEmpty()) {
-        return false;
-    }
-
-    QFileInfo fi(localFolder);
-    QDir parentDir(fi.dir());
-    QString folderName = fi.fileName();
-
-    // Adjust for case where localFolder ends with a /
-    if (fi.isDir()) {
-        folderName = parentDir.dirName();
-        parentDir.cdUp();
-    }
-
-    if (fi.exists()) {
-        // It exists, but is empty -> just reuse it.
-        if (fi.isDir() && fi.dir().count() == 0) {
-            qCDebug(lcFolderMan) << "startFromScratch: Directory is empty!";
-            return true;
-        }
-        // Disconnect the socket api from the database to avoid that locking of the
-        // db file does not allow to move this dir.
-        Folder *f = folderForPath(localFolder);
-        if (f) {
-            if (localFolder.startsWith(f->path())) {
-                _socketApi->slotUnregisterPath(f);
-            }
-            f->journalDb()->close();
-            f->slotTerminateSync(); // Normally it should not be running, but viel hilft viel
-        }
-
-        // Make a backup of the folder/file.
-        QString newName = getBackupName(parentDir.absoluteFilePath(folderName));
-        QString renameError;
-        if (!FileSystem::rename(fi.absoluteFilePath(), newName, &renameError)) {
-            qCWarning(lcFolderMan) << "startFromScratch: Could not rename" << fi.absoluteFilePath()
-                                   << "to" << newName << "error:" << renameError;
-            return false;
-        }
-    }
-
-    if (!parentDir.mkdir(fi.absoluteFilePath())) {
-        qCWarning(lcFolderMan) << "startFromScratch: Could not mkdir" << fi.absoluteFilePath();
-        return false;
-    }
-
-    return true;
-}
-
 void FolderMan::setDirtyProxy()
 {
     for (auto *f : qAsConst(_folders)) {

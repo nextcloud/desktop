@@ -161,9 +161,6 @@ public:
      */
     static bool ensureJournalGone(const QString &journalDbFile);
 
-    /** Creates a new and empty local directory. */
-    bool startFromScratch(const QString &);
-
     /// Produce text for use in the tray tooltip
     static QString trayTooltipStatusString(const SyncResult &result, bool paused);
 
