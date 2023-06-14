@@ -493,9 +493,8 @@ private slots:
 
     /** Warn users about an unreliable folder watcher */
     void slotWatcherUnreliable(const QString &message);
-private:
-    void connectSyncRoot();
 
+private:
     void showSyncResultPopup();
 
     bool checkLocalPath();
