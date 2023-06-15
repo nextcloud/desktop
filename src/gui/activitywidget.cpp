@@ -16,23 +16,18 @@
 #include <QtWidgets>
 
 #include "QProgressIndicator.h"
+
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "activitywidget.h"
 #include "commonstrings.h"
-#include "configfile.h"
-#include "folder.h"
-#include "folderman.h"
 #include "issueswidget.h"
-#include "logger.h"
 #include "notificationconfirmjob.h"
 #include "notificationwidget.h"
 #include "openfilemanager.h"
-#include "owncloudpropagator.h"
 #include "protocolwidget.h"
 #include "servernotificationhandler.h"
-#include "syncfileitem.h"
 #include "syncresult.h"
 #include "theme.h"
 

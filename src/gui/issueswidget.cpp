@@ -17,23 +17,15 @@
 
 #include "account.h"
 #include "accountmanager.h"
-#include "accountstate.h"
-#include "common/syncjournalfilerecord.h"
 #include "commonstrings.h"
-#include "configfile.h"
-#include "elidedlabel.h"
 #include "folder.h"
 #include "folderman.h"
 #include "issueswidget.h"
-#include "logger.h"
 #include "models/models.h"
-#include "openfilemanager.h"
 #include "protocolwidget.h"
 #include "syncengine.h"
 #include "syncfileitem.h"
-#include "syncresult.h"
 #include "theme.h"
-
 
 #include "ui_issueswidget.h"
 

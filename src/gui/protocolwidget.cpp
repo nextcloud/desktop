@@ -19,18 +19,13 @@
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "commonstrings.h"
-#include "configfile.h"
 #include "folder.h"
 #include "folderman.h"
 #include "guiutility.h"
-#include "logger.h"
 #include "openfilemanager.h"
 #include "protocolwidget.h"
 #include "syncfileitem.h"
-#include "syncresult.h"
-#include "theme.h"
 
-#include "models/activitylistmodel.h"
 #include "models/expandingheaderview.h"
 
 #include "ui_protocolwidget.h"
