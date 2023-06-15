@@ -317,7 +317,7 @@
         <translation>Produciuse un error descoñecido: a resposta da rede foi eliminada</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>O servidor repondeu «%1 %2» a «%3 %4»</translation>
     </message>
@@ -824,22 +824,22 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Para máis actividades, abra a aplicación Actividade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
         <translation>A obter actividades...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Non se sincronizaran os ficheiros da lista de ignorados e as ligazóns simbólicas.</translation>
     </message>
@@ -1177,7 +1177,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1583"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error writing metadata to the database</source>
         <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
     </message>
@@ -1448,7 +1448,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>Non se puido validar a solicitude para abrir un ficheiro desde o servidor.</translation>
+        <translation>Non foi posíbel validar a solicitude para abrir un ficheiro dende o servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
@@ -1613,7 +1613,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de inicio de sesión comezou con HTTPS. Non será posíbel iniciar sesión porque isto pode ser un problema de seguridade. Póñase en contacto co seu administrador.</translation>
+        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de inicio de sesión comezou con HTTPS. Non será posíbel acceder porque isto pode ser un problema de seguridade. Póñase en contacto co seu administrador.</translation>
     </message>
 </context>
 <context>
@@ -2279,7 +2279,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Aviso:&lt;/b&gt;  %1</translation>
+        <translation>&lt;b&gt;Advertencia:&lt;/b&gt;  %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="52"/>
@@ -2655,32 +2655,32 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
         <translation>Novo nome de ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>Rename file</source>
         <translation>Renomear o ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>Non foi posíbel sincronizar o ficheiro «%1» porque o nome contén caracteres que non están permitidos neste sistema.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
         <translation>Os seguintes caracteres non están permitidos no sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espazos ao principio/ao final</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Comprobando permisos de cambio de nome...</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Non tes permiso para cambiar o nome deste ficheiro. Pídalle ao autor do ficheiro que o cambie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>Non se puideron obter os permisos co erro %1</translation>
     </message>
@@ -2705,22 +2705,22 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
         <translation>Usa un nome non válido</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="222"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>O nome do ficheiro contén caracteres ilegais: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Non foi posíbel cambiar o nome do ficheiro. Asegúrese de estar conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Non se pode cambiar o nome do ficheiro porque xa existe un ficheiro co mesmo nome no servidor. Escolle outro nome.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Could not rename local file. %1</source>
         <translation>Non se puido cambiar o nome do ficheiro local. %1</translation>
     </message>
@@ -2982,7 +2982,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Conta incorrecta&lt;/h1&gt;&lt;p&gt;Iniciou sesión coa conta &lt;em&gt;%1&lt;/em&gt;, pero debe iniciar sesión coa conta &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Por favor, pecha sesión en %3 noutra pestana, &lt;a href=&apos;%4&apos;&gt;prema&lt;/a&gt; aquí e inicie sesión con %2.&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Conta incorrecta&lt;/h1&gt;&lt;p&gt;Accedeu coa conta &lt;em&gt;%1&lt;/em&gt;, mais debe acceder coa conta &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Peche a sesión de %3 noutra lapela, após &lt;a href=&apos;%4&apos;&gt;prema aquí&lt;/a&gt; e acceda con %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3187,13 +3187,13 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="662"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="663"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
         <translation>Erro cos metadatos. Obtendo un formato de metadatos inesperado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="874"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="951"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Imposible obter o tempo de modificación do ficheiro en conflito %1</translation>
     </message>
@@ -3427,7 +3427,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation>Introduce un contrasinal para compartir:</translation>
+        <translation>Introduza un contrasinal para compartir:</translation>
     </message>
 </context>
 <context>
@@ -3609,22 +3609,22 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1356"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
         <translation>non se puido eliminar o ficheiro %1 da base de datos local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1370"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Produciuse un erro ao actualizar os metadatos debido a unha hora de modificación non válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao actualizar os metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1390"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1391"/>
         <source>File is currently in use</source>
         <translation>O ficheiro está en uso</translation>
     </message>
@@ -3713,7 +3713,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>; Produciuse un fallo na restauración: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="307"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Un ficheiro ou cartafol foi eliminado dun recurso compartido só de lectura, pero fallou a restauración: %1</translation>
     </message>
@@ -3935,12 +3935,17 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Produciuse un fallo ao desbloquear un cartafol cifrado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="701"/>
+        <source>Unable to upload an item with invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="798"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao actualizar os metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="801"/>
         <source>The file %1 is currently in use</source>
         <translation>O ficheiro %1 está en uso</translation>
     </message>
@@ -4702,7 +4707,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation>Vexa a continuación os avisos</translation>
+        <translation>Vexa a seguir as advertencias</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
@@ -5506,7 +5511,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
         <source>Set expiration date</source>
-        <translation>Establece a data de caducidade</translation>
+        <translation>Estabelecer a data de caducidade</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
@@ -5601,7 +5606,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
-        <translation>Enviar resposta á mensaxe de chat</translation>
+        <translation>Enviar resposta á mensaxe de conversa</translation>
     </message>
 </context>
 <context>

@@ -317,7 +317,7 @@
         <translation>알 수 없는 오류: 네트워크 응답 객체가 삭제됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>서버에서 &quot;%3 %4&quot;에 &quot;%1 %2&quot;(으)로 응답함</translation>
     </message>
@@ -823,22 +823,22 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
         <translation>더 많은 활동을 보려면 액티비티 앱을 여십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
         <translation>활동 불러오는 중...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>무시 목록의 파일과 심볼릭 링크는 동기화되지 않습니다.</translation>
     </message>
@@ -1176,7 +1176,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1583"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error writing metadata to the database</source>
         <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
     </message>
@@ -2655,32 +2655,32 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>새 파일 이름</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>Rename file</source>
         <translation>파일 이름 바꾸기</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>이름에 이 시스템에서 허용되지 않는 문자가 포함되어 있으므로 파일 &quot;%1&quot;을 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
         <translation>다음 문자들은 시스템에서 허용되지 않습니다. * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; 선행/후행 공백</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>이름 변경 권한 확인 중…</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>이 파일의 이름을 바꿀 권한이 없습니다. 이 파일의 소유자에게 변경을 요청하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>오류 %1(으)로 인해 권한을 불러올 수 없음</translation>
     </message>
@@ -2705,22 +2705,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>잘못된 이름 사용</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="222"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>파일 이름에 허용하지 않는 문자가 있음: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>파일 이름을 바꿀 수 없습니다. 서버에 연결되어 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>서버에 동일한 이름의 파일이 있어 파일의 이름을 변경할 수 없습니다. 다른 이름을 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Could not rename local file. %1</source>
         <translation>로컬 파일의 이름을 변경할 수 없음. %1</translation>
     </message>
@@ -3189,13 +3189,13 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="662"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="663"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="874"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="951"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>%1(으)로 인해 파일의 수정 시각을 불러올 수 없음</translation>
     </message>
@@ -3611,22 +3611,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1356"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
         <translation>로컬 데이터베이스에서 파일 %1을(를) 삭제할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1370"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>유효하지 않은 수정 시간으로 인한 메타데이터 업데이트 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 업데이트 오류: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1390"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1391"/>
         <source>File is currently in use</source>
         <translation>파일이 현재 사용 중입니다.</translation>
     </message>
@@ -3715,7 +3715,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>; 복원 실패: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="307"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>파일 또는 폴더가 읽기 전용 공유에서 제거되었지만 복원에 실패했습니다: %1</translation>
     </message>
@@ -3937,12 +3937,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>암호화된 폴더 해제 실패</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="701"/>
+        <source>Unable to upload an item with invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="798"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="801"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
