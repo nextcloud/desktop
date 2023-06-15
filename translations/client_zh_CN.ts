@@ -1202,7 +1202,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="96"/>
         <source>Conflicting versions of %1.</source>
-        <translation>％1 的版本冲突。</translation>
+        <translation>%1 的版本冲突。</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -1284,12 +1284,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>是否要永久删除目录&lt;i&gt;％1&lt;/i&gt;及其所有内容？</translation>
+        <translation>是否要永久删除目录&lt;i&gt;%1&lt;/i&gt;及其所有内容？</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>是否要永久删除文件&lt;i&gt;％1&lt;/i&gt;？</translation>
+        <translation>是否要永久删除文件&lt;i&gt;%1&lt;/i&gt;？</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
@@ -2137,7 +2137,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>正在等待 ％n 个其他文件夹……</numerusform></translation>
+        <translation><numerusform>正在等待 %n 个其他文件夹……</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
@@ -3240,7 +3240,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>尝试连接到 ％1 的 ％2 …</translation>
+        <translation>尝试连接到 %1 的 %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
@@ -3265,7 +3265,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="482"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新建本地同步文件夹 ％1 …</translation>
+        <translation>正在新建本地同步文件夹 %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
@@ -5143,7 +5143,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>正在同步 ％2 的 ％1（剩余 ％3）</translation>
+        <translation>正在同步 %2 的 %1（剩余 %3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="489"/>
