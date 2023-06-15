@@ -1597,6 +1597,67 @@ private slots:
             QCOMPARE(conflicts.size(), 0);
         }
     }
+
+    void testServer_caseClash_createConflict_thenRemoveOneRemoteFile()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        // remove (UPPERCASE) file
+        fakeFolder.remoteModifier().remove(testUpperCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // make sure we got no conflicts now (conflicted copy gets removed)
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+
+        // insert (UPPERCASE) file back
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // we must get conflits
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        // now remove (lowercase) file
+        fakeFolder.remoteModifier().remove(testLowerCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // make sure we got no conflicts now (conflicted copy gets removed)
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+
+        // remove both files from the server(lower and UPPER case)
+        fakeFolder.remoteModifier().remove(testLowerCaseFile);
+        fakeFolder.remoteModifier().remove(testUpperCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

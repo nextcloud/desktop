@@ -216,7 +216,7 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, e, isHidden))
+        if (handleExcluded(path._target, e, entries, isHidden))
             continue;
 
         const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted() &&
@@ -243,7 +243,7 @@ void ProcessDirectoryJob::process()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, bool isHidden)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden)
 {
     const auto isDirectory = entries.localEntry.isDirectory || entries.serverEntry.isDirectory;
 
@@ -315,6 +315,14 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     item->_file = path;
     item->_originalFile = path;
     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+
+    if (excluded == CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT && canRemoveCaseClashConflictedCopy(path, allEntries)) {
+        excluded = CSYNC_NOT_EXCLUDED;
+        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+        item->_direction = SyncFileItem::Down;
+        emit _discoveryData->itemDiscovered(item);
+        return true;
+    }
 
     if (entries.localEntry.isSymLink) {
         /* Symbolic links are ignored. */
@@ -391,6 +399,38 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     _childIgnored = true;
     emit _discoveryData->itemDiscovered(item);
     return true;
+}
+
+bool ProcessDirectoryJob::canRemoveCaseClashConflictedCopy(const QString &path, const std::map<QString, Entries> &allEntries)
+{
+    const auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByPath(path.toUtf8());
+    const auto originalBaseFileName = QFileInfo(QString(_discoveryData->_localDir + "/" + conflictRecord.initialBasePath)).fileName();
+
+    if (allEntries.find(originalBaseFileName) == allEntries.end()) {
+        // original entry is no longer on the server, remove conflicted copy
+        qCDebug(lcDisco) << "original entry:" << originalBaseFileName << "is no longer on the server, remove conflicted copy:" << path;
+        return true;
+    }
+
+    auto numMatchingEntries = 0;
+    for (auto it = allEntries.cbegin(); it != allEntries.cend(); ++it) {
+        if (it->first.compare(originalBaseFileName, Qt::CaseInsensitive) == 0 && it->second.serverEntry.isValid()) {
+            // only case-insensitive matching entries that are present on the server
+            ++numMatchingEntries;
+        }
+        if (numMatchingEntries >= 2) {
+            break;
+        }
+    }
+
+    if (numMatchingEntries < 2) {
+        // original entry is present on the server but there is no case-clash conflict anymore, remove conflicted copy (only 1 matching file found during case-insensitive search)
+        qCDebug(lcDisco) << "original entry:" << originalBaseFileName << "is present on the server, but there is no case-clas conflict anymore, remove conflicted copy:" << path;
+        _discoveryData->_anotherSyncNeeded = true;
+        return true;
+    }
+
+    return false;
 }
 
 void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path)
