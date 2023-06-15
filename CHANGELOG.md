@@ -14,6 +14,7 @@ Summary
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
+* Enhancement - Persist filter settings for Not Synced tab: [#10928](https://github.com/owncloud/client/pull/10928)
 
 Details
 -------
@@ -58,6 +59,14 @@ Details
    This should reduce the amount of unnecessary checksum computations and attempted syncs.
 
    https://github.com/owncloud/client/pull/10825
+
+* Enhancement - Persist filter settings for Not Synced tab: [#10928](https://github.com/owncloud/client/pull/10928)
+
+   We now store the filter settings in the Not Synced tab. So after a restart of the client, the
+   filter will still be the same as the last time.
+
+   https://github.com/owncloud/client/issues/10884
+   https://github.com/owncloud/client/pull/10928
 
 Changelog for ownCloud Desktop Client [4.1.0] (2023-06-15)
 =======================================
