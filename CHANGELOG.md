@@ -3,51 +3,20 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v4.0.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v4.1.0...master
 
 Summary
 -------
 
-* Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
-* Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
-* Bugfix - Owncloudcmd: Ensure plugin path is initialized on Linux: [#10842](https://github.com/owncloud/client/issues/10842)
-* Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
-* Enhancement - Allow users to call commandline client from AppImage: [#10888](https://github.com/owncloud/client/issues/10888)
 
 Details
 -------
-
-* Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
-
-   We fixed a bug where the client did not follow same site redirects during the setup. If the used
-   url https://test.com/owncloud redirected to https://test.com the new url was not correctly
-   used for the newly created account.
-
-   https://github.com/owncloud/enterprise/issues/5743
-
-* Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
-
-   The systray menu for the ownCloud icon has an entry that shows the sync status. However, when a
-   sync error occurred, the entry would have no text in it. This has now been fixed.
-
-   https://github.com/owncloud/client/issues/10834
-
-* Bugfix - Owncloudcmd: Ensure plugin path is initialized on Linux: [#10842](https://github.com/owncloud/client/issues/10842)
-
-   https://github.com/owncloud/client/issues/10842
-
-* Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
-
-   Whith basic auth the name from the login credentials might not align with the name on the server.
-   We corrected the assumption and no longer change the user name.
-
-   https://github.com/owncloud/client/issues/10856
 
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 
@@ -89,6 +58,51 @@ Details
    This should reduce the amount of unnecessary checksum computations and attempted syncs.
 
    https://github.com/owncloud/client/pull/10825
+
+Changelog for ownCloud Desktop Client [4.1.0] (2023-06-15)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 4.1.0 relevant to
+ownCloud admins and users.
+
+[4.1.0]: https://github.com/owncloud/client/compare/v4.0.0...v4.1.0
+
+Summary
+-------
+
+* Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
+* Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
+* Bugfix - Owncloudcmd: Ensure plugin path is initialized on Linux: [#10842](https://github.com/owncloud/client/issues/10842)
+* Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
+* Enhancement - Allow users to call commandline client from AppImage: [#10888](https://github.com/owncloud/client/issues/10888)
+
+Details
+-------
+
+* Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
+
+   We fixed a bug where the client did not follow same site redirects during the setup. If the used
+   url https://test.com/owncloud redirected to https://test.com the new url was not correctly
+   used for the newly created account.
+
+   https://github.com/owncloud/enterprise/issues/5743
+
+* Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
+
+   The systray menu for the ownCloud icon has an entry that shows the sync status. However, when a
+   sync error occurred, the entry would have no text in it. This has now been fixed.
+
+   https://github.com/owncloud/client/issues/10834
+
+* Bugfix - Owncloudcmd: Ensure plugin path is initialized on Linux: [#10842](https://github.com/owncloud/client/issues/10842)
+
+   https://github.com/owncloud/client/issues/10842
+
+* Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
+
+   Whith basic auth the name from the login credentials might not align with the name on the server.
+   We corrected the assumption and no longer change the user name.
+
+   https://github.com/owncloud/client/issues/10856
 
 * Enhancement - Allow users to call commandline client from AppImage: [#10888](https://github.com/owncloud/client/issues/10888)
 
