@@ -13,6 +13,7 @@ Summary
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
+* Enhancement - Make "Show files versions..." context menu action available: [#10197](https://github.com/owncloud/client/issues/10197)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
 * Enhancement - Persist filter settings for Not Synced tab: [#10928](https://github.com/owncloud/client/pull/10928)
@@ -52,6 +53,10 @@ Details
    https://github.com/owncloud/client/issues/8432
    https://github.com/owncloud/client/pull/10754
    https://github.com/owncloud/client/pull/10758
+
+* Enhancement - Make "Show files versions..." context menu action available: [#10197](https://github.com/owncloud/client/issues/10197)
+
+   https://github.com/owncloud/client/issues/10197
 
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
 
