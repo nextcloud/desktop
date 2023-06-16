@@ -21,6 +21,7 @@
 #include "folder.h"
 #include "folderman.h"
 #include "issueswidget.h"
+#include "libsync/configfile.h"
 #include "models/models.h"
 #include "protocolwidget.h"
 #include "syncengine.h"
@@ -28,8 +29,6 @@
 #include "theme.h"
 
 #include "ui_issueswidget.h"
-
-#include <climits>
 
 namespace {
 bool persistsUntilLocalDiscovery(const OCC::ProtocolItem &data)
