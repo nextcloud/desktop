@@ -48,7 +48,7 @@ set(client_SRCS
     issueswidget.cpp
     activitydata.cpp
     activitywidget.cpp
-    selectivesyncdialog.cpp
+    selectivesyncwidget.cpp
     settingsdialog.cpp
     sharedialog.cpp
     sharelinkwidget.cpp

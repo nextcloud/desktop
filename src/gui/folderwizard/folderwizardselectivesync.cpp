@@ -23,7 +23,7 @@
 
 #include "gui/application.h"
 #include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
-#include "gui/selectivesyncdialog.h"
+#include "gui/selectivesyncwidget.h"
 
 #include "libsync/theme.h"
 

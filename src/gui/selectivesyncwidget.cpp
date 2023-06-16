@@ -11,23 +11,20 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "selectivesyncdialog.h"
-#include "folder.h"
-#include "account.h"
-#include "networkjobs.h"
-#include "theme.h"
-#include "folderman.h"
-#include "configfile.h"
+#include "selectivesyncwidget.h"
+
+#include "gui/folderman.h"
+#include "libsync/configfile.h"
+#include "libsync/networkjobs.h"
+#include "libsync/theme.h"
+
 #include <QDialogButtonBox>
-#include <QVBoxLayout>
-#include <QTreeWidget>
-#include <qpushbutton.h>
 #include <QFileIconProvider>
 #include <QHeaderView>
-#include <QSettings>
-#include <QScopedValueRollback>
-#include <QTreeWidgetItem>
 #include <QLabel>
+#include <QScopedValueRollback>
+#include <QSettings>
+#include <QTreeWidget>
 #include <QVBoxLayout>
 
 namespace OCC {
@@ -82,10 +79,8 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
 
     layout->addWidget(_folderTree);
 
-    connect(_folderTree, &QTreeWidget::itemExpanded,
-        this, &SelectiveSyncWidget::slotItemExpanded);
-    connect(_folderTree, &QTreeWidget::itemChanged,
-        this, &SelectiveSyncWidget::slotItemChanged);
+    connect(_folderTree, &QTreeWidget::itemExpanded, this, &SelectiveSyncWidget::slotItemExpanded);
+    connect(_folderTree, &QTreeWidget::itemChanged, this, &SelectiveSyncWidget::slotItemChanged);
     _folderTree->setSortingEnabled(true);
     _folderTree->sortByColumn(0, Qt::AscendingOrder);
     _folderTree->setColumnCount(2);
@@ -108,11 +103,9 @@ void SelectiveSyncWidget::refreshFolders()
 {
     // TODO: legacy
     PropfindJob *job = new PropfindJob(_account, _account->davUrl(), _folderPath, PropfindJob::Depth::One, this);
-    job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size") });
-    connect(job, &PropfindJob::directoryListingSubfolders,
-        this, &SelectiveSyncWidget::slotUpdateDirectories);
-    connect(job, &PropfindJob::finishedWithError,
-        this, &SelectiveSyncWidget::slotLscolFinishedWithError);
+    job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
+    connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
+    connect(job, &PropfindJob::finishedWithError, this, &SelectiveSyncWidget::slotLscolFinishedWithError);
     job->start();
     _folderTree->clear();
     _loading->show();
@@ -152,8 +145,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
         SelectiveSyncTreeViewItem *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
             item = new SelectiveSyncTreeViewItem(parent);
-            if (parent->checkState(0) == Qt::Checked
-                || parent->checkState(0) == Qt::PartiallyChecked) {
+            if (parent->checkState(0) == Qt::Checked || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
                 for (const auto &str : qAsConst(_oldBlackList)) {
                     if (str == path || str == QLatin1Char('/')) {
@@ -191,9 +183,10 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     const QString pathToRemove = Utility::concatUrlPath(_account->davUrl(), _folderPath).path();
 
     // Check for excludes.
-    list.erase(std::remove_if(list.begin(), list.end(), [&pathToRemove, this](const QString &it) {
-        return _excludedFiles.isExcludedRemote(it, pathToRemove, FolderMan::instance()->ignoreHiddenFiles(), ItemTypeDirectory);
-    }),
+    list.erase(std::remove_if(list.begin(), list.end(),
+                   [&pathToRemove, this](const QString &it) {
+                       return _excludedFiles.isExcludedRemote(it, pathToRemove, FolderMan::instance()->ignoreHiddenFiles(), ItemTypeDirectory);
+                   }),
         list.end());
 
     // Since / cannot be in the blacklist, expand it to the actual
@@ -272,9 +265,8 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
         return;
     // TODO: legacy
     PropfindJob *job = new PropfindJob(_account, _account->davUrl(), _folderPath + dir, PropfindJob::Depth::One, this);
-    job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size") });
-    connect(job, &PropfindJob::directoryListingSubfolders,
-        this, &SelectiveSyncWidget::slotUpdateDirectories);
+    job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
+    connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
     job->start();
 }
 
@@ -407,90 +399,4 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
     return result;
 }
 
-
-SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent, Qt::WindowFlags f)
-    : QDialog(parent, f)
-    , _folder(folder)
-    , _okButton(nullptr) // defined in init()
-{
-    bool ok;
-    init(account);
-    const auto selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (ok) {
-        _selectiveSync->setFolderInfo(_folder->remotePath(), QStringLiteral("/"), selectiveSyncList);
-    } else {
-        _okButton->setEnabled(false);
-    }
-    // Make sure we don't get crashes if the folder is destroyed while we are still open
-    connect(_folder, &QObject::destroyed, this, &QObject::deleteLater);
-}
-
-SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder, QWidget *parent, Qt::WindowFlags f)
-    : QDialog(parent, f)
-    , _folder(nullptr)
-{
-    init(account);
-    _selectiveSync->setFolderInfo(folder, folder);
-}
-
-void SelectiveSyncDialog::init(const AccountPtr &account)
-{
-    setWindowTitle(tr("Choose What to Sync"));
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    _selectiveSync = new SelectiveSyncWidget(account, this);
-    layout->addWidget(_selectiveSync);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
-    _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
-    connect(_okButton, &QPushButton::clicked, this, &SelectiveSyncDialog::accept);
-    QPushButton *button;
-    button = buttonBox->addButton(QDialogButtonBox::Cancel);
-    connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
-    layout->addWidget(buttonBox);
-}
-
-void SelectiveSyncDialog::accept()
-{
-    if (_folder) {
-        bool ok;
-        const auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        if (!ok) {
-            return;
-        }
-        const auto blackList = _selectiveSync->createBlackList();
-        _folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
-
-        FolderMan *folderMan = FolderMan::instance();
-        if (_folder->isSyncRunning()) {
-            _folder->slotTerminateSync();
-        }
-
-        //The part that changed should not be read from the DB on next sync because there might be new folders
-        // (the ones that are no longer in the blacklist)
-        const auto changes = (oldBlackListSet - blackList) + (blackList - oldBlackListSet);
-        for (const auto &it : changes) {
-            _folder->journalDb()->schedulePathForRemoteDiscovery(it);
-            _folder->schedulePathForLocalDiscovery(it);
-        }
-        // Also make sure we see the local file that had been ignored before
-        _folder->slotNextSyncFullLocalDiscovery();
-
-        folderMan->scheduleFolder(_folder);
-    }
-    QDialog::accept();
-}
-
-QSet<QString> SelectiveSyncDialog::createBlackList() const
-{
-    return _selectiveSync->createBlackList();
-}
-
-QSet<QString> SelectiveSyncDialog::oldBlackList() const
-{
-    return _selectiveSync->oldBlackList();
-}
-
-qint64 SelectiveSyncDialog::estimatedSize()
-{
-    return _selectiveSync->estimatedSize();
-}
 }

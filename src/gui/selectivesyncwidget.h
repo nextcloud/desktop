@@ -13,9 +13,9 @@
  */
 
 #pragma once
+#include "accountfwd.h"
 #include <QDialog>
 #include <QTreeWidget>
-#include "accountfwd.h"
 
 #include "csync_exclude.h"
 
@@ -79,34 +79,4 @@ private:
     ExcludedFiles _excludedFiles;
 };
 
-/**
- * @brief The SelectiveSyncDialog class
- * @ingroup gui
- */
-class SelectiveSyncDialog : public QDialog
-{
-    Q_OBJECT
-public:
-    // Dialog for a specific folder (used from the account settings button)
-    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = nullptr, Qt::WindowFlags f = {});
-
-    // Dialog for the whole account (Used from the wizard)
-    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, QWidget *parent = nullptr, Qt::WindowFlags f = {});
-
-    void accept() override;
-
-    QSet<QString> createBlackList() const;
-    QSet<QString> oldBlackList() const;
-
-    // Estimate the size of the total of sync'ed files from the server
-    qint64 estimatedSize();
-
-private:
-    void init(const AccountPtr &account);
-
-    SelectiveSyncWidget *_selectiveSync;
-
-    Folder *_folder;
-    QPushButton *_okButton;
-};
 }

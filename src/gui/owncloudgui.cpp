@@ -49,7 +49,6 @@
 
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "libcloudproviders/libcloudproviders.h"
-#include "selectivesyncdialog.h"
 #endif
 
 using namespace std::chrono_literals;

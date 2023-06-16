@@ -22,7 +22,7 @@
 #include "filesystem.h"
 #include "folder.h"
 #include "lockwatcher.h"
-#include "selectivesyncdialog.h"
+#include "selectivesyncwidget.h"
 #include "socketapi/socketapi.h"
 #include "syncresult.h"
 #include "theme.h"

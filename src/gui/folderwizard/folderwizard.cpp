@@ -34,7 +34,7 @@
 
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
-#include "gui/selectivesyncdialog.h"
+#include "gui/selectivesyncwidget.h"
 #include "gui/spaces/spacesmodel.h"
 
 #include <QDesktopServices>
