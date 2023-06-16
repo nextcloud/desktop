@@ -22,5 +22,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 # Translations
 Icon[et_EE]=@APPLICATION_ICON_NAME@
+Name[et_EE]=@APPLICATION_NAME@ Desktop
 Comment[et_EE]=@APPLICATION_NAME@ töölaua sünkroniseerimise klient
 GenericName[et_EE]=Kausta Sünkroonimine
