@@ -317,7 +317,7 @@
         <translation>Неизвестна грешка: мрежовия отговор беше изтрит</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Сървъра отговори &quot;%1 %2&quot; на &quot;%3 %4&quot;</translation>
     </message>
@@ -824,22 +824,22 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
         <translation>За повече дейности, моля, отворете приложението Дейност.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
         <translation>Извличане на активности ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Файловете от списъка за игнориране, както и символните връзки, не са синхронизирани.</translation>
     </message>
@@ -1177,7 +1177,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1583"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error writing metadata to the database</source>
         <translation>Възника грешка при запис на метаданните в базата данни</translation>
     </message>
@@ -2655,32 +2655,32 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Име на нов файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>Rename file</source>
         <translation>Преименуване на файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>Файлът %1, не можа да бъде синхронизиран, защото съдържа знаци, които не са разрешени в тази система.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
         <translation>Следните знаци не са разрешени в системата: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; водещи/ крайни интервали</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Проверка на права за преименуване ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Нямате право да преименувате този файл. Моля, помолете автора на файла да го преименува.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>Неуспешно извличане на права с грешка %1</translation>
     </message>
@@ -2705,22 +2705,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Използване на невалидно име</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="222"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>Името на файла съдържа непозволени знаци: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Файлът не можа да се преименува. Моля, уверете се, че сте свързани със сървъра. </translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Не може да се преименува файл, защото на сървъра, вече съществува файл със същото име. Моля, изберете друго име.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Could not rename local file. %1</source>
         <translation>Локалният файл не можа да бъде преименуван. %1</translation>
     </message>
@@ -3187,13 +3187,13 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="662"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="663"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
         <translation>Грешка с метаданните. Получаване на непредвиден формат на метаданните.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="874"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="951"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Невъзможно е да се получи час на модификация за файл в конфликт %1</translation>
     </message>
@@ -3441,167 +3441,167 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="321"/>
+        <location filename="../src/libsync/discovery.cpp" line="329"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Не се поддържат символни връзки при синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="329"/>
+        <location filename="../src/libsync/discovery.cpp" line="337"/>
         <source>File is listed on the ignore list.</source>
         <translation>Файлът е посочен в списъка за игнориране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="333"/>
+        <location filename="../src/libsync/discovery.cpp" line="341"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Имена на файлове, завършващи с точка, не се поддържат от тази файлова система.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="343"/>
+        <location filename="../src/libsync/discovery.cpp" line="351"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>Имената на файлове, съдържащи символа „%1“, не се поддържат в тази файлова система.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="345"/>
+        <location filename="../src/libsync/discovery.cpp" line="353"/>
         <source>File name contains at least one invalid character</source>
         <translation>Името на файла съдържа поне един невалиден знак</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="347"/>
+        <location filename="../src/libsync/discovery.cpp" line="355"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Името на файла е запазено име на тази файлова система.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="353"/>
+        <location filename="../src/libsync/discovery.cpp" line="361"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Името на файла съдържа крайни интервали.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="357"/>
+        <location filename="../src/libsync/discovery.cpp" line="365"/>
         <source>Filename contains leading spaces.</source>
         <translation>Името на файла съдържа начални интервали.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="361"/>
+        <location filename="../src/libsync/discovery.cpp" line="369"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Името на файла съдържа начални и крайни интервали.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="365"/>
+        <location filename="../src/libsync/discovery.cpp" line="373"/>
         <source>Filename is too long.</source>
         <translation>Името на файла е твърде дълго.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="369"/>
+        <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Файл / папка се игнорира, защото е скрит.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="372"/>
+        <location filename="../src/libsync/discovery.cpp" line="380"/>
         <source>Stat failed.</source>
         <translation>Неуспешен Отчет</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="375"/>
+        <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Конфликт: Изтеглена е версия на сървъра, а локалното копие е преименувано и не е качено.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Конфликтен сблъсък на случаи: Сървърният файл е изтеглен и преименуван, за да се избегне сблъсък.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Името на файла не може да бъде кодирано във вашата система от файлове.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="386"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Името на файла е в черния списък на сървъра.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <location filename="../src/libsync/discovery.cpp" line="515"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Файлът има разширение, запазено за виртуални файлове.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="561"/>
+        <location filename="../src/libsync/discovery.cpp" line="601"/>
         <source>size</source>
         <translation>размер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="563"/>
+        <location filename="../src/libsync/discovery.cpp" line="603"/>
         <source>permission</source>
         <translation>право</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="567"/>
+        <location filename="../src/libsync/discovery.cpp" line="607"/>
         <source>file id</source>
         <translation>идентификатор на файла</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="571"/>
+        <location filename="../src/libsync/discovery.cpp" line="611"/>
         <source>Server reported no %1</source>
         <translation>Сървърът е отчел не % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="941"/>
+        <location filename="../src/libsync/discovery.cpp" line="981"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Не може да се синхронизира поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="969"/>
+        <location filename="../src/libsync/discovery.cpp" line="1009"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Грешка при изтриване на запис на файл %1 от базата данни</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1223"/>
+        <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Конфликт при качване на папка. Ще бъде изчистен!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1226"/>
+        <location filename="../src/libsync/discovery.cpp" line="1266"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Конфликт при качване на файл. Ще бъде премахнат!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1595"/>
+        <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнориран заради черния списък &apos;изберете какво да синхронизирате&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1629"/>
+        <location filename="../src/libsync/discovery.cpp" line="1669"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Не е разрешено, защото нямате право да добавяте подпапки към тази папка</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1634"/>
+        <location filename="../src/libsync/discovery.cpp" line="1674"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Не е разрешено, защото нямате право да добавяте файлове в тази папка</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1647"/>
+        <location filename="../src/libsync/discovery.cpp" line="1687"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Не е позволено да качвате този файл, тъй като той е само за четене на сървъра, възстановява се</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1669"/>
+        <location filename="../src/libsync/discovery.cpp" line="1709"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Преместено в невалидна цел, възстановява се</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1683"/>
+        <location filename="../src/libsync/discovery.cpp" line="1723"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Не е позволено да се премахва, възстановява се</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1822"/>
+        <location filename="../src/libsync/discovery.cpp" line="1862"/>
         <source>Error while reading the database</source>
         <translation>Грешка при четене на базата данни</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1888"/>
+        <location filename="../src/libsync/discovery.cpp" line="1928"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Сървърът отговори с грешка при четене на директория „%1“: %2</translation>
     </message>
@@ -3609,22 +3609,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1356"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
         <translation>не можа да изтрие файл %1 от локалната БД /база данни/</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1370"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Грешка при актуализиране на метаданните поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка при актуализиране на метаданни: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1390"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1391"/>
         <source>File is currently in use</source>
         <translation>Файлът в момента се използва</translation>
     </message>
@@ -3713,7 +3713,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>; Възстановяването е Неуспешно: % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="307"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Файл или папка бяха премахнати от споделянето само за четене, но възстановяването не бе успешно: % 1</translation>
     </message>
@@ -3935,12 +3935,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Неуспешно отключване на криптирана папка.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="701"/>
+        <source>Unable to upload an item with invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="798"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка при актуализиране на метаданни: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="801"/>
         <source>The file %1 is currently in use</source>
         <translation>Файлът %1 в момента се използва</translation>
     </message>
@@ -4639,22 +4644,22 @@ Server replied with error: %2</source>
         <translation>Не може да се прочете черният списък от локалната база данни</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="634"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Не може да се чете от дневника за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="763"/>
+        <location filename="../src/libsync/syncengine.cpp" line="765"/>
         <source>Cannot open the sync journal</source>
         <translation>Не може да се отвори дневника за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Дисковото пространство е малко: Пропуснати са изтегляния, които биха намалили свободното място под% 1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сървъра няма достатъчно място за някои качвания.</translation>
     </message>

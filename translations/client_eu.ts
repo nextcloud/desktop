@@ -317,7 +317,7 @@
         <translation>Errore ezezaguna: sareko erantzuna ezabatu da</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Zerbitzariak erantzun du &quot;%1 %2&quot;  &quot;%3 %4&quot;-ra</translation>
     </message>
@@ -825,22 +825,22 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Jarduera gehiagorako ireki Jarduerak aplikazioa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
         <translation>Jarduerak eskuratzen ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Ez ikusi zerrendako fitxategiak eta esteka sinbolikoak ez dira sinkronizatuko.</translation>
     </message>
@@ -1178,7 +1178,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1583"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error writing metadata to the database</source>
         <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
@@ -2656,32 +2656,32 @@ Ezabatu daitezkeen elementuak ezabatu egingo dira karpeta bat ezabatzea ekiditen
         <translation>Fitxategi-izen berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>Rename file</source>
         <translation>Berrizendatu fitxategia</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>&quot;%1&quot; fitxategia ezin izan da sinkronizatu izenak sistema honetan onartuta ez dauden karaktereak dituelako.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
         <translation>Hurrengo karaktereak ez daude sisteman onartuta: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; hasierako/amaierako zuriuneak</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Berrizendatze baimenak egiaztatzen ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Ez duzu baimenik fitxategi hau berrizendatzeko. Mesedez, eskatu fitxategiaren jabeari berrizendatzeko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>Ezin izan dira baimenak eskuratu %1 errorearekin</translation>
     </message>
@@ -2706,22 +2706,22 @@ Ezabatu daitezkeen elementuak ezabatu egingo dira karpeta bat ezabatzea ekiditen
         <translation>Erabili izen baliogabea</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="222"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>Fitxategiak karaktere ilegalak dauzka: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Ezin izan da fitxategia berrizendatu. Mesedez egiaztatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Ezin da fitxategia berrizendatu izen berdina duen fitxategi bat existitzen delako zerbitzarian dagoeneko. Mesedez, aukeratu beste izen bat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Could not rename local file. %1</source>
         <translation>Ezin izan da fitxategi lokala berrizendatu. %1</translation>
     </message>
@@ -3188,13 +3188,13 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="662"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="663"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
         <translation>Errorea metadatuekin. Ustekabeko metadatuen formatua lortzea.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="874"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="951"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Ezin izan da lortu %1 gatazkan dagoen fitxategiaren aldatze-denbora</translation>
     </message>
@@ -3442,167 +3442,167 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="321"/>
+        <location filename="../src/libsync/discovery.cpp" line="329"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Esteka sinbolikoak ezin dira sinkronizatu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="329"/>
+        <location filename="../src/libsync/discovery.cpp" line="337"/>
         <source>File is listed on the ignore list.</source>
         <translation>Fitxategia baztertutakoen zerrendan dago.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="333"/>
+        <location filename="../src/libsync/discovery.cpp" line="341"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Puntu batekin amaitzen diren fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="343"/>
+        <location filename="../src/libsync/discovery.cpp" line="351"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>&quot;%1&quot; karakterea daukaten fitxategi-izenak ez dira onartzen fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="345"/>
+        <location filename="../src/libsync/discovery.cpp" line="353"/>
         <source>File name contains at least one invalid character</source>
         <translation>Fitxategi izenak behintzat baliogabeko karaktere bat du</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="347"/>
+        <location filename="../src/libsync/discovery.cpp" line="355"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Fitxategi-izena izen erreserbatua da fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="353"/>
+        <location filename="../src/libsync/discovery.cpp" line="361"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Fitxategi-izenak amaierako zuriunea dauka.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="357"/>
+        <location filename="../src/libsync/discovery.cpp" line="365"/>
         <source>Filename contains leading spaces.</source>
         <translation>Fitxategi-izenak hasierako zuriunea dauka.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="361"/>
+        <location filename="../src/libsync/discovery.cpp" line="369"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Fitxategi-izenak hasierako eta amaierako zuriuneak dauzka.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="365"/>
+        <location filename="../src/libsync/discovery.cpp" line="373"/>
         <source>Filename is too long.</source>
         <translation>Fitxategiaren izena luzeegia da.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="369"/>
+        <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Fitxategia/Karpeta ez da ikusi ezkutuan dagoelako.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="372"/>
+        <location filename="../src/libsync/discovery.cpp" line="380"/>
         <source>Stat failed.</source>
         <translation>Hasierak huts egin du.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="375"/>
+        <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Gatazka: zerbitzari bertsioa deskargatu da, kopia lokala berrizendatua eta ez kargatuta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Kasu-talka gatazka: zerbitzariaren fitxategia deskargatu eta izena aldatu da talka saihesteko.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Fitxategi-izen hori ezin da kodetu fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="386"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Fitxategiaren izena zerrenda beltzean dago zerbitzarian.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <location filename="../src/libsync/discovery.cpp" line="515"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Fitxategiak fitxategi birtualentzako gordetako luzapena du.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="561"/>
+        <location filename="../src/libsync/discovery.cpp" line="601"/>
         <source>size</source>
         <translation>tamaina</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="563"/>
+        <location filename="../src/libsync/discovery.cpp" line="603"/>
         <source>permission</source>
         <translation>baimena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="567"/>
+        <location filename="../src/libsync/discovery.cpp" line="607"/>
         <source>file id</source>
         <translation>fitxategiaren id-a</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="571"/>
+        <location filename="../src/libsync/discovery.cpp" line="611"/>
         <source>Server reported no %1</source>
         <translation>Zerbitzariak ez du %1-rik jakinarazi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="941"/>
+        <location filename="../src/libsync/discovery.cpp" line="981"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="969"/>
+        <location filename="../src/libsync/discovery.cpp" line="1009"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errorea %1 fitxategi erregistroa datu-basetik ezabatzean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1223"/>
+        <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Gatazka gertatu da karpeta kargatzean. Garbituko da!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1226"/>
+        <location filename="../src/libsync/discovery.cpp" line="1266"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Gatazka gertatu da fitxategia kargatzean. Garbituko da!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1595"/>
+        <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ez ikusi egin zaio, &quot;aukeratu zer sinkronizatu&quot; zerrenda beltzagatik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1629"/>
+        <location filename="../src/libsync/discovery.cpp" line="1669"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan azpikarpetak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1634"/>
+        <location filename="../src/libsync/discovery.cpp" line="1674"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan fitxategiak gehitzeko</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1647"/>
+        <location filename="../src/libsync/discovery.cpp" line="1687"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ez dago baimenik fitxategi hau kargatzek zerbitzarian irakurtzeko soilik delako, leheneratzen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1669"/>
+        <location filename="../src/libsync/discovery.cpp" line="1709"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Baliogabeko helburura mugitu da, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1683"/>
+        <location filename="../src/libsync/discovery.cpp" line="1723"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ezabatzeko baimenik gabe, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1822"/>
+        <location filename="../src/libsync/discovery.cpp" line="1862"/>
         <source>Error while reading the database</source>
         <translation>Errorea datu-basea irakurtzean</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1888"/>
+        <location filename="../src/libsync/discovery.cpp" line="1928"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Zerbitzariak errore batekin erantzun du &quot;%1&quot; direktorioa irakurtzean: % 2</translation>
     </message>
@@ -3610,22 +3610,22 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1356"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategia datu-base lokaletik ezabatu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1370"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Errorea metadatuak eguneratzen aldaketa-data baliogabeagatik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1390"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1391"/>
         <source>File is currently in use</source>
         <translation>Fitxategia erabiltzen ari da</translation>
     </message>
@@ -3714,7 +3714,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>; Berreskurapenak huts egin du: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="307"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Fitxategi edo karpeta bat kendu da irakurtzeko soilik zen partekatzetik, baina berreskurapenak huts egin du: %1</translation>
     </message>
@@ -3936,12 +3936,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin izan da enkriptatutako karpeta desblokeatu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="701"/>
+        <source>Unable to upload an item with invalid characters</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="798"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="801"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia erabiltzen ari da</translation>
     </message>
@@ -4640,22 +4645,22 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>Ezin izan da zerrenda beltza irakurri datu-base lokaletik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="634"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Ezin izan da sinkronizazio-egunkaria irakurri.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="763"/>
+        <location filename="../src/libsync/syncengine.cpp" line="765"/>
         <source>Cannot open the sync journal</source>
         <translation>Ezin da sinkronizazio egunerokoa ireki</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Toki gutxi dago diskoan: toki librea %1 azpitik gutxituko zuten deskargak saltatu egin dira.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Ez dago nahiko toki erabilgarririk zerbitzarian hainbat kargatarako.</translation>
     </message>

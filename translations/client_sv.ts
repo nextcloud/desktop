@@ -317,7 +317,7 @@
         <translation>Okänt fel: nätverkssvaret togs bort</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Servern svarade &quot;%1 %2&quot; på &quot;%3 %4&quot;</translation>
     </message>
@@ -825,22 +825,22 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Öppna Aktivitetsappen för fler aktiviteter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
         <translation>Hämtar aktiviteter ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
         <translation>Nätverksfel uppstod: klienten kommer att försöka synkronisera igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Filer från ignorerings-listan och symboliska länkar synkroniseras inte.</translation>
     </message>
@@ -1178,7 +1178,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1583"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error writing metadata to the database</source>
         <translation>Fel vid skrivning av metadata till databasen</translation>
     </message>
@@ -2656,32 +2656,32 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
         <translation>Nytt filnamn</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>Rename file</source>
         <translation>Byt filnamn</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>Filen &quot;%1&quot; kunde inte synkroniseras eftersom namnet innehåller tecken som inte är tillåtna på det här systemet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
         <translation>Följande tecken är inte tillåtna på systemet: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; inledande/efterföljande mellanslag</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
         <translation>Kontrollerar behörigheter för att byta namn ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>Du har inte behörighet att byta namn på den här filen. Be ägaren till filen att byta namn på den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>Misslyckades att hämta behörigheter med felet %1</translation>
     </message>
@@ -2706,22 +2706,22 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
         <translation>Använd ogiltigt namn</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="222"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>Filnamnet innehåller ogiltiga tecken: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Kunde inte byta namn på filen. Kontrollera anslutningen till servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Kunde inte byta namn på filen eftersom filnamnet är upptaget. Ange ett annat filnamn.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Could not rename local file. %1</source>
         <translation>Kunde inte byta namn på lokal fil. %1</translation>
     </message>
@@ -3188,13 +3188,13 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="662"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="663"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
         <translation>Fel metadata. Får oväntat metadataformat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="874"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="951"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Omöjligt att få ändringstid för filen i konflikten %1</translation>
     </message>
@@ -3442,167 +3442,167 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="321"/>
+        <location filename="../src/libsync/discovery.cpp" line="329"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symboliska länkar kan ej synkroniseras.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="329"/>
+        <location filename="../src/libsync/discovery.cpp" line="337"/>
         <source>File is listed on the ignore list.</source>
         <translation>Filen är listad i undantagslistan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="333"/>
+        <location filename="../src/libsync/discovery.cpp" line="341"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Filnamn som slutar med en punkt stöds inte på detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="343"/>
+        <location filename="../src/libsync/discovery.cpp" line="351"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>ilnamn innehållandes tecknet &quot;%1&quot;&apos; stöds inte på detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="345"/>
+        <location filename="../src/libsync/discovery.cpp" line="353"/>
         <source>File name contains at least one invalid character</source>
         <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="347"/>
+        <location filename="../src/libsync/discovery.cpp" line="355"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Detta filnamn är reserverat på detta filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="353"/>
+        <location filename="../src/libsync/discovery.cpp" line="361"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Filnamnet innehåller inledande blanksteg.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="357"/>
+        <location filename="../src/libsync/discovery.cpp" line="365"/>
         <source>Filename contains leading spaces.</source>
         <translation>Filnamnet innehåller inledande blanksteg.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="361"/>
+        <location filename="../src/libsync/discovery.cpp" line="369"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Filnamnet innehåller blanksteg i början och slutet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="365"/>
+        <location filename="../src/libsync/discovery.cpp" line="373"/>
         <source>Filename is too long.</source>
         <translation>Filnamnet är för långt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="369"/>
+        <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Filen/mappen ignoreras eftersom den är dold.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="372"/>
+        <location filename="../src/libsync/discovery.cpp" line="380"/>
         <source>Stat failed.</source>
         <translation>Status misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="375"/>
+        <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikt: Serverversion hämtad, lokal kopia omdöpt och inte uppladdad.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
         <translation>Skiftlägeskonflikt: Serverfilen har laddats ner och döpts om för att undvika konflikt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Filnamnet kan inte avkodas på ditt filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="386"/>
+        <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Filnamnet är svartlistat på servern.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <location filename="../src/libsync/discovery.cpp" line="515"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Filens ändelse är reserverad för virtuella filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="561"/>
+        <location filename="../src/libsync/discovery.cpp" line="601"/>
         <source>size</source>
         <translation>storlek</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="563"/>
+        <location filename="../src/libsync/discovery.cpp" line="603"/>
         <source>permission</source>
         <translation>behörighet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="567"/>
+        <location filename="../src/libsync/discovery.cpp" line="607"/>
         <source>file id</source>
         <translation>fil-ID</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="571"/>
+        <location filename="../src/libsync/discovery.cpp" line="611"/>
         <source>Server reported no %1</source>
         <translation>Servern svarade inte %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="941"/>
+        <location filename="../src/libsync/discovery.cpp" line="981"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="969"/>
+        <location filename="../src/libsync/discovery.cpp" line="1009"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fel vid borttagning av filpost %1 från databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1223"/>
+        <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Konflikt vid uppladdning av en mapp. Den kommer att rensas!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1226"/>
+        <location filename="../src/libsync/discovery.cpp" line="1266"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Konflikt vid uppladdning av en fil. Den kommer att tas bort!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1595"/>
+        <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkroniseras&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1629"/>
+        <location filename="../src/libsync/discovery.cpp" line="1669"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1634"/>
+        <location filename="../src/libsync/discovery.cpp" line="1674"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1647"/>
+        <location filename="../src/libsync/discovery.cpp" line="1687"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte tillåtet att ladda upp denna fil eftersom den är skrivskyddad på servern, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1669"/>
+        <location filename="../src/libsync/discovery.cpp" line="1709"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttade till ogiltigt mål, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1683"/>
+        <location filename="../src/libsync/discovery.cpp" line="1723"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Borttagning tillåts ej, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1822"/>
+        <location filename="../src/libsync/discovery.cpp" line="1862"/>
         <source>Error while reading the database</source>
         <translation>Fel uppstod när databasen skulle läsas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1888"/>
+        <location filename="../src/libsync/discovery.cpp" line="1928"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Servern svarade med ett fel när mappen lästes &quot;%1&quot; : %2</translation>
     </message>
@@ -3610,22 +3610,22 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1356"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
         <translation>Kunde inte ta bort filen %1 från lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1370"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Fel vid uppdatering av metadata på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1390"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1391"/>
         <source>File is currently in use</source>
         <translation>Filen används</translation>
     </message>
@@ -3714,7 +3714,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>; Återställning misslyckades: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="307"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>En fil eller mapp togs bort från en skrivskyddad delning, men återställning misslyckades: %1</translation>
     </message>
@@ -3936,12 +3936,17 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Kunde inte låsa upp krypterad mapp.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="701"/>
+        <source>Unable to upload an item with invalid characters</source>
+        <translation>Det gick inte att ladda upp ett objekt med ogiltiga tecken</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="798"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="801"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 används för tillfället</translation>
     </message>
@@ -4640,22 +4645,22 @@ Servern svarade med fel: %2</translation>
         <translation>Kunde inte läsa svartlistan från den lokala databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="634"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Det går inte att läsa från synkroniseringsjournalen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="763"/>
+        <location filename="../src/libsync/syncengine.cpp" line="765"/>
         <source>Cannot open the sync journal</source>
         <translation>Det går inte att öppna synkroniseringsjournalen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Diskutrymmet är lågt: Hämtningar som skulle reducera det fria utrymmet under %1 hoppas över.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det finns inte tillräckligt med utrymme på servern för vissa uppladdningar.</translation>
     </message>
