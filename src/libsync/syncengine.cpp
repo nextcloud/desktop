@@ -60,7 +60,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
 
 // doc in header
-std::chrono::milliseconds SyncEngine::minimumFileAgeForUpload(2000);
+std::chrono::seconds SyncEngine::minimumFileAgeForUpload(2s);
 
 SyncEngine::SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &localPath,
     const QString &remotePath, OCC::SyncJournalDb *journal)

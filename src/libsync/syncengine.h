@@ -106,7 +106,7 @@ public:
      * To avoid that, uploads of files where the distance between the mtime and the
      * current time is less than this duration are skipped.
      */
-    static std::chrono::milliseconds minimumFileAgeForUpload;
+    static std::chrono::seconds minimumFileAgeForUpload;
 
     /**
      * Control whether local discovery should read from filesystem or db.

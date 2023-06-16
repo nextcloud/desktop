@@ -492,7 +492,7 @@ int main(int argc, char **argv)
                     ctx.account->setDavDisplayName(data.value(QStringLiteral("display-name")).toString());
 
                     // much lower age than the default since this utility is usually made to be run right after a change in the tests
-                    SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
+                    SyncEngine::minimumFileAgeForUpload = std::chrono::seconds(0);
                     sync(ctx);
                 });
                 userJob->start();

@@ -29,13 +29,14 @@
 
 #include "libsync/theme.h"
 
-#include <QNetworkAccessManager>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkAccessManager>
+
+#include <chrono>
 #include <cmath>
-#include <cstring>
 
 using namespace std::chrono_literals;
 
@@ -58,11 +59,11 @@ Q_LOGGING_CATEGORY(lcPropagateUploadNG, "sync.propagator.upload.ng", QtInfoMsg)
 static bool fileIsStillChanging(const SyncFileItem &item)
 {
     const QDateTime modtime = Utility::qDateTimeFromTime_t(item._modtime);
-    const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTimeUtc());
+    const auto secondsSinceMod = std::chrono::seconds(modtime.secsTo(QDateTime::currentDateTimeUtc()));
 
-    return std::chrono::milliseconds(msSinceMod) < SyncEngine::minimumFileAgeForUpload
+    return secondsSinceMod < SyncEngine::minimumFileAgeForUpload
         // if the mtime is too much in the future we *do* upload the file
-        && msSinceMod > -10000;
+        && secondsSinceMod > -1s;
 }
 
 PUTFileJob::PUTFileJob(AccountPtr account, const QUrl &url, const QString &path, std::unique_ptr<QIODevice> &&device, const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent)

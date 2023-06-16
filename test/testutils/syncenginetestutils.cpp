@@ -923,7 +923,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode, boo
     : _localModifier(_tempDir.path())
 {
     // Needs to be done once
-    OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
+    OCC::SyncEngine::minimumFileAgeForUpload = 0s;
 
     QDir rootDir { _tempDir.path() };
     qDebug() << "FakeFolder operating on" << rootDir;
