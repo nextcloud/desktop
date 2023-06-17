@@ -278,7 +278,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>&amp;Escoller...</translation>
+        <translation>&amp;Escoller…</translation>
     </message>
 </context>
 <context>
@@ -406,7 +406,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="148"/>
         <source>Storage space: …</source>
-        <translation>Espazo de almacenamento: ...</translation>
+        <translation>Espazo de almacenamento:…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="256"/>
@@ -831,7 +831,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
-        <translation>A obter actividades...</translation>
+        <translation>Recuperando as actividades…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
@@ -864,7 +864,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>Examinar...</translation>
+        <translation>Examinar…</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -1110,7 +1110,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Ficheiro de conflito de casos</translation>
+        <translation>Ficheiro en conflito de capitalización</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -1584,7 +1584,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL solicitado non comeza por HTTPS a pesar de que o URL de acceso indicado comeza por HTTPS. Non é posíbel acceder porque isto podería implicar un fallo de seguranza. Consulte coa administración do sito.</translation>
+        <translation>O URL solicitado non comeza por HTTPS aínda que o URL de acceso indicado comeza por HTTPS. Non é posíbel acceder porque isto podería implicar un fallo de seguridade. Consulte coa administración do sito.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -2023,7 +2023,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>Fetching folder list from server …</source>
-        <translation>Obtendo a lista de cartafoles do servidor...</translation>
+        <translation>Obtendo a lista de cartafoles do servidor…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
@@ -2356,7 +2356,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation>Mostrar Notificacións de Chamadas</translation>
+        <translation>Amosar as notificacións de chamadas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2445,7 +2445,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
         <source>Show call notification dialogs.</source>
-        <translation>Mostrar diálogos de notificación de chamadas.</translation>
+        <translation>Amosar os diálogos de notificación de chamadas.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
@@ -2637,7 +2637,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Non foi posíbel sincronizar o ficheiro porque contén caracters que non están permitidos neste sistema.</translation>
+        <translation>Non foi posíbel sincronizar o ficheiro porque contén caracteres que non están permitidos neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -2672,7 +2672,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
-        <translation>Comprobando permisos de cambio de nome...</translation>
+        <translation>Comprobando os permisos de cambio de nome…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
@@ -2995,7 +2995,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation>Unha nova actualización para %1 está a piques de instalarse. O actualizador pode solicitar privilexios adicionais durante o proceso. O seu ordenador pode reiniciarse para completar a instalación.</translation>
+        <translation>Unha nova actualización para %1 está a piques de instalarse. O actualizador pode solicitar privilexios adicionais durante o proceso. Pode reiniciar o seu computador para completar a instalación.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -3359,7 +3359,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Non é posíbel retirar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Peche o cartafol ou ficheiro e prema en reintentar ou cancele a configuración.</translation>
+        <translation>Non é posíbel retirar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Peche o cartafol ou ficheiro e prema en volver tentar ou cancele a opción.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="698"/>
@@ -5486,7 +5486,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
         <source>Allow upload and editing</source>
-        <translation>Permitir carga e edición</translation>
+        <translation>Permitir o envío e a edición</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
@@ -5496,12 +5496,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
         <source>File drop (upload only)</source>
-        <translation>Soltar ficheiros (só carga)</translation>
+        <translation>Soltar ficheiro (só envíos) </translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
         <source>Hide download</source>
-        <translation>Ocultar descarga</translation>
+        <translation>Agochar a descarga</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
@@ -5572,7 +5572,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Buscar usuarios ou grupos...</translation>
+        <translation>Buscar usuarios ou grupos…</translation>
     </message>
 </context>
 <context>
@@ -5601,7 +5601,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
-        <translation>Respostar a...</translation>
+        <translation>Responder a…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
@@ -5662,7 +5662,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="43"/>
         <source>Search files, messages, events …</source>
-        <translation>Buscar ficheiros, mensaxes, eventos ...</translation>
+        <translation>Buscar ficheiros, mensaxes, eventos…</translation>
     </message>
 </context>
 <context>
