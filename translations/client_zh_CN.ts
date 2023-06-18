@@ -703,7 +703,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1251"/>
         <source>Connecting to %1 …</source>
-        <translation>正在连接到 %1 …</translation>
+        <translation>正在连接到 %1 ……</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1256"/>
@@ -2019,7 +2019,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>Fetching folder list from server …</source>
-        <translation>正在从服务器获取文件夹列表…</translation>
+        <translation>正在从服务器获取文件夹列表……</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
@@ -2142,7 +2142,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
         <source>Preparing to sync …</source>
-        <translation>正在准备同步…</translation>
+        <translation>正在准备同步……</translation>
     </message>
 </context>
 <context>
@@ -3028,7 +3028,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
-        <translation>正在检查更新服务器…</translation>
+        <translation>正在检查更新服务器……</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
@@ -3240,7 +3240,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>尝试连接到 ％1 的 ％2 …</translation>
+        <translation>尝试连接到 ％1 的 ％2 ……</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
@@ -3265,7 +3265,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="482"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新建本地同步文件夹 ％1 …</translation>
+        <translation>正在新建本地同步文件夹 ％1 ……</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
@@ -4034,7 +4034,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="72"/>
         <source>Loading …</source>
-        <translation>正在加载…</translation>
+        <translation>正在加载……</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
@@ -4260,7 +4260,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
-        <translation>通过电子邮件发送私人链接…</translation>
+        <translation>通过电子邮件发送私人链接……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>

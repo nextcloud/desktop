@@ -3195,7 +3195,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
         <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation>Imposible obter o tempo de modificación do ficheiro en conflito %1</translation>
+        <translation>Non foi posíbel obter o momento de modificación do ficheiro en conflito %1</translation>
     </message>
 </context>
 <context>
@@ -3563,7 +3563,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1266"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation>Conflito ao cargar un ficheiro. Vai ser eliminado!</translation>
+        <translation>Produciuse un conflito ao cargar un ficheiro. Vai ser retirado!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1635"/>
@@ -5409,7 +5409,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ficheiro en conflito</numerusform><numerusform>%1 ficheiros en conflito</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
@@ -6030,7 +6030,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Descargouse a versión do servidor, copiouse o ficheiro local modificado nun ficheiro de conflito de casos</translation>
+        <translation>Descargouse a versión do servidor, copiouse o ficheiro local modificado no ficheiro de conflito de capitalización</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
