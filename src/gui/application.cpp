@@ -228,10 +228,6 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
 
     FolderMan::instance()->setupFolders();
 
-    // Enable word wrapping of QInputDialog (#4197)
-    // TODO:
-    qApp->setStyleSheet(QStringLiteral("QInputDialog QLabel { qproperty-wordWrap:1; }"));
-
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved, this, &Application::slotAccountStateRemoved);
     for (const auto &ai : AccountManager::instance()->accounts()) {
