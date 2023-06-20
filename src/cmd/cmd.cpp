@@ -375,6 +375,8 @@ CmdOptions parseOptions(const QStringList &app_args)
     }
     if (parser.isSet(serverOption)) {
         options.server_url = QUrl::fromUserInput(parser.value(serverOption));
+    } else {
+        options.server_url = options.target_url;
     }
     if (parser.isSet(userOption)) {
         options.user = parser.value(userOption);
@@ -435,14 +437,6 @@ int main(int argc, char **argv)
 
     setupCredentials(ctx);
 
-    if (ctx.options.server_url.isEmpty()) {
-        ctx.options.server_url = ctx.options.target_url;
-        // guess dav path
-        if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
-            ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
-        }
-    }
-
     // don't leak credentials more than needed
     ctx.options.server_url = ctx.options.server_url.adjusted(QUrl::RemoveUserInfo);
     ctx.options.target_url = ctx.options.target_url.adjusted(QUrl::RemoveUserInfo);
@@ -486,10 +480,17 @@ int main(int argc, char **argv)
                 }
 
                 auto userJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/user"), {}, {}, nullptr);
-                QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx] {
+                QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx = ctx]() mutable {
                     const QJsonObject data = userJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
                     ctx.account->setDavUser(data.value(QStringLiteral("id")).toString());
                     ctx.account->setDavDisplayName(data.value(QStringLiteral("display-name")).toString());
+
+                    if (ctx.options.server_url == ctx.options.target_url) {
+                        // guess dav path
+                        if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
+                            ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
+                        }
+                    }
 
                     // much lower age than the default since this utility is usually made to be run right after a change in the tests
                     SyncEngine::minimumFileAgeForUpload = std::chrono::seconds(0);
@@ -499,10 +500,9 @@ int main(int argc, char **argv)
             });
             capabilitiesJob->start();
         } else {
-            switch (checkServerJob->reply()->error()) {
-            case QNetworkReply::OperationCanceledError:
+            if (checkServerJob->reply()->error() == QNetworkReply::OperationCanceledError) {
                 qCritical() << "Looking up " << ctx.account->url().toString() << " timed out.";
-            default:
+            } else {
                 qCritical() << "Failed to resolve " << ctx.account->url().toString() << " Error: " << checkServerJob->reply()->errorString();
             }
             qApp->exit(EXIT_FAILURE);

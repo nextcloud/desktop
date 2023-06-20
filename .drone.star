@@ -85,7 +85,7 @@ config = {
                 "skip_in_pr": True,
             },
             "ocis": {
-                "version": "2.0.0",
+                "version": "3.0.0",
                 # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
                 "tags": "~@skipOnOCIS",
             },
