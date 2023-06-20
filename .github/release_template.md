@@ -16,10 +16,9 @@ __TODO__:
 * [ ] QA: Check the translations coming from transifex: https://github.com/owncloud/client/commits/ -> Filter based on a release branch/tag and search for `[tx] updated client translations from transifex [skip ci]`
 * [ ] DEV: Check for new OpenSSL version 
 * [ ] DEV: Check [dependencies](https://confluence.owncloud.com/display/OG/Dependencies) for updates
-* [ ] DEV: Prepare the release in a `X.x` version branch (a patch release is maintained in the minor release branch)  
-  If this *is* a major or minor release:
-  * [ ] DEV: Create new `X.x` version branch.
-  * [ ] QA: In drone adjust the branch to run nightly (GUI tests](https://confluence.owncloud.com/display/OG/Squish+Testing#SquishTesting-Prerequisite) to the next release branch @individual-it 
+* [ ] DEV: For a major release create `X` version branch
+  * [ ] QA: In drone adjust the branch for nightly [GUI tests](https://confluence.owncloud.com/display/OG/Squish+Testing#SquishTesting-Prerequisite) @individual-it
+* [ ] DEV: Create a tag 
 * [ ] DEV: bump VERSION.cmake in master to say 3.(x+1).x unless already done.
 
 ### Build
@@ -54,6 +53,7 @@ __TODO__:
 * Manual tests:
    * [ ] QA: [Changelog](https://github.com/owncloud/client/blob/master/CHANGELOG.md) test
    * [ ] QA: Regression test
+   * [ ] QA: Branded regression test
 
 ### Final Rebuild after QA Approval
 
