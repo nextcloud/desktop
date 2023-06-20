@@ -511,10 +511,9 @@ int main(int argc, char **argv)
             });
             capabilitiesJob->start();
         } else {
-            switch (checkServerJob->reply()->error()) {
-            case QNetworkReply::OperationCanceledError:
+            if (checkServerJob->reply()->error() == QNetworkReply::OperationCanceledError) {
                 qCritical() << "Looking up " << ctx.account->url().toString() << " timed out.";
-            default:
+            } else {
                 qCritical() << "Failed to resolve " << ctx.account->url().toString() << " Error: " << checkServerJob->reply()->errorString();
             }
             qApp->exit(EXIT_FAILURE);
