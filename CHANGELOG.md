@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
+* Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
@@ -34,6 +35,13 @@ Details
    deadlocked.
 
    https://github.com/owncloud/client/pull/10905
+
+* Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
+
+   We fixed a bug where the wrong dav user was used in the url, when the username from the credentials
+   differed from the username used on the server.
+
+   https://github.com/owncloud/client/issues/10946
 
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 
