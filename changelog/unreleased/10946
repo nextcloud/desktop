@@ -1,0 +1,5 @@
+Bugfix: Wrong davUser in cmd client
+
+We fixed a bug where the wrong dav user was used in the url, when the username from the credentials differed from the username used on the server.
+
+https://github.com/owncloud/client/issues/10946
