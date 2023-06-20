@@ -144,7 +144,7 @@ void ProtocolWidget::showContextMenu(QWidget *parent, ProtocolItemModel *model, 
                     menu->addAction(tr("Retry sync"), parent, [data, folder = QPointer<Folder>(data.folder())] {
                         if (folder) {
                             folder->journalDb()->wipeErrorBlacklistEntry(data.path());
-                            FolderMan::instance()->scheduleFolder(folder, true);
+                            FolderMan::instance()->scheduler()->enqueueFolder(folder, SyncScheduler::Priority::Medium);
                         }
                     });
                 default:

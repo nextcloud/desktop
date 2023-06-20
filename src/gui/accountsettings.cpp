@@ -14,6 +14,7 @@
 
 
 #include "accountsettings.h"
+#include "scheduling/syncscheduler.h"
 #include "ui_accountsettings.h"
 
 #include "account.h"
@@ -525,7 +526,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             }
             folder->slotNextSyncFullLocalDiscovery();
 
-            FolderMan::instance()->scheduleFolder(folder);
+            FolderMan::instance()->scheduler()->enqueueFolder(folder);
 
             ui->_folderList->doItemsLayout();
             ui->selectiveSyncStatus->setVisible(false);
@@ -669,7 +670,7 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
 void AccountSettings::slotScheduleCurrentFolder()
 {
     if (auto folder = selectedFolder()) {
-        FolderMan::instance()->scheduleFolder(folder);
+        FolderMan::instance()->scheduler()->enqueueFolder(folder);
     }
 }
 
@@ -679,7 +680,7 @@ void AccountSettings::slotScheduleCurrentFolderForceFullDiscovery()
         folder->slotWipeErrorBlacklist();
         folder->slotNextSyncFullLocalDiscovery();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
-        FolderMan::instance()->scheduleFolder(folder);
+        FolderMan::instance()->scheduler()->enqueueFolder(folder);
     }
 }
 
@@ -690,14 +691,14 @@ void AccountSettings::slotForceSyncCurrentFolder()
         for (auto *folder : FolderMan::instance()->folders()) {
             if (folder->isSyncRunning()) {
                 folder->slotTerminateSync();
-                FolderMan::instance()->scheduleFolder(folder);
+                FolderMan::instance()->scheduler()->enqueueFolder(folder);
             }
         }
 
         selectedFolder->slotWipeErrorBlacklist(); // issue #6757
         selectedFolder->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
         // Insert the selected folder at the front of the queue
-        FolderMan::instance()->scheduleFolder(selectedFolder, true);
+        FolderMan::instance()->scheduler()->enqueueFolder(selectedFolder, SyncScheduler::Priority::High);
     }
 }
 

@@ -323,6 +323,7 @@ void AccountState::checkConnectivity(bool blockJobs)
     if (account()->hasCapabilities()) {
         // IF the account is connected the connection check can be skipped
         // if the last successful etag check job is not so long ago.
+        // TODO: https://github.com/owncloud/client/issues/10935
         const auto pta = account()->capabilities().remotePollInterval();
         const auto polltime = duration_cast<seconds>(ConfigFile().remotePollInterval(pta));
         const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());

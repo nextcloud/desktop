@@ -124,7 +124,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
             folder->journalDb()->forceRemoteDiscoveryNextSync();
             folder->reloadExcludes();
             folder->slotNextSyncFullLocalDiscovery();
-            folderMan->scheduleFolder(folder);
+            folderMan->scheduler()->enqueueFolder(folder);
         }
     }
 }

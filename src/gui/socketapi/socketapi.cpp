@@ -15,6 +15,7 @@
  */
 
 #include "socketapi.h"
+#include "scheduling/syncscheduler.h"
 #include "socketapi_p.h"
 
 #include "gui/commonstrings.h"
@@ -692,7 +693,7 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
 
         // Trigger sync
         data.folder->schedulePathForLocalDiscovery(data.folderRelativePath);
-        data.folder->scheduleThisFolderSoon();
+        FolderMan::instance()->scheduler()->enqueueFolder(data.folder, SyncScheduler::Priority::Medium);
     }
 }
 
@@ -711,7 +712,7 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
 
         // Trigger sync
         data.folder->schedulePathForLocalDiscovery(data.folderRelativePath);
-        data.folder->scheduleThisFolderSoon();
+        FolderMan::instance()->scheduler()->enqueueFolder(data.folder, SyncScheduler::Priority::Medium);
     }
 }
 

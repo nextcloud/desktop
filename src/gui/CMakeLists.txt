@@ -78,6 +78,9 @@ set(client_SRCS
     models/protocolitemmodel.cpp
 
     spacemigration.cpp
+
+    scheduling/syncscheduler.cpp
+    scheduling/etagwatcher.cpp
 )
 
 set(3rdparty_SRC

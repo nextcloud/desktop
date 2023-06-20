@@ -42,7 +42,7 @@ static void updateFolder(const AccountPtr &account, const QString &path)
 
             // Schedule a sync so it can update the remote permission flag and let the socket API
             // know about the shared icon.
-            f->scheduleThisFolderSoon();
+            FolderMan::instance()->scheduler()->enqueueFolder(f);
         }
     }
 }

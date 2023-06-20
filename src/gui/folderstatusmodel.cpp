@@ -102,7 +102,6 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
         _accountState = accountState;
 
         connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &FolderStatusModel::slotFolderSyncStateChange);
-        connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged, this, &FolderStatusModel::slotFolderScheduleQueueChanged);
 
         if (accountState->supportsSpaces()) {
             connect(accountState->account()->spacesManager(), &GraphApi::SpacesManager::updated, this, [this] {
@@ -937,7 +936,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             }
             // Also make sure we see the local file that had been ignored before
             folder->slotNextSyncFullLocalDiscovery();
-            FolderMan::instance()->scheduleFolder(folder);
+            FolderMan::instance()->scheduler()->enqueueFolder(folder);
         }
     }
 
@@ -1137,15 +1136,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         // Reset progress info.
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::NotYetStarted) {
-        FolderMan *folderMan = FolderMan::instance();
-        int pos = folderMan->scheduleQueue().indexOf(f);
-        for (auto other : folderMan->folders()) {
-            if (other != f && other->isSyncRunning())
-                pos += 1;
-        }
-        if (pos > 0) {
-            pi._overallSyncString = tr("Waiting for %n other folder(s)...", "", pos);
-        }
+        pi._overallSyncString = tr("Queued");
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
@@ -1164,14 +1155,6 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         && (state == SyncResult::Success || state == SyncResult::Problem)) {
         // There is a new or a removed folder. reset all data
         resetAndFetch(index(folderIndex));
-    }
-}
-
-void FolderStatusModel::slotFolderScheduleQueueChanged()
-{
-    // Update messages on waiting folders.
-    for (auto *f : FolderMan::instance()->folders()) {
-        slotFolderSyncStateChange(f);
     }
 }
 
@@ -1234,7 +1217,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         }
         // Also make sure we see the local file that had been ignored before
         folder->slotNextSyncFullLocalDiscovery();
-        FolderMan::instance()->scheduleFolder(folder);
+        FolderMan::instance()->scheduler()->enqueueFolder(folder);
     }
 
     resetFolders();

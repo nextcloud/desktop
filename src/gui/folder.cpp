@@ -32,6 +32,7 @@
 #include "folderwatcher.h"
 #include "localdiscoverytracker.h"
 #include "networkjobs.h"
+#include "scheduling/syncscheduler.h"
 #include "settingsdialog.h"
 #include "socketapi/socketapi.h"
 #include "syncengine.h"
@@ -105,7 +106,6 @@ Folder::Folder(const FolderDefinition &definition,
 {
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
-    _timeSinceLastEtagCheckDone.start();
 
     SyncResult::Status status = SyncResult::NotYetStarted;
     if (definition.paused) {
@@ -127,11 +127,6 @@ Folder::Folder(const FolderDefinition &definition,
         }
 
         connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
-        connect(_engine.data(), &SyncEngine::rootEtag, this, [this](const QString &etag, const QDateTime &time) {
-            qCInfo(lcFolder) << "Root etag from during sync:" << etag;
-            this->accountState()->tagLastSuccessfullETagRequest(time);
-            _lastEtag = etag;
-        });
 
         connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
         connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
@@ -149,11 +144,6 @@ Folder::Folder(const FolderDefinition &definition,
         connect(_engine.data(), &SyncEngine::aboutToPropagate,
             this, &Folder::slotLogPropagationStart);
         connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
-
-        _scheduleSelfTimer.setSingleShot(true);
-        _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
-        connect(&_scheduleSelfTimer, &QTimer::timeout,
-            this, &Folder::slotScheduleThisFolder);
 
         connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
             this, &Folder::slotFolderConflicts);
@@ -401,32 +391,12 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected() && isReady() && _accountState->account()->hasCapabilities();
+    return !syncPaused() && accountState()->isConnected() && isReady() && _accountState->account()->hasCapabilities() && _folderWatcher;
 }
 
 bool Folder::isReady() const
 {
     return _vfsIsReady;
-}
-
-bool Folder::dueToSync() const
-{
-    // conditions taken from previous folderman implementation
-    if (isSyncRunning() || etagJob() || !canSync()) {
-        return false;
-    }
-
-    ConfigFile cfg;
-    // the default poll time of 30 seconds as it had been in the client forever.
-    // Now with https://github.com/owncloud/client/pull/8777 also the server capabilities are considered.
-    const auto pta = accountState()->account()->capabilities().remotePollInterval();
-    const auto polltime = cfg.remotePollInterval(pta);
-
-    const auto timeSinceLastSync = std::chrono::milliseconds(_timeSinceLastEtagCheckDone.elapsed());
-    if (timeSinceLastSync >= polltime) {
-        return true;
-    }
-    return false;
 }
 
 void Folder::setSyncPaused(bool paused)
@@ -466,48 +436,6 @@ SyncResult Folder::syncResult() const
 void Folder::prepareToSync()
 {
     setSyncState(SyncResult::NotYetStarted);
-}
-
-void Folder::slotRunEtagJob()
-{
-    qCInfo(lcFolder) << "Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
-
-    AccountPtr account = _accountState->account();
-
-    if (_requestEtagJob) {
-        qCInfo(lcFolder) << remoteUrl().toString() << "has ETag job queued, not trying to sync";
-        return;
-    }
-
-    if (!canSync()) {
-        qCInfo(lcFolder) << "Not syncing.  :" << remoteUrl().toString() << _definition.paused << _accountState->state();
-        return;
-    }
-
-    // Do the ordinary etag check for the root folder and schedule a
-    // sync if it's different.
-
-    _requestEtagJob = new RequestEtagJob(account, webDavUrl(), remotePath(), this);
-    _requestEtagJob->setTimeout(60s);
-    // check if the etag is different when retrieved
-    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::finishedSignal, this, [this] {
-        if (_requestEtagJob->httpStatusCode() == 207) {
-            // re-enable sync if it was disabled because network was down
-            FolderMan::instance()->setSyncEnabled(true);
-
-            if (_lastEtag != _requestEtagJob->etag()) {
-                qCInfo(lcFolder) << "Compare etag with previous etag: last:" << _lastEtag << ", received:" << _requestEtagJob->etag() << "-> CHANGED";
-                _lastEtag = _requestEtagJob->etag();
-                slotScheduleThisFolder();
-            }
-
-            _accountState->tagLastSuccessfullETagRequest(_requestEtagJob->responseQTimeStamp());
-        }
-        _timeSinceLastEtagCheckDone.start();
-    });
-
-    FolderMan::instance()->slotScheduleETagJob(_requestEtagJob);
-    // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
 
 void Folder::showSyncResultPopup()
@@ -641,8 +569,14 @@ void Folder::startVfs()
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-wal"), SyncFileStatus::StatusExcluded);
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-shm"), SyncFileStatus::StatusExcluded);
         _engine->setSyncOptions(loadSyncOptions());
+        registerFolderWatcher();
         _vfsIsReady = true;
-        slotScheduleThisFolder();
+        Q_EMIT FolderMan::instance()->folderListChanged();
+        // we are setup, schedule ourselves if we can
+        // if not the scheduler will take care of it later.
+        if (canSync()) {
+            FolderMan::instance()->scheduler()->enqueueFolder(this);
+        }
     });
     connect(_vfs.data(), &Vfs::error, this, [this](const QString &error) {
         _syncResult.appendErrorString(error);
@@ -763,7 +697,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
 
         // Also schedule this folder for a sync, but only after some delay:
         // The sync will not upload files that were changed too recently.
-        scheduleThisFolderSoon();
+        QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [this] { FolderMan::instance()->scheduler()->enqueueFolder(this); });
     }
 }
 
@@ -794,7 +728,7 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
     // Add to local discovery
     schedulePathForLocalDiscovery(relativepath);
-    slotScheduleThisFolder();
+    FolderMan::instance()->scheduler()->enqueueFolder(this);
 }
 
 void Folder::setVirtualFilesEnabled(bool enabled)
@@ -1130,7 +1064,7 @@ void Folder::slotSyncFinished(bool success)
     }
 
     // syncStateChange from setSyncState needs to be emitted first
-    QTimer::singleShot(0, this, &Folder::slotEmitFinishedDelayed);
+    QTimer::singleShot(0, this, [this] { Q_EMIT syncFinished(_syncResult); });
 
     _lastSyncDuration = std::chrono::milliseconds(_timeSinceLastSyncStart.elapsed());
     _timeSinceLastSyncDone.start();
@@ -1149,23 +1083,7 @@ void Folder::slotSyncFinished(bool success)
         // Sometimes another sync is requested because a local file is still
         // changing, so wait at least a small amount of time before syncing
         // the folder again.
-        scheduleThisFolderSoon();
-    }
-}
-
-void Folder::slotEmitFinishedDelayed()
-{
-    emit syncFinished(_syncResult);
-
-    // Immediately check the etag again if there was some sync activity.
-    if ((_syncResult.status() == SyncResult::Success
-            || _syncResult.status() == SyncResult::Problem)
-        && (_syncResult.firstItemDeleted()
-               || _syncResult.firstItemNew()
-               || _syncResult.firstItemRenamed()
-               || _syncResult.firstItemUpdated()
-               || _syncResult.firstNewConflictItem())) {
-        slotRunEtagJob();
+        QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [this] { FolderMan::instance()->scheduler()->enqueueFolder(this); });
     }
 }
 
@@ -1222,11 +1140,6 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 void Folder::slotLogPropagationStart()
 {
     _fileLog->logLap(QStringLiteral("Propagation starts"));
-}
-
-void Folder::slotScheduleThisFolder()
-{
-    FolderMan::instance()->scheduleFolder(this);
 }
 
 void Folder::slotNextSyncFullLocalDiscovery()
@@ -1302,13 +1215,6 @@ void Folder::slotWatcherUnreliable(const QString &message)
     ocApp()->gui()->raiseDialog(msgBox);
 }
 
-void Folder::scheduleThisFolderSoon()
-{
-    if (!_scheduleSelfTimer.isActive()) {
-        _scheduleSelfTimer.start();
-    }
-}
-
 void Folder::setSaveBackwardsCompatible(bool save)
 {
     _saveBackwardsCompatible = save;
@@ -1316,11 +1222,7 @@ void Folder::setSaveBackwardsCompatible(bool save)
 
 void Folder::registerFolderWatcher()
 {
-    if (!isReady()) {
-        return;
-    }
-    if (_folderWatcher)
-        return;
+    Q_ASSERT(!_folderWatcher);
 
     _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged, this,
@@ -1371,8 +1273,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
         } else {
             _allowRemoveAllOnce = true;
         }
-        _lastEtag.clear();
-        slotScheduleThisFolder();
+        FolderMan::instance()->scheduler()->enqueueFolder(this);
         setSyncPaused(oldPaused);
     });
     connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);

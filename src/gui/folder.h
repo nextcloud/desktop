@@ -238,12 +238,6 @@ public:
         return _syncResult.status() == SyncResult::SetupError;
     }
 
-    /**
-     *  Returns true if the folder needs sync poll interval wise, and can
-     *  sync due to its internal state
-     */
-    bool dueToSync() const;
-
     void prepareToSync();
 
     /** True if the folder is currently synchronizing */
@@ -290,7 +284,6 @@ public:
         return *_vfs;
     }
 
-    RequestEtagJob *etagJob() const { return _requestEtagJob; }
     auto lastSyncTime() const { return QDateTime::currentDateTime().addMSecs(-msecSinceLastSync().count()); }
     std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
     std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
@@ -312,17 +305,6 @@ public:
       */
     bool isFileExcludedRelative(const QString &relativePath) const;
 
-    /** Calls schedules this folder on the FolderMan after a short delay.
-      *
-      * This should be used in situations where a sync should be triggered
-      * because a local file was modified. Syncs don't upload files that were
-      * modified too recently, and this delay ensures the modification is
-      * far enough in the past.
-      *
-      * The delay doesn't reset with subsequent calls.
-      */
-    void scheduleThisFolderSoon();
-
     /**
       * Migration: When this flag is true, this folder will save to
       * the backwards-compatible 'Folders' section in the config file.
@@ -332,12 +314,6 @@ public:
     /** Used to have placeholders: save in placeholder config section */
     void setSaveInFoldersWithPlaceholders() { _saveInFoldersWithPlaceholders = true; }
 
-    /**
-     * Sets up this folder's folderWatcher if possible.
-     *
-     * May be called several times.
-     */
-    void registerFolderWatcher();
 
     /** virtual files of some kind are enabled
      *
@@ -387,6 +363,7 @@ signals:
     void syncPausedChanged(Folder *, bool paused);
     void canSyncChanged();
 
+
     /**
      * Fires for each change inside this folder that wasn't caused
      * by sync activity.
@@ -394,9 +371,6 @@ signals:
     void watchedFileChangedExternally(const QString &path);
 
 public slots:
-
-    void slotRunEtagJob();
-
     /**
        * terminate the current sync run
        */
@@ -465,16 +439,9 @@ private slots:
 
     void slotItemCompleted(const SyncFileItemPtr &);
 
-    void slotEmitFinishedDelayed();
-
     void slotNewBigFolderDiscovered(const QString &, bool isExternal);
 
     void slotLogPropagationStart();
-
-    /** Adds this folder to the list of scheduled folders in the
-     *  FolderMan.
-     */
-    void slotScheduleThisFolder();
 
     /** Adjust sync result based on conflict data from IssuesWidget.
      *
@@ -495,6 +462,13 @@ private:
     bool checkLocalPath();
 
     SyncOptions loadSyncOptions();
+
+    /**
+     * Sets up this folder's folderWatcher if possible.
+     *
+     * May be called several times.
+     */
+    void registerFolderWatcher();
 
     enum LogStatus {
         LogStatusRemove,
@@ -517,9 +491,6 @@ private:
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
-    QPointer<RequestEtagJob> _requestEtagJob;
-    QString _lastEtag;
-    QElapsedTimer _timeSinceLastEtagCheckDone;
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;
     QElapsedTimer _timeSinceLastFullLocalDiscovery;
@@ -536,8 +507,6 @@ private:
     mutable SyncJournalDb _journal;
 
     QScopedPointer<SyncRunFileLog> _fileLog;
-
-    QTimer _scheduleSelfTimer;
 
     /**
      * When the same local path is synced to multiple accounts, only one

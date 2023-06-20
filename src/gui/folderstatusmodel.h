@@ -187,7 +187,6 @@ private slots:
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(Folder *f);
-    void slotFolderScheduleQueueChanged();
     void slotNewBigFolder();
 
     /**
