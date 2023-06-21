@@ -210,7 +210,7 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _sortModel = new Models::SignalledQSortFilterProxyModel(this);
     connect(_sortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
     _sortModel->setSourceModel(_model);
-    _statusSortModel = new SyncFileItemStatusSetSortFilterProxyModel(this);
+    _statusSortModel = new SyncFileItemStatusSetSortFilterProxyModel(this); // Note: this will restore a previously set filter, if there was one.
     connect(_statusSortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
     _statusSortModel->setSourceModel(_sortModel);
     _statusSortModel->setSortRole(Qt::DisplayRole); // Sorting should be done based on the text in the column cells, but...
@@ -234,6 +234,7 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
         showFilterMenu(_ui->_filterButton);
     });
+    filterDidChange(); // Set the appropriate label.
 
     _ui->_tooManyIssuesWarning->hide();
     connect(_model, &ProtocolItemModel::rowsInserted, this, [this] {
@@ -355,7 +356,7 @@ void IssuesWidget::filterDidChange()
         filterCount += 1;
     }
 
-    _ui->_filterButton->setText(CommonStrings::filterButtonText(filterCount));
+    _ui->_filterButton->setText(filterCount > 0 ? CommonStrings::filterButtonText(filterCount) : tr("Filter"));
 }
 
 void IssuesWidget::slotItemContextMenu()
@@ -401,12 +402,13 @@ std::function<void(void)> IssuesWidget::addStatusFilter(QMenu *menu)
 
     // Add the other non-error items:
     const std::vector<SyncFileItem::Status> OtherStatusItems = {
-        SyncFileItem::Status::Conflict,
-        SyncFileItem::Status::FileIgnored,
-        SyncFileItem::Status::Restoration,
-        SyncFileItem::Status::BlacklistedError,
-        SyncFileItem::Status::Excluded,
-        SyncFileItem::Status::Message
+        SyncFileItem::Status::Conflict, //
+        SyncFileItem::Status::FileIgnored, //
+        SyncFileItem::Status::Restoration, //
+        SyncFileItem::Status::BlacklistedError, //
+        SyncFileItem::Status::Excluded, //
+        SyncFileItem::Status::Message, //
+        SyncFileItem::Status::FilenameReserved, //
     };
     // list of OtherStatusItems with the localised name
     std::vector<std::pair<QString, SyncFileItem::Status>> otherStatusItems;

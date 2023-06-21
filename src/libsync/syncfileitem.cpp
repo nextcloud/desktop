@@ -105,7 +105,7 @@ QString Utility::enumToDisplayName(SyncFileItem::Status s)
     case OCC::SyncFileItem::Message:
         return QCoreApplication::translate("SyncFileItem::Status", "Message");
     case OCC::SyncFileItem::FilenameReserved:
-        return QCoreApplication::translate("SyncFileItem::Status", "Filename reserved");
+        return QCoreApplication::translate("SyncFileItem::Status", "Filename Reserved");
     case OCC::SyncFileItem::StatusCount:
         Q_UNREACHABLE();
     }

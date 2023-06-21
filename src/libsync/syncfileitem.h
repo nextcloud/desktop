@@ -51,6 +51,9 @@ public:
     Q_ENUM(Direction)
 
     enum Status : uint8_t { // stored in 4 bits
+        // IMPORTANT: if something changes in this enum, please check `IssuesWidget::addStatusFilter`
+        // if it needs adjustment. The same for `SyncFileItemStatusSetSortFilterProxyModel`.
+
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop

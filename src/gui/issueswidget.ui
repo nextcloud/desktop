@@ -40,11 +40,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="_filterButton">
-       <property name="text">
-        <string>Filter</string>
-       </property>
-      </widget>
+      <widget class="QPushButton" name="_filterButton"/>
      </item>
     </layout>
    </item>
