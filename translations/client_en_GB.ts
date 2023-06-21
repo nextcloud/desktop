@@ -1553,7 +1553,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="157"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtual files are not available for the selected folder</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="170"/>
@@ -1581,7 +1581,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Select the local folder</translation>
     </message>
 </context>
 <context>
@@ -1629,7 +1629,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation type="unfinished"/>
+        <translation>This folder can&apos;t be synced. Please choose another one.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
@@ -1639,7 +1639,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1647,7 +1647,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Use virtual files instead of downloading content immediately%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
@@ -1698,7 +1698,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on &amp;Login</source>
-        <translation type="unfinished"/>
+        <translation>Start on &amp;Login</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1713,12 +1713,12 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Log Settings</source>
-        <translation type="unfinished"/>
+        <translation>Log Settings</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Advanced - Approval of folder sync (Non virtual file mode only)</source>
-        <translation type="unfinished"/>
+        <translation>Advanced - Approval of folder sync (Non virtual file mode only)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -1753,7 +1753,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use &amp;Monochrome Icons in the system tray</source>
-        <translation type="unfinished"/>
+        <translation>Use &amp;Monochrome Icons in the system tray</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
@@ -1819,7 +1819,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="75"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Language changes require a restart of this application to take effect.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="218"/>
@@ -1843,12 +1843,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="346"/>
         <source>unknown (%1)</source>
-        <translation type="unfinished"/>
+        <translation>unknown (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="330"/>
         <source>(use default)</source>
-        <translation type="unfinished"/>
+        <translation>(use default)</translation>
     </message>
 </context>
 <context>
@@ -1869,7 +1869,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="113"/>
         <source>Please enter your password to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Please enter your password to log in to your account.</translation>
     </message>
 </context>
 <context>
@@ -1909,7 +1909,9 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Files or folders matching a pattern will not be synchronised. Changes take effect the next time folders are synchronised.
+
+Items, where deletion is allowed, will be deleted if they prevent a directory from being removed. This is useful for metadata.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
@@ -3818,7 +3820,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="81"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Select the local folder</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
