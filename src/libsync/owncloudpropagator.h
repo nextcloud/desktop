@@ -456,7 +456,7 @@ public:
     bool _abortRequested = false;
 
     /** The list of currently active jobs.
-        This list contains the jobs that are currently using ressources and is used purely to
+        This list contains the jobs that are currently using resources and is used purely to
         know how many jobs there is currently running for the scheduler.
         Jobs add themself to the list when they do an assynchronous operation.
         Jobs can be several time on the list (example, when several chunks are uploaded in parallel)
@@ -468,7 +468,7 @@ public:
 
     /** Per-folder quota guesses.
      *
-     * This starts out empty. When an upload in a folder fails due to insufficent
+     * This starts out empty. When an upload in a folder fails due to insufficient
      * remote quota, the quota guess is updated to be attempted_size-1 at maximum.
      *
      * Note that it will usually just an upper limit for the actual quota - but

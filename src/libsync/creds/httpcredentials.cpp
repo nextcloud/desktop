@@ -391,7 +391,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
         emit fetched();
     } else {
         // we come here if the password is empty or any other keychain
-        // error happend.
+        // error happened.
 
         _fetchErrorString = job->error() != QKeychain::EntryNotFound ? job->errorString() : QString();
 
@@ -528,7 +528,7 @@ void HttpCredentials::persist()
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {
         // Option 1: If we have a pkcs12 bundle, that'll be written to the config file
-        // and we'll just store the bundle password in the keychain. That's prefered
+        // and we'll just store the bundle password in the keychain. That's preferred
         // since the keychain on older Windows platforms can only store a limited number
         // of bytes per entry and key/cert may exceed that.
         auto *job = new QKeychain::WritePasswordJob(Theme::instance()->appName());

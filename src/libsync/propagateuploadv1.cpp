@@ -256,7 +256,7 @@ void PropagateUploadFileV1::slotPutFinished()
         }
     }
 
-    // Check whether the file changed since discovery. the file check here is the original and not the temprary.
+    // Check whether the file changed since discovery. the file check here is the original and not the temporary.
     Q_ASSERT(_item->_modtime > 0);
     if (_item->_modtime <= 0) {
         qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;

@@ -97,7 +97,7 @@ bool StoreMetaDataApiJob::finished()
 			emit error(_fileId, retCode);
 		}
 
-		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
 }
@@ -148,7 +148,7 @@ bool UpdateMetadataApiJob::finished()
 			emit error(_fileId, retCode);
 		}
 
-		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
 }

@@ -349,7 +349,7 @@ bool Systray::raiseFileDetailDialogs(const QString &localPath)
         continue;
     }
 
-    // If it is empty then we have raised no dialogs, so return false (and viceversa)
+    // If it is empty then we have raised no dialogs, so return false (and vice-versa)
     return !_fileDetailDialogs.empty();
 }
 

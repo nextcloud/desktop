@@ -53,7 +53,7 @@ bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QMod
 
     // Then compare by status
     if (leftSyncFileItemStatus != rightSyncFileItemStatus) {
-        // We want to shove erors towards the top.
+        // We want to shove errors towards the top.
         return (leftSyncFileItemStatus != SyncFileItem::NoStatus &&
                 leftSyncFileItemStatus != SyncFileItem::Success) ||
                 leftSyncFileItemStatus == SyncFileItem::FatalError ||

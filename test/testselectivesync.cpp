@@ -77,7 +77,7 @@ private slots:
         QCOMPARE(sizeRequests.count(), 1); // "A/newBigDir";
         sizeRequests.clear();
 
-        // Simulate that we accept all files by seting a wildcard white list
+        // Simulate that we accept all files by setting a wildcard white list
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
         fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));

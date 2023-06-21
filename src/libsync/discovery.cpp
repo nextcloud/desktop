@@ -771,7 +771,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
         if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
             // We are syncing a file for the first time (local entry is invalid) and it is encrypted file that will be virtual once synced
-            // to avoid having error of "file has changed during sync" when trying to hydrate it excplicitly - we must remove Constants::e2EeTagSize bytes from the end
+            // to avoid having error of "file has changed during sync" when trying to hydrate it explicitly - we must remove Constants::e2EeTagSize bytes from the end
             // as explicit hydration does not care if these bytes are present in the placeholder or not, but, the size must not change in the middle of the sync
             // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag Constants::e2EeTagSize bytes
             // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
@@ -1503,7 +1503,7 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
 
     // Do we have an UploadInfo for this?
     // Maybe the Upload was completed, but the connection was broken just before
-    // we recieved the etag (Issue #5106)
+    // we received the etag (Issue #5106)
     auto up = _discoveryData->_statedb->getUploadInfo(path._original);
     if (up._valid && up._contentChecksum == serverEntry.checksumHeader) {
         // Solve the conflict into an upload, or nothing

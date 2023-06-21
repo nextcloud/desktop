@@ -23,7 +23,7 @@
 #include <QUrl>
 
 #define OCS_SUCCESS_STATUS_CODE 100
-// Apparantly the v2.php URLs can return that
+// Apparently the v2.php URLs can return that
 #define OCS_SUCCESS_STATUS_CODE_V2 200
 // Two factor auth notification returns Accepted 202
 #define OCS_ACCEPTED_STATUS_CODE 202

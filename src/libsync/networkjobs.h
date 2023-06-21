@@ -518,7 +518,7 @@ private:
 };
 
 /**
- * @brief A basic job around a network request without extra funtionality
+ * @brief A basic job around a network request without extra functionality
  * @ingroup libsync
  *
  * Primarily adds timeout and redirection handling.

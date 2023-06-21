@@ -198,7 +198,7 @@ void PushNotifications::handleAuthenticated()
     emit ready();
 
     // We maybe reconnected to websocket while being offline for a
-    // while. To not miss any notifications that may have happend,
+    // while. To not miss any notifications that may have happened,
     // emit all the signals once.
     emitFilesChanged();
     emitNotificationsChanged();

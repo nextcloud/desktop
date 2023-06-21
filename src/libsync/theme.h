@@ -278,9 +278,9 @@ public:
     [[nodiscard]] bool doNotUseProxy() const;
 
     /**
-     * This is only usefull when previous version had a different overrideServerUrl
+     * This is only useful when previous version had a different overrideServerUrl
      * with a different auth type in that case You should then specify "http" or "shibboleth".
-     * Normaly this should be left empty.
+     * Normally this should be left empty.
      */
     [[nodiscard]] QString forceConfigAuthType() const;
 
@@ -352,7 +352,7 @@ public:
     void setSystrayUseMonoIcons(bool mono);
 
     /**
-     * Retrieve wether to use mono icons for systray
+     * Retrieve whether to use mono icons for systray
      */
     [[nodiscard]] bool systrayUseMonoIcons() const;
 
@@ -458,7 +458,7 @@ public:
     /**
      * @brief the server folder that should be queried for the quota information
      *
-     * This can be configured to show the quota infromation for a different
+     * This can be configured to show the quota information for a different
      * folder than the root. This is the folder on which the client will do
      * PROPFIND calls to get "quota-available-bytes" and "quota-used-bytes"
      *

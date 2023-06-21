@@ -1534,7 +1534,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
 
     // The metadata is being retrieved as a string stored in a json.
-    // This *seems* to be broken but the RFC doesn't explicits how it wants.
+    // This *seems* to be broken but the RFC doesn't explicit how it wants.
     // I'm currently unsure if this is error on my side or in the server implementation.
     // And because inside of the meta-data there's an object called metadata, without '-'
     // make it really different.

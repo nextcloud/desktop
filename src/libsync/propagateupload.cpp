@@ -368,7 +368,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
 
 void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
 {
-    // Remove ourselfs from the list of active job, before any posible call to done()
+    // Remove ourselves from the list of active job, before any possible call to done()
     // When we start chunks, we will add it again, once for every chunks.
     propagator()->_activeJobList.removeOne(this);
 
@@ -723,7 +723,7 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
 }
 
-// This function is used whenever there is an error occuring and jobs might be in progress
+// This function is used whenever there is an error occurring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
     if (_aborting)
@@ -864,7 +864,7 @@ void PropagateUploadFileCommon::abortNetworkJobs(
 
         // Abort the job
         if (abortType == AbortType::Asynchronous) {
-            // Connect to finished signal of job reply to asynchonously finish the abort
+            // Connect to finished signal of job reply to asynchronously finish the abort
             connect(reply, &QNetworkReply::finished, this, oneAbortFinished);
         }
         reply->abort();
