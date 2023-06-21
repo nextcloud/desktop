@@ -97,29 +97,23 @@ void FolderWizardLocalPath::cleanupPage()
 
 bool FolderWizardLocalPath::isComplete() const
 {
-    QUrl serverUrl = _account->url();
+    auto serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
 
-    const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
-
-
-    bool isOk = errorStr.isEmpty();
-    QStringList warnStrings;
-    if (!isOk) {
-        warnStrings << errorStr;
-    }
-
+    const auto errorMessage = FolderMan::instance()->checkPathValidityForNewFolder(QDir::fromNativeSeparators(
+                                                                                       _ui.localFolderLineEdit->text()),
+                                                                                   serverUrl).second;
+    const auto noErrorMessage = errorMessage.isEmpty();
     _ui.warnLabel->setWordWrap(true);
-    if (isOk) {
+    if (noErrorMessage) {
         _ui.warnLabel->hide();
         _ui.warnLabel->clear();
     } else {
         _ui.warnLabel->show();
-        QString warnings = formatWarnings(warnStrings);
-        _ui.warnLabel->setText(warnings);
+        _ui.warnLabel->setText(formatWarnings({errorMessage}));
     }
-    return isOk;
+
+    return noErrorMessage;
 }
 
 void FolderWizardLocalPath::slotChooseLocalFolder()
