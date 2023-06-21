@@ -194,18 +194,14 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
 {
-    QTreeWidgetItem *current = _ui.folderTreeWidget->currentItem();
-
-    QString parent('/');
-    if (current) {
-        parent = current->data(0, Qt::UserRole).toString();
-    }
-
+    const auto *currentItem = _ui.folderTreeWidget->currentItem();
     auto *dlg = new QInputDialog(this);
 
     dlg->setWindowTitle(tr("Create Remote Folder"));
     dlg->setLabelText(tr("Enter the name of the new folder to be created below \"%1\":")
-                          .arg(parent));
+                          .arg(currentItem?
+                                   currentItem->data(0, Qt::UserRole).toString() :
+                                   QStringLiteral("/")));
     dlg->open(this, SLOT(slotCreateRemoteFolder(QString)));
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 }
