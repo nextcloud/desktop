@@ -1188,12 +1188,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Introduza a súa frase de paso de cifrado de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>Introduza a súa frase de contrasinal de cifrado de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1377"/>
         <source>Enter E2E passphrase</source>
-        <translation>Introduza a frase de paso E2E</translation>
+        <translation>Introduza a frase de contrasinal E2E</translation>
     </message>
 </context>
 <context>
@@ -5880,17 +5880,17 @@ O servidor respondeu co erro: %2</translation>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="340"/>
+        <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
         <translation>A cabeceira da suma de comprobación é incorrecta.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="380"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>A cabeceira da suma de comprobación contiña un tipo de suma de comprobación descoñecido «%1»</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="385"/>
+        <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase. «%1» != «%2»</translation>
     </message>
