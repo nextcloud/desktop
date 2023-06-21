@@ -468,7 +468,7 @@ chrono::milliseconds OCC::ConfigFile::fullLocalDiscoveryInterval() const
 {
     auto settings = makeQSettings();
     settings.beginGroup(defaultConnection());
-    return millisecondsValue(settings, fullLocalDiscoveryIntervalC(), chrono::hours(1));
+    return millisecondsValue(settings, fullLocalDiscoveryIntervalC(), 1h);
 }
 
 chrono::milliseconds ConfigFile::notificationRefreshInterval(const QString &connection) const

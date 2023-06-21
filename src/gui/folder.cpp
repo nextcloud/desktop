@@ -934,18 +934,11 @@ void Folder::startSync()
 
     setDirtyNetworkLimits();
 
-    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
-        auto interval = ConfigFile().fullLocalDiscoveryInterval();
-        QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
-        if (!env.isEmpty()) {
-            interval = std::chrono::milliseconds(env.toLongLong());
-        }
-        return interval;
-    }();
-    bool hasDoneFullLocalDiscovery = _timeSinceLastFullLocalDiscovery.isValid();
-    bool periodicFullLocalDiscoveryNow =
-        fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
-        && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
+    const std::chrono::milliseconds fullLocalDiscoveryInterval = ConfigFile().fullLocalDiscoveryInterval();
+    const bool hasDoneFullLocalDiscovery = _timeSinceLastFullLocalDiscovery.isValid();
+    // negative fullLocalDiscoveryInterval means we don't require periodic full runs
+    const bool periodicFullLocalDiscoveryNow =
+        fullLocalDiscoveryInterval.count() >= 0 && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
     if (_folderWatcher && _folderWatcher->isReliable()
         && hasDoneFullLocalDiscovery
         && !periodicFullLocalDiscoveryNow) {
