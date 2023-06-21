@@ -1091,7 +1091,7 @@ private slots:
             return nullptr;
         });
 
-        // make sure the first sync failes and files get restored to original folder
+        // make sure the first sync fails and files get restored to original folder
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.syncOnce());
@@ -1142,7 +1142,7 @@ private slots:
             return nullptr;
         });
 
-        // make sure the first sync failes and files get restored to original folder
+        // make sure the first sync fails and files get restored to original folder
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.syncOnce());

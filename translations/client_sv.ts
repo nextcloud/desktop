@@ -5880,17 +5880,17 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="340"/>
+        <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
         <translation>Kontrollsummans header är felformaterad.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="380"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Kontrollsummans header innehåller en okänd kontrollsumma av typ &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="385"/>
+        <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Den nedladdade filen matchar inte kontrollsumman, den kommer att återupptas. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>

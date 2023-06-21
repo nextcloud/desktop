@@ -19,7 +19,7 @@ The |version| release of the Nextcloud desktop sync client has many new features
 improvements.
 
   * Main dialog will be a regular window if tray icons are not available on the system.
-  * Virtual files wil be optional. That enables the desktop client to run on older Windows versions.
+  * Virtual files will be optional. That enables the desktop client to run on older Windows versions.
   * Improvements for the virtual files on Windows
   * Network traffic performance improvements
   * Improvements to the sync engine

@@ -99,7 +99,7 @@ public:
     /**
      * The user that can be used in dav url.
      *
-     * This can very well be different frome the login user that's
+     * This can very well be different from the login user that's
      * stored in credentials()->user().
      */
     [[nodiscard]] QString davUser() const;
@@ -220,7 +220,7 @@ public:
     void setCredentialSetting(const QString &key, const QVariant &value);
 
     /** Assign a client certificate */
-    void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
+    void setCertificate(const QByteArray certificate = QByteArray(), const QString privateKey = QString());
 
     /** Access the server capabilities */
     [[nodiscard]] const Capabilities &capabilities() const;

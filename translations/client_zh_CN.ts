@@ -703,7 +703,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1251"/>
         <source>Connecting to %1 …</source>
-        <translation>正在连接到 %1 …</translation>
+        <translation>正在连接到 %1 ……</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1256"/>
@@ -1536,13 +1536,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="102"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>%1 秒前</numerusform></translation>
+        <translation><numerusform>%1秒前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="105"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>%1 分钟前</numerusform></translation>
+        <translation><numerusform>%1分钟前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="108"/>
@@ -2019,7 +2019,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>Fetching folder list from server …</source>
-        <translation>正在从服务器获取文件夹列表…</translation>
+        <translation>正在从服务器获取文件夹列表……</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
@@ -2142,7 +2142,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
         <source>Preparing to sync …</source>
-        <translation>正在准备同步…</translation>
+        <translation>正在准备同步……</translation>
     </message>
 </context>
 <context>
@@ -3028,7 +3028,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
-        <translation>正在检查更新服务器…</translation>
+        <translation>正在检查更新服务器……</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
@@ -3240,7 +3240,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>尝试连接到 ％1 的 ％2 …</translation>
+        <translation>尝试连接到 ％1 的 ％2 ……</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
@@ -3265,7 +3265,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="482"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新建本地同步文件夹 ％1 …</translation>
+        <translation>正在新建本地同步文件夹 ％1 ……</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
@@ -4034,7 +4034,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="72"/>
         <source>Loading …</source>
-        <translation>正在加载…</translation>
+        <translation>正在加载……</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
@@ -4260,7 +4260,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
-        <translation>通过电子邮件发送私人链接…</translation>
+        <translation>通过电子邮件发送私人链接……</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
@@ -4896,18 +4896,18 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation>30 分钟</translation>
+        <translation>30分钟</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation>1 小时</translation>
+        <translation>1小时</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation>4 小时</translation>
+        <translation>4小时</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
@@ -4929,17 +4929,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation>1 分钟</translation>
+        <translation>1分钟</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation>%1 分钟</translation>
+        <translation>%1分钟</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation>%1 小时</translation>
+        <translation>%1小时</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
@@ -5848,7 +5848,7 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n 分</numerusform></translation>
+        <translation><numerusform>%n分钟</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
@@ -5864,17 +5864,17 @@ Server replied with error: %2</source>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="340"/>
+        <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
         <translation>校验码头部无效。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="380"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>校验和头包含未知的校验和类型 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="385"/>
+        <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>已下载的文件和校验和不匹配，它将被继续下载。&quot;%1&quot; != &quot;%2&quot;</translation>
     </message>

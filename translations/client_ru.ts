@@ -3505,7 +3505,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт при объединении: серверный файл загружен и переименован, чтобы избежать конфликта.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
@@ -3689,7 +3689,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл «%1» загружен, но это привело к конфликту имен локальных файлов!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
@@ -3725,7 +3725,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Каталог «%1» не может быть создан по причине конфликта имен локальных файлов или каталогов.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
@@ -3761,7 +3761,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Файл «%1» загружен, но это привело к конфликту имен локальных файлов!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
@@ -3796,7 +3796,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="334"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось распространить переименование каталога в иерархии</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="339"/>
@@ -3934,7 +3934,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="701"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation type="unfinished"/>
+        <translation>Не удается загрузить элемент с недопустимыми символами</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="798"/>
@@ -4120,7 +4120,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
         <source>Secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Защищенная ссылка для удаления файла</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
@@ -4140,7 +4140,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="649"/>
         <source>Secure file drop</source>
-        <translation type="unfinished"/>
+        <translation>Безопасное удаление файла</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="938"/>
@@ -4206,17 +4206,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось зашифровать каталог в &quot;% 1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>Для учетной записи %1 не настроено сквозное шифрование. Пожалуйста, включите сквозное шифрование в настройках вашей учетной записи, чтобы обеспечить работу шифрования каталогов.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation>Не удалось расшифровать папку</translation>
+        <translation>Не удалось зашифровать каталог</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
@@ -4277,7 +4277,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Отказаться от совместного доступа к этому ресурсу</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
@@ -4292,7 +4292,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation type="unfinished"/>
+        <translation>Скопировать защищенную ссылку для удаления файла</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
@@ -4303,7 +4303,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation type="unfinished"/>
+        <translation>Скопировать защищенную ссылку для удаления файла</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
@@ -4607,7 +4607,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="400"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось обновить метаданные файла: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
@@ -4804,7 +4804,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Этот выпуск подготовлен %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5353,7 +5353,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n д.</numerusform><numerusform>%n д.</numerusform><numerusform>%n д.</numerusform><numerusform>%n д.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
@@ -5364,7 +5364,7 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ч.</numerusform><numerusform>%n ч.</numerusform><numerusform>%n ч.</numerusform><numerusform>%n ч.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
@@ -5375,13 +5375,13 @@ Server replied with error: %2</source>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation type="unfinished"/>
+        <translation>1 м.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n м.</numerusform><numerusform>%n м.</numerusform><numerusform>%n м.</numerusform><numerusform>%n м.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
@@ -5406,12 +5406,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 файл конфликтует</numerusform><numerusform>%1 файла конфликтуют</numerusform><numerusform>%1 файлов конфликтуют</numerusform><numerusform>%1 файлов конфликтуют</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Выберите, хотите ли вы сохранить локальную версию, версию с сервера или и то, и другое. Если вы выберете оба варианта, к имени локального файла будет добавлен номер.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="97"/>
@@ -5462,7 +5462,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="95"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Произошла ошибка при установке пароля общего доступа</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
@@ -5611,12 +5611,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Открыть локальную или групповую папку</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation>Открыть локальню папку</translation>
+        <translation>Открыть локальную папку</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
@@ -5631,17 +5631,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
         <source>Group folder button</source>
-        <translation type="unfinished"/>
+        <translation>Кнопка групповой папки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Открыть локальную папку &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Открыть групповую папку &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
@@ -5651,7 +5651,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>Меню пользователя групповых и локальных папок</translation>
     </message>
 </context>
 <context>
@@ -5876,17 +5876,17 @@ Server replied with error: %2</source>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="340"/>
+        <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
         <translation>Неверная контрольная сумма заголовка.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="380"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>Заголовок контрольной суммы содержит контрольную сумму неизвестного типа: «%1»</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="385"/>
+        <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>Вычисленная контрольная сумма файла не соответствует ожидаемой, операция будет возобновлена: %1 != %2</translation>
     </message>
@@ -6027,7 +6027,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Загружена новая версия файла, измененный локальный файл скопирован в хранилище конфликтных файлов.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>

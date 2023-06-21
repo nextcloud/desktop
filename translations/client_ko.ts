@@ -5879,17 +5879,17 @@ Server replied with error: %2</source>
 <context>
     <name>ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="340"/>
+        <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
         <translation>체크섬 헤더가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="380"/>
+        <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
         <translation>체크섬 헤더에 알 수 없는 체크섬 유형 &quot;%1&quot;이 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="385"/>
+        <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <translation>다운로드한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.  &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
