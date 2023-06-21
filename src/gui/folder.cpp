@@ -197,7 +197,7 @@ QString Folder::shortGuiRemotePathOrAppName() const
         }
         return a;
     } else {
-        return Theme::instance()->appNameGUI();
+        return Theme::instance()->defaultClientFolder();
     }
 }
 

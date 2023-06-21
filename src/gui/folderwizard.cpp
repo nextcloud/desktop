@@ -68,10 +68,12 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     connect(_ui.localFolderChooseBtn, &QAbstractButton::clicked, this, &FolderWizardLocalPath::slotChooseLocalFolder);
     _ui.localFolderChooseBtn->setToolTip(tr("Click to select a local folder to sync."));
 
-    QUrl serverUrl = _account->url();
+    auto serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
-    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appSyncFolderName();
-    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, serverUrl, FolderMan::GoodPathStrategy::AllowOnlyNewPath);
+    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->defaultClientFolder();
+    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath,
+                                                                      serverUrl,
+                                                                      FolderMan::GoodPathStrategy::AllowOnlyNewPath);
     _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
@@ -552,8 +554,9 @@ void FolderWizardSelectiveSync::initializePage()
         targetPath = targetPath.mid(1);
     }
     QString alias = QFileInfo(targetPath).fileName();
-    if (alias.isEmpty())
-        alias = Theme::instance()->appName();
+    if (alias.isEmpty()) {
+        alias = Theme::instance()->defaultClientFolder();
+    }
     QStringList initialBlacklist;
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         initialBlacklist = QStringList("/");
