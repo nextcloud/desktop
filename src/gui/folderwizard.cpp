@@ -124,24 +124,26 @@ bool FolderWizardLocalPath::isComplete() const
 
 void FolderWizardLocalPath::slotChooseLocalFolder()
 {
-    QString sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QDir d(sf);
+    auto homeDirectoryName = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    // open the first entry of the home dir. Otherwise the dir picker comes
-    // up with the closed home dir icon, stupid Qt default...
-    QStringList dirs = d.entryList(QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks,
-        QDir::DirsFirst | QDir::Name);
+    // open the first entry of the home dir, otherwise the dir picker comes up with the closed home dir icon
+    const auto homeDirectoryList = QDir(homeDirectoryName).entryList(QDir::Dirs |
+                                                                         QDir::NoDotAndDotDot |
+                                                                         QDir::NoSymLinks,
+                                                                     QDir::DirsFirst | QDir::Name);
 
-    if (dirs.count() > 0)
-        sf += "/" + dirs.at(0); // Take the first dir in home dir.
-
-    QString dir = QFileDialog::getExistingDirectory(this,
-        tr("Select the source folder"),
-        sf);
-    if (!dir.isEmpty()) {
-        // set the last directory component name as alias
-        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
+    if (homeDirectoryList.count() > 0) {
+        homeDirectoryName += "/" + homeDirectoryList.at(0); // Take the first dir in home dir.
     }
+
+    const auto userSelectedDirectory = QFileDialog::getExistingDirectory(this,
+                                                                         tr("Select the source folder"),
+                                                                         homeDirectoryName);
+
+    if (!userSelectedDirectory.isEmpty()) {
+        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(userSelectedDirectory));
+    }
+
     emit completeChanged();
 }
 
