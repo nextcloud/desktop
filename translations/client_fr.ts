@@ -2023,7 +2023,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>Fetching folder list from server …</source>
-        <translation>Récupération de la liste des dossiers depuis le serveur ...</translation>
+        <translation>Récupération de la liste des dossiers depuis le serveur...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
@@ -2995,12 +2995,12 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation>Une nouvelle mise à jour pour %1 est sur le point d&apos;être installée. Le dispositif de mise à jour peut demander des autorisations supplémentaires au cours du processus. Votre ordinateur peut redémarrer pour terminer l&apos;installation.</translation>
+        <translation>Une nouvelle mise à jour pour %1 est sur le point d&apos;être installée. Le dispositif de mise à jour peut demander des autorisations supplémentaires au cours du processus. Votre ordinateur peut nécessiter un redémarrage pour terminer l&apos;installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>Réception %1. Veuillez patienter ...</translation>
+        <translation>Réception en cours de %1. Veuillez patienter...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
@@ -4047,7 +4047,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="72"/>
         <source>Loading …</source>
-        <translation>Chargement …</translation>
+        <translation>Chargement…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
