@@ -12,6 +12,7 @@ Summary
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
+* Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Make "Show files versions..." context menu action available: [#10197](https://github.com/owncloud/client/issues/10197)
@@ -48,6 +49,12 @@ Details
    We removed the support to query and store credentials for the system proxy.
 
    https://github.com/owncloud/client/pull/10866
+
+* Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
+
+   We had a closer look on the system tray and cleaned it up.
+
+   https://github.com/owncloud/client/issues/10939
 
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 
