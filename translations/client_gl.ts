@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 204, mais recibiuse «%1 %2».</translation>
+        <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
@@ -2308,7 +2308,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="241"/>
         <source>Server returned wrong content-range</source>
-        <translation>O servidor devolveu un intervalo de contidos estragado</translation>
+        <translation>O servidor devolveu un intervalo de contidos erróneo</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
@@ -2983,7 +2983,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Conta incorrecta&lt;/h1&gt;&lt;p&gt;Accedeu coa conta &lt;em&gt;%1&lt;/em&gt;, mais debe acceder coa conta &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Peche a sesión de %3 noutra lapela, após &lt;a href=&apos;%4&apos;&gt;prema aquí&lt;/a&gt; e acceda con %2.&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Conta erróneo&lt;/h1&gt;&lt;p&gt;Accedeu coa conta &lt;em&gt;%1&lt;/em&gt;, mais debe acceder coa conta &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Peche a sesión de %3 noutra lapela, após &lt;a href=&apos;%4&apos;&gt;prema aquí&lt;/a&gt; e acceda con %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3220,7 +3220,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="350"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Non foi posíbel cargar o certificado. Quizais o contrasinal é incorrecto?</translation>
+        <translation>Non foi posíbel cargar o certificado. Quizais o contrasinal é erróneo?</translation>
     </message>
 </context>
 <context>
@@ -3324,12 +3324,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>A creación do cartafol remoto fracasou por mor de seren incorrectas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
+        <translation>A creación do cartafol remoto fracasou por mor de seren erróneas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="599"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A creación do cartafol remoto fallou probabelmente debido a que as credenciais que se deron non foran as correctas.&lt;/font&gt;&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt; </translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A creación do cartafol remoto fallou probabelmente por mor de que as credenciais que se deron non foran as correctas.&lt;/font&gt;&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
@@ -3813,7 +3813,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="111"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 204, mais recibiuse «%1 %2».</translation>
+        <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="119"/>
@@ -3826,7 +3826,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 204, mais recibiuse «%1 %2».</translation>
+        <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
     </message>
 </context>
 <context>
@@ -3834,7 +3834,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="133"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 201, mais recibiuse «%1 %2».</translation>
+        <translation>O servidor devolveu código HTTP erróneo. Agardábase 201, mais recibiuse «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
@@ -3857,7 +3857,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="229"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 201, mais recibiuse «%1 %2».</translation>
+        <translation>O servidor devolveu código HTTP erróneo. Agardábase 201, mais recibiuse «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
