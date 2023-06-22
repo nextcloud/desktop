@@ -18,3 +18,4 @@ jobs:
         with:
           check_filenames: true
           check_hidden: true
+          ignore_file_list: './doc/_shared_assets/*,./*/translation*,./translations*,./*/3rdparty*,./*/l10n*'
