@@ -73,9 +73,7 @@ namespace FileSystem {
      *
      * @return true if the file's mtime or size are not what is expected.
      */
-    bool OWNCLOUDSYNC_EXPORT fileChanged(const QFileInfo &info,
-        qint64 previousSize,
-        time_t previousMtime);
+    bool OWNCLOUDSYNC_EXPORT fileChanged(const QFileInfo &info, qint64 previousSize, time_t previousMtime, std::optional<quint64> previousInode = {});
 
 
     struct RemoveEntry

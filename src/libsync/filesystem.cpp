@@ -89,9 +89,7 @@ bool FileSystem::setModTime(const QString &filename, time_t modTime)
     return true;
 }
 
-bool FileSystem::fileChanged(const QFileInfo &info,
-    qint64 previousSize,
-    time_t previousMtime)
+bool FileSystem::fileChanged(const QFileInfo &info, qint64 previousSize, time_t previousMtime, std::optional<quint64> previousInode)
 {
     // previousMtime == -1 indicates the file does not exist
     if (!info.exists() && previousMtime != -1) {
@@ -99,12 +97,22 @@ bool FileSystem::fileChanged(const QFileInfo &info,
         return true;
     }
     const qint64 actualSize = getSize(info);
-    const time_t actualMtime = getModTime(info.filePath());
-    if (actualSize != previousSize || actualMtime != previousMtime) {
-        qCDebug(lcFileSystem) << "File" << info.filePath() << "has changed:"
-                              << "size: " << previousSize << "<->" << actualSize
-                              << ", mtime: " << previousMtime << "<->" << actualMtime;
+    if (actualSize != previousSize) {
+        qCDebug(lcFileSystem) << "File" << info.filePath() << "has changed: size: " << previousSize << "<->" << actualSize;
         return true;
+    } else {
+        const time_t actualMtime = getModTime(info.filePath());
+        if (actualMtime != previousMtime) {
+            qCDebug(lcFileSystem) << "File" << info.filePath() << "has changed: mtime: " << previousMtime << "<->" << actualMtime;
+            return true;
+        } else if (previousInode.has_value()) {
+            quint64 actualIndoe;
+            FileSystem::getInode(info.filePath(), &actualIndoe);
+            if (previousInode.value() != actualIndoe) {
+                qCDebug(lcFileSystem) << "File" << info.filePath() << "has changed: inode" << previousInode.value() << "<-->" << actualIndoe;
+                return true;
+            }
+        }
     }
     return false;
 }
