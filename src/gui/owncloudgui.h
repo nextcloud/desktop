@@ -97,7 +97,6 @@ public slots:
     void slotSyncStateChange(Folder *);
     void slotTrayClicked(QSystemTrayIcon::ActivationReason reason);
     void slotToggleLogBrowser();
-    void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
     void slotHelp();
     void slotAbout();
@@ -116,16 +115,10 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
-private slots:
-    void slotLogin();
-    void slotLogout();
-    void slotUnpauseAllFolders();
-    void slotPauseAllFolders();
-
 private:
-    void setPauseOnAllFoldersHelper(bool pause);
+    void setPauseOnAllFoldersHelper(const QList<AccountStatePtr> &accounts, bool pause);
     void setupActions();
-    void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
+    void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu);
 
     Systray *_tray;
     SettingsDialog *_settingsDialog;
@@ -147,21 +140,7 @@ private:
     QTimer _delayedTrayUpdateTimer;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
-    QAction *_actionLogin;
-    QAction *_actionLogout;
-
-    QAction *_actionNewAccountWizard;
-    QAction *_actionSettings;
     QAction *_actionStatus;
-    QAction *_actionEstimate;
-    QAction *_actionRecent;
-    QAction *_actionHelp;
-    QAction *_actionAbout;
-    QAction *_actionQuit;
-    QAction *_actionCrash;
-    QAction *_actionCrashEnforce;
-    QAction *_actionCrashFatal;
-
 
     QList<QAction *> _recentItemsActions;
     Application *_app;
