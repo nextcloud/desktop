@@ -155,7 +155,7 @@ void ActivityWidget::showLabels()
     t.clear();
     QSetIterator<QString> i(_accountsWithoutActivities);
     while (i.hasNext()) {
-        t.append(tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
+        t.append(tr("<br/>%1 does not provide activities.").arg(i.next()));
     }
     _ui->_bottomLabel->setTextFormat(Qt::RichText);
     _ui->_bottomLabel->setText(t);
