@@ -3583,7 +3583,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1687"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Non autorisé à téléverser ce fichier, car il est en lecture seule sur le serveur. Restauration</translation>
+        <translation>Non autorisé à téléverser ce fichier, car il est en lecture seule sur le serveur, restauration en cours</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1709"/>
@@ -3593,7 +3593,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1723"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Non autorisé à supprimer. Restauration</translation>
+        <translation>Suppression non autorisée, restauration en cours</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1862"/>
@@ -4185,7 +4185,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation>Rechercher globallement</translation>
+        <translation>Rechercher globalement</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
@@ -4677,7 +4677,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation>Tous synchronisés !</translation>
+        <translation>Tout est synchronisé !</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
