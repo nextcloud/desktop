@@ -160,6 +160,9 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     // we don't follow redirects, if we receive one the ConnectionValidor is triggered
     _request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
 
+    // allow to transfer files with a big compression ratio
+    _request.setDecompressedSafetyCheckThreshold(-1);
+
     _request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, _storeInCache);
 
     if (_cacheLoadControl.has_value()) {
