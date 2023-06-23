@@ -78,15 +78,19 @@ UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
 SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequest *request, UploadDevice *device)
 {
     Q_ASSERT(propagator()->account()->capabilities().tusSupport().extensions.contains(QStringLiteral("creation-with-upload")));
-    // in difference to the old protocol the algrithm and the value are space seperated
+
     const auto checksumHeader = ChecksumHeader::parseChecksumHeader(_transmissionChecksumHeader);
-    const QByteArray checkSum = QByteArray(CheckSums::toQString(checksumHeader.type()).toUtf8() + ' ' + checksumHeader.checksum()).toBase64();
-    const QByteArray base64Path = propagator()->fullRemotePath(_item->_file).toUtf8().toBase64();
-    qCDebug(lcPropagateUploadTUS) << "FullPath:" << propagator()->fullRemotePath(_item->_file) << "Base64:" << base64Path;
-    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + base64Path + ",checksum " + checkSum);
+
+    QByteArrayList encodedMetaData;
+    auto addMetaData = [&encodedMetaData](const QByteArray &key, const QByteArray &value) { encodedMetaData << key + ' ' + value.toBase64(); };
+    addMetaData(QByteArrayLiteral("filename"), propagator()->fullRemotePath(_item->_file).toUtf8());
+    // in difference to the old protocol the algrithm and the value are space seperated
+    addMetaData(QByteArrayLiteral("checksum"), CheckSums::toQString(checksumHeader.type()).toUtf8() + ' ' + checksumHeader.checksum());
+    addMetaData(QByteArrayLiteral("mtime"), QByteArray::number(_item->_modtime));
+
+    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), encodedMetaData.join(','));
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
-    auto job = new SimpleNetworkJob(propagator()->account(), propagator()->webDavUrl(), {}, "POST", device, *request, this);
-    return job;
+    return new SimpleNetworkJob(propagator()->account(), propagator()->webDavUrl(), {}, "POST", device, *request, this);
 }
 
 QNetworkRequest PropagateUploadFileTUS::prepareRequest(const quint64 &chunkSize)
