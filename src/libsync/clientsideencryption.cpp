@@ -898,7 +898,7 @@ void ClientSideEncryption::fetchCertificateFromKeyChain(const AccountPtr &accoun
         account->id()
         );
 
-    auto *job = new ReadPasswordJob(Theme::instance()->appName());
+    const auto job = new ReadPasswordJob(Theme::instance()->appName());
     job->setProperty(accountProperty, QVariant::fromValue(account));
     job->setInsecureFallback(false);
     job->setKey(kck);
@@ -1011,8 +1011,8 @@ void ClientSideEncryption::publicCertificateFetched(Job *incoming)
 
 void ClientSideEncryption::publicKeyFetched(QKeychain::Job *incoming)
 {
-    auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
-    auto account = readJob->property(accountProperty).value<AccountPtr>();
+    const auto readJob = dynamic_cast<ReadPasswordJob *>(incoming);
+    const auto account = readJob->property(accountProperty).value<AccountPtr>();
     Q_ASSERT(account);
 
            // Error or no valid public key error out
@@ -1038,7 +1038,7 @@ void ClientSideEncryption::publicKeyFetched(QKeychain::Job *incoming)
         account->id()
         );
 
-    auto *job = new ReadPasswordJob(Theme::instance()->appName());
+    const auto job = new ReadPasswordJob(Theme::instance()->appName());
     job->setProperty(accountProperty, QVariant::fromValue(account));
     job->setInsecureFallback(false);
     job->setKey(kck);
@@ -1146,7 +1146,7 @@ void ClientSideEncryption::writeCertificate(const AccountPtr &account)
 
 void ClientSideEncryption::generateMnemonic()
 {
-    QStringList list = WordList::getRandomWords(12);
+    const auto list = WordList::getRandomWords(12);
     _mnemonic = list.join(' ');
     qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
 }
@@ -1483,7 +1483,7 @@ void ClientSideEncryption::writeKeyPair(AccountPtr account,
     }
     const auto bytearrayPrivateKey = BIO2ByteArray(privateKey);
 
-    auto *privateKeyJob = new WritePasswordJob(Theme::instance()->appName());
+    const auto privateKeyJob = new WritePasswordJob(Theme::instance()->appName());
     privateKeyJob->setInsecureFallback(false);
     privateKeyJob->setKey(privateKeyKeychainId);
     privateKeyJob->setBinaryData(bytearrayPrivateKey);
@@ -1504,7 +1504,7 @@ void ClientSideEncryption::writeKeyPair(AccountPtr account,
 
         const auto bytearrayPublicKey = BIO2ByteArray(publicKey);
 
-        auto *publicKeyJob = new WritePasswordJob(Theme::instance()->appName());
+        const auto publicKeyJob = new WritePasswordJob(Theme::instance()->appName());
         publicKeyJob->setInsecureFallback(false);
         publicKeyJob->setKey(publicKeyKeychainId);
         publicKeyJob->setBinaryData(bytearrayPublicKey);
