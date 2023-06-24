@@ -1585,7 +1585,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL solicitado non comeza por HTTPS aínda que o URL de acceso indicado comeza por HTTPS. Non é posíbel acceder porque isto podería implicar un fallo de seguranza. Consulte coa administración do sito.</translation>
+        <translation>O URL solicitado non comeza con HTTPS aínda que o URL de acceso indicado comeza por HTTPS. Non é posíbel acceder porque isto podería implicar un fallo de seguranza. Consulte coa administración do sito.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
