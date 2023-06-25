@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
         <source>Decline</source>
-        <translation>거부하다</translation>
+        <translation>거부</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation>파일 %1 · %2에 대한 세부정보</translation>
+        <translation>파일 %1 · %2에 대한 세부 정보</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
         <source>Could not make directories in trash</source>
-        <translation>휴지통에 있는 디렉터리를 만들 수 없음</translation>
+        <translation>휴지통에 디렉터리를 만들 수 없음</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>이 플랫폼에서 휴지통으로 이동을 지원하지 않음</translation>
+        <translation>이 플랫폼에서 휴지통으로 이동을 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="157"/>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="316"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>알 수 없는 오류: 네트워크 응답 객체가 삭제됨</translation>
+        <translation>알 수 없는 오류: 네트워크 응답이 삭제됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>서버에서 잘못된 HTTP 코드를 반환했습니다. 204가 받아지는 대신 &quot;1 %2&quot;을 받았습니다.</translation>
+        <translation>서버에서 잘못된 HTTP 코드를 반환했습니다. 204가 받아지는 대신 &quot;%1 %2&quot;(을)를 받았습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
@@ -340,17 +340,17 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="927"/>
         <source>File %1 is already locked by %2.</source>
-        <translation>파일 %1은 이미 %2에 의해 잠겼습니다.</translation>
+        <translation>%1 파일은 이미 %2에 의해 잠겼습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="929"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>오류 %2로 인해 %1 잠금에 실패했습니다</translation>
+        <translation>%2 오류로 인해 %1의 잠금에 실패했습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="931"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>%2 오류로 인해 %1 잠금 해제에 실패했습니다</translation>
+        <translation>%2 오류로 인해 %1의 잠금 해제에 실패했습니다.</translation>
     </message>
 </context>
 <context>
@@ -385,7 +385,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>확인되지 않은 폴더는 로컬 파일 시스템에서 &lt;b&gt;제거&lt;/b&gt;되고 더 이상이 컴퓨터와 동기화되지 않습니다.</translation>
+        <translation>지정하지 않은 폴더는 로컬 파일 시스템에서 &lt;b&gt;제거&lt;/b&gt;되고 더 이상이 컴퓨터와 동기화되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
@@ -603,11 +603,11 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>이 동작은 가상 파일 지원을 비활성화할 것입니다. 결과적으로, 폴더에서 &quot;온라인에서만 사용 가능&quot;한 콘텐츠들이 다운로드 됩니다.
+        <translation>이 동작은 가상 파일 지원을 비활성화 할 것입니다. 결과적으로, 폴더에서 &quot;온라인에서만 사용 가능&quot;한 콘텐츠들이 다운로드 됩니다.
 
-가상 파일 지원을 비활성화의 유일한 장점은 선택적 동기화 기능이 다시 사용 가능하게 된다는 것입니다.
+가상 파일 지원을 비활성화 하는 것의 유일한 장점은 선택적 동기화 기능이 다시 사용 가능하게 된다는 것입니다.
 
-이 동작은 진행중인 동기화를 모두 취소합니다.</translation>
+이 동작은 진행 중인 동기화를 모두 취소합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="929"/>
@@ -617,12 +617,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>종단간 암호화 연상 기호</translation>
+        <translation>종단간 암호화 니모닉</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>암호화 신원을 보호하기 위해 12개의 사전 단어를 연상 기호로 사용하여 암호화합니다. 이 내용을 기록하고 안전하게 보관하십시오. 휴대전화나 노트북과 같은 다른 기기를 계정에 추가해야합니다.</translation>
+        <translation>암호화 신원을 보호하기 위해 12개의 사전 단어를 니모닉으로 사용하여 이를 암호화합니다. 이 내용을 기록하고 안전하게 보관하세요. 다른 기기(노트북과 휴대전화 등)를 계정에 추가할 때에 필요합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
@@ -727,7 +727,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1514"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>사이즈가 너무 커서 동기화 되지 않은 폴더가 있습니다:</translation>
+        <translation>크기가 너무 커서 동기화 되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1516"/>

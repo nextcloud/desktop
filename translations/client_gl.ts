@@ -1783,7 +1783,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Vaia a axustes a seleccionalo se quere descargar isto.</translation>
+        <translation>Vaia a axustes para seleccionalo se quere descargar isto.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1245"/>
