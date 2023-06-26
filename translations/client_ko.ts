@@ -51,12 +51,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation>Talk 알림 호출 아바타</translation>
+        <translation>토크 알림 호출 아바타</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
-        <translation>Talk 통화 알림에 응답하기</translation>
+        <translation>토크 통화 알림에 응답하기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
-        <translation>Talk 통화 알림을 거절하기</translation>
+        <translation>토크 통화 알림에 거절하기</translation>
     </message>
 </context>
 <context>
@@ -2540,7 +2540,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>웹 인터페이스에서 앱 비밀번호를 요청하려면 &lt;a href=&quot;%1&quot;&gt;여기&lt;/a&gt;을 클릭하십시오.</translation>
+        <translation>웹 인터페이스에서 앱 암호를 요청하려면 &lt;a href=&quot;%1&quot;&gt;여기&lt;/a&gt;을 클릭하십시오.</translation>
     </message>
 </context>
 <context>
@@ -3425,12 +3425,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation>공유를 위한 비밀번호 필요</translation>
+        <translation>공유를 위한 암호 필요</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation>공유를 위해 비밀번호를 입력하세요.</translation>
+        <translation>공유를 위한 암호를 입력하세요.</translation>
     </message>
 </context>
 <context>
@@ -5964,7 +5964,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>브라우저에서 Nextcloud Talk 열기</translation>
+        <translation>브라우저에서 Nextcloud 토크 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
