@@ -4853,7 +4853,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
         <source>Confirm Account Removal</source>
-        <translation>Confirme a retirada da conta</translation>
+        <translation>Confirmar a retirada da conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
