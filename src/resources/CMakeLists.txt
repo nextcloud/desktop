@@ -37,4 +37,4 @@ add_resources_to_target(
     FILES "${client_compiled_translations}"
 )
 
-install(TARGETS owncloudResources EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS owncloudResources EXPORT ${APPLICATION_SHORTNAME}Config ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

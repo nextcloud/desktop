@@ -85,10 +85,10 @@ INSTALL(
         ../common/filesystembase.h
         ../common/utility.h
     DESTINATION
-        ${INCLUDE_INSTALL_DIR}/ownCloud/common
+        ${INCLUDE_INSTALL_DIR}/${APPLICATION_SHORTNAME}/common
 )
 
-INSTALL(TARGETS csync EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+INSTALL(TARGETS csync EXPORT ${APPLICATION_SHORTNAME}Config ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 configure_file(config_csync.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config_csync.h)
 

@@ -75,7 +75,7 @@ INSTALL(
         ${CMAKE_CURRENT_BINARY_DIR}/owncloudlib.h
         logger.h
         accessmanager.h
-    DESTINATION ${INCLUDE_INSTALL_DIR}/ownCloud/libsync
+    DESTINATION ${INCLUDE_INSTALL_DIR}/${APPLICATION_SHORTNAME}/libsync
 )
 
 add_library(libsync SHARED ${libsync_SRCS})
@@ -128,4 +128,4 @@ set_target_properties(libsync PROPERTIES
         VERSION ${MIRALL_VERSION}
         SOVERSION ${MIRALL_SOVERSION}
 )
-install(TARGETS libsync EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS libsync EXPORT ${APPLICATION_SHORTNAME}Config ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
