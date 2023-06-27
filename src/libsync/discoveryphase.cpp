@@ -82,8 +82,48 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     return false;
 }
 
-void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
-    std::function<void(bool)> callback)
+void DiscoveryPhase::checkFolderSizeLimit(const QString &path,
+                                          const std::function<void(bool)> callback)
+{
+    const auto limit = _syncOptions._newBigFolderSizeLimit;
+    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
+        // no limit, everything is allowed;
+        return callback(false);
+    }
+
+    // do a PROPFIND to know the size of this folder
+    const auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
+    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
+                                                   << "http://owncloud.org/ns:size");
+
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [=] { return callback(false); });
+    connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+        auto result = values.value(QLatin1String("size")).toLongLong();
+        if (result >= limit) {
+            // we tell the UI there is a new folder
+            emit newBigFolder(path, false);
+            return callback(true);
+        } else {
+            // it is not too big, put it in the white list (so we will not do more query for the children)
+            // and and do not block.
+            auto sanitisedPath = path;
+            if (!sanitisedPath.endsWith(QLatin1Char('/'))) {
+                sanitisedPath += QLatin1Char('/');
+            }
+
+            _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),
+                                                            _selectiveSyncWhiteList.end(),
+                                                            sanitisedPath),
+                                           sanitisedPath);
+            return callback(false);
+        }
+    });
+    propfindJob->start();
+}
+
+void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
+                                                 const RemotePermissions remotePerm,
+                                                 const std::function<void(bool)> callback)
 {
     if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
@@ -107,37 +147,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
         return callback(false);
     }
 
-    auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
-        // no limit, everything is allowed;
-        return callback(false);
-    }
-
-    // do a PROPFIND to know the size of this folder
-    auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, [=] { return callback(false); });
-    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
-        auto result = values.value(QLatin1String("size")).toLongLong();
-        if (result >= limit) {
-            // we tell the UI there is a new folder
-            emit newBigFolder(path, false);
-            return callback(true);
-        } else {
-            // it is not too big, put it in the white list (so we will not do more query for the children)
-            // and and do not block.
-            auto p = path;
-            if (!p.endsWith(QLatin1Char('/')))
-                p += QLatin1Char('/');
-            _selectiveSyncWhiteList.insert(
-                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p),
-                p);
-            return callback(false);
-        }
-    });
-    propfindJob->start();
+    checkFolderSizeLimit(path, callback);
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */
