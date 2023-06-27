@@ -291,7 +291,7 @@ QRectF FolderStatusDelegate::computeOptionsButtonRect(QRectF within) const
     opt.rect.setSize(QSize(e,e));
     QSizeF size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size());
 
-    return {{within.right() - size.width() - QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing),
+    return {{within.right() - size.width() - QApplication::style()->pixelMetric(QStyle::PM_LayoutRightMargin),
                 within.top() + within.height() / 2 - size.height() / 2},
         size};
 }
