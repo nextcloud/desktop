@@ -82,11 +82,15 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     return false;
 }
 
+bool DiscoveryPhase::activeFolderSizeLimit() const
+{
+    return _syncOptions._newBigFolderSizeLimit > 0 && _syncOptions._vfs->mode() == Vfs::Off;
+}
+
 void DiscoveryPhase::checkFolderSizeLimit(const QString &path,
                                           const std::function<void(bool)> callback)
 {
-    const auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
+    if (activeFolderSizeLimit()) {
         // no limit, everything is allowed;
         return callback(false);
     }
@@ -98,8 +102,11 @@ void DiscoveryPhase::checkFolderSizeLimit(const QString &path,
 
     connect(propfindJob, &PropfindJob::finishedWithError, this, [=] { return callback(false); });
     connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
-        auto result = values.value(QLatin1String("size")).toLongLong();
-        if (result >= limit) {
+
+        if (const auto result = values.value(QLatin1String("size")).toLongLong(),
+            limit = _syncOptions._newBigFolderSizeLimit;
+            result >= limit) {
+
             // we tell the UI there is a new folder
             emit newBigFolder(path, false);
             return callback(true);

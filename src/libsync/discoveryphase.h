@@ -255,6 +255,8 @@ class DiscoveryPhase : public QObject
 
     [[nodiscard]] bool isInSelectiveSyncBlackList(const QString &path) const;
 
+    [[nodiscard]] bool activeFolderSizeLimit() const;
+  
     void checkFolderSizeLimit(const QString &path,
 			      const std::function<void(bool)> callback);
 
