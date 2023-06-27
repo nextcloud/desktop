@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>동기화할 컴퓨터의 로컬 폴더를 선택하십시오</translation>
+        <translation>동기화할 컴퓨터의 로컬 폴더를 선택하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -437,7 +437,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation>폴더를 암호화하지 마십시오</translation>
+        <translation>폴더를 암호화하지 마세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
@@ -519,7 +519,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Availability</source>
-        <translation>사용 가능 여부</translation>
+        <translation>가용성</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
@@ -874,7 +874,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>사본이 설정 파일에 저장될 것이므로, 암호화된 pkcs12 번들을 강력히 권장합니다</translation>
+        <translation>사본이 설정 파일에 저장될 것이므로, 암호화된 pkcs12 번들을 강력히 권장합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -970,7 +970,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="123"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>파일% 1은 대소문자만 다른 같은 이름의 파일이 있기 때문에 업로드할 수 없습니다</translation>
+        <translation>파일% 1은 대소문자만 다른 같은 이름의 파일이 있기 때문에 업로드할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
@@ -2206,7 +2206,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="209"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation>&quot;%1&quot; 아래에 만들 새 폴더의 이름을 입력하십시오:</translation>
+        <translation>&quot;%1&quot; 아래에 만들 새 폴더의 이름을 입력하세요:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="238"/>
@@ -2503,7 +2503,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="799"/>
         <source>Please enter a password for your link share:</source>
-        <translation>내 링크 공유를 위한 암호를 입력하십시오:</translation>
+        <translation>내 링크 공유를 위한 암호를 입력하세요:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="825"/>
@@ -2525,7 +2525,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>%1 암호를 입력하십시오:&lt;br&gt;&lt;br&gt;사용자 이름: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
+        <translation>%1 암호를 입력하세요:&lt;br&gt;&lt;br&gt;사용자 이름: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
@@ -2648,7 +2648,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
-        <translation>이 파일의 새 이름을 입력하십시오:</translation>
+        <translation>이 파일의 새 이름을 입력하세요:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
@@ -2832,7 +2832,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Ask again later</source>
-        <translation>다음에 다시 요청하십시오</translation>
+        <translation>다음에 다시 요청하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
@@ -3066,7 +3066,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>컨텐츠를 즉시 다운로드 하는 대신 &amp;가상 파일을 사용하십시오 %1</translation>
+        <translation>콘텐츠를 즉시 다운로드 하는 대신 &amp;가상 파일을 사용하세요 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
@@ -3171,7 +3171,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Enter user credentials</source>
-        <translation>유저 인증 정보 입력</translation>
+        <translation>사용자 인증 정보 입력</translation>
     </message>
 </context>
 <context>
@@ -3401,7 +3401,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>&quot;가상 파일&quot; 모드를 활성화 할 경우, 어떠한 파일도 우선 다운로드되지 않을 것입니다. 대신, 작은 &quot;%1&quot;파일이 서버에 존재하는 각 파일마다 생성될 것입니다. 이러한 작은 파일을 실행하거나 각 컨텍스트 메뉴를 이용하여 컨텐츠를 다운로드할 수 있습니다.
+        <translation>&quot;가상 파일&quot; 모드를 활성화 할 경우, 어떠한 파일도 우선 다운로드되지 않을 것입니다. 대신, 작은 &quot;%1&quot;파일이 서버에 존재하는 각 파일마다 생성될 것입니다. 이러한 작은 파일을 실행하거나 각 컨텍스트 메뉴를 이용하여 콘텐츠를 다운로드할 수 있습니다.
 
 가상 파일 모드는 선택적 동기화와 함께 사용될 수 없습니다. 선택하지 않은 폴더는 online-only 폴더로 바뀌며 선택적 동기화 설정은 초기화됩니다.
 
@@ -4463,7 +4463,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;메모:&lt;/b&gt; 이 인증서는 수동으로 승인되었습니다&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;메모:&lt;/b&gt; 이 인증서는 수동으로 승인되었습니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
@@ -4497,7 +4497,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>SSL 세션 티켓/식별자를 지원하지 않습니다</translation>
+        <translation>SSL 세션 티켓/식별자를 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
@@ -4690,7 +4690,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation>오류는 아래를 참조하십시오</translation>
+        <translation>오류는 아래를 참조하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -4710,7 +4710,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation>경고는 아래를 참조하십시오</translation>
+        <translation>경고는 아래를 참조하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
@@ -4909,7 +4909,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation>지우지 마십시오</translation>
+        <translation>지우지 마세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
@@ -5019,7 +5019,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation>다음 계정으로 로그인하십시오: %1</translation>
+        <translation>다음 계정으로 로그인하세요: %1</translation>
     </message>
 </context>
 <context>
@@ -5042,7 +5042,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation>데이터를 안전하게 보관하세요</translation>
+        <translation>데이터를 안전하게 보관하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
@@ -5255,12 +5255,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이 박스를 선택하면 서버에서 클린 동기화를 시작하기 위해 로컬 폴더의 기존 컨텐츠가 지워 집니다.&lt;/p&gt;&lt;p&gt; 로컬 컨텐츠를 서버 폴더에 업로드해야하는 경우 이를 선택하지 마십시오.&lt;/p&gt;&lt;/body&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이 박스를 선택하면 서버에서 클린 동기화를 시작하기 위해 로컬 폴더의 기존 콘텐츠가 지워 집니다.&lt;/p&gt;&lt;p&gt; 로컬 콘텐츠를 서버 폴더에 업로드해야하는 경우 이를 선택하지 마십시오.&lt;/p&gt;&lt;/body&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation>로컬 폴더를 지우고 클린 동기화를 시작하십시오</translation>
+        <translation>로컬 폴더를 지우고 클린 동기화를 시작하세요.</translation>
     </message>
 </context>
 <context>
@@ -5333,22 +5333,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="740"/>
         <source>You renamed %1</source>
-        <translation>%1의 이름을 변경했습니다</translation>
+        <translation>%1의 이름을 변경했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="742"/>
         <source>You deleted %1</source>
-        <translation>% 1을 지웠습니다</translation>
+        <translation>%1을 지웠습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="744"/>
         <source>You created %1</source>
-        <translation>%1을(를) 생성했습니다</translation>
+        <translation>%1을(를) 생성했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="746"/>
         <source>You changed %1</source>
-        <translation>%1을 변경했습니다</translation>
+        <translation>%1을 변경했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="770"/>
@@ -5547,7 +5547,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation>새 공유를 위한 암호가 필요합니다</translation>
+        <translation>새 공유를 위한 암호가 필요합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
@@ -5723,7 +5723,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is do not disturb</source>
-        <translation>현재 계정 상태는 방해 금지 상태입니다</translation>
+        <translation>현재 계정 상태는 방해 금지 상태입니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="148"/>
@@ -5773,7 +5773,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="83"/>
         <source>Do not disturb</source>
-        <translation>방해하지 마십시오</translation>
+        <translation>방해하지 마세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
