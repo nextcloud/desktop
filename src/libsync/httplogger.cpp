@@ -116,21 +116,25 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     auto timer = std::make_unique<Utility::ChronoElapsedTimer>();
 
     // device should still exist, lets still use a qpointer to ensure we have valid data
-    QObject::connect(
-        reply, &QNetworkReply::requestSent, reply, [timer = timer.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
-            Q_ASSERT(!deviceRaw || device);
-            timer->reset();
+    const auto logSend = [timer = timer.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
+        Q_ASSERT(!deviceRaw || device);
+        timer->reset();
 
-            const auto request = reply->request();
-            const auto keys = request.rawHeaderList();
-            QList<QNetworkReply::RawHeaderPair> header;
-            header.reserve(keys.size());
-            for (const auto &key : keys) {
-                header << qMakePair(key, request.rawHeader(key));
-            }
-            logHttp(requestVerb(operation, request), request.url().toString(), request.rawHeader(XRequestId()),
-                request.header(QNetworkRequest::ContentTypeHeader).toString(), header, device);
-        });
+        const auto request = reply->request();
+        const auto keys = request.rawHeaderList();
+        QList<QNetworkReply::RawHeaderPair> header;
+        header.reserve(keys.size());
+        for (const auto &key : keys) {
+            header << qMakePair(key, request.rawHeader(key));
+        }
+        logHttp(requestVerb(operation, request), request.url().toString(), request.rawHeader(XRequestId()),
+            request.header(QNetworkRequest::ContentTypeHeader).toString(), header, device);
+    };
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend);
+#else
+    logSend();
+#endif
 
     QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer = std::move(timer)] {
         logHttp(requestVerb(*reply), reply->url().toString(), reply->request().rawHeader(XRequestId()),
