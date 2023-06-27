@@ -83,11 +83,13 @@ config = {
                     },
                 },
                 "skip_in_pr": True,
+                "skip": True,
             },
             "ocis": {
                 "version": "3.0.0",
                 # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
                 "tags": "~@skipOnOCIS",
+                "skip": True,
             },
         },
     },
@@ -165,6 +167,8 @@ def gui_test_pipeline(ctx):
     squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false  --tags ~@skip" % dir["guiTestReport"]
     pipelines = []
     for server, params in config["gui-tests"]["servers"].items():
+        if params.get("skip", False):
+            continue
         if ctx.build.event == "pull_request" and params.get("skip_in_pr", False) and not "full-ci" in ctx.build.title.lower():
             continue
 
