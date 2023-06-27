@@ -1054,8 +1054,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
-        _certificate = QSslCertificate();
-        _publicKey = QSslKey();
+        forgetSensitiveData(account);
         getPublicKeyFromServer(account);
         return;
     }
@@ -1092,9 +1091,7 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming)
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->textData().length() == 0) {
-        _certificate = QSslCertificate();
-        _publicKey = QSslKey();
-        _privateKey = QByteArray();
+        forgetSensitiveData(account);
         getPublicKeyFromServer(account);
         return;
     }
@@ -1180,8 +1177,6 @@ void ClientSideEncryption::writeMnemonic(OCC::AccountPtr account,
 
 void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
 {
-    _publicKey = QSslKey();
-
     if (!sensitiveDataRemaining()) {
         checkAllSensitiveDataDeleted();
         return;
@@ -1198,12 +1193,10 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
     const auto deletePrivateKeyJob = createDeleteJob(user + e2e_private);
     const auto deleteCertJob = createDeleteJob(user + e2e_cert);
     const auto deleteMnemonicJob = createDeleteJob(user + e2e_mnemonic);
-    const auto deletePublicKeyJob = createDeleteJob(user + e2e_public);
 
     connect(deletePrivateKeyJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handlePrivateKeyDeleted);
     connect(deleteCertJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handleCertificateDeleted);
     connect(deleteMnemonicJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handleMnemonicDeleted);
-    connect(deletePublicKeyJob, &DeletePasswordJob::finished, this, &ClientSideEncryption::handlePublicKeyDeleted);
     deletePrivateKeyJob->start();
     deleteCertJob->start();
     deleteMnemonicJob->start();
@@ -1742,9 +1735,7 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
                 }
             } else {
                 qCInfo(lcCse()) << "Error invalid server public key";
-                _certificate = QSslCertificate();
-                _publicKey = QSslKey();
-                _privateKey = QByteArray();
+                forgetSensitiveData(account);
                 getPublicKeyFromServer(account);
                 return;
             }
