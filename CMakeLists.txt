@@ -18,22 +18,15 @@ set(APPLE_SUPPRESS_X11_WARNING ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(QT 5.15 NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(QT 6.2 NAMES Qt6 COMPONENTS Core REQUIRED)
 
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR}LinguistTools REQUIRED)
+find_package(Qt6 COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
+find_package(Qt6LinguistTools REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${QT_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
-if (${QT_VERSION_MAJOR} EQUAL 5)
-    if (WIN32)
-        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS WinExtras)
-    elseif(APPLE)
-        find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS MacExtras)
-    endif()
-endif()
 if (UNIX AND NOT APPLE)
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS DBus)
+    find_package(Qt6 REQUIRED COMPONENTS DBus)
 endif()
 
 include(KDEInstallDirs)

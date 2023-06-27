@@ -91,7 +91,7 @@ target_link_libraries(libsync
         owncloudResources
         Qt::Concurrent
         ZLIB::ZLIB
-        Qt${QT_VERSION_MAJOR}Keychain::Qt${QT_VERSION_MAJOR}Keychain
+        Qt6Keychain::Qt6Keychain
 )
 
 apply_common_target_settings(libsync)

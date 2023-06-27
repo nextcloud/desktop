@@ -101,7 +101,7 @@ target_link_libraries(owncloudCore
         Qt::Widgets Qt::Network Qt::Xml
         newwizard folderwizard spaces loginrequireddialog
         libsync
-        Qt${QT_VERSION_MAJOR}Keychain::Qt${QT_VERSION_MAJOR}Keychain
+        Qt6Keychain::Qt6Keychain
 )
 
 apply_common_target_settings(owncloudCore)
@@ -120,10 +120,6 @@ target_include_directories(owncloudCore PUBLIC
 )
 
 IF( APPLE )
-    if (TARGET Qt::MacExtras)
-        target_link_libraries(owncloudCore PUBLIC Qt::MacExtras)
-    endif()
-
     target_sources(owncloudCore PRIVATE
             systray.mm
             settingsdialog_mac.mm
@@ -135,9 +131,6 @@ elseif( WIN32 )
             guiutility_win.cpp
             folderwatcher_win.cpp
             navigationpanehelper.cpp)
-    if(TARGET Qt::WinExtras)
-        target_link_libraries(owncloudCore PUBLIC Qt::WinExtras)
-    endif()
 elseif(UNIX AND NOT APPLE)
     ## handle DBUS for Fdo notifications
     if (TARGET Qt::DBus)

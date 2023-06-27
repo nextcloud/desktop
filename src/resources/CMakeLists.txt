@@ -30,12 +30,7 @@ generate_export_header(owncloudResources
 
 # Handle Translations, pick all client_* files from trans directory.
 file(GLOB client_translations ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
-if (${QT_VERSION_MAJOR} GREATER_EQUAL 6 AND ${QT_VERSION_MAJOR} GREATER_EQUAL 2)
-    qt_add_lrelease(owncloudResources TS_FILES ${client_translations} QM_FILES_OUTPUT_VARIABLE client_compiled_translations)
-else()
-    qt_add_translation(client_compiled_translations ${client_translations})
-    target_sources(owncloudResources PRIVATE ${client_compiled_translations})
-endif()
+qt_add_lrelease(owncloudResources TS_FILES ${client_translations} QM_FILES_OUTPUT_VARIABLE client_compiled_translations)
 add_resources_to_target(
     TARGET owncloudResources
     PREFIX translations

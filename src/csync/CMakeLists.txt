@@ -59,11 +59,6 @@ target_link_libraries(csync
         ZLIB::ZLIB
 )
 
-# For platform_win.cpp
-if (WIN32 AND TARGET Qt::WinExtras)
-    target_link_libraries(csync PUBLIC Qt::WinExtras)
-endif()
-
 # For src/common/utility_mac.cpp
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)

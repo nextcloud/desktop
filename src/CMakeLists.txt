@@ -2,7 +2,7 @@ if(WITH_CRASHREPORTER)
     find_package(CrashReporterQt REQUIRED)
 endif()
 
-find_package(Qt${QT_VERSION_MAJOR}Keychain 0.13 REQUIRED)
+find_package(Qt6Keychain 0.13 REQUIRED)
 
 # TODO: Mingw64 7.3 might also need to be excluded here as it seems to not automatically link libssp
 if(NOT WIN32)
