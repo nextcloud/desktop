@@ -92,11 +92,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
         }();
 
         QTextStream ts(&iniFile);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        ts.setCodec("UTF-8");
-#else
         ts.setEncoding(QStringConverter::Utf8);
-#endif
         ts << QLatin1String("[Desktop Entry]") << Qt::endl
            << QLatin1String("Name=") << guiName << Qt::endl
            << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << Qt::endl

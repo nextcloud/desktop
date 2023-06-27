@@ -467,10 +467,6 @@ void Application::setupTranslations()
                 QLocale newLocale(lang);
                 qCDebug(lcApplication) << "language" << lang << "was enforced, changing default locale to" << newLocale;
                 QLocale::setDefault(newLocale);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-                // setting the layout direction directly only appears to be needed on mac
-                setLayoutDirection(newLocale.textDirection());
-#endif
             }
 
             break;

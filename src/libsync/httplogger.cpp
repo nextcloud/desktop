@@ -115,7 +115,6 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     }
     auto timer = std::make_unique<Utility::ChronoElapsedTimer>();
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // device should still exist, lets still use a qpointer to ensure we have valid data
     QObject::connect(
         reply, &QNetworkReply::requestSent, reply, [timer = timer.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
@@ -132,7 +131,6 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
             logHttp(requestVerb(operation, request), request.url().toString(), request.rawHeader(XRequestId()),
                 request.header(QNetworkRequest::ContentTypeHeader).toString(), header, device);
         });
-#endif
 
     QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer = std::move(timer)] {
         logHttp(requestVerb(*reply), reply->url().toString(), reply->request().rawHeader(XRequestId()),

@@ -140,13 +140,6 @@ void WatcherThread::processEntries(FILE_NOTIFY_INFORMATION *curEntry)
             }
         }
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-        // The prefix is needed for native Windows functions before Windows 10, version 1607
-        const bool hasLongPathPrefix = longPath.startsWith(QStringLiteral("\\\\?\\"));
-        if (hasLongPathPrefix) {
-            longfile.remove(0, 4);
-        }
-#endif
         longfile = QDir::cleanPath(longfile);
 
         // Skip modifications of folders: One of these is triggered for changes

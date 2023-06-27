@@ -68,11 +68,7 @@ namespace CheckSums {
     inline QString toQString(Algorithm algo)
     {
         const auto n = toString(algo);
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        return QString::fromUtf8(n.data(), static_cast<int>(n.size()));
-#else
         return QString::fromUtf8(n.data(), n.size());
-#endif
     }
 
     constexpr auto pair(Algorithm a)

@@ -217,9 +217,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         pBarOpt.minimum = 0;
         pBarOpt.maximum = 100;
         pBarOpt.progress = overallPercent;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        pBarOpt.orientation = Qt::Horizontal;
-#endif
         pBarOpt.rect = QStyle::visualRect(option.direction, option.rect, pBRect.toRect());
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &pBarOpt, painter, option.widget);
 
