@@ -593,7 +593,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_lockEditorApp = serverEntry.lockEditorApp;
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
-    qCDebug(lcDisco()) << item->_locked << item->_lockOwnerDisplayName << item->_lockOwnerId << item->_lockOwnerType << item->_lockEditorApp << item->_lockTime << item->_lockTimeout;
+    
+    qCDebug(lcDisco()) << "item lock for:" << item->_file
+                       << item->_locked
+                       << item->_lockOwnerDisplayName
+                       << item->_lockOwnerId
+                       << item->_lockOwnerType
+                       << item->_lockEditorApp
+                       << item->_lockTime
+                       << item->_lockTimeout;
 
     // Check for missing server data
     {
@@ -640,11 +648,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
     // The file is known in the db already
     if (dbEntry.isValid()) {
-        const bool isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
+        const auto isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
         Q_ASSERT(!isDbEntryAnE2EePlaceholder || serverEntry.size >= Constants::e2EeTagSize);
-        const bool isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
-        const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
-        const bool metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
+        const auto isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
+        const auto sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
+        const auto metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
 
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
@@ -696,7 +704,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // to update a placeholder with corrected size (-16 Bytes)
             // or, maybe, add a flag to the database - vfsE2eeSizeCorrected? if it is not set - subtract it from the placeholder's size and re-create/update a placeholder?
             const QueryMode serverQueryMode = [this, &dbEntry, &serverEntry]() {
-                const bool isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
+                const auto isVfsModeOn = _discoveryData && _discoveryData->_syncOptions._vfs && _discoveryData->_syncOptions._vfs->mode() != Vfs::Off;
                 if (isVfsModeOn && dbEntry.isDirectory() && dbEntry.isE2eEncrypted()) {
                     qint64 localFolderSize = 0;
                     const auto listFilesCallback = [&localFolderSize](const OCC::SyncJournalFileRecord &record) {
@@ -709,7 +717,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                         }
                     };
 
-                    const bool listFilesSucceeded = _discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), listFilesCallback);
+                    const auto listFilesSucceeded = _discoveryData->_statedb->listFilesInPath(dbEntry.path().toUtf8(), listFilesCallback);
 
                     if (listFilesSucceeded && localFolderSize != 0 && localFolderSize == serverEntry.sizeOfFolder) {
                         qCInfo(lcDisco) << "Migration of E2EE folder " << dbEntry.path() << " from older version to the one, supporting the implicit VFS hydration.";
@@ -735,7 +743,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_modtime = serverEntry.modtime;
     item->_size = serverEntry.size;
 
-    auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
+    const auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
     if (conflictRecord.isValid() && QString::fromUtf8(conflictRecord.path).contains(QStringLiteral("(case clash from"))) {
         qCInfo(lcDisco) << "should ignore" << item->_file << "has already a case clash conflict record" << conflictRecord.path;
 
@@ -758,7 +766,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
         // Turn new remote files into virtual files if the option is enabled.
-        auto &opts = _discoveryData->_syncOptions;
+        const auto opts = _discoveryData->_syncOptions;
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
@@ -831,7 +839,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
 
         // Now we know there is a sane rename candidate.
-        QString originalPath = base.path();
+        const auto originalPath = base.path();
 
         if (_discoveryData->isRenamed(originalPath)) {
             qCInfo(lcDisco, "folder already has a rename entry, skipping");
@@ -847,7 +855,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
 
-        QString originalPathAdjusted = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
+        const auto originalPathAdjusted = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
 
         if (!base.isDirectory()) {
             csync_file_stat_t buf;
@@ -873,10 +881,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_type = ItemTypeVirtualFile;
         }
 
-        bool wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
+        const auto wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
 
         auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
-            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
+            const auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
             _discoveryData->_renamedItemsRemote.insert(originalPath, path._target);
             item->_modtime = base._modtime;
             item->_inode = base._inode;
@@ -896,7 +904,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         } else {
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
-            auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
+            const auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_remoteFolder + originalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
