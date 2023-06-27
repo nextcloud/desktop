@@ -46,7 +46,7 @@ struct csync_vio_handle_t {
 };
 
 csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
-    QScopedPointer<csync_vio_handle_t> handle(new csync_vio_handle_t{});
+    std::unique_ptr<csync_vio_handle_t> handle(new csync_vio_handle_t{});
 
     auto dirname = QFile::encodeName(name);
 
@@ -56,7 +56,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
     }
 
     handle->path = name;
-    return handle.take();
+    return handle.release();
 }
 
 int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {

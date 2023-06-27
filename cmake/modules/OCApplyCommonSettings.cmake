@@ -19,7 +19,7 @@ function(apply_common_target_settings targetName)
             QT_USE_QSTRINGBUILDER
             QT_MESSAGELOGCONTEXT  # enable function name and line number in debug output
             QT_NO_FOREACH
-            QT_DISABLE_DEPRECATED_BEFORE=0x051500
+            QT_DISABLE_DEPRECATED_BEFORE=0x062000
     )
 
     if(WIN32)

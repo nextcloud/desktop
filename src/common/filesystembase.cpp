@@ -382,7 +382,7 @@ QString FileSystem::fileSystemForPath(const QString &path)
             fileSystemBuffer, fileSystemBufferSize)) {
         return QString();
     }
-    return QString::fromUtf16(reinterpret_cast<const ushort *>(fileSystemBuffer));
+    return QString::fromUtf16(reinterpret_cast<const char16_t *>(fileSystemBuffer));
 }
 
 bool FileSystem::longPathsEnabledOnWindows()

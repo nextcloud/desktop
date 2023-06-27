@@ -233,7 +233,6 @@ int main(int argc, char **argv)
 {
     // load the resources
     const OCC::ResourcesLoader resource;
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     // Create a `Platform` instance so it can set-up/tear-down stuff for us, and do any
     // initialisation that needs to be done before creating a QApplication

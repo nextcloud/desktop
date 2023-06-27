@@ -267,7 +267,7 @@ class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagateItemJob
     Q_OBJECT
 public:
     // e.g: create the directory
-    QScopedPointer<PropagateItemJob> _firstJob;
+    std::unique_ptr<PropagateItemJob> _firstJob;
 
     PropagatorCompositeJob _subJobs;
 

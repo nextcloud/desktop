@@ -409,34 +409,34 @@ void SqlQuery::bindValueInternal(int pos, const QVariant &value)
         return;
     }
 
-    switch (value.type()) {
-    case QVariant::Int:
-    case QVariant::Bool:
+    switch (value.typeId()) {
+    case QMetaType::Int:
+    case QMetaType::Bool:
         res = sqlite3_bind_int(_stmt, pos, value.toInt());
         break;
-    case QVariant::Double:
+    case QMetaType::Double:
         res = sqlite3_bind_double(_stmt, pos, value.toDouble());
         break;
-    case QVariant::UInt:
-    case QVariant::LongLong:
-    case QVariant::ULongLong:
+    case QMetaType::UInt:
+    case QMetaType::LongLong:
+    case QMetaType::ULongLong:
         res = sqlite3_bind_int64(_stmt, pos, value.toLongLong());
         break;
-    case QVariant::DateTime: {
+    case QMetaType::QDateTime: {
         const QDateTime dateTime = value.toDateTime();
         const QString str = dateTime.toString(QStringLiteral("yyyy-MM-ddThh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
             str.size() * sizeof(ushort), SQLITE_TRANSIENT);
         break;
     }
-    case QVariant::Time: {
+    case QMetaType::QTime: {
         const QTime time = value.toTime();
         const QString str = time.toString(QStringLiteral("hh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
             str.size() * sizeof(ushort), SQLITE_TRANSIENT);
         break;
     }
-    case QVariant::String: {
+    case QMetaType::QString: {
         if (!value.toString().isNull()) {
             // lifetime of string == lifetime of its qvariant
             const QString *str = static_cast<const QString *>(value.constData());
@@ -447,7 +447,7 @@ void SqlQuery::bindValueInternal(int pos, const QVariant &value)
         }
         break;
     }
-    case QVariant::ByteArray: {
+    case QMetaType::QByteArray: {
         auto ba = value.toByteArray();
         res = sqlite3_bind_text(_stmt, pos, ba.constData(), ba.size(), SQLITE_TRANSIENT);
         break;
@@ -473,7 +473,7 @@ bool SqlQuery::nullValue(int index)
 
 QString SqlQuery::stringValue(int index)
 {
-    return QString::fromUtf16(static_cast<const ushort *>(sqlite3_column_text16(_stmt, index)));
+    return QString::fromUtf16(static_cast<const char16_t *>(sqlite3_column_text16(_stmt, index)));
 }
 
 int SqlQuery::intValue(int index)

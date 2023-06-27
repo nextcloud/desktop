@@ -237,7 +237,7 @@ private:
     QString _remotePath;
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
-    QScopedPointer<DiscoveryPhase> _discoveryPhase;
+    std::unique_ptr<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 
     // List of all files with conflicts

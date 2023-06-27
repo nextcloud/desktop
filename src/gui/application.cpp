@@ -203,13 +203,11 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
         Utility::sleep(5);
         if (!AccountManager::instance()->restore()) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
+            QMessageBox::critical(nullptr, tr("Error accessing the configuration file"),
                 tr("There was an error while accessing the configuration "
                    "file at %1.")
                     .arg(ConfigFile::configFile()),
-                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+                QMessageBox::Close);
             QTimer::singleShot(0, qApp, &QApplication::quit);
             return;
         }
@@ -424,7 +422,7 @@ void Application::setupTranslations()
             qCInfo(lcApplication) << "Using" << lang << "translation";
             _displayLanguage = lang;
 
-            const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+            const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
             qCDebug(lcApplication) << "qtTrPath:" << qtTrPath;
             const QString qtTrFile = QLatin1String("qt_") + lang;
             qCDebug(lcApplication) << "qtTrFile:" << qtTrFile;

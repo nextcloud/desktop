@@ -61,7 +61,7 @@ private slots:
             // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
             // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
         } else if (Utility::isWindows()) {
-            QWARN("Skipping Vfs::WindowsCfApi");
+            qWarning("Skipping Vfs::WindowsCfApi");
         }
     }
 

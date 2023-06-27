@@ -155,7 +155,7 @@ bool SpacesDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
             auto *mouseEvent = static_cast<QMouseEvent *>(event);
 
             // we need to make sure the mouse click is within the button's boundary box
-            if (opt.rect.contains(mouseEvent->localPos().toPoint())) {
+            if (opt.rect.contains(mouseEvent->position().toPoint())) {
                 const auto url = index.data().toUrl();
 
                 // we only display the button when the URL is valid (see above)
