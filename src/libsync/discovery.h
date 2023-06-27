@@ -162,6 +162,12 @@ private:
      */
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
 
+    void postProcessServerNew(const SyncFileItemPtr &item,
+                              PathTuple &path,
+                              const LocalInfo &localEntry,
+                              const RemoteInfo &serverEntry,
+                              const SyncJournalFileRecord &dbEntry);
+
     /// processFile helper for when remote information is available, typically flows into AnalyzeLocalInfo when done
     void processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
 

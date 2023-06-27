@@ -559,9 +559,58 @@ static bool computeLocalChecksum(const QByteArray &header, const QString &path, 
     return false;
 }
 
-void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
-    const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
-    const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)
+void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
+                                               PathTuple &path,
+                                               const LocalInfo &localEntry,
+                                               const RemoteInfo &serverEntry,
+                                               const SyncJournalFileRecord &dbEntry)
+{
+    if (item->isDirectory()) {
+        _pendingAsyncJobs++;
+        _discoveryData->checkSelectiveSyncNewFolder(path._server,
+                                                    serverEntry.remotePerm,
+                                                    [=](bool result) {
+                                                        --_pendingAsyncJobs;
+                                                        if (!result) {
+                                                            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
+                                                        }
+                                                        QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+                                                    });
+        return;
+    }
+
+    // Turn new remote files into virtual files if the option is enabled.
+    const auto opts = _discoveryData->_syncOptions;
+    if (!localEntry.isValid() &&
+        item->_type == ItemTypeFile &&
+        opts._vfs->mode() != Vfs::Off &&
+        !FileSystem::isLnkFile(item->_file) &&
+        _pinState != PinState::AlwaysLocal &&
+        !FileSystem::isExcludeFile(item->_file)) {
+
+        item->_type = ItemTypeVirtualFile;
+        if (isVfsWithSuffix()) {
+            addVirtualFileSuffix(path._original);
+        }
+    }
+
+    if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
+        // We are syncing a file for the first time (local entry is invalid) and it is encrypted file that will be virtual once synced
+        // to avoid having error of "file has changed during sync" when trying to hydrate it explicitly - we must remove Constants::e2EeTagSize bytes from the end
+        // as explicit hydration does not care if these bytes are present in the placeholder or not, but, the size must not change in the middle of the sync
+        // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag Constants::e2EeTagSize bytes
+        // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
+        item->_size = serverEntry.size - Constants::e2EeTagSize;
+    }
+
+    processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
+}
+
+void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item,
+                                                       PathTuple path,
+                                                       const LocalInfo &localEntry,
+                                                       const RemoteInfo &serverEntry,
+                                                       const SyncJournalFileRecord &dbEntry)
 {
     item->_checksumHeader = serverEntry.checksumHeader;
     item->_fileId = serverEntry.fileId;
@@ -593,7 +642,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_lockEditorApp = serverEntry.lockEditorApp;
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
-    
+
     qCDebug(lcDisco()) << "item lock for:" << item->_file
                        << item->_locked
                        << item->_lockOwnerDisplayName
@@ -752,46 +801,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         return;
     }
 
-    auto postProcessServerNew = [=]() mutable {
-        if (item->isDirectory()) {
-            _pendingAsyncJobs++;
-            _discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm,
-                [=](bool result) {
-                    --_pendingAsyncJobs;
-                    if (!result) {
-                        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
-                    }
-                    QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-                });
-            return;
-        }
-        // Turn new remote files into virtual files if the option is enabled.
-        const auto opts = _discoveryData->_syncOptions;
-        if (!localEntry.isValid()
-            && item->_type == ItemTypeFile
-            && opts._vfs->mode() != Vfs::Off
-            && !FileSystem::isLnkFile(item->_file)
-            && _pinState != PinState::AlwaysLocal
-            && !FileSystem::isExcludeFile(item->_file)) {
-            item->_type = ItemTypeVirtualFile;
-            if (isVfsWithSuffix())
-                addVirtualFileSuffix(path._original);
-        }
-
-        if (opts._vfs->mode() != Vfs::Off && !item->_encryptedFileName.isEmpty()) {
-            // We are syncing a file for the first time (local entry is invalid) and it is encrypted file that will be virtual once synced
-            // to avoid having error of "file has changed during sync" when trying to hydrate it explicitly - we must remove Constants::e2EeTagSize bytes from the end
-            // as explicit hydration does not care if these bytes are present in the placeholder or not, but, the size must not change in the middle of the sync
-            // this way it works for both implicit and explicit hydration by making a placeholder size that does not includes encryption tag Constants::e2EeTagSize bytes
-            // another scenario - we are syncing a file which is on disk but not in the database (database was removed or file was not written there yet)
-            item->_size = serverEntry.size - Constants::e2EeTagSize;
-        }
-        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
-    };
-
     // Potential NEW/NEW conflict is handled in AnalyzeLocal
     if (localEntry.isValid()) {
-        postProcessServerNew();
+        postProcessServerNew(item, path, localEntry, serverEntry, dbEntry);
         return;
     }
 
@@ -912,7 +924,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                     // Somehow another item claimed this original path, consider as if it existed
                     _discoveryData->isRenamed(originalPath)) {
                     // If the file exist or if there is another error, consider it is a new file.
-                    postProcessServerNew();
+                    postProcessServerNew(item, path, localEntry, serverEntry, dbEntry);
                     return;
                 }
 
@@ -938,7 +950,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     }
 
     if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
-        postProcessServerNew();
+        postProcessServerNew(item, path, localEntry, serverEntry, dbEntry);
         return;
     }
     processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
