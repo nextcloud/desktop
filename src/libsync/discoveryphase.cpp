@@ -157,6 +157,19 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
     checkFolderSizeLimit(path, callback);
 }
 
+void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path, const RemotePermissions &rp, const qint64 folderSize)
+{
+    // TODO: Check for setting to obey big folder sync
+    // If no size limit is enforced, or if is in whitelist (explicitly allowed) or in blacklist (explicitly disallowed), do nothing.
+    if (!activeFolderSizeLimit() || findPathInList(_selectiveSyncWhiteList, path) || findPathInList(_selectiveSyncBlackList, path)) {
+        return;
+    } else if (folderSize >= _syncOptions._newBigFolderSizeLimit) { // If the folder is too big, notify the user and prompt for response.
+        const auto isExternalStorage =
+            _syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off && rp.hasPermission(RemotePermissions::IsMounted);
+        emit newBigFolder(path, isExternalStorage);
+    }
+}
+
 /* Given a path on the remote, give the path as it is when the rename is done */
 QString DiscoveryPhase::adjustRenamedPath(const QString &original, SyncFileItem::Direction d) const
 {

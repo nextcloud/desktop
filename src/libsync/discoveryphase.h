@@ -266,6 +266,8 @@ class DiscoveryPhase : public QObject
                                      const RemotePermissions rp,
                                      const std::function<void(bool)> callback);
 
+    void checkSelectiveSyncExistingFolder(const QString &path, const RemotePermissions &rp, const qint64 folderSize);
+
     /** Given an original path, return the target path obtained when renaming is done.
      *
      * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
