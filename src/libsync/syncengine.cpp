@@ -15,19 +15,19 @@
 
 #include "syncengine.h"
 #include "account.h"
-#include "owncloudpropagator.h"
+#include "common/asserts.h"
+#include "common/syncfilestatus.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
-#include "discoveryphase.h"
-#include "creds/abstractcredentials.h"
-#include "common/syncfilestatus.h"
-#include "csync_exclude.h"
-#include "filesystem.h"
-#include "propagateremotedelete.h"
-#include "propagatedownload.h"
-#include "common/asserts.h"
-#include "discovery.h"
 #include "common/vfs.h"
+#include "creds/abstractcredentials.h"
+#include "csync_exclude.h"
+#include "discovery.h"
+#include "discoveryphase.h"
+#include "filesystem.h"
+#include "owncloudpropagator.h"
+#include "propagatedownload.h"
+#include "propagateremotedelete.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -653,32 +653,18 @@ void SyncEngine::slotDiscoveryFinished()
 
     if (!_hasNoneFiles && _hasRemoveFile) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
-        int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
-        for (const auto &it : qAsConst(_syncItems)) {
-            if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-                side += it->_direction == SyncFileItem::Down ? 1 : -1;
-            }
-        }
 
-        QPointer<QObject> guard = new QObject();
-        QPointer<QObject> self = this;
-        auto callback = [this, self, finish, guard](bool cancel) -> void {
-            // use a guard to ensure its only called once...
-            // qpointer to self to ensure we still exist
-            if (!guard || !self) {
-                return;
+        if (_promptRemoveAllFiles) {
+            int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
+            for (const auto &it : qAsConst(_syncItems)) {
+                if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                    side += it->_direction == SyncFileItem::Down ? 1 : -1;
+                }
             }
-            guard->deleteLater();
-            if (cancel) {
-                qCInfo(lcEngine) << "User aborted sync";
-                finalize(false);
-                return;
-            } else {
-                finish();
-            }
-        };
-        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
-        return;
+            emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up);
+            finalize(false);
+            return;
+        }
     }
     finish();
 }
@@ -956,6 +942,16 @@ void SyncEngine::slotInsufficientRemoteStorage()
 
     _uniqueErrors.insert(msg);
     emit syncError(msg, ErrorCategory::InsufficientRemoteStorage);
+}
+
+bool SyncEngine::isPromtRemoveAllFiles() const
+{
+    return _promptRemoveAllFiles;
+}
+
+void SyncEngine::setPromtRemoveAllFiles(bool promtRemoveAllFiles)
+{
+    _promptRemoveAllFiles = promtRemoveAllFiles;
 }
 
 } // namespace OCC

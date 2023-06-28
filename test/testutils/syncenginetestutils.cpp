@@ -950,13 +950,6 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode, boo
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
-    // handle aboutToRemoveAllFiles with a timeout in case our test does not handle it
-    QObject::connect(_syncEngine.get(), &OCC::SyncEngine::aboutToRemoveAllFiles, _syncEngine.get(), [this](OCC::SyncFileItem::Direction, const std::function<void(bool)> &callback) {
-        QTimer::singleShot(1s, _syncEngine.get(), [callback] {
-            callback(false);
-        });
-    });
-
     auto vfs = _syncEngine->syncOptions()._vfs;
     if (vfsMode != vfs->mode()) {
         vfs.reset(OCC::VfsPluginManager::instance().createVfsFromPlugin(vfsMode).release());

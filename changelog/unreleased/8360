@@ -1,0 +1,9 @@
+Enhancement: Change how all files deleted is handled
+
+When the client detects that all files are deleted on either side of the sync,
+the client now aborts the sync and asks for a user decision.
+Afterwords a new sync is started.
+
+Previously we blocked the current sync until the user responded which could lead to unwanted side effects.
+
+https://github.com/owncloud/client/issues/8360

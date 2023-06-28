@@ -1027,6 +1027,12 @@ void Folder::startSync()
     }
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+    if (_allowRemoveAllOnce) {
+        _engine->setPromtRemoveAllFiles(false);
+        _allowRemoveAllOnce = false;
+    } else {
+        _engine->setPromtRemoveAllFiles(ConfigFile().promptDeleteFiles());
+    }
 
     QMetaObject::invokeMethod(_engine.data(), &SyncEngine::startSync, Qt::QueuedConnection);
 
@@ -1332,22 +1338,22 @@ bool Folder::virtualFilesEnabled() const
     return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
 }
 
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, const std::function<void(bool)> &abort)
+void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
 {
-    ConfigFile cfgFile;
-    if (!cfgFile.promptDeleteFiles()) {
-        abort(false);
-        return;
-    }
-    const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
-                                                 "These deletes will be synchronized to your local sync folder, making such files "
-                                                 "unavailable unless you have a right to restore. \n"
-                                                 "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
-                                                 "If you decide to delete the files, they will be unavailable to you, unless you are the owner.")
-                                            : tr("All the files in your local sync folder '%1' were deleted. These deletes will be "
-                                                 "synchronized with your server, making such files unavailable unless restored.\n"
-                                                 "Are you sure you want to sync those actions with the server?\n"
-                                                 "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
+    const QString msg = [direction] {
+        if (direction == SyncFileItem::Down) {
+            return tr("All files in the sync folder '%1' folder were deleted on the server.\n"
+                      "These deletes will be synchronized to your local sync folder, making such files "
+                      "unavailable unless you have a right to restore. \n"
+                      "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
+                      "If you decide to delete the files, they will be unavailable to you, unless you are the owner.");
+        } else {
+            return tr("All the files in your local sync folder '%1' were deleted. These deletes will be "
+                      "synchronized with your server, making such files unavailable unless restored.\n"
+                      "Are you sure you want to sync those actions with the server?\n"
+                      "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
+        }
+    }();
     auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove All Files?"),
         msg.arg(shortGuiLocalPath()), QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -1357,15 +1363,16 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, const std::f
     msgBox->setDefaultButton(keepBtn);
     bool oldPaused = syncPaused();
     setSyncPaused(true);
-    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, abort, oldPaused, this] {
-        const bool cancel = msgBox->clickedButton() == keepBtn;
-        abort(cancel);
-        if (cancel) {
+    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, oldPaused, direction, this] {
+        if (msgBox->clickedButton() == keepBtn) {
+            // reset the db upload all local files or download all remote files
             FileSystem::setFolderMinimumPermissions(path());
             journalDb()->clearFileTable();
-            _lastEtag.clear();
-            slotScheduleThisFolder();
+        } else {
+            _allowRemoveAllOnce = true;
         }
+        _lastEtag.clear();
+        slotScheduleThisFolder();
         setSyncPaused(oldPaused);
     });
     connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);

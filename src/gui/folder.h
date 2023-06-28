@@ -403,7 +403,7 @@ public slots:
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, const std::function<void(bool)> &abort);
+    void slotAboutToRemoveAllFiles(SyncFileItem::Direction);
 
     /**
       * Starts a sync operation
@@ -587,6 +587,9 @@ private:
      * The vfs mode instance (created by plugin) to use. Never null.
      */
     QSharedPointer<Vfs> _vfs;
+
+    // allow that all files are removed in the next run
+    bool _allowRemoveAllOnce = false;
 
     friend class SpaceMigration;
 };

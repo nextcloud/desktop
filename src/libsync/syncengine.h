@@ -145,6 +145,10 @@ public:
 
     auto getPropagator() { return _propagator; } // for the test
 
+
+    bool isPromtRemoveAllFiles() const;
+    void setPromtRemoveAllFiles(bool promtRemoveAllFiles);
+
 signals:
     // During update, before reconcile
     void rootEtag(const QString &, const QDateTime &);
@@ -167,9 +171,10 @@ signals:
     /**
      * Emited when the sync engine detects that all the files have been removed or change.
      * This usually happen when the server was reset or something.
-     * Call abort(true) slot connected from this signal to abort the sync.
+     * SyncFileItem::Down indicates all files where removed on the server
+     * SyncFileItem::Up indicates all files where removed locally
      */
-    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, std::function<void(bool)> abort);
+    void aboutToRemoveAllFiles(SyncFileItem::Direction direction);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
@@ -250,13 +255,6 @@ private:
     Utility::StopWatch _stopWatch;
 
     /**
-     * check if we are allowed to propagate everything, and if we are not, adjust the instructions
-     * to recover
-     */
-    void checkForPermission(SyncFileItemSet &syncItems);
-    RemotePermissions getPermissions(const QString &file) const;
-
-    /**
      * Instead of downloading files from the server, upload the files to the server
      */
     void restoreOldFiles(SyncFileItemSet &syncItems);
@@ -292,5 +290,7 @@ private:
 
     // destructor called
     bool _goingDown = false;
+
+    bool _promptRemoveAllFiles = true;
 };
 }

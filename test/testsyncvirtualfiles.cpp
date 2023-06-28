@@ -82,6 +82,8 @@ private slots:
         QFETCH(bool, doLocalDiscovery);
 
         FakeFolder fakeFolder{ FileInfo() };
+        fakeFolder.syncEngine().setPromtRemoveAllFiles(false);
+
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -310,6 +312,7 @@ private slots:
     void testVirtualFileDownload()
     {
         FakeFolder fakeFolder{ FileInfo() };
+        fakeFolder.syncEngine().setPromtRemoveAllFiles(false);
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
