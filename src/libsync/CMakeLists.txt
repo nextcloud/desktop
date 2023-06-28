@@ -48,7 +48,6 @@ set(libsync_SRCS
     networkjobs/fetchuserinfojobfactory.cpp
     networkjobs/checkserverjobfactory.cpp
     networkjobs/jsonjob.cpp
-    networkjobs/jobgroup.cpp
     networkjobs/resources.cpp
 
     abstractcorejob.cpp

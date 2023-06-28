@@ -17,6 +17,7 @@
 #include "accountmanager.h"
 #include "application.h"
 #include "configfile.h"
+#include "fetchserversettings.h"
 
 #include "libsync/creds/abstractcredentials.h"
 #include "libsync/creds/httpcredentials.h"
@@ -241,6 +242,9 @@ void AccountState::setState(State state)
         QTimer::singleShot(0, this, [this] {
             // ensure the connection validator is done
             _queueGuard.unblock();
+            // update capabilites and fetch relevant settings
+            auto updateJob = new FetchServerSettingsJob(account(), this);
+            updateJob->start();
         });
     }
     // don't anounce a state change from connected to connected

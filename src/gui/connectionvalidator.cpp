@@ -11,6 +11,17 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include "gui/connectionvalidator.h"
+#include "gui/clientproxy.h"
+#include "gui/fetchserversettings.h"
+#include "gui/tlserrordialog.h"
+#include "libsync/account.h"
+#include "libsync/cookiejar.h"
+#include "libsync/creds/abstractcredentials.h"
+#include "libsync/networkjobs.h"
+#include "libsync/networkjobs/checkserverjobfactory.h"
+#include "libsync/networkjobs/jsonjob.h"
+#include "libsync/theme.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -19,17 +30,6 @@
 #include <QNetworkProxyFactory>
 #include <QXmlStreamReader>
 
-#include "account.h"
-#include "clientproxy.h"
-#include "connectionvalidator.h"
-#include "cookiejar.h"
-#include "creds/abstractcredentials.h"
-#include "networkjobs.h"
-#include "networkjobs/checkserverjobfactory.h"
-#include "networkjobs/jobgroup.h"
-#include "networkjobs/jsonjob.h"
-#include "theme.h"
-#include "tlserrordialog.h"
 
 using namespace std::chrono_literals;
 
@@ -228,113 +228,22 @@ void ConnectionValidator::slotAuthSuccess()
 {
     _errors.clear();
     if (_mode != ConnectionValidator::ValidationMode::ValidateAuth) {
-        checkServerCapabilities();
+        auto *fetchSetting = new FetchServerSettingsJob(_account, this);
+        const auto unsupportedServerError = [this] {
+            _errors.append({tr("The configured server for this client is too old."), tr("Please update to the latest server and restart the client.")});
+        };
+        connect(fetchSetting, &FetchServerSettingsJob::unknownServerDetected, unsupportedServerError);
+        connect(fetchSetting, &FetchServerSettingsJob::unsupportedServerDetected, [unsupportedServerError, this] {
+            unsupportedServerError();
+            Q_EMIT reportResult(ServerVersionMismatch);
+        });
+
+        connect(fetchSetting, &FetchServerSettingsJob::finishedSignal, this, [this] { reportResult(Connected); });
+
+        fetchSetting->start();
         return;
     }
     reportResult(Connected);
-}
-
-void ConnectionValidator::checkServerCapabilities()
-{
-    // The main flow now needs the capabilities
-    auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/capabilities"), {}, {}, this);
-    job->setAuthenticationJob(true);
-    job->setTimeout(timeoutToUse);
-
-    QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
-        auto caps = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
-        qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
-        _account->setCapabilities(caps.toVariantMap());
-        if (!checkServerInfo()) {
-            return;
-        }
-
-        fetchUser();
-    });
-    job->start();
-}
-
-void ConnectionValidator::fetchUser()
-{
-    auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), {}, {}, this);
-    job->setTimeout(timeoutToUse);
-    job->setAuthenticationJob(true);
-    QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
-        const QString user = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
-        if (!user.isEmpty()) {
-            _account->setDavUser(user);
-        }
-        const QString displayName = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
-        if (!displayName.isEmpty()) {
-            _account->setDavDisplayName(displayName);
-        }
-
-        auto capabilities = _account->capabilities();
-        // We should have received the capabilities by now. Check that assumption in a debug build. If
-        // it's not the case, the code below will assume that they are not available.
-        Q_ASSERT(capabilities.isValid());
-
-        auto *group = new JobGroup(this);
-        group->setJobHook([](auto *job) {
-            job->setAuthenticationJob(true);
-            job->setTimeout(20s);
-        });
-        if (capabilities.isValid()) {
-            if (capabilities.avatarsAvailable()) {
-                auto *avatarJob = group->createJob<AvatarJob>(_account, _account->davUser(), 128, this);
-                connect(avatarJob, &AvatarJob::avatarPixmap, this, [this](const QPixmap &img) {
-                    _account->setAvatar(img);
-                });
-                avatarJob->start();
-            }
-            if (capabilities.appProviders().enabled) {
-                auto *jsonJob = group->createJob<JsonJob>(_account, _account->url(), capabilities.appProviders().appsUrl, "GET");
-                connect(jsonJob, &JsonApiJob::finishedSignal, this, [jsonJob, this] {
-                    _account->setAppProvider(AppProvider { jsonJob->data() });
-                });
-                jsonJob->start();
-            }
-        }
-        connect(group, &JobGroup::finishedSignal, this, [group, this] {
-            group->deleteLater();
-            reportResult(Connected);
-        });
-
-        if (group->isEmpty()) {
-            Q_EMIT group->finishedSignal();
-        }
-    });
-    job->start();
-}
-
-bool ConnectionValidator::checkServerInfo()
-{
-    // We cannot deal with servers < 10.0.0
-    switch (_account->serverSupportLevel()) {
-    case Account::ServerSupportLevel::Supported:
-        break;
-    case Account::ServerSupportLevel::Unknown:
-        [[fallthrough]];
-    case Account::ServerSupportLevel::Unsupported:
-        _errors.append(tr("The configured server for this client is too old."));
-        _errors.append(tr("Please update to the latest server and restart the client."));
-        if (_account->serverSupportLevel() == Account::ServerSupportLevel::Unsupported) {
-            reportResult(ServerVersionMismatch);
-            return false;
-        }
-    }
-    // We attempt to work with servers >= 7.0.0 but warn users.
-    // Check usages of Account::serverVersionUnsupported() for details.
-
-    // Record that the server supports HTTP/2
-    // Actual decision if we should use HTTP/2 is done in AccessManager::createRequest
-    if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
-        if (auto reply = job->reply()) {
-            _account->setHttp2Supported(
-                reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
-        }
-    }
-    return true;
 }
 
 void ConnectionValidator::reportResult(Status status)

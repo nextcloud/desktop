@@ -1,0 +1,6 @@
+Bugfix: Update capabilites and other info after connect
+
+We fixed a bug where server infos might have only been updated several minutes
+after the client connected to the server.
+
+https://github.com/owncloud/client/issues/10978
