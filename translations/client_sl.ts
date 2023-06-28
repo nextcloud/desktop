@@ -431,7 +431,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Kaže, da imate na tej mapi omogočeno možnost navideznih datotek. Trenutno ni mogoče neposredno prejeti tovrstnih datotek, če so šifrirane po protokolu E2E. Za najenostavnejše delo z navideznimi datotekami poskrbite, da je šifrirana mapa označena kot »Vedno na voljo krajevno«.</translation>
+        <translation>Kaže, da imate na tej mapi omogočeno možnost navideznih datotek. Trenutno ni mogoče neposredno prejeti tovrstnih datotek, če so šifrirane po protokolu E2E. Za najenostavnejše delo s tovrstnimi datotekami poskrbite, da je šifrirana mapa označena kot »Vedno na voljo krajevno«.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -451,7 +451,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation>Omogoči šifriranje</translation>
+        <translation>Onemogoči šifriranje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
