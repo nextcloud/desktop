@@ -266,7 +266,7 @@ class DiscoveryPhase : public QObject
                                      const RemotePermissions rp,
                                      const std::function<void(bool)> callback);
 
-    void checkSelectiveSyncExistingFolder(const QString &path, const RemotePermissions &rp, const qint64 folderSize);
+    void checkSelectiveSyncExistingFolder(const QString &path, const qint64 folderSize);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *
@@ -324,6 +324,7 @@ signals:
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
+    void existingFolderNowBig(const QString &folder);
 
     /** For excluded items that don't show up in itemDiscovered()
       *

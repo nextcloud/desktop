@@ -728,7 +728,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
                 ENFORCE(dbEntry.isDirectory());
 
                 if (differingSize) {
-                    _discoveryData->checkSelectiveSyncExistingFolder(path._server, serverEntry.remotePerm, sizeOnServer);
+                    _discoveryData->checkSelectiveSyncExistingFolder(path._server, sizeOnServer);
                 }
 
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
