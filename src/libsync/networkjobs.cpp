@@ -50,6 +50,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcEtagJob, "nextcloud.sync.networkjob.etag", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcLsColJob, "nextcloud.sync.networkjob.lscol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCheckServerJob, "nextcloud.sync.networkjob.checkserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCheckRedirectCostFreeUrlJob, "nextcloud.sync.networkjob.checkredirectcostfreeurl", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropfindJob, "nextcloud.sync.networkjob.propfind", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
@@ -552,6 +553,42 @@ bool CheckServerJob::finished()
     return true;
 }
 
+/*********************************************************************************************/
+
+CheckRedirectCostFreeUrlJob::CheckRedirectCostFreeUrlJob(const AccountPtr &account, QObject *parent)
+    : AbstractNetworkJob(account, QLatin1String(statusphpC), parent)
+{
+    setIgnoreCredentialFailure(true);
+}
+
+void CheckRedirectCostFreeUrlJob::start()
+{
+    setFollowRedirects(false);
+    sendRequest("GET", Utility::concatUrlPath(account()->url(), QStringLiteral("/index.php/204")));
+    AbstractNetworkJob::start();
+}
+
+void CheckRedirectCostFreeUrlJob::onTimedOut()
+{
+    qCDebug(lcCheckRedirectCostFreeUrlJob) << "TIMEOUT";
+    if (reply() && reply()->isRunning()) {
+        emit timeout(reply()->url());
+    } else if (!reply()) {
+        qCDebug(lcCheckRedirectCostFreeUrlJob) << "Timeout without a reply?";
+    }
+    AbstractNetworkJob::onTimedOut();
+}
+
+bool CheckRedirectCostFreeUrlJob::finished()
+{
+    const auto statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (statusCode >= 301 && statusCode <= 307) {
+        const auto redirectionTarget = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+        qCDebug(lcCheckRedirectCostFreeUrlJob) << "Redirecting cost-free URL" << reply()->url() << " to" << redirectionTarget;
+    }
+    emit jobFinished(statusCode);
+    return true;
+}
 /*********************************************************************************************/
 
 PropfindJob::PropfindJob(AccountPtr account, const QString &path, QObject *parent)
