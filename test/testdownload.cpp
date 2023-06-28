@@ -61,7 +61,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted);
         auto size = 30 * 1000 * 1000;
         fakeFolder.remoteModifier().insert("A/a0", size);
 
@@ -96,7 +96,7 @@ private slots:
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted);
         auto size = 3'500'000;
         fakeFolder.remoteModifier().insert("A/broken", size);
 
@@ -236,7 +236,7 @@ private slots:
         resendActual = 0;
         resendExpected = 10;
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &OCC::SyncEngine::itemCompleted);
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(resendActual, 4); // the 4th fails because it only resends 3 times
         QCOMPARE(getItem(completeSpy, "A/resendme")->_status, SyncFileItem::NormalError);
