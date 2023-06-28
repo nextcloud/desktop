@@ -90,6 +90,7 @@ public:
         CredentialsWrong, // AuthenticationRequiredError
         SslError, // SSL handshake error, certificate rejected by user?
         StatusNotFound, // Error retrieving status.php
+        StatusRedirect, // 204 URL received one of redirect HTTP codes (301-307), possibly a captive portal
         ServiceUnavailable, // 503 on authed request
         MaintenanceMode, // maintenance enabled in status.php
         Timeout // actually also used for other errors on the authed request
@@ -111,7 +112,11 @@ signals:
     void connectionResult(OCC::ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:
+    void slotCheckRedirectCostFreeUrl();
+
     void slotCheckServerAndAuth();
+
+    void slotCheckRedirectCostFreeUrlFinished(int statusCode);
 
     void slotStatusFound(const QUrl &url, const QJsonObject &info);
     void slotNoStatusFound(QNetworkReply *reply);
