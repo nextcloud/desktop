@@ -405,6 +405,7 @@ private slots:
     void slotEmitFinishedDelayed();
 
     void slotNewBigFolderDiscovered(const QString &, bool isExternal);
+    void slotExistingFolderNowBig(const QString &folderPath);
 
     void slotLogPropagationStart();
 

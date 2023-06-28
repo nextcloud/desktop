@@ -1216,6 +1216,27 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
     }
 }
 
+void Folder::slotExistingFolderNowBig(const QString &folderPath)
+{
+    const auto trailSlashFolderPath = trailingSlashPath(folderPath);
+    const auto journal = journalDb();
+
+    auto undecidedListQueryOk = false;
+    auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &undecidedListQueryOk);
+    if (undecidedListQueryOk) {
+        if (!undecidedList.contains(trailSlashFolderPath)) {
+            undecidedList.append(trailSlashFolderPath);
+            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
+            emit newBigFolderDiscovered(trailSlashFolderPath);
+        }
+
+        const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n"
+                                "Please go into the settings and disable it if you wish to stop synchronising it.")
+                                 .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath);
+        Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+    }
+}
+
 void Folder::slotLogPropagationStart()
 {
     _fileLog->logLap("Propagation starts");
