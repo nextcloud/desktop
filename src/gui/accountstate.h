@@ -47,6 +47,7 @@ class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
     Q_PROPERTY(AccountPtr account MEMBER _account)
+    Q_PROPERTY(State state READ state NOTIFY stateChanged)
 
 public:
     enum State {

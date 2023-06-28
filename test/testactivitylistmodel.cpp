@@ -445,6 +445,17 @@ public:
         return model;
     }
 
+    void testActivityAdd(void(OCC::ActivityListModel::*addingMethod)(const OCC::Activity&, OCC::ActivityListModel::ErrorType), OCC::Activity &activity) {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        (model.data()->*addingMethod)(activity, OCC::ActivityListModel::ErrorType::SyncError);
+        QCOMPARE(model->rowCount(), 1);
+
+        const auto index = model->index(0, 0);
+        QVERIFY(index.isValid());
+    }
+
     void testActivityAdd(void(OCC::ActivityListModel::*addingMethod)(const OCC::Activity&), OCC::Activity &activity) {
         const auto model = testingALM();
         QCOMPARE(model->rowCount(), 0);

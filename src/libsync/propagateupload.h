@@ -281,7 +281,7 @@ private slots:
     void slotPollFinished();
 
 protected:
-    void done(SyncFileItem::Status status, const QString &errorString = QString(), const ErrorCategory category = ErrorCategory::NoError) override;
+    void done(const SyncFileItem::Status status, const QString &errorString = QString(), const ErrorCategory category = ErrorCategory::NoError) override;
 
     /**
      * Aborts all running network jobs, except for the ones that mayAbortJob
