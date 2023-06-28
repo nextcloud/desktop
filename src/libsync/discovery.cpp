@@ -718,11 +718,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
         } else if (dbEntry._etag != serverEntry.etag) {
+            const auto differingSize = sizeOnServer != item->_size;
+
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = sizeOnServer;
+
             if (serverEntry.isDirectory) {
                 ENFORCE(dbEntry.isDirectory());
+
+                if (differingSize) {
+                    _discoveryData->checkSelectiveSyncExistingFolder(path._server, serverEntry.remotePerm, sizeOnServer);
+                }
+
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
                 // Deleted locally, changed on server
