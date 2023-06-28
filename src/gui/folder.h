@@ -75,17 +75,6 @@ public:
     /// Reads a folder definition from the current settings group.
     static FolderDefinition load(QSettings &settings, const QByteArray &id);
 
-    /** The highest version in the settings that load() can read
-     *
-     * Version 1: initial version (default if value absent in settings)
-     * Version 2: introduction of metadata_parent hash in 2.6.0
-     *            (version remains readable by 2.5.1)
-     * Version 3: introduction of new windows vfs mode in 2.6.0
-     * Version 4: until 2.9.1 windows vfs tried to unregister folders with a different id from windows.
-     * Version 5: 3.0.0 Introduced spaces, the profiles are not downwards compatible
-     */
-    static int maxSettingsVersion();
-
     /// Ensure / as separator and trailing /.
     void setLocalPath(const QString &path);
 
@@ -305,11 +294,16 @@ public:
       */
     bool isFileExcludedRelative(const QString &relativePath) const;
 
-    /**
-      * Migration: When this flag is true, this folder will save to
-      * the backwards-compatible 'Folders' section in the config file.
-      */
-    void setSaveBackwardsCompatible(bool save);
+    /** Calls schedules this folder on the FolderMan after a short delay.
+     *
+     * This should be used in situations where a sync should be triggered
+     * because a local file was modified. Syncs don't upload files that were
+     * modified too recently, and this delay ensures the modification is
+     * far enough in the past.
+     *
+     * The delay doesn't reset with subsequent calls.
+     */
+    void scheduleThisFolderSoon();
 
     /** Used to have placeholders: save in placeholder config section */
     void setSaveInFoldersWithPlaceholders() { _saveInFoldersWithPlaceholders = true; }
@@ -508,15 +502,7 @@ private:
 
     QScopedPointer<SyncRunFileLog> _fileLog;
 
-    /**
-     * When the same local path is synced to multiple accounts, only one
-     * of them can be stored in the settings in a way that's compatible
-     * with old clients that don't support it. This flag marks folders
-     * that shall be written in a backwards-compatible way, by being set
-     * on the *first* Folder instance that was configured for each local
-     * path.
-     */
-    bool _saveBackwardsCompatible = false;
+    QTimer _scheduleSelfTimer;
 
     /** Whether the folder should be saved in that settings group
      *

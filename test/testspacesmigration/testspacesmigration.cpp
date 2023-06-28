@@ -92,7 +92,7 @@ private slots:
             QCOMPARE(folder4->remotePath(), QStringLiteral("/Shares"));
         }
 
-        const int expectedSize = 4;
+        const qsizetype expectedSize = 4;
         QCOMPARE(FolderMan::instance()->folders().size(), expectedSize);
 
         // unload the folders

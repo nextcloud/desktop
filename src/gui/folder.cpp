@@ -81,8 +81,6 @@ auto priorityC()
 {
     return QStringLiteral("priority");
 }
-
-constexpr int SettingsVersionC = 5;
 }
 
 namespace OCC {
@@ -791,14 +789,7 @@ void Folder::saveToSettings() const
         // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
         settingsGroup = QStringLiteral("FoldersWithPlaceholders");
-    } else if (_saveBackwardsCompatible || oneAccountOnly) {
-        // The folder is saved to backwards-compatible "Folders"
-        // section only if it has the migrate flag set (i.e. was in
-        // there before) or if the folder is the only one for the
-        // given target path.
-        // This ensures that older clients will not read a configuration
-        // where two folders for different accounts point at the same
-        // local folders.
+    } else if (oneAccountOnly) {
         settingsGroup = QStringLiteral("Folders");
     }
 
@@ -1205,9 +1196,11 @@ void Folder::slotWatcherUnreliable(const QString &message)
     ocApp()->gui()->raiseDialog(msgBox);
 }
 
-void Folder::setSaveBackwardsCompatible(bool save)
+void Folder::scheduleThisFolderSoon()
 {
-    _saveBackwardsCompatible = save;
+    if (!_scheduleSelfTimer.isActive()) {
+        _scheduleSelfTimer.start();
+    }
 }
 
 void Folder::registerFolderWatcher()
@@ -1306,7 +1299,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QStringLiteral("virtualFilesMode"), Utility::enumToString(folder.virtualFilesMode));
 
     // Prevent loading of profiles in old clients
-    settings.setValue(versionC(), maxSettingsVersion());
+    settings.setValue(versionC(), ConfigFile::UnusedLegacySettingsVersionNumber);
 }
 
 FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &id)
@@ -1335,11 +1328,6 @@ FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &i
         }
     }
     return folder;
-}
-
-int FolderDefinition::maxSettingsVersion()
-{
-    return SettingsVersionC;
 }
 
 void FolderDefinition::setLocalPath(const QString &path)

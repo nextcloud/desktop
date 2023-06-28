@@ -207,6 +207,45 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     return out;
 }
 
+/**
+ * Check if the last version used to write the config file differs from the current version.
+ * If the current version is newer, update the config file with our current version. If the
+ * current version is older, refuse to do anything: this is a downgrade, and it is too risky to
+ * assume that things might work "just fine".
+ */
+bool checkClientVersion()
+{
+    ConfigFile configFile;
+
+    // Did the client version change?
+    // (The client version is adjusted further down)
+    auto configVersion = QVersionNumber::fromString(configFile.clientVersionWithBuildNumberString());
+    auto clientVersion = OCC::Version::versionWithBuildNumber();
+
+    if (configVersion.majorVersion() == clientVersion.majorVersion()) {
+        // no migration needed
+        return true;
+    }
+
+    if (clientVersion.majorVersion() < configVersion.majorVersion()) {
+        // We refuse to downgrade, too much can go wrong.
+        QMessageBox box(QMessageBox::Warning, Theme::instance()->appNameGUI(),
+            QCoreApplication::translate("version check",
+                "Some settings were configured in newer versions of this client "
+                "and use features that are not available in this version"));
+        box.addButton(OCC::Application::tr("Quit"), QMessageBox::AcceptRole);
+        box.exec();
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return false;
+    }
+
+    // We're okay to continue. The settings will be updated in other parts, but here we bump the
+    // version we store in the config file.
+    configFile.backup();
+    configFile.setClientVersionWithBuildNumberString(OCC::Version::versionWithBuildNumber().toString());
+    return true;
+}
+
 void setupLogging(const CommandLineOptions &options)
 {
     // might be called from second instance
@@ -255,6 +294,12 @@ int main(int argc, char **argv)
     KDSingleApplication singleApplication;
 
     if (singleApplication.isPrimaryInstance()) {
+        // Check if the user upgraded or downgraded. We do this as early as possible, to detect
+        // a possible downgrade.
+        if (!checkClientVersion()) {
+            return -1;
+        }
+
         const auto options = parseOptions(app.arguments());
 
         setupLogging(options);

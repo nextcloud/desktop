@@ -83,12 +83,6 @@ public:
     static AccountPtr createAccount(const QUuid &uuid);
 
     /**
-     * Returns the list of settings keys that can't be read because
-     * they are from the future.
-     */
-    static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
-
-    /**
      * Returns a sorted list of displayNames
      */
     QStringList accountNames() const;

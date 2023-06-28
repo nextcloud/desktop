@@ -179,15 +179,9 @@ void FolderMan::registerFolderWithSocketApi(Folder *folder)
         _socketApi->slotRegisterPath(folder);
 }
 
-int FolderMan::setupFolders()
+qsizetype FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
-
-    QStringList skipSettingsKeys, deleteSettingsKeys;
-    backwardMigrationSettingsKeys(&deleteSettingsKeys, &skipSettingsKeys);
-    // deleteKeys should already have been deleted on application startup.
-    // We ignore them here just in case.
-    skipSettingsKeys += deleteSettingsKeys;
 
     auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
     const auto &accountsWithSettings = settings->childGroups();
@@ -203,22 +197,18 @@ int FolderMan::setupFolders()
 
         // The "backwardsCompatible" flag here is related to migrating old
         // database locations
-        auto process = [&](const QString &groupName, bool backwardsCompatible, bool foldersWithPlaceholders) {
+        auto process = [&](const QString &groupName, bool foldersWithPlaceholders) {
             settings->beginGroup(groupName);
-            if (skipSettingsKeys.contains(settings->group())) {
-                // Should not happen: bad container keys should have been deleted
-                qCWarning(lcFolderMan) << "Folder structure" << groupName << "is too new, ignoring";
-            } else {
-                setupFoldersHelper(*settings, account, skipSettingsKeys, backwardsCompatible, foldersWithPlaceholders);
-            }
+            setupFoldersHelper(*settings, account, foldersWithPlaceholders);
             settings->endGroup();
+            return true;
         };
 
-        process(QStringLiteral("Folders"), true, false);
-
-        // See Folder::saveToSettings for details about why these exists.
-        process(QStringLiteral("Multifolders"), false, false);
-        process(QStringLiteral("FoldersWithPlaceholders"), false, true);
+        if (!process(QStringLiteral("Folders"), false) ||
+            // See Folder::saveToSettings for details about why these exists.
+            !process(QStringLiteral("Multifolders"), false) || !process(QStringLiteral("FoldersWithPlaceholders"), true)) {
+            return 0;
+        }
 
         settings->endGroup(); // <account>
     }
@@ -228,20 +218,10 @@ int FolderMan::setupFolders()
     return _folders.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders)
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool foldersWithPlaceholders)
 {
     const auto &childGroups = settings.childGroups();
     for (const auto &folderAlias : childGroups) {
-        // Skip folders with too-new version
-        settings.beginGroup(folderAlias);
-        if (ignoreKeys.contains(settings.group())) {
-            qCInfo(lcFolderMan) << "Folder" << folderAlias << "is too new, ignoring";
-            _additionalBlockedFolderAliases.insert(folderAlias);
-            settings.endGroup();
-            continue;
-        }
-        settings.endGroup();
-
         settings.beginGroup(folderAlias);
         FolderDefinition folderDefinition = FolderDefinition::load(settings, folderAlias.toUtf8());
         const auto defaultJournalPath = [&account, folderDefinition] {
@@ -286,9 +266,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         }
 
         // Migration: If an old .csync_journal.db is found, move it to the new name.
-        if (backwardsCompatible) {
-            SyncJournalDb::maybeMigrateDb(folderDefinition.localPath(), folderDefinition.absoluteJournalPath());
-        }
+        SyncJournalDb::maybeMigrateDb(folderDefinition.localPath(), folderDefinition.absoluteJournalPath());
 
         auto vfs = VfsPluginManager::instance().createVfsFromPlugin(folderDefinition.virtualFilesMode);
         if (!vfs) {
@@ -297,9 +275,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         }
 
         if (Folder *f = addFolderInternal(std::move(folderDefinition), account, std::move(vfs))) {
-            // Migration: Mark folders that shall be saved in a backwards-compatible way
-            if (backwardsCompatible)
-                f->setSaveBackwardsCompatible(true);
             if (foldersWithPlaceholders)
                 f->setSaveInFoldersWithPlaceholders();
 
@@ -308,39 +283,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             emit folderSyncStateChange(f);
         }
         settings.endGroup();
-    }
-}
-
-void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
-{
-    auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
-
-    auto processSubgroup = [&](const QString &name) {
-        settings->beginGroup(name);
-        const int foldersVersion = settings->value(versionC(), 1).toInt();
-        if (foldersVersion <= maxFoldersVersion) {
-            const auto &childGroups = settings->childGroups();
-            for (const auto &folderAlias : childGroups) {
-                settings->beginGroup(folderAlias);
-                const int folderVersion = settings->value(versionC(), 1).toInt();
-                if (folderVersion > FolderDefinition::maxSettingsVersion()) {
-                    ignoreKeys->append(settings->group());
-                }
-                settings->endGroup();
-            }
-        } else {
-            deleteKeys->append(settings->group());
-        }
-        settings->endGroup();
-    };
-
-    const auto &childGroups = settings->childGroups();
-    for (const auto &accountId : childGroups) {
-        settings->beginGroup(accountId);
-        processSubgroup(QStringLiteral("Folders"));
-        processSubgroup(QStringLiteral("Multifolders"));
-        processSubgroup(QStringLiteral("FoldersWithPlaceholders"));
-        settings->endGroup();
     }
 }
 
@@ -567,18 +509,7 @@ Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDe
 
     auto folder = addFolderInternal(definition, accountState, std::move(vfs));
 
-    // Migration: The first account that's configured for a local folder shall
-    // be saved in a backwards-compatible way.
-    bool oneAccountOnly = true;
-    for (auto *other : qAsConst(_folders)) {
-        if (other != folder && other->cleanPath() == folder->cleanPath()) {
-            oneAccountOnly = false;
-            break;
-        }
-    }
-
     if (folder) {
-        folder->setSaveBackwardsCompatible(oneAccountOnly);
         folder->saveToSettings();
         emit folderSyncStateChange(folder);
         emit folderListChanged();

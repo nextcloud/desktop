@@ -97,7 +97,7 @@ public:
     // TODO: use acces throug ocApp and remove that instance pointer
     static FolderMan *instance();
 
-    int setupFolders();
+    qsizetype setupFolders();
 
     /** Find folder setting keys that need to be ignored or deleted for being too new.
      *
@@ -116,8 +116,6 @@ public:
      * future configurations (possibly with user confirmation for deletions) and in
      * FolderMan::setupFolders() to know which too-new folder configurations to skip.
      */
-    static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
-
     const QVector<Folder *> &folders() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
@@ -295,7 +293,7 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool foldersWithPlaceholders);
 
     QSet<Folder *> _disabledFolders;
     QVector<Folder *> _folders;

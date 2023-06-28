@@ -57,66 +57,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcApplication, "gui.application", QtInfoMsg)
 
-bool Application::configVersionMigration()
-{
-    QStringList deleteKeys, ignoreKeys;
-    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
-
-    ConfigFile configFile;
-
-    // Did the client version change?
-    // (The client version is adjusted further down)
-    const bool versionChanged = QVersionNumber::fromString(configFile.clientVersionWithBuildNumberString()) != OCC::Version::versionWithBuildNumber();
-
-    // We want to message the user either for destructive changes,
-    // or if we're ignoring something and the client version changed.
-    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
-
-    if (!versionChanged && !warningMessage)
-        return true;
-
-    const auto backupFile = configFile.backup();
-
-    if (warningMessage) {
-        QString boldMessage;
-        if (!deleteKeys.isEmpty()) {
-            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
-        } else {
-            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
-        }
-
-        QMessageBox box(
-            QMessageBox::Warning,
-            Theme::instance()->appNameGUI(),
-            tr("Some settings were configured in newer versions of this client and "
-               "use features that are not available in this version.<br>"
-               "<br>"
-               "%1<br>"
-               "<br>"
-               "The current configuration file was already backed up to <i>%2</i>.")
-                .arg(boldMessage, backupFile));
-        box.addButton(tr("Quit"), QMessageBox::AcceptRole);
-        auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
-
-        box.exec();
-        if (box.clickedButton() != continueBtn) {
-            QTimer::singleShot(0, qApp, &QApplication::quit);
-            return false;
-        }
-
-        auto settings = ConfigFile::settingsWithGroup(QStringLiteral("foo"));
-        settings->endGroup();
-
-        // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : qAsConst(deleteKeys))
-            settings->remove(badKey);
-    }
-
-    configFile.setClientVersionWithBuildNumberString(OCC::Version::versionWithBuildNumber().toString());
-    return true;
-}
-
 QString Application::displayLanguage() const
 {
     return _displayLanguage;
@@ -150,10 +90,6 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
         qCInfo(lcApplication) << "VFS windows plugin is available";
     if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
-
-    if (!configVersionMigration()) {
-        return;
-    }
 
     ConfigFile cfg;
 
