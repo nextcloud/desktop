@@ -51,7 +51,13 @@ namespace {
 #define VERSION_C
 constexpr auto versionC = "version";
 #endif
+
+QString trailingSlashPath(const QString &path)
+{
+    return path.endsWith('/') ? path : QString(path + QStringLiteral("/"));
 }
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolder, "nextcloud.gui.folder", QtInfoMsg)
@@ -167,9 +173,9 @@ void Folder::checkLocalPath()
     if (_canonicalLocalPath.isEmpty()) {
         qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath;
         _canonicalLocalPath = _definition.localPath;
-    } else if (!_canonicalLocalPath.endsWith('/')) {
-        _canonicalLocalPath.append('/');
     }
+
+    _canonicalLocalPath = trailingSlashPath(_canonicalLocalPath);
 
     if (fi.isDir() && fi.isReadable()) {
         qCDebug(lcFolder) << "Checked local path ok";
@@ -214,10 +220,8 @@ QString Folder::path() const
 QString Folder::shortGuiLocalPath() const
 {
     QString p = _definition.localPath;
-    QString home = QDir::homePath();
-    if (!home.endsWith('/')) {
-        home.append('/');
-    }
+    const auto home = trailingSlashPath(QDir::homePath());
+
     if (p.startsWith(home)) {
         p = p.mid(home.length());
     }
@@ -266,10 +270,7 @@ QString Folder::remotePath() const
 
 QString Folder::remotePathTrailingSlash() const
 {
-    QString result = remotePath();
-    if (!result.endsWith('/'))
-        result.append('/');
-    return result;
+    return trailingSlashPath(remotePath());
 }
 
 QUrl Folder::remoteUrl() const
@@ -1183,10 +1184,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item, ErrorCategory errorC
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 {
-    auto newFolder = newF;
-    if (!newFolder.endsWith(QLatin1Char('/'))) {
-        newFolder += QLatin1Char('/');
-    }
+    const auto newFolder = trailingSlashPath(newF);
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
@@ -1451,7 +1449,7 @@ void Folder::removeLocalE2eFiles()
             }
 
             if (!parentPathEncrypted) {
-                const auto pathAdjusted = rec._path.endsWith('/') ? rec._path : QString(rec._path + QStringLiteral("/"));
+                const auto pathAdjusted = trailingSlashPath(rec._path);
                 e2eFoldersToBlacklist.append(pathAdjusted);
             }
         }
@@ -1566,11 +1564,8 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
 
 QString FolderDefinition::prepareLocalPath(const QString &path)
 {
-    QString p = QDir::fromNativeSeparators(path);
-    if (!p.endsWith(QLatin1Char('/'))) {
-        p.append(QLatin1Char('/'));
-    }
-    return p;
+    const auto normalisedPath = QDir::fromNativeSeparators(path);
+    return trailingSlashPath(normalisedPath);
 }
 
 QString FolderDefinition::prepareTargetPath(const QString &path)
