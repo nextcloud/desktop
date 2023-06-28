@@ -112,3 +112,36 @@ def step(context, user_name, resource_name):
     test.compare(
         has_link_share, False, f"Resource '{resource_name}' have public link share"
     )
+
+
+@Then(
+    r'the public should be able to download the (?:file|folder) "([^"].*)" without password from the last created public link by "([^"].*)" in the server',
+    regexp=True,
+)
+def step(context, resource_name, link_creator):
+    downloaded = sharing_helper.download_last_public_link_resource(
+        link_creator, resource_name
+    )
+    test.compare(downloaded, True, "Could not download public share")
+
+
+@Then(
+    r'the public should not be able to download the (?:file|folder) "([^"].*)" from the last created public link by "([^"].*)" in the server',
+    regexp=True,
+)
+def step(context, resource_name, link_creator):
+    downloaded = sharing_helper.download_last_public_link_resource(
+        link_creator, resource_name
+    )
+    test.compare(downloaded, False, "Could download public share")
+
+
+@Then(
+    r'the public should be able to download the (?:file|folder) "([^"].*)" with password "([^"].*)" from the last created public link by "([^"].*)" in the server',
+    regexp=True,
+)
+def step(context, resource_name, public_link_password, link_creator):
+    downloaded = sharing_helper.download_last_public_link_resource(
+        link_creator, resource_name, public_link_password
+    )
+    test.compare(downloaded, True, "Could not download public share")

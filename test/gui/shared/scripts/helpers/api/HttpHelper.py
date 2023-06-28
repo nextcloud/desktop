@@ -4,14 +4,16 @@ from helpers.UserHelper import basic_auth_header
 requests.packages.urllib3.disable_warnings()
 
 
-def send_request(url, method, body=None, headers={}, user=None):
-    auth_header = basic_auth_header(user)
+def send_request(url, method, body=None, headers={}, user=None, password=None):
+    auth_header = basic_auth_header(user, password)
     headers.update(auth_header)
     return requests.request(method, url, data=body, headers=headers, verify=False)
 
 
-def get(url, headers={}, user=None):
-    return send_request(url=url, method="GET", headers=headers, user=user)
+def get(url, headers={}, user=None, password=None):
+    return send_request(
+        url=url, method="GET", headers=headers, user=user, password=password
+    )
 
 
 def post(url, body=None, headers={}, user=None):
@@ -30,5 +32,5 @@ def mkcol(url, headers={}, user=None):
     return send_request(url=url, method="MKCOL", headers=headers, user=user)
 
 
-def propfind(url, body=None, headers={}, user=None):
-    return send_request(url, "PROPFIND", body, headers, user)
+def propfind(url, body=None, headers={}, user=None, password=None):
+    return send_request(url, "PROPFIND", body, headers, user, password)

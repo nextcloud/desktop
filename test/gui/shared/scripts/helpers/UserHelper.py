@@ -6,12 +6,14 @@ from helpers.ConfigHelper import get_config
 createdUsers = {}
 
 
-def basic_auth_header(user=None):
-    # default admin auth
-    token = b64encode(b"admin:admin").decode()
-    if user:
+def basic_auth_header(user=None, password=None):
+    if not user and not password:
+        user = 'admin'
+        password = 'admin'
+    elif not user == 'public' and not password:
         password = getPasswordForUser(user)
-        token = b64encode(("%s:%s" % (user, password)).encode()).decode()
+
+    token = b64encode(("%s:%s" % (user, password)).encode()).decode()
     return {"Authorization": "Basic " + token}
 
 
