@@ -151,6 +151,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _userInfo(accountState, false, true)
 {
     _ui->setupUi(this);
+    _ui->moreMemoryButton->setVisible(false);
+    _ui->quotaProgressLabel->setVisible(false);
 
     _model = new FolderStatusModel;
     _model->setAccountState(_accountState);
