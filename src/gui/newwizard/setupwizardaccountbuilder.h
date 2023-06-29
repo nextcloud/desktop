@@ -44,14 +44,15 @@ public:
     virtual bool isValid() = 0;
 
     /**
-     * The username to use for WebDAV authentication along with the secret credentials.
-     * For some reason, the credentials object must be seeded with this username separately.
-     * @return username for use with WebDAV
+     * The username used for ownCloud 10 dav requests.
      */
-    virtual QString davUser() = 0;
-    virtual void setDavUser(const QString &user) = 0;
+    QString davUser();
+    void setDavUser(const QString &user);
 
     virtual FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) = 0;
+
+private:
+    QString _davUser;
 };
 
 class HttpBasicAuthenticationStrategy : public AbstractAuthenticationStrategy
@@ -63,17 +64,18 @@ public:
 
     bool isValid() override;
 
-    QString davUser() override;
-    void setDavUser(const QString &user) override;
-
     // access is needed to be able to check these credentials against the server
-    QString username() const;
     QString password() const;
+
+    /**
+     *  The user name used for authentication
+     */
+    QString loginUser() const;
 
     FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) override;
 
 private:
-    QString _username;
+    QString _loginUser;
     QString _password;
 };
 
@@ -86,13 +88,9 @@ public:
 
     bool isValid() override;
 
-    QString davUser() override;
-    void setDavUser(const QString &user) override;
-
     FetchUserInfoJobFactory makeFetchUserInfoJobFactory(QNetworkAccessManager *nam) override;
 
 private:
-    QString _davUser;
     QString _token;
     QString _refreshToken;
 };

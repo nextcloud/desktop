@@ -33,13 +33,13 @@ public:
         : HttpCredentials()
     {
     }
-    HttpCredentialsGui(const QString &user, const QString &password)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
+    HttpCredentialsGui(const QString &loginUser, const QString &password)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, loginUser, password)
     {
     }
 
-    HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, user, password)
+    HttpCredentialsGui(const QString &davUser, const QString &password, const QString &refreshToken)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, davUser, password)
     {
         _refreshToken = refreshToken;
     }

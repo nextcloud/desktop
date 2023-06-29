@@ -19,41 +19,32 @@
 
 namespace OCC::Wizard {
 
-AbstractAuthenticationStrategy::~AbstractAuthenticationStrategy() {};
+AbstractAuthenticationStrategy::~AbstractAuthenticationStrategy() { }
 
+QString AbstractAuthenticationStrategy::davUser()
+{
+    return _davUser;
+}
+
+void AbstractAuthenticationStrategy::setDavUser(const QString &user)
+{
+    _davUser = user;
+}
 
 HttpBasicAuthenticationStrategy::HttpBasicAuthenticationStrategy(const QString &username, const QString &password)
-    : _username(username)
+    : _loginUser(username)
     , _password(password)
 {
 }
 
 HttpCredentialsGui *HttpBasicAuthenticationStrategy::makeCreds()
 {
-    return new HttpCredentialsGui(_username, _password);
+    return new HttpCredentialsGui(loginUser(), _password);
 }
 
 bool HttpBasicAuthenticationStrategy::isValid()
 {
-    return !_username.isEmpty() && !_password.isEmpty();
-}
-
-QString HttpBasicAuthenticationStrategy::davUser()
-{
-    return _username;
-}
-
-void HttpBasicAuthenticationStrategy::setDavUser(const QString &user)
-{
-    // the fetched username should always match the one the user gave us
-    Q_ASSERT(user == _username);
-    // however, as a fallback, in production, we will overwrite our current value with the one we fetched
-    _username = user;
-}
-
-QString HttpBasicAuthenticationStrategy::username() const
-{
-    return _username;
+    return !loginUser().isEmpty() && !_password.isEmpty();
 }
 
 QString HttpBasicAuthenticationStrategy::password() const
@@ -61,9 +52,14 @@ QString HttpBasicAuthenticationStrategy::password() const
     return _password;
 }
 
+QString HttpBasicAuthenticationStrategy::loginUser() const
+{
+    return _loginUser;
+}
+
 FetchUserInfoJobFactory HttpBasicAuthenticationStrategy::makeFetchUserInfoJobFactory(QNetworkAccessManager *nam)
 {
-    return FetchUserInfoJobFactory::fromBasicAuthCredentials(nam, _username, _password);
+    return FetchUserInfoJobFactory::fromBasicAuthCredentials(nam, loginUser(), _password);
 }
 
 OAuth2AuthenticationStrategy::OAuth2AuthenticationStrategy(const QString &token, const QString &refreshToken)
@@ -75,24 +71,12 @@ OAuth2AuthenticationStrategy::OAuth2AuthenticationStrategy(const QString &token,
 HttpCredentialsGui *OAuth2AuthenticationStrategy::makeCreds()
 {
     Q_ASSERT(isValid());
-    return new HttpCredentialsGui(_davUser, _token, _refreshToken);
+    return new HttpCredentialsGui(davUser(), _token, _refreshToken);
 }
 
 bool OAuth2AuthenticationStrategy::isValid()
 {
-    return !_davUser.isEmpty() && !_token.isEmpty() && !_refreshToken.isEmpty();
-}
-
-QString OAuth2AuthenticationStrategy::davUser()
-{
-    return _davUser;
-}
-
-void OAuth2AuthenticationStrategy::setDavUser(const QString &user)
-{
-    // should be called only once
-    Q_ASSERT(_davUser.isEmpty());
-    _davUser = user;
+    return !davUser().isEmpty() && !_token.isEmpty() && !_refreshToken.isEmpty();
 }
 
 FetchUserInfoJobFactory OAuth2AuthenticationStrategy::makeFetchUserInfoJobFactory(QNetworkAccessManager *nam)
