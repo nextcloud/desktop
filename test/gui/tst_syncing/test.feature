@@ -351,9 +351,9 @@ Feature: Syncing files
         And the user waits for folder "folder1" to be synced
         And the user waits for folder "folder2" to be synced
         Then as "Alice" folder "folder1" should exist in the server
-        And as user "Alice" folder "folder1" should contain "500" items on the server
+        And as user "Alice" folder "folder1" should contain "500" items in the server
         And as "Alice" folder "folder2" should exist in the server
-        And as user "Alice" folder "folder2" should contain "500" items on the server
+        And as user "Alice" folder "folder2" should contain "500" items in the server
 
 
     Scenario: Skip sync folder configuration

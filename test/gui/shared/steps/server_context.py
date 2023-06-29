@@ -145,3 +145,16 @@ def step(context, resource_name, public_link_password, link_creator):
         link_creator, resource_name, public_link_password
     )
     test.compare(downloaded, True, "Could not download public share")
+
+
+@Then(
+    r'as user "([^"].*)" folder "([^"].*)" should contain "([^"].*)" items in the server',
+    regexp=True,
+)
+def step(context, user_name, folder_name, items_number):
+    total_items = webdav.get_folder_items_count(user_name, folder_name)
+    test.compare(
+        total_items,
+        items_number,
+        f"Folder should contain {items_number} items",
+    )
