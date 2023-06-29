@@ -221,13 +221,21 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         return;
     }
 
+    auto chatNotificationsReceivedCount = 0;
+
     for(const auto &activity : qAsConst(toNotifyList)) {
         if (activity._objectType == QStringLiteral("chat")) {
+            ++chatNotificationsReceivedCount;
             showDesktopTalkNotification(activity);
         } else {
             showDesktopNotification(activity);
         }
     }
+
+    if (chatNotificationsReceivedCount < _lastChatNotificationsReceivedCount) {
+        _activityModel->checkAndRemoveSeenActivities(toNotifyList);
+    }
+    _lastChatNotificationsReceivedCount = chatNotificationsReceivedCount;
 }
 
 void User::slotBuildIncomingCallDialogs(const ActivityList &list)
