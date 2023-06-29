@@ -640,6 +640,15 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
     }
 }
 
+void ActivityListModel::checkAndRemoveSeenActivities(const OCC::ActivityList &newActivities)
+{
+    for (const auto &activity : _finalList) {
+        if (activity._objectType == QStringLiteral("chat") && !newActivities.contains(activity)) {
+            removeActivityFromActivityList(activity);
+        }
+    }
+}
+
 void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
