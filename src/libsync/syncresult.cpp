@@ -34,47 +34,34 @@ void SyncResult::reset()
     *this = SyncResult();
 }
 
-QString SyncResult::statusString() const
+template <>
+QString Utility::enumToDisplayName(SyncResult::Status status)
 {
-    QString re;
-    Status stat = status();
-
-    switch (stat) {
-    case Undefined:
-        re = QStringLiteral("Undefined");
-        break;
-    case NotYetStarted:
-        re = QStringLiteral("Not yet Started");
-        break;
-    case SyncRunning:
-        re = QStringLiteral("Sync Running");
-        break;
-    case Success:
-        re = QStringLiteral("Success");
-        break;
-    case Error:
-        re = QStringLiteral("Error");
-        break;
-    case SetupError:
-        re = QStringLiteral("SetupError");
-        break;
-    case SyncPrepare:
-        re = QStringLiteral("SyncPrepare");
-        break;
-    case Problem:
-        re = QStringLiteral("Success, some files were ignored.");
-        break;
-    case SyncAbortRequested:
-        re = QStringLiteral("Sync Request aborted by user");
-        break;
-    case Paused:
-        re = QStringLiteral("Sync Paused");
-        break;
-    case Offline:
-        re = QStringLiteral("Offline");
-        break;
+    switch (status) {
+    case SyncResult::Status::Undefined:
+        return QStringLiteral("Undefined");
+    case SyncResult::Status::NotYetStarted:
+        return QStringLiteral("Awaiting sync");
+    case SyncResult::Status::SyncRunning:
+        return QStringLiteral("Sync running");
+    case SyncResult::Status::Success:
+        return QStringLiteral("Success");
+    case SyncResult::Status::Error:
+        return QStringLiteral("Error");
+    case SyncResult::Status::SetupError:
+        return QStringLiteral("Setup error");
+    case SyncResult::Status::SyncPrepare:
+        return QStringLiteral("Preparing to sync");
+    case SyncResult::Status::Problem:
+        return QStringLiteral("Success, some files were ignored.");
+    case SyncResult::Status::SyncAbortRequested:
+        return QStringLiteral("Aborting sync");
+    case SyncResult::Status::Paused:
+        return QStringLiteral("Sync paused");
+    case SyncResult::Status::Offline:
+        return QStringLiteral("Offline");
     }
-    return re;
+    Q_UNREACHABLE();
 }
 
 void SyncResult::setStatus(Status stat)

@@ -748,10 +748,9 @@ void FolderMan::slotScheduleFolderByTime()
         if (f->consecutiveFailingSyncs() > 1)
             syncAgainDelay = std::chrono::seconds(60); // 60s for each further attempt
         if (syncAgain && msecsSinceSync > syncAgainDelay) {
-            qCInfo(lcFolderMan) << "Scheduling folder" << f->path()
-                                << ", the last" << f->consecutiveFailingSyncs() << "syncs failed"
+            qCInfo(lcFolderMan) << "Scheduling folder" << f->path() << ", the last" << f->consecutiveFailingSyncs() << "syncs failed"
                                 << ", anotherSyncNeeded" << f->syncEngine().isAnotherSyncNeeded()
-                                << ", last status:" << f->syncResult().statusString()
+                                << ", last status:" << Utility::enumToDisplayName(f->syncResult().status())
                                 << ", time since last sync:" << msecsSinceSync.count();
 
             scheduleFolder(f);
@@ -1036,43 +1035,15 @@ QString FolderMan::trayTooltipStatusString(
 {
     QString folderMessage;
     switch (result.status()) {
-    case SyncResult::Undefined:
-        folderMessage = tr("Undefined State.");
-        break;
-    case SyncResult::NotYetStarted:
-        folderMessage = tr("Waiting to start syncing.");
-        break;
-    case SyncResult::SyncPrepare:
-        folderMessage = tr("Preparing for sync.");
-        break;
-    case SyncResult::SyncRunning:
-        folderMessage = tr("Sync is running.");
-        break;
     case SyncResult::Success:
         [[fallthrough]];
     case SyncResult::Problem:
         if (result.hasUnresolvedConflicts()) {
             folderMessage = tr("Sync was successful, unresolved conflicts.");
-        } else {
-            folderMessage = tr("Last Sync was successful.");
+            break;
         }
-        break;
-    case SyncResult::Error:
-        folderMessage = tr("Sync Error.");
-        break;
-    case SyncResult::SetupError:
-        folderMessage = tr("Setup Error.");
-        break;
-    case SyncResult::SyncAbortRequested:
-        folderMessage = tr("User Abort.");
-        break;
-    case SyncResult::Paused:
-        folderMessage = tr("Sync is paused.");
-        break;
-    case SyncResult::Offline:
-        folderMessage = tr("Offline.");
-        break;
-        // no default case on purpose, check compiler warnings
+    default:
+        return Utility::enumToDisplayName(result.status());
     }
     if (paused) {
         // sync is disabled.

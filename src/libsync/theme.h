@@ -129,8 +129,6 @@ public:
     */
     bool allowDarkTheme() const;
 
-    virtual QString statusHeaderText(SyncResult::Status) const;
-
     /**
      * Characteristics: bool if more than one sync folder is allowed
      */

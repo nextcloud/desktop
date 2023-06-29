@@ -94,16 +94,17 @@ namespace TestUtils {
         static const auto algorithmNames = [] {
             QVariantList out;
             for (const auto &a : CheckSums::All) {
-                out.append(CheckSums::toQString(a.first));
+                out.append(Utility::enumToString(a.first));
             }
             return out;
         }();
-        return {
-            { "core", QVariantMap { { "status", QVariantMap { { "installed", "1" }, { "maintenance", "0" }, { "needsDbUpgrade", "0" }, { "version", "10.11.0.0" }, { "versionstring", "10.11.0" }, { "edition", "Community" }, { "productname", "Infinite Scale" }, { "product", "Infinite Scale" }, { "productversion", "2.0.0-beta1+7c2e3201b" } } } } },
-            { "files", QVariantList {} },
-            { "dav", QVariantMap { { "chunking", "1.0" } } },
-            { "checksums", QVariantMap { { "preferredUploadType", CheckSums::toQString(algo) }, { "supportedTypes", algorithmNames } } }
-        };
+        return {{"core",
+                    QVariantMap{{"status",
+                        QVariantMap{{"installed", "1"}, {"maintenance", "0"}, {"needsDbUpgrade", "0"}, {"version", "10.11.0.0"}, {"versionstring", "10.11.0"},
+                            {"edition", "Community"}, {"productname", "Infinite Scale"}, {"product", "Infinite Scale"},
+                            {"productversion", "2.0.0-beta1+7c2e3201b"}}}}},
+            {"files", QVariantList{}}, {"dav", QVariantMap{{"chunking", "1.0"}}},
+            {"checksums", QVariantMap{{"preferredUploadType", Utility::enumToString(algo)}, {"supportedTypes", algorithmNames}}}};
     }
 }
 }

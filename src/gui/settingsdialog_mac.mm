@@ -13,6 +13,7 @@
  */
 
 #include "settingsdialog_mac.h"
+#include "common/utility.h"
 
 #import <AppKit/AppKit.h>
 #include <QDebug>

@@ -19,6 +19,7 @@
 #include <QHash>
 #include <QDateTime>
 
+#include "common/utility.h"
 #include "owncloudlib.h"
 #include "syncfileitem.h"
 
@@ -61,7 +62,6 @@ public:
 
     void setStatus(Status);
     Status status() const;
-    QString statusString() const;
     QDateTime syncTime() const;
 
     bool foundFilesNotSynced() const { return _foundFilesNotSynced; }
@@ -118,6 +118,9 @@ private:
 
     friend class TrayOverallStatusResult;
 };
+
+template <>
+OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(SyncResult::Status status);
 }
 
 #endif

@@ -1402,7 +1402,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(deployedC(), folder.isDeployed());
     settings.setValue(priorityC(), folder.priority());
 
-    settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
+    settings.setValue(QStringLiteral("virtualFilesMode"), Utility::enumToString(folder.virtualFilesMode));
 
     // Prevent loading of profiles in old clients
     settings.setValue(versionC(), maxSettingsVersion());

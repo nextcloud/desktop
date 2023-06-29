@@ -146,7 +146,7 @@ QByteArray ChecksumHeader::makeChecksumHeader() const
     if (!isValid()) {
         return {};
     }
-    return CheckSums::toQString(_checksumType).toUtf8() + ':' + _checksum;
+    return Utility::enumToString(_checksumType).toUtf8() + ':' + _checksum;
 }
 
 CheckSums::Algorithm ChecksumHeader::type() const
@@ -312,7 +312,7 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, CheckSums::Algorithm a
         if (crypto.addData(device)) {
             return crypto.result().toHex();
         }
-        qCWarning(lcChecksums) << "Failed to compoute checksum" << CheckSums::toQString(algorithm);
+        qCWarning(lcChecksums) << "Failed to compoute checksum" << Utility::enumToString(algorithm);
         return {};
     }
     case CheckSums::Algorithm::ADLER32:

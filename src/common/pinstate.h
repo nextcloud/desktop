@@ -16,6 +16,7 @@
 #define PINSTATE_H
 
 #include "ocsynclib.h"
+#include "utility.h"
 
 #include <QObject>
 
@@ -129,6 +130,8 @@ Q_ENUM_NS(VfsItemAvailability)
 }
 using namespace PinStateEnums;
 
+template <>
+OCSYNC_EXPORT QString Utility::enumToDisplayName(VfsItemAvailability availability);
 }
 
 #endif

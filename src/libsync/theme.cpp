@@ -86,48 +86,6 @@ Theme::~Theme()
 {
 }
 
-QString Theme::statusHeaderText(SyncResult::Status status) const
-{
-    QString resultStr;
-
-    switch (status) {
-    case SyncResult::Undefined:
-        resultStr = QCoreApplication::translate("theme", "Status undefined");
-        break;
-    case SyncResult::NotYetStarted:
-        resultStr = QCoreApplication::translate("theme", "Waiting to start sync");
-        break;
-    case SyncResult::SyncRunning:
-        resultStr = QCoreApplication::translate("theme", "Sync is running");
-        break;
-    case SyncResult::Success:
-        resultStr = QCoreApplication::translate("theme", "Sync Success");
-        break;
-    case SyncResult::Problem:
-        resultStr = QCoreApplication::translate("theme", "Sync Success, some files were ignored.");
-        break;
-    case SyncResult::Error:
-        resultStr = QCoreApplication::translate("theme", "Sync Error");
-        break;
-    case SyncResult::SetupError:
-        resultStr = QCoreApplication::translate("theme", "Setup Error");
-        break;
-    case SyncResult::SyncPrepare:
-        resultStr = QCoreApplication::translate("theme", "Preparing to sync");
-        break;
-    case SyncResult::SyncAbortRequested:
-        resultStr = QCoreApplication::translate("theme", "Aborting...");
-        break;
-    case SyncResult::Paused:
-        resultStr = QCoreApplication::translate("theme", "Sync is paused");
-        break;
-    case SyncResult::Offline:
-        resultStr = QCoreApplication::translate("theme", "Offline");
-        break;
-    }
-    return resultStr;
-}
-
 QString Theme::appNameGUI() const
 {
     return QStringLiteral(APPLICATION_NAME);
@@ -424,8 +382,8 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
         "Using virtual files plugin: %5%7"
         "%6")
         .arg(appName(), _version, qtVersionString, QSslSocket::sslLibraryVersionString(),
-            Vfs::modeToString(VfsPluginManager::instance().bestAvailableVfsMode()), QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion(), br,
-            gitUrl);
+            Utility::enumToString(VfsPluginManager::instance().bestAvailableVfsMode()), QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion(),
+            br, gitUrl);
 }
 
 

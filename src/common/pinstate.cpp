@@ -14,3 +14,25 @@
 
 #include "pinstate.h"
 #include "moc_pinstate.cpp"
+
+#include <QCoreApplication>
+
+using namespace OCC;
+
+template <>
+QString Utility::enumToDisplayName(VfsItemAvailability availability)
+{
+    switch (availability) {
+    case VfsItemAvailability::AlwaysLocal:
+        return QCoreApplication::translate("pinstate", "Always available locally");
+    case VfsItemAvailability::AllHydrated:
+        return QCoreApplication::translate("pinstate", "Currently available locally");
+    case VfsItemAvailability::Mixed:
+        return QCoreApplication::translate("pinstate", "Some available online only");
+    case VfsItemAvailability::AllDehydrated:
+        [[fallthrough]];
+    case VfsItemAvailability::OnlineOnly:
+        return QCoreApplication::translate("pinstate", "Available online only");
+    }
+    Q_UNREACHABLE();
+}

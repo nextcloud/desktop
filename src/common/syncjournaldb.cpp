@@ -1921,7 +1921,7 @@ int SyncJournalDb::mapChecksumType(CheckSums::Algorithm checksumType)
     }
 
     // the type is mapped as utf8
-    const auto typeName = CheckSums::toQString(checksumType).toUtf8();
+    const auto typeName = Utility::enumToString(checksumType).toUtf8();
     // Ensure the checksum type is in the db
     {
         const auto query = _queryManager.get(PreparedSqlQueryManager::InsertChecksumTypeQuery, QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db);

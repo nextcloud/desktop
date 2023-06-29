@@ -341,7 +341,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return progress._progressString;
         }
         if (accountConnected) {
-            return tr("%1\n%2").arg(Theme::instance()->statusHeaderText(f->syncResult().status()), QDir::toNativeSeparators(folderInfo._folder->path()));
+            return tr("%1\n%2").arg(Utility::enumToDisplayName(f->syncResult().status()), QDir::toNativeSeparators(folderInfo._folder->path()));
         } else {
             return tr("Signed out\n%1").arg(QDir::toNativeSeparators(folderInfo._folder->path()));
         }
@@ -1149,7 +1149,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
-        pi._overallSyncString = Theme::instance()->statusHeaderText(SyncResult::SyncPrepare);
+        pi._overallSyncString = Utility::enumToDisplayName(SyncResult::SyncPrepare);
     } else if (state == SyncResult::Problem || state == SyncResult::Success) {
         // Reset the progress info after a sync.
         pi = SubFolderInfo::Progress();

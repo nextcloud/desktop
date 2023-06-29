@@ -41,20 +41,6 @@ QString Vfs::underlyingFileName(const QString &fileName) const
 
 Vfs::~Vfs() = default;
 
-QString Vfs::modeToString(Mode mode)
-{
-    // Note: Strings are used for config and must be stable
-    switch (mode) {
-    case Off:
-        return QStringLiteral("off");
-    case WithSuffix:
-        return QStringLiteral("suffix");
-    case WindowsCfApi:
-        return QStringLiteral("wincfapi");
-    }
-    return QStringLiteral("off");
-}
-
 Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
 {
     // Note: Strings are used for config and must be stable
@@ -258,4 +244,19 @@ const VfsPluginManager &VfsPluginManager::instance()
         _instance = new VfsPluginManager();
     }
     return *_instance;
+}
+
+template <>
+QString Utility::enumToString(Vfs::Mode mode)
+{
+    // Note: Strings are used for config and must be stable
+    switch (mode) {
+    case Vfs::Mode::WithSuffix:
+        return QStringLiteral("suffix");
+    case Vfs::Mode::WindowsCfApi:
+        return QStringLiteral("wincfapi");
+    case Vfs::Mode::Off:
+        return QStringLiteral("off");
+    }
+    Q_UNREACHABLE();
 }
