@@ -169,15 +169,15 @@ private slots:
 private:
     void generateMnemonic();
 
-    [[nodiscard]] std::pair<QByteArray, PKey> generateCSR(AccountPtr account,
+    [[nodiscard]] std::pair<QByteArray, PKey> generateCSR(const AccountPtr &account,
                                                           PKey keyPair,
                                                           PKey privateKey);
 
-    void sendSignRequestCSR(AccountPtr account,
+    void sendSignRequestCSR(const AccountPtr &account,
                             PKey keyPair,
                             QByteArray csrContent);
 
-    void writeKeyPair(AccountPtr account,
+    void writeKeyPair(const AccountPtr &account,
                       PKey keyPair,
                       QByteArray output);
 
@@ -185,21 +185,21 @@ private:
     void writeMnemonic(OCC::AccountPtr account,
                        L nextCall);
 
-    void checkServerHasSavedKeys(AccountPtr account);
+    void checkServerHasSavedKeys(const AccountPtr &account);
 
     template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
-    void checkUserPublicKeyOnServer(OCC::AccountPtr account,
+    void checkUserPublicKeyOnServer(const OCC::AccountPtr &account,
                                     SUCCESS_CALLBACK nextCheck,
                                     ERROR_CALLBACK onError);
 
     template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
-    void checkUserPrivateKeyOnServer(OCC::AccountPtr account,
+    void checkUserPrivateKeyOnServer(const OCC::AccountPtr &account,
                                      SUCCESS_CALLBACK nextCheck,
                                      ERROR_CALLBACK onError);
 
     template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
     void checkUserKeyOnServer(const QString &keyType,
-                              OCC::AccountPtr account,
+                              const OCC::AccountPtr &account,
                               SUCCESS_CALLBACK nextCheck,
                               ERROR_CALLBACK onError);
 

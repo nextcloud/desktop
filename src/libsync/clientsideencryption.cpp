@@ -1345,7 +1345,7 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
     });
 }
 
-std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generateCSR(AccountPtr account,
+std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generateCSR(const AccountPtr &account,
                                                                                     PKey keyPair,
                                                                                     PKey privateKey)
 {
@@ -1416,7 +1416,7 @@ std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generate
     return {result, std::move(keyPair)};
 }
 
-void ClientSideEncryption::sendSignRequestCSR(AccountPtr account,
+void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account,
                                               PKey keyPair,
                                               QByteArray csrContent)
 {
@@ -1452,7 +1452,7 @@ void ClientSideEncryption::sendSignRequestCSR(AccountPtr account,
     job->start();
 }
 
-void ClientSideEncryption::writeKeyPair(AccountPtr account,
+void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
                                         PKey keyPair,
                                         QByteArray output)
 {
@@ -1516,7 +1516,7 @@ void ClientSideEncryption::writeKeyPair(AccountPtr account,
     privateKeyJob->start();
 }
 
-void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
+void ClientSideEncryption::checkServerHasSavedKeys(const AccountPtr &account)
 {
     const auto keyIsNotOnServer = [account, this] () {
         qCInfo(lcCse) << "server is missing keys. deleting local keys";
@@ -1537,7 +1537,7 @@ void ClientSideEncryption::checkServerHasSavedKeys(AccountPtr account)
 
 template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
 void ClientSideEncryption::checkUserKeyOnServer(const QString &keyType,
-                                                OCC::AccountPtr account,
+                                                const AccountPtr &account,
                                                 SUCCESS_CALLBACK nextCheck,
                                                 ERROR_CALLBACK onError)
 {
@@ -1556,7 +1556,7 @@ void ClientSideEncryption::checkUserKeyOnServer(const QString &keyType,
 }
 
 template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
-void ClientSideEncryption::checkUserPublicKeyOnServer(AccountPtr account,
+void ClientSideEncryption::checkUserPublicKeyOnServer(const AccountPtr &account,
                                                       SUCCESS_CALLBACK nextCheck,
                                                       ERROR_CALLBACK onError)
 {
@@ -1564,7 +1564,7 @@ void ClientSideEncryption::checkUserPublicKeyOnServer(AccountPtr account,
 }
 
 template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
-void ClientSideEncryption::checkUserPrivateKeyOnServer(AccountPtr account, SUCCESS_CALLBACK nextCheck, ERROR_CALLBACK onError)
+void ClientSideEncryption::checkUserPrivateKeyOnServer(const AccountPtr &account, SUCCESS_CALLBACK nextCheck, ERROR_CALLBACK onError)
 {
     checkUserKeyOnServer("private-key", account, nextCheck, onError);
 }
@@ -1759,7 +1759,7 @@ FolderMetadata::FolderMetadata(AccountPtr account,
                                RequiredMetadataVersion requiredMetadataVersion,
                                const QByteArray& metadata,
                                int statusCode)
-    : _account(account)
+    : _account(std::move(account))
     , _requiredMetadataVersion(requiredMetadataVersion)
 {
     if (metadata.isEmpty() || statusCode == 404) {
