@@ -175,11 +175,11 @@ private:
 
     void sendSignRequestCSR(const AccountPtr &account,
                             PKey keyPair,
-                            QByteArray csrContent);
+                            const QByteArray &csrContent);
 
     void writeKeyPair(const AccountPtr &account,
                       PKey keyPair,
-                      QByteArray output);
+                      const QByteArray &csrContent);
 
     template <typename L>
     void writeMnemonic(OCC::AccountPtr account,

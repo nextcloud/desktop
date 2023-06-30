@@ -1314,8 +1314,7 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
             return;
         }
 
-        const auto key = BIO2ByteArray(privKey);
-        _privateKey = key;
+        _privateKey = BIO2ByteArray(privKey);
     }
 
     Bio privKey;
@@ -1325,13 +1324,11 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
         return;
     }
 
-    auto privateKey = PKey::readPrivateKey(privKey);
-
     qCDebug(lcCse()) << "Key correctly generated";
 
-    auto csrOutput = generateCSR(account, std::move(localKeyPair), std::move(privateKey));
-    writeMnemonic(account, [account, keyPair = std::move(csrOutput.second), output = std::move(csrOutput.first), this]() mutable -> void {
-        writeKeyPair(account, std::move(keyPair), output);
+    auto csrContent = generateCSR(account, std::move(localKeyPair), PKey::readPrivateKey(privKey));
+    writeMnemonic(account, [account, keyPair = std::move(csrContent.second), csrContent = std::move(csrContent.first), this]() mutable -> void {
+        writeKeyPair(account, std::move(keyPair), csrContent);
     });
 }
 
@@ -1356,7 +1353,7 @@ std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generate
     int nVersion = 1;
 
     // 2. set version of x509 req
-    X509_REQ *x509_req = X509_REQ_new();
+    auto x509_req = X509_REQ_new();
     auto release_on_exit_x509_req = qScopeGuard([&] {
         X509_REQ_free(x509_req);
     });
@@ -1406,7 +1403,7 @@ std::pair<QByteArray, ClientSideEncryption::PKey> ClientSideEncryption::generate
 
 void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account,
                                               PKey keyPair,
-                                              QByteArray csrContent)
+                                              const QByteArray &csrContent)
 {
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
     job->setCsr(csrContent);
@@ -1441,7 +1438,7 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account,
 
 void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
                                         PKey keyPair,
-                                        QByteArray output)
+                                        const QByteArray &csrContent)
 {
     const auto privateKeyKeychainId = AbstractCredentials::keychainKey(
         account->url().toString(),
@@ -1467,7 +1464,7 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
     privateKeyJob->setInsecureFallback(false);
     privateKeyJob->setKey(privateKeyKeychainId);
     privateKeyJob->setBinaryData(bytearrayPrivateKey);
-    connect(privateKeyJob, &WritePasswordJob::finished, [keyPair = std::move(keyPair), publicKeyKeychainId, account, output, this] (Job *incoming) mutable {
+    connect(privateKeyJob, &WritePasswordJob::finished, [keyPair = std::move(keyPair), publicKeyKeychainId, account, csrContent, this] (Job *incoming) mutable {
         if (incoming->error() != Error::NoError) {
             failedToInitialize(account);
             return;
@@ -1486,13 +1483,13 @@ void ClientSideEncryption::writeKeyPair(const AccountPtr &account,
         publicKeyJob->setInsecureFallback(false);
         publicKeyJob->setKey(publicKeyKeychainId);
         publicKeyJob->setBinaryData(bytearrayPublicKey);
-        connect(publicKeyJob, &WritePasswordJob::finished, [account, keyPair = std::move(keyPair), output, this](Job *incoming) mutable {
+        connect(publicKeyJob, &WritePasswordJob::finished, [account, keyPair = std::move(keyPair), csrContent, this](Job *incoming) mutable {
             if (incoming->error() != Error::NoError) {
                 failedToInitialize(account);
                 return;
             }
 
-            sendSignRequestCSR(account, std::move(keyPair), output);
+            sendSignRequestCSR(account, std::move(keyPair), csrContent);
         });
         publicKeyJob->start();
     });
