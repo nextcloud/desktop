@@ -1,6 +1,18 @@
 FAQ
 ===
 
+How the "Edit locally" functionality works when running the desktop client AppImage
+-----------------------------------------------------------------------------------
+
+This functionality depends on the desktop client ability to register the mime to handle the nc:// scheme. That is the handler used by the server to open a file locally.
+
+We use AppImage due to its universal compatibility but to take full advantage of the desktop client features you will need a third part software to integrate the AppImage in your system.
+We have tested `AppImageLauncher <https://github.com/TheAssassin/AppImageLauncher>`_ and alternatively there is `Go AppImage <https://github.com/probonopd/go-appimage>`_.
+
+Without it, independent of the browser and distro being used, the desktop client will fail to open a document with the local editor when you click on the option "Edit locally" in your Nextcloud instance.
+
+See https://nextcloud.com/blog/nextcloud-office-release-solves-document-compatibility-overhauls-knowledge-management/ for more information.
+
 Some Files Are Continuously Uploaded to the Server, Even When They Are Not Modified.
 ------------------------------------------------------------------------------------
 
@@ -43,8 +55,8 @@ or permanently by adjusting ``/etc/sysctl.conf``.
 I Want To Move My Local Sync Folder
 -----------------------------------
 
-The Nextcloud desktop client does not provide a way to change the local sync directory. 
-However, it can be done, though it is a bit unorthodox. 
+The Nextcloud desktop client does not provide a way to change the local sync directory.
+However, it can be done, though it is a bit unorthodox.
 Specifically, you have to:
 
 1. Remove the existing connection which syncs to the wrong directory
@@ -53,7 +65,7 @@ Specifically, you have to:
 .. figure:: images/setup/remove.png
    :alt: Remove an existing connection
 
-To do so, in the client UI, which you can see above, click the "**Account**" drop-down menu and then click "Remove". 
+To do so, in the client UI, which you can see above, click the "**Account**" drop-down menu and then click "Remove".
 This will display a "**Confirm Account Removal**" dialog window.
 
 .. figure:: images/setup/confirm.png
@@ -69,9 +81,9 @@ Then, click the Account drop-down menu again, and this time click "**Add new**".
 This opens the Nextcloud Connection Wizard, which you can see above, *but* with an extra option.
 This option provides the ability to either: keep the existing data (synced by the previous connection) or to start a clean sync (erasing the existing data).
 
-.. important:: 
+.. important::
 
-  Be careful before choosing the "Start a clean sync" option. The old sync folder *may* contain a considerable amount of data, ranging into the gigabytes or terabytes. If it does, after the client creates the new connection, it will have to download **all** of that information again. Instead, first move or copy the old local sync folder, containing a copy of the existing files, to the new location. Then, when creating the new connection choose "*keep existing data*" instead. The Nextcloud client will check the files in the newly-added sync folder and find that they match what is on the server and not need to download anything. 
+  Be careful before choosing the "Start a clean sync" option. The old sync folder *may* contain a considerable amount of data, ranging into the gigabytes or terabytes. If it does, after the client creates the new connection, it will have to download **all** of that information again. Instead, first move or copy the old local sync folder, containing a copy of the existing files, to the new location. Then, when creating the new connection choose "*keep existing data*" instead. The Nextcloud client will check the files in the newly-added sync folder and find that they match what is on the server and not need to download anything.
 
 Make your choice and click "**Connect...**".
 This will then step you through the Connection Wizard, just as you did when you setup the previous sync connection, but giving you the opportunity to choose a new sync directory.
