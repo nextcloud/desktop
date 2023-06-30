@@ -11,6 +11,7 @@ Summary
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
+* Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
@@ -43,6 +44,13 @@ Details
    differed from the username used on the server.
 
    https://github.com/owncloud/client/issues/10946
+
+* Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
+
+   We fixed a bug where server infos might have only been updated several minutes after the client
+   connected to the server.
+
+   https://github.com/owncloud/client/issues/10978
 
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 
