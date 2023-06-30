@@ -1,0 +1,5 @@
+Bugfix: Account activity and crash after an account was removed
+
+We fixed a bug where an account performed actions after it was removed.
+
+https://github.com/owncloud/client/issues/10990

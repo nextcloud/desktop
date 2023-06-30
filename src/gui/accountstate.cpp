@@ -155,16 +155,11 @@ AccountState::AccountState(AccountPtr account)
     });
 }
 
-AccountState::~AccountState()
-{
-    if (FolderMan::instance()) {
-        FolderMan::instance()->socketApi()->unregisterAccount(account());
-    }
-}
+AccountState::~AccountState() { }
 
-AccountStatePtr AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)
+std::unique_ptr<AccountState> AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)
 {
-    auto accountState = AccountStatePtr(new AccountState(account));
+    auto accountState = std::unique_ptr<AccountState>(new AccountState(account));
     const bool userExplicitlySignedOut = settings.value(userExplicitlySignedOutC(), false).toBool();
     if (userExplicitlySignedOut) {
         // see writeToSettings below
@@ -174,9 +169,9 @@ AccountStatePtr AccountState::loadFromSettings(AccountPtr account, const QSettin
     return accountState;
 }
 
-AccountStatePtr AccountState::fromNewAccount(AccountPtr account)
+std::unique_ptr<AccountState> AccountState::fromNewAccount(AccountPtr account)
 {
-    return AccountStatePtr(new AccountState(account));
+    return std::unique_ptr<AccountState>(new AccountState(account));
 }
 
 void AccountState::writeToSettings(QSettings &settings) const

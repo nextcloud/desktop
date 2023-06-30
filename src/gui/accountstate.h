@@ -41,7 +41,7 @@ class TlsErrorDialog;
  * @brief Extra info about an ownCloud server account.
  * @ingroup gui
  */
-class AccountState : public QObject, public QSharedData
+class AccountState : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(AccountPtr account MEMBER _account READ account)
@@ -90,9 +90,9 @@ public:
      *
      * Use from AccountManager with a prepared QSettings object only.
      */
-    static AccountStatePtr loadFromSettings(AccountPtr account, const QSettings &settings);
+    static std::unique_ptr<AccountState> loadFromSettings(AccountPtr account, const QSettings &settings);
 
-    static AccountStatePtr fromNewAccount(AccountPtr account);
+    static std::unique_ptr<AccountState> fromNewAccount(AccountPtr account);
 
     /** Writes account state information to settings.
      *
@@ -197,6 +197,11 @@ private:
 
     friend class SpaceMigration;
 };
+}
+
+inline size_t qHash(const OCC::AccountStatePtr &acs, size_t seed)
+{
+    return qHash(acs.data(), seed);
 }
 
 Q_DECLARE_METATYPE(OCC::AccountState *)

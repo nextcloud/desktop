@@ -59,18 +59,18 @@ private slots:
         const QUrl personalUrl(
             QStringLiteral("https://ocis.owncloud.test/dav/spaces/1284d238-aa92-42ce-bdc4-0b0000009157$534bb038-6f9d-4093-946f-133be61fa4e7"));
         QByteArray folder1Uuid;
-        AccountStatePtr newAccountState = AccountState::fromNewAccount(fakeFolder.account());
+        auto newAccountState = AccountState::fromNewAccount(fakeFolder.account());
         {
-            auto folder1 = addFolder(newAccountState, QStringLiteral("/root"), QStringLiteral("/"));
+            auto folder1 = addFolder(newAccountState.get(), QStringLiteral("/root"), QStringLiteral("/"));
             folder1Uuid = folder1->id();
 
-            auto folder2 = addFolder(newAccountState, QStringLiteral("/Documents"), QStringLiteral("/Documents"));
-            auto folder3 = addFolder(newAccountState, QStringLiteral("/eos/a/Alice"), QStringLiteral("/eos/a/Alice"));
-            auto folder4 = addFolder(newAccountState, QStringLiteral("/Shares"), QStringLiteral("/Shares"));
+            auto folder2 = addFolder(newAccountState.get(), QStringLiteral("/Documents"), QStringLiteral("/Documents"));
+            auto folder3 = addFolder(newAccountState.get(), QStringLiteral("/eos/a/Alice"), QStringLiteral("/eos/a/Alice"));
+            auto folder4 = addFolder(newAccountState.get(), QStringLiteral("/Shares"), QStringLiteral("/Shares"));
 
 
             QVERIFY(fakeFolder.account()->capabilities().migration().space_migration.enabled);
-            auto *migr = new SpaceMigration(newAccountState, fakeFolder.account()->capabilities().migration().space_migration.endpoint, this);
+            auto *migr = new SpaceMigration(newAccountState.get(), fakeFolder.account()->capabilities().migration().space_migration.endpoint, this);
             QSignalSpy spy(migr, &SpaceMigration::finished);
             migr->start();
             QVERIFY(spy.wait());

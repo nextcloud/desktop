@@ -38,8 +38,6 @@ class SettingsDialog;
 class ShareDialog;
 class Application;
 class LogBrowser;
-class AccountState;
-class OwncloudSetupWizard;
 
 enum class ShareDialogStartPage {
     UsersAndGroups,

@@ -104,7 +104,7 @@ private:
     QString generateFreeAccountId() const;
 
     // Adds an account to the tracked list, emitting accountAdded()
-    void addAccountState(AccountStatePtr accountState);
+    AccountStatePtr addAccountState(std::unique_ptr<AccountState> &&accountState);
 
 public slots:
     /// Saves account data, not including the credentials

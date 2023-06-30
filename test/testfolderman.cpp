@@ -48,13 +48,13 @@ private slots:
         QString dirPath = dir2.canonicalPath();
 
         AccountPtr account = TestUtils::createDummyAccount();
-        AccountStatePtr newAccountState = AccountState::fromNewAccount(account);
+        auto newAccountState = AccountState::fromNewAccount(account);
         FolderMan *folderman = TestUtils::folderMan();
         QCOMPARE(folderman, FolderMan::instance());
         QVERIFY(folderman->addFolder(
-            newAccountState, TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/sub/ownCloud1"))));
-        QVERIFY(
-            folderman->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/ownCloud2"))));
+            newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/sub/ownCloud1"))));
+        QVERIFY(folderman->addFolder(
+            newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/ownCloud2"))));
 
 
         // those should be allowed
@@ -175,12 +175,12 @@ private slots:
 
         AccountPtr account = TestUtils::createDummyAccount();
 
-        AccountStatePtr newAccountState = AccountState::fromNewAccount(account);
+        auto newAccountState = AccountState::fromNewAccount(account);
         FolderMan *folderman = TestUtils::folderMan();
         QVERIFY(folderman->addFolder(
-            newAccountState, TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/sub/ownCloud/"))));
-        QVERIFY(
-            folderman->addFolder(newAccountState, TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/ownCloud2/"))));
+            newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/sub/ownCloud/"))));
+        QVERIFY(folderman->addFolder(
+            newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/ownCloud2/"))));
 
         // TEST
 

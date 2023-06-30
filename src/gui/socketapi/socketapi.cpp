@@ -176,6 +176,12 @@ SocketApi::SocketApi(QObject *parent)
 
     // Now we're ready to start the native shell integration:
     Utility::startShellIntegration();
+
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](const auto &accountState) {
+        if (_registeredAccounts.contains(accountState->account())) {
+            unregisterAccount(accountState->account());
+        }
+    });
 }
 
 SocketApi::~SocketApi()

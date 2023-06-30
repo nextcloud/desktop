@@ -129,7 +129,7 @@ bool AccountManager::restore()
             if (auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
-                    addAccountState(accState);
+                    addAccountState(std::move(accState));
                 }
             }
         } else {
@@ -364,9 +364,7 @@ AccountStatePtr AccountManager::addAccount(const AccountPtr &newAccount)
     }
     newAccount->_id = id;
 
-    AccountStatePtr newAccountState(AccountState::fromNewAccount(newAccount));
-    addAccountState(newAccountState);
-    return newAccountState;
+    return addAccountState(AccountState::fromNewAccount(newAccount));
 }
 
 void AccountManager::deleteAccount(AccountStatePtr account)
@@ -387,6 +385,7 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     settings->remove(account->account()->id());
 
     emit accountRemoved(account);
+    account->deleteLater();
 }
 
 AccountPtr AccountManager::createAccount(const QUuid &uuid)
@@ -427,7 +426,7 @@ QString AccountManager::generateFreeAccountId() const
     }
 }
 
-void AccountManager::addAccountState(AccountStatePtr accountState)
+AccountStatePtr AccountManager::addAccountState(std::unique_ptr<AccountState> &&accountState)
 {
     auto *rawAccount = accountState->account().data();
     connect(rawAccount, &Account::wantsAccountSaved, this, [rawAccount, this] {
@@ -435,7 +434,9 @@ void AccountManager::addAccountState(AccountStatePtr accountState)
         saveAccount(rawAccount, false);
     });
 
-    _accounts.insert(accountState->account()->uuid(), accountState);
-    emit accountAdded(accountState);
+    AccountStatePtr statePtr = accountState.release();
+    _accounts.insert(statePtr->account()->uuid(), statePtr);
+    emit accountAdded(statePtr);
+    return statePtr;
 }
 }

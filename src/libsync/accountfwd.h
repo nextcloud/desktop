@@ -23,7 +23,8 @@ class Account;
 class AccountState;
 
 using AccountPtr = QSharedPointer<Account>;
-using AccountStatePtr = QExplicitlySharedDataPointer<AccountState>;
+using AccountStatePtr = QPointer<AccountState>;
+
 
 } // namespace OCC
 
