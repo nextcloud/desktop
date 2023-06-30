@@ -66,6 +66,7 @@ CloudProviderWrapper::~CloudProviderWrapper()
     g_object_unref(_cloudProviderAccount);
     g_object_unref(_mainMenu);
     g_object_unref(actionGroup);
+    actionGroup = nullptr;
     g_object_unref(_recentMenu);
 }
 
