@@ -60,9 +60,6 @@ public:
      */
     void init(const QString &root);
 
-    /* Check if the path is ignored. */
-    bool pathIsIgnored(const QString &path);
-
     /**
      * Returns false if the folder watcher can't be trusted to capture all
      * notifications.
@@ -134,6 +131,9 @@ private:
 
     QString possiblyAddUnlockedFilePath(const QString &path);
     QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName);
+
+    /* Check if the path should be igored by the FolderWatcher. */
+    [[nodiscard]] bool pathIsIgnored(const QString &path) const;
 
     /** Path of the expected test notification */
     QString _testNotificationPath;
