@@ -1969,7 +1969,7 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 was ignored as its name is reserved by %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
@@ -2006,12 +2006,13 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Enable logging to temporary folder</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
@@ -2021,28 +2022,29 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
         <source>If enabled, logs will be written to:</source>
-        <translation type="unfinished"/>
+        <translation>If enabled, logs will be written to:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="91"/>
         <source>C:/log</source>
-        <translation type="unfinished"/>
+        <translation>C:/log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation type="unfinished"/>
+        <translation>Log HTTP traffic </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>Log files to keep:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
-        <translation type="unfinished"/>
+        <translation>These settings persist across client restarts.
+Note that using any logging command line options will override the settings.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="178"/>
@@ -2068,7 +2070,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="88"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 Filter:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="109"/>
@@ -2078,12 +2080,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="258"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Reset Filters</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="346"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Status Filter:</translation>
     </message>
 </context>
 <context>
@@ -2117,17 +2119,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="467"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Update Failed</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="487"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Ask again later</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="488"/>
