@@ -1,0 +1,6 @@
+Change: Remove support for sidebar entries for non-vfs setups on Windows
+
+For vfs setups, this is handled by Windows itself.
+
+https://github.com/owncloud/client/issues/10788
+https://github.com/owncloud/client/pull/10910

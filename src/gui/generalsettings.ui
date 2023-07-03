@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>771</width>
-        <height>637</height>
+        <width>765</width>
+        <height>618</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -100,13 +100,6 @@
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_6">
-            <item>
-             <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
-              <property name="text">
-               <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
-              </property>
-             </widget>
-            </item>
             <item>
              <widget class="QCheckBox" name="syncHiddenFilesCheckBox">
               <property name="text">
@@ -378,7 +371,6 @@
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>desktopNotificationsCheckBox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
-  <tabstop>showInExplorerNavigationPaneCheckBox</tabstop>
   <tabstop>syncHiddenFilesCheckBox</tabstop>
   <tabstop>crashreporterCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>

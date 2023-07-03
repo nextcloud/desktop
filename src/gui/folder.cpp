@@ -1406,12 +1406,6 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 
     // Prevent loading of profiles in old clients
     settings.setValue(versionC(), maxSettingsVersion());
-
-    // Happens only on Windows when the explorer integration is enabled.
-    if (!folder.navigationPaneClsid.isNull())
-        settings.setValue(QStringLiteral("navigationPaneClsid"), folder.navigationPaneClsid);
-    else
-        settings.remove(QStringLiteral("navigationPaneClsid"));
 }
 
 FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &id)
@@ -1422,7 +1416,6 @@ FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &i
     folder.setTargetPath(settings.value(QStringLiteral("targetPath")).toString());
     folder.paused = settings.value(QStringLiteral("paused")).toBool();
     folder.ignoreHiddenFiles = settings.value(QStringLiteral("ignoreHiddenFiles"), QVariant(true)).toBool();
-    folder.navigationPaneClsid = settings.value(QStringLiteral("navigationPaneClsid")).toUuid();
     folder._deployed = settings.value(deployedC(), false).toBool();
     folder._priority = settings.value(priorityC(), 0).toInt();
 
@@ -1502,12 +1495,6 @@ bool Folder::groupInSidebar() const
         return QFileInfo(parentDir) != QFileInfo(QDir::homePath()) && FileSystem::isChildPathOf(parentDir, _accountState->account()->defaultSyncRoot());
     }
     return false;
-}
-
-void Folder::setNavigationPaneClsid(const QUuid &clsid)
-{
-    _definition.navigationPaneClsid = clsid;
-    saveToSettings();
 }
 
 bool FolderDefinition::isDeployed() const

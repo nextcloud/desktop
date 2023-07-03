@@ -155,9 +155,6 @@ public:
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);
 
-    bool showInExplorerNavigationPane() const;
-    void setShowInExplorerNavigationPane(bool show);
-
     QStringList issuesWidgetFilter() const;
     void setIssuesWidgetFilter(const QStringList &checked);
 

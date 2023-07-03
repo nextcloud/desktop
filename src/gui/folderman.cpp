@@ -106,9 +106,6 @@ FolderMan::FolderMan(QObject *parent)
     , _currentSyncFolder(nullptr)
     , _syncEnabled(true)
     , _lockWatcher(new LockWatcher)
-#ifdef Q_OS_WIN
-    , _navigationPaneHelper(this)
-#endif
     , _appRestartRequired(false)
 {
     OC_ASSERT(!_instance);
@@ -964,9 +961,6 @@ void FolderMan::removeFolder(Folder *f)
     unloadFolder(f);
     f->deleteLater();
 
-#ifdef Q_OS_WIN
-    _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
-#endif
     Q_EMIT folderRemoved(f);
     emit folderListChanged();
     QTimer::singleShot(0, this, &FolderMan::startScheduledSyncSoon);
@@ -1266,13 +1260,6 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
         // With spaces we only handle the main folder
         if (!newFolder->groupInSidebar()) {
             Utility::setupFavLink(localFolder);
-#ifdef Q_OS_WIN
-            if (_navigationPaneHelper.showInExplorerNavigationPane()) {
-                newFolder->setNavigationPaneClsid(QUuid::createUuid());
-                // we might need to add or remove the panel entry as cfapi brings this feature out of the box
-                FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
-            }
-#endif
         }
         if (!ConfigFile().newBigFolderSizeLimit().first) {
             // The user already accepted the selective sync dialog. everything is in the white list

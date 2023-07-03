@@ -130,8 +130,7 @@ IF( APPLE )
 elseif( WIN32 )
     target_sources(owncloudCore PRIVATE
             guiutility_win.cpp
-            folderwatcher_win.cpp
-            navigationpanehelper.cpp)
+            folderwatcher_win.cpp)
 elseif(UNIX AND NOT APPLE)
     ## handle DBUS for Fdo notifications
     if (TARGET Qt::DBus)

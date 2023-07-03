@@ -53,8 +53,10 @@ const QString notificationRefreshIntervalC() { return QStringLiteral("notificati
 const QString monoIconsC() { return QStringLiteral("monoIcons"); }
 const QString promptDeleteC() { return QStringLiteral("promptDeleteAllFiles"); }
 const QString crashReporterC() { return QStringLiteral("crashReporter"); }
-const QString optionalDesktopNoficationsC() { return QStringLiteral("optionalDesktopNotifications"); }
-const QString showInExplorerNavigationPaneC() { return QStringLiteral("showInExplorerNavigationPane"); }
+const QString optionalDesktopNoficationsC()
+{
+    return QStringLiteral("optionalDesktopNotifications");
+}
 const QString skipUpdateCheckC() { return QStringLiteral("skipUpdateCheck"); }
 const QString updateCheckIntervalC() { return QStringLiteral("updateCheckInterval"); }
 const QString updateChannelC() { return QStringLiteral("updateChannel"); }
@@ -136,19 +138,6 @@ bool ConfigFile::optionalDesktopNotifications() const
 {
     auto settings = makeQSettings();
     return settings.value(optionalDesktopNoficationsC(), true).toBool();
-}
-
-bool ConfigFile::showInExplorerNavigationPane() const
-{
-    auto settings = makeQSettings();
-    return settings.value(showInExplorerNavigationPaneC(), QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10).toBool();
-}
-
-void ConfigFile::setShowInExplorerNavigationPane(bool show)
-{
-    auto settings = makeQSettings();
-    settings.setValue(showInExplorerNavigationPaneC(), show);
-    settings.sync();
 }
 
 QStringList ConfigFile::issuesWidgetFilter() const

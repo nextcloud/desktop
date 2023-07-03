@@ -65,8 +65,6 @@ public:
     bool ignoreHiddenFiles = true;
     /// Which virtual files setting the folder uses
     Vfs::Mode virtualFilesMode = Vfs::Off;
-    /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
-    QUuid navigationPaneClsid;
 
     /// Whether the vfs mode shall silently be updated if possible
     bool upgradeVfsMode = false;
@@ -212,9 +210,6 @@ public:
      * remote folder path, always with a trailing /
      */
     QString remotePathTrailingSlash() const;
-
-    void setNavigationPaneClsid(const QUuid &clsid);
-    QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
 
     /**
      * remote folder path with server url
