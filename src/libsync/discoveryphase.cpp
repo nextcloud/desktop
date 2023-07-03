@@ -87,12 +87,11 @@ bool DiscoveryPhase::activeFolderSizeLimit() const
     return _syncOptions._newBigFolderSizeLimit > 0 && _syncOptions._vfs->mode() == Vfs::Off;
 }
 
-void DiscoveryPhase::checkFolderSizeLimit(const QString &path,
-                                          const std::function<void(bool)> callback)
+void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::function<void(bool)> completionCallback)
 {
-    if (activeFolderSizeLimit()) {
+    if (!activeFolderSizeLimit()) {
         // no limit, everything is allowed;
-        return callback(false);
+        return completionCallback(false);
     }
 
     // do a PROPFIND to know the size of this folder
@@ -100,30 +99,13 @@ void DiscoveryPhase::checkFolderSizeLimit(const QString &path,
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
                                                    << "http://owncloud.org/ns:size");
 
-    connect(propfindJob, &PropfindJob::finishedWithError, this, [=] { return callback(false); });
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [=] {
+        return completionCallback(false);
+    });
     connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
-
-        if (const auto result = values.value(QLatin1String("size")).toLongLong(),
-            limit = _syncOptions._newBigFolderSizeLimit;
-            result >= limit) {
-
-            // we tell the UI there is a new folder
-            emit newBigFolder(path, false);
-            return callback(true);
-        } else {
-            // it is not too big, put it in the white list (so we will not do more query for the children)
-            // and and do not block.
-            auto sanitisedPath = path;
-            if (!sanitisedPath.endsWith(QLatin1Char('/'))) {
-                sanitisedPath += QLatin1Char('/');
-            }
-
-            _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),
-                                                            _selectiveSyncWhiteList.end(),
-                                                            sanitisedPath),
-                                           sanitisedPath);
-            return callback(false);
-        }
+        const auto result = values.value(QLatin1String("size")).toLongLong();
+        const auto limit = _syncOptions._newBigFolderSizeLimit;
+        return completionCallback(result >= limit);
     });
     propfindJob->start();
 }
@@ -154,7 +136,18 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
         return callback(false);
     }
 
-    checkFolderSizeLimit(path, callback);
+    checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
+        if (bigFolder) {
+            // we tell the UI there is a new folder
+            emit newBigFolder(path, false);
+            return callback(true);
+        }
+
+        // it is not too big, put it in the white list (so we will not do more query for the children) and and do not block.
+        const auto sanitisedPath = path.endsWith(QLatin1Char('/')) ? path + QLatin1Char('/') : path;
+        _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), sanitisedPath), sanitisedPath);
+        return callback(false);
+    });
 }
 
 void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path, const qint64 folderSize)
