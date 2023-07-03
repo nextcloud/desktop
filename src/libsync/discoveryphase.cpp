@@ -150,15 +150,20 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
     });
 }
 
-void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path, const qint64 folderSize)
+void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path)
 {
     // TODO: Check for setting to obey big folder sync
     // If no size limit is enforced, or if is in whitelist (explicitly allowed) or in blacklist (explicitly disallowed), do nothing.
     if (!activeFolderSizeLimit() || findPathInList(_selectiveSyncWhiteList, path) || findPathInList(_selectiveSyncBlackList, path)) {
         return;
-    } else if (folderSize >= _syncOptions._newBigFolderSizeLimit) { // If the folder is too big, notify the user and prompt for response.
-        emit existingFolderNowBig(path);
     }
+
+    checkFolderSizeLimit(path, [this, path](const bool bigFolder) {
+        if (bigFolder) {
+            // Notify the user and prompt for response.
+            emit existingFolderNowBig(path);
+        }
+    });
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */

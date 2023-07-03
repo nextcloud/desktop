@@ -703,6 +703,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         const auto sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
         const auto metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
 
+        if (serverEntry.isDirectory) {
+            // Even if over quota, continue syncing as normal for now
+            _discoveryData->checkSelectiveSyncExistingFolder(path._server);
+        }
+
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
             // needs to delete the other entity first.
@@ -718,19 +723,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
         } else if (dbEntry._etag != serverEntry.etag) {
-            const auto differingSize = sizeOnServer != item->_size;
-
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = sizeOnServer;
 
             if (serverEntry.isDirectory) {
                 ENFORCE(dbEntry.isDirectory());
-
-                if (differingSize) {
-                    _discoveryData->checkSelectiveSyncExistingFolder(path._server, sizeOnServer);
-                }
-
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
                 // Deleted locally, changed on server
@@ -743,7 +741,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
                                  << "serverEntry.isDirectory:" << serverEntry.isDirectory
                                  << "dbEntry.isDirectory:" << dbEntry.isDirectory();
             }
-        } else if (dbEntry._modtime != serverEntry.modtime && localEntry.size == serverEntry.size && dbEntry._fileSize == serverEntry.size && dbEntry._etag == serverEntry.etag) {
+        } else if (dbEntry._modtime != serverEntry.modtime && localEntry.size == serverEntry.size && dbEntry._fileSize == serverEntry.size
+                   && dbEntry._etag == serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = sizeOnServer;

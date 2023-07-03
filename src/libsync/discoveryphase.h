@@ -266,7 +266,7 @@ class DiscoveryPhase : public QObject
                                      const RemotePermissions rp,
                                      const std::function<void(bool)> callback);
 
-    void checkSelectiveSyncExistingFolder(const QString &path, const qint64 folderSize);
+    void checkSelectiveSyncExistingFolder(const QString &path);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *
