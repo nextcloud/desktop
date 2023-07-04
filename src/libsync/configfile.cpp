@@ -99,6 +99,7 @@ static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
+static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
 static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
 static constexpr char moveToTrashC[] = "moveToTrash";
 
@@ -957,6 +958,17 @@ bool ConfigFile::useNewBigFolderSizeLimit() const
 {
     const auto fallback = getValue(useNewBigFolderSizeLimitC, QString(), true);
     return getPolicySetting(QLatin1String(useNewBigFolderSizeLimitC), fallback).toBool();
+}
+
+bool ConfigFile::notifyExistingFoldersOverLimit() const
+{
+    const auto fallback = getValue(notifyExistingFoldersOverLimitC, {}, true);
+    return getPolicySetting(QString(notifyExistingFoldersOverLimitC), fallback).toBool();
+}
+
+void ConfigFile::setNotifyExistingFoldersOverLimit(const bool notify)
+{
+    setValue(notifyExistingFoldersOverLimitC, notify);
 }
 
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
