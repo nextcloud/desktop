@@ -486,7 +486,7 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
         if (!text.isEmpty()) {
             // Ignores the settings in case of an error or conflict
             if(status == LogStatusError || status == LogStatusConflict)
-                logger->postOptionalGuiLog(tr("Sync Activity"), text);
+                logger->postGuiLog(tr("Sync Activity"), text);
         }
     }
 }
@@ -1213,7 +1213,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
         message += tr("Please go in the settings to select it if you wish to download it.");
 
         auto logger = Logger::instance();
-        logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+        logger->postGuiLog(Theme::instance()->appNameGUI(), message);
     }
 }
 
@@ -1234,7 +1234,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n"
                                 "Please go into the settings and disable it if you wish to stop synchronising it.")
                                  .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath);
-        Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+        Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
     }
 }
 
@@ -1303,7 +1303,7 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
              "It will not be synchronized.")
               .arg(fi.filePath());
 
-    Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 void Folder::slotWatcherUnreliable(const QString &message)

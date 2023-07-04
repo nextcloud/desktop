@@ -42,7 +42,6 @@ public:
     static Logger *instance();
 
     void postGuiLog(const QString &title, const QString &message);
-    void postOptionalGuiLog(const QString &title, const QString &message);
     void postGuiMessage(const QString &title, const QString &message);
 
     QString logFile() const;
@@ -87,7 +86,6 @@ signals:
 
     void guiLog(const QString &, const QString &);
     void guiMessage(const QString &, const QString &);
-    void optionalGuiLog(const QString &, const QString &);
 
 public slots:
     void enterNextLogFile();
