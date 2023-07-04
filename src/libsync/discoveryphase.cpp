@@ -40,34 +40,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDiscovery, "nextcloud.sync.discovery", QtInfoMsg)
 
-/* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
-static bool findPathInList(const QStringList &list, const QString &path)
-{
-    Q_ASSERT(std::is_sorted(list.begin(), list.end()));
-
-    if (list.size() == 1 && list.first() == QLatin1String("/")) {
-        // Special case for the case "/" is there, it matches everything
-        return true;
-    }
-
-    QString pathSlash = path + QLatin1Char('/');
-
-    // Since the list is sorted, we can do a binary search.
-    // If the path is a prefix of another item or right after in the lexical order.
-    auto it = std::lower_bound(list.begin(), list.end(), pathSlash);
-
-    if (it != list.end() && *it == pathSlash) {
-        return true;
-    }
-
-    if (it == list.begin()) {
-        return false;
-    }
-    --it;
-    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
-    return pathSlash.startsWith(*it);
-}
-
 bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
@@ -76,7 +48,7 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     }
 
     // Block if it is in the black list
-    if (findPathInList(_selectiveSyncBlackList, path)) {
+    if (SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncBlackList, path)) {
         return true;
     }
 
@@ -138,7 +110,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
     }
 
     // If this path or the parent is in the white list, then we do not block this file
-    if (findPathInList(_selectiveSyncWhiteList, path)) {
+    if (SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncWhiteList, path)) {
         return callback(false);
     }
 
@@ -159,7 +131,8 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
 void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path)
 {
     // If no size limit is enforced, or if is in whitelist (explicitly allowed) or in blacklist (explicitly disallowed), do nothing.
-    if (!notifyExistingFolderOverLimit() || findPathInList(_selectiveSyncWhiteList, path) || findPathInList(_selectiveSyncBlackList, path)) {
+    if (!notifyExistingFolderOverLimit() || SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncWhiteList, path)
+        || SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncBlackList, path)) {
         return;
     }
 
