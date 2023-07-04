@@ -12,6 +12,7 @@ Summary
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
+* Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
@@ -51,6 +52,12 @@ Details
    connected to the server.
 
    https://github.com/owncloud/client/issues/10978
+
+* Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
+
+   We fixed a bug where an account performed actions after it was removed.
+
+   https://github.com/owncloud/client/issues/10990
 
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 
