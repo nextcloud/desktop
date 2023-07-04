@@ -2893,7 +2893,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="257"/>
         <location filename="../src/gui/networksettings.ui" line="289"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>قاصر على 3/4 من عرض النطاق الترددي المقدر</translation>
+        <translation>مقتصر على 3/4 من عرض النطاق الترددي المقدر</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="260"/>
@@ -2909,27 +2909,27 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
         <source>Hostname of proxy server</source>
-        <translation>اسم مضيف الخادم الوكيل</translation>
+        <translation>اسم مضيف الخادوم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>Username for proxy server</source>
-        <translation>اسم المستخدم للخادم الوكيل</translation>
+        <translation>اسم المستخدم للخادوم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>Password for proxy server</source>
-        <translation>كلمة مرور للخادم الوكيل</translation>
+        <translation>كلمة مرور للخادوم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="44"/>
         <source>HTTP(S) proxy</source>
-        <translation>وكيل بروتوكول نقل النص التشعبي &quot;HTTP&quot; (بروتوكول نقل النص الفائق الآمن )</translation>
+        <translation>وكيل بروتوكول HTTP ( أو HTTPS)</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="45"/>
         <source>SOCKS5 proxy</source>
-        <translation>وكيل/ بروكسي SOCKS5</translation>
+        <translation>وكيل SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -2937,12 +2937,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>خطأ راجع من الخادم:&lt;em&gt;1%&lt;/em&gt;</translation>
+        <translation>خطأ راجع من الخادوم:&lt;em&gt;1%&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>حدث خطأ عند محاولة الوصول إلى &quot;token&quot; endpoint النقطة الحدّيّة للأَمَارَة : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>حدث خطأ عند محاولة الوصول إلى token endpoint النقطة الحدّيّة للأَمَارَة : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
@@ -2952,12 +2952,12 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>تعذر تحليل ملف جسون ‏&quot;ترميز الكائنات باستعمال جافا سكريبت JSON&quot; المعاد من الخادم:&lt;em&gt; 1%&lt;/em&gt;</translation>
+        <translation>تعذّر تحليل ملف JSON المعاد من الخادوم:&lt;em&gt; 1%&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>لا يحتوي الرد من الخادم على كافة الحقول المتوقعة</translation>
+        <translation>لا يحتوي الرد من الخادوم على كافة الحقول المتوقعة</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
@@ -5422,22 +5422,22 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>أَنشِيءْ رابط مشاركة جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>إنسَخ موضع رابط المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
         <source>Copied!</source>
-        <translation type="unfinished"/>
+        <translation>تمّ النسخ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>إعدادات المُشارَكة</translation>
     </message>
 </context>
 <context>
@@ -5445,78 +5445,78 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="95"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>حدث خطأٌ أثناء تعيين كلمة مرور المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>تعديل المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>رفض</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>مشاركة اللاصقة label</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>السّماح بالرفع و التعديل </translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>عرض فقط</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>إفلات ملف (للرفع فقط)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
         <source>Hide download</source>
-        <translation type="unfinished"/>
+        <translation>إخفاء التنزيل</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>حماية كلمة المرور</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>تعيين تاريخ انتهاء الصلاحية</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>ملاحظة للمُتلَقّي</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>إلغاء المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>إضافة رابط آخر</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Share link copied!</source>
-        <translation type="unfinished"/>
+        <translation>تمّ نسخ رابط المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>نسخ رابط المشاركة</translation>
     </message>
 </context>
 <context>
@@ -5524,27 +5524,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>كلمة المرور لازمة للمشاركة الجديدة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>كلمة مرور المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>المشاركة موقوفة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>هذا العنصر لا يمكن مشاركته</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>المشاركة موقوفة.</translation>
     </message>
 </context>
 <context>
@@ -5552,7 +5552,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>البحث عن مستخدمين و مجموعات</translation>
     </message>
 </context>
 <context>
@@ -5560,7 +5560,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>تعذّر توصيل قاعدة البيانات</translation>
     </message>
 </context>
 <context>
@@ -5568,7 +5568,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>زامِن الأن ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="128"/>
@@ -5581,12 +5581,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>الردّ على ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>أرسل ردّاً على رسالة الدردشة</translation>
     </message>
 </context>
 <context>
@@ -5594,27 +5594,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>إفتح مجلدات محلية أو جماعية</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>إفتح مجلداً محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>غيرَ مُتّصِلٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
         <source>Group folder button</source>
-        <translation type="unfinished"/>
+        <translation>زر المجلد الجماعي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
@@ -5634,7 +5634,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
         <source>User group and local folders menu</source>
-        <translation type="unfinished"/>
+        <translation>قائمة مجموعة المستخدمين و المجلدات المحلية</translation>
     </message>
 </context>
 <context>
@@ -5642,7 +5642,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="43"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>البحث في الملفات، و الرسائل، و الأحداث ...</translation>
     </message>
 </context>
 <context>
@@ -5650,7 +5650,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="45"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>حمّل نتائح أكثر</translation>
     </message>
 </context>
 <context>
@@ -5658,7 +5658,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="29"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>هيكل نتائج البحث Search result skeleton.</translation>
     </message>
 </context>
 <context>
@@ -5666,7 +5666,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="43"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>حمّل نتائج أكثر</translation>
     </message>
 </context>
 <context>
@@ -5674,7 +5674,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="40"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>لا نتائج لـ</translation>
     </message>
 </context>
 <context>
@@ -5682,7 +5682,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="34"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>قسم نتائج البحث %1</translation>
     </message>
 </context>
 <context>
@@ -5695,12 +5695,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>حالة الحساب الحالية: مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>حالة الحساب الحالية: الرجاء عدم الإزعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="148"/>
@@ -5735,67 +5735,67 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>حالة الاتصال Online status</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="60"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>اتّصال</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="71"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>بعيد</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="83"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>يُرجى عدم الازعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>كتم جميع الإشعارات</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>غير مرئي</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>يظهر كأنه غير متصل</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>رسالة الحالة</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="212"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>ما حالتك؟</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>إمحُ رسالة الحالة بعدَ</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>إمحُ رسالة الحالة</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>عيّن رسالة الحالة</translation>
     </message>
 </context>
 <context>
@@ -5861,17 +5861,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>ترويسة المجموع الاختباري checksum header مشوهة</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>ترويسة المجموع الاختباري checksum header تحوي نوعاً غير معروف &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>الملف الذي تمّ تنزيله، المجموع الاختباري checksum له غير مطابق. و سيتم استئنافه. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -5879,7 +5879,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="256"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>مربع الحوار الرئيسي في عمل نكست كلاود لسطح المكتب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="282"/>
@@ -5890,13 +5890,13 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>إستئناف المزامنة للجميع</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>تجميد المزامنة للجميع</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="380"/>
@@ -5906,7 +5906,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="392"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>إضافة حساب جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="426"/>
@@ -5916,32 +5916,32 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="448"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>خروج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="492"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>التجسيد الرمزي avatar للحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>حالة الحساب الحالي: مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>حالة الحساب الحالي: الرجاء عدم الإزعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="607"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>مُبدّل الحساب Account switcher و قائمة الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>فتح &quot;محادثة&quot; نكست كلاود Talk في المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
@@ -5951,12 +5951,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="715"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>إفتح %1 في المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
-        <translation type="unfinished"/>
+        <translation>قائمة نتائج البحث الموحدة</translation>
     </message>
 </context>
 <context>
@@ -5969,7 +5969,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/main.cpp" line="46"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>يحتاج ٪ 1 أن يعمل على شريط النظام system tray. إذا كنت تقوم تشتغل على XFCE، فيرجى اتّباع &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;هذه التعليمات&lt;/a&gt;. و إلاّ فيُرجى تنصيب أحد تطبيقات شريط النظام مثل &quot;trayer&quot; ثم حاول مرة أخرى.</translation>
     </message>
 </context>
 <context>
@@ -5977,7 +5977,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="533"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation> &lt;p&gt;&lt;small&gt;مبنية من مراجعة  Gitـ &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; على %3, %4 باستخدام Qt ـ %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5985,12 +5985,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>تمّ إنشاء الملف الظاهري</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>تمّ استبداله بالملف الظاهري</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -6010,7 +6010,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>تم تنزيل نسخة الخادوم، و تمّ نسخ الملف المحلي الذي تم تغييره إلى ملف تعارض الحالة case conflict </translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -6129,7 +6129,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>جارٍ إجهاض العملية ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
@@ -6162,17 +6162,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>دائماً متاحٌ محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>متاحٌ الآن محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>البعض متاحٌ فقط عند الاتصال بالإنترنت </translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
@@ -6182,12 +6182,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>إجعله متاحاً دائماً محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>قم بتحرير المساحة المحلية</translation>
     </message>
 </context>
 </TS>
