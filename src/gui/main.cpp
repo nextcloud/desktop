@@ -78,7 +78,7 @@ void displayHelpText(const QString &t, std::ostream &stream = std::cout)
 
 struct CommandLineOptions
 {
-    bool showSettings = false;
+    bool show = false;
     bool quitInstance = false;
 
     QString logDir;
@@ -122,7 +122,12 @@ CommandLineOptions parseOptions(const QStringList &arguments)
         return option;
     };
 
-    auto showSettingsOption = addOption({{QStringLiteral("s"), QStringLiteral("showsettings")}, QStringLiteral("Show the settings dialog while starting.")});
+    auto showSettingsLegacyOption = QCommandLineOption{{QStringLiteral("showsettings")}, QStringLiteral("Hidden legacy option")};
+    showSettingsLegacyOption.setFlags(QCommandLineOption::HiddenFromHelp);
+    parser.addOption(showSettingsLegacyOption);
+
+    auto showOption =
+        addOption({{QStringLiteral("s"), QStringLiteral("show")}, QStringLiteral("Show the main window. By default the client is started in the background.")});
     auto quitInstanceOption = addOption({{QStringLiteral("q"), QStringLiteral("quit")}, QStringLiteral("Quit the running instance.")});
     auto logFileOption = addOption({QStringLiteral("logfile"), QStringLiteral("Write log to file (use - to write to stdout)."), QStringLiteral("filename")});
     auto logDirOption = addOption({QStringLiteral("logdir"), QStringLiteral("Write each sync log output in a new file in folder."), QStringLiteral("name")});
@@ -140,9 +145,8 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     parser.process(arguments);
 
     CommandLineOptions out;
-    // TODO: rename this option (see #8234 for more information)
-    if (parser.isSet(showSettingsOption)) {
-        out.showSettings = true;
+    if (parser.isSet(showOption) || parser.isSet(showSettingsLegacyOption)) {
+        out.show = true;
     }
     if (parser.isSet(quitInstanceOption)) {
         out.quitInstance = true;
@@ -266,7 +270,7 @@ int main(int argc, char **argv)
             if (msg.startsWith(msgParseOptionsC())) {
                 const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
                 CommandLineOptions options = parseOptions(optionsStrings);
-                if (options.showSettings) {
+                if (options.show) {
                     ocApp->gui()->slotShowSettings();
                 }
                 if (options.quitInstance) {
@@ -278,7 +282,7 @@ int main(int argc, char **argv)
             }
         });
 
-        if (options.showSettings) {
+        if (options.show) {
             ocApp->gui()->slotShowSettings();
         }
         if (!options.fileToOpen.isEmpty()) {
