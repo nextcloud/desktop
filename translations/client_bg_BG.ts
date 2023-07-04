@@ -1094,7 +1094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="227"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Пътят &apos;%1&apos; е твърде дълъг. Моля, активирайте дългите пътища в настройките на Windows или изберете друга папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="235"/>
@@ -1315,7 +1315,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Офлайн.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1130"/>
@@ -1330,7 +1330,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1167"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Пътят &apos;%1&apos; е твърде дълъг. Моля, активирайте дългите пътища в настройките на Windows или изберете друга папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1173"/>
@@ -4086,7 +4086,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Профил %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>

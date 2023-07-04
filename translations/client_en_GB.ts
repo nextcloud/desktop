@@ -2134,12 +2134,12 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="488"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Restart and update</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="489"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Update manually</translation>
     </message>
 </context>
 <context>
@@ -2187,7 +2187,7 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/gui/networksettings.ui" line="180"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Note: proxy settings have no effects for accounts on localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="201"/>
@@ -2300,18 +2300,19 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Unsupported token type: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
-        <translation type="unfinished"/>
+        <translation>The reply from the server did not contain all expected fields
+:%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
-        <translation type="unfinished"/>
+        <translation>Unknown Error</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
@@ -2322,32 +2323,32 @@ Note that using any logging command line options will override the settings.</tr
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="395"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="399"/>
         <source>Wrong user</source>
-        <translation type="unfinished"/>
+        <translation>Wrong user</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="417"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="418"/>
         <source>Login Successful</source>
-        <translation type="unfinished"/>
+        <translation>Login Successful</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="572"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>Oauth2 Error</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="573"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>Oauth2 authentication requires a secured connection.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
@@ -2383,22 +2384,22 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>Downloading %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Downloading %1. Please wait...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 available. Restart application to start the update.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>New %1 available. Please use the system&apos;s update tool to install it.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
@@ -2426,7 +2427,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="765"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>File %1 is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2494,7 +2495,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="313"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>The filename is blacklisted on the server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="416"/>
@@ -2504,27 +2505,27 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>permissions</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>etag</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="422"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>file id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="426"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>server reported no %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1259"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Moved to invalid target, restoring</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1272"/>
@@ -2554,17 +2555,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1382"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Error while reading the database</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>This Space is currently unavailable</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Server replied with an error while reading directory &apos;%1&apos; : %2</translation>
     </message>
 </context>
 <context>
@@ -2572,12 +2573,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1128"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1131"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the folder is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2585,13 +2586,13 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="435"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Failed to free up space, the file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="450"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="536"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>File %1 can not be downloaded because of a local file name clash with %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="594"/>
@@ -2611,7 +2612,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>Broken webserver returned empty content length for non-empty file on resume</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
@@ -2626,12 +2627,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="905"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>File %1 cannot be saved because of a local file name clash with %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1024"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="544"/>
@@ -2639,7 +2640,7 @@ for additional privileges during the process.</translation>
         <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1027"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="430"/>
@@ -2666,17 +2667,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>Can not create local folder %1 because of a local file name clash with %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
@@ -2689,18 +2690,18 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 failed with: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Could not remove %1 because of a local file name clash with %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2713,27 +2714,27 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Could not rename %1 to %2, the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Failed to rename file</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Error setting pin state</translation>
     </message>
 </context>
 <context>
@@ -2754,12 +2755,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error writing metadata to the database: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="185"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>Setting file status failed due to file lock</translation>
     </message>
 </context>
 <context>
@@ -2767,7 +2768,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="120"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Could not rename %1 to %2, error: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="167"/>
@@ -2777,12 +2778,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="205"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="208"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
@@ -2792,7 +2793,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="213"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Error setting pin state</translation>
     </message>
 </context>
 <context>
@@ -2800,12 +2801,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1312"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>Could not update file : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1315"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2819,7 +2820,7 @@ for additional privileges during the process.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="182"/>
         <location filename="../src/libsync/propagateupload.cpp" line="213"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="248"/>
@@ -2829,12 +2830,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="112"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Local file changed during sync. It will be resumed.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
@@ -2848,7 +2849,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="95"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="464"/>
@@ -2858,7 +2859,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="511"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>The server did ask for a removed legacy feature(polling)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="516"/>
@@ -2881,12 +2882,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="63"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>Checksum computation failed</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
@@ -2899,12 +2900,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="48"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="213"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>The server did ask for a removed legacy feature(polling)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="233"/>
