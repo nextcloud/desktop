@@ -478,7 +478,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
-                // Piggy back on the persmission field
+                // Piggy back on the permission field
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
                 result.sharedByMe = true;
             }

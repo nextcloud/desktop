@@ -450,8 +450,8 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
     QDateTime oldestDate = QDateTime::currentDateTime();
     oldestDate = oldestDate.addDays(static_cast<qint64>(_maxActivitiesDays) * -1);
 
-    for (const auto &activ : activities) {
-        const auto json = activ.toObject();
+    for (const auto &activity : activities) {
+        const auto json = activity.toObject();
 
         auto a = Activity::fromActivityJson(json, _accountState->account());
 
