@@ -7,7 +7,8 @@
 
 #include <QToolBar>
 #include <QtTest>
-#include "gui/nextcloudCore_autogen/include/ui_settingsdialog.h"
+
+#include "ui_settingsdialog.h"
 #include "settingsdialog.h"
 
 using namespace OCC;

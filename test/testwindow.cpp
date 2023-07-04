@@ -11,7 +11,7 @@
 #include <QQuickItem>
 #include <QtTest>
 
-#include "tray/UserModel.h"
+#include "tray/usermodel.h"
 #include "systray.h"
 #include "theme.h"
 

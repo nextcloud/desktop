@@ -6,8 +6,7 @@
  */
 
 #include <QtTest>
-#include "gui/nextcloudCore_autogen/include/ui_flow2authwidget.h"
-#include "gui/wizard/flow2authwidget.h"
+#include "wizard/flow2authwidget.h"
 
 using namespace OCC;
 

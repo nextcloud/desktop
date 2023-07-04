@@ -14,7 +14,7 @@
 #define private public
 #include "accountstate.h"
 #include "folder.h"
-#include "gui/tray/UserModel.h"
+#include "tray/usermodel.h"
 #undef private
 
 using namespace OCC;

@@ -1,4 +1,6 @@
 find_package(Qt5 COMPONENTS Core Test Xml Network Qml Quick REQUIRED)
+get_property(nextcloudCoreName TARGET nextcloudCore PROPERTY NAME)
+set(nextcloudCoreAutogenInclude ${CMAKE_BINARY_DIR}/src/gui/${nextcloudCoreName}_autogen/include)
 
 macro(nextcloud_build_test test_class)
     set(CMAKE_AUTOMOC TRUE)
@@ -32,6 +34,7 @@ macro(nextcloud_build_test test_class)
 
     target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE
         "${CMAKE_SOURCE_DIR}/test/"
+        ${nextcloudCoreAutogenInclude}
         ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
     )
     set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES FOLDER Tests)
@@ -81,8 +84,9 @@ macro(nextcloud_add_test test_class)
     target_include_directories(${OWNCLOUD_TEST_CLASS}Test
         PRIVATE
         "${CMAKE_SOURCE_DIR}/test/"
+        ${nextcloudCoreAutogenInclude}
         ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
-        )
+    )
     set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES FOLDER Tests)
 endmacro()
 

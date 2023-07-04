@@ -6,8 +6,8 @@
  */
 
 #include <QtTest>
-#include "gui/nextcloudCore_autogen/include/ui_owncloudsetupnocredspage.h"
-#include "gui/wizard/owncloudsetuppage.h"
+
+#include "wizard/owncloudsetuppage.h"
 
 using namespace OCC;
 

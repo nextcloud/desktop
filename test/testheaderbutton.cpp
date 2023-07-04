@@ -5,10 +5,11 @@
  *
  */
 
-#include <qqmlengine.h>
+#include <QQmlEngine>
 #include <QQuickItem>
 #include <QQuickView>
 #include <QtTest>
+
 #include "theme.h"
 
 using namespace OCC;

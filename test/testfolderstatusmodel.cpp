@@ -5,12 +5,13 @@
  *
  */
 
+#include <QtTest>
+
 #include "localdiscoverytracker.h"
 #include "folderstatusmodel.h"
 #include "syncrunfilelog.h"
 #include "syncengine.h"
 #include "account.h"
-#include <QtTest>
 
 #define private public
 #include "accountstate.h"

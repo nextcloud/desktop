@@ -6,13 +6,14 @@
  */
 
 #include <QtTest>
+
 #include "theme.h"
 #include "folderman.h"
 #include "configfile.h"
 #define private public
 #include "generalsettings.h"
 #undef private
-#include "gui/nextcloudCore_autogen/include/ui_generalsettings.h"
+#include "ui_generalsettings.h"
 
 using namespace OCC;
 

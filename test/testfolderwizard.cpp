@@ -5,16 +5,15 @@
  *
  */
 
-#include "gui/nextcloudCore_autogen/include/ui_folderwizardsourcepage.h"
-#include "gui/nextcloudCore_autogen/include/ui_folderwizardtargetpage.h"
+#include <QWizardPage>
+#include <QtTest>
+
 #include "creds/abstractcredentials.h"
 #include "folderwizard.h"
 #include "accountstate.h"
 #include "testhelper.h"
-#include <QWizardPage>
 #include "folderman.h"
 #include "account.h"
-#include <QtTest>
 
 using namespace OCC;
 

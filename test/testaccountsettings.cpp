@@ -6,7 +6,8 @@
  */
 
 #include <QtTest>
-#include "gui/nextcloudCore_autogen/include/ui_accountsettings.h"
+
+#include "ui_accountsettings.h"
 #include "accountsettings.h"
 
 using namespace OCC;

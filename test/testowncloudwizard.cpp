@@ -6,7 +6,8 @@
  */
 
 #include <QtTest>
-#include "gui/wizard/owncloudwizard.h"
+
+#include "wizard/owncloudwizard.h"
 
 using namespace OCC;
 
