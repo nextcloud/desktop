@@ -962,7 +962,7 @@ bool ConfigFile::useNewBigFolderSizeLimit() const
 
 bool ConfigFile::notifyExistingFoldersOverLimit() const
 {
-    const auto fallback = getValue(notifyExistingFoldersOverLimitC, {}, true);
+    const auto fallback = getValue(notifyExistingFoldersOverLimitC, {}, false);
     return getPolicySetting(QString(notifyExistingFoldersOverLimitC), fallback).toBool();
 }
 
