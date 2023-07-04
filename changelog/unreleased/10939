@@ -3,3 +3,5 @@ Change: Modernize systray menu
 We had a closer look on the system tray and cleaned it up.
 
 https://github.com/owncloud/client/issues/10939
+https://github.com/owncloud/client/pull/10949
+https://github.com/owncloud/client/pull/10999

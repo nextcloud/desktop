@@ -595,7 +595,6 @@ void ownCloudGui::updateContextMenu()
     bool isConfigured = (!accountList.isEmpty());
     bool atLeastOneConnected = false;
     bool atLeastOnePaused = false;
-    bool atLeastOneNotPaused = false;
     for (const auto &a : accountList) {
         if (a->isConnected()) {
             atLeastOneConnected = true;
@@ -605,25 +604,24 @@ void ownCloudGui::updateContextMenu()
     for (auto *f : FolderMan::instance()->folders()) {
         if (f->syncPaused()) {
             atLeastOnePaused = true;
-        } else {
-            atLeastOneNotPaused = true;
         }
     }
 
     _contextMenu->addAction(Theme::instance()->applicationIcon(), tr("Show %1").arg(Theme::instance()->appNameGUI()), this, &ownCloudGui::slotShowSettings);
     _contextMenu->addSeparator();
-    if (atLeastOnePaused) {
-        _contextMenu->addAction(
-            tr("Resume synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts().values(), false); });
-    } else {
-        _contextMenu->addAction(
-            tr("Stop synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts().values(), true); });
-    }
-    _contextMenu->addSeparator();
 
     if (accountList.isEmpty()) {
         _contextMenu->addAction(tr("Create a new account"), this, &ownCloudGui::runNewAccountWizard);
     } else {
+        if (atLeastOnePaused) {
+            _contextMenu->addAction(
+                tr("Resume synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts().values(), false); });
+        } else {
+            _contextMenu->addAction(
+                tr("Stop synchronization"), this, [this] { setPauseOnAllFoldersHelper(AccountManager::instance()->accounts().values(), true); });
+        }
+        _contextMenu->addSeparator();
+
         // submenus for accounts
         for (const auto &account : accountList) {
             QMenu *accountMenu = new QMenu(account->account()->displayName(), _contextMenu.data());
