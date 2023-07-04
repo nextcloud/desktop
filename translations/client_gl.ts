@@ -703,7 +703,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1247"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Obtendo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para volver abrir o navegador.</translation>
+        <translation>Obtendo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para reabrir o navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1251"/>
@@ -1647,7 +1647,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
         <source>Reopen Browser</source>
-        <translation>Volver abrir o navegador</translation>
+        <translation>Reabrir o navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -5289,7 +5289,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation>Volver abrir o navegador</translation>
+        <translation>Reabrir o navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
