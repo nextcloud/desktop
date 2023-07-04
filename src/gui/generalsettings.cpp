@@ -432,14 +432,17 @@ void GeneralSettings::saveMiscSettings()
     ConfigFile cfgFile;
 
     const auto useMonoIcons = _ui->monoIconsCheckBox->isChecked();
+    const auto newFolderLimitEnabled = _ui->newFolderLimitCheckBox->isChecked();
     Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
 
     cfgFile.setMonoIcons(useMonoIcons);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
     cfgFile.setMoveToTrash(_ui->moveFilesToTrashCheckBox->isChecked());
-    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(), _ui->newFolderLimitSpinBox->value());
+    cfgFile.setNewBigFolderSizeLimit(newFolderLimitEnabled, _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
     cfgFile.setNotifyExistingFoldersOverLimit(_ui->existingFolderLimitCheckBox->isChecked());
+
+    _ui->existingFolderLimitCheckBox->setEnabled(newFolderLimitEnabled);
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
