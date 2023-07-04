@@ -1561,13 +1561,7 @@ void AccountSettings::initializeE2eEncryption()
     if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
         slotE2eEncryptionMnemonicReady();
     } else {
-        _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
-        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
-        _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
-        _ui->encryptionMessage->hide();
-
-        auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
-        connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+        initializeE2eEncryptionSettingsMessage();
 
         connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
             if (!_accountState->account()->e2e()->_publicKey.isNull()) {
@@ -1590,7 +1584,7 @@ void AccountSettings::resetE2eEncryption()
     }
     _ui->encryptionMessage->setText({});
     _ui->encryptionMessage->setIcon({});
-    initializeE2eEncryption();
+    initializeE2eEncryptionSettingsMessage();
     checkClientSideEncryptionState();
 
     const auto account = _accountState->account();
@@ -1625,6 +1619,17 @@ QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitl
     }
     _ui->encryptionMessage->addAction(action);
     return action;
+}
+
+void AccountSettings::initializeE2eEncryptionSettingsMessage()
+{
+    _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
+    _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+    _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
+    _ui->encryptionMessage->hide();
+
+    auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
+    connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
 }
 
 } // namespace OCC

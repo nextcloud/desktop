@@ -1,15 +1,15 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="gl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ar">
 <context>
     <name>ActivityItem</name>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="24"/>
         <source>Open %1 locally</source>
-        <translation>Abrir %1 localmente</translation>
+        <translation>فتح %1 محليا</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
         <source>In %1</source>
-        <translation>En %1</translation>
+        <translation>في %1</translation>
     </message>
 </context>
 <context>
@@ -17,12 +17,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="170"/>
         <source>Open file details</source>
-        <translation>Abrir os detalles do ficheiro</translation>
+        <translation>إفتح تفاصيل الملف</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="203"/>
         <source>Dismiss</source>
-        <translation>Rexeitar</translation>
+        <translation>تجاهل</translation>
     </message>
 </context>
 <context>
@@ -30,12 +30,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="31"/>
         <source>Activity list</source>
-        <translation>Lista de actividades</translation>
+        <translation>قائمة الحركات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="108"/>
         <source>No activities yet</source>
-        <translation>Aínda non hai actividades</translation>
+        <translation>لا توجد أي حركة بعدُ</translation>
     </message>
 </context>
 <context>
@@ -43,7 +43,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="62"/>
         <source>Clear status message menu</source>
-        <translation>Limpar o menú de mensaxes de estado</translation>
+        <translation>إمسح قائمة رسالة الحالة</translation>
     </message>
 </context>
 <context>
@@ -51,22 +51,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation>Avatar de notificación de chamada de Talk</translation>
+        <translation>التجسيد الرمزي avatar للمتصل على تطبيق المحادثة Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
-        <translation>Notificación de resposta á chamada de Talk</translation>
+        <translation>إشعارٌ بالرّدّ على اتصالٍ عبر تطبيق المحادثة Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
         <source>Decline</source>
-        <translation>Declinar</translation>
+        <translation>رفض</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
-        <translation>Declinar a notificación de chamada de Talk</translation>
+        <translation>إشعارٌ بالرّفض على اتصالٍ عبر تطبيق المحادثة Talk</translation>
     </message>
 </context>
 <context>
@@ -79,78 +79,78 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="123"/>
         <source>Checking for changes in &quot;%1&quot;</source>
-        <translation>Comprobando os cambios en «%1»</translation>
+        <translation>التحقّق من التغييرات في &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Sincronizando %1 of %2  (restan %3)</translation>
+        <translation>مُزامنة %1 من %2 (الباقي %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
         <source>Syncing %1 of %2</source>
-        <translation>Sincronizando %1 de %2</translation>
+        <translation>مزامنة %1 من %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="140"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sincronizando %1 (restan %2)</translation>
+        <translation>يزامن %1 (متبقٍ %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="143"/>
         <source>Syncing %1</source>
-        <translation>Sincronizando %1</translation>
+        <translation>مزامنة %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
         <source>No recently changed files</source>
-        <translation>Non hai ficheiros cambiados recentemente</translation>
+        <translation>لا توجد أيّ ملفات تمّ تغييرها مؤخرًا</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
         <source>Sync paused</source>
-        <translation>Sincronización en pausa</translation>
+        <translation>تجميد المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
         <source>Syncing</source>
-        <translation>Sincronizando</translation>
+        <translation>مزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="219"/>
         <source>Open website</source>
-        <translation>Abrir o sitio web</translation>
+        <translation>إفتح الموقع</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="231"/>
         <source>Recently changed</source>
-        <translation>Cambiado recentemente</translation>
+        <translation>تمّ تغييرها مؤخراً</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
         <source>Pause synchronization</source>
-        <translation>Pausar a sincronización</translation>
+        <translation>تجميد المزامنة </translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
         <source>Help</source>
-        <translation>Axuda</translation>
+        <translation>مساعدة</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="248"/>
         <source>Settings</source>
-        <translation>Axustes</translation>
+        <translation>إعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="251"/>
         <source>Log out</source>
-        <translation>Saír</translation>
+        <translation>خروج</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
         <source>Quit sync client</source>
-        <translation>Saír da sincronización co cliente</translation>
+        <translation>قم بإنهاء عميل المزامنة</translation>
     </message>
 </context>
 <context>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation>Versión local</translation>
+        <translation>نسخة محلّيّة</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation>Versión do servidor</translation>
+        <translation>نسخة الخادوم</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="95"/>
         <source>Opening file for local editing</source>
-        <translation>Abrindo ficheiro para edición local</translation>
+        <translation>فتح ملف للتحرير محلّيّاً</translation>
     </message>
 </context>
 <context>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="136"/>
         <source>No recent emojis</source>
-        <translation>Non hai «emojis» recentes</translation>
+        <translation>لا صور &quot;إيموجي&quot; مُؤخّراً</translation>
     </message>
 </context>
 <context>
@@ -187,7 +187,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="63"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>خطأ</translation>
     </message>
 </context>
 <context>
@@ -195,17 +195,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="139"/>
         <source>Dismiss</source>
-        <translation>Rexeitar</translation>
+        <translation>رفض</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="224"/>
         <source>Activity</source>
-        <translation>Actividade</translation>
+        <translation>الحركات</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="231"/>
         <source>Sharing</source>
-        <translation>Compartindo</translation>
+        <translation>مشاركة</translation>
     </message>
 </context>
 <context>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation>Detalles do ficheiro %1 · %2</translation>
+        <translation>تفاصيل الملف لـ %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -221,28 +221,28 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
         <source>Could not make directories in trash</source>
-        <translation>Non foi posíbel crear directorios no lixo</translation>
+        <translation>لا يمكن إنشاء مُجلّدات في سلة المُهملات</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation>Non foi posíbel mover «%1» para «%2»</translation>
+        <translation>تعذّر نقل &quot;%1&quot; إلى &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Mover ao lixo non está dispoñíbel nesta plataforma</translation>
+        <translation>لم يتم تنفيذ النقل إلى سلّة المُهملات على هذه المنصة</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="157"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation>Produciuse un erro ao retirar «%1»: %2</translation>
+        <translation>حدث خطاٌ في نقل &quot;%1&quot;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="173"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation>Non foi posíbel retirar o cartafol «%1»</translation>
+        <translation>تعذّر نقل المٌجلّد &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -250,22 +250,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>Autenticación do navegadoir</translation>
+        <translation>مصادقة المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation>Logotipo</translation>
+        <translation>شعار</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
         <source>Switch to your browser to connect your account</source>
-        <translation>Cambie ao seu navegador para conectar coa súa conta</translation>
+        <translation>بدّل إلى متصفحك لربط حسابك</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Produciuse un erro ao conectarse. Ténteo de novo.</translation>
+        <translation>حدث خطأ أثناء الاتصال. يُرجى المحاولة مرة أخرى.</translation>
     </message>
 </context>
 <context>
@@ -273,12 +273,12 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Escolla un cartafol local no seu computador para sincronizar</translation>
+        <translation>إختر مُجلّدًا محليًا على جهازك لمزامنته</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation>&amp;Escoller…</translation>
+        <translation>و اختر …</translation>
     </message>
 </context>
 <context>
@@ -286,22 +286,22 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Seleccione o cartafol remoto de destino</translation>
+        <translation>إختر مُجلّداً مقصداً قصيّاً remote destination</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create folder</source>
-        <translation>Crear un cartafol</translation>
+        <translation>أنشئ مُجلّداً</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
         <source>Refresh</source>
-        <translation>Actualizar</translation>
+        <translation>قم بالتحديث</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>Cartafoles</translation>
+        <translation>مجلدات</translation>
     </message>
 </context>
 <context>
@@ -309,17 +309,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="314"/>
         <source>Connection timed out</source>
-        <translation>Esgotouse o tempo de conexión</translation>
+        <translation>إنتهت مدة الاتصال</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="316"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>Produciuse un error descoñecido: a resposta da rede foi eliminada</translation>
+        <translation>خطأ غير مُحّدد: تمّ حذف جواب الشبكة</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>O servidor repondeu «%1 %2» a «%3 %4»</translation>
+        <translation>الخادوم أجاب &quot;%1 %2&quot; إلى &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -327,12 +327,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
+        <translation>كود HTTP غير صحيح ردّ به الخادوم. المُتوقّع هو 204, لكن ما تمّ استقباله هو &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>«%1 Produciuse un fallo ao crear o cartafol %2».</translation>
+        <translation>&quot;%1 إخفاق في فك قفل المُجلّد المُشفّر %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -340,17 +340,17 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="927"/>
         <source>File %1 is already locked by %2.</source>
-        <translation>O ficheiro %1 xa está bloqueado por %2</translation>
+        <translation>الملف %1 مُشفّرٌ مُسبقاً من قِبَل %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="929"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>A operación de bloqueo en %1 fallou co erro %2</translation>
+        <translation>عملية قفل %1 فشلت بسبب الخطأ %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="931"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>A operación de desbloqueo en %1 fallou co erro %2</translation>
+        <translation>عملية فك قفل %1 فشلت بسب الخطأ %2</translation>
     </message>
 </context>
 <context>
@@ -359,25 +359,24 @@
         <location filename="../src/gui/accountmanager.cpp" line="182"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation>Detectouse unha configuración existente dun cliente de escritorio estilo antigo.
-Deberíase tentar importar unha conta?</translation>
+        <translation>تم اكتشاف تهيئة من نسخة سابقة للعميل موجودة على الجهاز. هل ترغب في محاولة استيراد الحساب؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="184"/>
         <location filename="../src/gui/accountmanager.cpp" line="252"/>
         <location filename="../src/gui/accountmanager.cpp" line="260"/>
         <source>Legacy import</source>
-        <translation>Importar estilo antigo</translation>
+        <translation>إستيراد قديم</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="253"/>
         <source>Successfully imported account from legacy client: %1</source>
-        <translation>Importouse correctamente a conta de  cliente estilo antigo: % 1</translation>
+        <translation>تمّ بنجاح استيراد الحساب من عميل سابق: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="261"/>
         <source>Could not import accounts from legacy client configuration.</source>
-        <translation>Non foi posíbel importar contas da configuración do cliente estilo antigo.</translation>
+        <translation>تعذّر استيراد الحسابات من تهيئة العميل السابق,</translation>
     </message>
 </context>
 <context>
@@ -385,217 +384,216 @@ Deberíase tentar importar unha conta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Os cartafoles non seleccionados van seren &lt;b&gt;eliminados&lt;/b&gt; do seu sistema de ficheiros local e non volverán sincronizarse con este computador</translation>
+        <translation>المٌجلّات غير المختارة سوف &lt;b&gt;يتم حذفها&lt;/b&gt; من نظام الملفات على جهازك و لن تتم مزامنتها مع هذا الجهاز في المستقبل</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
         <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <location filename="../src/gui/accountsettings.cpp" line="930"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>إِلغِ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="83"/>
         <source>Apply</source>
-        <translation>Aplicar</translation>
+        <translation>طبِّق</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Conectado con &lt;server&gt; como &lt;user&gt;</translation>
+        <translation>تمّ التوصيل مع &lt;server&gt; كـ &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="148"/>
         <source>Storage space: …</source>
-        <translation>Espazo de almacenamento:…</translation>
+        <translation>مساحة التخزين: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="256"/>
         <source>Synchronize all</source>
-        <translation>Sincronizar todo</translation>
+        <translation>زامن الكل</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="263"/>
         <source>Synchronize none</source>
-        <translation>Non sincronizar</translation>
+        <translation>لا تُزامِن شيئاً</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
         <source>Apply manual changes</source>
-        <translation>Aplicar cambios manuais</translation>
+        <translation>طبّق التغييرات اليدوية</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Cifrado de extremo a extremo con ficheiros virtuais</translation>
+        <translation>تشفير من الحدّ إلى الحدّ E2EE مع الملفات الافتراضية</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Parece que a función de ficheiros virtuais está activada neste cartafol. Polo momento, non é posíbel descargar implícitamente ficheiros virtuais cifrados de extremo a extremo. Para obter a mellor experiencia cos ficheiros virtuais e o cifrado de extremo a extremo, asegúrese de que o cartafol cifrado estea marcado con «Estar sempre dispoñíbel localmente».</translation>
+        <translation>يبدو أنه تمّ تمكين ميزة &quot;الملفات الافتراضية&quot; Virtual Files في هذا المجلد. لا يمكن حاليّاً تنزيل ملفات افتراضية مشفرة من الحدّ للحدّ ضمنيًا. للحصول على أفضل تجربة مع الملفات الافتراضية والتشفير من الحدّ للحدّ، تأكد من تمييز المجلد المشفر بعلامة &quot;إجعله دائماً مُتاحًا محليًا&quot; &quot;Make it always available locally&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation>Non cifrar o cartafol</translation>
+        <translation>لا تٌشفّر المٌجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
         <source>Encrypt folder</source>
-        <translation>Cifrar cartafol</translation>
+        <translation>شفّر المُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>No account configured.</source>
-        <translation>Non hai contas configuradas.</translation>
+        <translation>لم تتم تهيئة أي حسابٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation>Desactivar o cifrado</translation>
+        <translation>إيقاف التشفير</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>Display mnemonic</source>
-        <translation>Amosar o mnemónico</translation>
+        <translation>عرض استذكاري</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Activouse o cifrado de extremo a extremo para esta conta</translation>
+        <translation>التشفير من الحدّ للحدّ تمّ تمكينه لهذا الحساب</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation>تحذير</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>O cifrado de extremo a extremo non está configurado neste dispositivo. Unha vez configurado, poderá cifrar este cartafol.
-Quere configurar o cifrado de extremo a extremo</translation>
+        <translation>التشفير من الحدّ للحدّ غيرُ مُهيّإٍ على هذا الجهاز. بمجرد أن تتمّ تهيئته، سوف يمكنك تشفير هذا المٌجلّد. 
+هل ترغب في إعداد التشفير من الحدّ للحدّ؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Non pode cifrar un cartafol con contido, retire os ficheiros. 
-Agarde a nova sincronización e logo cífreo.</translation>
+        <translation>لا يمكنك تشفير مُجلّدٍ مع محتوياته. رجاءً، إحذف الملفّات ثم إنتظر المزامنة التالية ثم قم بتشفيره. </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Encryption failed</source>
-        <translation>Fallou o cifrado</translation>
+        <translation>إخفاق في التشفير</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation>Non foi posíbel cifrar o cartafol porque o cartafol xa non existe</translation>
+        <translation>تعذّر تشفير المُجلّد بسبب أنّه لم يعد موجوداً</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="510"/>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Open folder</source>
-        <translation>Abrir o cartafol</translation>
+        <translation>إفتح المجلد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
         <source>Encrypt</source>
-        <translation>Cifrar</translation>
+        <translation>شفّر</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
-        <translation>Editar ficheiros ignorados</translation>
+        <translation>تحرير الملفات التي تمّ تجاهلها</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
         <location filename="../src/gui/accountsettings.cpp" line="608"/>
         <source>Create new folder</source>
-        <translation>Crear un cartafol novo</translation>
+        <translation>إنشاء مُجلّدٍ جديدٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Availability</source>
-        <translation>Dispoñíbilidade</translation>
+        <translation>أوقات التواجد Availability</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <source>Choose what to sync</source>
-        <translation>Escolla que sincronizar</translation>
+        <translation>اختر ما تريد مزامنته</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="619"/>
         <source>Force sync now</source>
-        <translation>Forzar a sincronización</translation>
+        <translation>إفرض المزامنة الآن</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="621"/>
         <source>Restart sync</source>
-        <translation>Reiniciar a sincronización</translation>
+        <translation>أعِدِ المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="627"/>
         <source>Resume sync</source>
-        <translation>Continuar coa sincronización</translation>
+        <translation>إستأنِف المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="627"/>
         <source>Pause sync</source>
-        <translation>Por en pausa a sincronización</translation>
+        <translation>جمّد المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="630"/>
         <source>Remove folder sync connection</source>
-        <translation>Retirar a conexión da sincronización do cartafol</translation>
+        <translation>إزالة اتصال مزامنة المٌجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="643"/>
         <source>Disable virtual file support …</source>
-        <translation>Desactivar a compatibilidade con ficheiros virtuais…</translation>
+        <translation>أوقف دعم الملفات الافتراضية ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>Enable virtual file support %1 …</source>
-        <translation>Activar a compatibilidade con ficheiros virtuais %1…</translation>
+        <translation>فعِّل دعم الملفات الافتراضية %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>(experimental)</source>
-        <translation>(experimental)</translation>
+        <translation>(تجريبي)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="745"/>
         <source>Folder creation failed</source>
-        <translation>Non foi posíbel crear o cartafol</translation>
+        <translation>إخفاق في إنشاء المُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Non foi posíbel crear o cartafol local &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;تعذّر إنشاء مٌجلّدٍ محلّي &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Confirmar a retirada da conexión da sincronización do cartafol</translation>
+        <translation>أكّد على حذف اتصال مُزامنة المُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="804"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Confirma que quere deixar de sincronizar o cartafol &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Isto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;هل أنت متأكّدٌ أنك ترغب في إيقاف مُزامنة المُجلّد &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;لاحظ أن:&lt;/b&gt; هذا سوف&lt;b&gt;لن&lt;/b&gt; يتسبب في حذف أيّ ملفات.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Retirar a conexión da sincronización do cartafol</translation>
+        <translation>حذف اتصال مُزامنة المُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>Disable virtual file support?</source>
-        <translation>Quere desactivar a compatibilidade con ficheiros virtuais?</translation>
+        <translation>إيقاف دعم الملفات الافتراضية؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
@@ -604,156 +602,154 @@ Agarde a nova sincronización e logo cífreo.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Esta acción desactivará a compatibilidade cos ficheiros virtuais. Como consecuencia, descargaranse os contidos dos cartafoles que están marcados actualmente como «só dispoñíbeis en liña».
-
-A única vantaxe de desactivar a compatibilidade con ficheiros virtuais é que volverá dispoñíbel a función de sincronización selectiva.
-
-Esta acción interromperá calquera sincronización que estea a executarse actualmente.</translation>
+        <translation>سيؤدي هذا الإجراء إلى تعطيل دعم الملفات الافتراضية. نتيجة لذلك، سيتم تنزيل محتويات المجلدات التي تمّ وضع علامة عليها حاليًا على أنها &quot;متوفرة فقط عند الاتصال بالإنترنت&quot;. 
+الميزة الوحيدة لتعطيل دعم الملفات الافتراضية هي أن ميزة المزامنة الانتقائية ستصبح متاحة مرة أخرى. 
+هذا الإجراء سيؤدي إلى إجهاض أي عمليات مزامنة جارية حاليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="929"/>
         <source>Disable support</source>
-        <translation>Desactivar a compatibilidade</translation>
+        <translation>إيقاف الدعم</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Mnemónico de cifrado de extremo a extremo</translation>
+        <translation>تشفير استذكاري من الحدّ للحدّ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Para protexer a súa identidade criptográfica, cifrámola cun mnemotécnico de 12 palabras do dicionario. Anóteas a poñas a seguro. Serán necesarias para engadir outros dispositivos á súa conta (como o seu teléfono móbil ou o computador portátil).</translation>
+        <translation>لحماية هوية التشفير الخاصة بك، نقوم بتشفيرها باستذكارٍ من 12 كلمة قاموسية. يرجى تسجيلها والاحتفاظ بها في مأمنٍ. ستحتاجها مستقبلاً عند إضافة أجهزة أخرى إلى حسابك (مثل هاتفك المحمول أو الكمبيوتر المحمول).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Desactivar o cifrado de extremo a extremo</translation>
+        <translation>إيقاف التشفير من الحدّ للحدّ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Desactivar o cifrado de extremo a extremo para %1?</translation>
+        <translation>إيقاف التشفير من الحدّ للحدّ بالنسبة إلى %1؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Ao retirar o cifrado de extremo a extremo, retiraranse os ficheiros sincronizados localmente que están cifrados.&lt;br&gt;Os  ficheiros cifrados permanecerán no servidor.</translation>
+        <translation>حذف التشفير من الحدّ للحدّ سيؤدي إلى حذف الملفات المحلية المُشفّرة&lt;br&gt;لكن ستبقى الملفات المُشفّرة محفوظةً على الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1105"/>
         <source>Sync Running</source>
-        <translation>Sincronización en proceso</translation>
+        <translation>المٌزامنة جارية</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1106"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Estase a realizar a sincronización.&lt;br/&gt;Quere interrompela e rematala?</translation>
+        <translation>المُزامنة جاريةٌ.&lt;br/&gt;هل ترغب في إيقافه؟</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1178"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) de %2 en uso. Algúns cartafoles, incluíndo os compartidos e os montados en rede, poderían ter diferentes límites.</translation>
+        <translation>%1 (%3%) of %2 قيد الاستخدام. قد يكون لبعض المُجلّدات، و منها المُجلّدات المُثبتّة على الشبكة أو المُجلّدات المشتركة حدود مختلفة,</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1179"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 de %2 en uso</translation>
+        <translation>%1 من %2 قيد الاستخدام</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1188"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Actualmente non hai dispoñíbel ningunha información sobre o uso do almacenamento.</translation>
+        <translation>لا توجد حاليّاً أيّ معلوماتٍ حول إشغال وحدات التخزين</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1191"/>
         <source>%1 in use</source>
-        <translation>%1 en uso</translation>
+        <translation>%1 قيد الاستعمال</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1218"/>
         <source>%1 as %2</source>
-        <translation>%1 como %2</translation>
+        <translation>%1  كـ %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1225"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Este servidor da versión %1 non ten asistencia técnica! Proceda baixo a súa propia responsabilidade.</translation>
+        <translation>إصدار الخادوم %1 غير مدعوم! إستمر على مسؤوليتك.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1227"/>
         <source>Connected to %1.</source>
-        <translation>Conectado a %1.</translation>
+        <translation>مُتصل مع %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1231"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>O servidor %1 non está dispoñíbel temporalmente.</translation>
+        <translation>الخادوم %1 غير مُتاحٍ مؤقّتاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1234"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>O servidor %1 neste momento está en modo de mantemento.</translation>
+        <translation>الخادوم %1 في حالة صيانة حاليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Signed out from %1.</source>
-        <translation>Desconectado de %1.</translation>
+        <translation>تمّ الخروج من %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1247"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Obtendo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para reabrir o navegador.</translation>
+        <translation>الحصول على تصريحٍ من المُتصفِّح &lt;a href=&apos;%1&apos;&gt;إضغط هنا&lt;/a&gt; لإعادة فتح المُتصفِّح.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1251"/>
         <source>Connecting to %1 …</source>
-        <translation>Conectando con %1…</translation>
+        <translation>الاتصال مع %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1256"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Non hai conexión con %1 en %2.</translation>
+        <translation>لا يوجد اتصال مع %1 فى %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1261"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Produciuse un erro de configuración do servidor: %1 en %2.</translation>
+        <translation>خطـأ تهيئة الخادوم: %1 في %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1272"/>
         <source>No %1 connection configured.</source>
-        <translation>Non se configurou a conexión %1.</translation>
+        <translation>لا توجد %1 اتصالات مُهيّأةٍ.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1514"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Hai cartafoles que non se sincronizaron por ser demasiado grandes:</translation>
+        <translation>هنالك مجلدات لم تتم مزامنتها لأن حجمها كبيرٌ جدًا:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1516"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Hai cartafoles que non se sincronizaron porque son almacenamentos externos:</translation>
+        <translation>هنالك مجلدات لم تتم مزامنتها لأنها وحدات تخزين خارجية:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Hai cartafoles que non se sincronizaron porque son demasiado grandes ou almacenamentos externos:</translation>
+        <translation>هنالك مجلدات لم تتم مزامنتها لأن حجمها كبيرٌ جدًا أو لأنها وحدات تخزين خارجية:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1574"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>Activouse o cifrado de extremo a extremo nesta conta con outro dispositivo.&lt;br&gt; Pódese activar neste dispositivo introducindo o seu mnemotécnico.&lt;br&gt; Isto activará a sincronización dos cartafoles cifrados existentes.</translation>
+        <translation>التشفير من الحدّ للحدّ مُفعّلٌ على هذا الحساب مع جهازٍ آخر.&lt;br&gt; يٌمكنك تفعيله مع هذا  الجهاز أيضاً بإدخال رمزك الاستذكاري mnemonic&lt;br&gt;هذا سوف يُفعّل مٌزامنة المُجلّدات المُشفّرة الموجودة. </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1565"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>Esta conta admite o cifrado de extremo a extremo</translation>
+        <translation>هذا الحساب يدعم التشفير من الحدّ للحدّ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1569"/>
         <source>Set up encryption</source>
-        <translation>Estabelecer o cifrado</translation>
+        <translation>إعداد التشفير</translation>
     </message>
 </context>
 <context>
@@ -761,17 +757,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>A solicitude autenticada ao servidor foi redirixida a «%1». O URL é incorrecto, o servidor está mal configurado.</translation>
+        <translation>الطلب المُصادق عليه للدخول إلى الخادوم تمّ إعادة توجيهه إلى  &quot;%1&quot;. العنوان URL غير صحيح، و الخادوم غير مُهيّأ كما يجب.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Acceso prohibido polo servidor. Para comprobar que dispón do acceso axeitado, &lt;a href=&quot;%1&quot;&gt;prema aquí&lt;/a&gt; para acceder ao servizo co seu navegador.</translation>
+        <translation>تمّ منع دخولك من قِبَل الخادوم. للتأكد من أنك تملك التخويل المناسب, &lt;a href=&quot;%1&quot;&gt;إضغط هنا&lt;/a&gt; للدخول إلى الخدمة عبر متصفّحك.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Houbo unha resposta non válida a unha solicitude WebDAV autenticada</translation>
+        <translation>هنالك استجابة غير صحيحة لطلب WebDAV مُصادقٍ عليه</translation>
     </message>
 </context>
 <context>
@@ -779,47 +775,47 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountstate.cpp" line="144"/>
         <source>Signed out</source>
-        <translation>Desconectado</translation>
+        <translation>تمّ تسجيل الخروج signed out</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="146"/>
         <source>Disconnected</source>
-        <translation>Desconectado</translation>
+        <translation>غيرُ متصلٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="148"/>
         <source>Connected</source>
-        <translation>Conectado</translation>
+        <translation>مُتصلٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="150"/>
         <source>Service unavailable</source>
-        <translation>Servizo non dispoñíbel</translation>
+        <translation>الخدمة غير متوفرة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="152"/>
         <source>Maintenance mode</source>
-        <translation>Modo de mantemento</translation>
+        <translation>وضع الصيانة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="154"/>
         <source>Network error</source>
-        <translation>Produciuse un erro na rede</translation>
+        <translation>خطأ في الشبكة</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Configuration error</source>
-        <translation>Produciuse un erro de configuración</translation>
+        <translation>خطأ في الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Asking Credentials</source>
-        <translation>Solicitando credenciais</translation>
+        <translation>السؤال عن حيثيات الدخول credentials</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Unknown account state</source>
-        <translation>Estado da conta descoñecido</translation>
+        <translation>حالة الحساب غير معروفة</translation>
     </message>
 </context>
 <context>
@@ -827,22 +823,22 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="490"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>Para máis actividades, abra a aplicación Actividade.</translation>
+        <translation>للمزيد عن الحركات، إفتح تطبيق الحركات Activity app.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
-        <translation>Recuperando as actividades…</translation>
+        <translation>جلب الحركات activities ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation>Produciuse un erro de rede: o cliente tentará de novo a sincronización.</translation>
+        <translation>حدث خطأ في الشبكة: سوف يحاول العميل إعادة المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="579"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Non se sincronizaran os ficheiros da lista de ignorados e as ligazóns simbólicas.</translation>
+        <translation>لا تتم مزامنة الملفات من قائمة التجاهل وكذلك الروابط الرمزية symbolic links.</translation>
     </message>
 </context>
 <context>
@@ -850,42 +846,42 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Certificado de autenticación SSL do cliente</translation>
+        <translation>مصادقة شهادة SSL للعميل client.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Este servidor probabelmente require un certificado SSL de cliente.</translation>
+        <translation>ربما يتطلب هذا الخادوم شهادة عميل SSL.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation>Certificado e chave (pkcs12):</translation>
+        <translation>الشهادة والمفتاح (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>Examinar…</translation>
+        <translation>تصفّح …</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation>Contrasinal do certificado:</translation>
+        <translation>كلمة سر الشهادة:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>Recoméndase encarecidamente un paquete pkcs12 cifrado xa que se gardará unha copia no ficheiro de configuración.</translation>
+        <translation>يوصى بشدة باستخدام حزمة pkcs12 المشفرة حيث سيتم تخزين نسخة في ملف التكوين.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Select a certificate</source>
-        <translation>Seleccione un certificado</translation>
+        <translation>إختر شهادةً</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Ficheiros de certificado (*.p12 *.pfx)</translation>
+        <translation>ملفات الشهادات (* .p12 * .pfx)</translation>
     </message>
 </context>
 <context>
@@ -893,54 +889,54 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/application.cpp" line="177"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Algúns axustes configuráronse nas versións %1 deste cliente e usan funcións que non están dispoñíbeis nesta versión. &lt;br&gt;&lt;br&gt;Continuar significará que &lt;b&gt;%2 estes axustes&lt;/b&gt;. &lt;br&gt;&lt;br&gt;Xa se fixo unha copia de seguranza do ficheiro de configuración actual en &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation>بعض الإعدادات تمّت تهيئتها في الإصدارات %1 من هذا العميل، و هي تستعمل خصائص غير موجودة في هذا الإصدار.&lt;br&gt;&lt;br&gt;الاستمرار سيعني &lt;b&gt; %2 هذه الإعدادات&lt;/b&gt;.&lt;br&gt;&lt;br&gt;ملف التهيئة الحالية تمّ سلفاً نسخه احتياطاً حتى &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation>máis recente</translation>
+        <translation>أحدث</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation>máis antigo</translation>
+        <translation>أقدم</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>ignoring</source>
-        <translation>ignorando</translation>
+        <translation>تجاهل</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
         <source>deleting</source>
-        <translation>eliminando</translation>
+        <translation>حذف</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="186"/>
         <source>Quit</source>
-        <translation>Saír</translation>
+        <translation>خروج</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
-        <translation>Continuar</translation>
+        <translation>استمرار</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="394"/>
         <source>Error accessing the configuration file</source>
-        <translation>Produciuse un erro ao acceder ao ficheiro de configuración</translation>
+        <translation>خطأ في الوصول إلى ملف التهيئة configuration file</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="395"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation>Produciuse un erro ao acceder ao ficheiro de configuración en %1. Comprobe que é posíbel acceder ao ficheiro coa súa conta do sistema.</translation>
+        <translation>حدث خطأ أثناء الوصول إلى ملف التهيئة في٪ 1. يرجى التأكد من إمكانية الوصول إلى الملف من خلال حسابك في النظام.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="398"/>
         <source>Quit %1</source>
-        <translation>Saír de %1</translation>
+        <translation>خروج %1</translation>
     </message>
 </context>
 <context>
@@ -948,22 +944,22 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>É necesario autenticarse</translation>
+        <translation>المصادقة لازمة</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation>Introduza o nome de usuario e o contrasinal de «%1» en %2.</translation>
+        <translation>أدخل اسم المستخدم و كلمة المرور لـ &quot;%1&quot; في %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation>Nome de &amp;usuario:</translation>
+        <translation>&amp;اسم_المستخدم:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Contrasinal:</translation>
+        <translation>&amp;كلمة_المرور:</translation>
     </message>
 </context>
 <context>
@@ -971,58 +967,58 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="123"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Non foi posíbel enviar o ficheiro %1 porque existe outro ficheiro co mesmo nome que só se diferenzan polas maiúsuclas</translation>
+        <translation>لا يمكن تحميل الملف٪ 1 نظرًا لوجود ملف آخر يحمل نفس الاسم. يختلف فقط في حالة  الحروف الصغيرة و الكبيرة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation>O ficheiro %1 ten unha data de modificación incorrecta. Non o envíe ao servidor.</translation>
+        <translation>الملف٪ 1، زمن آخر تعديل modified time فيه غير صالح. لا تقم برفعه إلى الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Ficheiro eliminado (iniciar o envío) %1</translation>
+        <translation>تم حذف الملف (إبدإ الرفع) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>O ficheiro %1 ten unha data de modificación incorrecta. Non o envíe ao servidor.</translation>
+        <translation>الملف٪ 1، زمن آخر تعديل modified time فيه غير صالح. لا تقم برفعه إلى الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>O ficheiro local cambiou durante a sincronización. Retómase.</translation>
+        <translation>ملف محلي تغيّر أثناء المزامنة. سوف يتم إستئنافه.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="334"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="667"/>
         <source>Local file changed during sync.</source>
-        <translation>O ficheiro local cambiou durante a sincronización.</translation>
+        <translation>ملف محلي تغيّر أثناء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="432"/>
         <source>Network error: %1</source>
-        <translation>Produciuse un erro na rede: %1</translation>
+        <translation>خطأ بالشبكة: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="477"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>خطأ في تحميل البيانات الوصفية metadata ـ : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="480"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 قيد الاستعمال حاليّاً</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="649"/>
         <source>The local file was removed during sync.</source>
-        <translation>O ficheiro local foi retirado durante a sincronización.</translation>
+        <translation>الملف المحلي حُذِفَ أثناء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="697"/>
         <source>Restoration failed: %1</source>
-        <translation>Produciuse un fallo na restauración: %1</translation>
+        <translation>أخفقت الاستعادة: %1</translation>
     </message>
 </context>
 <context>
@@ -1030,37 +1026,37 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation>Non é posíbel cambiar o nome do ficheiro porque xa existe un ficheiro co mesmo nome no servidor. Escolla outro nome.</translation>
+        <translation>لا يمكن تغيير تسمية الملف لأن هنالك ملف آخر بنفس الاسم موجود على الخادوم. الرجاء اختيار اسم آخر.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Non foi posíbel cambiar o nome do ficheiro. Asegúrese de estar conectado ao servidor.</translation>
+        <translation>تعذر تغيير تسمية الملف. يرجى التأكد من اتصالك بالخادوم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Non ten permisos para cambiar o nome deste ficheiro. Pídalle ao autor do ficheiro que o cambie.</translation>
+        <translation>ليس لديك إذن بتغيير تسمية هذا الملف. يرجى مطالبة منشيء الملف بتغيير تسميته.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>Produciuse un fallo ao obter os permisos co erro %1</translation>
+        <translation>فشل إحضار الأذونات بسبب الخطأ٪ 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio e ao final.</translation>
+        <translation>اسم الملف يحتوي على فراغات في البداية و النهاية.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio.</translation>
+        <translation>اسم الملف يحتوي على فراغات في البداية.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao final.</translation>
+        <translation>اسم الملف يحتوي على فراغات في النهاية.</translation>
     </message>
 </context>
 <context>
@@ -1068,111 +1064,111 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Conflito de capitalización</translation>
+        <translation>حالة تعارض Case Clash Conflict</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Non foi posíbel sincronizar o ficheiro porque xera un conflito de capitalización cun ficheiro existente neste sistema.</translation>
+        <translation>تعذرت مزامنة الملف لأنه ينشئ حالة تعارض Case Clash Conflict مع ملف موجود على هذا النظام.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
-        <translation>Ficheiro existente</translation>
+        <translation>ملف موجود</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation>ficheiro A</translation>
+        <translation>الملف &quot;أ&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
-        <translation>hoxe</translation>
+        <translation>اليوم</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation>0 bytes</translation>
+        <translation>0 بايت</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation>Abrir ficheiro existente</translation>
+        <translation>إفتح الملف الموجود</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Ficheiro en conflito de capitalización</translation>
+        <translation>ملف تعارض حالة</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation>ficheiro B</translation>
+        <translation>الملف &quot;ب&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation>Abrir ficheiro en conflito</translation>
+        <translation>فتح الملف المتعارض</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation>Introduza un novo nome para o ficheiro en conflito:</translation>
+        <translation>رجاءً، أدخل اسماً جديداً للملف المتعارض clashing file:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation>Novo nome de ficheiro</translation>
+        <translation>اسم ملف جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation>Cambiar o nome do ficheiro</translation>
+        <translation>تغيير اسم الملف</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Non foi posíbel sincronizar o ficheiro «%1» por mor dun conflito de capitalización cun ficheiro existente neste sistema.</translation>
+        <translation>تعذرت مزامنة الملف &quot;٪ 1&quot; بسبب تعارض الحالة مع ملف موجود على هذا النظام.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation>%1 non admite nomes de ficheiros iguais con só diferenzas entre maiúsculas e minúsculas.</translation>
+        <translation>لا يعتبر٪ 1 أسماء الملفات متطابقة إذا وُجدت اختلافات في حالة الأحرف الصغيرة و الكبيرة.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio e ao final.</translation>
+        <translation>اسم الملف يحوي فراغات في البداية و النهاية.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio.</translation>
+        <translation>اسم الملف يحوي فراغات في البداية.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao final.</translation>
+        <translation>اسم الملف يحوي فراغات في النهاية.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation>Nome incorrecto</translation>
+        <translation>استخدام اسم غير صحيح</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation>O nome do ficheiro contén caracteres non admitidos: %1</translation>
+        <translation>اسم الملف يحوي حروفاً غير مسموح بها: %1</translation>
     </message>
 </context>
 <context>
@@ -1180,7 +1176,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1585"/>
         <source>Error writing metadata to the database</source>
-        <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
+        <translation>خطأ في كتابة البيانات الوصفية metadata في قاعدة البيانات</translation>
     </message>
 </context>
 <context>
@@ -1188,12 +1184,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Introduza a súa frase de contrasinal de cifrado de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>الرجاء إدخال عبارة مرور التشفير من الحد للحد :&lt;br&gt;&lt;br&gt;اسم المستخدم: %2&lt;br&gt;الحساب: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1377"/>
         <source>Enter E2E passphrase</source>
-        <translation>Introduza a frase de contrasinal E2E</translation>
+        <translation>أدخِل عبارة مرور التشفير من الحد للحد E2E passphrase</translation>
     </message>
 </context>
 <context>
@@ -1201,87 +1197,87 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation>Conflito na sinconización</translation>
+        <translation>تعارض في المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="96"/>
         <source>Conflicting versions of %1.</source>
-        <translation>Versións en conflito de %1.</translation>
+        <translation>تعارض بين نُسَخ %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation>Que versión do  ficheiro quere conservar? &lt;br/&gt;Se selecciona ámbalas dúas versións, engadiráselle un número ao nome do ficheiro local.</translation>
+        <translation>أيّ نسخة من الملف ترغب في الاحتفاظ بها؟&lt;br/&gt;إذا اخترت كلتي النسختين، سيعطى الملف المحلي رقماً يُلحق باسمه.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation>Versión local</translation>
+        <translation>النسخة المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation>Prema para abrir o ficheiro</translation>
+        <translation>إضغط لفتح الملف</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation>hoxe</translation>
+        <translation>اليوم</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation>0 byte</translation>
+        <translation>0 بايت</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Abrir a versión local&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;إفتح النسخة المحلية&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation>Versión do servidor</translation>
+        <translation>إصدار الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Abrir a versión do servidor&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;إفتح نسخة الخادوم&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="179"/>
         <source>Keep selected version</source>
-        <translation>Conservar a versión seleccionada</translation>
+        <translation>إحتفظ بالنسخة المختارة</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
-        <translation>Abrir a versión local</translation>
+        <translation>إفتح النسخة المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="158"/>
         <source>Open server version</source>
-        <translation>Abrir a versión do servidor</translation>
+        <translation>إفتح نسخة الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep both versions</source>
-        <translation>Conservar ámbalas dúas versións</translation>
+        <translation>إحتفظ بكلتيْ النسختين</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep local version</source>
-        <translation>Conservar a versión local</translation>
+        <translation>إحتفظ بالنسخة المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
-        <translation>Conservar a versión do servidor</translation>
+        <translation>إحتفظ بنسخة الخادوم</translation>
     </message>
 </context>
 <context>
@@ -1289,23 +1285,23 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Confirma que quere eliminar permanentemente o directorio &lt;i&gt;%1&lt;/i&gt; e todo o seu contido?</translation>
+        <translation>هل ترغب في حذف الدليل &lt;i&gt;%1&lt;/i&gt; و كل محتوياته بشكل نهائي؟</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Confirma que quere eliminar permanentemente o ficheiro &lt;i&gt;%1&lt;/i&gt; ?</translation>
+        <translation>هل ترغب في حذف الدليل &lt;i&gt;%1&lt;/i&gt; بشكل نهائي؟</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation>Confirmar a eliminación</translation>
+        <translation>أكّد رغبتك في الحذف</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -1313,7 +1309,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <source>Moving file failed:
 
 %1</source>
-        <translation>Produciuse un fallo ao mover o ficheiro:
+        <translation>تعذّر نقل الملف:
 
 %1</translation>
     </message>
@@ -1323,32 +1319,32 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="49"/>
         <source>No Nextcloud account configured</source>
-        <translation>Non hai configurada ningunha conta Nextcloud </translation>
+        <translation>لم تتم تهيئة حساب على النكست كلاود</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="146"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Produciuse un erro de autenticación: Ou o nome de usuario ou o contrasinal son erróneos.</translation>
+        <translation>خطأ في المصادقة: اسم المستخدم و/أو كلمة المرور خطأ.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="158"/>
         <source>Timeout</source>
-        <translation>Tempo de espera</translation>
+        <translation>نهاية المهلة</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="195"/>
         <source>The provided credentials are not correct</source>
-        <translation>As credenciais fornecidas non son correctas</translation>
+        <translation>الحيثيات credentials المعطاة غير صحيحة</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="266"/>
         <source>The configured server for this client is too old</source>
-        <translation>O servidor configurado para este cliente é moi antigo</translation>
+        <translation>تهيئة الخادوم في هذا العميل قديمة جداً</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="267"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Actualice ao último servidor e reinicie o cliente.</translation>
+        <translation>يرجى التحديث إلى الإصدار الأخير من الخادوم ثم إعادة تشغيل العميل.</translation>
     </message>
 </context>
 <context>
@@ -1356,12 +1352,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="191"/>
         <source>Error while canceling deletion of a file</source>
-        <translation>Produciuse un ficheiro ao cancelar a eliminación dun ficheiro</translation>
+        <translation>خطأ أثناء إلغاء حذف ملف</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
         <source>Error while canceling deletion of %1</source>
-        <translation>Produciuse un ficheiro ao cancelar a eliminación de %1</translation>
+        <translation>خطأ أثناء إلغاء حذف %1</translation>
     </message>
 </context>
 <context>
@@ -1370,7 +1366,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/libsync/discoveryphase.cpp" line="579"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="609"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Erro do servidor: a resposta PROPFIND non está formatada en XML.</translation>
+        <translation>خطأ خادوم: رد PROPFIND ليس على نسق XML!</translation>
     </message>
 </context>
 <context>
@@ -1378,27 +1374,27 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="279"/>
         <source>Error while opening directory %1</source>
-        <translation>Produciuse un erro ao abrir o directorio %1</translation>
+        <translation>خطأ أثناء فتح الدليل %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="281"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Directorio non accesíbel no cliente, permiso denegado</translation>
+        <translation>لا يمكن للعميل أن يصل إلى الدليل. تمّ رفض الإذن</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="285"/>
         <source>Directory not found: %1</source>
-        <translation>Non se atopou o directorio: %1</translation>
+        <translation>الدليل غير موجود: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="316"/>
         <source>Filename encoding is not valid</source>
-        <translation>O nome de ficheiro codificado non é correcto</translation>
+        <translation>ترميز اسم المف غير صحيح</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="335"/>
         <source>Error while reading directory %1</source>
-        <translation>Produciuse un erro ao ler o directorio %1</translation>
+        <translation>خطأ أثناء القراءة من الدليل %1</translation>
     </message>
 </context>
 <context>
@@ -1406,7 +1402,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
         <source>Invalid token received.</source>
-        <translation>Recibiuse un testemuño non válido.</translation>
+        <translation>تمّ استلام أَمَارَة toekn غير صحيحة.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
@@ -1416,17 +1412,17 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
         <source>Please try again.</source>
-        <translation>Ténteo de novo</translation>
+        <translation>حاول مرة أخرى، من فضلك.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
-        <translation>Forneceu unha ruta incorrecta.</translation>
+        <translation>مسار الملف المُعطَى غير صحيح.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <source>Could not find an account for local editing.</source>
-        <translation>Non foi posíbel atopar unha conta para a edición local.</translation>
+        <translation>تعذّر العثور على حساب للتحرير المحلي.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="93"/>
@@ -1438,24 +1434,24 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="557"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="577"/>
         <source>Could not start editing locally.</source>
-        <translation>Non foi posíbel comezar a editar localmente.</translation>
+        <translation>تعذّر البدء في التحرير محليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation>Produciuse un erro ao tentar verificar a solicitude de edición local.</translation>
+        <translation>حدث خطأ أثناء محاولة التحّقق من طلب التحرير محليًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="132"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>Non foi posíbel validar a solicitude para abrir un ficheiro dende o servidor.</translation>
+        <translation>تعذر التحقق من صحة طلب فتح ملف من الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="138"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="151"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Non foi posíbel atopar un ficheiro para a edición local. Asegúrese de que a ruta sexa a correcta e de que se sincronice localmente.</translation>
+        <translation>تعذر العثور على ملف للتحرير المحلي. تأكد من أن مساره صالح وأنه متزامن محليًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
@@ -1463,66 +1459,66 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="181"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Non foi posíbel atopar un ficheiro para a edición local. Asegúrese de que non se exclúa mediante a sincronización selectiva.</translation>
+        <translation>تعذر العثور على ملف للتحرير المحلي. تأكد من عدم استبعاده عن طريق المزامنة الانتقائية.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="205"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="533"/>
         <source>An error occurred during data retrieval.</source>
-        <translation>Produciuse un erro durante a recuperación dos datos.</translation>
+        <translation>حدث خطأ أثناء استرداد البيانات.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="261"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="558"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation>Produciuse un erro ao tentar sincronizar o ficheiro para editar localmente.</translation>
+        <translation>حدث خطأ أثناء محاولة مزامنة الملف لتحريره محليًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="466"/>
         <source>An error occurred during setup.</source>
-        <translation>Produciuse un erro durante a configuración.</translation>
+        <translation>حدث خطأ أثناء الإعداد.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="512"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Erro do servidor: a resposta PROPFIND non ten formato XML.</translation>
+        <translation>خطأ خادوم: رد PROPFIND ليس على نسق XML!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="514"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation>Non foi posíbel atopar unha información de ficheiro remoto para a edición local. Asegúrese de que a súa ruta sexa correcta.</translation>
+        <translation>تعذّر العثور على معلومات ملف قَصٍي remote للتحرير المحلي. تأكد من أن مساره صالح.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
         <source>Invalid local file path.</source>
-        <translation>A ruta do ficheiro local non é correcta.</translation>
+        <translation>مسار غير صحيح للملف المحلي.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
         <source>Could not open %1</source>
-        <translation>Non foi posíbel abrir %1</translation>
+        <translation>تعذّر فتح %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="669"/>
         <source>File %1 already locked.</source>
-        <translation>O ficheiro %1 xa está bloqueado.</translation>
+        <translation>الملف%1 مقفول locked مُسبقاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="670"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="681"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation>O bloqueo durará %1 minutos. Tamén pode desbloquear este ficheiro manualmente unha vez que remate a edición.</translation>
+        <translation>سيستمر القفل لمدة٪ 1 دقيقة. يمكنك أيضًا إلغاء قفل هذا الملف يدويًا بمجرد الانتهاء من التحرير.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="680"/>
         <source>File %1 now locked.</source>
-        <translation>O ficheiro %1 agora está bloqueado.</translation>
+        <translation>الملف %1 مقفول locked الآن.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="689"/>
         <source>File %1 could not be locked.</source>
-        <translation>Non foi posíbel bloquear o ficheiro %1.</translation>
+        <translation>الملف %1 تعذّر قفله.</translation>
     </message>
 </context>
 <context>
@@ -1531,8 +1527,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/libsync/encryptfolderjob.cpp" line="90"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Non foi posíbel xerar os metadatos para o cifrado, Desbloqueando o cartafol.
-Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
+        <translation>تعذر إنشاء البيانات الوصفية للتشفير، وإلغاء تأمين المجلد. يمكن أن يكون هذا مشكلة في مكتبات OpenSSL لديك.</translation>
     </message>
 </context>
 <context>
@@ -1541,43 +1536,43 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="102"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>Hai %1 segundo(s)</numerusform><numerusform>Hai %1 segundo(s)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="105"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>Hai %1 minuto(s)</numerusform><numerusform>Hai %1 minuto(s)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="108"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation><numerusform>Hai %1 hora(s)</numerusform><numerusform>Hai %1 hora(s)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="111"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation><numerusform>Hai %1 día(s)</numerusform><numerusform>Hai %1 día(s)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="114"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>Hai %1 mes(es)</numerusform><numerusform>Hai %1 mes(es)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="117"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation><numerusform>Hai %1 ano(s)</numerusform><numerusform>Hai %1 ano(s)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="149"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1 - Caduca en %2 minuto(s)</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minuto(s)</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -1585,36 +1580,36 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL solicitado non comeza con HTTPS aínda que o URL de acceso indicado comeza por HTTPS. Non é posíbel acceder porque isto podería implicar un fallo de seguranza. Consulte coa administración do sito.</translation>
+        <translation>عنوان URL الخاص بالتصويت polling لا يبدأ بـ HTTPS على الرغم من أن عنوان URL الخاص بتسجيل الدخول يبدأ بـ HTTPS. لن يكون تسجيل الدخول ممكنًا لأن هذا قد يتسبب مشكلة أمنية. الرجاء الاتصال بمشرف النظام عندك.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="231"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Erro devolto dende o servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>خطأ راجع من الخادوم: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="234"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao «testemuño» do punto final: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>هنالك خطأ في الوصول إلى النقطة الحدّيّة للأَمَارَة token endpoint ـ : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="119"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="237"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Non foi posíbel analizar o JSON devolto dende o servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>تعذّر تحليل JSON الراجعة من الخادوم: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="122"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="240"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>A resposta do servidor non contiña todos os campos agardados</translation>
+        <translation>الردُّ الوارد من الخادوم لا يحوي كل الحقول المنتظرة</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de inicio de sesión comezou con HTTPS. Non será posíbel acceder porque isto pode ser un problema de seguranza. Póñase en contacto co seu administrador.</translation>
+        <translation>عنوان URL الخاص بالتصويت polling لا يبدأ بـ HTTPS على الرغم من أن عنوان URL الخاص بتسجيل الدخول يبدأ بـ HTTPS. لن يكون تسجيل الدخول ممكنًا لأن هذا قد يتسبب مشكلة أمنية. الرجاء الاتصال بمشرف النظام عندك.</translation>
     </message>
 </context>
 <context>
@@ -1622,37 +1617,37 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="97"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Non é posíbel abrir o navegador, copie a ligazón ao seu navegador.</translation>
+        <translation>تعذّر فتح المتصفح. رجاءً، إنسخ الرابط في متصفحك.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="160"/>
         <source>Waiting for authorization</source>
-        <translation>Agardando autorización</translation>
+        <translation>في انتظار الإذن</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="165"/>
         <source>Polling for authorization</source>
-        <translation>Solicitando autorización</translation>
+        <translation>التصويت على الإذن</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="170"/>
         <source>Starting authorization</source>
-        <translation>Iniciando autorización</translation>
+        <translation>إذن البدء </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="174"/>
         <source>Link copied to clipboard.</source>
-        <translation>A ligazón foi copiada no portapapeis.</translation>
+        <translation>تمّ نسخ الرابط إلى الحافظة</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
         <source>Reopen Browser</source>
-        <translation>Reabrir o navegador</translation>
+        <translation>أَعِد فتح المُتصفّح</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation>Copiar a ligazón</translation>
+        <translation>إنسخ الرابط</translation>
     </message>
 </context>
 <context>
@@ -1660,140 +1655,140 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="179"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>O cartafol local %1 non existe.</translation>
+        <translation>الملف المحلي %1 غير موجود.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="182"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 debería ser un cartafol, mais non o é.</translation>
+        <translation>%1 يفترض أن يكون مُجلّداً لكنه ليس كذلك.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="185"/>
         <source>%1 is not readable.</source>
-        <translation>%1 non é lexíbel.</translation>
+        <translation>%1 لا يمكن قراءته.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 e outro ficheiro foi retirado.</numerusform><numerusform>%1 e outros %n ficheiros foron retirados.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="430"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>Retirouse %1.</translation>
+        <translation>%1 تمّ حذفه.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 e outro ficheiro foi actualizado.</numerusform><numerusform>%1 e outros %n ficheiros foron engadidos.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="437"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation>Engadíuse %1.</translation>
+        <translation>%1 تمّت إضافته.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 e outro ficheiro foi actualizado.</numerusform><numerusform>%1 e outros %n ficheiros foron actualizados.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation>Enviouse %1.</translation>
+        <translation>%1 تمّ تحديثه.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 foi renomeado a %2 e outro ficheiro tamén foi renomeado.</numerusform><numerusform>%1 foi renomeado a %2 e outros %n ficheiros tamén foron renomeados.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 foi renomeado a %2.</translation>
+        <translation>%1 تمّ تغيير تسميته إلى %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 foi movido a %2 e outro ficheiro tamén foi movido.</numerusform><numerusform>%1 foi movido a %2 e outros %n ficheiros tamén foron movidos.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 has been moved to %2.</source>
-        <translation>%1 foi movido a %2.</translation>
+        <translation>%1 تمّ نقله إلى %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 e outro ficheiro tiveron conflitos ao sincronizar.</numerusform><numerusform>%1 e outros %n ficheiros tiveron conflitos ao sincronizar.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>Produciuse un conflito ao sincronizar %1. Comprobe o ficheiro!</translation>
+        <translation>%1 فيه تضارب. رجاءً، راجع ملف التضارب conflict file!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>Non foi posíbel sincronizar %1 e outro ficheiro por mor de erros. Vexa os detalles no rexistro.</numerusform><numerusform>Non foi posíbel sincronizar %1 e outros %n ficheiros por mor de erros. Vexa os detalles no rexistro.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>Non foi posíbel sincronizar %1 por mor dun erro. Vexa os detalles no rexistro.</translation>
+        <translation>%1 تعذّرت مزامنته. راجع سجل الحركات log لمزيد التفاصيل.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 e outro %n ficheiro está bloqueado actualmente.</numerusform><numerusform>%1 e outros %n ficheiros están bloqueados actualmente.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
         <source>%1 is currently locked.</source>
-        <translation>%1 está bloqueado actualmente.</translation>
+        <translation>%1 مقفول حاليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>Sync Activity</source>
-        <translation>Actividade de sincronización</translation>
+        <translation>حركات المزامنة Sync Activity</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="893"/>
         <source>Could not read system exclude file</source>
-        <translation>Non foi posíbel ler o ficheiro de exclusión do sistema</translation>
+        <translation>تعذرت قراءة ملف استثناء النظام system exclude file.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1176"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Foi engadido un cartafol maior de %1 MB: %2.
+        <translation>مُجلّد جديد حجمه أكبر من %1 MB تمّت إضافته إلى: %2.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1179"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Foi engadido un cartafol de almacenamento externo.
+        <translation>مُجلّد من وحدة تخزين خارجية تمّت إضافته.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Vaia a axustes para seleccionalo se quere descargar isto.</translation>
+        <translation>رجاءً، إذهب إلى الإعدادات لاختياره إذا كنت ترغب في تنزيله.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1245"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Creouse o cartafol %1 mais foi excluído da sincronización con anterioridade. Os datos no seu interior non se sincronizarán.</translation>
+        <translation>تم إنشاء المجلد٪ 1 ولكن لأنه قد سبق استبعاده من المزامنةفلن تتم مزامنة البيانات الموجودة بداخله.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Creouse o ficheiro %1 mais foi excluído da sincronización con anterioridade. Non se sincronizará.</translation>
+        <translation>تم إنشاء الملف٪ 1 ولكن لأنه قد سبق استبعاده من المزامنة فلن تتم مزامنته.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1259"/>
@@ -1802,11 +1797,9 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Non foi posíbel rastrexar de xeito fiábel os cambios nos cartafoles sincronizados.
+        <translation>لا يمكن تتبع التغييرات في المجلدات المتزامنة بشكل موثوق. هذا يعني أن عميل المزامنة قد لا يقوم بتحميل التغييرات المحلية على الفور و بدلاً من ذلك سيقوم فقط بالبحث عن التغييرات المحلية وتحميلها من حين لآخر (كل ساعتين بشكل افتراضي)
 
-Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e no canto diso, só examinará buscando cambios locais e enviaraos ocasionalmente (por omisión cada dúas horas)
-
-%1</translation>
+٪ 1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1361"/>
@@ -1814,34 +1807,32 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Todos os ficheiros no cartafol de sincronización «%1» foron eliminados no servidor.
-Estas eliminacións sincronizarse co seu cartafol  local sincronizado, facendo que estes ficheiros non estean dispoñíbeis a menos que teña permisos para restauralos. 
-Se decide restaurar os ficheiros, volveranse sincronizar co servidor se ten permisos para facelo.
-Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o propietario.</translation>
+        <translation>تم حذف جميع الملفات الموجودة في مجلد المزامنة &quot;٪ 1&quot; على الخادوم. ستتم مزامنة عمليات الحذف هذه مع مجلد المزامنة المحلي، مما يجعل هذه الملفات غير متاحة إلاّ ذا كان لديك الحق في استعادتها. 
+إذا قررت استعادة الملفات ، فستتم إعادة مزامنتها مع الخادوم إذا كان لديك صلاحية القيام بذلك. 
+إذا قررت حذف الملفات، فلن تكون متاحة لك إلا إذا كنت المالك.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1366"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Elimináronse todos os ficheiros do cartafol de sincronización local «%1». Estes ficheiros eliminados sincronizaranse co seu servidor, polo que tales ficheiros non estarán dispoñíbeis a non ser que sexan restaurados.
-Confirma que quere sincronizar esas accións co servidor?
-Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincronizar dende o servidor.</translation>
+        <translation>تم حذف كافة الملفات الموجودة في مجلد المزامنة المحلي &quot;٪ 1&quot;. ستتم مزامنة عمليات الحذف هذه مع خادومك، هذا يجعل هذه الملفات غير متاحة ما لم تتم استعادتها. 
+هل تريد بالتأكيد مزامنة هذه الإجراءات مع الخادم؟ إذا كان هذا حادثًا وقررت الاحتفاظ بملفاتك، فستتم إعادة مزامنتها من الخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1370"/>
         <source>Remove All Files?</source>
-        <translation>Retirar todos os ficheiros?</translation>
+        <translation>حذف كل الملفات؟</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1374"/>
         <source>Remove all files</source>
-        <translation>Retirar todos os ficheiros</translation>
+        <translation>حذف كل الملفات</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1375"/>
         <source>Keep files</source>
-        <translation>Conservar os ficheiros</translation>
+        <translation>إحتفظ بالملفات</translation>
     </message>
 </context>
 <context>
@@ -1849,27 +1840,27 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation>Crear un cartafol novo</translation>
+        <translation>أنشِيء مُجلّداً جديداً</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation>Introduza o nome do cartafol</translation>
+        <translation>أدخل اسم المُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation>Xa existe o cartafol</translation>
+        <translation>المُجلّد موجود سلفاً</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="80"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation>Non foi posíbel crear un cartafol. Comprobe os seus permisos de escritura.</translation>
+        <translation>تعذّر إنشاء المُجلّد. راجع أذونات الكتابة.</translation>
     </message>
 </context>
 <context>
@@ -1877,107 +1868,107 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderman.cpp" line="414"/>
         <source>Could not reset folder state</source>
-        <translation>Non foi posíbel restabelecer o estado do cartafol</translation>
+        <translation>تعذّرت إعادة تعيين حالة المجلد</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="415"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Atopouse un diario de sincronización antigo «%1», mais non foi posíbel eliminalo. Asegúrese de que ningunha aplicación estea a usalo actualmente.</translation>
+        <translation>تم ّالعثور على سجل مزامنة قديم &quot;٪ 1&quot; ، ولكن لا يمكن إزالته. يرجى التأكد من عدم وجود تطبيق يستخدمه حاليًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source> (backup)</source>
-        <translation> (copia de seguranza)</translation>
+        <translation> (نسخ احتياطي)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source> (backup %1)</source>
-        <translation> (copia de seguranza %1)</translation>
+        <translation> (نسخ احتياطي %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1602"/>
         <source>Undefined state.</source>
-        <translation>Estado sen definir.</translation>
+        <translation>حالة غير محددة.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1605"/>
         <source>Waiting to start syncing.</source>
-        <translation>Agardando para iniciar a sincronización.</translation>
+        <translation>في انتظار بدء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1608"/>
         <source>Preparing for sync.</source>
-        <translation>Preparando para sincronizar.</translation>
+        <translation>التحضير للمزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1611"/>
         <source>Sync is running.</source>
-        <translation>Estase sincronizando.</translation>
+        <translation>المزامنة جاريةٌ.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1616"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation>A sincronización rematou con conflitos sen resolver.</translation>
+        <translation>إنتهت المزامنة مع وجود تعارضات لم يتم حلُّها.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Last sync was successful.</source>
-        <translation>A última sincronización fíxose correctamente.</translation>
+        <translation>آخر مزامنة كانت ناجحة.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1624"/>
         <source>Setup error.</source>
-        <translation>Produciuse un erro de configuración.</translation>
+        <translation>خطأ في الإعداد.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1627"/>
         <source>Sync request was cancelled.</source>
-        <translation>Cancelouse a solicitude de sincronización.</translation>
+        <translation>طلب المزامنة تمّ إلغاؤه.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1630"/>
         <source>Sync is paused.</source>
-        <translation>Sincronización en pausa.</translation>
+        <translation>تمّ تجميد المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1636"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (sincronización en pausa)</translation>
+        <translation>%1 (المزامنة مُجمّدةٌ)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1644"/>
         <source>No valid folder selected!</source>
-        <translation>Non seleccionou ningún cartafol correcto!</translation>
+        <translation>لم يتم اختيار أي مُجلّدٍ صحيحٍ!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>The selected path does not exist!</source>
-        <translation>A ruta seleccionada non éexiste!</translation>
+        <translation>المسار المختار غير موجود!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1660"/>
         <source>The selected path is not a folder!</source>
-        <translation>A ruta seleccionada non é un cartafol!</translation>
+        <translation>المسار المختار ليس مُجلّداً!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1664"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Vostede non ten permiso para escribir neste cartafol!</translation>
+        <translation>ليس عندك صلاحية للكتابة في المُجلّد المُختار!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1716"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>O cartafol local %1 xa contén un cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
+        <translation>يحتوي المجلد المحلي٪ 1 سلفاً على مجلد مستخدم في اتصال مزامنة مجلد folder sync connection. الرجاء اختيار واحدة أخرى!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1724"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>O cartafol local %1 está dentro dun cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
+        <translation>المجلد المحلي٪ 1 موجود سلفاً في مجلد مستخدم في اتصال مزامنة مجلد folder sync connection. الرجاء اختيار واحدة أخرى!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1740"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Xa existe unha tarefa de sincronización entre o servidor e este cartafol. Escolla outro cartafol local!</translation>
+        <translation>هناك مزامنة من الخادوم لهذا المجلد المحلي قائمة سلفاً. الرجاء اختيار مجلد محلي آخر!</translation>
     </message>
 </context>
 <context>
@@ -1985,12 +1976,12 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="55"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Engadir a conexión da sincronización do cartafol</translation>
+        <translation>إضافة اتصال مزامنة المجلد Folder Sync Connection</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="299"/>
         <source>File</source>
-        <translation>Ficheiro</translation>
+        <translation>ملف</translation>
     </message>
 </context>
 <context>
@@ -1998,17 +1989,17 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <source>You need to be connected to add a folder</source>
-        <translation>Ten que estar conectado para engadir un cartafol</translation>
+        <translation>يجب أن تكون مُتّصلاً حتى يمكنك إضافة مُجلّد</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="153"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Prema nesta botón para engadir un cartafol para sincronizar.</translation>
+        <translation>إضغط هذا الزر لإضافة مُجلّد لغرض المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source>Could not decrypt!</source>
-        <translation>Non foi posíbel descifrar!</translation>
+        <translation>تعذّر فك التشفير!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
@@ -2019,58 +2010,58 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="210"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Produciuse un erro ao cargar a lista de cartafoles dende o servidor.</translation>
+        <translation>خطأ أثناء تحميل قائمة المُجلّدات من الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>Fetching folder list from server …</source>
-        <translation>Obtendo a lista de cartafoles do servidor…</translation>
+        <translation>جلب قائمة المُجلّدات من الخادوم ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Hai conflitos sen resolver. Prema para obter máis detalles.</translation>
+        <translation>هناك تضاربات لم تُحل. أُنقر للاطلاع على التفاصيل.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="245"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Está activada a compatibilidade con ficheiros virtuais.</translation>
+        <translation>تمّ تمكين دعم الملفات الافتراضية.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="267"/>
         <source>Signed out</source>
-        <translation>Desconectado</translation>
+        <translation>تمّ تسجيل الخروج</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="309"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation>Sincronizando os ficheiros virtuais co cartafol local</translation>
+        <translation>مزامنة الملفات الافتراضية VirtualFiles مع المجلد المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="311"/>
         <source>Synchronizing with local folder</source>
-        <translation>Sincronizando co cartafol local</translation>
+        <translation>المزامنة مع المُجلّد المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Comprobando os cambios no cartafol remoto «%1»</translation>
+        <translation>البحث عن تغييرات في  &quot;%1&quot; القَصِي remote.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Comprobando os cambios no cartafol local «%1»</translation>
+        <translation>البحث عن تغييرات في &quot;%1&quot; المحلي local.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
         <source>Reconciling changes</source>
-        <translation>Reconciliando os cambios</translation>
+        <translation>التوفيق بين التغييرات Reconciling changes</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>Sincronizando %1</translation>
+        <translation>مزامنة %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
@@ -2082,29 +2073,29 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>descargar %1/s</translation>
+        <translation>تنزيل %1/ثا</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>↓ %1/s</source>
-        <translation>↓ %1/s</translation>
+        <translation>↓ %1/ثا</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>enviar %1/s</translation>
+        <translation>رفع %1/ثا</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
         <source>↑ %1/s</source>
-        <translation>↑ %1/s</translation>
+        <translation>↑ %1/ثا</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 de %4)</translation>
+        <translation>%1 %2 (%3 مِن %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
@@ -2116,38 +2107,38 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>Restan uns segundos, %1 de %2, ficheiro %3 de %4</translation>
+        <translation>ثوان معدودة مازالت؛ %1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation>Restan %5, %1 de %2, ficheiro %3 de %4</translation>
+        <translation>%5 مازالت؛  %1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1129"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 de %2, ficheiro %3 de %4</translation>
+        <translation>%1 من %2, ملف %3 من %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
-        <translation>ficheiro %1 de %2</translation>
+        <translation>ملف %1 من %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
         <source>Waiting …</source>
-        <translation>Agardando…</translation>
+        <translation>في الانتظار ...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Agardando por outro cartafol…</numerusform><numerusform>Agardando por outros %n cartafoles…</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
         <source>Preparing to sync …</source>
-        <translation>Preparando para sincronizar…</translation>
+        <translation>التحضير للمزامنة ...</translation>
     </message>
 </context>
 <context>
@@ -2155,7 +2146,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="140"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation>O observador non recibiu unha notificación de proba.</translation>
+        <translation>لم يتلقّ المراقب watcher إشعار الاختبار.</translation>
     </message>
 </context>
 <context>
@@ -2163,7 +2154,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="88"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Este problema xeralmente acontece cando os reloxos inotify están esgotados. Comprobe as preguntas frecuentes (FAQ) para obter máis detalles.</translation>
+        <translation>تحدث هذه المشكلة عادة عندما لا تستطيع وحدات مراقبة تغييرات الملفات التي تحت المراقبة inotify watches مُجاراة سرعة تلك التغييرات. تحقق من التعليمات للحصول على التفاصيل.</translation>
     </message>
 </context>
 <context>
@@ -2171,12 +2162,12 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="647"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Engadir a conexión da sincronización do cartafol</translation>
+        <translation>إضافة اتصال مزامنة المجلد Folder Sync Connection.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="649"/>
         <source>Add Sync Connection</source>
-        <translation>Engadir a conexión da sincronización</translation>
+        <translation>إضافة اتصال مزامنة Sync Connection.</translation>
     </message>
 </context>
 <context>
@@ -2184,17 +2175,17 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="69"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Prema para escoller un cartafol local para sincronizar.</translation>
+        <translation>أُنقُر لتحديد مجلد محلي لمزامنته.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="76"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Introduza a ruta ao cartafol local.</translation>
+        <translation>أدخل مسار المجلد المحلي.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="137"/>
         <source>Select the source folder</source>
-        <translation>Escolla o cartafol de orixe</translation>
+        <translation>إختر المجلد المصدر</translation>
     </message>
 </context>
 <context>
@@ -2202,52 +2193,52 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="208"/>
         <source>Create Remote Folder</source>
-        <translation>Crear un cartafol remoto</translation>
+        <translation>أنشِيء مُجلّداً قَصِيّاَ remote.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="209"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation>Introduza o nome do novo cartafol que se creará a seguir «%1»:</translation>
+        <translation>أدخل اسم المجلد الجديد الذي ترغب بإنشائه أدناه &quot;%1&quot;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="238"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Creouse correctamente o cartafol en %1.</translation>
+        <translation>تمّ بنجاحٍ إنشاء مجلد على %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="248"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Non foi posíbel facer a autenticación accedendo a %1</translation>
+        <translation>أخفق التخويل في الوصول إلى %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="250"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Non foi posíbel crear o cartafol en %1. Compróbeo manualmente.</translation>
+        <translation>تعذّر إنشاء مجلد على %1. رجاءً، راجعه يدويّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="268"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Produciuse un fallo ao listar un cartafol. Erro: %1</translation>
+        <translation>تعذر عرض المجلد. خطأ: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="349"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Escolla isto para sincronizar toda a conta</translation>
+        <translation>إختر هذه لمزامنة الحساب بأكمله</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="492"/>
         <source>This folder is already being synced.</source>
-        <translation>Este cartafol xa está sincronizado.</translation>
+        <translation>هذا المجلد تتم مزامنته حاليّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="494"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Xa está a sincronizar &lt;i&gt;%1&lt;/i&gt;, é o cartafol pai de &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>أنت حاليّاً تقوم بمزامنة &lt;i&gt;%1&lt;/i&gt;, و الذي هو أب المجلد &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="496"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Xa está a sincronizar &lt;i&gt;%1&lt;/i&gt;, é o subcartafol de &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>أنت تقوم حاليّاً بمزامنة &lt;i&gt;%1&lt;/i&gt;, و الذي هو مجلد فرعي من &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -2256,23 +2247,23 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Use ficheiros virtuais no canto de descargar contido inmediatamente %1</translation>
+        <translation>إستعمل الملفات الظاهرية virtual files بدلاً من تنزيل المحتوى فورًا ٪ 1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>(experimental)</source>
-        <translation>(experimental)</translation>
+        <translation>(تجريبي)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="568"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Os ficheiros virtuais non son compatíbeis coas particións raíz de Windows como cartafol local. Escolla un subcartafol válido baixo a letra de unidade.</translation>
+        <translation>الملفات الظاهرية virtual files غير مدعومة عند التعامل مع جذور تقسيمات الأقراص في وندوز Windows partition roots كمجلدات محلية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="591"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Os ficheiros virtuais non están dispoñíbeis para o cartafol seleccionado</translation>
+        <translation>الملفات الظاهرية virtual files غير متاحة بالنسبة للمجلد المختار</translation>
     </message>
 </context>
 <context>
@@ -2280,12 +2271,12 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation>&lt;b&gt;Advertencia:&lt;/b&gt;  %1</translation>
+        <translation>&lt;b&gt;تحذير:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="52"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Advertencia:&lt;/b&gt; </translation>
+        <translation>&lt;b&gt;تحذير:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2293,27 +2284,27 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="195"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Non se recibiu a «E-Tag» do servidor, comprobe o proxy e/ou a pasarela</translation>
+        <translation>لم يتم استلام أي وسم E-Tag من الخادوم. راجع الوكيل أو البوابة Proxy/Gateway.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="202"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Recibiuse unha «E-Tag» diferente para continuar. Tentándoo outra vez.</translation>
+        <translation>لقد تلقينا سمة E-Tag مختلفة لغرض الاستئناف. أعد المحاولة في المرة القادمة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Recibimos unha descarga inesperada de lonxitude do contido.</translation>
+        <translation>لقد تلقينا طول محتوى تنزيل Download Content-Lenght غير متوقع.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="241"/>
         <source>Server returned wrong content-range</source>
-        <translation>O servidor devolveu un intervalo de contidos erróneo</translation>
+        <translation>الخادوم أرجع نطاق محتوى تنزيل Download Content-range غير متوقع.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
         <source>Connection Timeout</source>
-        <translation>Esgotouse o tempo de conexión</translation>
+        <translation>مهلة الاتصال</translation>
     </message>
 </context>
 <context>
@@ -2322,175 +2313,173 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
-        <translation>Sobre</translation>
+        <translation>حول</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation>Aviso legal</translation>
+        <translation>ملاحظة قانونية</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
         <source>General Settings</source>
-        <translation>Axustes xerais</translation>
+        <translation>الإعدادات العامة</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation>Para a área de notificación</translation>
+        <translation>لشريط النظام system tray</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Usar iconas &amp;monocromáticas</translation>
+        <translation>إستخدام &amp;أيقونات_أحادية_اللون</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Executar ao iniciar o sistema</translation>
+        <translation>&amp;أطلقه عند بدء تشغيل النظام</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Amosar as &amp;notificacións do servidor</translation>
+        <translation>أعرض &amp;إشعارات_الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation>Amosar as notificacións de chamadas</translation>
+        <translation>إظهار إشعارات المكالمات</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>Updates</source>
-        <translation>Actualizacións</translation>
+        <translation>تحديثات</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="114"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>Comprobar automaticamente as &amp;actualizacións</translation>
+        <translation>&amp;تلقائيّاً إبحث عن التحديثات</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>&amp;Channel</source>
-        <translation>&amp;Canle</translation>
+        <translation>&amp;قناة</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
         <location filename="../src/gui/generalsettings.cpp" line="321"/>
         <source>stable</source>
-        <translation>estábel</translation>
+        <translation>مُستقِرٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
         <location filename="../src/gui/generalsettings.cpp" line="323"/>
         <source>beta</source>
-        <translation>beta</translation>
+        <translation>بيتا</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Reiniciar e actualizar</translation>
+        <translation>&amp;أعد_التشغيل_و_حدّث</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
         <source>&amp;Check for Update now</source>
-        <translation>&amp;Comprobar agora se hai actualizacións</translation>
+        <translation>&amp;إبحث عن التحديثات الآن</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
         <source>Advanced</source>
-        <translation>Avanzado</translation>
+        <translation>متقدمة</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Preguntar se se queren sincronizar cartafoles de máis de</translation>
+        <translation>أطلب التأكيد قبل مزامنة المجلدات الأكبر من</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
+        <translation>ميغا بايت</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Preguntar se se queren sincronizar os cartafoles de almacenamento externo</translation>
+        <translation>اطلب التأكيد قبل مزامنة وحدات التخزين الخارجية</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Amosar os cartafoles sincronizados no &amp;panel de navegación do navegador</translation>
+        <translation>إظهار مجلدات المزامنة في جزء التنقل من &amp;المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="301"/>
         <source>S&amp;how crash reporter</source>
-        <translation>Amosar o informe de &amp;fallos</translation>
+        <translation>عرض تقرير &amp;التعرقلات</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Editar ficheiros &amp;ignorados</translation>
+        <translation>عين الملفات &amp;المتجاهلة</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Create Debug Archive</source>
-        <translation>Crear arquivo de depuración</translation>
+        <translation>إنشيء أرشيفاً بالتنقيحات Debug Archive</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
         <source>Server notifications that require attention.</source>
-        <translation>Notificacións do servidor que requiren atención.</translation>
+        <translation>إشعارات الخادوم ذات الأهمية</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
         <source>Show call notification dialogs.</source>
-        <translation>Amosar os diálogos de notificación de chamadas.</translation>
+        <translation>أعرض حوارات إشعارات المكالمات.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Non pode desactivar o inicio automático porque o inicio automático de todo o sistema está activado.</translation>
+        <translation>لا يمكنك تعطيل التشغيل التلقائي لأنه تم تمكين التشغيل التلقائي على مستوى النظام.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="344"/>
         <source>Change update channel?</source>
-        <translation>Cambiar canle de actualización?</translation>
+        <translation>تغيير قناة التحديث؟</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="345"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>A canle de actualización determina que actualizacións de clientes se ofrecerán para a instalación. A canle «estábel» só contén anovacións que se consideran fiábeis, mentres que as versións da canle «beta» poden conter funcións e correccións de erros máis recentes, pero aínda non foron probadas a fondo.
-
-Teña en conta que isto só selecciona de que grupo se toman as anovacións e que non hai reversións: polo tanto, volver da canle beta á canle estábel normalmente non se pode facer inmediatamente e significa agardar por unha versión estábel que sexa máis recente que a versión beta instalada actualmente.</translation>
+        <translation>تُحدّد قناة التحديث أي تحديثات للعميل سيتم اقتراح تثبيتها. تحتوي القناة &quot;المستقرة&quot; فقط على الترقيات الموثوقة. في حين أن الإصدارات الموجودة في القناة &quot;التجريبية&quot; قد تحتوي على تحسيناتٍ و تصليحاتٍ أحدث؛ ولكن لم يتم اختبارها بدقة بعد.  لا حظ أنه لا يمكن عادةً العودة من القناة التجريبية إلى القناة الثابتة على الفور إلا بانتظار إصدار ثابت أحدث من الإصدار التجريبي المثبت حاليًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Change update channel</source>
-        <translation>Cambiar canle de actualización</translation>
+        <translation>تغيير قناة التحديث</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="359"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="463"/>
         <source>Zip Archives</source>
-        <translation>Arquivos Zip</translation>
+        <translation>أراشيف مضغوطة Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Debug Archive Created</source>
-        <translation>Creose o arquivo de depuración</translation>
+        <translation>تم إنشاء أرشيف التنقيح debug archive</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Debug archive is created at %1</source>
-        <translation>O arquivo de depuración creouse en %1</translation>
+        <translation>تمّ إنشاء أرشيف التنقيح في %1</translation>
     </message>
 </context>
 <context>
@@ -2498,24 +2487,24 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="798"/>
         <source>Password for share required</source>
-        <translation>É necesario un contrasinal para compartir</translation>
+        <translation>يلزم كلمة مرور للمشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="799"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Introduza un contrasinal para a súa ligazón de compartición:</translation>
+        <translation>رجاءً، أدخل كلمة مرور لرابط مشاركتك:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="825"/>
         <source>Sharing error</source>
-        <translation>Produciuse un erro ao compartir</translation>
+        <translation>خطأ مشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="826"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>Non foi posíbel recuperar ou crear a ligazón pública compartida. Erro:
+        <translation>تعذّر استرداد أو إنشاء رابط مشاركة عمومي. خطأ:
 
 %1</translation>
     </message>
@@ -2525,22 +2514,22 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Introduza o contrasinal de %1: &lt;br&gt;&lt;br&gt;Nome de usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
+        <translation>رجاءً، أدخِل %1 كلمة المرور:&lt;br&gt;&lt;br&gt;اسم المستخدم: %2&lt;br&gt;الحساب: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &quot;%1&quot;</source>
-        <translation>Produciuse un fallo ao ler do chaveiro: «%1»</translation>
+        <translation>فشلت القراءة من سلسلة المفاتيح keychain بسبب الخطأ: &quot;٪ 1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
         <source>Enter Password</source>
-        <translation>Introduza o contrasinal</translation>
+        <translation>أدخل كلمة المرور</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicación dende a interface web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;إضغط هنا&lt;/a&gt; لطلب كلمة مرور لتطبيق من واجهة الوب.</translation>
     </message>
 </context>
 <context>
@@ -2548,27 +2537,27 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Editor de ficheiros ignorados</translation>
+        <translation>مُحرّر الملفات المتجاهلة Ignored Files</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Axustes globais para ignorar</translation>
+        <translation>إعدادات التجاهل العامة Global Ignore</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Sincronizar os ficheiros agochados</translation>
+        <translation>مزامنة الملفات المخفية</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Ficheiros ignorados por patróns</translation>
+        <translation>ملفات متجاهلة بحسب أنماطها</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation>Esta entrada é fornecida polo sistema en «%1» e non se pode modificar nesta vista.</translation>
+        <translation>هذا المَدخَل تمّ توفيره من قِبَل النظام في &quot;٪ 1&quot; ولا يمكن تعديله في هذا العرض.</translation>
     </message>
 </context>
 <context>
@@ -2576,56 +2565,54 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation>Modelo</translation>
+        <translation>نمط</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation>Permitir a eliminación</translation>
+        <translation>السماح بالحذف</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation>Engadir</translation>
+        <translation>إضافة</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation>Retirar</translation>
+        <translation>حذف</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation>Retirar todo</translation>
+        <translation>حذف الكل</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Os ficheiros ou cartafoles que coincidan cun patrón non se sincronizarán.
-
-Os elementos onde se permite a eliminación eliminaranse se impiden que se retire un directorio. Isto é útil para os metadatos.</translation>
+        <translation>الملفات أو المجلدات التي تتطابق مع النمط لن تتم مزامنتها. إذا كان مسموحا بحذف العناصر، فسيتم حذفها إذا كانت تمنع إزالة الدليل. هذا مفيد للبيانات الوصفية metadata.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation>Non foi posíbel abrir o ficheiro</translation>
+        <translation>تعذّر فتح الملف</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &quot;%1&quot;.</source>
-        <translation>Non é posíbel escribir os cambios en «%1».</translation>
+        <translation>تعذّر كتابة التغييرات في &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation>Engadir o patrón a ignorar</translation>
+        <translation>أضِف نمط تجاهل Ignore Pattern</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Engadir un novo patrón a ignorar:</translation>
+        <translation>أضِف نمط تجاهل Ignore Pattern جديد:</translation>
     </message>
 </context>
 <context>
@@ -2633,97 +2620,97 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation>Nome de cartafol incorrecto</translation>
+        <translation>اسم ملف غير صحيح</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Non foi posíbel sincronizar o ficheiro porque contén caracteres que non están permitidos neste sistema.</translation>
+        <translation>لا يمكن مزامنة الملف لأنه يحتوي على أحرف غير مسموح بها على هذا النظام.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
-        <translation>Introduza un nome novo para o ficheiro:</translation>
+        <translation>رجاءً، أدخِل اسماً جديداً للملف:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
         <source>New filename</source>
-        <translation>Novo nome de ficheiro</translation>
+        <translation>اسم جديد للملف</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
         <source>Rename file</source>
-        <translation>Renomear o ficheiro</translation>
+        <translation>تغيير تسمية ملف</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation>Non foi posíbel sincronizar o ficheiro «%1» porque o nome contén caracteres que non están permitidos neste sistema.</translation>
+        <translation>تعذّرت مُزامنة الملف &quot;٪ 1&quot; لأن الاسم يحتوي على أحرفٍ غير مسموح بها في هذا النظام.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation>Os seguintes caracteres non están permitidos no sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espazos ao principio/ao final</translation>
+        <translation>الأحرف التالية غير مسموح بها: * &quot;| &amp;؟،؛: \ / ~ &lt;&gt; بالإضافة إلى الفراغات في البداية و النهاية.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="100"/>
         <source>Checking rename permissions …</source>
-        <translation>Comprobando os permisos de cambio de nome…</translation>
+        <translation>جارٍ التحقق من أذونات تغيير التسمية ...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="135"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Non ten permiso para cambiar o nome deste ficheiro. Pídalle ao autor do ficheiro que o cambie.</translation>
+        <translation>ليس لديك إذن بتغيير تسمية هذا الملف. يرجى مطالبة مُنشيء الملف بإعادة تسميته.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="140"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>Produciuse un fallo ao obter os permisos co erro %1</translation>
+        <translation>إخفاق في جلب الأذونات نتج عنه الخطأ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio e ao final.</translation>
+        <translation>اسم الملف يحوي فراغات في البداية أو النهاية.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="160"/>
         <source>Filename contains leading spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio.</translation>
+        <translation>اسم الملف يحوي فراغات في البداية.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="162"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao final.</translation>
+        <translation>اسم الملف يحوي فراغات في النهاية.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="167"/>
         <source>Use invalid name</source>
-        <translation>Nome incorrecto</translation>
+        <translation>استخدام اسم غير صالحٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="222"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation>O nome do ficheiro contén caracteres non admitidos: %1</translation>
+        <translation>اسم الملف يحوي أحرُفاً غير مسموح بها: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Non foi posíbel cambiar o nome do ficheiro. Asegúrese de estar conectado ao servidor.</translation>
+        <translation>تعذّرت إعادة تسمية الملف. تأكد أنك متصل بالخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="246"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Non é posíbel cambiar o nome do ficheiro porque xa existe un ficheiro co mesmo nome no servidor. Escolla outro nome.</translation>
+        <translation>لا يمكن تغيير تسمية الملف لأن هنالك ملف بنفس الاسم موجود بالفعل على الخادوم. الرجاء اختيار اسم آخر.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="282"/>
         <source>Could not rename local file. %1</source>
-        <translation>Non foi posíbel cambiar o nome do ficheiro local. %1</translation>
+        <translation>تعذّر تغيير تسمية ملف محلي %1</translation>
     </message>
 </context>
 <context>
@@ -2732,22 +2719,22 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation>Aviso legal</translation>
+        <translation>ملاحظة قانونية</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
         <source>Close</source>
-        <translation>Pechar</translation>
+        <translation>إغلاق</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;حقوق الطبع 2017-2023 Nextcloud GmbH&lt;br /&gt;حقوق الطبع 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Licenciado baixo a Licenza Pública Xeral de GNU (GPL) Version 2.0 ou calquera versión posterior.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;مُرخص بموجب رخصة GNU العمومية (GPL) الإصدار 2.0 أو أي إصدار لاحق&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2755,33 +2742,30 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se retir
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="44"/>
         <source>Log Output</source>
-        <translation>Rexistro da saída</translation>
+        <translation>مخرجات السجل</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="50"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>O cliente pode escribir rexistros de depuración nun cartafol temporal. Estes rexistros son moi útiles para diagnosticar problemas.
-Dado que os ficheiros de rexistro poden ser grandes, o cliente iniciará un novo para cada execución de sincronización e comprimirá os máis antigos. Tamén eliminará os ficheiros de rexistro após un par de horas para evitar consumir demasiado espazo no disco.
-Se está activado, os rexistros escribiranse en %1</translation>
+        <translation>يمكن للعميل كتابة سجلات التصحيح debug logs إلى مجلد مؤقت. تُعد هذه السجلات مفيدة جدًا في تشخيص المشكلات. نظرًا لإمكانية زيادة حجمها، سيبدأ العميل ملفًا جديدًا لكل عملية مزامنة و سيقوم بضغط الملفات القديمة. سيؤدي أيضًا إلى حذف ملفات السجل بعد بضع ساعات لتجنب استهلاك مساحة كبيرة جدًا على القرص. في حالة التمكين، ستتم كتابة السجلات إلى٪ 1.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation>Activar o acceso no cartafol temporal</translation>
+        <translation>تمكين الدخول إلى المجلد المؤقت</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation>Este axuste persiste nos reinicios do cliente.
-Teña en conta que o uso de calquera opción da liña de ordes anulara este axuste.</translation>
+        <translation>سيستمر هذا الإعداد مهما أُعيد تشغيل العميل. لاحظ أن استخدام أي خيارات لتسجيل الحركات من سطر الأوامر logging command line options سيؤدي إلى تجاوز هذا الإعداد.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation>Abrir o cartafol</translation>
+        <translation>فتح المُجلّد</translation>
     </message>
 </context>
 <context>
@@ -2789,12 +2773,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/libsync/logger.cpp" line="352"/>
         <source>Error</source>
-        <translation>Produciuse un erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/libsync/logger.cpp" line="353"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;O ficheiro «%1»&lt;br/&gt; non se pode abrir para escritura.&lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non se pode&lt;/n&gt; gardar!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;الملف &quot;%1&quot;&lt;br/&gt;لا يمكن فتحه للكتابة.&lt;br/&gt;&lt;br/&gt;ناتج الحركة The log output &lt;b&gt;لا يمكن&lt;/b&gt; حفظه!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -2802,47 +2786,47 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="408"/>
         <source>New Version Available</source>
-        <translation>Hai dispoñíbel unha nova versión</translation>
+        <translation>يوجد إصدار أحدث</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Hai dispoñíbel unha nova versión do cliente %1.&lt;/p&gt;&lt;p&gt;Pode descargar a versión &lt;b&gt;%2&lt;/b&gt;. A versión instalada é a %3&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;يتوفر إصدار جديد من 1% عميل. &lt;/p&gt;&lt;p&gt;&lt;b&gt;2% &lt;/b&gt;متاح للتنزيل. الإصدار المثبت هو 3%.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
         <source>Skip this time</source>
-        <translation>Omitir polo de agora</translation>
+        <translation>تجاوزها هذه المرة</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Get update</source>
-        <translation>Obter a actualización</translation>
+        <translation>احصل على التحديث</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>Update Failed</source>
-        <translation>Produciuse un fallo ao actualizar</translation>
+        <translation>فشل التحديث</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Hai unha nova versión do cliente %1 dispoñíbel mais o proceso de actualización fallou.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; descargouse. A versión instalada é %3. Se confirma o reinicio e a actualización, é posíbel que o seu computador se reinicie para completar a instalación.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;توجد نسخة جديدة من عميل %1، لكن عملية التحديث فشلت.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; تمّ تنزيلها. النسخة المثبّتة هي %3. إذا وافقت على إعادة التشغيل و التحديث، سوف تتم إعادة تشغيل جهازك، و من ثمّ استكمال التنصيب.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Ask again later</source>
-        <translation>Pregunte de novo máis tarde</translation>
+        <translation>إسألني مرة أخرى لاحقاً</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Restart and update</source>
-        <translation>Reiniciar e actualizar</translation>
+        <translation>إعد التشغيل و التحديث</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Update manually</source>
-        <translation>Actualizar manualmente</translation>
+        <translation>تحديث يدوي</translation>
     </message>
 </context>
 <context>
@@ -2850,102 +2834,102 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Axustes do proxy</translation>
+        <translation>إعدادات الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="36"/>
         <source>No Proxy</source>
-        <translation>Sen proxy</translation>
+        <translation>لا يوجد وكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
         <source>Use system proxy</source>
-        <translation>Usar o servidor proxy do sistema</translation>
+        <translation>استخدم وكيل النظام</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="59"/>
         <source>Specify proxy manually as</source>
-        <translation>Especifique o proxy manualmente como</translation>
+        <translation>حدّد الوكيل proxy يدوياً كـ</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Servidor</translation>
+        <translation>المضيف</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation>O servidor proxy precisa autenticación</translation>
+        <translation>يفرض الخادم الوكيل المصادقة</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Nota: os axustes do proxy non teñen efectos para as contas en localhost</translation>
+        <translation>ملاحظة: لا تؤثر إعدادات الوكيل على حسابات المضيف المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
         <source>Download Bandwidth</source>
-        <translation>Largo de banda de descarga</translation>
+        <translation>تنزيل النطاق الترددي</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to</source>
-        <translation>Limitar a</translation>
+        <translation>قاصر على</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="210"/>
         <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>No limit</source>
-        <translation>Sen límite</translation>
+        <translation>لا يوجد حد</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="248"/>
         <location filename="../src/gui/networksettings.ui" line="327"/>
         <source>KBytes/s</source>
-        <translation>KBytes/s</translation>
+        <translation>كيلو بايت/ثانية</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="257"/>
         <location filename="../src/gui/networksettings.ui" line="289"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Limitar a 3/4 do largo de banda estimado</translation>
+        <translation>مقتصر على 3/4 من عرض النطاق الترددي المقدر</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="260"/>
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>Limit automatically</source>
-        <translation>Limitar automáticamente</translation>
+        <translation>تقييد تلقائي</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="276"/>
         <source>Upload Bandwidth</source>
-        <translation>Largo de banda de envíos</translation>
+        <translation>تحميل النطاق الترددي</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
         <source>Hostname of proxy server</source>
-        <translation>Nome de máquina para o servidor proxy</translation>
+        <translation>اسم مضيف الخادوم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>Username for proxy server</source>
-        <translation>Nome de usuario para o servidor proxy</translation>
+        <translation>اسم المستخدم للخادوم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>Password for proxy server</source>
-        <translation>Contrasinal para o servidor proxy</translation>
+        <translation>كلمة مرور للخادوم الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="44"/>
         <source>HTTP(S) proxy</source>
-        <translation>Proxy HTTP(S)</translation>
+        <translation>وكيل بروتوكول HTTP ( أو HTTPS)</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="45"/>
         <source>SOCKS5 proxy</source>
-        <translation>Proxy SOCKS5</translation>
+        <translation>وكيل SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -2953,37 +2937,37 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Erro devolto dende o servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>خطأ راجع من الخادوم:&lt;em&gt;1%&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao «testemuño» do punto final: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>حدث خطأ عند محاولة الوصول إلى token endpoint النقطة الحدّيّة للأَمَارَة : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation>JSON baleiro da redirección de OAuth2</translation>
+        <translation>إفراغ JSON أو JSON فارغ من إعادة توجيه OAuth2</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Non foi posíbel analizar o JSON devolto dende o servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>تعذّر تحليل ملف JSON المعاد من الخادوم:&lt;em&gt; 1%&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>A resposta do servidor non contiña todos os campos agardados</translation>
+        <translation>لا يحتوي الرد من الخادوم على كافة الحقول المتوقعة</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Produciuse un erro de acceso&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;خطأ في تسجيل الدخول&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Conta erróneo&lt;/h1&gt;&lt;p&gt;Accedeu coa conta &lt;em&gt;%1&lt;/em&gt;, mais debe acceder coa conta &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Peche a sesión de %3 noutra lapela, após &lt;a href=&apos;%4&apos;&gt;prema aquí&lt;/a&gt; e acceda con %2.&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;حساب غير صحيح&lt;/h1&gt;&lt;p&gt;أنت دخلت من الحساب &lt;em&gt;%1&lt;/em&gt;, لكن يجب أن تدخل من الحساب&lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;رجاءً، أخرج من %3 في تبويبة tab أخرى ثم &lt;a href=&apos;%4&apos;&gt;إضغط هنا&lt;/a&gt; و ادخل بـ %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2991,67 +2975,67 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
         <source>New %1 update ready</source>
-        <translation>Preparada a nova actualización %1</translation>
+        <translation>تحديث جديد جاهز لـ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation>Unha nova actualización para %1 está a piques de instalarse. O actualizador pode solicitar privilexios adicionais durante o proceso. Pode reiniciar o seu computador para completar a instalación.</translation>
+        <translation>هناك تحديث جديد لـ %1 على وشك التثبيت. قد يطلب المُحدّث صلاحيات إضافية أثناء العملية. قد يتم إعادة تشغيل جهازك لإكمال التثبيت.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>Descargando %1. Agarde…</translation>
+        <translation>تنزيل %1. يرجى الانتظار ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>Está dispoñíbel a versión %1. Reinicie a aplicación para comezar a actualización.</translation>
+        <translation>%1 مُتاحٌ. أعد تشغيل التطبيق لبدء التحديث.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation>Non foi posíbel descargar a actualización. Abra &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; para descargar a actualización manualmente.</translation>
+        <translation>تعذّر تنزيل التحديث. من فضلك، إفتح &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; لتنزيل التحديث يدويّاً.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation>Non foi posíbel descargar a actualización. Abra %1 para descargar a actualización manualmente.</translation>
+        <translation>تعذر تنزيل التحديث. الرجاء فتح٪ 1 لتنزيل التحديث يدويًا.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
         <source>Could not check for new updates.</source>
-        <translation>Non foi posíbel comprobar se hai novas actualizacións.</translation>
+        <translation>لا يمكن التحقق من وجود تحديثات جديدة.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>Xa está dispoñíbel o novo %1. Abra &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; para descargar a actualización.</translation>
+        <translation>%1 جديد متوفر. إفتح &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; لتنزيل التحديثات، من فضلك.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>Xa está dispoñíbel o novo %1. Abra %2 para descargar a actualización.</translation>
+        <translation>%1 جديد متوفر. إفتح %2 لتنزيل التحديثات، من فضلك.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
-        <translation>Comprobando o servidor de actualizacións…</translation>
+        <translation>جارٍ التحقق من خادوم التحديثات ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>O estado da actualización é descoñecido: non se comprobaron as actualizacións.</translation>
+        <translation>حالة التحديث غير معروفة: لم يتم التحقق من وجود تحديثات جديدة.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>Non hai actualizacións dispoñíbeis. A instalación xa está na versión máis recente.</translation>
+        <translation>لا توجد تحديثات متوفرة. التثبيت الخاص بك في أحدث إصدار.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="195"/>
         <source>Update Check</source>
-        <translation>Comprobar actualizacións</translation>
+        <translation>التحقق من التحديثات</translation>
     </message>
 </context>
 <context>
@@ -3059,66 +3043,66 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="70"/>
         <source>Connect</source>
-        <translation>Conectar</translation>
+        <translation>اتصال</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Use ficheiros &amp;virtuais no canto de descargar contido inmediatamente %1</translation>
+        <translation>إستخدم &amp;الملفات_الظاهرية بدلاً عن تنزيل المحتوى فورًا 1%</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="262"/>
         <source>(experimental)</source>
-        <translation>(experimental)</translation>
+        <translation>(تجريبي)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="258"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Os ficheiros virtuais non son compatíbeis coas particións raíz de Windows como cartafol local. Escolla un subcartafol válido baixo a letra de unidade.</translation>
+        <translation>الملفات الظاهرية virtual files غير مدعومة في حالة استخدام جذور تقسيمات وندوز Windows partition roots كمجلدات محلّية. الرجاء اختيار مجلد فرعي صالح ضمن حرف محرك الأقراص.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="295"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>O cartafol %1 «%2» está sincronizado co cartafol local «%3»</translation>
+        <translation>%1 مجلد &quot;%2&quot; تمّت مزامنته مع المجلد المحلي &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="298"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation>Sincronizar o cartafol «%1»</translation>
+        <translation>مزامنة المجلد &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="303"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Advertencia: o cartafol local non está baleiro. Escolla unha resolución.</translation>
+        <translation>تحذير: المجلد المحلي ليس فارغاً. حدّد خيارك!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation>%1 de espazo libre</translation>
+        <translation>المساحة المتاحة 1%</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="398"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation>Os ficheiros virtuais non están dispoñíbeis para o cartafol seleccionado</translation>
+        <translation>الملفات الظاهرية غير متاحة للمجلد المحدد</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="458"/>
         <source>Local Sync Folder</source>
-        <translation>Sincronización do cartafol local</translation>
+        <translation>مجلد المزامنة المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="501"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="542"/>
         <source>(%1)</source>
-        <translation>(%1)</translation>
+        <translation>(1%)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="559"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>Non hai espazo libre abondo no cartafol local!</translation>
+        <translation>لا توجد مساحة كافية في المجلد المحلي!</translation>
     </message>
 </context>
 <context>
@@ -3126,32 +3110,32 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation>Produciuse un fallo de conexión</translation>
+        <translation>فشل الاتصال</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Produciuse un erro ao conectar co enderezo seguro do servidor especificado. Como quere proceder?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;فشل الاتصال بعنوان الخادم الآمن المحدد. كيف تريد المتابعة؟ &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>Seleccione un URL diferente</translation>
+        <translation>حدد عنوان محدد موقع الموارد المُوحّد &quot;URL&quot; مختلفًا</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Tenteo de novo sen cifrar a través de HTTP (non é seguro)</translation>
+        <translation>إعادة المحاولة بدون تشفير عبر بروتوكول نقل النص التشعبي &quot;HTTP&quot;(غير آمن)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation>Configurar o certificado TLS do lado do cliente</translation>
+        <translation>تكوين شهادة طبقة النقل الآمنة/ المفتاح العام &quot;TLS&quot; من جانب العميل</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Produciuse un erro ao conectar co enderezo seguro do servidor &lt;em&gt;%1&lt;/em&gt;. Como quere proceder?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;فشل الاتصال بعنوان الخادم الآمن &lt;em&gt; 1%&lt;/em&gt;. كيف تريد المتابعة؟&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -3159,17 +3143,17 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="48"/>
         <source>&amp;Email</source>
-        <translation>&amp;Correo-e</translation>
+        <translation>&amp; بريد إلكتروني</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="58"/>
         <source>Connect to %1</source>
-        <translation>Conectar con %1</translation>
+        <translation>الاتصال بـ 1%</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Enter user credentials</source>
-        <translation>Introduza as credenciais do usuario</translation>
+        <translation>أدخل بيانات اعتماد المستخدم</translation>
     </message>
 </context>
 <context>
@@ -3177,12 +3161,12 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation>Conectar con %1</translation>
+        <translation>اتصل بـ 1%</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>Acceda no seu navegador</translation>
+        <translation>أدخل إلى متصفحك</translation>
     </message>
 </context>
 <context>
@@ -3190,13 +3174,13 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="663"/>
         <source>Error with the metadata. Getting unexpected metadata format.</source>
-        <translation>Produciuse un erro cos metadatos. Obtendo un formato de metadatos non agardado.</translation>
+        <translation>خطأ في البيانات الوصفية metadata. نسق غير متوقع من البيانات الوصفية وقع الحصول عليه.</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="875"/>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="952"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation>Non foi posíbel obter o momento de modificación do ficheiro en conflito %1</translation>
+        <translation>يستحيل الحصول على وقت تعديل file in conflict الملف المتعارض 1%</translation>
     </message>
 </context>
 <context>
@@ -3205,22 +3189,22 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>The link to your %1 web interface when you open it in the browser.</source>
         <comment>%1 will be replaced with the application name</comment>
-        <translation>A ligazón á súa interface web %1 cando a abre no navegador.</translation>
+        <translation>الرابط لواجهة الوب الخاصة بك %1 عندما تفتحه في المُستعرِض.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="201"/>
         <source>&amp;Next &gt;</source>
-        <translation>&amp;Seguinte &gt;</translation>
+        <translation>&amp; التالي&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="239"/>
         <source>Server address does not seem to be valid</source>
-        <translation>Parece que o enderezo do servidor non é válido</translation>
+        <translation>عنوان الخادوم يبدو غير صحيح</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="350"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Non foi posíbel cargar o certificado. Quizais o contrasinal é erróneo?</translation>
+        <translation>تعذّر تحميل الشهادة. هل يمكن أن يكون السبب كلمة مرور غير صحيحة؟</translation>
     </message>
 </context>
 <context>
@@ -3228,144 +3212,144 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Conectouse correctamente a %1: %2 versión %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;تم الاتصال بنجاح بـ 1%:2% الإصدار 3% (4%)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="304"/>
         <source>Invalid URL</source>
-        <translation>URL incorrecto</translation>
+        <translation>عنوان URL غير صالح</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="306"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Non foi posíbel conectar con %1 en %2:&lt;br/&gt;%3</translation>
+        <translation>فشل الاتصال بـ 1% على 2%:&lt;br/&gt;3%</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Esgotouse o tempo tentando conectar con %1 en %2.</translation>
+        <translation>تجاوز المهلة المتوقعة للتوصيل مع %1 في %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>Tentando conectar con %1 en %2…</translation>
+        <translation>محاولة التوصيل مع %1 في %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>A solicitude autenticada ao servidor foi redirixida a «%1». O URL é incorrecto, o servidor está mal configurado.</translation>
+        <translation>تمّت إعادة توجيه الطلب المصادق عليه إلى الخادوم إلى &quot;%1&quot;. عنوان URL تالف، وقد تم تكوين الخادوم بشكل خاطئ.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Acceso prohibido polo servidor. Para comprobar que dispón do acceso axeitado, &lt;a href=&quot;%1&quot;&gt;prema aquí&lt;/a&gt; para acceder ao servizo co seu navegador.</translation>
+        <translation>الوصول محظور من قبل الخادم. للتحقق من أن لديك حق الوصول المناسب،&lt;a href=&quot;%1&quot;&gt;انقر هنا &lt;/a&gt;من أجل الوصول إلى الخدمة من خلال متصفحك.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="433"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Deuse unha resposta incorrecta a unha solicitude de WebDAV autenticada</translation>
+        <translation>كانت هناك استجابة غير صالحة لطلب WebDAV المصادق عليه</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>O cartafol de sincronización local %1 xa existe. Configurándoo para a sincronización.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>مجلد المزامنة المحلي 1% موجود بالفعل، قم بإعداده للمزامنة.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="482"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>Creando o cartafol local de sincronización %1…</translation>
+        <translation>جارٍ إنشاء مجلد المزامنة المحلي٪ 1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
         <source>OK</source>
-        <translation>Aceptar</translation>
+        <translation>تم</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="488"/>
         <source>failed.</source>
-        <translation>fallou.</translation>
+        <translation>أخفق.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="490"/>
         <source>Could not create local folder %1</source>
-        <translation>Non foi posíbel crear o cartafol local %1</translation>
+        <translation>تعذر إنشاء المجلد المحلي 1%</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="550"/>
         <source>No remote folder specified!</source>
-        <translation>Non se especificou o cartafol remoto!</translation>
+        <translation>لم يتم تحديد مجلد بعيد!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="556"/>
         <source>Error: %1</source>
-        <translation>Erro: %1</translation>
+        <translation>خطأ: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="569"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>creando un cartafol en Nextcloud: %1</translation>
+        <translation>إنشاء مجلد على النكست كلاود: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="574"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>O cartafol remoto %1 creouse correctamente.</translation>
+        <translation>تم إنشاء المجلد البعيد٪ 1 بنجاح.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="589"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>O cartafol remoto %1 xa existe. Conectándoo para a sincronización.</translation>
+        <translation>المجلد البعيد 1% موجود بالفعل. جاري ربطه للمزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="591"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="593"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>A creación do cartafol resultou nun código de erro HTTP %1</translation>
+        <translation>نتج عن إنشاء المجلد رمز خطأ 1% لبروتوكول نقل النص التشعبي &quot;HTTP&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>A creación do cartafol remoto fracasou por mor de seren erróneas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
+        <translation>عملية إنشاء مجلد قَصِِي remote فشلت بسبب أن حيثيّات الدخول credentials المُعطاة خاطئة!&lt;br/&gt;رجاءً، عُد و تحقّق من حيثيات دخولك.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="599"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A creación do cartafol remoto fallou probabelmente por mor de que as credenciais que se deron non foran as correctas.&lt;/font&gt;&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt; </translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;يحتمل أن يكون فشل إنشاء مجلد عن بعد ناتج عن أن بيانات الاعتماد المقدمة خاطئة. &lt;/font&gt;&lt;br/&gt;يُرجى الرجوع والتحقق من بيانات الاعتماد الخاصة بك.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Produciuse un fallo ao crear o cartafol remoto %1 e dou o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>فشل إنشاء المجلد البعيد 1% بسبب الخطأ &lt;tt&gt;2%&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="619"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>Estabeleceuse a conexión de sincronización de %1 ao directorio remoto %2.</translation>
+        <translation>تم تنصيب اتصال مزامنة من 1% إلى الدليل البعيد 2%.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="624"/>
         <source>Successfully connected to %1!</source>
-        <translation>Conectou satisfactoriamente con %1!</translation>
+        <translation>تم الاتصال بنجاح بـ 1%!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="631"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Non foi posíbel estabelecer a conexión con %1. Compróbeo de novo.</translation>
+        <translation>تعذر إنشاء الاتصال بـ 1%. يرجى التحقق مرة أخرى.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Folder rename failed</source>
-        <translation>Non foi posíbel renomear o cartafol</translation>
+        <translation>فشلت إعادة تسمية المجلد</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="645"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Non é posíbel retirar e facer unha copia de seguranza do cartafol porque o cartafol ou un ficheiro dentro del está aberto noutro programa. Peche o cartafol ou ficheiro e prema en volver tentar ou cancele a opción.</translation>
+        <translation>لا يمكن إزالة المجلد وعمل نسخة احتياطية منه لأن المجلد أو الملف الموجود فيه مفتوح في برنامج آخر. الرجاء إغلاق المجلد أو الملف، والضغط على إعادة المحاولة أو إلغاء الإعداد.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="698"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;O cartafol local de sincronización %1 creouse correctamente!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;تم إنشاء مجلد المزامنة المحلي٪ 1 بنجاح!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -3373,22 +3357,22 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Add %1 account</source>
-        <translation>Engadir %1 conta</translation>
+        <translation>إضافة %1 حساب</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="97"/>
         <source>Skip folders configuration</source>
-        <translation>Omitir a configuración dos cartafoles</translation>
+        <translation>تخطي تكوين المجلدات</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="430"/>
         <source>Enable experimental feature?</source>
-        <translation>Activar as funcionalidades experimentais?</translation>
+        <translation>تمكين خاصية تجريبية؟</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="431"/>
@@ -3399,23 +3383,20 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Cando está activado o modo «ficheiros virtuais» inicialmente non se descargarán ficheiros. Pola contra, crearase un pequeno ficheiro «%1» para cada ficheiro que existe no servidor. O contido pódese descargar executando estes ficheiros ou usando o seu menú contextual.
-
-O modo de ficheiros virtuais exclúese mutuamente coa sincronización selectiva. Os cartafoles non seleccionados actualmente converteranse en cartafoles só en liña e restabeleceranse os axustes de sincronización selectiva.
-
-Cambiar a este modo interromperá calquera sincronización que estea a executarse actualmente.
-
-Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe dos problemas que se presenten.</translation>
+        <translation>عند تمكين وضع &quot;الملفات الافتراضية&quot; virtual folders، لن يتم تنزيل أي ملفات في البداية. بدلاً من ذلك، سيتم إنشاء ملف &quot;٪ 1&quot; صغير لكل ملف موجود على الخادوم. يمكن تنزيل المحتويات عن طريق تشغيل هذه الملفات أو باستخدام قائمة السياق الخاصة بها. 
+يعد وضع الملفات الافتراضية حصريًا بشكل متبادل مع المزامنة الانتقائية. ستتم ترجمة المجلدات غير المحددة حاليًا إلى مجلدات على الإنترنت فقط وستتم إعادة تعيين إعدادات المزامنة الانتقائية. 
+سيؤدي التبديل إلى هذا الوضع إلى إجهاض أي مزامنة قيد التشغيل حاليًا. 
+هذا وضع تجريبي جديد. إذا قررت استخدامه ، فيرجى الإبلاغ عن أي مشكلات تطرأ.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="445"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Activar o modo de marcador de posición experimental</translation>
+        <translation>تفعيل وضع العنصر النائب placeholder mode التجريبي</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="446"/>
         <source>Stay safe</source>
-        <translation>Permanecer seguro</translation>
+        <translation>إبق آمنا</translation>
     </message>
 </context>
 <context>
@@ -3423,12 +3404,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation>É necesario un contrasinal para compartir</translation>
+        <translation>كلمة المرور لازمة للمشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation>Introduza un contrasinal para compartir:</translation>
+        <translation>رجاءً، أدخل كلمة المرور لمشاركتك:</translation>
     </message>
 </context>
 <context>
@@ -3436,7 +3417,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>O URL requirido devolveu unha resposta JSON incorrecta</translation>
+        <translation>رد ملف جسون ‏&quot;ترميز الكائنات باستعمال جافا سكريبت JSON&quot;غير صالح من عنوان محدد موقع الموارد المُوحّد &quot;URL&quot; للاستطلاع</translation>
     </message>
 </context>
 <context>
@@ -3444,167 +3425,167 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="329"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>As ligazóns simbolicas non son admitidas nas sincronizacións.</translation>
+        <translation>الروابط الرمزية Symbolic links غير مدعومة في المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="337"/>
         <source>File is listed on the ignore list.</source>
-        <translation>O ficheiro está na lista de ignorados.</translation>
+        <translation>الملف موضوع على قائمة التجاهل.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="341"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Os nomes de ficheiros que rematan cun punto non son compatíbeis con este sistema de ficheiros.</translation>
+        <translation>أسماء الملفات المنتهية بنُقطةٍ dot غير مدعومة في نظام التشغيل هذا.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="351"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
-        <translation>Os nomes de ficheiros que conteñen o carácter «%1» non son compatíbeis neste sistema de ficheiros.</translation>
+        <translation>أسماء الملفات التي تحوي الحرف &quot;%1&quot; غير مدعومة في نظام التشغيل هذا.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="353"/>
         <source>File name contains at least one invalid character</source>
-        <translation>O nome de ficheiro contén algún carácter incorrecto</translation>
+        <translation>اسم الملف يحوي حرفاً أو أكثر من الحروف غير المقبولة</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="355"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation>O nome do ficheiro é un nome reservado neste sistema de ficheiros.</translation>
+        <translation>اسم الملف هذا هو اسم محجوز لنظام التشغيل هذا.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="361"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos finais.</translation>
+        <translation>اسم ملف يحوي فراغات في نهايته</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="365"/>
         <source>Filename contains leading spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio.</translation>
+        <translation>اسم الملف يحوي فراغات في بدايته</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="369"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>O nome do ficheiro contén espazos ao principio e ao final.</translation>
+        <translation>اسم الملف يحوي فراغات في بدايته و نهايته</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="373"/>
         <source>Filename is too long.</source>
-        <translation>O nome de ficheiro é longo de máis.</translation>
+        <translation>اسم الملف طويل جدّاً</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>O ficheiro/cartafol ignórase por estar agochado.</translation>
+        <translation>تمّ تجاهل الملف / المجلد لأنه مخفي.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="380"/>
         <source>Stat failed.</source>
-        <translation>Produciuse un fallo na obtención de estatísticas.</translation>
+        <translation>الإحصاء فشل.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Conflito: Versión do servidor descargada, a copia local cambiou o nome e non se cargou.</translation>
+        <translation>تعارض: نسخة الخادوم تمّ تنزيلها، و النسخة المحلية تمّ تغيير اسمها، لكن لم يتم رفعها.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation>Conflito de capitalización: Descargado e renomeado o ficheiro do servidor para evitar o conflito.</translation>
+        <translation>تعارض بسبب تضارب الحالة Case Clash Conflict: نسخة الخادوم تمّ تنزيلها، و تمّ تغيير تسميتها لتجنب التضارب.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>O nome do ficheiro non pode ser codificado no seu sistema de ficheiros.</translation>
+        <translation>تعذّر ترميز encoding اسم الملف على نظام ملفاتك هذا.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="394"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation>O nome do ficheiro está na lista de bloqueo no servidor.</translation>
+        <translation>اسم الملف موجود في القائمة السوداء للخادوم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="515"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation>O ficheiro ten a extensión reservada para ficheiros virtuais.</translation>
+        <translation>إمتداد الملف extension محجوز للملفات الظاهرية virtual files.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="601"/>
         <source>size</source>
-        <translation>tamaño</translation>
+        <translation>الحجم</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="603"/>
         <source>permission</source>
-        <translation>permiso</translation>
+        <translation>الإذن</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="607"/>
         <source>file id</source>
-        <translation>ID do ficheiro</translation>
+        <translation>مُعرّف الملف id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="611"/>
         <source>Server reported no %1</source>
-        <translation>O servidor non informou de %1</translation>
+        <translation>أبلغ الخادوم عن عدم وجود %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="981"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation>Non é posíbel sincronizar por mor dunha hora de modificación incorrecta</translation>
+        <translation>تعذّرت المزامنة لأن وقت آخر تعديل للملف غير صالح</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1009"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation>Produciuse un erro ao eliminar o rexistro do ficheiro %1 da base de datos</translation>
+        <translation>حدث خطأ أثناء حذف file record سجل الملفات %1 من قاعدة البيانات</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation>Produciuse un conflito ao cargar un cartafol. Vai ser limpado!</translation>
+        <translation>حدث تعارضٌ أثناء رفع المجلد. سوف يتم محوه!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1266"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation>Produciuse un conflito ao cargar un ficheiro. Vai ser retirado!</translation>
+        <translation>حدث تعارضٌ أثناء رفع المجلد. سوف يتم حذفه!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignorado por mor da lista de bloqueo de «escolla que sincronizar»</translation>
+        <translation>تم التّجاهل بسبب القائمة السوداء &quot;اختيار ما تريد مزامنته&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1669"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Non se lle permite porque vostede non ten permiso para engadir subcartafoles neste cartafol</translation>
+        <translation>غير مسموح به؛ لأنه ليس لديك صلاحية إضافة مجلدات فرعية إلى هذا المجلد</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1674"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Non se lle permite porque vostede non ten permiso para engadir ficheiros neste cartafol</translation>
+        <translation>غير مسموح به؛ لأنه ليس لديك صلاحية إضافة ملفات في هذا المجلد</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1687"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
+        <translation>غير مسموح برفع هذا الملف لأنه للقراءة فقط على الخادوم. إستعادة</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1709"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>Moveuse a un destino non válido, restaurándo</translation>
+        <translation>نُقِلَ إلى مَقْصِد taget غير صالحٍ. إستعادة</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1723"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Non está permitido retiralo, restaurando</translation>
+        <translation>غير مسموح بالحذف. إستعادة</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1862"/>
         <source>Error while reading the database</source>
-        <translation>Produciuse un erro ao ler a base de datos</translation>
+        <translation>خطأ أثناء القراءة من قاعدة البيانات</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1928"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation>O servidor respondeu cun erro ao ler o directorio «%1» : %2</translation>
+        <translation>ردّ الخادوم بخطأ عند القراءة من الدليل &quot;%1&quot; : %2</translation>
     </message>
 </context>
 <context>
@@ -3612,22 +3593,22 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1357"/>
         <source>could not delete file %1 from local DB</source>
-        <translation>non foi posíbel eliminar o ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر حذف الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1371"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Produciuse un erro ao actualizar os metadatos por mor dunha hora de modificación incorrecta</translation>
+        <translation>خطأ في تحديث البيانات الوصفية metadata بسبب أن &quot;آخر وقت تعديل للملف&quot; غير صالح</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>خطأ في تحديث البيانات الوصفية metadata ـ : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1391"/>
         <source>File is currently in use</source>
-        <translation>O ficheiro está en uso</translation>
+        <translation>الملف في حالة استعمال حاليّاً</translation>
     </message>
 </context>
 <context>
@@ -3635,75 +3616,75 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>could not get file %1 from local DB</source>
-        <translation>non foi posíbel obter o ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر الحصول على الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Non é posíbel descargar o ficheiro %1 xa que falta información do cifrado.</translation>
+        <translation>تعذّر تحميل الملف %1 لأن معلومات التشفير مفقودة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
         <source>File has changed since discovery</source>
-        <translation>O ficheiro cambiou após ser atopado</translation>
+        <translation>تغير الملف منذ اكتشافه</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر حذف الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Non é posíbel descargar o ficheiro %1 por mor dunha colisión co nome dun ficheiro local!</translation>
+        <translation>لا يمكن تحميل الملف 1% بسبب تعارض اسم الملف المحلي!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="692"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>A descarga reducirá o espazo libre local por baixo do límite</translation>
+        <translation>سيؤدي التنزيل إلى تقليل المساحة الخالية على القرص المحلي إلى ما دون الحد المسموح به</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="696"/>
         <source>Free space on disk is less than %1</source>
-        <translation>O espazo libre no disco é inferior a %1</translation>
+        <translation>المساحة الخالية على القرص أقل من %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="817"/>
         <source>File was deleted from server</source>
-        <translation>O ficheiro vai ser eliminado do servidor</translation>
+        <translation>تم حذف الملف من الخادم</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="890"/>
         <source>The file could not be downloaded completely.</source>
-        <translation>Non foi posíbel descargar completamente o ficheiro.</translation>
+        <translation>تعذر تنزيل الملف بالكامل.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation>O ficheiro descargado está baleiro, mais o servidor di que o seu tamaño debe ser de %1. </translation>
+        <translation>الملف الذي تمّ تنزيله فارغٌُ؛ لكن الخادوم يقول أن حجمه يجب أن يكون %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1158"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1171"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation>O ficheiro %1 ten unha hora de modificación incorrecta. Non o envíe ao servidor.</translation>
+        <translation>الخادوم أبلغ أن &quot;وقت آخر تعديل&quot; في الملف %1 غير صحيح. لا تقم بحفظه.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation>Descargouse o ficheiro %1 mais provocou unha colisión no nome do ficheiro local!</translation>
+        <translation>الملف %1 تمّ تنزيله، لكنه تسبب في حدوث تضارب مع اسم ملف محلي!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>خطأ في تحديث البيانات الوصفية: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 في حالة استعمال حاليّاً</translation>
     </message>
 </context>
 <context>
@@ -3711,12 +3692,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="237"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; Produciuse un fallo na restauración: %1</translation>
+        <translation>؛ فشل الاستعادة: 1%</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Un ficheiro ou cartafol foi eliminado dun recurso compartido só de lectura, pero fallou a restauración: %1</translation>
+        <translation>تمت إزالة ملف أو مجلد من مشاركة للقراءة فقط، لكن الاستعادة فشلت: 1%</translation>
     </message>
 </context>
 <context>
@@ -3724,27 +3705,27 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>non foi posíbel eliminar o ficheiro %1, erro: %2</translation>
+        <translation>تعذر حذف الملف1%، الخطأ: 2%</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation>Non é posíbel crear o cartafol %1 por mor dunha colisión co nome dun ficheiro ou cartafol local!</translation>
+        <translation>تعذّر إنشاء الملف %1 بسبب التضارب مع اسم ملف محلي أو مجلد محلي!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
         <source>Could not create folder %1</source>
-        <translation>Non foi posíbel crear o cartafol %1</translation>
+        <translation>تعذّر إنشاء المجلد %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="200"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>تعذّر تحديث البيانات الوصفية: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 في حالة استعمال حاليّاً</translation>
     </message>
 </context>
 <context>
@@ -3752,12 +3733,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="105"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Non é posíbel retirar %1 por mor dunha colisión co nome dun ficheiro local</translation>
+        <translation>تعذر إزالة 1% بسبب تعارض اسم الملف المحلي</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر حذف file record سجل الملفات %1 من قاعدة البيانات المحلية</translation>
     </message>
 </context>
 <context>
@@ -3765,47 +3746,47 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation>Descargouse o ficheiro %1 mais provocou unha colisión no nome do ficheiro local!</translation>
+        <translation>الملف %1 تمّ تنزيله؛ لكنه تسبّب في تضارب مع اسم ملف محلي!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
         <source>could not get file %1 from local DB</source>
-        <translation>non foi posíbel obter o ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر الحصول على الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="283"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
         <source>Error setting pin state</source>
-        <translation>Produciuse un erro ao definir o estado do pin</translation>
+        <translation>خطأ في تعيين حالة السلة pin state</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="296"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="329"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>خطأ في تحديث البيانات الوصفية: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="299"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 قيد الاستعمال حاليّاً</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="362"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر حذف سجل الملفات %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="334"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation>Produciuse un erro ao propagar o cambio de nome do directorio na xerarquía</translation>
+        <translation>فشل في نشر الاسم الجديد للدليل في السلسلة الهرمية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="339"/>
         <source>Failed to rename file</source>
-        <translation>Produciuse un fallo ao renomear o ficheiro</translation>
+        <translation>فشل في تغيير اسم الملف</translation>
     </message>
 </context>
 <context>
@@ -3813,12 +3794,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="111"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
+        <translation>أرجع الخادم كود بروتوكول نقل النص التشعبي &quot;HTTP&quot;خاطئ. متوقع 204، ولكن تم تلقي &quot;٪ 1٪ 2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="119"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر حذف سجل الملفات %1 من قاعدة البيانات المحلية</translation>
     </message>
 </context>
 <context>
@@ -3826,7 +3807,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP erróneo. Agardábase 204, mais recibiuse «%1 %2».</translation>
+        <translation>كود HTTP خاطيء عائد من الخادوم. المتوقع هو 204، بينما الوارد هو  &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -3834,17 +3815,17 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="133"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP erróneo. Agardábase 201, mais recibiuse «%1 %2».</translation>
+        <translation>أرجع الخادم كود بروتوكول نقل النص التشعبي &quot;HTTP&quot;خاطئ. متوقع 201 ، ولكن تم تلقي &quot;٪ 1٪ 2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
+        <translation>خطأ في كتابة البيانات الوصفية في قاعدة البيانات: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="263"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 قيد الاستعمال حاليّاً</translation>
     </message>
 </context>
 <context>
@@ -3852,42 +3833,42 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="169"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>Non foi posíbel renomear %1 a %2, erro: %3</translation>
+        <translation>تعذّرت تسمية %1 إلى %2, خطأ: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="229"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>O servidor devolveu código HTTP erróneo. Agardábase 201, mais recibiuse «%1 %2».</translation>
+        <translation>كود HTTP خاطيء وارد من الخادوم. المتوقع هو 201، بينما الوارد هو &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
         <source>could not get file %1 from local DB</source>
-        <translation>non foi posíbel obter o ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر الحصول على الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
+        <translation>تعذّر حذف الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="288"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>خطأ في تحديث البيانات الوصفية: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="291"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 قيد الاستعمال حاليّاً</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="296"/>
         <source>Error setting pin state</source>
-        <translation>Produciuse un erro ao definir o estado do pin</translation>
+        <translation>خطأ في تعيين حالة السلة pin state</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="303"/>
         <source>Error writing metadata to the database</source>
-        <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
+        <translation>خطأ في كتابة بيانات التعريف الوصفية لقاعدة البيانات</translation>
     </message>
 </context>
 <context>
@@ -3895,60 +3876,60 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="233"/>
         <source>Failed to upload encrypted file.</source>
-        <translation>Produciuse un erro ao enviar un ficheiro cifrado.</translation>
+        <translation>خطأ في رفع ملف مُشفّر.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="266"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Non foi posíbel enviar o ficheiro %1 xa que existe outro co mesmo nome. Difire só nas maiusculas/minúsculas</translation>
+        <translation>لا يمكن رفع الملف1% نظرًا لوجود ملف آخر يحمل نفس الاسم، ويختلف فقط في نوع الحروف</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="277"/>
         <location filename="../src/libsync/propagateupload.cpp" line="695"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>O envío de %1 excede o límite de tamaño do cartafol</translation>
+        <translation>رفع  1% يتجاوز الحصة النسبية للمجلد</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="314"/>
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
         <location filename="../src/libsync/propagateupload.cpp" line="402"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>O ficheiro %1 ten unha hora de modificación incorrecta. Non o envíe ao servidor.</translation>
+        <translation>الملف %1، فيه &quot;تاريخ آخر تعديل&quot; غير صحيح. لا ترفعه إلى الخادوم.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="386"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Ficheiro eliminado (iniciar o envío) %1</translation>
+        <translation>تمّت إزالة الملف (بدء الرفع) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="412"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>O ficheiro local cambiou durante a sincronización. Retomase.</translation>
+        <translation>تم تغيير الملف المحلي أثناء المزامنة. سيتم استئنافه.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="423"/>
         <source>Local file changed during sync.</source>
-        <translation>O ficheiro local cambiou durante a sincronización.</translation>
+        <translation>تم تغيير الملف المحلي أثناء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Produciuse un fallo ao desbloquear un cartafol cifrado.</translation>
+        <translation>تعذّر فك قفل مُجلّد مُشفّر</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="701"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation>Non é posíbel enviar un elemento con caracteres non válidos</translation>
+        <translation>غير قادر علي تحميل عنصر بأحرف غير صحيحة</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="798"/>
         <source>Error updating metadata: %1</source>
-        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
+        <translation>خطأ في تعديل البيانات الوصفية: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="801"/>
         <source>The file %1 is currently in use</source>
-        <translation>O ficheiro %1 está en uso neste momento</translation>
+        <translation>الملف %1 قيد الاستعمال حاليّاً</translation>
     </message>
 </context>
 <context>
@@ -3956,32 +3937,32 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="430"/>
         <source>The local file was removed during sync.</source>
-        <translation>O ficheiro local retirarase durante a sincronización.</translation>
+        <translation>الملف المحلي تمّ حذفه أثناء المزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="445"/>
         <source>Local file changed during sync.</source>
-        <translation>O ficheiro local cambiou durante a sincronización.</translation>
+        <translation>تم تغيير الملف المحلي أثناء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="484"/>
         <source>Poll URL missing</source>
-        <translation>Non se atopa o URL da enquisa</translation>
+        <translation>عنوان التصويت Poll URL مفقود</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>O servidor devolveu un código non agardado (%1)</translation>
+        <translation>كود رجوع غير متوقع من الخادم (1%)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="500"/>
         <source>Missing File ID from server</source>
-        <translation>Falta o ID do ficheiro do servidor</translation>
+        <translation>معرف الملف مفقود من الخادم</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="514"/>
         <source>Missing ETag from server</source>
-        <translation>Falta ETag do servidor</translation>
+        <translation>وسم الكيان &quot;ETag&quot; مفقود من الخادم</translation>
     </message>
 </context>
 <context>
@@ -3989,22 +3970,22 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
         <source>Poll URL missing</source>
-        <translation>Non se atopa o URL da enquisa</translation>
+        <translation>عنوان محدد موقع الموارد المُوحّد للاستطلاع مفقود</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation>O ficheiro local retirarase durante a sincronización.</translation>
+        <translation>تمت إزالة الملف المحلي أثناء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="267"/>
         <source>Local file changed during sync.</source>
-        <translation>O ficheiro local cambiou durante a sincronización.</translation>
+        <translation>تم تغيير الملف المحلي أثناء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="281"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>O servidor non recoñeceu o último bloque. (Non había unha e-tag presente)</translation>
+        <translation>لم يتعرف الخادوم على القطعة chunk الأخيرة. (خالية من السمة e-tag)</translation>
     </message>
 </context>
 <context>
@@ -4012,27 +3993,27 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>O proxy require autenticación</translation>
+        <translation>مطلوب مصادقة الوكيل</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation>Nome de usuario:</translation>
+        <translation>اسم المستخدم:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation>Proxy</translation>
+        <translation>الوكيل:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>O servidor proxy precisa dun nome de usuario de dun contrasinal.</translation>
+        <translation>يحتاج الخادم الوكيل إلى اسم مستخدم وكلمة مرور.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation>Contrasinal:</translation>
+        <translation>كلمة المرور:</translation>
     </message>
 </context>
 <context>
@@ -4040,7 +4021,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="507"/>
         <source>Choose What to Sync</source>
-        <translation>Escolla que sincronizar</translation>
+        <translation>اختر ما تريد مزامنته</translation>
     </message>
 </context>
 <context>
@@ -4048,33 +4029,33 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="72"/>
         <source>Loading …</source>
-        <translation>Cargando…</translation>
+        <translation>تحميل ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Desmarque os cartafoles remotos que non quere sincronizar.</translation>
+        <translation>قم بإلغاء تحديد المجلدات القصيّة remote التي لا ترغب في مزامنتها.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="94"/>
         <source>Name</source>
-        <translation>Nome</translation>
+        <translation>الاسم</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
         <source>Size</source>
-        <translation>Tamaño</translation>
+        <translation>الحجم</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="236"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="313"/>
         <source>No subfolders currently on the server.</source>
-        <translation>Actualmente non hai subcartafoles no servidor.</translation>
+        <translation>لا توجد مجلدات فرعية حاليًا على الخادم.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="315"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Produciuse un erro ao cargar a lista de subcartafoles.</translation>
+        <translation>حدث خطأ أثناء تحميل قائمة المجلدات الفرعية.</translation>
     </message>
 </context>
 <context>
@@ -4082,12 +4063,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="119"/>
         <source>Reply</source>
-        <translation>Responder</translation>
+        <translation>جواب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="151"/>
         <source>Dismiss</source>
-        <translation>Rexeitar</translation>
+        <translation>رفض</translation>
     </message>
 </context>
 <context>
@@ -4095,28 +4076,28 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Axustes</translation>
+        <translation>الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation>Axustes de %1</translation>
+        <translation>%1 الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
         <source>General</source>
-        <translation>Xeral</translation>
+        <translation>عام</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="129"/>
         <source>Network</source>
-        <translation>Rede</translation>
+        <translation>الشبكة</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="237"/>
         <source>Account</source>
-        <translation>Conta</translation>
+        <translation>الحساب</translation>
     </message>
 </context>
 <context>
@@ -4124,32 +4105,32 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
         <source>Secure file drop link</source>
-        <translation>Ligazón de entrega segura de ficheiros</translation>
+        <translation>رابط آمن لإفلات الملف</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
         <source>Share link</source>
-        <translation>Compartir ligazón</translation>
+        <translation>رابط مشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="645"/>
         <source>Link share</source>
-        <translation>Ligazón para compartir</translation>
+        <translation>مشاركة رابط</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="647"/>
         <source>Internal link</source>
-        <translation>Ligazón interna</translation>
+        <translation>رابط داخلي</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="649"/>
         <source>Secure file drop</source>
-        <translation>Entrega segura de ficheiros</translation>
+        <translation>إفلات آمن للملف</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="938"/>
         <source>Enter a note for the recipient</source>
-        <translation>Introduza unha nota para o destinatario</translation>
+        <translation>أدخل ملاحظة للمُستلِم</translation>
     </message>
 </context>
 <context>
@@ -4157,27 +4138,27 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/shareuserline.ui" line="80"/>
         <source>Username</source>
-        <translation>Nome de usuario</translation>
+        <translation>اسم المستخدم</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation>Pode editar</translation>
+        <translation>يمكن تعديله</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation>Nota:</translation>
+        <translation>ملاحظة:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation>Contrasinal:</translation>
+        <translation>كلمة مرور:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation>Caduca:</translation>
+        <translation>تنتهي الصلاحية في:</translation>
     </message>
 </context>
 <context>
@@ -4186,17 +4167,17 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="33"/>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="290"/>
         <source>Search globally</source>
-        <translation>Buscar globalmente</translation>
+        <translation>بحث شامل</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>No results found</source>
-        <translation>Non se atoparon resultados</translation>
+        <translation>لا توجد أي نتائج</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation>Resultados da busca global</translation>
+        <translation>نتائج البحث الشامل</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
@@ -4210,175 +4191,173 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation>Produciuse un fallo ao cifrar o cartafol en «%1»</translation>
+        <translation>تعذّر تشفير المجلد في &quot;%1&quot; </translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>A conta %1 non ten o cifrado de extremo a extremo configurado. Configure isto nos axustes  da súa conta para activar o cifrado do cartafol.</translation>
+        <translation>الحساب %1 غير جاهزٍ للتشفير من الحد للحد. يرجى تمكين التشفير في إعدادات حسابك.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation>Produciuse un erro ao cifrar o cartafol</translation>
+        <translation>تعذّر تشفير المجلد</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation>Non foi posíbel  cifrar o seguinte cartafol: «%1».
-
-O servidor respondeu co erro: %2</translation>
+        <translation>تعذر تشفير المجلد التالي: &quot;%1&quot;. الحادوم أجاب برسالة خطأ:  %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation>O cartafol foi cifrado correctamente</translation>
+        <translation>تمّ تشفير المجلد بنجاحٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>O seguinte cartafol foi cifrado correctamente: «%1»</translation>
+        <translation>المجلد التالي تمّ تشفيره بنجاحٍ: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
         <source>Context menu share</source>
-        <translation>Compartir o menú contextual</translation>
+        <translation>مشاركة قائمة السياق Context menu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1060"/>
         <source>Select new location …</source>
-        <translation>Seleccionar a nova localización…</translation>
+        <translation>حدد موضعاً جديدًا ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1120"/>
         <source>I shared something with you</source>
-        <translation>Compartín algo con vostede</translation>
+        <translation>لقد قمت أنا بمشاركة شيئًا معك</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1133"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1170"/>
         <source>Share options</source>
-        <translation>Opcións da compartición</translation>
+        <translation>خيارات المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1363"/>
         <source>Activity</source>
-        <translation>Actividade</translation>
+        <translation>الحركات</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
         <source>Copy private link to clipboard</source>
-        <translation>Copiar a ligazón privada no portapapeis</translation>
+        <translation>إنسخ الرابط الخاص إلى الحافظة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Send private link by email …</source>
-        <translation>Enviar a ligazón privada por correo…</translation>
+        <translation>أرسل رابطاً خاصاً بالإيميل ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
         <source>Leave this share</source>
-        <translation>Deixar esta compartición</translation>
+        <translation>غادر هذه المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Non está permitido volver compartir este ficheiro</translation>
+        <translation>إعادة مشاركة الملف غير مسموحة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Non está permitido volver compartir este cartafol</translation>
+        <translation>إعادة مشاركة هذا الملف غير مسموحة</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
         <source>Copy secure file drop link</source>
-        <translation>Copiar a ligazón para entrega segura de ficheiros</translation>
+        <translation>نسخ الرابط الآمن لإفلات الملف secure file drop link</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1191"/>
         <source>Copy public link</source>
-        <translation>Copiar a ligazón pública</translation>
+        <translation>نسخ الرابط العمومي</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
         <source>Copy secure filedrop link</source>
-        <translation>Copiar a ligazón para entrega segura de ficheiros (filedrop)</translation>
+        <translation>نسخ الرابط الآمن لإفلات الملف secure filedrop link</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1197"/>
         <source>Copy internal link</source>
-        <translation>Copiar a ligazón interna</translation>
+        <translation>نسخ رابط داخلي</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1234"/>
         <source>Encrypt</source>
-        <translation>Cifrar</translation>
+        <translation>تشفير</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
         <source>Lock file</source>
-        <translation>Bloquear ficheiro</translation>
+        <translation>قفل lock ملف</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
         <source>Unlock file</source>
-        <translation>Desbloquear ficheiro</translation>
+        <translation>فتح قفل unlock ملف</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1263"/>
         <source>Locked by %1</source>
-        <translation>Bloqueado por %1</translation>
+        <translation>مقفولٌ من قِبَل %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1267"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Caduca en %1 minutos</numerusform><numerusform>Caduca en %1 minutos</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation>تحرير</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1371"/>
         <source>Open in browser</source>
-        <translation>Abrir no navegador</translation>
+        <translation>إفتح في المُتصفّح</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
         <source>Resolve conflict …</source>
-        <translation>Resolver conflitos…</translation>
+        <translation>حُلَّ التعارُض conflict</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1402"/>
         <source>Move and rename …</source>
-        <translation>Mover e renomear…</translation>
+        <translation>نقل أو تغيير اسم</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1405"/>
         <source>Move, rename and upload …</source>
-        <translation>Mover, renomear e enviar…</translation>
+        <translation>نقل، و تغيير اسم و رفع ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1407"/>
         <source>Delete local changes</source>
-        <translation>Eliminar os cambios locais</translation>
+        <translation>حذف التغييرات المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1413"/>
         <source>Move and upload …</source>
-        <translation>Mover e enviar…</translation>
+        <translation>نقل و رفع</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1414"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>حذف</translation>
     </message>
 </context>
 <context>
@@ -4386,87 +4365,87 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Detalles do certificado&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;تفاصيل الشهادة&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
-        <translation>Nome común (NC):</translation>
+        <translation>الاسم الشائع (CN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
-        <translation>Nomes alternativos do titular:</translation>
+        <translation>الأسماء البديلة للموضوع:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organization (O):</source>
-        <translation>Organización (O):</translation>
+        <translation>المؤسسة (O):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>Organizational Unit (OU):</source>
-        <translation>Unidade organizativa (OU):</translation>
+        <translation>الوحدة التنظيمية (OU):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>State/Province:</source>
-        <translation>Provincia/Estado:</translation>
+        <translation>الولاية / المقاطعة:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="96"/>
         <source>Country:</source>
-        <translation>País:</translation>
+        <translation>البلد:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Serial:</source>
-        <translation>Serie:</translation>
+        <translation>الرقم التسلسلي:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="100"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Emisor&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;المُصدر&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Issuer:</source>
-        <translation>Emisor:</translation>
+        <translation>المُصدِر:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Issued on:</source>
-        <translation>Emitido o:</translation>
+        <translation>صدر بتاريخ:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
-        <translation>Caduca o:</translation>
+        <translation>تنتهي صلاحيته في:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Pegadas&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;بصمات الأصابع&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-256:</source>
-        <translation>SHA-256:</translation>
+        <translation>خوارزميات التجزئة الآمنة - 256 &quot;SHA-256&quot;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>SHA-1:</source>
-        <translation>SHA-1:</translation>
+        <translation>خوارزمية التجزئة الآمنة &quot;SHA-1&quot;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Este certificado foi aprobado manualmente&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;ملاحظة:&lt;/b&gt; تمت الموافقة على هذه الشهادة يدويًا&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (autoasinada)</translation>
+        <translation>٪ 1 (موقع ذاتيًا)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
@@ -4477,35 +4456,35 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>Esta conexión está cifrada empregando %1 a %2 bits.
+        <translation>تم تشفير هذا الاتصال باستخدام 1% بت 2%.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Esta conexión non é segura e non está cifrada.
+        <translation>هذا الاتصال غير آمن لأنه غير مشفر
 </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation>Versión do servidor: %1</translation>
+        <translation>نسخة الخادوم: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>Non hai compatiblidade cos billetes/identificadores da sesión SSL</translation>
+        <translation>لا يوجد دعم لتذاكر / معرفات جلسة طبقة المنافذ الآمنة &quot;SSL&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
-        <translation>Información do certificado:</translation>
+        <translation>معلومات الشهادة:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation>A conexión non é segura</translation>
+        <translation>الاتصال غير آمن</translation>
     </message>
 </context>
 <context>
@@ -4513,82 +4492,82 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Confiar igualmente neste certificado</translation>
+        <translation>ثق بهذه الشهادة على أي حال</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation>Certificado non fiábel</translation>
+        <translation>شهادة غير موثوقة</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="138"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>Non se pode conectar de xeito seguro con &lt;i&gt;%1&lt;/i&gt;:</translation>
+        <translation>لا يمكن الاتصال بشكل آمن بـ &lt;i&gt;1%&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
         <source>Additional errors:</source>
-        <translation>Erros adicionais:</translation>
+        <translation>أخطاء إضافية:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>with Certificate %1</source>
-        <translation>co certificado %1</translation>
+        <translation>بموجب الشهادة٪ 1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation>&amp;lt;sen especificar&amp;gt;</translation>
+        <translation>&amp; هو؛ غير محدد &amp; جي تي.</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="222"/>
         <source>Organization: %1</source>
-        <translation>Organización: %1</translation>
+        <translation>المنظمة: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="223"/>
         <source>Unit: %1</source>
-        <translation>Unidade: %1</translation>
+        <translation>الوحدة: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="224"/>
         <source>Country: %1</source>
-        <translation>País: %1</translation>
+        <translation>البلد: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Pegada dixital (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>بصمة الإصبع (خوارزمية التجزئة الآمنة 1):&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Pegada dixital (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>البصمة (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Pegada dixital (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>البصمة (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
         <source>Effective Date: %1</source>
-        <translation>Data de aplicación: %1</translation>
+        <translation>تاريخ السريان:٪ 1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
         <source>Expiration Date: %1</source>
-        <translation>Data de caducidade: %1</translation>
+        <translation>تاريخ انتهاء تاريخ انتهاء الصلاحية:٪ 1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="219"/>
         <source>Issuer: %1</source>
-        <translation>Emisor: %1</translation>
+        <translation>المُصدر:٪ 1</translation>
     </message>
 </context>
 <context>
@@ -4596,73 +4575,73 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="197"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (omitido por mor do erro anterior, tentándoo de novo en %2)</translation>
+        <translation>1% (تم تخطيه بسبب خطأ سابق، حاول مرة أخرى في 2%)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="381"/>
         <source>Could not update file: %1</source>
-        <translation>Non foi posíbel actualizar o ficheiro: %1</translation>
+        <translation>تعذّر تحديث الملف: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation>Non foi posíbel actualizar os metadatos do ficheiro virtual: %1</translation>
+        <translation>تعذّر تحديث virtual file metadata البيانات الوصفية للملف الظاهري: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="400"/>
         <source>Could not update file metadata: %1</source>
-        <translation>Non foi posíbel actualizar os metadatos do ficheiro: %1</translation>
+        <translation>تعذّر تحديث  file metadata البيانات الوصفية للملف: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation>Non foi posíbel estabelecer o rexistro do ficheiro na base de datos local: %1</translation>
+        <translation>تعذّر تعيين سجل الملفات إلى قاعدة بيانات محلية: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
         <source>Unresolved conflict.</source>
-        <translation>Conflito sen resolver.</translation>
+        <translation>التضارب الغير محلول.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="532"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Só %1 está dispoñíbel, necesita polo menos %2 para comezar</translation>
+        <translation>يتوفر فقط 1%، وتحتاج إلى 2% على الأقل للبدء</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="565"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Non é posíbel abrir ou crear a base de datos de sincronización local. Asegúrese de ter acceso de escritura no cartafol de sincronización.</translation>
+        <translation>تعذر فتح أو إنشاء قاعدة بيانات المزامنة المحلية. تأكد من أن لديك حق الوصول للكتابة في مجلد المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="581"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Usando ficheiros virtuais con sufixo, mais o sufixo non está definido</translation>
+        <translation>إستعمال الملف الظاهري مع بادئة suffix؛ لكن لم يتم تعيينها</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="593"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>Non é posíbel ler a lista de bloqueo da base de datos local</translation>
+        <translation>غير قادرعلى قراءة القائمة السوداء/ قائمة الحظر من قاعدة البيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>Non é posíbel ler dende o diario de sincronización.</translation>
+        <translation>تعذرت القراءة من دفتر يومية المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="765"/>
         <source>Cannot open the sync journal</source>
-        <translation>Non foi posíbel abrir o diario de sincronización</translation>
+        <translation>لا يمكن فتح دفتر يومية المزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1239"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Pouco espazo dispoñíbel no disco: As descargas que reduzan o tamaño por baixo de %1 van ser omitidas.</translation>
+        <translation>مساحة القرص منخفضة: تم تخطي التنزيلات التي من شأنها أن تقلل المساحة الخالية عن٪ 1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1246"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Non hai espazo libre abondo no servisor para algúns envíos.</translation>
+        <translation>لا توجد مساحة كافية على الخادم لبعض عمليات الرفع.</translation>
     </message>
 </context>
 <context>
@@ -4671,59 +4650,59 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation>Sen conexión</translation>
+        <translation>بدون اتصال</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation>Todo sincronizado!</translation>
+        <translation>الكل متزامن!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation>Non foi posíbel sincronizar algúns ficheiros.</translation>
+        <translation>بعض الملفات تعذّرت مزامنتها</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation>Vexa a seguir os erros</translation>
+        <translation>أنظر الأخطاء أدناه</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation>Sincronizando</translation>
+        <translation>مزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation>Sincronización en pausa</translation>
+        <translation>المزامنة مُجمّدةٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation>Non foi posíbel sincronizar algúns ficheiros.</translation>
+        <translation>بعض الملفات تعذّرت مزامنتها!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation>Vexa a seguir as advertencias</translation>
+        <translation>أنظر التحذيرات أدناه</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation>%1 de %2 · %3 restante</translation>
+        <translation>%1 من %2 · %3 مازال</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation>%1 de %2</translation>
+        <translation>%1 من %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation>Sincronizando o ficheiro %1 de %2</translation>
+        <translation>مزامنة ملف %1 من %2</translation>
     </message>
 </context>
 <context>
@@ -4731,54 +4710,54 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="80"/>
         <source>Download</source>
-        <translation>Descargar</translation>
+        <translation>تنزيل</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="180"/>
         <source>Add account</source>
-        <translation>Engadir unha conta</translation>
+        <translation>أضف حساباً</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <source>Open main dialog</source>
-        <translation>Abrir o diálogo principal</translation>
+        <translation>فتح الحوار الرئيسي</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync</source>
-        <translation>Por en pausa a sincronización</translation>
+        <translation>تجميد المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="186"/>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync</source>
-        <translation>Continuar coa sincronización</translation>
+        <translation>إستئناف المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="187"/>
         <source>Settings</source>
-        <translation>Axustes</translation>
+        <translation>الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="188"/>
         <source>Help</source>
-        <translation>Axuda</translation>
+        <translation>مساعدة</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>
         <source>Exit %1</source>
-        <translation>Saír de %1</translation>
+        <translation>خروج %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync for all</source>
-        <translation>Por en pausa a sincronización para todos</translation>
+        <translation>تجميد المزامنة للكل</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
         <source>Resume sync for all</source>
-        <translation>Continuar coa sincronización para todos</translation>
+        <translation>إستئناف المزامنة للكل</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="554"/>
@@ -4792,23 +4771,23 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;Cliente de escritorio do %1&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 عميل سطح المكتب Desktop Client&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="557"/>
         <location filename="../src/libsync/theme.cpp" line="572"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Versión %1. Para obter máis información prema &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;النسخة %1. لمزيد المعلومات، رجاءً إضغط &lt;a href=&apos;%2&apos;&gt;هنا&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="561"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Usando o complemento de ficheiros virtuais: %1&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;إستعمال الملحق البرمجي plugin للملفات الظاهرية: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="576"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Esta versión foi fornecida por %1.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;تمّ توفير هذا الإصدار من %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4816,22 +4795,22 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
-        <translation>Produciuse un fallo ao obter os provedores.</translation>
+        <translation>إخفاق في جلب المورّدين</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation>Produciuse un fallo ao obter provedores de busca para «%1». Erro: %2</translation>
+        <translation>إخفاق في جلب المورّدين لـ &apos;%1&apos;. خطأ: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation>Produciuse un fallo na busca de «%2».</translation>
+        <translation>أخفق البحث عن &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation>Produciuse un fallo na busca de «%1». Erro %2</translation>
+        <translation>أخفق البحث عن &apos;%1&apos;. خطأ: %2</translation>
     </message>
 </context>
 <context>
@@ -4839,13 +4818,13 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="623"/>
         <source>Retry all uploads</source>
-        <translation>Tentar de novo todos os envíos</translation>
+        <translation>أعِد جميع عمليات الرفع</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="815"/>
         <source>Resolve conflict</source>
-        <translation>Resolver conflitos</translation>
+        <translation>حُلّ التعارض</translation>
     </message>
 </context>
 <context>
@@ -4853,22 +4832,22 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
         <source>Confirm Account Removal</source>
-        <translation>Confirmar a retirada da conta</translation>
+        <translation>أكّد إزالة الحساب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Confirma que quere retirar a conexión a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Isto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;هل ترغب حقاً في إزالة الاتصال بالحساب &lt;i&gt;%1&lt;/i&gt;؟&lt;/p&gt;&lt;p&gt;&lt;b&gt;ملاحظة:&lt;/b&gt; هذا سوف &lt;b&gt;لن&lt;/b&gt; يتسبب في حذف أي ملفّاتٍ.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
         <source>Remove connection</source>
-        <translation>Retirar conexión</translation>
+        <translation>إزالة الاتصال</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1386"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>إلغاء</translation>
     </message>
 </context>
 <context>
@@ -4876,96 +4855,96 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation>Non foi posíbel recuperar os estados predefinidos. Asegúrese de estar conectado ao servidor.</translation>
+        <translation>تعذر جلب الحالات statuses المحددة مسبقًا. تأكد من أنك متصل بالخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Non foi posíbel recuperar o estado. Asegúrese de estar conectado ao servidor.</translation>
+        <translation> تعذّر جلب الحالة status. تأكد من اتصالك بالخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>A función de estado non é compatíbel. Non poderá estabelecer o seu estado.</translation>
+        <translation>خاصية الحالة Status غير مدعومة. لن يمكنك تعيين حالتك.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Non se admiten «emojis». É posíbel que algunhas funcións de estado non funcionen.</translation>
+        <translation>الرموز التعبيرية &quot;إيموجي&quot; emoji غير مدعومة. بعض وظائف الحالة status قد لا تعمل.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Non foi posíbel estabelecer o estado. Asegúrese de estar conectado ao servidor.</translation>
+        <translation>تعذّر تعيين الحالة status. تأكد من اتصالك بالخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Non foi posíbel borrar a mensaxe de estado. Asegúrese de estar conectado ao servidor.</translation>
+        <translation>تعذّر مسح رسالة الحالة status. تأكد من اتصالك بالخادوم.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation>Non limpar</translation>
+        <translation>لا تمحُ</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation>30 minutos</translation>
+        <translation>30 دقيقة</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation>1 hora</translation>
+        <translation>1 ساعة</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation>4 horas</translation>
+        <translation>4 ساعات</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation>Hoxe</translation>
+        <translation>اليوم</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation>Esta semana</translation>
+        <translation>هذا الأسبوع</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation>Menos dun minuto</translation>
+        <translation>أقل من دقيقة</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation>1 minuto</translation>
+        <translation>1 دقيقة</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation>%1 minutos</translation>
+        <translation>%1 دقائق</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation>%1 horas</translation>
+        <translation>%1 ساعات</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation>1 día</translation>
+        <translation>1 يوم</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation>%1 días</translation>
+        <translation>%1 أيام</translation>
     </message>
 </context>
 <context>
@@ -4973,7 +4952,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>A funcionalidade do sistema de ficheiros virtual require un sistema de ficheiros NTFS, %1 está a usar %2</translation>
+        <translation>تتطلب ميزة نظام الملفات الظاهري نظام ملفات NTFS ـ . %1 تستخدم %2</translation>
     </message>
 </context>
 <context>
@@ -4982,7 +4961,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="90"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Produciuse un erro ao actualizar os metadatos por mor dunha hora de modificación incorrecta</translation>
+        <translation>خطأ في تحديث البيانات الوصفية بسبب أن &quot;وقت التعديل&quot; modification time غير صالح</translation>
     </message>
 </context>
 <context>
@@ -4991,7 +4970,7 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Produciuse un erro ao actualizar os metadatos por mor dunha hora de modificación incorrecta</translation>
+        <translation>خطأ في تحديث البيانات الوصفية بسبب أن &quot;وقت التعديل&quot; modification time غير صالح</translation>
     </message>
 </context>
 <context>
@@ -4999,12 +4978,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="231"/>
         <source>Invalid certificate detected</source>
-        <translation>Detectouse un certificado non válido</translation>
+        <translation>شهادة غير صالحة تمّ اكتشافها</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="232"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>O servidor «%1» forneceu un certificado non válido. Continuar?</translation>
+        <translation>قدّم المضيف &quot;%1&quot; شهادة غير صالحة. هل ترغب بالاستمرار؟</translation>
     </message>
 </context>
 <context>
@@ -5012,12 +4991,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>Foi desconectado da súa conta %1 en %2. Volva a acceder.</translation>
+        <translation>أنت خرجت من حسابك %1 في %2. هل ترغب بالدخول من جديد؟</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation>Acceda coa conta: %1</translation>
+        <translation>رجاءُ، سجل دخولك بالحساب: %1</translation>
     </message>
 </context>
 <context>
@@ -5025,42 +5004,42 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation>Formulario</translation>
+        <translation>نموذج</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation>Acceder</translation>
+        <translation>تسجيل الدخول</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation>Rexistrarse cun provedor</translation>
+        <translation>سجّل نفسك مع المُزوّد</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Manteña os seus datos seguros e baixo o seu control</translation>
+        <translation>إحتفظ ببياناتك آمنة و تحت سيطرتك</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>Colaboración segura e intercambio de ficheiros</translation>
+        <translation>تعاون و تبادل ملفات مُؤمّن </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Correo web, calendario e contactos doados de usar</translation>
+        <translation>بريد إلكتروني سهل الاستعمال، و تقويم و جهات اتصال</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Compartir a pantalla, xuntanzas en liña e conferencias web </translation>
+        <translation>مشاركة الشاشة، و الاجتماع على الخط، و المؤتمرات على الوب</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
         <source>Host your own server</source>
-        <translation>Hospede o seu propio servidor</translation>
+        <translation>قم باستضافة خادومك الخاص</translation>
     </message>
 </context>
 <context>
@@ -5068,118 +5047,118 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>Unsupported Server Version</source>
-        <translation>Versión del servidor non admitida</translation>
+        <translation>إصدار خادم غير مدعوم</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="265"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>O servidor na conta %1 executa unha versión non admitida (%2). O uso deste cliente con versións de servidor non admitidas non está probado e é potencialmente perigoso. Proceda baixo a súa propia responsabilidade.</translation>
+        <translation>الخادوم على الحساب %1 يقوم بتشغيل إصدار غير معتمد %2. إستعمال هذا العميل مع إصدارات خادوم غير مدعومة لم يتم اختبارها يحتمل أن يُشكّل خطراً أمنيّاً. المضي قدما على مسؤوليتك الخاصة.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Disconnected</source>
-        <translation>Desconectado</translation>
+        <translation>غير متصلٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Disconnected from some accounts</source>
-        <translation>Desconectado dalgunhas contas</translation>
+        <translation>قطع الاتصال ببعض الحسابات</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Disconnected from %1</source>
-        <translation>Desconectado de %1</translation>
+        <translation>قطع الاتصال من %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="319"/>
         <source>Disconnected from accounts:</source>
-        <translation>Desconectado das contas:</translation>
+        <translation>قطع الاتصال من الحسابات:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Account %1: %2</source>
-        <translation>Conta %1: %2</translation>
+        <translation>حساب %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Please sign in</source>
-        <translation>Ten que rexistrarse</translation>
+        <translation>يرجي تسجيل الدخول</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="336"/>
         <source>Signed out</source>
-        <translation>Desconectado</translation>
+        <translation>تسجيل الخروج</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Account synchronization is disabled</source>
-        <translation>A sincronización está desactivada</translation>
+        <translation>تم تعطيل مزامنة الحساب</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="341"/>
         <location filename="../src/gui/owncloudgui.cpp" line="394"/>
         <source>Synchronization is paused</source>
-        <translation>A sincronización está en pausa</translation>
+        <translation>تم إيقاف المزامنة مؤقتًا</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="381"/>
         <source>Folder %1: %2</source>
-        <translation>Cartafol %1: %2</translation>
+        <translation>المجلد 1%: 2%</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Unresolved conflicts</source>
-        <translation>Conflitos sen resolver</translation>
+        <translation>تعارض لم يُحل</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Up to date</source>
-        <translation>Actualizado</translation>
+        <translation>حتى تاريخه</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Error during synchronization</source>
-        <translation>Produciuse un erro durante a sincronización</translation>
+        <translation>خطأ خلال المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="399"/>
         <source>There are no sync folders configured.</source>
-        <translation>Non existen cartafoles de sincronización configurados.</translation>
+        <translation>لم يتم تكوين مجلدات مزامنة.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="400"/>
         <source>No sync folders configured</source>
-        <translation>Non hai cartafoles de sincronización configurados</translation>
+        <translation>لم يتم تكوين مجلدات مزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="465"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Comprobando os cambios no «%1» remoto</translation>
+        <translation>التحقّق من التغييرات في &apos;%1&apos; القَصِي</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="468"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Comprobando os cambios no cartafol local «%1»</translation>
+        <translation>التحقّق من التغييرات في &apos;%1&apos; المحلي</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Sincronizando %1 de %2  (restan %3)</translation>
+        <translation>مزامنة %1 من %2 (الباقي %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="489"/>
         <source>Syncing %1 of %2</source>
-        <translation>Sincronizando %1 de %2</translation>
+        <translation>مزامنة %1 من %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="498"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sincronizando %1 (restan %2)</translation>
+        <translation>مزامنة %1 (متبقٍ %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="501"/>
         <source>Syncing %1</source>
-        <translation>Sincronizando %1</translation>
+        <translation>مزامنة %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="511"/>
@@ -5192,73 +5171,73 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
         <source>&amp;Local Folder</source>
-        <translation>Cartafol &amp;local</translation>
+        <translation>&amp; مجلد محلي</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
-        <translation>Nome de usuario</translation>
+        <translation>اسم المستخدم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
-        <translation>Cartafol local</translation>
+        <translation>مُجلّد محلي</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
-        <translation>Escolla un cartafol diferente</translation>
+        <translation>إختر مُجلّداً آخر</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Server address</source>
-        <translation>Enderezo do servidor </translation>
+        <translation>عنوان الخادم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
-        <translation>Logotipo de sincronización</translation>
+        <translation>شعار المزامنة</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
-        <translation>Sincronizar todo dende o servidor</translation>
+        <translation>قم بمزامنة كل شيء مع الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation>Pregunta antes de sincronizar cartafoles de máis de</translation>
+        <translation>إسأل قبل مزامنة ملفات أكبر من </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
+        <translation>ميغا بايت</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation>Pregunta antes de sincronizar almacenamentos externos</translation>
+        <translation>إسأل قبل مزامنة وحدات تخزين خارجية</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
         <source>Choose what to sync</source>
-        <translation>Escolla que sincronizar</translation>
+        <translation>إختر ما تريد مزامنته</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
-        <translation>Conservar os datos locais</translation>
+        <translation>إحتفظ بالبيانات المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se marca esta caixa, o contido existente no cartafol local borrarase para iniciar unha sincronización limpa do servidor.&lt;/p&gt;&lt;p&gt;Non marque isto se o contido local debe ser enviado ao cartafol do servidore.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;إذا تم تحديد هذا المربع ، فسيتم محو المحتوى الموجود في المجلد المحلي لبدء مزامنة جديدة نظيفة من الخادم. &lt;/p&gt;&lt;p&gt;لا تحدد هذا إذا كان يجب رفع المحتوى المحلي إلى مجلد الخوادم.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation>Eliminar o cartafol local e iniciar unha sincronización limpa</translation>
+        <translation>إمحُ المجلد المحلي و ابدأ مزامنة نظيفة</translation>
     </message>
 </context>
 <context>
@@ -5266,12 +5245,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation>Nome do &amp;usuario</translation>
+        <translation>&amp;اسم المستخدم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation>&amp;Contrasinal</translation>
+        <translation>&amp;كلمة المرور</translation>
     </message>
 </context>
 <context>
@@ -5279,22 +5258,22 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Cambie para o seu navegador para proseguir.</translation>
+        <translation>يرجى التبديل إلى المتصفح الخاص بك للمتابعة.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Produciuse un erro ao conectarse. Ténteo de novo.</translation>
+        <translation>حدث خطأ أثناء التوصيل. حاول مرة أخرى من فضلك.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation>Reabrir o navegador</translation>
+        <translation>أعد فتح المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation>Copiar a ligazón</translation>
+        <translation>إنسخ الرابط</translation>
     </message>
 </context>
 <context>
@@ -5303,22 +5282,22 @@ O servidor respondeu co erro: %2</translation>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation>EtiquetaDeTexto</translation>
+        <translation>اسم الحقل</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation>Logotipo</translation>
+        <translation>الشعار</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation>Enderezo do servidor </translation>
+        <translation>عنوان الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
         <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>Esta é a ligazón á súa interface web %1 cando a abre no navegador.</translation>
+        <translation>هذا هو الرابط إلى واجهة الوب %1 الخاصة بك عندما تفتحها في المُتصفّح</translation>
     </message>
 </context>
 <context>
@@ -5326,77 +5305,77 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="41"/>
         <source>New folder</source>
-        <translation>Novo cartafol</translation>
+        <translation>مجلد جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="740"/>
         <source>You renamed %1</source>
-        <translation>Vostede cambiou o nome de %1</translation>
+        <translation>أنت غيّرت اسم %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="742"/>
         <source>You deleted %1</source>
-        <translation>Vostede eliminou %1</translation>
+        <translation>أنت حذفت %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="744"/>
         <source>You created %1</source>
-        <translation>Vostede creou %1</translation>
+        <translation>أنت أنشأت %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="746"/>
         <source>You changed %1</source>
-        <translation>Vostede cambiou %1</translation>
+        <translation>أنت غيّرت %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="770"/>
         <source>Synced %1</source>
-        <translation>Sincronizou %1</translation>
+        <translation>تمّت مزامنة %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>in the future</source>
-        <translation>no futuro</translation>
+        <translation>بالمستقبل</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="491"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation><numerusform>%nh</numerusform><numerusform>%nh</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="497"/>
         <source>now</source>
-        <translation>agora</translation>
+        <translation>الآن</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="499"/>
         <source>1m</source>
         <comment>one minute after activity date and time</comment>
-        <translation>1m</translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="502"/>
         <source>%nm</source>
         <comment>delay in minutes after an activity</comment>
-        <translation><numerusform>%nm</numerusform><numerusform>%nm</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="506"/>
         <source>Some time ago</source>
-        <translation>Hai algún tempo</translation>
+        <translation>منذ فترة وجيزة</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation>%1: %2</translation>
+        <translation>1%: 2%</translation>
     </message>
 </context>
 <context>
@@ -5404,38 +5383,38 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation>Resolver conflitos na sincronización</translation>
+        <translation>حل تعارضات المزامنة</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation><numerusform>%1 ficheiro en conflito</numerusform><numerusform>%1 ficheiros en conflito</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation>Escolla se quere manter a versión local, a versión do servidor ou ambas. Se escolle ambas, o ficheiro local terá un número engadido ao seu nome.</translation>
+        <translation>اختر ما إذا كنت تريد الاحتفاظ بالإصدار المحلي أو إصدار الخادم أو كليهما. وفي حالة اختيار كلاهما فسوف يضاف إلي اسم الملف المحلي رقم.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="97"/>
         <source>All local versions</source>
-        <translation>Todas as versións locais</translation>
+        <translation>جميع الإصدارات المحلية</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="115"/>
         <source>All server versions</source>
-        <translation>Todas as versións de servidor</translation>
+        <translation>جميع إصدارات الخادوم</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="170"/>
         <source>Resolve conflicts</source>
-        <translation>Resolver conflitos</translation>
+        <translation>حل التعارُض</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="174"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>إلغاء</translation>
     </message>
 </context>
 <context>
@@ -5443,22 +5422,22 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="161"/>
         <source>Create a new share link</source>
-        <translation>Crear unha nova ligazón para compartir</translation>
+        <translation>أَنشِيءْ رابط مشاركة جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="195"/>
         <source>Copy share link location</source>
-        <translation>Copiar a localización da ligazón para compartir</translation>
+        <translation>إنسَخ موضع رابط المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="197"/>
         <source>Copied!</source>
-        <translation>Copiado!</translation>
+        <translation>تمّ النسخ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="244"/>
         <source>Share options</source>
-        <translation>Opcións de compartir</translation>
+        <translation>إعدادات المُشارَكة</translation>
     </message>
 </context>
 <context>
@@ -5466,78 +5445,78 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="95"/>
         <source>An error occurred setting the share password.</source>
-        <translation>Produciuse un erro ao estabelecer o contrasinal de uso compartido.</translation>
+        <translation>حدث خطأٌ أثناء تعيين كلمة مرور المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
         <source>Edit share</source>
-        <translation>Editar a compartición</translation>
+        <translation>تعديل المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Dismiss</source>
-        <translation>Rexeitar</translation>
+        <translation>رفض</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
         <source>Share label</source>
-        <translation>Compartir a etiqueta</translation>
+        <translation>مشاركة اللاصقة label</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
         <source>Allow upload and editing</source>
-        <translation>Permitir o envío e a edición</translation>
+        <translation>السّماح بالرفع و التعديل </translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
         <source>View only</source>
-        <translation>Só ver</translation>
+        <translation>عرض فقط</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
         <source>File drop (upload only)</source>
-        <translation>Soltar ficheiro (só envíos) </translation>
+        <translation>إفلات ملف (للرفع فقط)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
         <source>Hide download</source>
-        <translation>Agochar a descarga</translation>
+        <translation>إخفاء التنزيل</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
         <source>Password protect</source>
-        <translation>Protexido con contrasinal</translation>
+        <translation>حماية كلمة المرور</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
         <source>Set expiration date</source>
-        <translation>Estabelecer a data de caducidade</translation>
+        <translation>تعيين تاريخ انتهاء الصلاحية</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
         <source>Note to recipient</source>
-        <translation>Nota para o destinatario</translation>
+        <translation>ملاحظة للمُتلَقّي</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
         <source>Unshare</source>
-        <translation>Deixar de compartir</translation>
+        <translation>إلغاء المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
         <source>Add another link</source>
-        <translation>Engadir outra ligazón</translation>
+        <translation>إضافة رابط آخر</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Share link copied!</source>
-        <translation>Copiouse a ligazón para compartir!</translation>
+        <translation>تمّ نسخ رابط المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Copy share link</source>
-        <translation>Copiar a ligazón compartida</translation>
+        <translation>نسخ رابط المشاركة</translation>
     </message>
 </context>
 <context>
@@ -5545,27 +5524,27 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation>É necesario un contrasinal para a nova compartición</translation>
+        <translation>كلمة المرور لازمة للمشاركة الجديدة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
         <source>Share password</source>
-        <translation>Compartir contrasinal</translation>
+        <translation>كلمة مرور المشاركة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="279"/>
         <source>Sharing is disabled</source>
-        <translation>O uso compartido está desactivado</translation>
+        <translation>المشاركة موقوفة</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
         <source>This item cannot be shared.</source>
-        <translation>Non é posíbel compartir este elemento.</translation>
+        <translation>هذا العنصر لا يمكن مشاركته</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
         <source>Sharing is disabled.</source>
-        <translation>O uso compartido está desactivado.</translation>
+        <translation>المشاركة موقوفة.</translation>
     </message>
 </context>
 <context>
@@ -5573,7 +5552,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Buscar usuarios ou grupos…</translation>
+        <translation>البحث عن مستخدمين و مجموعات</translation>
     </message>
 </context>
 <context>
@@ -5581,7 +5560,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="931"/>
         <source>Failed to connect database.</source>
-        <translation>Produciuse un fallo ao conectar a base de datos.</translation>
+        <translation>تعذّر توصيل قاعدة البيانات</translation>
     </message>
 </context>
 <context>
@@ -5589,12 +5568,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="101"/>
         <source>Sync now</source>
-        <translation>Sincronizar agora</translation>
+        <translation>زامِن الأن ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="128"/>
         <source>Resolve conflicts</source>
-        <translation>Resolver conflitos</translation>
+        <translation>حل التعارُض</translation>
     </message>
 </context>
 <context>
@@ -5602,12 +5581,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="16"/>
         <source>Reply to …</source>
-        <translation>Responder a…</translation>
+        <translation>الردّ على ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
-        <translation>Enviar resposta á mensaxe de conversa</translation>
+        <translation>أرسل ردّاً على رسالة الدردشة</translation>
     </message>
 </context>
 <context>
@@ -5615,47 +5594,47 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local or group folders</source>
-        <translation>Abrir cartafoles locais ou de grupo</translation>
+        <translation>إفتح مجلدات محلية أو جماعية</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="55"/>
         <source>Open local folder</source>
-        <translation>Abrir o cartafol local</translation>
+        <translation>إفتح مجلداً محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Connected</source>
-        <translation>Conectado</translation>
+        <translation>مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="70"/>
         <source>Disconnected</source>
-        <translation>Desconectado</translation>
+        <translation>غيرَ مُتّصِلٍ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="109"/>
         <source>Group folder button</source>
-        <translation>Botón do cartafol do grupo</translation>
+        <translation>زر المجلد الجماعي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation>Abrir o cartafol local «%1»</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation>Abrir o cartafol do grupo «%1»</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open %1 in file explorer</source>
-        <translation>Abrir % 1 no xestor de ficheiros</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>
         <source>User group and local folders menu</source>
-        <translation>Menú de grupos de usuarios e cartafoles locais</translation>
+        <translation>قائمة مجموعة المستخدمين و المجلدات المحلية</translation>
     </message>
 </context>
 <context>
@@ -5663,7 +5642,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="43"/>
         <source>Search files, messages, events …</source>
-        <translation>Buscar ficheiros, mensaxes, eventos…</translation>
+        <translation>البحث في الملفات، و الرسائل، و الأحداث ...</translation>
     </message>
 </context>
 <context>
@@ -5671,7 +5650,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="45"/>
         <source>Load more results</source>
-        <translation>Cargar máis resultados</translation>
+        <translation>حمّل نتائح أكثر</translation>
     </message>
 </context>
 <context>
@@ -5679,7 +5658,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="29"/>
         <source>Search result skeleton.</source>
-        <translation>Esqueleto do resultado da busca.</translation>
+        <translation>هيكل نتائج البحث Search result skeleton.</translation>
     </message>
 </context>
 <context>
@@ -5687,7 +5666,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="43"/>
         <source>Load more results</source>
-        <translation>Cargar máis resultados</translation>
+        <translation>حمّل نتائج أكثر</translation>
     </message>
 </context>
 <context>
@@ -5695,7 +5674,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="40"/>
         <source>No results for</source>
-        <translation>Non hai resultados para</translation>
+        <translation>لا نتائج لـ</translation>
     </message>
 </context>
 <context>
@@ -5703,7 +5682,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="34"/>
         <source>Search results section %1</source>
-        <translation>Sección de resultados da busca %1</translation>
+        <translation>قسم نتائج البحث %1</translation>
     </message>
 </context>
 <context>
@@ -5711,44 +5690,44 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="33"/>
         <source>Switch to account</source>
-        <translation>Cambiar á conta</translation>
+        <translation>تبديل إلى الحساب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is online</source>
-        <translation>O estado da conta actual é conectado</translation>
+        <translation>حالة الحساب الحالية: مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is do not disturb</source>
-        <translation>O estado actual da conta é non molestar</translation>
+        <translation>حالة الحساب الحالية: الرجاء عدم الإزعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="148"/>
         <source>Account actions</source>
-        <translation>Accións da conta</translation>
+        <translation>إجراءات الحساب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="165"/>
         <source>Set status</source>
-        <translation>Estabelecer o estado</translation>
+        <translation>تعيين الحالة</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log out</source>
-        <translation>Saír</translation>
+        <translation>خروج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <location filename="../src/gui/tray/UserLine.qml" line="193"/>
         <source>Log in</source>
-        <translation>Acceder</translation>
+        <translation>تسجيل الدخول</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="207"/>
         <source>Remove account</source>
-        <translation>Retirar a conta</translation>
+        <translation>حذف حساب</translation>
     </message>
 </context>
 <context>
@@ -5756,67 +5735,67 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
-        <translation>Estado conectado</translation>
+        <translation>حالة الاتصال Online status</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="60"/>
         <source>Online</source>
-        <translation>Conectado/a</translation>
+        <translation>اتّصال</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="71"/>
         <source>Away</source>
-        <translation>Ausente</translation>
+        <translation>بعيد</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="83"/>
         <source>Do not disturb</source>
-        <translation>Non molestar</translation>
+        <translation>يُرجى عدم الازعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Mute all notifications</source>
-        <translation>Silenciar todas as notificacións</translation>
+        <translation>كتم جميع الإشعارات</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
         <source>Invisible</source>
-        <translation>Invisíbel</translation>
+        <translation>غير مرئي</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
-        <translation>Aparecer como sen conexión</translation>
+        <translation>يظهر كأنه غير متصل</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
         <source>Status message</source>
-        <translation>Mensaxe de estado</translation>
+        <translation>رسالة الحالة</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="212"/>
         <source>What is your status?</source>
-        <translation>Cal é o seu estado?</translation>
+        <translation>ما حالتك؟</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
         <source>Clear status message after</source>
-        <translation>Limpar a mensaxe de estado após</translation>
+        <translation>إمحُ رسالة الحالة بعدَ</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>إلغاء</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
-        <translation>Limpar a mensaxe de estado</translation>
+        <translation>إمحُ رسالة الحالة</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation>Estabelecer a mensaxe de estado</translation>
+        <translation>عيّن رسالة الحالة</translation>
     </message>
 </context>
 <context>
@@ -5824,57 +5803,57 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>
         <source>%L1 GB</source>
-        <translation>%L1 GB</translation>
+        <translation>٪ L1 ميجا بايت</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="140"/>
         <source>%L1 MB</source>
-        <translation>%L1 MB</translation>
+        <translation>٪ L1 ميجا بايت</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="144"/>
         <source>%L1 KB</source>
-        <translation>%L1 KB</translation>
+        <translation>٪ L1 كيلوبايت</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="147"/>
         <source>%L1 B</source>
-        <translation>%L1 B</translation>
+        <translation>٪ L1 بايت</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="335"/>
         <source>%n year(s)</source>
-        <translation><numerusform>vai %n ano</numerusform><numerusform>hai %n anos</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="336"/>
         <source>%n month(s)</source>
-        <translation><numerusform>vai %n mes</numerusform><numerusform>hai %n meses</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation><numerusform>vai %n día</numerusform><numerusform>hai %n días</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>vai %n hora</numerusform><numerusform>hai %n horas</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>vai %n minuto</numerusform><numerusform>hai %n minutos</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
         <source>%n second(s)</source>
-        <translation><numerusform>vai %n segundo</numerusform><numerusform>hai %n segundos</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="364"/>
         <source>%1 %2</source>
-        <translation>%1 %2</translation>
+        <translation>1% 2%</translation>
     </message>
 </context>
 <context>
@@ -5882,17 +5861,17 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="256"/>
         <source>The checksum header is malformed.</source>
-        <translation>A cabeceira da suma de comprobación é incorrecta.</translation>
+        <translation>ترويسة المجموع الاختباري checksum header مشوهة</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="297"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation>A cabeceira da suma de comprobación contiña un tipo de suma de comprobación descoñecido «%1»</translation>
+        <translation>ترويسة المجموع الاختباري checksum header تحوي نوعاً غير معروف &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="302"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase. «%1» != «%2»</translation>
+        <translation>الملف الذي تمّ تنزيله، المجموع الاختباري checksum له غير مطابق. و سيتم استئنافه. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -5900,84 +5879,84 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="256"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation>Diálogo principal do escritorio Nextcloud</translation>
+        <translation>مربع الحوار الرئيسي في عمل نكست كلاود لسطح المكتب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="282"/>
         <source>Current account</source>
-        <translation>Conta actual</translation>
+        <translation>الحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Resume sync for all</source>
-        <translation>Continuar coa sincronización para todos</translation>
+        <translation>إستئناف المزامنة للجميع</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Pause sync for all</source>
-        <translation>Por en pausa a sincronización para todos</translation>
+        <translation>تجميد المزامنة للجميع</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="380"/>
         <source>Add account</source>
-        <translation>Engadir unha conta</translation>
+        <translation>إضافة حساب</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="392"/>
         <source>Add new account</source>
-        <translation>Engadir unha conta nova</translation>
+        <translation>إضافة حساب جديد</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="426"/>
         <source>Settings</source>
-        <translation>Axustes</translation>
+        <translation>الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="448"/>
         <source>Exit</source>
-        <translation>Saír</translation>
+        <translation>خروج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="492"/>
         <source>Current account avatar</source>
-        <translation>Avatar actual da conta</translation>
+        <translation>التجسيد الرمزي avatar للحساب الحالي</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is online</source>
-        <translation>O estado da conta actual é conectado</translation>
+        <translation>حالة الحساب الحالي: مُتّصِلٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is do not disturb</source>
-        <translation>O estado actual da conta é non molestar</translation>
+        <translation>حالة الحساب الحالي: الرجاء عدم الإزعاج</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="607"/>
         <source>Account switcher and settings menu</source>
-        <translation>Cambiador de contas e menú de axustes</translation>
+        <translation>مُبدّل الحساب Account switcher و قائمة الإعدادات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Abrir Nextcloud Talk no navegador</translation>
+        <translation>فتح &quot;محادثة&quot; نكست كلاود Talk في المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
         <source>More apps</source>
-        <translation>Máis aplicacións</translation>
+        <translation>المزيد من التطبيقات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="715"/>
         <source>Open %1 in browser</source>
-        <translation>Abrir %1 nun navegador</translation>
+        <translation>إفتح %1 في المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
-        <translation>Lista unificada de resultados de busca</translation>
+        <translation>قائمة نتائج البحث الموحدة</translation>
     </message>
 </context>
 <context>
@@ -5985,12 +5964,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="45"/>
         <source>System Tray not available</source>
-        <translation>Área de notificación non dispoñíbel</translation>
+        <translation>لوحة النظام غير متوفرة</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="46"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 necesita dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale unha aplicación de área de notificación como «trayer» e ténteo de novo.</translation>
+        <translation>يحتاج ٪ 1 أن يعمل على شريط النظام system tray. إذا كنت تقوم تشتغل على XFCE، فيرجى اتّباع &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;هذه التعليمات&lt;/a&gt;. و إلاّ فيُرجى تنصيب أحد تطبيقات شريط النظام مثل &quot;trayer&quot; ثم حاول مرة أخرى.</translation>
     </message>
 </context>
 <context>
@@ -5998,7 +5977,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="533"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Construido dende la revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation> &lt;p&gt;&lt;small&gt;مبنية من مراجعة  Gitـ &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; على %3, %4 باستخدام Qt ـ %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6006,103 +5985,103 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation>Creouse o ficheiro virtual</translation>
+        <translation>تمّ إنشاء الملف الظاهري</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation>Substituído por un ficheiro virtual</translation>
+        <translation>تمّ استبداله بالملف الظاهري</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded</source>
-        <translation>Descargado</translation>
+        <translation>تم التنزيل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
         <source>Uploaded</source>
-        <translation>Enviado</translation>
+        <translation>تم الرفع</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Versión do servidor descargada, copiouse o cambio local do ficheiro dentro do ficheiro en conflito</translation>
+        <translation>تم تنزيل إصدار الخادم، ونسخ الملف المحلي المتغير إلى ملف تعارض</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Descargouse a versión do servidor, copiouse o ficheiro local modificado no ficheiro de conflito de capitalización</translation>
+        <translation>تم تنزيل نسخة الخادوم، و تمّ نسخ الملف المحلي الذي تم تغييره إلى ملف تعارض الحالة case conflict </translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
         <source>Deleted</source>
-        <translation>Eliminado</translation>
+        <translation>تم الحذف</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Moved to %1</source>
-        <translation>Movido a %1</translation>
+        <translation>نُقل إلى 1%</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Ignored</source>
-        <translation>Ignorado</translation>
+        <translation>تم التجاهل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Filesystem access error</source>
-        <translation>Produciuse un erro de acceso ao sistema de ficheiros</translation>
+        <translation>خطأ في الوصول إلى نظام الملفات</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Error</source>
-        <translation>Produciuse un erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="58"/>
         <source>Updated local metadata</source>
-        <translation>Actualizados os metadatos locais</translation>
+        <translation>تحديث بيانات التعريف الوصفية المحلية</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
         <source>Unknown</source>
-        <translation>Descoñecido</translation>
+        <translation>غير معلوم</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>downloading</source>
-        <translation>descargando</translation>
+        <translation>جارى التحميل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <source>uploading</source>
-        <translation>enviando</translation>
+        <translation>جار الرفع</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>deleting</source>
-        <translation>eliminando</translation>
+        <translation>جار الحذف</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
         <source>moving</source>
-        <translation>movendo</translation>
+        <translation>جاري النقل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
         <source>ignoring</source>
-        <translation>ignorando</translation>
+        <translation>تجاهل</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="87"/>
         <source>error</source>
-        <translation>erro</translation>
+        <translation>خطأ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="89"/>
         <source>updating local metadata</source>
-        <translation>actualizando os metadatos locais</translation>
+        <translation>تحديث بيانات التعريف الوصفية المحلية</translation>
     </message>
 </context>
 <context>
@@ -6110,52 +6089,52 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Status undefined</source>
-        <translation>Estado sen definir</translation>
+        <translation>الحالة غير محددة</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Waiting to start sync</source>
-        <translation>Agardando o comezo da sincronización</translation>
+        <translation>في انتظار بدء المزامنة.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Sync is running</source>
-        <translation>Sincronización en proceso</translation>
+        <translation>عملية المزامنة قيد التشغيل</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="93"/>
         <source>Sync Success</source>
-        <translation>Sincronización realizada</translation>
+        <translation>نجاح المزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>A sincronización foi satisfactoria, algúns ficheiros foron ignorados.</translation>
+        <translation>تمت عملية المزامنة بنجاح، تم تجاهل بعض الملفات.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync Error</source>
-        <translation>Produciuse un erro de sincronización</translation>
+        <translation>خطأ في المزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Setup Error</source>
-        <translation>Produciuse un erro de configuración</translation>
+        <translation>خطأ في التنصيب</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Preparing to sync</source>
-        <translation>Preparando para sincronizar</translation>
+        <translation>التحضير للمزامنة</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Aborting …</source>
-        <translation>Interrompendo…</translation>
+        <translation>جارٍ إجهاض العملية ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync is paused</source>
-        <translation>Sincronización en pausa</translation>
+        <translation>تم إيقاف المزامنة مؤقتًا</translation>
     </message>
 </context>
 <context>
@@ -6163,52 +6142,52 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="46"/>
         <source>Could not open browser</source>
-        <translation>Non foi posíbel abrir o navegador</translation>
+        <translation>تعذر فتح المتصفح</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="47"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Produciuse un erro ao iniciar o navegador para ir ao URL %1. Quizais non estea configurado ningún navegador predeterminado?</translation>
+        <translation>حدث خطأ عند بدء تشغيل المستعرض للانتقال إلى عنوان محدد موقع الموارد المُوحّد ٪ 1. ربما لم يتم تهيئة متصفح افتراضي؟</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
         <source>Could not open email client</source>
-        <translation>Non foi posíbel abrir o cliente de correo</translation>
+        <translation>تعذر فتح عميل البريد الإلكتروني</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="71"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Produciuse un erro ao iniciar o cliente de correo para crear unha nova mensaxe. Quizais non estea configurado ningún cliente predeterminado de correo?</translation>
+        <translation>حدث خطأ أثناء تشغيل عميل البريد الإلكتروني لإنشاء رسالة جديدة. ربما لم يتم تهيئة عميل البريد الإلكتروني الافتراضي؟</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
         <source>Always available locally</source>
-        <translation>Sempre dispoñíbel localmente</translation>
+        <translation>دائماً متاحٌ محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="88"/>
         <source>Currently available locally</source>
-        <translation>Actualmente dispoñíbel localmente</translation>
+        <translation>متاحٌ الآن محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation>Algúns dispoñíbeis só en liña</translation>
+        <translation>البعض متاحٌ فقط عند الاتصال بالإنترنت </translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation>Dispoñíbeis só en liña</translation>
+        <translation>متاحٌ فقط عند الاتصال بالإنترنت</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation>Estar sempre dispoñíbel localmente</translation>
+        <translation>إجعله متاحاً دائماً محليّاً</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
-        <translation>Liberar espazo local</translation>
+        <translation>قم بتحرير المساحة المحلية</translation>
     </message>
 </context>
 </TS>

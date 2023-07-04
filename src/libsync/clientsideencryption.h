@@ -135,6 +135,7 @@ signals:
     void privateKeyDeleted();
     void certificateDeleted();
     void mnemonicDeleted();
+    void publicKeyDeleted();
 
 public slots:
     void initialize(const OCC::AccountPtr &account);
@@ -144,6 +145,7 @@ private slots:
     void generateKeyPair(const OCC::AccountPtr &account);
     void encryptPrivateKey(const OCC::AccountPtr &account);
 
+    void publicCertificateFetched(QKeychain::Job *incoming);
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
@@ -151,6 +153,7 @@ private slots:
     void handlePrivateKeyDeleted(const QKeychain::Job* const incoming);
     void handleCertificateDeleted(const QKeychain::Job* const incoming);
     void handleMnemonicDeleted(const QKeychain::Job* const incoming);
+    void handlePublicKeyDeleted(const QKeychain::Job* const incoming);
     void checkAllSensitiveDataDeleted();
 
     void getPrivateKeyFromServer(const OCC::AccountPtr &account);
@@ -158,18 +161,53 @@ private slots:
     void fetchAndValidatePublicKeyFromServer(const OCC::AccountPtr &account);
     void decryptPrivateKey(const OCC::AccountPtr &account, const QByteArray &key);
 
-    void fetchFromKeyChain(const OCC::AccountPtr &account);
+    void fetchCertificateFromKeyChain(const OCC::AccountPtr &account);
+    void fetchPublicKeyFromKeyChain(const OCC::AccountPtr &account);
     void writePrivateKey(const OCC::AccountPtr &account);
     void writeCertificate(const OCC::AccountPtr &account);
-    void writeMnemonic(const OCC::AccountPtr &account);
 
 private:
-    void generateCSR(const AccountPtr &account, PKey keyPair);
-    void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
+    void generateMnemonic();
+
+    [[nodiscard]] std::pair<QByteArray, PKey> generateCSR(const AccountPtr &account,
+                                                          PKey keyPair,
+                                                          PKey privateKey);
+
+    void sendSignRequestCSR(const AccountPtr &account,
+                            PKey keyPair,
+                            const QByteArray &csrContent);
+
+    void writeKeyPair(const AccountPtr &account,
+                      PKey keyPair,
+                      const QByteArray &csrContent);
+
+    template <typename L>
+    void writeMnemonic(OCC::AccountPtr account,
+                       L nextCall);
+
+    void checkServerHasSavedKeys(const AccountPtr &account);
+
+    template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+    void checkUserPublicKeyOnServer(const OCC::AccountPtr &account,
+                                    SUCCESS_CALLBACK nextCheck,
+                                    ERROR_CALLBACK onError);
+
+    template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+    void checkUserPrivateKeyOnServer(const OCC::AccountPtr &account,
+                                     SUCCESS_CALLBACK nextCheck,
+                                     ERROR_CALLBACK onError);
+
+    template <typename SUCCESS_CALLBACK, typename ERROR_CALLBACK>
+    void checkUserKeyOnServer(const QString &keyType,
+                              const OCC::AccountPtr &account,
+                              SUCCESS_CALLBACK nextCheck,
+                              ERROR_CALLBACK onError);
 
     [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     [[nodiscard]] bool sensitiveDataRemaining() const;
+
+    void failedToInitialize(const AccountPtr &account);
 
     bool isInitialized = false;
 };

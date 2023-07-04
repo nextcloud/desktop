@@ -128,7 +128,7 @@ public slots:
     void slotTriggerDismiss(const int activityIndex);
 
     void addNotificationToActivityList(const OCC::Activity &activity);
-    void addErrorToActivityList(const OCC::Activity &activity, const ErrorType type);
+    void addErrorToActivityList(const OCC::Activity &activity, const OCC::ActivityListModel::ErrorType type);
     void addIgnoredFileToList(const OCC::Activity &newActivity);
     void addSyncFileItemToActivityList(const OCC::Activity &activity);
     void removeActivityFromActivityList(int row);
@@ -163,6 +163,7 @@ protected slots:
 
 private slots:
     void addEntriesToActivityList(const OCC::ActivityList &activityList);
+    void accountStateHasChanged();
 
 private:
     static QVariantList convertLinksToMenuEntries(const Activity &activity);
@@ -208,6 +209,10 @@ private:
     bool _hideOldActivities = true;
 
     bool _hasSyncConflicts = false;
+
+    bool _accountStateWasConnected = false;
+
+    QElapsedTimer _durationSinceDisconnection;
 
     static constexpr quint32 MaxActionButtons = 3;
 };
