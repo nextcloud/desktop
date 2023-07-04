@@ -1480,38 +1480,44 @@ void AccountSettings::folderTerminateSyncAndUpdateBlackList(const QStringList &b
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    QString msg;
+    QString unsyncedMsg;
+
     auto cnt = 0;
     const auto folders = FolderMan::instance()->map().values();
+
     _ui->bigFolderUi->setVisible(false);
+
     for (const auto folder : folders) {
         if (folder->accountState() != _accountState) {
             continue;
         }
 
         auto ok = false;
+        auto blacklistOk = false;
         const auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
+        const auto blacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &blacklistOk);
+
         for (const auto &it : undecidedList) {
             // FIXME: add the folder alias in a hoover hint.
             // folder->alias() + QLatin1String("/")
             if (cnt++) {
-                msg += QLatin1String(", ");
+                unsyncedMsg += QStringLiteral(", ");
             }
-            auto myFolder = (it);
-            if (myFolder.endsWith('/')) {
-                myFolder.chop(1);
-            }
-            const auto theIndx = _model->indexForPath(folder, myFolder);
-            if (theIndx.isValid()) {
-                msg += QString::fromLatin1("<a href=\"%1?folder=%2\">%1</a>")
-                           .arg(Utility::escape(myFolder), Utility::escape(folder->alias()));
+
+            const auto folderWithoutTrailingSlash = it.endsWith('/') ? it.left(it.length() - 1) : it;
+
+            const auto folderIdx = _model->indexForPath(folder, folderWithoutTrailingSlash);
+            if (folderIdx.isValid()) {
+                const auto escapedFolderString = Utility::escape(folderWithoutTrailingSlash);
+                const auto escapedFolderName = Utility::escape(folder->alias());
+                unsyncedMsg += QStringLiteral("<a href=\"%1?folder=%2\">%1</a>").arg(escapedFolderString, escapedFolderName);
             } else {
-                msg += myFolder; // no link because we do not know the index yet.
+                unsyncedMsg += folderWithoutTrailingSlash; // no link because we do not know the index yet.
             }
         }
     }
 
-    if (!msg.isEmpty()) {
+    if (!unsyncedMsg.isEmpty()) {
         ConfigFile cfg;
         const auto info = !cfg.confirmExternalStorage() ?
                     tr("There are folders that were not synchronized because they are too big: ") :
@@ -1519,7 +1525,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
                         tr("There are folders that were not synchronized because they are external storages: ") :
                         tr("There are folders that were not synchronized because they are too big or external storages: ");
 
-        _ui->selectiveSyncNotification->setText(info + msg);
+        _ui->selectiveSyncNotification->setText(info + unsyncedMsg);
         _ui->bigFolderUi->setVisible(true);
     }
 }
