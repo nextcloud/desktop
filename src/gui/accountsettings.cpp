@@ -14,6 +14,7 @@
 
 
 #include "accountsettings.h"
+#include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "qmessagebox.h"
 #include "ui_accountsettings.h"
@@ -1480,10 +1481,21 @@ void AccountSettings::folderTerminateSyncAndUpdateBlackList(const QStringList &b
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    QString unsyncedMsg;
+    QString unsyncedFoldersString;
+    QString becameBigFoldersString;
 
-    auto cnt = 0;
     const auto folders = FolderMan::instance()->map().values();
+
+    static const auto folderSeparatorString = QStringLiteral(", ");
+    static const auto folderLinkString = [](const QString &slashlessFolderPath, const QString &folderName) {
+        return QStringLiteral("<a href=\"%1?folder=%2\">%1</a>").arg(slashlessFolderPath, folderName);
+    };
+    static const auto appendFolderDisplayString = [](QString &foldersString, const QString &folderDisplayString) {
+        if (!foldersString.isEmpty()) {
+            foldersString += folderSeparatorString;
+        }
+        foldersString += folderDisplayString;
+    };
 
     _ui->bigFolderUi->setVisible(false);
 
@@ -1500,34 +1512,49 @@ void AccountSettings::refreshSelectiveSyncStatus()
         for (const auto &it : undecidedList) {
             // FIXME: add the folder alias in a hoover hint.
             // folder->alias() + QLatin1String("/")
-            if (cnt++) {
-                unsyncedMsg += QStringLiteral(", ");
-            }
 
+            const auto folderTrailingSlash = it.endsWith('/') ? it : it + QChar('/');
             const auto folderWithoutTrailingSlash = it.endsWith('/') ? it.left(it.length() - 1) : it;
-
+            const auto escapedFolderString = Utility::escape(folderWithoutTrailingSlash);
+            const auto escapedFolderName = Utility::escape(folder->alias());
             const auto folderIdx = _model->indexForPath(folder, folderWithoutTrailingSlash);
-            if (folderIdx.isValid()) {
-                const auto escapedFolderString = Utility::escape(folderWithoutTrailingSlash);
-                const auto escapedFolderName = Utility::escape(folder->alias());
-                unsyncedMsg += QStringLiteral("<a href=\"%1?folder=%2\">%1</a>").arg(escapedFolderString, escapedFolderName);
+
+            // If we do not know the index yet then do not provide a link string
+            const auto folderDisplayString = folderIdx.isValid() ? folderLinkString(escapedFolderString, escapedFolderName) : folderWithoutTrailingSlash;
+
+            // The new big folder procedure automatically places these new big folders in the blacklist.
+            // This is not the case for existing folders discovered to have gone beyond the limit.
+            // So we need to check if the folder is in the blacklist or not and tweak the message accordingly.
+            if (SyncJournalDb::findPathInSelectiveSyncList(blacklist, folderTrailingSlash)) {
+                appendFolderDisplayString(unsyncedFoldersString, folderDisplayString);
             } else {
-                unsyncedMsg += folderWithoutTrailingSlash; // no link because we do not know the index yet.
+                appendFolderDisplayString(becameBigFoldersString, folderDisplayString);
             }
         }
     }
 
-    if (!unsyncedMsg.isEmpty()) {
-        ConfigFile cfg;
-        const auto info = !cfg.confirmExternalStorage() ?
-                    tr("There are folders that were not synchronized because they are too big: ") :
-                    !cfg.newBigFolderSizeLimit().first ?
-                        tr("There are folders that were not synchronized because they are external storages: ") :
-                        tr("There are folders that were not synchronized because they are too big or external storages: ");
+    ConfigFile cfg;
+    QString infoString;
 
-        _ui->selectiveSyncNotification->setText(info + unsyncedMsg);
-        _ui->bigFolderUi->setVisible(true);
+    if (!unsyncedFoldersString.isEmpty()) {
+        infoString += !cfg.confirmExternalStorage() ? tr("There are folders that were not synchronized because they are too big: ")
+            : !cfg.newBigFolderSizeLimit().first    ? tr("There are folders that were not synchronized because they are external storages: ")
+                                                    : tr("There are folders that were not synchronized because they are too big or external storages: ");
+
+        infoString += unsyncedFoldersString;
     }
+
+    if (!becameBigFoldersString.isEmpty()) {
+        if (!infoString.isEmpty()) {
+            infoString += QStringLiteral("\n");
+        }
+
+        const auto folderSizeLimitString = QString::number(cfg.newBigFolderSizeLimit().second);
+        infoString += tr("There are folders that have grown in size beyond %1MB: %2").arg(folderSizeLimitString, becameBigFoldersString);
+    }
+
+    _ui->selectiveSyncNotification->setText(infoString);
+    _ui->bigFolderUi->setVisible(!infoString.isEmpty());
 }
 
 bool AccountSettings::event(QEvent *e)
