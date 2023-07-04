@@ -53,7 +53,7 @@ rm -rf usr/include
 rm -rf usr/mkspecs
 rm -rf usr/lib/x86_64-linux-gnu/
 
-# Don't bundle the explorer extentions as we can't do anything with them in the AppImage
+# Don't bundle the explorer extensions as we can't do anything with them in the AppImage
 rm -rf usr/share/caja-python/
 rm -rf usr/share/nautilus-python/
 rm -rf usr/share/nemo-python/

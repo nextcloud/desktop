@@ -43,7 +43,7 @@ AccessManager::AccessManager(QObject *parent)
 #endif
 
 #ifndef Q_OS_LINUX
-    // Atempt to workaround for https://github.com/owncloud/client/issues/3969
+    // Attempt to workaround for https://github.com/owncloud/client/issues/3969
     setConfiguration(QNetworkConfiguration());
 #endif
     setCookieJar(new CookieJar);

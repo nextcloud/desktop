@@ -63,7 +63,7 @@ void PropagateUploadEncrypted::start()
 }
 
 /* We try to lock a folder, if it's locked we try again in one second.
- * if it's still locked we try again in one second. looping untill one minute.
+ * if it's still locked we try again in one second. looping until one minute.
  *                                                                      -> fail.
  * the 'loop':                                                         /
  *    slotFolderEncryptedIdReceived -> slotTryLock -> lockError -> stillTime? -> slotTryLock
@@ -231,7 +231,7 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
     QFileInfo outputInfo(_completeFileName);
 
     qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
-    qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
+    qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actual uploader will take over";
     emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
                    _remoteParentPath + QLatin1Char('/') + outputInfo.fileName(),
                    outputInfo.size());

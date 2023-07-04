@@ -23,7 +23,7 @@ if(NOT DEFINED CUSTOM_STATE_ICON_INDEX_OFFSET)
     set(CUSTOM_STATE_ICON_INDEX_OFFSET 1)
 endif()
 
-# indeces used for referencing icon within the binary's resources and .rc file's IDI_ICON{i} entries 'i'
+# indices used for referencing icon within the binary's resources and .rc file's IDI_ICON{i} entries 'i'
 if(NOT DEFINED CUSTOM_STATE_ICON_LOCKED_INDEX)
     set(CUSTOM_STATE_ICON_LOCKED_INDEX 1)
 endif()

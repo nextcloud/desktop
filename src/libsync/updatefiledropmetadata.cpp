@@ -143,7 +143,7 @@ void UpdateFileDropMetadataJob::slotUpdateMetadataSuccess(const QByteArray &file
     Q_UNUSED(fileId);
     qCDebug(lcUpdateFileDropMetadataJob) << "Uploading of the metadata success, Encrypting the file";
 
-    qCDebug(lcUpdateFileDropMetadataJob) << "Finalizing the upload part, now the actuall uploader will take over";
+    qCDebug(lcUpdateFileDropMetadataJob) << "Finalizing the upload part, now the actual uploader will take over";
     unlockFolder();
 }
 

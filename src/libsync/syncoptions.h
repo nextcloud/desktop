@@ -106,7 +106,7 @@ public:
 
 private:
     /**
-     * Only sync files that mathc the expression
+     * Only sync files that match the expression
      * Invalid pattern by default.
      */
     QRegularExpression _fileRegex = QRegularExpression(QStringLiteral("("));

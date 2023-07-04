@@ -124,7 +124,7 @@ The tab provides several useful options:
 Network
 ~~~~~~~
 
-.. index:: proxy settings, SOCKS, bandwith, throttling, limiting
+.. index:: proxy settings, SOCKS, bandwidth, throttling, limiting
 
 This tab consolidates ``Proxy Settings`` and ``Bandwith Limiting``:
 

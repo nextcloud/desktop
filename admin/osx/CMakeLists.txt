@@ -1,5 +1,5 @@
 
-# Check if varialbe MAC_INSTALLER_BACKGROUND_FILE is defined.
+# Check if variable MAC_INSTALLER_BACKGROUND_FILE is defined.
 # Make sure that the MAC_INSTALLER_BACKGROUND_FILE contains the full path, ie.
 # includes CMAKE_SOURCE_DIR or so.
 

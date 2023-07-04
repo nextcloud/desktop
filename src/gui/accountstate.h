@@ -159,12 +159,12 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    /** Returns the notifications status retrieved by the notificatons endpoint
+    /** Returns the notifications status retrieved by the notifications endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
     */
     bool isDesktopNotificationsAllowed() const;
 
-    /** Set desktop notifications status retrieved by the notificatons endpoint
+    /** Set desktop notifications status retrieved by the notifications endpoint
     */
     void setDesktopNotificationsAllowed(bool isAllowed);
 

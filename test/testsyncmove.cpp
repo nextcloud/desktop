@@ -351,7 +351,7 @@ private slots:
         QCOMPARE(counter.nGET, 1);
         counter.reset();
 
-        // remove localy, and remote move at the same time
+        // remove locally, and remote move at the same time
         fakeFolder.localModifier().remove("A/Q/W/a1m");
         remote.rename("A/Q/W/a1m", "A/Q/W/a1p");
         remote.rename(prefix + "/A/Q/W/a1m", prefix + "/A/Q/W/a1p");
@@ -814,7 +814,7 @@ private slots:
 
         // Test that renaming a file within a directory that was renamed on the other side actually do a rename.
 
-        // 1) move the folder alphabeticaly before
+        // 1) move the folder alphabetically before
         fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
         fakeFolder.localModifier().rename("A", "_A");
         fakeFolder.localModifier().rename("B/b1", "B/b1m");

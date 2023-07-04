@@ -172,7 +172,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
 #ifndef Q_OS_WIN
     bool success = false;
     QFile orig(originFileName);
-    // We want a rename that also overwites.  QFile::rename does not overwite.
+    // We want a rename that also overwrites.  QFile::rename does not overwrite.
     // Qt 5.1 has QSaveFile::renameOverwrite we could use.
     // ### FIXME
     success = true;

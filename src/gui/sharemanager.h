@@ -387,7 +387,7 @@ public:
      * @param password The password of the share, may be empty
      *
      * On success the signal linkShareCreated is emitted
-     * For older server the linkShareRequiresPassword signal is emitted when it seems appropiate
+     * For older server the linkShareRequiresPassword signal is emitted when it seems appropriate
      * In case of a server error the serverError signal is emitted
      */
     void createLinkShare(const QString &path,

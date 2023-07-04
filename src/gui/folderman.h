@@ -264,7 +264,7 @@ public slots:
     /**
      * Triggers a sync run once the lock on the given file is removed.
      *
-     * Automatically detemines the folder that's responsible for the file.
+     * Automatically determines the folder that's responsible for the file.
      * See slotWatchedFileUnlocked().
      */
     void slotSyncOnceFileUnlocks(const QString &path);
