@@ -196,6 +196,9 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
+
+    _ui.subHeader->setText(tr("Step 2 from 2: Directory in your CLOUD"));
+    _ui.content->setText(tr("Both folders are permanently linked, the respective contents are automatically compared and updated."));
     _ui.subContent->setText(tr("Please select or create a target folder in your %1, where the content will be uploaded and synchronized.")
                             .arg(Theme::instance()->appNameGUI()));
 }
