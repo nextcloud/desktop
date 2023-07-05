@@ -871,14 +871,16 @@ void Folder::removePathFromSelectiveSyncList(const QString &path, const SyncJour
 
 void Folder::whitelistPath(const QString &path)
 {
-    appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
     removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
+    appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
 }
 
 void Folder::blacklistPath(const QString &path)
 {
-    appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
     removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
+    appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
 }
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
