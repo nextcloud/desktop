@@ -26,6 +26,10 @@ def get_share_url():
     )
 
 
+def get_public_endpoint():
+    return path.join(get_config('localBackendUrl'), 'remote.php', 'dav', 'public-files')
+
+
 def get_public_link_shares(user):
     public_shares_list = []
     response = request.get(get_share_url(), user=user)
@@ -45,3 +49,32 @@ def has_public_link_share(user, resource_name):
             if share["file_target"].strip('\/') == resource_name:
                 return True
     return False
+
+
+def download_last_public_link_resource(user, resource, public_link_password=None):
+    last_stime = 0
+    share = False
+
+    public_link_shares = get_public_link_shares(user)
+
+    for share_link in public_link_shares:
+        if last_stime < share_link["stime"]:
+            share = share_link
+            last_stime = share_link["stime"]
+    if not share:
+        raise Exception(
+            f"Expected public link for {resource} shared by {user} could not be found"
+        )
+
+    api_url = provisioning.format_json(
+        path.join(get_public_endpoint(), share["token"], resource)
+    )
+
+    response = request.get(api_url, user='public', password=public_link_password)
+
+    if response.status_code == 200:
+        return True
+    elif response.status_code == 404:
+        return False
+    else:
+        raise Exception(f"Server returned status code: {response.status_code}")

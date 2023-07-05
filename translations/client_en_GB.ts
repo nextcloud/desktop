@@ -1969,7 +1969,7 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 was ignored as its name is reserved by %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
@@ -2006,12 +2006,13 @@ Items, where deletion is allowed, will be deleted if they prevent a directory fr
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Enable logging to temporary folder</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
@@ -2021,28 +2022,29 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
         <source>If enabled, logs will be written to:</source>
-        <translation type="unfinished"/>
+        <translation>If enabled, logs will be written to:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="91"/>
         <source>C:/log</source>
-        <translation type="unfinished"/>
+        <translation>C:/log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation type="unfinished"/>
+        <translation>Log HTTP traffic </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>Log files to keep:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
-        <translation type="unfinished"/>
+        <translation>These settings persist across client restarts.
+Note that using any logging command line options will override the settings.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="178"/>
@@ -2068,7 +2070,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="88"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 Filter:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="109"/>
@@ -2078,12 +2080,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="258"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Reset Filters</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="346"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Status Filter:</translation>
     </message>
 </context>
 <context>
@@ -2117,27 +2119,27 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="467"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Update Failed</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="487"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Ask again later</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="488"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Restart and update</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="489"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Update manually</translation>
     </message>
 </context>
 <context>
@@ -2185,7 +2187,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="180"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Note: proxy settings have no effects for accounts on localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="201"/>
@@ -2298,18 +2300,19 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Unsupported token type: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
-        <translation type="unfinished"/>
+        <translation>The reply from the server did not contain all expected fields
+:%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
-        <translation type="unfinished"/>
+        <translation>Unknown Error</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
@@ -2320,32 +2323,32 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="395"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="399"/>
         <source>Wrong user</source>
-        <translation type="unfinished"/>
+        <translation>Wrong user</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="417"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="418"/>
         <source>Login Successful</source>
-        <translation type="unfinished"/>
+        <translation>Login Successful</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="572"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>Oauth2 Error</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="573"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>Oauth2 authentication requires a secured connection.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
@@ -2381,22 +2384,22 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>Downloading %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Downloading %1. Please wait...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 available. Restart application to start the update.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>New %1 available. Please use the system&apos;s update tool to install it.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
@@ -2424,7 +2427,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="765"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>File %1 is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2492,7 +2495,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="313"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>The filename is blacklisted on the server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="416"/>
@@ -2502,27 +2505,27 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>permissions</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="420"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>etag</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="422"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>file id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="426"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>server reported no %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1259"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Moved to invalid target, restoring</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1272"/>
@@ -2552,17 +2555,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1382"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Error while reading the database</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1430"/>
         <source>This Space is currently unavailable</source>
-        <translation type="unfinished"/>
+        <translation>This Space is currently unavailable</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1450"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Server replied with an error while reading directory &apos;%1&apos; : %2</translation>
     </message>
 </context>
 <context>
@@ -2570,12 +2573,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1128"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1131"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the folder is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2583,13 +2586,13 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="435"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Failed to free up space, the file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="450"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="536"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>File %1 can not be downloaded because of a local file name clash with %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="594"/>
@@ -2609,7 +2612,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="785"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>Broken webserver returned empty content length for non-empty file on resume</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
@@ -2624,12 +2627,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="905"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>File %1 cannot be saved because of a local file name clash with %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1024"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="544"/>
@@ -2637,7 +2640,7 @@ for additional privileges during the process.</translation>
         <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1027"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="430"/>
@@ -2664,17 +2667,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>Can not create local folder %1 because of a local file name clash with %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
@@ -2687,18 +2690,18 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 failed with: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Could not remove %1 because of a local file name clash with %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2711,27 +2714,27 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Could not rename %1 to %2, the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Failed to rename file</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Error setting pin state</translation>
     </message>
 </context>
 <context>
@@ -2752,12 +2755,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error writing metadata to the database: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="185"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>Setting file status failed due to file lock</translation>
     </message>
 </context>
 <context>
@@ -2765,7 +2768,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="120"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Could not rename %1 to %2, error: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="167"/>
@@ -2775,12 +2778,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="205"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="208"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
@@ -2790,7 +2793,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="213"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Error setting pin state</translation>
     </message>
 </context>
 <context>
@@ -2798,12 +2801,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1312"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>Could not update file : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1315"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>The file %1 is currently in use</translation>
     </message>
 </context>
 <context>
@@ -2817,7 +2820,7 @@ for additional privileges during the process.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="182"/>
         <location filename="../src/libsync/propagateupload.cpp" line="213"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="248"/>
@@ -2827,12 +2830,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="112"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Local file changed during sync. It will be resumed.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Error updating metadata: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
@@ -2846,7 +2849,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="95"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="464"/>
@@ -2856,7 +2859,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="511"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>The server did ask for a removed legacy feature(polling)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="516"/>
@@ -2879,12 +2882,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="63"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>Checksum computation failed</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
@@ -2897,12 +2900,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="48"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 the file is currently in use</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="213"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>The server did ask for a removed legacy feature(polling)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="233"/>
@@ -2984,7 +2987,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>Retry sync</translation>
     </message>
 </context>
 <context>
@@ -3091,7 +3094,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="252"/>
         <source>Are you sure you want to quit %1?</source>
-        <translation type="unfinished"/>
+        <translation>Are you sure you want to quit %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="379"/>
@@ -3101,7 +3104,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"/>
+        <translation>MainWindow</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
@@ -3192,17 +3195,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="269"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Name:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
         <source>Enter name of new share...</source>
-        <translation type="unfinished"/>
+        <translation>Enter name of new share...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Create</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="221"/>
@@ -3294,7 +3297,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="285"/>
         <source>Create new...</source>
-        <translation type="unfinished"/>
+        <translation>Create new...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="578"/>
@@ -3349,7 +3352,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="96"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>You can direct people to this shared file or folder %1 by giving them a private link</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
@@ -3445,27 +3448,27 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="548"/>
         <source>Context menu share %1</source>
-        <translation type="unfinished"/>
+        <translation>Context menu share %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Confirm deletion</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="722"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="764"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Select new location...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="774"/>
@@ -3477,7 +3480,9 @@ for additional privileges during the process.</translation>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Moving file failed:
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="849"/>
@@ -3509,12 +3514,12 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="890"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Resharing this folder is not allowed</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="902"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Create and copy public link to clipboard</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="904"/>
@@ -3524,43 +3529,43 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="988"/>
         <source>Open in %1</source>
-        <translation type="unfinished"/>
+        <translation>Open in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="998"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>Show file versions in browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1019"/>
         <source>Rename...</source>
-        <translation type="unfinished"/>
+        <translation>Rename...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1022"/>
         <source>Rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Rename and upload...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1027"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1031"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>Move and rename...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1034"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Move, rename and upload...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1037"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Delete local changes</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Move and upload...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1043"/>
@@ -3573,7 +3578,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="183"/>
         <source>Open in Web</source>
-        <translation type="unfinished"/>
+        <translation>Open in Web</translation>
     </message>
 </context>
 <context>
@@ -3581,7 +3586,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="50"/>
         <source>Sync</source>
-        <translation type="unfinished"/>
+        <translation>Sync</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="52"/>
@@ -3591,17 +3596,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="54"/>
         <source>Subtitle</source>
-        <translation type="unfinished"/>
+        <translation>Subtitle</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="56"/>
         <source>Web URL</source>
-        <translation type="unfinished"/>
+        <translation>Web URL</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="58"/>
         <source>Web Dav URL</source>
-        <translation type="unfinished"/>
+        <translation>Web Dav URL</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="60"/>
@@ -3655,7 +3660,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="438"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Using virtual files with suffix, but suffix is not set</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="450"/>
@@ -3683,7 +3688,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="947"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Failed to connect database.</translation>
     </message>
 </context>
 <context>
@@ -3699,7 +3704,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="447"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public Licence (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3707,7 +3712,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="14"/>
         <source>TLS Certificate Error</source>
-        <translation type="unfinished"/>
+        <translation>TLS Certificate Error</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
@@ -3717,7 +3722,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
         <source>Cannot connect securely to %1</source>
-        <translation type="unfinished"/>
+        <translation>Cannot connect securely to %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="62"/>
@@ -3727,7 +3732,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="68"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organisation: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organisation: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -3735,22 +3740,22 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="40"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>Change url permanently to %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Reject</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>Url update requested for %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>The URL for %1 changed from %2 to %3, do you want to accept the changed URL?</translation>
     </message>
 </context>
 <context>
@@ -3758,7 +3763,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="389"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -3766,17 +3771,17 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="77"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation type="unfinished"/>
+        <translation>The Virtual filesystem feature does not support a drive as sync root</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="81"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="85"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
-        <translation type="unfinished"/>
+        <translation>The Virtual filesystem feature is not supported on network drives</translation>
     </message>
 </context>
 <context>
@@ -3784,7 +3789,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/plugins/vfs/suffix/vfs_suffix.cpp" line="110"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>Cannot create a placeholder because a file with the placeholder name already exist</translation>
     </message>
 </context>
 <context>
@@ -3792,7 +3797,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="75"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Invalid local download directory: %1</translation>
     </message>
 </context>
 <context>
@@ -3800,22 +3805,22 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="32"/>
         <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Use &amp;virtual files instead of downloading content immediately</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="57"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (recommended)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>The virtual filesystem feature is not available for this installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="77"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
-        <translation type="unfinished"/>
+        <translation>The virtual filesystem feature is not stable yet. Use with caution.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="81"/>
@@ -3860,7 +3865,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Please enter your credentials to log in to your account.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
@@ -3873,7 +3878,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="43"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Invalid credentials</translation>
     </message>
 </context>
 <context>
@@ -3887,7 +3892,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Please enter your %1:</translation>
     </message>
 </context>
 <context>
@@ -3895,12 +3900,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation type="unfinished"/>
+        <translation>Failed to parse WebFinger response: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>WebFinger endpoint did not send href attribute</translation>
     </message>
 </context>
 <context>
@@ -3913,12 +3918,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Reopen Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Please use your browser to log in to %1.</translation>
     </message>
 </context>
 <context>
@@ -3926,12 +3931,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="58"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation type="unfinished"/>
+        <translation>Error while trying to log in to OAuth2-enabled server.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="63"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation type="unfinished"/>
+        <translation>Server reports that OAuth2 is not supported.</translation>
     </message>
 </context>
 <context>
@@ -3939,7 +3944,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="16"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Welcome to %1</translation>
     </message>
 </context>
 <context>
@@ -3947,18 +3952,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="84"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>Invalid server URL</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Insecure connection</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="91"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>The connection to %1 is insecure.
+Are you sure you want to proceed?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="98"/>
@@ -3968,7 +3974,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="101"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Insecure server rejected by user</translation>
     </message>
 </context>
 <context>
@@ -3976,12 +3982,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="187"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Invalid credentials</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="190"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Failed to retrieve user information from server</translation>
     </message>
 </context>
 <context>
@@ -3989,22 +3995,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="110"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Finish</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="112"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Next &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>Cancel Setup</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="157"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>Do you really want to cancel the account setup?</translation>
     </message>
 </context>
 <context>
@@ -4022,12 +4028,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="345"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Unresolved %1 conflicts</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>Ignored errors %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
@@ -4081,27 +4087,27 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Account %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Restart all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Restart all synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="721"/>
         <source>Restart synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Restart synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Stop all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Stop all synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Stop synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Stop synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="825"/>
@@ -4166,7 +4172,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Up to date (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="364"/>
@@ -4196,7 +4202,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="827"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>Show %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="828"/>
@@ -4298,17 +4304,17 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="58"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Could not detect compatible server at %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="87"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>User rejected redirect from %1 to %2</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="115"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>User rejected invalid SSL certificate</translation>
     </message>
 </context>
 <context>
@@ -4321,7 +4327,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>What is your server&apos;s address?</translation>
     </message>
 </context>
 <context>
@@ -4349,7 +4355,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation type="unfinished"/>
+        <translation>Sync Options</translation>
     </message>
 </context>
 <context>
@@ -4357,7 +4363,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Add New Account</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4372,7 +4378,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; Back</translation>
     </message>
 </context>
 <context>
@@ -4388,7 +4394,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4396,12 +4402,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
         <source>Undefined</source>
-        <translation type="unfinished"/>
+        <translation>Undefined</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
         <source>Fatal Error</source>
-        <translation type="unfinished"/>
+        <translation>Fatal Error</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
@@ -4427,22 +4433,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>File Ignored</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>Restored</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>Blacklisted</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>Excluded</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
@@ -4460,7 +4466,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>E-mail address</translation>
     </message>
 </context>
 <context>
@@ -4523,7 +4529,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/platform_win.cpp" line="116"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>Shutting down %1</translation>
     </message>
 </context>
 <context>
@@ -4552,7 +4558,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4560,7 +4566,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="418"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Plugin dir: %1%2</translation>
     </message>
 </context>
 <context>
@@ -4568,7 +4574,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="405"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Built against Qt %2)</translation>
     </message>
 </context>
 <context>
@@ -4584,12 +4590,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Virtual file created</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Replaced by virtual file</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4614,7 +4620,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 moved to %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
@@ -4762,33 +4768,33 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Always available locally</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="87"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Some available online only</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="89"/>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Available online only</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="85"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Currently available locally</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="98"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Make always available locally</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="103"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Free up local space</translation>
     </message>
 </context>
 </TS>

@@ -2,6 +2,7 @@ import urllib.parse
 import helpers.api.HttpHelper as request
 from helpers.ConfigHelper import get_config
 from os import path
+import xml.etree.ElementTree as ET
 
 
 def get_webdav_url():
@@ -31,3 +32,19 @@ def resource_exists(user, resource):
 def get_file_content(user, resource):
     response = request.get(get_resource_path(user, resource), user=user)
     return response.text
+
+
+def get_folder_items_count(user, folder_name):
+    folder_name = folder_name.strip('/')
+    path = get_resource_path(user, folder_name)
+    xml_response = request.propfind(path, user=user)
+    total_items = 0
+    root_element = ET.fromstring(xml_response.content)
+    for response_element in root_element:
+        for href_element in response_element:
+            # The first item is folder itself so excluding it
+            if href_element.tag == '{DAV:}href' and not href_element.text.endswith(
+                f'{user}/{folder_name}/'
+            ):
+                total_items += 1
+    return str(total_items)

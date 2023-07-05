@@ -836,7 +836,7 @@ The update will be performed in the background, and overwrite the current AppIma
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 версия %2
-Помощна програма за синхронизиране на файлове за настолни компютри.</translation>
+Помощна програма за настолни компютри за синхронизиране на файлове.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -847,7 +847,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="613"/>
         <source>Show the settings dialog while starting.</source>
-        <translation>Показване на диалоговия прозорец с настройките при стартиране.</translation>
+        <translation>Показване при стартиране на диалоговия прозорец с настройките.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="614"/>
@@ -862,12 +862,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="616"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation>Записване на всяко извеждане от дневника за синхронизиране, като нов файл в папката.</translation>
+        <translation>Записване като нов файл в папката, всяко извеждане от дневника за синхронизиране.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="617"/>
         <source>Flush the log file after every write.</source>
-        <translation>Изчиствайте регистрационния файл след всяко записване.</translation>
+        <translation>Изчистване на регистрационния файл след всеки запис.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="618"/>
@@ -887,7 +887,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
         <source>Use the given configuration folder.</source>
-        <translation>Използвайте дадената конфигурационна папка.</translation>
+        <translation>Използване на дадената конфигурационна папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="622"/>
@@ -897,7 +897,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="625"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation>Файл на виртуалната файлова система, който да бъде отворен (по избор).</translation>
+        <translation>Файл от виртуалната файлова система, който да бъде отворен (по избор).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="625"/>
@@ -907,7 +907,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="641"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation>--logfile и --logdir се изключват взаимно</translation>
+        <translation>--logfile и --logdir взаимно се изключват</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="655"/>
@@ -917,7 +917,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="668"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
-        <translation>Грешка: непознат език &quot;%1&quot; (използвайте --list-languages за да получите пълен списък на поддържаните преводи)</translation>
+        <translation>Грешка: непознат език &quot;%1&quot; (използвайте --list-languages, за да получите пълен списък с поддържаните преводи)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="677"/>
@@ -1094,7 +1094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="227"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Пътят &apos;%1&apos; е твърде дълъг. Моля, активирайте дългите пътища в настройките на Windows или изберете друга папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="235"/>
@@ -1315,7 +1315,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>Offline.</source>
-        <translation type="unfinished"/>
+        <translation>Офлайн.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1130"/>
@@ -1330,7 +1330,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1167"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Пътят &apos;%1&apos; е твърде дълъг. Моля, активирайте дългите пътища в настройките на Windows или изберете друга папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1173"/>
@@ -3891,7 +3891,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/newwizard/pages/legacywebfingersetupwizardpage.cpp" line="51"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation>Моля, въведете вашия %1:</translation>
+        <translation>Моля, въведете %1:</translation>
     </message>
 </context>
 <context>
@@ -3904,7 +3904,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/legacywebfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation>Крайната точка на WebFinger не изпрати атрибут href</translation>
+        <translation>Крайната точка на WebFinger не изпрати атрибута href</translation>
     </message>
 </context>
 <context>
@@ -4086,7 +4086,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1</source>
-        <translation type="unfinished"/>
+        <translation>Профил %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="719"/>
