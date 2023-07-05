@@ -735,10 +735,11 @@ void User::slotAddErrorToGui(const QString &folderAlias, const SyncFileItem::Sta
 
 void User::slotAddNotification(const Folder *folder, const Activity &activity)
 {
-    if (!isActivityOfCurrentAccount(folder)) {
+    if (!isActivityOfCurrentAccount(folder) || _notifiedNotifications.contains(activity._id)) {
         return;
     }
 
+    _notifiedNotifications.insert(activity._id);
     _activityModel->addNotificationToActivityList(activity);
 }
 
