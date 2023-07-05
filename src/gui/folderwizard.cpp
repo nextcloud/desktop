@@ -78,6 +78,10 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
 
+    _ui.content->setText(tr("Select a folder on your hard drive, that will be connected to your %1 and permanently connected. All files and sub-folders are automatically uploaded and "
+                            "synchronized.").arg(Theme::instance()->appNameGUI()));
+    _ui.subHeader->setText(tr("Step 1 from 2: Local Folder"));
+
     changeStyle();
 }
 
@@ -192,6 +196,11 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
+
+    _ui.subHeader->setText(tr("Step 2 from 2: Directory in your CLOUD"));
+    _ui.content->setText(tr("Both folders are permanently linked, the respective contents are automatically compared and updated."));
+    _ui.subContent->setText(tr("Please select or create a target folder in your %1, where the content will be uploaded and synchronized.")
+                            .arg(Theme::instance()->appNameGUI()));
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
@@ -634,6 +643,7 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
+    setWizardStyle(QWizard::ClassicStyle);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage);
     _folderWizardSourcePage->installEventFilter(this);
