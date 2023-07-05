@@ -14,15 +14,11 @@
 
 #include "discoverwebfingerservicejobfactory.h"
 
-#include "accessmanager.h"
 #include "common/utility.h"
-#include "creds/httpcredentials.h"
-#include "gui/tlserrordialog.h"
-#include "gui/updateurldialog.h"
-#include "theme.h"
 
 #include <QApplication>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QJsonParseError>
 #include <QNetworkReply>
 

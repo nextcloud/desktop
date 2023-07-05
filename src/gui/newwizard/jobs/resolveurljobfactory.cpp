@@ -14,7 +14,6 @@
 
 #include "resolveurljobfactory.h"
 
-#include "accessmanager.h"
 #include "common/utility.h"
 #include "gui/application.h"
 #include "gui/owncloudgui.h"
