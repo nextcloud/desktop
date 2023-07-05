@@ -210,8 +210,8 @@ public:
     [[nodiscard]]  QImage avatarById(const int id) const;
 
     [[nodiscard]] User *currentUser() const;
-
-    int findUserIdForAccount(AccountState *account) const;
+    [[nodiscard]] User *findUserForAccount(AccountState *account) const;
+    [[nodiscard]] int findUserIdForAccount(AccountState *account) const;
 
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();

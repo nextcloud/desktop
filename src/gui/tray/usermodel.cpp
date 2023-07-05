@@ -1526,6 +1526,21 @@ User *UserModel::currentUser() const
     return _users[currentUserId()];
 }
 
+User *UserModel::findUserForAccount(AccountState *account) const
+{
+    Q_ASSERT(account);
+
+    const auto it = std::find_if(_users.cbegin(), _users.cend(), [account](const User *user) {
+        return user->account()->id() == account->account()->id();
+    });
+
+    if (it == _users.cend()) {
+        return nullptr;
+    }
+
+    return *it;
+}
+
 int UserModel::findUserIdForAccount(AccountState *account) const
 {
     const auto it = std::find_if(std::cbegin(_users), std::cend(_users), [=](const User *user) {
