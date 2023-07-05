@@ -16,6 +16,13 @@
 
 using namespace std::chrono_literals;
 
+namespace {
+inline auto chunkingNgUploadPathC()
+{
+    return QStringLiteral("/owncloud/remote.php/dav/uploads/admin/");
+}
+}
+
 PathComponents::PathComponents(const QString &path)
     : QStringList { path.split(QLatin1Char('/'), Qt::SkipEmptyParts) }
 {
@@ -879,13 +886,14 @@ QNetworkReply *FakeAM::createRequest(QNetworkAccessManager::Operation op, const 
     }
     if (!reply) {
         const QString fileName = getFilePathFromUrl(newRequest.url());
-        Q_ASSERT(!fileName.isNull());
+        Q_ASSERT(!fileName.isNull()); // we only expect webdav request for which we might get an empty sting but  not a null string
         if (_errorPaths.contains(fileName)) {
             reply = new FakeErrorReply { op, newRequest, this, _errorPaths[fileName] };
         }
     }
     if (!reply) {
-        const bool isUpload = newRequest.url().path().startsWith(sUploadUrl.path());
+        // detect chunking ng upload
+        const bool isUpload = newRequest.url().path().startsWith(chunkingNgUploadPathC());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
         const auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
@@ -1179,4 +1187,22 @@ FakeReply::FakeReply(QObject *parent)
 
 FakeReply::~FakeReply()
 {
+}
+
+QString getFilePathFromUrl(const QUrl &url)
+{
+    const QString path = url.path();
+    // old school dav url
+    const QString sRootUrl = QStringLiteral("/owncloud/remote.php/webdav/");
+    // more modern dav url including user name
+    const QString sRootUrl2 = QStringLiteral("/owncloud/remote.php/dav/files/admin/");
+
+    if (path.startsWith(sRootUrl)) {
+        return path.mid(sRootUrl.length());
+    } else if (path.startsWith(sRootUrl2)) {
+        return path.mid(sRootUrl2.length());
+    } else if (path.startsWith(chunkingNgUploadPathC())) {
+        return path.mid(chunkingNgUploadPathC().length());
+    }
+    return {};
 }

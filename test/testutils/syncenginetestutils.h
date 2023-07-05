@@ -35,22 +35,7 @@ using namespace OCC::FileSystem::SizeLiterals;
  * only works when directly called from a QTest :-(
  */
 
-
-static const QUrl sRootUrl = QUrl::fromEncoded("owncloud://somehost/owncloud/remote.php/webdav/");
-static const QUrl sRootUrl2 = QUrl::fromEncoded("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
-static const QUrl sUploadUrl = QUrl::fromEncoded("owncloud://somehost/owncloud/remote.php/dav/uploads/admin/");
-
-inline QString getFilePathFromUrl(const QUrl &url)
-{
-    QString path = url.path();
-    if (path.startsWith(sRootUrl.path()))
-        return path.mid(sRootUrl.path().length());
-    if (path.startsWith(sRootUrl2.path()))
-        return path.mid(sRootUrl2.path().length());
-    if (path.startsWith(sUploadUrl.path()))
-        return path.mid(sUploadUrl.path().length());
-    return {};
-}
+QString getFilePathFromUrl(const QUrl &url);
 
 
 inline QByteArray generateEtag()
