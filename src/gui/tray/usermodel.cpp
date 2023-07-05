@@ -733,6 +733,15 @@ void User::slotAddErrorToGui(const QString &folderAlias, const SyncFileItem::Sta
     }
 }
 
+void User::slotAddNotification(const Folder *folder, const Activity &activity)
+{
+    if (!isActivityOfCurrentAccount(folder)) {
+        return;
+    }
+
+    _activityModel->addNotificationToActivityList(activity);
+}
+
 bool User::isActivityOfCurrentAccount(const Folder *folder) const
 {
     return folder->accountState() == _account.data();

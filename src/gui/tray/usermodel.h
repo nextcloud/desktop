@@ -8,12 +8,13 @@
 #include <QQuickImageProvider>
 #include <QHash>
 
-#include "activitylistmodel.h"
 #include "accountfwd.h"
 #include "accountmanager.h"
+#include "activitydata.h"
+#include "activitylistmodel.h"
 #include "folderman.h"
-#include "userstatusselectormodel.h"
 #include "userstatusconnector.h"
+#include "userstatusselectormodel.h"
 #include <chrono>
 
 namespace OCC {
@@ -118,6 +119,7 @@ public slots:
     void slotProgressInfo(const QString &folder, const OCC::ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, OCC::ErrorCategory category);
     void slotAddErrorToGui(const QString &folderAlias, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+    void slotAddNotification(const OCC::Folder *folder, const OCC::Activity &activity);
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
