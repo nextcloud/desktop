@@ -1259,6 +1259,29 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
                                 "Please go into the settings and disable it if you wish to stop synchronising it.")
                                  .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath);
         Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
+
+        auto blacklistActivityLink = ActivityLink();
+        blacklistActivityLink._label = tr("Stop syncing");
+        blacklistActivityLink._primary = true;
+        blacklistActivityLink._verb = "BLACKLIST_FOLDER";
+
+        auto whitelistActivityLink = ActivityLink();
+        whitelistActivityLink._label = tr("Keep syncing");
+        whitelistActivityLink._primary = false;
+        whitelistActivityLink._verb = "WHITELIST_FOLDER";
+
+        auto existingFolderNowBigActivity = Activity();
+        existingFolderNowBigActivity._type = Activity::NotificationType;
+        existingFolderNowBigActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        existingFolderNowBigActivity._subject =
+            tr("The folder %1 has surpassed the set folder size limit of %2MB.").arg(folderPath, QString::number(ConfigFile().newBigFolderSizeLimit().second));
+        existingFolderNowBigActivity._message = tr("Would you like to stop syncing this folder?");
+        existingFolderNowBigActivity._accName = _accountState->account()->displayName();
+        existingFolderNowBigActivity._folder = alias();
+        existingFolderNowBigActivity._links = {blacklistActivityLink, whitelistActivityLink};
+
+        const auto user = UserModel::instance()->findUserForAccount(_accountState.data());
+        user->slotAddNotification(this, existingFolderNowBigActivity);
     }
 }
 
