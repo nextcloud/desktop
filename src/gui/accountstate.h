@@ -199,11 +199,6 @@ private:
 };
 }
 
-inline size_t qHash(const OCC::AccountStatePtr &acs, size_t seed)
-{
-    return qHash(acs.data(), seed);
-}
-
 Q_DECLARE_METATYPE(OCC::AccountState *)
 Q_DECLARE_METATYPE(OCC::AccountStatePtr)
 

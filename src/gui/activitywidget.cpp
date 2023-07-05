@@ -489,6 +489,9 @@ ActivitySettings::ActivitySettings(QWidget *parent)
 
     // We want the protocol be the default
     _tab->setCurrentIndex(1);
+
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this,
+        [this](const AccountStatePtr &accountStatePtr) { _timeSinceLastCheck.take(accountStatePtr); });
 }
 
 void ActivitySettings::setNotificationRefreshInterval(std::chrono::milliseconds interval)

@@ -364,7 +364,7 @@ void SettingsDialog::showIssuesList()
     _activitySettings->slotShowIssuesTab();
 }
 
-void SettingsDialog::accountAdded(AccountStatePtr s)
+void SettingsDialog::accountAdded(AccountStatePtr accountStatePtr)
 {
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
@@ -373,8 +373,8 @@ void SettingsDialog::accountAdded(AccountStatePtr s)
     }
 
     QAction *accountAction;
-    const QPixmap avatar = s->account()->avatar();
-    const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
+    const QPixmap avatar = accountStatePtr->account()->avatar();
+    const QString actionText = brandingSingleAccount ? tr("Account") : accountStatePtr->account()->displayName();
     if (avatar.isNull()) {
         accountAction = new ToolButtonAction(QStringLiteral("account"), actionText, this);
     } else {
@@ -383,30 +383,30 @@ void SettingsDialog::accountAdded(AccountStatePtr s)
     }
 
     if (!brandingSingleAccount) {
-        accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(shortDisplayNameForSettings(s->account().data()));
+        accountAction->setToolTip(accountStatePtr->account()->displayName());
+        accountAction->setIconText(shortDisplayNameForSettings(accountStatePtr->account().data()));
     }
     _ui->toolBar->insertAction(_addAccountAction ? _ui->toolBar->actions().at(1) : _ui->toolBar->actions().at(0), accountAction);
-    auto accountSettings = new AccountSettings(s, this);
+    auto accountSettings = new AccountSettings(accountStatePtr, this);
     QString objectName = QStringLiteral("accountSettings_");
-    objectName += s->account()->displayName();
+    objectName += accountStatePtr->account()->displayName();
     accountSettings->setObjectName(objectName);
     _ui->stack->insertWidget(0 , accountSettings);
 
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
-    _actionForAccount.insert(s->account().data(), accountAction);
+    _actionForAccount.insert(accountStatePtr->account().data(), accountAction);
     accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
-    connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
-    connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
+    connect(accountStatePtr->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
+    connect(accountStatePtr->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     // Refresh immediatly when getting online
-    connect(s.data(), &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
-
-    slotRefreshActivity(s);
+    connect(accountStatePtr.data(), &AccountState::isConnectedChanged, _activitySettings,
+        [this, accountStatePtr] { _activitySettings->slotRefresh(accountStatePtr); });
+    _activitySettings->slotRefresh(accountStatePtr);
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
@@ -481,18 +481,6 @@ void SettingsDialog::customizeStyle()
     }
 }
 
-void SettingsDialog::slotRefreshActivityAccountStateSender()
-{
-    AccountStatePtr accountState(qobject_cast<AccountState *>(sender()));
-    slotRefreshActivity(accountState);
-}
-
-void SettingsDialog::slotRefreshActivity(const AccountStatePtr &accountState)
-{
-    if (accountState) {
-        _activitySettings->slotRefresh(accountState);
-    }
-}
 
 } // namespace OCC
 

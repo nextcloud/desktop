@@ -40,6 +40,12 @@ Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)
 ActivityListModel::ActivityListModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](const AccountStatePtr &accountStatePtr) {
+        _activityLists.remove(accountStatePtr.get());
+        if (auto *job = _currentlyFetching.take(accountStatePtr.get())) {
+            job->abort();
+        }
+    });
 }
 
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
@@ -192,8 +198,8 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
     }
     auto *job = new JsonApiJob(ast->account(), QStringLiteral("ocs/v2.php/cloud/activity"), { { QStringLiteral("page"), QStringLiteral("0") }, { QStringLiteral("pagesize"), QStringLiteral("100") } }, {}, this);
 
-    QObject::connect(job, &JsonApiJob::finishedSignal,
-        this, [job, ast, this] {
+    QObject::connect(
+        job, &JsonApiJob::finishedSignal, this, [job, ast, this] {
             _currentlyFetching.remove(ast);
             const auto activities = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toArray();
 
@@ -225,7 +231,7 @@ void ActivityListModel::startFetchJob(AccountStatePtr ast)
             combineActivityLists();
         });
 
-    _currentlyFetching.insert(ast);
+    _currentlyFetching.insert(ast, job);
     qCInfo(lcActivity) << "Start fetching activities for " << ast->account()->displayName();
     job->start();
 }

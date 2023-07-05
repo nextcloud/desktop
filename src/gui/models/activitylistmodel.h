@@ -73,9 +73,9 @@ private:
     void startFetchJob(AccountStatePtr s);
     void combineActivityLists();
 
-    QMap<AccountStatePtr, ActivityList> _activityLists;
+    QMap<AccountState *, ActivityList> _activityLists;
     ActivityList _finalList;
-    QSet<AccountStatePtr> _currentlyFetching;
+    QMap<AccountState *, AbstractNetworkJob *> _currentlyFetching;
 
     friend class TestActivityModel;
 };

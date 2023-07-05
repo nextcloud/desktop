@@ -162,7 +162,7 @@ private:
     IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
     QTimer _notificationCheckTimer;
-    QHash<AccountStatePtr, QElapsedTimer> _timeSinceLastCheck;
+    QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 };
 }
 #endif // ActivityWIDGET_H
