@@ -1266,7 +1266,9 @@ void FolderMan::whitelistFolderPath(const QString &path)
         return;
     }
 
-    folder->whitelistPath(path);
+    const QString folderPath = folder->cleanPath() + QLatin1Char('/');
+    const auto relPath = path.mid(folderPath.length());
+    folder->whitelistPath(relPath);
 }
 
 void FolderMan::blacklistFolderPath(const QString &path)
@@ -1276,7 +1278,9 @@ void FolderMan::blacklistFolderPath(const QString &path)
         return;
     }
 
-    folder->blacklistPath(path);
+    const QString folderPath = folder->cleanPath() + QLatin1Char('/');
+    const auto relPath = path.mid(folderPath.length());
+    folder->blacklistPath(relPath);
 }
 
 QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const AccountPtr acc)

@@ -1263,6 +1263,16 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
     const auto trailSlashFolderPath = trailingSlashPath(folderPath);
     const auto journal = journalDb();
 
+    // Add the entry to the whitelist if it is neither in the blacklist or whitelist already
+    bool ok1 = false;
+    bool ok2 = false;
+    auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
+    auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
+    if (ok1 && ok2 && !blacklist.contains(trailSlashFolderPath) && !whitelist.contains(trailSlashFolderPath)) {
+        whitelist.append(trailSlashFolderPath);
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whitelist);
+    }
+
     auto undecidedListQueryOk = false;
     auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &undecidedListQueryOk);
     if (undecidedListQueryOk) {
@@ -1295,6 +1305,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         existingFolderNowBigActivity._message = tr("Would you like to stop syncing this folder?");
         existingFolderNowBigActivity._accName = _accountState->account()->displayName();
         existingFolderNowBigActivity._folder = alias();
+        existingFolderNowBigActivity._file = cleanPath() + '/' + trailSlashFolderPath;
         existingFolderNowBigActivity._links = {blacklistActivityLink, whitelistActivityLink};
         existingFolderNowBigActivity._id = qHash(existingFolderNowBigActivity._file);
 
