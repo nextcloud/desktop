@@ -14,7 +14,6 @@ OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CLIENT = "owncloudci/client:latest"
 OC_CI_CORE = "owncloudci/core"
-OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
 OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 OC_CI_NODEJS = "owncloudci/nodejs:16"
 OC_CI_PHP = "owncloudci/php:%s"
@@ -96,8 +95,7 @@ config = {
 }
 
 def main(ctx):
-    pipelines = cancelPreviousBuilds() + \
-                check_starlark() + \
+    pipelines = check_starlark() + \
                 gui_tests_format() + \
                 changelog(ctx)
     unit_tests = unit_test_pipeline(ctx)
@@ -704,30 +702,6 @@ def githubComment(alternateSuiteName, server_type = "oc10"):
             "status": [
                 "failure",
             ],
-            "event": [
-                "pull_request",
-            ],
-        },
-    }]
-
-def cancelPreviousBuilds():
-    return [{
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "cancel-previous-builds",
-        "clone": {
-            "disable": True,
-        },
-        "steps": [{
-            "name": "cancel-previous-builds",
-            "image": OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS,
-            "settings": {
-                "DRONE_TOKEN": {
-                    "from_secret": "drone_token",
-                },
-            },
-        }],
-        "trigger": {
             "event": [
                 "pull_request",
             ],
