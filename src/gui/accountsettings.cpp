@@ -1507,7 +1507,8 @@ void AccountSettings::refreshSelectiveSyncStatus()
         auto ok = false;
         auto blacklistOk = false;
         const auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
-        const auto blacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &blacklistOk);
+        auto blacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &blacklistOk);
+        blacklist.sort();
 
         for (const auto &it : undecidedList) {
             // FIXME: add the folder alias in a hoover hint.
