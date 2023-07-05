@@ -1173,6 +1173,8 @@ FakeReply::FakeReply(QObject *parent)
     : QNetworkReply(parent)
 {
     setRawHeader(QByteArrayLiteral("Date"), OCC::Utility::formatRFC1123Date(QDateTime::currentDateTimeUtc()).toUtf8());
+    // emulate the real world
+    QTimer::singleShot(0, this, &QNetworkReply::requestSent);
 }
 
 FakeReply::~FakeReply()
