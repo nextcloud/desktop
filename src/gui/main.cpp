@@ -127,7 +127,7 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     parser.addOption(showSettingsLegacyOption);
 
     auto showOption =
-        addOption({{QStringLiteral("s"), QStringLiteral("show")}, QStringLiteral("Show the main window. By default the client is started in the background.")});
+        addOption({{QStringLiteral("s"), QStringLiteral("show")}, QStringLiteral("Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.")});
     auto quitInstanceOption = addOption({{QStringLiteral("q"), QStringLiteral("quit")}, QStringLiteral("Quit the running instance.")});
     auto logFileOption = addOption({QStringLiteral("logfile"), QStringLiteral("Write log to file (use - to write to stdout)."), QStringLiteral("filename")});
     auto logDirOption = addOption({QStringLiteral("logdir"), QStringLiteral("Write each sync log output in a new file in folder."), QStringLiteral("name")});
