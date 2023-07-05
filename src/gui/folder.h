@@ -301,6 +301,9 @@ public:
 
     QString fileFromLocalPath(const QString &localPath) const;
 
+    void whitelistPath(const QString &path);
+    void blacklistPath(const QString &path);
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -467,6 +470,8 @@ private:
     void startVfs();
 
     void correctPlaceholderFiles();
+
+    void appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;
