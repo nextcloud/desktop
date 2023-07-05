@@ -16,6 +16,9 @@
 
 #include "gui/folderman.h"
 #include "gui/scheduling/etagwatcher.h"
+#include "libsync/configfile.h"
+
+using namespace std::chrono_literals;
 
 using namespace OCC;
 
@@ -95,6 +98,19 @@ SyncScheduler::SyncScheduler(FolderMan *parent)
     , _queue(new FolderPriorityQueue)
 {
     new ETagWatcher(parent, this);
+
+    // Normal syncs are performed incremental but when fullLocalDiscoveryInterval times out
+    // a complete local discovery is performed.
+    // This timer here triggers a sync independent of etag changes on the server.
+    auto *fullLocalDiscoveryTimer = new QTimer(this);
+    fullLocalDiscoveryTimer->setInterval(ConfigFile().fullLocalDiscoveryInterval() + 2min);
+    connect(fullLocalDiscoveryTimer, &QTimer::timeout, this, [parent, this] {
+        for (auto *f : parent->folders()) {
+            if (f->isReady() && f->accountState()->state() == AccountState::State::Connected) {
+                enqueueFolder(f);
+            }
+        }
+    });
 }
 
 
