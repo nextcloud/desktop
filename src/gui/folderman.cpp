@@ -1259,6 +1259,26 @@ Folder *FolderMan::folderForPath(const QString &path)
     return it != folders.cend() ? *it : nullptr;
 }
 
+void FolderMan::whitelistFolderPath(const QString &path)
+{
+    const auto folder = folderForPath(path);
+    if (!folder) {
+        return;
+    }
+
+    folder->whitelistPath(path);
+}
+
+void FolderMan::blacklistFolderPath(const QString &path)
+{
+    const auto folder = folderForPath(path);
+    if (!folder) {
+        return;
+    }
+
+    folder->blacklistPath(path);
+}
+
 QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const AccountPtr acc)
 {
     QStringList re;

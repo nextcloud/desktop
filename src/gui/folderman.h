@@ -104,6 +104,9 @@ public:
     /** Returns the folder which the file or directory stored in path is in */
     Folder *folderForPath(const QString &path);
 
+    void whitelistFolderPath(const QString &path);
+    void blacklistFolderPath(const QString &path);
+
     /**
       * returns a list of local files that exist on the local harddisk for an
       * incoming relative server path. The method checks with all existing sync
