@@ -472,6 +472,7 @@ private:
     void correctPlaceholderFiles();
 
     void appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+    void removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;

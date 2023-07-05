@@ -856,14 +856,29 @@ void Folder::appendPathToSelectiveSyncList(const QString &path, const SyncJourna
     }
 }
 
+void Folder::removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType)
+{
+    const auto folderPath = trailingSlashPath(path);
+    const auto journal = journalDb();
+    auto ok = false;
+    auto list = journal->getSelectiveSyncList(listType, &ok);
+
+    if (ok) {
+        list.removeAll(folderPath);
+        journal->setSelectiveSyncList(listType, list);
+    }
+}
+
 void Folder::whitelistPath(const QString &path)
 {
     appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
 }
 
 void Folder::blacklistPath(const QString &path)
 {
     appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
 }
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
