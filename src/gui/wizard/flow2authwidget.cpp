@@ -42,8 +42,8 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
     WizardCommon::initErrorLabel(_ui.errorLabel);
     _ui.errorLabel->setTextFormat(Qt::RichText);
 
-    connect(_ui.openLinkLabel, &LinkLabel::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
-    connect(_ui.copyLinkLabel, &LinkLabel::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
+    connect(_ui.openLinkButton, &QPushButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
+    connect(_ui.copyLinkButton, &QPushButton::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
 
     auto sizePolicy = _progressIndi->sizePolicy();
     sizePolicy.setRetainSizeWhenHidden(true);
@@ -186,8 +186,8 @@ void Flow2AuthWidget::startSpinner()
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 
-    _ui.openLinkLabel->setEnabled(false);
-    _ui.copyLinkLabel->setEnabled(false);
+    _ui.openLinkButton->setEnabled(false);
+    _ui.copyLinkButton->setEnabled(false);
 }
 
 void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
@@ -197,8 +197,8 @@ void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 
-    _ui.openLinkLabel->setEnabled(_statusUpdateSkipCount == 0);
-    _ui.copyLinkLabel->setEnabled(_statusUpdateSkipCount == 0);
+    _ui.openLinkButton->setEnabled(_statusUpdateSkipCount == 0);
+    _ui.copyLinkButton->setEnabled(_statusUpdateSkipCount == 0);
 }
 
 void Flow2AuthWidget::slotStyleChanged()
@@ -219,11 +219,9 @@ void Flow2AuthWidget::customizeStyle()
         }
     }
 
-    _ui.openLinkLabel->setText(tr("Reopen Browser"));
-    _ui.openLinkLabel->setAlignment(Qt::AlignCenter);
+    _ui.openLinkButton->setText(tr("Open Browser"));
 
-    _ui.copyLinkLabel->setText(tr("Copy Link"));
-    _ui.copyLinkLabel->setAlignment(Qt::AlignCenter);
+    _ui.copyLinkButton->setText(tr("Copy Link"));
 
     WizardCommon::customizeHintLabel(_ui.statusLabel);
 }
