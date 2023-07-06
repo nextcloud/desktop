@@ -52,6 +52,11 @@
 #include "libcloudproviders/libcloudproviders.h"
 #endif
 
+
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
+
 using namespace std::chrono_literals;
 
 namespace {

@@ -34,6 +34,7 @@ int c_utimes(const QString &uri, const struct timeval *times) {
 #else // HAVE_UTIMES
 
 #ifdef _WIN32
+#include "common/utility_win.h"
 // implementation for utimes taken from KDE mingw headers
 
 #include <errno.h>

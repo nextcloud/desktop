@@ -17,8 +17,9 @@ using namespace std::chrono_literals;
 using namespace OCC;
 
 #ifdef Q_OS_WIN
+#include "common/utility_win.h"
 // pass combination of FILE_SHARE_READ, FILE_SHARE_WRITE, FILE_SHARE_DELETE
-HANDLE makeHandle(const QString &file, int shareMode)
+Utility::Handle makeHandle(const QString &file, int shareMode)
 {
     const auto fName = FileSystem::longWinPath(file);
     const wchar_t *wuri = reinterpret_cast<const wchar_t *>(fName.utf16());
@@ -32,7 +33,7 @@ HANDLE makeHandle(const QString &file, int shareMode)
     if (handle == INVALID_HANDLE_VALUE) {
         qWarning() << GetLastError();
     }
-    return handle;
+    return Utility::Handle(handle);
 }
 #endif
 

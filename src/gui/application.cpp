@@ -40,6 +40,10 @@
 #include "updater/ocupdater.h"
 #endif
 
+#if defined(Q_OS_WIN)
+#include <qt_windows.h>
+#endif
+
 #include <QApplication>
 #include <QDesktopServices>
 #include <QDir>

@@ -27,6 +27,9 @@
 #include <QLoggingCategory>
 #include <QPluginLoader>
 
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 using namespace OCC;
 
 Vfs::Vfs(QObject* parent)

@@ -45,6 +45,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 #endif
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 
 #include <cstring>
 #include <math.h>

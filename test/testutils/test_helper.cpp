@@ -20,8 +20,12 @@
 #include <iostream>
 #include <vector>
 
-#include <common/utility.h>
-#include <libsync/filesystem.h>
+#include "common/utility.h"
+#include "libsync/filesystem.h"
+
+#ifdef Q_OS_WIN
+#include "common/utility_win.h"
+#endif
 
 
 /*

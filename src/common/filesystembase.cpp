@@ -31,9 +31,7 @@
 #include <sys/types.h>
 
 #ifdef Q_OS_WIN
-#include <windows.h>
-#include <windef.h>
-#include <winbase.h>
+#include "utility_win.h"
 #include <fcntl.h>
 #include <io.h>
 #endif
@@ -498,51 +496,51 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 }
 
 #ifdef Q_OS_WIN
-Utility::Handle FileSystem::lockFile(const QString &fileName, LockMode mode)
-{
-    const QString fName = longWinPath(fileName);
-    int shareMode = 0;
-    int accessMode = GENERIC_READ | GENERIC_WRITE;
-    switch (mode) {
-    case LockMode::Exclusive:
-        shareMode = 0;
-        break;
-    case LockMode::Shared:
-        shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
-        break;
-    case LockMode::SharedRead:
-        shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
-        accessMode = GENERIC_READ;
-        break;
-    }
-    // Check if file exists
-    DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
-    if (attr != INVALID_FILE_ATTRIBUTES) {
-        // Try to open the file with as much access as possible..
-        auto out = Utility::Handle { CreateFileW(
-            reinterpret_cast<const wchar_t *>(fName.utf16()),
-            accessMode,
-            shareMode,
-            nullptr,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-            nullptr) };
 
-        if (out) {
-            LARGE_INTEGER start;
-            start.QuadPart = 0;
-            LARGE_INTEGER end;
-            end.QuadPart = -1;
-            if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
-                OC_ENSURE(UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart));
-                return out;
-            } else {
-                return {};
-            }
+namespace {
+    /**
+     * This function creates a file handle with the desired LockMode
+     */
+    Utility::Handle lockFile(const QString &fileName, FileSystem::LockMode mode)
+    {
+        const QString fName = FileSystem::longWinPath(fileName);
+        int shareMode = 0;
+        int accessMode = GENERIC_READ | GENERIC_WRITE;
+        switch (mode) {
+        case FileSystem::LockMode::Exclusive:
+            shareMode = 0;
+            break;
+        case FileSystem::LockMode::Shared:
+            shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+            break;
+        case FileSystem::LockMode::SharedRead:
+            shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+            accessMode = GENERIC_READ;
+            break;
         }
-        return out;
+        // Check if file exists
+        DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
+        if (attr != INVALID_FILE_ATTRIBUTES) {
+            // Try to open the file with as much access as possible..
+            auto out = Utility::Handle{CreateFileW(reinterpret_cast<const wchar_t *>(fName.utf16()), accessMode, shareMode, nullptr, OPEN_EXISTING,
+                FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS, nullptr)};
+
+            if (out) {
+                LARGE_INTEGER start;
+                start.QuadPart = 0;
+                LARGE_INTEGER end;
+                end.QuadPart = -1;
+                if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
+                    OC_ENSURE(UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart));
+                    return out;
+                } else {
+                    return {};
+                }
+            }
+            return out;
+        }
+        return {};
     }
-    return {};
 }
 #endif
 

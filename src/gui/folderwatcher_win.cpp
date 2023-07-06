@@ -18,6 +18,7 @@
 
 #include "common/asserts.h"
 #include "common/utility.h"
+#include "common/utility_win.h"
 #include "filesystem.h"
 #include "folderwatcher.h"
 #include "folderwatcher_win.h"

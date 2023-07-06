@@ -30,8 +30,7 @@
 #include "propagatorjobs.h"
 
 #ifdef Q_OS_WIN
-#include <winbase.h>
-#include <windef.h>
+#include "common/utility_win.h"
 #endif
 
 #include <QApplication>
@@ -592,12 +591,10 @@ Result<QString, bool> OwncloudPropagator::localFileNameClash(const QString &relF
         }
 #elif defined(Q_OS_WIN)
         WIN32_FIND_DATA FindFileData;
-        HANDLE hFind;
-
-        hFind = FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(fileInfo.filePath()).utf16()), &FindFileData);
+        const Utility::Handle hFind(FindFirstFileW(reinterpret_cast<const wchar_t *>(FileSystem::longWinPath(fileInfo.filePath()).utf16()), &FindFileData),
+            [](HANDLE h) { FindClose(h); });
         if (hFind != INVALID_HANDLE_VALUE) {
             const QString realFileName = QString::fromWCharArray(FindFileData.cFileName);
-            FindClose(hFind);
 
             if (!fileInfo.filePath().endsWith(realFileName, Qt::CaseSensitive)) {
                 const QString clashName = fileInfo.path() + QLatin1Char('/') + realFileName;

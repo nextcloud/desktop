@@ -15,9 +15,9 @@
 #ifndef MIRALL_FOLDERWATCHER_WIN_H
 #define MIRALL_FOLDERWATCHER_WIN_H
 
-#include <QThread>
 #include <QAtomicInt>
-#include <windows.h>
+#include <QThread>
+#include <qt_windows.h>
 
 namespace OCC {
 

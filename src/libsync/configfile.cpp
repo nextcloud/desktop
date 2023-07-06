@@ -15,6 +15,9 @@
 #include "common/asserts.h"
 #include "common/utility.h"
 #include "common/version.h"
+#ifdef Q_OS_WIN
+#include "common/utility_win.h"
+#endif
 #include "configfile.h"
 #include "logger.h"
 #include "theme.h"

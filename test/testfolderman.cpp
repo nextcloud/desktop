@@ -19,6 +19,8 @@
 
 #ifndef Q_OS_WIN
 #include <unistd.h>
+#else
+#include "common/utility_win.h"
 #endif
 
 using namespace OCC;

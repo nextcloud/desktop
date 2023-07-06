@@ -29,27 +29,15 @@
 #include "propagatedownload.h"
 #include "propagateremotedelete.h"
 
-#ifdef Q_OS_WIN
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
-
-#include <climits>
-#include <assert.h>
 #include <chrono>
 
 #include <QCoreApplication>
 #include <QDir>
-#include <QElapsedTimer>
 #include <QLoggingCategory>
-#include <QMutexLocker>
 #include <QProcess>
-#include <QSslCertificate>
 #include <QSslSocket>
 #include <QStringList>
 #include <QTextStream>
-#include <QThread>
 #include <QTime>
 #include <QUrl>
 

@@ -40,6 +40,10 @@
 #include "syncrunfilelog.h"
 #include "theme.h"
 
+#ifdef Q_OS_WIN
+#include "common/utility_win.h"
+#endif
+
 #include <QTimer>
 #include <QUrl>
 #include <QDir>

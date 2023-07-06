@@ -16,18 +16,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "utility_win.h"
 #include "utility.h"
 
 #include "asserts.h"
 #include "filesystembase.h"
 
 #include <comdef.h>
+#include <qt_windows.h>
 #include <shlguid.h>
 #include <shlobj.h>
 #include <string>
-#include <winbase.h>
-#include <windows.h>
-#include <winerror.h>
 
 #include <QCoreApplication>
 #include <QDir>

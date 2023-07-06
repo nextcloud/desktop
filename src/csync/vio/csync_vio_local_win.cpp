@@ -20,15 +20,10 @@
  */
 
 #include <errno.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-
-#include "windows.h"
 
 #include "common/filesystembase.h"
 #include "common/utility.h"
+#include "common/utility_win.h"
 #include "csync.h"
 #include "vio/csync_vio_local.h"
 

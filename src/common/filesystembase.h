@@ -163,11 +163,6 @@ namespace FileSystem {
      * Returns the file system used at the given path.
      */
     QString fileSystemForPath(const QString &path);
-
-    /**
-     * This function creates a file handle with the desired LockMode
-     */
-    Utility::Handle OCSYNC_EXPORT lockFile(const QString &fileName, LockMode mode);
 #endif
 
     /**

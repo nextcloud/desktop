@@ -26,6 +26,7 @@
 #include "std/c_time.h"
 
 #ifdef Q_OS_WIN32
+#include "common/utility_win.h"
 #include <winsock2.h>
 #endif
 

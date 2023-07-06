@@ -14,12 +14,15 @@
 
 #include "platform_win.h"
 
+#ifdef Q_OS_WIN
+#include "common/utility_win.h"
+#endif
+
 #include <QApplication>
 #include <QGuiApplication>
 #include <QIcon>
 #include <QMetaMethod>
 
-#include <qt_windows.h>
 
 #include <chrono>
 #include <thread>
