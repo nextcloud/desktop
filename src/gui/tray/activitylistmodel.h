@@ -134,6 +134,8 @@ public slots:
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(const OCC::Activity &activity);
 
+    void checkAndRemoveSeenActivities(const OCC::ActivityList &newActivities);
+
     void setAccountState(OCC::AccountState *state);
     void setReplyMessageSent(const int activityIndex, const QString &message);
     void setCurrentItem(const int currentItem);
