@@ -423,91 +423,100 @@ int main(int argc, char **argv)
 
     SyncCTX ctx { parseOptions(app.arguments()) };
 
-    if (ctx.options.silent) {
-        qInstallMessageHandler([](QtMsgType, const QMessageLogContext &, const QString &) {});
-    } else {
-        qSetMessagePattern(Logger::loggerPattern());
-    }
-
-    ctx.account = Account::create(QUuid::createUuid());
-
-    if (!ctx.account) {
-        qCritical() << "Could not initialize account!";
-        qApp->exit(EXIT_FAILURE);
-    }
-
-    setupCredentials(ctx);
-
-    // don't leak credentials more than needed
-    ctx.options.server_url = ctx.options.server_url.adjusted(QUrl::RemoveUserInfo);
-    ctx.options.target_url = ctx.options.target_url.adjusted(QUrl::RemoveUserInfo);
-
-    const QUrl baseUrl = [&ctx] {
-        auto tmp = ctx.options.server_url;
-        // Find the folder and the original owncloud url
-        QStringList splitted = tmp.path().split(ctx.account->davPath());
-        tmp.setPath(splitted.value(0));
-        tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
-        return tmp;
-    }();
-
-
-    ctx.account->setUrl(baseUrl);
-
-    auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url(), qApp);
-
-    QObject::connect(checkServerJob, &CoreJob::finished, [ctx, checkServerJob] {
-        if (checkServerJob->success()) {
-            // Perform a call to get the capabilities.
-            auto *capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);
-            QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
-                if (capabilitiesJob->reply()->error() != QNetworkReply::NoError || capabilitiesJob->httpStatusCode() != 200) {
-                    qCritical() << "Error connecting to server";
-                    qApp->exit(EXIT_FAILURE);
-                }
-                auto caps = capabilitiesJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
-                qDebug() << "Server capabilities" << caps;
-                ctx.account->setCapabilities(caps.toVariantMap());
-
-                switch (ctx.account->serverSupportLevel()) {
-                case Account::ServerSupportLevel::Supported:
-                    break;
-                case Account::ServerSupportLevel::Unknown:
-                    qWarning() << "Failed to detect server version";
-                    break;
-                case Account::ServerSupportLevel::Unsupported:
-                    qCritical() << "Error unsupported server";
-                    qApp->exit(EXIT_FAILURE);
-                }
-
-                auto userJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/user"), {}, {}, nullptr);
-                QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx = ctx]() mutable {
-                    const QJsonObject data = userJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
-                    ctx.account->setDavUser(data.value(QStringLiteral("id")).toString());
-                    ctx.account->setDavDisplayName(data.value(QStringLiteral("display-name")).toString());
-
-                    if (ctx.options.server_url == ctx.options.target_url) {
-                        // guess dav path
-                        if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
-                            ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
-                        }
-                    }
-
-                    // much lower age than the default since this utility is usually made to be run right after a change in the tests
-                    SyncEngine::minimumFileAgeForUpload = std::chrono::seconds(0);
-                    sync(ctx);
-                });
-                userJob->start();
-            });
-            capabilitiesJob->start();
+    // start the main loop before we ask for the username etc
+    QTimer::singleShot(0, &app, [&] {
+        if (ctx.options.silent) {
+            qInstallMessageHandler([](QtMsgType, const QMessageLogContext &, const QString &) {});
         } else {
-            if (checkServerJob->reply()->error() == QNetworkReply::OperationCanceledError) {
-                qCritical() << "Looking up " << ctx.account->url().toString() << " timed out.";
-            } else {
-                qCritical() << "Failed to resolve " << ctx.account->url().toString() << " Error: " << checkServerJob->reply()->errorString();
-            }
+            qSetMessagePattern(Logger::loggerPattern());
+        }
+
+        ctx.account = Account::create(QUuid::createUuid());
+
+        if (!ctx.account) {
+            qCritical() << "Could not initialize account!";
             qApp->exit(EXIT_FAILURE);
         }
+
+        setupCredentials(ctx);
+
+        // don't leak credentials more than needed
+        ctx.options.server_url = ctx.options.server_url.adjusted(QUrl::RemoveUserInfo);
+        ctx.options.target_url = ctx.options.target_url.adjusted(QUrl::RemoveUserInfo);
+
+        const QUrl baseUrl = [&ctx] {
+            auto tmp = ctx.options.server_url;
+            // Find the folder and the original owncloud url
+            QStringList splitted = tmp.path().split(ctx.account->davPath());
+            tmp.setPath(splitted.value(0));
+            tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
+            return tmp;
+        }();
+
+
+        ctx.account->setUrl(baseUrl);
+
+        auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url(), qApp);
+
+        QObject::connect(checkServerJob, &CoreJob::finished, [ctx, checkServerJob] {
+            if (checkServerJob->success()) {
+                // Perform a call to get the capabilities.
+                auto *capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);
+                QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
+                    if (capabilitiesJob->reply()->error() != QNetworkReply::NoError || capabilitiesJob->httpStatusCode() != 200) {
+                        qCritical() << "Error connecting to server";
+                        qApp->exit(EXIT_FAILURE);
+                    }
+                    auto caps = capabilitiesJob->data()
+                                    .value(QStringLiteral("ocs"))
+                                    .toObject()
+                                    .value(QStringLiteral("data"))
+                                    .toObject()
+                                    .value(QStringLiteral("capabilities"))
+                                    .toObject();
+                    qDebug() << "Server capabilities" << caps;
+                    ctx.account->setCapabilities(caps.toVariantMap());
+
+                    switch (ctx.account->serverSupportLevel()) {
+                    case Account::ServerSupportLevel::Supported:
+                        break;
+                    case Account::ServerSupportLevel::Unknown:
+                        qWarning() << "Failed to detect server version";
+                        break;
+                    case Account::ServerSupportLevel::Unsupported:
+                        qCritical() << "Error unsupported server";
+                        qApp->exit(EXIT_FAILURE);
+                    }
+
+                    auto userJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/user"), {}, {}, nullptr);
+                    QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx = ctx]() mutable {
+                        const QJsonObject data = userJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
+                        ctx.account->setDavUser(data.value(QStringLiteral("id")).toString());
+                        ctx.account->setDavDisplayName(data.value(QStringLiteral("display-name")).toString());
+
+                        if (ctx.options.server_url == ctx.options.target_url) {
+                            // guess dav path
+                            if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
+                                ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
+                            }
+                        }
+
+                        // much lower age than the default since this utility is usually made to be run right after a change in the tests
+                        SyncEngine::minimumFileAgeForUpload = std::chrono::seconds(0);
+                        sync(ctx);
+                    });
+                    userJob->start();
+                });
+                capabilitiesJob->start();
+            } else {
+                if (checkServerJob->reply()->error() == QNetworkReply::OperationCanceledError) {
+                    qCritical() << "Looking up " << ctx.account->url().toString() << " timed out.";
+                } else {
+                    qCritical() << "Failed to resolve " << ctx.account->url().toString() << " Error: " << checkServerJob->reply()->errorString();
+                }
+                qApp->exit(EXIT_FAILURE);
+            }
+        });
     });
 
     return app.exec();
