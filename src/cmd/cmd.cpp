@@ -148,7 +148,7 @@ void sync(const SyncCTX &ctx)
     QObject::connect(engine, &SyncEngine::finished, engine, [engine, ctx, restartCount = std::make_shared<int>(0)](bool result) {
         if (!result) {
             qWarning() << "Failed to sync";
-            qApp->exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         } else {
             if (engine->isAnotherSyncNeeded() != NoFollowUpSync) {
                 if (*restartCount < ctx.options.restartTimes) {
@@ -216,7 +216,7 @@ void sync(const SyncCTX &ctx)
 
     if (!engine->excludedFiles().reloadExcludeFiles()) {
         qCritical() << "Cannot load system exclude list or list supplied via --exclude";
-        qApp->exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     engine->startSync();
 }
@@ -256,14 +256,14 @@ void setupCredentials(SyncCTX &ctx)
             port = pList.at(2).toUInt(&ok);
             if (!ok || port > std::numeric_limits<uint16_t>::max()) {
                 qCritical() << "Invalid port number";
-                qApp->exit(EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
 
             QNetworkProxyFactory::setUseSystemConfiguration(false);
             QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, static_cast<uint16_t>(port)));
         } else {
             qCritical() << "Could not read httpproxy. The proxy should have the format \"http://hostname:port\".";
-            qApp->exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -274,7 +274,7 @@ void setupCredentials(SyncCTX &ctx)
         QFile f(ctx.options.unsyncedfolders);
         if (!f.open(QFile::ReadOnly)) {
             qCritical() << "Cannot read unsyncedfolders file '" << ctx.options.unsyncedfolders << "': " << f.errorString();
-            qApp->exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
         f.close();
     }
@@ -293,7 +293,7 @@ void setupCredentials(SyncCTX &ctx)
                 qCritical() << e.errorString();
             }
             qCritical() << "If you trust the certificate and want to ignore the errors, use the --trust option.";
-            qApp->exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         });
     }
 }
@@ -341,15 +341,14 @@ CmdOptions parseOptions(const QStringList &app_args)
 
     const QStringList args = parser.positionalArguments();
     if (args.size() < 2 || args.size() > 3) {
-        parser.showHelp();
-        qApp->exit(EXIT_FAILURE);
+        parser.showHelp(EXIT_FAILURE);
     }
 
     options.source_dir = [arg = args[0]] {
-        QFileInfo fi(arg);
+        const QFileInfo fi(arg);
         if (!fi.exists()) {
-            qCritical() << "Source dir '" << arg << "' does not exist.";
-            qApp->exit(EXIT_FAILURE);
+            qCritical() << "Source dir" << arg << "does not exist.";
+            exit(EXIT_FAILURE);
         }
         QString sourceDir = fi.absoluteFilePath();
         if (!sourceDir.endsWith(QLatin1Char('/'))) {
@@ -435,7 +434,7 @@ int main(int argc, char **argv)
 
         if (!ctx.account) {
             qCritical() << "Could not initialize account!";
-            qApp->exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
 
         setupCredentials(ctx);
@@ -465,7 +464,7 @@ int main(int argc, char **argv)
                 QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
                     if (capabilitiesJob->reply()->error() != QNetworkReply::NoError || capabilitiesJob->httpStatusCode() != 200) {
                         qCritical() << "Error connecting to server";
-                        qApp->exit(EXIT_FAILURE);
+                        exit(EXIT_FAILURE);
                     }
                     auto caps = capabilitiesJob->data()
                                     .value(QStringLiteral("ocs"))
@@ -485,7 +484,7 @@ int main(int argc, char **argv)
                         break;
                     case Account::ServerSupportLevel::Unsupported:
                         qCritical() << "Error unsupported server";
-                        qApp->exit(EXIT_FAILURE);
+                        exit(EXIT_FAILURE);
                     }
 
                     auto userJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/user"), {}, {}, nullptr);
@@ -514,7 +513,7 @@ int main(int argc, char **argv)
                 } else {
                     qCritical() << "Failed to resolve " << ctx.account->url().toString() << " Error: " << checkServerJob->reply()->errorString();
                 }
-                qApp->exit(EXIT_FAILURE);
+                exit(EXIT_FAILURE);
             }
         });
     });
