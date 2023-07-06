@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[ar]=@APPLICATION_NAME@
-Name[ar]=@APPLICATION_NAME@ المكتب
-Comment[ar]=عميل @APPLICATION_NAME@ لمزامنة سطح المكتب 
+Icon[ar]=@APPLICATION_ICON_NAME@
+Name[ar]=@APPLICATION_NAME@ Desktop
+Comment[ar]=@APPLICATION_NAME@ desktop synchronization client
 GenericName[ar]=مزامنة المجلد

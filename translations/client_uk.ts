@@ -4053,7 +4053,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Зніміть позначку з віддалених каталогів, які не потрібно синхронізувати.</translation>
+        <translation>Зніміть вибір з віддалених каталогів, які не потрібно синхронізувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="94"/>
@@ -5253,7 +5253,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Якщо встановлено цю позначку, вміст у каталозі на пристрої буде вилучено, щоб розпочати синхронізацію з сервером з самого початку.&lt;/p&gt;&lt;p&gt;Не встановлюйте її, якщо ваші дані на пристрої має бути завантажено на сервер.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Якщо встановлено цю мітку, вміст у каталозі на пристрої буде вилучено, щоб розпочати синхронізацію з сервером з самого початку.&lt;/p&gt;&lt;p&gt;Не встановлюйте її, якщо ваші дані на пристрої має бути завантажено на сервер.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
