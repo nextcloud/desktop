@@ -62,6 +62,9 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
     newRequest.setRawHeader(QByteArrayLiteral("Accept"), QByteArrayLiteral("*/*"));
 
+    // Set the language, so messages from the server are localised correctly.
+    newRequest.setRawHeader("Accept-Language", QLocale().name().toUtf8());
+
     QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
     // This needs extension

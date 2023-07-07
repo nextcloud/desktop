@@ -1,0 +1,8 @@
+Enhancement: send a language header in all http requests
+
+All http requests to the server will now contain the language for the
+client. This can be used by the server to localize responses like error
+messages.
+
+https://github.com/owncloud/client/issues/10619
+https://github.com/owncloud/client/pull/11020
