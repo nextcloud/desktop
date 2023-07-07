@@ -357,6 +357,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
         // mini-jobs later on, we just update metadata right now.
 
         if (item->_direction == SyncFileItem::Down) {
+            auto modificationHappened = false;
             QString filePath = _localPath + item->_file;
 
             // If the 'W' remote permission changed, update the local filesystem
@@ -365,8 +366,9 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 && prev.isValid()
                 && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
                 const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
-                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+                modificationHappened = FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
+
             auto rec = item->toSyncJournalFileRecordWithInode(filePath);
             if (rec._checksumHeader.isEmpty())
                 rec._checksumHeader = prev._checksumHeader;
@@ -382,23 +384,26 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
+                modificationHappened = true;
             }
 
             // Update on-disk virtual file metadata
-            if (item->_type == ItemTypeVirtualFile) {
-                auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
-                if (!r) {
-                    item->_status = SyncFileItem::Status::NormalError;
+            if (modificationHappened) {
+                if (item->_type == ItemTypeVirtualFile) {
+                    auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
+                    if (!r) {
+                        item->_status = SyncFileItem::Status::NormalError;
+                        item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                        item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
+                        emit itemCompleted(item, ErrorCategory::GenericError);
+                        return;
+                    }
+                } else if (!FileSystem::setModTime(filePath, item->_modtime)) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
+                    item->_errorString = tr("Could not update file metadata: %1").arg(filePath);
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
-            } else if (!FileSystem::setModTime(filePath, item->_modtime)) {
-                item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                item->_errorString = tr("Could not update file metadata: %1").arg(filePath);
-                emit itemCompleted(item, ErrorCategory::GenericError);
-                return;
             }
 
             // Updating the db happens on success
