@@ -4821,13 +4821,13 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="623"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="631"/>
         <source>Retry all uploads</source>
         <translation>重试所有上传</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"/>
     </message>
@@ -4835,22 +4835,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
         <source>Confirm Account Removal</source>
         <translation>确认移除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1389"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您确定要移除与账号&lt;i&gt;%1&lt;/i&gt;的连接吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1393"/>
         <source>Remove connection</source>
         <translation>移除连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1386"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1394"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -5313,27 +5313,27 @@ Server replied with error: %2</source>
         <translation>新文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="740"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="748"/>
         <source>You renamed %1</source>
         <translation>你重命名了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="742"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="750"/>
         <source>You deleted %1</source>
         <translation>你删除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="744"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="752"/>
         <source>You created %1</source>
         <translation>你创建了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="746"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="754"/>
         <source>You changed %1</source>
         <translation>你修改了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="770"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="778"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
