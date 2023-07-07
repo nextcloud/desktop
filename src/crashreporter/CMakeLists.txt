@@ -38,6 +38,7 @@ add_executable(${CRASHREPORTER_EXECUTABLE}
     ${crashreporter_UI_HEADERS}
     ${crashreporter_RC}
 )
+apply_common_target_settings(${CRASHREPORTER_EXECUTABLE})
 
 # This is a GUI Application without its own bundle
 set_target_properties(${CRASHREPORTER_EXECUTABLE}
