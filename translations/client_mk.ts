@@ -4808,13 +4808,13 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="623"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="631"/>
         <source>Retry all uploads</source>
         <translation>Повтори ги сите прикачувања</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="674"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="815"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
         <source>Resolve conflict</source>
         <translation>Решете конфликт</translation>
     </message>
@@ -4822,22 +4822,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
         <source>Confirm Account Removal</source>
         <translation>Потврди отстранување на сметка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1389"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја отстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1393"/>
         <source>Remove connection</source>
         <translation>Отстрани врска</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1386"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1394"/>
         <source>Cancel</source>
         <translation>Откажи</translation>
     </message>
@@ -5300,27 +5300,27 @@ Server replied with error: %2</source>
         <translation>Нова папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="740"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="748"/>
         <source>You renamed %1</source>
         <translation>Преименувавте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="742"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="750"/>
         <source>You deleted %1</source>
         <translation>Избришавте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="744"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="752"/>
         <source>You created %1</source>
         <translation>Креиравте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="746"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="754"/>
         <source>You changed %1</source>
         <translation>Изменивте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="770"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="778"/>
         <source>Synced %1</source>
         <translation>Синхронизирано %1</translation>
     </message>
