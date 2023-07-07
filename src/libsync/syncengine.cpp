@@ -375,7 +375,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
 
             // Ensure it's a placeholder file on disk
-            if (item->_type == ItemTypeFile) {
+            if (item->_type == ItemTypeFile && _syncOptions._vfs->mode() != Vfs::Off) {
                 const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
                 if (!result) {
                     item->_status = SyncFileItem::Status::NormalError;
