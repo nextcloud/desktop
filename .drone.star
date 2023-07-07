@@ -36,6 +36,19 @@ PYTHON = "python"
 THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 
+# secrets used in the pipeline
+secrets = {
+    "SQUISH_LICENSEKEY": "squish_license_server",
+    "GITHUB_USERNAME": "github_username",
+    "GITHUB_TOKEN": "github_token",  # not available for PRs
+    "GITHUB_TOKEN_COMMENT": "github_token_comments",
+    "CACHE_ENDPOINT": "cache_public_s3_server",
+    "CACHE_BUCKET": "cache_public_s3_bucket",
+    "AWS_ACCESS_KEY_ID": "cache_public_s3_access_key",
+    "AWS_SECRET_ACCESS_KEY": "cache_public_s3_secret_key",
+    "ROCKETCHAT_WEBHOOK": "rocketchat_chat_webhook",
+}
+
 dir = {
     "base": "/drone/src",
     "server": "/drone/src/server",
@@ -106,7 +119,7 @@ def main(ctx):
 
 def from_secret(name):
     return {
-        "from_secret": name,
+        "from_secret": secrets[name],
     }
 
 def check_starlark():
@@ -268,7 +281,7 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
         "name": "GUItests",
         "image": OC_CI_SQUISH,
         "environment": {
-            "LICENSEKEY": from_secret("squish_license_server"),
+            "LICENSEKEY": from_secret("SQUISH_LICENSEKEY"),
             "GUI_TEST_REPORT_DIR": dir["guiTestReport"],
             "CLIENT_REPO": dir["base"],
             "MIDDLEWARE_URL": "http://testmiddleware:3000/",
@@ -345,8 +358,8 @@ def changelog(ctx):
                     "author_email": "devops@owncloud.com",
                     "author_name": "ownClouders",
                     "netrc_machine": "github.com",
-                    "netrc_username": from_secret("github_username"),
-                    "netrc_password": from_secret("github_token"),
+                    "netrc_username": from_secret("GITHUB_USERNAME"),
+                    "netrc_password": from_secret("GITHUB_TOKEN"),
                 },
                 "when": {
                     "ref": {
@@ -373,12 +386,8 @@ def notification():
         "name": "create-template",
         "image": OC_CI_ALPINE,
         "environment": {
-            "CACHE_ENDPOINT": {
-                "from_secret": "cache_public_s3_server",
-            },
-            "CACHE_BUCKET": {
-                "from_secret": "cache_public_s3_bucket",
-            },
+            "CACHE_ENDPOINT": from_secret("CACHE_ENDPOINT"),
+            "CACHE_BUCKET": from_secret("CACHE_BUCKET"),
         },
         "commands": [
             "bash %s/drone/notification_template.sh %s" % (dir["guiTest"], dir["base"]),
@@ -387,7 +396,7 @@ def notification():
 
     for channel, params in notify_channels.items():
         settings = {
-            "webhook": from_secret("private_rocketchat"),
+            "webhook": from_secret("ROCKETCHAT_WEBHOOK"),
             "template": "file:%s/template.md" % dir["base"],
         }
         if params["type"] == "user":
@@ -630,24 +639,16 @@ def uploadGuiTestLogs(ctx, server_type = "oc10"):
         "name": "upload-gui-test-result",
         "image": PLUGINS_S3,
         "settings": {
-            "bucket": {
-                "from_secret": "cache_public_s3_bucket",
-            },
-            "endpoint": {
-                "from_secret": "cache_public_s3_server",
-            },
+            "bucket": from_secret("CACHE_BUCKET"),
+            "endpoint": from_secret("CACHE_ENDPOINT"),
             "path_style": True,
             "source": "%s/**/*" % dir["guiTestReport"],
             "strip_prefix": "%s" % dir["guiTestReport"],
             "target": "/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/%s/guiReportUpload" % server_type,
         },
         "environment": {
-            "AWS_ACCESS_KEY_ID": {
-                "from_secret": "cache_public_s3_access_key",
-            },
-            "AWS_SECRET_ACCESS_KEY": {
-                "from_secret": "cache_public_s3_secret_key",
-            },
+            "AWS_ACCESS_KEY_ID": from_secret("AWS_ACCESS_KEY_ID"),
+            "AWS_SECRET_ACCESS_KEY": from_secret("AWS_SECRET_ACCESS_KEY"),
         },
         "when": trigger,
     }]
@@ -661,12 +662,8 @@ def buildGithubComment(suite = "", server_type = "oc10"):
         ],
         "environment": {
             "TEST_CONTEXT": suite,
-            "CACHE_ENDPOINT": {
-                "from_secret": "cache_public_s3_server",
-            },
-            "CACHE_BUCKET": {
-                "from_secret": "cache_public_s3_bucket",
-            },
+            "CACHE_ENDPOINT": from_secret("CACHE_ENDPOINT"),
+            "CACHE_BUCKET": from_secret("CACHE_BUCKET"),
         },
         "when": {
             "status": [
@@ -687,9 +684,7 @@ def githubComment(alternateSuiteName, server_type = "oc10"):
             "message": "%s/comments.file" % dir["guiTestReport"],
             "key": "pr-${DRONE_PULL_REQUEST}-%s" % server_type,
             "update": "true",
-            "api_key": {
-                "from_secret": "github_token",
-            },
+            "api_key": from_secret("GITHUB_TOKEN_COMMENT"),
         },
         "commands": [
             "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (dir["guiTestReport"], prefix, dir["guiTestReport"], dir["guiTestReport"]),
