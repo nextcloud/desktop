@@ -1,0 +1,5 @@
+Bugfix: Crash during application shutdown
+
+We fixed a where the main instance was accessed after it was destroyed.
+
+https://github.com/owncloud/client/issues/11016

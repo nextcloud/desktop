@@ -149,7 +149,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 
 ownCloudGui::~ownCloudGui()
 {
-    _settingsDialog->deleteLater();
+    delete _settingsDialog;
 }
 
 // This should rather be in application.... or rather in ConfigFile?
