@@ -65,7 +65,7 @@ namespace FileSystem {
      * This means that it will preserve explicitly set rw-r--r-- permissions even
      * when the umask is 0002. (setFileReadOnly() would adjust to rw-rw-r--)
      */
-    void OCSYNC_EXPORT setFileReadOnlyWeak(const QString &filename, bool readonly);
+    bool OCSYNC_EXPORT setFileReadOnlyWeak(const QString &filename, bool readonly);
 
     /**
      * @brief Try to set permissions so that other users on the local machine can not
