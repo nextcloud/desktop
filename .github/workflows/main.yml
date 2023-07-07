@@ -97,7 +97,7 @@ jobs:
 
     - name: Build
       run: |
-        if ("${{ matrix.target }}" -eq "windows-msvc2022_64-cl") {
+        if ("${{ matrix.target }}" -eq "windows-cl-msvc2022-x86_64") {
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --configure owncloud/owncloud-client
             $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --build
@@ -119,7 +119,7 @@ jobs:
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --test owncloud/owncloud-client
 
     - name: Sonarcloud
-      if: ${{ matrix.target == 'windows-msvc2022_64-cl' }}
+      if: ${{ matrix.target == 'windows-cl-msvc2022-x86_64' }}
       run: |
         $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --analyze
