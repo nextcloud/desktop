@@ -1670,7 +1670,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 و %n ملف(ملفات) أخري تم إزالتها.</numerusform><numerusform>%1 و %n ملف(ملفات) أخري تم إزالتها.</numerusform><numerusform>%1 و %n ملف(ملفات) أخري تم إزالتها.</numerusform><numerusform>%1 و %n ملف(ملفات) أخري تم إزالتها.</numerusform><numerusform>%1 و %n ملف(ملفات) أخري تم إزالتها.</numerusform><numerusform>%1 و %n ملف(ملفات) أخري تم إزالتها.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="430"/>
@@ -1681,7 +1681,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>تمت إضافة %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملف (ملفات) أخرى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="437"/>
@@ -1692,7 +1692,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>تم تحديث %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملف (ملفات) أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملف (ملفات) أخرى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -1703,7 +1703,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>تمت إعادة تسمية٪ 1 إلى٪ 2 وتمت إعادة تسمية٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إعادة تسمية٪ 1 إلى٪ 2 وتمت إعادة تسمية٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إعادة تسمية٪ 1 إلى٪ 2 وتمت إعادة تسمية٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إعادة تسمية٪ 1 إلى٪ 2 وتمت إعادة تسمية٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إعادة تسمية٪ 1 إلى٪ 2 وتمت إعادة تسمية٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تمت إعادة تسمية٪ 1 إلى٪ 2 وتمت إعادة تسمية٪ n ملف (ملفات) أخرى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
@@ -1714,7 +1714,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>تم نقل٪ 1 إلى٪ 2 وتم نقل٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تم نقل٪ 1 إلى٪ 2 وتم نقل٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تم نقل٪ 1 إلى٪ 2 وتم نقل٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تم نقل٪ 1 إلى٪ 2 وتم نقل٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تم نقل٪ 1 إلى٪ 2 وتم نقل٪ n ملف (ملفات) أخرى.</numerusform><numerusform>تم نقل٪ 1 إلى٪ 2 وتم نقل٪ n ملف (ملفات) أخرى.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -1724,7 +1724,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>٪ 1 و٪ n ملف (ملفات) أخري بها تعارضات في المزامنة.</numerusform><numerusform>٪ 1 و٪ n ملف (ملفات) أخري بها تعارضات في المزامنة.</numerusform><numerusform>٪ 1 و٪ n ملف (ملفات) أخري بها تعارضات في المزامنة.</numerusform><numerusform>٪ 1 و٪ n ملف (ملفات) أخري بها تعارضات في المزامنة.</numerusform><numerusform>٪ 1 و٪ n ملف (ملفات) أخري بها تعارضات في المزامنة.</numerusform><numerusform>٪ 1 و٪ n ملف (ملفات) أخري بها تعارضات في المزامنة.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
@@ -1734,7 +1734,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>تعذرت مزامنة٪ 1 و٪ n ملف (ملفات) أخرى بسبب الأخطاء. راجع السجل للحصول على التفاصيل.</numerusform><numerusform>تعذرت مزامنة٪ 1 و٪ n ملف (ملفات) أخرى بسبب الأخطاء. راجع السجل للحصول على التفاصيل.</numerusform><numerusform>تعذرت مزامنة٪ 1 و٪ n ملف (ملفات) أخرى بسبب الأخطاء. راجع السجل للحصول على التفاصيل.</numerusform><numerusform>تعذرت مزامنة٪ 1 و٪ n ملف (ملفات) أخرى بسبب الأخطاء. راجع السجل للحصول على التفاصيل.</numerusform><numerusform>تعذرت مزامنة٪ 1 و٪ n ملف (ملفات) أخرى بسبب الأخطاء. راجع السجل للحصول على التفاصيل.</numerusform><numerusform>تعذرت مزامنة٪ 1 و٪ n ملف (ملفات) أخرى بسبب الأخطاء. راجع السجل للحصول على التفاصيل.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
@@ -1744,7 +1744,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 و%n ملف (ملفات) أخرى مقفلة حالياً.</numerusform><numerusform>%1 و%n ملف (ملفات) أخرى مقفلة حالياً.</numerusform><numerusform>%1 و%n ملف (ملفات) أخرى مقفلة حالياً.</numerusform><numerusform>%1 و%n ملف (ملفات) أخرى مقفلة حالياً.</numerusform><numerusform>%1 و%n ملف (ملفات) أخرى مقفلة حالياً.</numerusform><numerusform>%1 و%n ملف (ملفات) أخرى مقفلة حالياً.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
@@ -2133,7 +2133,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>في انتظار %n مجلد (مجلدات) آخر ...</numerusform><numerusform>في انتظار %n مجلد (مجلدات) آخر ...</numerusform><numerusform>في انتظار %n مجلد (مجلدات) آخر ...</numerusform><numerusform>في انتظار %n مجلد (مجلدات) آخر ...</numerusform><numerusform>في انتظار %n مجلد (مجلدات) آخر ...</numerusform><numerusform>في انتظار %n مجلد (مجلدات) آخر  ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
@@ -5389,7 +5389,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1 ملفات متضاربة</numerusform><numerusform>%1  ملفات متضاربة</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
@@ -5823,32 +5823,32 @@ Server replied with error: %2</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="335"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>٪ n سنة (سنوات)</numerusform><numerusform>٪ n سنة (سنوات)</numerusform><numerusform>٪ n سنة (سنوات)</numerusform><numerusform>٪ n سنة (سنوات)</numerusform><numerusform>٪ n سنة (سنوات)</numerusform><numerusform>٪ n سنة (سنوات)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="336"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>٪ n شهر (أشهر)</numerusform><numerusform>٪ n شهر (أشهر)</numerusform><numerusform>٪ n شهر (أشهر)</numerusform><numerusform>٪ n شهر (أشهر)</numerusform><numerusform>٪ n شهر (أشهر)</numerusform><numerusform>٪ n شهر (أشهر)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n يوم (أيام)</numerusform><numerusform>%n يوم (أيام)</numerusform><numerusform>%n يوم (أيام)</numerusform><numerusform>%n يوم (أيام)</numerusform><numerusform>%n يوم (أيام)</numerusform><numerusform>%n يوم (أيام)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ساعة(ساعات)</numerusform><numerusform>%n ساعة(ساعات)</numerusform><numerusform>%n ساعة(ساعات)</numerusform><numerusform>%n ساعة(ساعات)</numerusform><numerusform>%n ساعة(ساعات)</numerusform><numerusform>%n ساعة(ساعات)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n دقيقة (دقائق)</numerusform><numerusform>%n دقيقة (دقائق)</numerusform><numerusform>%n دقيقة (دقائق)</numerusform><numerusform>%n دقيقة (دقائق)</numerusform><numerusform>%n دقيقة (دقائق)</numerusform><numerusform>%n دقيقة (دقائق)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ثانية (ثواني)</numerusform><numerusform>%n ثانية (ثواني)</numerusform><numerusform>%n ثانية (ثواني)</numerusform><numerusform>%n ثانية (ثواني)</numerusform><numerusform>%n ثانية (ثواني)</numerusform><numerusform>%n ثانية (ثواني)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="364"/>

@@ -955,7 +955,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ชื่อผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1144,7 +1144,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ไม่รองรับชื่อไฟล์ที่เท่ากันที่มีเพียงความต่างของตัวพิมพ์เล็ก-ใหญ่เท่านั้น</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
@@ -1164,7 +1164,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ชื่อที่ไม่ถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
@@ -1909,12 +1909,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>การซิงค์ครั้งล่าสุดสำเร็จ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1624"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งค่าผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1627"/>
@@ -2103,7 +2103,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>เหลืออีกไม่กี่วินาที, %1 จาก %2, ไฟล์ที่ %3 จาก %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
@@ -2134,7 +2134,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>กำลังเตรียมการซิงค์ …</translation>
     </message>
 </context>
 <context>
