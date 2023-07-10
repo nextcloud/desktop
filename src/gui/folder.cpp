@@ -52,11 +52,6 @@ namespace {
 #define VERSION_C
 constexpr auto versionC = "version";
 #endif
-
-QString trailingSlashPath(const QString &path)
-{
-    return path.endsWith('/') ? path : QString(path + QStringLiteral("/"));
-}
 }
 
 namespace OCC {
@@ -177,7 +172,7 @@ void Folder::checkLocalPath()
         _canonicalLocalPath = _definition.localPath;
     }
 
-    _canonicalLocalPath = trailingSlashPath(_canonicalLocalPath);
+    _canonicalLocalPath = Utility::trailingSlashPath(_canonicalLocalPath);
 
     if (fi.isDir() && fi.isReadable()) {
         qCDebug(lcFolder) << "Checked local path ok";
@@ -222,7 +217,7 @@ QString Folder::path() const
 QString Folder::shortGuiLocalPath() const
 {
     QString p = _definition.localPath;
-    const auto home = trailingSlashPath(QDir::homePath());
+    const auto home = Utility::trailingSlashPath(QDir::homePath());
 
     if (p.startsWith(home)) {
         p = p.mid(home.length());
@@ -272,7 +267,7 @@ QString Folder::remotePath() const
 
 QString Folder::remotePathTrailingSlash() const
 {
-    return trailingSlashPath(remotePath());
+    return Utility::trailingSlashPath(remotePath());
 }
 
 QUrl Folder::remoteUrl() const
@@ -845,7 +840,7 @@ bool Folder::pathIsIgnored(const QString &path) const
 
 void Folder::appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType)
 {
-    const auto folderPath = trailingSlashPath(path);
+    const auto folderPath = Utility::trailingSlashPath(path);
     const auto journal = journalDb();
     auto ok = false;
     auto list = journal->getSelectiveSyncList(listType, &ok);
@@ -858,7 +853,7 @@ void Folder::appendPathToSelectiveSyncList(const QString &path, const SyncJourna
 
 void Folder::removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType)
 {
-    const auto folderPath = trailingSlashPath(path);
+    const auto folderPath = Utility::trailingSlashPath(path);
     const auto journal = journalDb();
     auto ok = false;
     auto list = journal->getSelectiveSyncList(listType, &ok);
@@ -1226,7 +1221,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item, ErrorCategory errorC
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 {
-    const auto newFolder = trailingSlashPath(newF);
+    const auto newFolder = Utility::trailingSlashPath(newF);
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
@@ -1260,7 +1255,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 
 void Folder::slotExistingFolderNowBig(const QString &folderPath)
 {
-    const auto trailSlashFolderPath = trailingSlashPath(folderPath);
+    const auto trailSlashFolderPath = Utility::trailingSlashPath(folderPath);
     const auto journal = journalDb();
 
     // Add the entry to the whitelist if it is neither in the blacklist or whitelist already
@@ -1547,7 +1542,7 @@ void Folder::removeLocalE2eFiles()
             }
 
             if (!parentPathEncrypted) {
-                const auto pathAdjusted = trailingSlashPath(rec._path);
+                const auto pathAdjusted = Utility::trailingSlashPath(rec._path);
                 e2eFoldersToBlacklist.append(pathAdjusted);
             }
         }
@@ -1663,7 +1658,7 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
 QString FolderDefinition::prepareLocalPath(const QString &path)
 {
     const auto normalisedPath = QDir::fromNativeSeparators(path);
-    return trailingSlashPath(normalisedPath);
+    return Utility::trailingSlashPath(normalisedPath);
 }
 
 QString FolderDefinition::prepareTargetPath(const QString &path)
