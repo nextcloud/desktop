@@ -2013,7 +2013,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     }
 
     SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)", _db);
-    foreach (const auto &path, list) {
+    for (const auto &path : list) {
         insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
         insQuery.bindValue(2, int(type));
