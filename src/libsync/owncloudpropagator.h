@@ -25,13 +25,14 @@
 #include <QMutex>
 #include <QNetworkReply>
 
-#include "csync.h"
-#include "syncfileitem.h"
-#include "common/syncjournaldb.h"
-#include "bandwidthmanager.h"
 #include "accountfwd.h"
-#include "syncoptions.h"
+#include "bandwidthmanager.h"
+#include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "csync.h"
 #include "progressdispatcher.h"
+#include "syncfileitem.h"
+#include "syncoptions.h"
 
 #include <deque>
 
@@ -416,15 +417,13 @@ public:
     bool _finishedEmited = false; // used to ensure that finished is only emitted once
 
 public:
-    OwncloudPropagator(AccountPtr account, const QString &localDir,
-                       const QString &remoteFolder, SyncJournalDb *progressDb,
-                       QSet<QString> &bulkUploadBlackList)
+    OwncloudPropagator(AccountPtr account, const QString &localDir, const QString &remoteFolder, SyncJournalDb *progressDb, QSet<QString> &bulkUploadBlackList)
         : _journal(progressDb)
         , _bandwidthManager(this)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
-        , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
-        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
+        , _localDir(Utility::trailingSlashPath(localDir))
+        , _remoteFolder(Utility::trailingSlashPath(remoteFolder))
         , _bulkUploadBlackList(bulkUploadBlackList)
     {
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");

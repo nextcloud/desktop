@@ -408,12 +408,12 @@ QString Theme::helpUrl() const
 
 QString Theme::conflictHelpUrl() const
 {
-    auto baseUrl = helpUrl();
-    if (baseUrl.isEmpty())
+    const auto baseUrl = helpUrl();
+    if (baseUrl.isEmpty()) {
         return QString();
-    if (!baseUrl.endsWith('/'))
-        baseUrl.append('/');
-    return baseUrl + QStringLiteral("conflicts.html");
+    }
+
+    return Utility::trailingSlashPath(baseUrl) + QStringLiteral("conflicts.html");
 }
 
 QString Theme::overrideServerUrl() const

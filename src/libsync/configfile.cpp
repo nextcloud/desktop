@@ -363,11 +363,8 @@ QString ConfigFile::configPath() const
             _confDir = newLocation;
         }
     }
-    QString dir = _confDir;
 
-    if (!dir.endsWith(QLatin1Char('/')))
-        dir.append(QLatin1Char('/'));
-    return dir;
+    return Utility::trailingSlashPath(_confDir);
 }
 
 static const QLatin1String exclFile("sync-exclude.lst");

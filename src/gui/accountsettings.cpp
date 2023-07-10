@@ -1514,7 +1514,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
             // FIXME: add the folder alias in a hoover hint.
             // folder->alias() + QLatin1String("/")
 
-            const auto folderTrailingSlash = it.endsWith('/') ? it : it + QChar('/');
+            const auto folderTrailingSlash = Utility::trailingSlashPath(it);
             const auto folderWithoutTrailingSlash = it.endsWith('/') ? it.left(it.length() - 1) : it;
             const auto escapedFolderString = Utility::escape(folderWithoutTrailingSlash);
             const auto escapedFolderName = Utility::escape(folder->alias());

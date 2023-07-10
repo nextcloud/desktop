@@ -437,7 +437,7 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
 {
     bool ok = false;
 
-    const auto pathWithTrailingSpace = path.endsWith(QLatin1Char('/')) ? path : path + QLatin1Char('/');
+    const auto pathWithTrailingSpace = Utility::trailingSlashPath(path);
 
     auto blackListSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
     blackListSet.insert(pathWithTrailingSpace);

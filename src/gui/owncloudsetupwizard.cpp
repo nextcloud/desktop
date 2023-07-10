@@ -20,19 +20,20 @@
 #include <QDesktopServices>
 #include <QApplication>
 
-#include "wizard/owncloudwizardcommon.h"
-#include "wizard/owncloudwizard.h"
-#include "owncloudsetupwizard.h"
-#include "configfile.h"
-#include "folderman.h"
 #include "accessmanager.h"
 #include "account.h"
-#include "networkjobs.h"
-#include "sslerrordialog.h"
 #include "accountmanager.h"
 #include "clientproxy.h"
+#include "common/utility.h"
+#include "configfile.h"
 #include "filesystem.h"
+#include "folderman.h"
+#include "networkjobs.h"
 #include "owncloudgui.h"
+#include "owncloudsetupwizard.h"
+#include "sslerrordialog.h"
+#include "wizard/owncloudwizard.h"
+#include "wizard/owncloudwizardcommon.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -125,13 +126,7 @@ void OwncloudSetupWizard::startWizard()
     }
 
     // remember the local folder to compare later if it changed, but clean first
-    QString lf = QDir::fromNativeSeparators(localFolder);
-    if (!lf.endsWith(QLatin1Char('/'))) {
-        lf.append(QLatin1Char('/'));
-    }
-
-    _initLocalFolder = lf;
-
+    _initLocalFolder = Utility::trailingSlashPath(QDir::fromNativeSeparators(localFolder));
     _ocWizard->setRemoteFolder(_remoteFolder);
 
     const auto isEnforcedServerSetup =

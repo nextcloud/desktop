@@ -13,6 +13,7 @@
  */
 
 #include "discoveryphase.h"
+#include "common/utility.h"
 #include "configfile.h"
 #include "discovery.h"
 #include "helpers.h"
@@ -122,8 +123,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
         }
 
         // it is not too big, put it in the white list (so we will not do more query for the children) and and do not block.
-        static const auto slash = QLatin1Char('/');
-        const auto sanitisedPath = path.endsWith(slash) ? path : path + slash;
+        const auto sanitisedPath = Utility::trailingSlashPath(path);
         _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), sanitisedPath), sanitisedPath);
         return callback(false);
     });

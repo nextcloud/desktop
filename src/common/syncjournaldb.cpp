@@ -1985,10 +1985,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         if (!next.hasData)
             break;
 
-        auto entry = query->stringValue(0);
-        if (!entry.endsWith(QLatin1Char('/'))) {
-            entry.append(QLatin1Char('/'));
-        }
+        const auto entry = Utility::trailingSlashPath(query->stringValue(0));
         result.append(entry);
     }
     *ok = true;
