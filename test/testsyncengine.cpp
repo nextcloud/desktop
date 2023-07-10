@@ -85,6 +85,11 @@ class TestSyncEngine : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogDebug(true);
+    }
+
     void testFileDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         ItemCompletedSpy completeSpy(fakeFolder);
