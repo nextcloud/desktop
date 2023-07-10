@@ -122,7 +122,8 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
         }
 
         // it is not too big, put it in the white list (so we will not do more query for the children) and and do not block.
-        const auto sanitisedPath = path.endsWith(QLatin1Char('/')) ? path + QLatin1Char('/') : path;
+        static const auto slash = QLatin1Char('/');
+        const auto sanitisedPath = path.endsWith(slash) ? path : path + slash;
         _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), sanitisedPath), sanitisedPath);
         return callback(false);
     });
