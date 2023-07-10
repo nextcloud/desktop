@@ -207,24 +207,24 @@ bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &abso
 
 bool SyncJournalDb::findPathInSelectiveSyncList(const QStringList &list, const QString &path)
 {
-    Q_ASSERT(std::is_sorted(list.begin(), list.end()));
+    Q_ASSERT(std::is_sorted(list.cbegin(), list.cend()));
 
-    if (list.size() == 1 && list.first() == QLatin1String("/")) {
+    if (list.size() == 1 && list.first() == QStringLiteral("/")) {
         // Special case for the case "/" is there, it matches everything
         return true;
     }
 
-    QString pathSlash = path + QLatin1Char('/');
+    const QString pathSlash = path + QLatin1Char('/');
 
     // Since the list is sorted, we can do a binary search.
     // If the path is a prefix of another item or right after in the lexical order.
-    auto it = std::lower_bound(list.begin(), list.end(), pathSlash);
+    auto it = std::lower_bound(list.cbegin(), list.cend(), pathSlash);
 
-    if (it != list.end() && *it == pathSlash) {
+    if (it != list.cend() && *it == pathSlash) {
         return true;
     }
 
-    if (it == list.begin()) {
+    if (it == list.cbegin()) {
         return false;
     }
     --it;
