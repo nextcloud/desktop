@@ -155,7 +155,7 @@ public:
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);
 
-    QStringList issuesWidgetFilter() const;
+    std::optional<QStringList> issuesWidgetFilter() const;
     void setIssuesWidgetFilter(const QStringList &checked);
 
     std::chrono::seconds timeout() const;

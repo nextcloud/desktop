@@ -140,10 +140,14 @@ bool ConfigFile::optionalDesktopNotifications() const
     return settings.value(optionalDesktopNoficationsC(), true).toBool();
 }
 
-QStringList ConfigFile::issuesWidgetFilter() const
+std::optional<QStringList> ConfigFile::issuesWidgetFilter() const
 {
     auto settings = makeQSettings();
-    return settings.value(issuesWidgetFilterC()).toStringList();
+    if (settings.contains(issuesWidgetFilterC())) {
+        return settings.value(issuesWidgetFilterC()).toStringList();
+    }
+
+    return {};
 }
 
 void ConfigFile::setIssuesWidgetFilter(const QStringList &checked)

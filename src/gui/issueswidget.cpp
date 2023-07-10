@@ -145,19 +145,23 @@ private:
 
     void restoreFilter()
     {
-        StatusSet filter;
+        StatusSet filter = {};
         bool filterNeedsReset = true; // If there is no filter, the `true` value will cause a reset.
-        QStringList checked = ConfigFile().issuesWidgetFilter();
+        std::optional<QStringList> checked = ConfigFile().issuesWidgetFilter();
 
-        for (const QString &s : checked) {
-            auto status = Utility::stringToEnum<SyncFileItem::Status>(s);
-            if (static_cast<int8_t>(status) == -1) {
-                // The string value is not a valid enum value, so stop processing, and queue a reset.
-                filterNeedsReset = true;
-                break;
-            } else {
-                filter[status] = true;
-                filterNeedsReset = false;
+        if (checked.has_value()) {
+            // There is a filter, but it can be empty (user unchecked all checkboxes), and in that case we do not want to reset the filter.
+            filterNeedsReset = false;
+
+            for (const QString &s : checked.value()) {
+                auto status = Utility::stringToEnum<SyncFileItem::Status>(s);
+                if (static_cast<int8_t>(status) == -1) {
+                    // The string value is not a valid enum value, so stop processing, and queue a reset.
+                    filterNeedsReset = true;
+                    break;
+                } else {
+                    filter[status] = true;
+                }
             }
         }
 
