@@ -457,8 +457,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const LocalInfo &localEntry, const RemoteInfo &serverEntry,
     const SyncJournalFileRecord &dbEntry)
 {
-    const char *hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
-    const char *hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
+    const auto hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
+    const auto hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
     const auto serverFileIsLocked = (serverEntry.isValid() ? (serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked")  : "");
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
     qCInfo(lcDisco).nospace() << "Processing " << path._original
@@ -488,7 +488,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         return; // Ignore this.
     }
 
-    auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
+    const auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
     item->_file = path._target;
     item->_originalFile = path._original;
     item->_previousSize = dbEntry._fileSize;
