@@ -691,10 +691,15 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 
 void ActivityListModel::checkAndRemoveSeenActivities(const OCC::ActivityList &newActivities)
 {
+    ActivityList activitiesToRemove;
     for (const auto &activity : _finalList) {
         if (activity._objectType == QStringLiteral("chat") && !newActivities.contains(activity)) {
-            removeActivityFromActivityList(activity);
+            activitiesToRemove.push_back(activity);
         }
+    }
+
+    for (const auto &toRemove : activitiesToRemove) {
+        removeActivityFromActivityList(toRemove);
     }
 }
 

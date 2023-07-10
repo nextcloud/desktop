@@ -24,12 +24,12 @@ ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState,
 {
 }
 
-void ServerNotificationHandler::slotFetchNotifications()
+bool ServerNotificationHandler::startFetchNotifications()
 {
     // check connectivity and credentials
     if (!(_accountState && _accountState->isConnected() && _accountState->account() && _accountState->account()->credentials() && _accountState->account()->credentials()->ready())) {
         deleteLater();
-        return;
+        return false;
     }
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
@@ -37,7 +37,7 @@ void ServerNotificationHandler::slotFetchNotifications()
         if (!_accountState->account()->capabilities().notificationsAvailable()) {
             qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
-            return;
+            return false;
         }
     }
 
@@ -50,6 +50,7 @@ void ServerNotificationHandler::slotFetchNotifications()
     _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
     _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
+    return true;
 }
 
 void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode)
@@ -66,12 +67,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();
+        emit jobFinished();
         return;
     }
 
     if (statusCode == notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
         deleteLater();
+        emit jobFinished();
         return;
     }
 
@@ -170,6 +173,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     }
     emit newNotificationList(list);
     emit newIncomingCallsList(callList);
+    emit jobFinished();
 
     deleteLater();
 }

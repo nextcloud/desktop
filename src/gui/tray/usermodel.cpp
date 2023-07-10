@@ -119,6 +119,14 @@ bool User::canShowNotification(const long notificationId)
             !notificationAlreadyShown(notificationId);
 }
 
+void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numChatNotificationsReceived)
+{
+    if (numChatNotificationsReceived < _lastChatNotificationsReceivedCount) {
+        _activityModel->checkAndRemoveSeenActivities(list);
+    }
+    _lastChatNotificationsReceivedCount = numChatNotificationsReceived;
+}
+
 void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
 {
     if(!canShowNotification(notificationId)) {
@@ -197,6 +205,11 @@ void User::showDesktopTalkNotification(const Activity &activity)
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
+    const auto chatNotificationsReceivedCount = std::count_if(std::cbegin(list), std::cend(list), [](const auto &activity) {
+        return activity._objectType == QStringLiteral("chat");
+    });
+    checkAndRemoveSeenActivities(list, chatNotificationsReceivedCount);
+
     ActivityList toNotifyList;
 
     std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) {
@@ -221,21 +234,18 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         return;
     }
 
-    auto chatNotificationsReceivedCount = 0;
-
-    for(const auto &activity : qAsConst(toNotifyList)) {
+    for (const auto &activity : qAsConst(toNotifyList)) {
         if (activity._objectType == QStringLiteral("chat")) {
-            ++chatNotificationsReceivedCount;
             showDesktopTalkNotification(activity);
         } else {
             showDesktopNotification(activity);
         }
     }
+}
 
-    if (chatNotificationsReceivedCount < _lastChatNotificationsReceivedCount) {
-        _activityModel->checkAndRemoveSeenActivities(toNotifyList);
-    }
-    _lastChatNotificationsReceivedCount = chatNotificationsReceivedCount;
+void User::slotNotificationFetchFinished()
+{
+    _isNotificationFetchRunning = false;
 }
 
 void User::slotBuildIncomingCallDialogs(const ActivityList &list)
@@ -440,13 +450,18 @@ void User::slotRefreshNotifications()
     // start a server notification handler if no notification requests
     // are running
     if (_notificationRequestsRunning == 0) {
+        if (_isNotificationFetchRunning) {
+            qCDebug(lcActivity) << "Notification fetch is already running.";
+            return;
+        }
         auto *snh = new ServerNotificationHandler(_account.data());
         connect(snh, &ServerNotificationHandler::newNotificationList,
             this, &User::slotBuildNotificationDisplay);
         connect(snh, &ServerNotificationHandler::newIncomingCallsList,
             this, &User::slotBuildIncomingCallDialogs);
-
-        snh->slotFetchNotifications();
+        connect(snh, &ServerNotificationHandler::jobFinished,
+            this, &User::slotNotificationFetchFinished);
+        _isNotificationFetchRunning = snh->startFetchNotifications();
     } else {
         qCWarning(lcActivity) << "Notification request counter not zero.";
     }
