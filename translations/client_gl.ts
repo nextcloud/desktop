@@ -1289,12 +1289,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Confirma que quere eliminar permanentemente o directorio &lt;i&gt;%1&lt;/i&gt; e todo o seu contido?</translation>
+        <translation>Confirma que quere eliminar definitivamente o directorio &lt;i&gt;%1&lt;/i&gt; e todo o seu contido?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>Confirma que quere eliminar permanentemente o ficheiro &lt;i&gt;%1&lt;/i&gt; ?</translation>
+        <translation>Confirma que quere eliminar definitivamente o ficheiro &lt;i&gt;%1&lt;/i&gt; ?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
