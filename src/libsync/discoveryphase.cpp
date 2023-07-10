@@ -248,13 +248,13 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 void DiscoveryPhase::setSelectiveSyncBlackList(const QStringList &list)
 {
     _selectiveSyncBlackList = list;
-    std::sort(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end());
+    _selectiveSyncBlackList.sort();
 }
 
 void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
 {
     _selectiveSyncWhiteList = list;
-    std::sort(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end());
+    _selectiveSyncWhiteList.sort();
 }
 
 void DiscoveryPhase::scheduleMoreJobs()
