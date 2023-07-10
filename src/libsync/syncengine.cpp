@@ -388,17 +388,17 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             }
 
             // Update on-disk virtual file metadata
-            if (modificationHappened) {
-                if (item->_type == ItemTypeVirtualFile) {
-                    auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
-                    if (!r) {
-                        item->_status = SyncFileItem::Status::NormalError;
-                        item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                        item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
-                        emit itemCompleted(item, ErrorCategory::GenericError);
-                        return;
-                    }
-                } else if (!FileSystem::setModTime(filePath, item->_modtime)) {
+            if (modificationHappened && item->_type == ItemTypeVirtualFile) {
+                auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
+                if (!r) {
+                    item->_status = SyncFileItem::Status::NormalError;
+                    item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
+                    emit itemCompleted(item, ErrorCategory::GenericError);
+                    return;
+                }
+            } else if (modificationHappened || prev._modtime != item->_modtime) {
+                if (!FileSystem::setModTime(filePath, item->_modtime)) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
                     item->_errorString = tr("Could not update file metadata: %1").arg(filePath);
                     emit itemCompleted(item, ErrorCategory::GenericError);
