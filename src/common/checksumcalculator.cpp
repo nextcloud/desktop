@@ -95,8 +95,6 @@ QByteArray ChecksumCalculator::calculate()
         return result;
     }
 
-    bool isAnyChunkAdded = false;
-
     for (;;) {
         QMutexLocker locker(&_deviceMutex);
         if (!_device->isOpen() || _device->atEnd()) {
@@ -114,7 +112,6 @@ QByteArray ChecksumCalculator::calculate()
         if (!addChunk(buf, sizeRead)) {
             break;
         }
-        isAnyChunkAdded = true;
     }
 
     {
@@ -124,14 +121,12 @@ QByteArray ChecksumCalculator::calculate()
         }
     }
 
-    if (isAnyChunkAdded) {
-        if (_algorithmType == AlgorithmType::Adler32) {
-            result = QByteArray::number(_adlerHash, 16);
-        } else {
-            Q_ASSERT(_cryptographicHash);
-            if (_cryptographicHash) {
-                result = _cryptographicHash->result().toHex();
-            }
+    if (_algorithmType == AlgorithmType::Adler32) {
+        result = QByteArray::number(_adlerHash, 16);
+    } else {
+        Q_ASSERT(_cryptographicHash);
+        if (_cryptographicHash) {
+            result = _cryptographicHash->result().toHex();
         }
     }
 
@@ -150,13 +145,6 @@ void ChecksumCalculator::initChecksumAlgorithm()
     if (_algorithmType == AlgorithmType::Undefined) {
         qCWarning(lcChecksumCalculator) << "_algorithmType is Undefined, impossible to init Checksum Algorithm";
         return;
-    }
-
-    {
-        QMutexLocker locker(&_deviceMutex);
-        if (_device->size() == 0) {
-            return;
-        }
     }
 
     if (_algorithmType == AlgorithmType::Adler32) {

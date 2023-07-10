@@ -53,7 +53,11 @@ void PutMultiFileJob::start()
 
         auto onePart = QHttpPart{};
 
-        onePart.setBodyDevice(oneDevice._device.get());
+        if (oneDevice._device->size() == 0) {
+            onePart.setBody({});
+        } else {
+            onePart.setBodyDevice(oneDevice._device.get());
+        }
 
         for (auto it = oneDevice._headers.begin(); it != oneDevice._headers.end(); ++it) {
             onePart.setRawHeader(it.key(), it.value());
