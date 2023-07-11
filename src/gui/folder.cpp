@@ -741,9 +741,6 @@ void Folder::setVirtualFilesEnabled(bool enabled)
     }
 
     if (newMode != _definition.virtualFilesMode) {
-        // TODO: Must wait for current sync to finish!
-        SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
-
         _vfs->stop();
         _vfs->unregisterFolder();
 
