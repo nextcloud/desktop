@@ -124,25 +124,21 @@ void SyncScheduler::enqueueFolder(Folder *folder, Priority priority)
     Q_ASSERT(folder->isReady());
     Q_ASSERT(folder->canSync());
     _queue->enqueueFolder(folder, priority);
-    if (_running) {
-        startNext();
-    }
+    startNext();
 }
 
 void SyncScheduler::startNext()
 {
-    if (OC_ENSURE_NOT(!_running || _currentSync)) {
+    if (!_running || !_currentSync.isNull()) {
         return;
     }
     _currentSync = _queue->pop();
-    if (_currentSync) {
+    if (!_currentSync.isNull()) {
         connect(
             _currentSync, &Folder::syncFinished, this,
             [this] {
                 _currentSync = nullptr;
-                if (_running) {
-                    startNext();
-                }
+                startNext();
             },
             Qt::SingleShotConnection);
         connect(_currentSync, &Folder::destroyed, this, &SyncScheduler::startNext, Qt::SingleShotConnection);
