@@ -1256,9 +1256,8 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
     msgBox->addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
     QPushButton *keepBtn = msgBox->addButton(tr("Keep files"), QMessageBox::AcceptRole);
     msgBox->setDefaultButton(keepBtn);
-    bool oldPaused = syncPaused();
     setSyncPaused(true);
-    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, oldPaused, direction, this] {
+    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, this] {
         if (msgBox->clickedButton() == keepBtn) {
             // reset the db upload all local files or download all remote files
             FileSystem::setFolderMinimumPermissions(path());
@@ -1266,8 +1265,9 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
         } else {
             _allowRemoveAllOnce = true;
         }
+        // the only way we end up in here is that the folder was not paused
+        setSyncPaused(false);
         FolderMan::instance()->scheduler()->enqueueFolder(this);
-        setSyncPaused(oldPaused);
     });
     connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
     msgBox->open();
