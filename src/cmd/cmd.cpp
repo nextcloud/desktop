@@ -306,7 +306,10 @@ CmdOptions parseOptions(const QStringList &app_args)
     parser.setApplicationDescription(QStringLiteral("%1 version %2 - command line client tool").arg(QCoreApplication::instance()->applicationName(), OCC::Version::displayString()));
 
     // this little snippet saves a few lines below
-    auto addOption = [&parser](const QCommandLineOption &option) {
+    auto addOption = [&parser](QCommandLineOption &&option, std::optional<QCommandLineOption::Flag> &&flags = {}) {
+        if (flags.has_value()) {
+            option.setFlags(flags.value());
+        }
         parser.addOption(option);
         return option;
     };
@@ -328,6 +331,9 @@ CmdOptions parseOptions(const QStringList &app_args)
     auto syncHiddenFilesOption = addOption({ { QStringLiteral("sync-hidden-files") }, QStringLiteral("Enables synchronization of hidden files") });
 
     auto logdebugOption = addOption({ { QStringLiteral("logdebug") }, QStringLiteral("More verbose logging") });
+
+    const auto testCrashReporter =
+        addOption({{QStringLiteral("crash")}, QStringLiteral("Crash the client to test the crash reporter")}, QCommandLineOption::HiddenFromHelp);
 
     parser.addHelpOption();
     parser.addVersionOption();
@@ -405,6 +411,11 @@ CmdOptions parseOptions(const QStringList &app_args)
     if (parser.isSet(logdebugOption)) {
         Logger::instance()->setLogFile(QStringLiteral("-"));
         Logger::instance()->setLogDebug(true);
+    }
+    if (parser.isSet(testCrashReporter)) {
+        // crash onc ethe main loop was started
+        qCritical() << "We'll soon crash on purpose";
+        QTimer::singleShot(0, qApp, &Utility::crash);
     }
     return options;
 }
