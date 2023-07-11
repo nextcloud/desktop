@@ -1258,10 +1258,13 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
         if (msgBox->clickedButton() == keepBtn) {
             // reset the db upload all local files or download all remote files
             FileSystem::setFolderMinimumPermissions(path());
+            // will remove placeholders in the next sync
+            SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
             journalDb()->clearFileTable();
-        } else {
-            _allowRemoveAllOnce = true;
         }
+        // if all local files where placeholders, they might be gone after the next sync
+        // therefor we need to allow removal off all files in the next sync even if we selected keep
+        _allowRemoveAllOnce = true;
         // the only way we end up in here is that the folder was not paused
         setSyncPaused(false);
         FolderMan::instance()->scheduler()->enqueueFolder(this);
