@@ -40,14 +40,6 @@
 #include "updater/ocupdater.h"
 #endif
 
-#if defined(Q_OS_WIN)
-#include <windows.h>
-#endif
-
-#if defined(WITH_CRASHREPORTER)
-#include <libcrashreporter-handler/Handler.h>
-#endif
-
 #include <QApplication>
 #include <QDesktopServices>
 #include <QDir>
@@ -145,18 +137,6 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
     _instance = this;
 
     platform->migrate();
-
-#if defined(WITH_CRASHREPORTER)
-    if (ConfigFile().crashReporter()) {
-        auto reporter = QStringLiteral(CRASHREPORTER_EXECUTABLE);
-#ifdef Q_OS_WIN
-        if (!reporter.endsWith(QLatin1String(".exe"))) {
-            reporter.append(QLatin1String(".exe"));
-        }
-#endif
-        connect(qApp, &QApplication::aboutToQuit, this, [crashHandler = new CrashReporter::Handler(QDir::tempPath(), true, reporter)] { delete crashHandler; });
-    }
-#endif
 
     setupTranslations();
 

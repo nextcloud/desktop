@@ -57,6 +57,7 @@ WinPlatform::~WinPlatform()
 
 void WinPlatform::setApplication(QCoreApplication *application)
 {
+    Platform::setApplication(application);
     // Ensure OpenSSL config file is only loaded from app directory
     const QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());

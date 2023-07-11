@@ -150,16 +150,6 @@ if(WITH_AUTO_UPDATER)
     target_compile_definitions(owncloudCore PRIVATE WITH_AUTO_UPDATER)
 endif()
 
-
-if(WITH_CRASHREPORTER)
-    target_link_libraries(owncloudCore PRIVATE CrashReporterQt::Handler)
-
-    if(UNIX AND NOT MAC)
-        find_package(Threads REQUIRED)
-        target_link_libraries(owncloudCore PUBLIC ${CMAKE_THREAD_LIBS_INIT})
-    endif()
-endif()
-
 add_executable(owncloud main.cpp)
 set_target_properties(owncloud PROPERTIES
     OUTPUT_NAME "${APPLICATION_EXECUTABLE}"

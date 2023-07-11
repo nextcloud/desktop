@@ -21,6 +21,15 @@
 #include "platform_mac.h"
 #endif
 
+#include "configfile.h"
+
+#ifdef CRASHREPORTER_EXECUTABLE
+#include <QDir>
+
+#include <libcrashreporter-handler/Handler.h>
+
+#endif
+
 namespace OCC {
 
 void Platform::migrate()
@@ -29,7 +38,13 @@ void Platform::migrate()
 
 void Platform::setApplication(QCoreApplication *application)
 {
-    Q_UNUSED(application)
+#ifdef CRASHREPORTER_EXECUTABLE
+    if (ConfigFile().crashReporter()) {
+        auto *crashHandler =
+            new CrashReporter::Handler(QDir::tempPath(), true, QStringLiteral("%1/" CRASHREPORTER_EXECUTABLE).arg(application->applicationDirPath()));
+        connect(application, &QCoreApplication::aboutToQuit, this, [crashHandler] { delete crashHandler; });
+    }
+#endif
 }
 
 void Platform::startServices() { }

@@ -127,4 +127,16 @@ set_target_properties(libsync PROPERTIES
         VERSION ${MIRALL_VERSION}
         SOVERSION ${MIRALL_SOVERSION}
 )
+
+if(WITH_CRASHREPORTER)
+    set_source_files_properties(platform.cpp PROPERTIES COMPILE_DEFINITIONS CRASHREPORTER_EXECUTABLE="${CRASHREPORTER_EXECUTABLE}")
+    target_link_libraries(libsync PRIVATE CrashReporterQt::Handler)
+
+    if(UNIX AND NOT MAC)
+        find_package(Threads REQUIRED)
+        target_link_libraries(libsync PUBLIC Threads::Threads)
+    endif()
+endif()
+
+
 install(TARGETS libsync EXPORT ${APPLICATION_SHORTNAME}Config ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

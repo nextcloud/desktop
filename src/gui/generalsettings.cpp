@@ -78,9 +78,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
      */
     connect(_ui->syncHiddenFilesCheckBox, &QCheckBox::toggled, this, [](bool checked) { FolderMan::instance()->setIgnoreHiddenFiles(!checked); });
 
-#ifndef WITH_CRASHREPORTER
-    _ui->crashreporterCheckBox->setVisible(false);
-#endif
+    _ui->crashreporterCheckBox->setVisible(Theme::instance()->withCrashReporter());
 
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758

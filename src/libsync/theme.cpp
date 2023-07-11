@@ -621,6 +621,15 @@ bool Theme::enableCernBranding() const
     return false;
 }
 
+bool Theme::withCrashReporter() const
+{
+#ifdef WITH_CRASHREPORTER
+    return true;
+#else
+    return false;
+#endif
+}
+
 template <>
 OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(Theme::UserIDType userIdType)
 {
