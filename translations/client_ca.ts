@@ -51,7 +51,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar de trucades de notificació de Converses</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
         <source>Decline</source>
-        <translation>Rebutja</translation>
+        <translation>Rebutjar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="62"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Versió local</translation>
     </message>
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Versió del servidor</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="95"/>
         <source>Opening file for local editing</source>
-        <translation>Obrint el fitxer per editar-lo localment</translation>
+        <translation>Obrint el fitxer per la edició local</translation>
     </message>
 </context>
 <context>
@@ -359,7 +359,8 @@
         <location filename="../src/gui/accountmanager.cpp" line="182"/>
         <source>An existing configuration from a legacy desktop client was detected.
 Should an account import be attempted?</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha detectat una configuració existent d&apos;un client d&apos;escriptori antic.
+S&apos;ha d&apos;intentar importar un compte?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="184"/>

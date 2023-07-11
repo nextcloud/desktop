@@ -4317,7 +4317,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1267"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
