@@ -1205,7 +1205,7 @@ void PropagateDownloadFile::downloadFinished()
         qCDebug(lcPropagateDownload()) << _tmpFile << "file is not locked: making it"
                                        << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
                                                                                                                                             : "read write");
-        FileSystem::setFileReadOnly(filename, (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+        FileSystem::setFileReadOnlyWeak(filename, (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
 
     // Apply the remote permissions
@@ -1355,7 +1355,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         FileSystem::setFileReadOnly(fn, true);
     } else {
         qCDebug(lcPropagateDownload()) << fn << "file is not locked: making it" << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only" : "read write");
-        FileSystem::setFileReadOnly(fn, (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+        FileSystem::setFileReadOnlyWeak(fn, (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
 
     qint64 duration = _stopwatch.elapsed();
