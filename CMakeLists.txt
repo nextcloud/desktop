@@ -35,6 +35,8 @@ include(ECMMarkNonGuiExecutable)
 include(ECMSetupVersion)
 
 include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMEnableSanitizers)
+
 
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")
