@@ -38,6 +38,11 @@ jobs:
               os: macos-latest
               fetch-depth: 1
               container:
+            - name: macOS 64-bit clang debug
+              target: macos-64-clang-debug
+              os: macos-latest
+              fetch-depth: 1
+              container:
             - name: CentOS 7 64-bit gcc
               target: linux-64-gcc
               os: ubuntu-latest
@@ -97,6 +102,12 @@ jobs:
 
     - name: Build
       run: |
+        if ("${{ matrix.target }}" -eq "macos-64-clang-debug" ) {
+            # https://api.kde.org/ecm/module/ECMEnableSanitizers.html
+            # address;leak;undefined
+            # clang: error: unsupported option '-fsanitize=leak' for target 'x86_64-apple-darwin21.6.0'
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --set args="-DECM_ENABLE_SANITIZERS='address;undefined'" owncloud/owncloud-client
+        }
         if ("${{ matrix.target }}" -eq "windows-cl-msvc2022-x86_64") {
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --configure owncloud/owncloud-client
             $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
