@@ -67,6 +67,10 @@ class TestPermissions : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogDebug(true);
+    }
 
     void t7pl()
     {
