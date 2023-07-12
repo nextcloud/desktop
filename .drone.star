@@ -33,7 +33,6 @@ PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
 PLUGINS_SLACK = "plugins/slack"
 PYTHON = "python"
-THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 
 # secrets used in the pipeline
@@ -41,7 +40,6 @@ secrets = {
     "SQUISH_LICENSEKEY": "squish_license_server",
     "GITHUB_USERNAME": "github_username",
     "GITHUB_TOKEN": "github_token",  # not available for PRs
-    "GITHUB_TOKEN_COMMENT": "github_token_comments",
     "CACHE_ENDPOINT": "cache_public_s3_server",
     "CACHE_BUCKET": "cache_public_s3_bucket",
     "AWS_ACCESS_KEY_ID": "cache_public_s3_access_key",
@@ -208,9 +206,7 @@ def gui_test_pipeline(ctx):
         steps += installPnpm() + \
                  setGuiTestReportDir() + \
                  gui_tests(squish_parameters, server) + \
-                 uploadGuiTestLogs(ctx, server) + \
-                 buildGithubComment(pipeline_name, server) + \
-                 githubComment(pipeline_name, server)
+                 uploadGuiTestLogs(ctx, server)
 
         pipelines.append({
             "kind": "pipeline",
@@ -651,52 +647,6 @@ def uploadGuiTestLogs(ctx, server_type = "oc10"):
             "AWS_SECRET_ACCESS_KEY": from_secret("AWS_SECRET_ACCESS_KEY"),
         },
         "when": trigger,
-    }]
-
-def buildGithubComment(suite = "", server_type = "oc10"):
-    return [{
-        "name": "build-github-comment",
-        "image": OC_UBUNTU,
-        "commands": [
-            "bash %s/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER} %s" % (dir["guiTest"], dir["guiTestReport"], server_type),
-        ],
-        "environment": {
-            "TEST_CONTEXT": suite,
-            "CACHE_ENDPOINT": from_secret("CACHE_ENDPOINT"),
-            "CACHE_BUCKET": from_secret("CACHE_BUCKET"),
-        },
-        "when": {
-            "status": [
-                "failure",
-            ],
-            "event": [
-                "pull_request",
-            ],
-        },
-    }]
-
-def githubComment(alternateSuiteName, server_type = "oc10"):
-    prefix = "Results for <strong>%s</strong> ${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1" % alternateSuiteName
-    return [{
-        "name": "github-comment",
-        "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
-        "settings": {
-            "message": "%s/comments.file" % dir["guiTestReport"],
-            "key": "pr-${DRONE_PULL_REQUEST}-%s" % server_type,
-            "update": "true",
-            "api_key": from_secret("GITHUB_TOKEN_COMMENT"),
-        },
-        "commands": [
-            "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (dir["guiTestReport"], prefix, dir["guiTestReport"], dir["guiTestReport"]),
-        ],
-        "when": {
-            "status": [
-                "failure",
-            ],
-            "event": [
-                "pull_request",
-            ],
-        },
     }]
 
 def skipIfUnchanged(ctx, type):
