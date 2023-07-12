@@ -1,5 +1,10 @@
 include(OCRcVersion)
 
+if (MSVC)
+    # ecm sets /W3 we set /W4
+    string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+endif()
+
 # common target settings that are used by all important targets
 function(apply_common_target_settings targetName)
     add_windows_version_info(${targetName})
@@ -38,7 +43,7 @@ function(apply_common_target_settings targetName)
                 # enable linter like warnings with msvc
                 # this includes deprecations
                 # https://learn.microsoft.com/en-us/cpp/build/reference/compiler-option-warning-level?view=msvc-170
-                /W3
+                /W4
                 # treat unhandled switch cases as error
                 /we4062
         )
