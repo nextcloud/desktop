@@ -204,6 +204,17 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(_model, &FolderStatusModel::dataChanged, [this]() {
         ui->addButton->setVisible(!Theme::instance()->singleSyncFolder() || _model->rowCount() == 0);
     });
+
+    connect(_accountState.get(), &AccountState::isSettingUpChanged, this, [this] {
+        if (_accountState->isSettingUp()) {
+            ui->spinner->startAnimation();
+            ui->stackedWidget->setCurrentWidget(ui->loadingPage);
+        } else {
+            ui->spinner->stopAnimation();
+            ui->stackedWidget->setCurrentWidget(ui->folderListPage);
+        }
+    });
+    ui->stackedWidget->setCurrentWidget(ui->folderListPage);
 }
 
 

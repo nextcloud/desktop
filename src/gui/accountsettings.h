@@ -28,7 +28,6 @@
 
 class QModelIndex;
 class QNetworkReply;
-class QListWidgetItem;
 class QLabel;
 class QSortFilterProxyModel;
 

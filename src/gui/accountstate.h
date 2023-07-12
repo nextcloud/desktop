@@ -145,6 +145,12 @@ public:
     void tagLastSuccessfullETagRequest(const QDateTime &tp);
     UpdateUrlDialog *updateUrlDialog(const QUrl &newUrl);
 
+    /***
+     * The account is setup for the first time, this may take some time
+     */
+    bool isSettingUp() const;
+    void setSettingUp(bool settingUp);
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -161,6 +167,7 @@ signals:
     void stateChanged(State state);
     void isConnectedChanged();
     void urlUpdated();
+    void isSettingUpChanged();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
@@ -180,6 +187,8 @@ private:
     QPointer<UpdateUrlDialog> _updateUrlDialog;
     QPointer<TlsErrorDialog> _tlsDialog;
     bool _supportsSpaces = true;
+
+    bool _settingUp = false;
 
     /**
      * Starts counting when the server starts being back up after 503 or

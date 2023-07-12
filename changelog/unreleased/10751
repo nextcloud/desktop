@@ -1,0 +1,6 @@
+Enhancement: Display a progress spinner during the initial setup
+
+We now display a progress spinner after the setup wizard, until
+the client is done setting the account up.
+
+https://github.com/owncloud/client/issues/10751

@@ -565,4 +565,17 @@ QuotaInfo *AccountState::quotaInfo()
     return _quotaInfo;
 }
 
+bool AccountState::isSettingUp() const
+{
+    return _settingUp;
+}
+
+void AccountState::setSettingUp(bool settingUp)
+{
+    if (_settingUp != settingUp) {
+        _settingUp = settingUp;
+        Q_EMIT isSettingUpChanged();
+    }
+}
+
 } // namespace OCC

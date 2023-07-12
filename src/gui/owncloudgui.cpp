@@ -844,6 +844,7 @@ void ownCloudGui::runNewAccountWizard()
                 if (!newAccount.isNull()) {
                     // finally, call the slot that finalizes the setup
                     auto accountStatePtr = ocApp()->addNewAccount(newAccount);
+                    accountStatePtr->setSettingUp(true);
 
                     // ensure we are connected and fetch the capabilities
                     auto validator = new ConnectionValidator(accountStatePtr->account(), accountStatePtr->account().data());
@@ -868,7 +869,7 @@ void ownCloudGui::runNewAccountWizard()
                             case Wizard::SyncMode::UseVfs: {
                                 bool useVfs = syncMode == Wizard::SyncMode::UseVfs;
                                 setUpInitialSyncFolder(accountStatePtr, useVfs);
-
+                                accountStatePtr->setSettingUp(false);
                                 break;
                             }
                             case Wizard::SyncMode::ConfigureUsingFolderWizard: {
@@ -897,11 +898,13 @@ void ownCloudGui::runNewAccountWizard()
 
                                     folderMan->setSyncEnabled(true);
                                     folderMan->scheduleAllFolders();
+                                    accountStatePtr->setSettingUp(false);
                                 });
 
-                                connect(folderWizard, &QDialog::rejected, []() {
+                                connect(folderWizard, &QDialog::rejected, [accountStatePtr]() {
                                     qCInfo(lcApplication) << "Folder wizard cancelled";
                                     FolderMan::instance()->setSyncEnabled(true);
+                                    accountStatePtr->setSettingUp(false);
                                 });
 
                                 folderWizard->open();
@@ -909,7 +912,7 @@ void ownCloudGui::runNewAccountWizard()
 
                                 break;
                             }
-                            default:
+                            case OCC::Wizard::SyncMode::Invalid:
                                 Q_UNREACHABLE();
                             }
                         }
