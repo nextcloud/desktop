@@ -253,7 +253,9 @@ void ShareModel::updateData()
     qCDebug(lcShareModel) << "Updating share model data now.";
 
     const auto relPath = _localPath.mid(_folder->cleanPath().length() + 1);
-    _sharePath = _folder->remotePathTrailingSlash() + relPath;
+    const auto sharePath = _folder->remotePathTrailingSlash() + relPath;
+    const auto percentEncoded = QUrl::toPercentEncoding(sharePath);
+    _sharePath = QString::fromUtf8(percentEncoded);
 
     SyncJournalFileRecord fileRecord;
     auto resharingAllowed = true; // lets assume the good
