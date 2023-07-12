@@ -1198,8 +1198,15 @@ void PropagateDownloadFile::downloadFinished()
         }
     }
 
-    // Apply the remote permissions
-    FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
+        qCDebug(lcPropagateDownload()) << _tmpFile << "file is locked: making it read only";
+        FileSystem::setFileReadOnly(_tmpFile.fileName(), true);
+    } else {
+        qCDebug(lcPropagateDownload()) << _tmpFile << "file is not locked: making it"
+                                       << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
+                                                                                                                                            : "read write");
+        FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+    }
 
     const auto isConflict = (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
                              && (QFileInfo(filename).isDir() || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
@@ -1260,12 +1267,6 @@ void PropagateDownloadFile::downloadFinished()
 
         done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
         return;
-    }
-
-    qCInfo(lcPropagateDownload()) << propagator()->account()->davUser() << propagator()->account()->davDisplayName() << propagator()->account()->displayName();
-    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
-        qCInfo(lcPropagateDownload()) << "file is locked: making it read only";
-        FileSystem::setFileReadOnly(filename, true);
     }
 
     FileSystem::setFileHidden(filename, false);
@@ -1344,6 +1345,14 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         && (_item->_file == QLatin1String(".sys.admin#recall#")
                || _item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
         handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
+    }
+
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
+        qCDebug(lcPropagateDownload()) << fn << "file is locked: making it read only";
+        FileSystem::setFileReadOnly(fn, true);
+    } else {
+        qCDebug(lcPropagateDownload()) << fn << "file is not locked: making it" << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only" : "read write");
+        FileSystem::setFileReadOnlyWeak(fn, (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
 
     qint64 duration = _stopwatch.elapsed();
