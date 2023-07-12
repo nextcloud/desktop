@@ -8,7 +8,6 @@
 DEFAULT_PHP_VERSION = "7.4"
 
 CYTOPIA_BLACK = "cytopia/black"
-DOCKER_GIT = "docker:git"
 MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
@@ -17,7 +16,6 @@ OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 OC_CI_NODEJS = "owncloudci/nodejs:16"
 OC_CI_PHP = "owncloudci/php:%s"
-OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
 OC_OCIS = "owncloud/ocis:%s"
 OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.3"
@@ -32,7 +30,6 @@ OC_CI_SQUISH = "owncloudci/squish:fedora-36-6.7-20220106-1008-qt515x-linux64"
 PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
 PLUGINS_SLACK = "plugins/slack"
-PYTHON = "python"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 
 # secrets used in the pipeline
