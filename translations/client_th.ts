@@ -2720,7 +2720,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>ปิด</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -2971,22 +2971,22 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>%1 พร้อมอัปเดตใหม่</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>อัปเดตใหม่สำหรับ %1 กำลังจะถูกติดตั้ง ตัวอัปเดตอาจขอเข้าถึงสิทธิประโยชน์เพิ่มเติมในระหว่างกระบวนการ คอมพิวเตอร์ของคุณอาจรีบูตเพื่อติดตั้งให้เสร็จสิ้น</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>กำลังดาวน์โหลด %1 โปรดรอสักครู่ …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 พร้อมใช้งานแล้ว เริ่มต้นแอปพลิเคชันใหม่เพื่อเริ่มต้นการอัปเดต</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -3039,7 +3039,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="70"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
@@ -3077,7 +3077,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>พื้นที่ว่าง %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="398"/>
