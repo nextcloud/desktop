@@ -46,6 +46,8 @@ function(apply_common_target_settings targetName)
                 /W4
                 # treat unhandled switch cases as error
                 /we4062
+                # Worder
+                /w15038
         )
     elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
         target_compile_options(${targetName}
