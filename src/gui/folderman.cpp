@@ -37,20 +37,6 @@ using namespace std::chrono;
 using namespace std::chrono_literals;
 
 namespace {
-/*
- * [Accounts]
- * 0\version=1
- */
-auto versionC()
-{
-    return QStringLiteral("version");
-}
-
-/*
- * Folders with a version > maxFoldersVersion will be removed
- * After the user was prompted for consent.
- */
-constexpr int maxFoldersVersion = 1;
 
 int numberOfSyncJournals(const QString &path)
 {
