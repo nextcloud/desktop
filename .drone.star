@@ -608,24 +608,14 @@ def setGuiTestReportDir():
         ],
     }]
 
-def showGuiTestResult():
-    return [{
-        "name": "show-gui-test-result",
-        "image": PYTHON,
-        "commands": [
-            "python %s/TestLogParser.py %s/results.json" % (dir["guiTest"], dir["guiTestReport"]),
-        ],
-        "when": {
-            "status": [
-                "failure",
-            ],
-        },
-    }]
-
 def uploadGuiTestLogs(ctx, server_type = "oc10"):
     trigger = {
         "status": [
             "failure",
+        ],
+        "event": [
+            "cron",
+            "tag",
         ],
     }
     if ctx.build.event == "tag":
