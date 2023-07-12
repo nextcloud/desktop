@@ -20,6 +20,7 @@
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
 #include "setupwizardcontext.h"
+#include "setupwizardcontroller_p.h"
 #include "setupwizardwindow.h"
 #include "states/abstractsetupwizardstate.h"
 
@@ -53,7 +54,7 @@ Q_SIGNALS:
     void finished(AccountPtr newAccount, SyncMode syncMode, const QVariantMap &dynamicRegistrationData);
 
 private:
-    void changeStateTo(SetupWizardState nextState);
+    void changeStateTo(SetupWizardState nextState, SetupWizardControllerPrivate::ChangeReason reason = SetupWizardControllerPrivate::ChangeReason::Default);
 
     SetupWizardContext *_context = nullptr;
 

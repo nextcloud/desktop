@@ -24,6 +24,8 @@ namespace {
 using namespace OCC;
 using namespace OCC::Wizard;
 
+using namespace SetupWizardControllerPrivate;
+
 /**
  * Generate list of wizard states to put in the navigation.
  * The actual wizard may be in states not within this list to perform tasks in the background without user interaction
@@ -103,7 +105,7 @@ SetupWizardWindow *SetupWizardController::window()
     return _context->window();
 }
 
-void SetupWizardController::changeStateTo(SetupWizardState nextState)
+void SetupWizardController::changeStateTo(SetupWizardState nextState, ChangeReason reason)
 {
     // validate initial state
     Q_ASSERT(nextState == SetupWizardState::ServerUrlState || _currentState != nullptr);
@@ -137,6 +139,18 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
     }
     case SetupWizardState::AccountConfiguredState: {
         _currentState = new AccountConfiguredSetupWizardState(_context);
+
+        switch (reason) {
+        case ChangeReason::Default:
+            break;
+        case ChangeReason::EvaluationFailed:
+            // whenever the evaluation of the last page fails, it's safe to assume it's due to some issue with the advanced
+            // therefore, we want to show them in that case
+            auto *page = dynamic_cast<AccountConfiguredWizardPage *>(_currentState->page());
+            if (OC_ENSURE(page != nullptr)) {
+                page->setShowAdvancedSettings(true);
+            }
+        }
         break;
     }
     default:
@@ -207,7 +221,7 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
     connect(_currentState, &AbstractSetupWizardState::evaluationFailed, this, [this](const QString &errorMessage) {
         _currentState->deleteLater();
         _context->window()->showErrorMessage(errorMessage);
-        changeStateTo(_currentState->state());
+        changeStateTo(_currentState->state(), ChangeReason::EvaluationFailed);
     });
 
     _context->window()->displayPage(_currentState->page(), _currentState->state());

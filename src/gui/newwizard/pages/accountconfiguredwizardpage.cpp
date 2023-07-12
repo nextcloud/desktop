@@ -187,4 +187,9 @@ bool AccountConfiguredWizardPage::validateInput()
     // nothing to validate here
     return true;
 }
+
+void AccountConfiguredWizardPage::setShowAdvancedSettings(bool showAdvancedSettings)
+{
+    _ui->advancedConfigGroupBox->setChecked(showAdvancedSettings);
+}
 }

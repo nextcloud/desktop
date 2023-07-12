@@ -39,6 +39,8 @@ public:
 
     bool validateInput() override;
 
+    void setShowAdvancedSettings(bool showAdvancedSettings);
+
 private:
     ::Ui::AccountConfiguredWizardPage *_ui;
 };
