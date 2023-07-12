@@ -89,8 +89,8 @@ FolderMan *FolderMan::_instance = nullptr;
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
     , _lockWatcher(new LockWatcher)
-    , _appRestartRequired(false)
     , _scheduler(new SyncScheduler(this))
+    , _appRestartRequired(false)
 {
     OC_ASSERT(!_instance);
     _instance = this;
@@ -678,6 +678,7 @@ QString FolderMan::trayTooltipStatusString(
             folderMessage = tr("Sync was successful, unresolved conflicts.");
             break;
         }
+        [[fallthrough]];
     default:
         return Utility::enumToDisplayName(result.status());
     }
