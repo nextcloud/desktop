@@ -193,24 +193,21 @@ qsizetype FolderMan::setupFolders()
         if (!accountsWithSettings.contains(id)) {
             continue;
         }
-        settings->beginGroup(id);
 
-        // The "backwardsCompatible" flag here is related to migrating old
-        // database locations
+        settings->beginGroup(id); // Process settings for this account.
+
         auto process = [&](const QString &groupName, bool foldersWithPlaceholders) {
             settings->beginGroup(groupName);
             setupFoldersHelper(*settings, account, foldersWithPlaceholders);
             settings->endGroup();
-            return true;
         };
 
-        if (!process(QStringLiteral("Folders"), false) ||
-            // See Folder::saveToSettings for details about why these exists.
-            !process(QStringLiteral("Multifolders"), false) || !process(QStringLiteral("FoldersWithPlaceholders"), true)) {
-            return 0;
-        }
+        process(QStringLiteral("Folders"), false);
+        process(QStringLiteral("FoldersWithPlaceholders"), true);
+        // See Folder::saveToSettings for details about why these exists.
+        process(QStringLiteral("Multifolders"), false);
 
-        settings->endGroup(); // <account>
+        settings->endGroup(); // Finished processing this account.
     }
 
     emit folderListChanged();
