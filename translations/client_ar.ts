@@ -1536,43 +1536,43 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="102"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="105"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="108"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="111"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="114"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="117"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="149"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -4317,7 +4317,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1267"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform></translation>
+        <translation><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>ينتهي صلاحيته في %1 دقائق</numerusform><numerusform>تنتهي صلاحيته في %1 دقائق</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
