@@ -13,10 +13,11 @@
  */
 
 #include "sharemanager.h"
-#include "ocssharejob.h"
 #include "account.h"
-#include "folderman.h"
 #include "accountstate.h"
+#include "folderman.h"
+#include "ocssharejob.h"
+#include "sharee.h"
 
 #include <QUrl>
 #include <QJsonDocument>
@@ -508,29 +509,24 @@ void ShareManager::fetchShares(const QString &path)
 
 void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 {
-    qDebug() << reply;
-    auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
-    const QString versionString = _account->serverVersion();
+    qCDebug(lcSharing) << reply;
+    const auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
+    const auto versionString = _account->serverVersion();
     qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
 
     QList<SharePtr> shares;
 
-    foreach (const auto &share, tmpShares) {
-        auto data = share.toObject();
-
-        auto shareType = data.value("share_type").toInt();
-
-        SharePtr newShare;
+    for (const auto &share : tmpShares) {
+        const auto data = share.toObject();
+        const auto shareType = data.value("share_type").toInt();
 
         if (shareType == Share::TypeLink) {
-            newShare = parseLinkShare(data);
-        } else if (Share::isShareTypeUserGroupEmailRoomOrRemote(static_cast <Share::ShareType>(shareType))) {
-            newShare = parseUserGroupShare(data);
+            shares.append(parseLinkShare(data));
+        } else if (Share::isShareTypeUserGroupEmailRoomOrRemote(static_cast<Share::ShareType>(shareType))) {
+            shares.append(parseUserGroupShare(data));
         } else {
-            newShare = parseShare(data);
+            shares.append(parseShare(data));
         }
-
-        shares.append(SharePtr(newShare));
     }
 
     qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
