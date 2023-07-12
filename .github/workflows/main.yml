@@ -41,7 +41,7 @@ jobs:
             - name: CentOS 7 64-bit gcc
               target: linux-64-gcc
               os: ubuntu-latest
-              container: owncloudci/appimage-build:centos7-amd64
+              container: owncloudci/appimage-build:centos7-devtoolset11-amd64
               fetch-depth: 1
 
     name: ${{ matrix.name }}
