@@ -325,18 +325,15 @@ void ShareModel::initShareManager()
 {
     if (!_accountState || _accountState->account().isNull()) {
         return;
-    }
-
-    bool sharingPossible = true;
-    if (!canShare()) {
+    } else if (!canShare()) {
         qCWarning(lcSharing) << "The file cannot be shared because it does not have sharing permission.";
-        sharingPossible = false;
+        return;
     }
 
-    if (_manager.isNull() && sharingPossible) {
+    if (_manager.isNull()) {
         _manager.reset(new ShareManager(_accountState->account(), this));
         connect(_manager.data(), &ShareManager::sharesFetched, this, &ShareModel::slotSharesFetched);
-        connect(_manager.data(), &ShareManager::shareCreated, this, [&] {
+        connect(_manager.data(), &ShareManager::shareCreated, this, [this] {
             _manager->fetchShares(_sharePath);
         });
         connect(_manager.data(), &ShareManager::linkShareCreated, this, &ShareModel::slotAddShare);
