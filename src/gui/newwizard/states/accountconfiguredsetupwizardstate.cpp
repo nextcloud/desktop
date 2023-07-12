@@ -55,8 +55,13 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
         return _context->accountBuilder().serverUrl();
     }();
 
-    _page = new AccountConfiguredWizardPage(FolderMan::suggestSyncFolder(urlToSuggestSyncFolderFor, _context->accountBuilder().displayName()), vfsIsAvailable,
-        enableVfsByDefault, vfsModeIsExperimental);
+    QString defaultSyncTargetDir = _context->accountBuilder().defaultSyncTargetDir();
+
+    if (defaultSyncTargetDir.isEmpty()) {
+        defaultSyncTargetDir = FolderMan::suggestSyncFolder(urlToSuggestSyncFolderFor, _context->accountBuilder().displayName());
+    }
+
+    _page = new AccountConfiguredWizardPage(defaultSyncTargetDir, vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
 }
 
 SetupWizardState AccountConfiguredSetupWizardState::state() const
@@ -72,6 +77,9 @@ void AccountConfiguredSetupWizardState::evaluatePage()
     if (accountConfiguredSetupWizardPage->syncMode() != Wizard::SyncMode::ConfigureUsingFolderWizard) {
         QString syncTargetDir = QDir::fromNativeSeparators(accountConfiguredSetupWizardPage->syncTargetDir());
 
+        // make sure we remember it now so we can show it to the user again upon failures
+        _context->accountBuilder().setDefaultSyncTargetDir(syncTargetDir);
+
         const QString errorMessageTemplate = tr("Invalid local download directory: %1");
 
         if (!QDir::isAbsolutePath(syncTargetDir)) {
@@ -84,8 +92,6 @@ void AccountConfiguredSetupWizardState::evaluatePage()
             Q_EMIT evaluationFailed(errorMessageTemplate.arg(invalidPathErrorMessage));
             return;
         }
-
-        _context->accountBuilder().setDefaultSyncTargetDir(syncTargetDir);
     }
 
     Q_EMIT evaluationSuccessful();

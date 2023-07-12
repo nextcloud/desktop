@@ -184,6 +184,11 @@ void SetupWizardAccountBuilder::setDefaultSyncTargetDir(const QString &syncTarge
     _defaultSyncTargetDir = syncTargetDir;
 }
 
+QString SetupWizardAccountBuilder::defaultSyncTargetDir() const
+{
+    return _defaultSyncTargetDir;
+}
+
 QString SetupWizardAccountBuilder::legacyWebFingerUsername() const
 {
     return _legacyWebFingerUsername;

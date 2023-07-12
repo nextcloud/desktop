@@ -145,6 +145,7 @@ public:
 
     // getter is not needed at the moment
     void setDefaultSyncTargetDir(const QString &syncTargetDir);
+    QString defaultSyncTargetDir() const;
 
     /**
      * Store custom CA certificate for the newly built account.
