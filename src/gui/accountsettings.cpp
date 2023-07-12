@@ -501,7 +501,6 @@ void AccountSettings::slotRemoveCurrentFolder()
 
 void AccountSettings::slotEnableVfsCurrentFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
     QPointer<Folder> folder = selectedFolder();
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
     if (!selected.isValid() || !folder)
@@ -565,7 +564,6 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 
 void AccountSettings::slotDisableVfsCurrentFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
     QPointer<Folder> folder = selectedFolder();
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
     if (!selected.isValid() || !folder)

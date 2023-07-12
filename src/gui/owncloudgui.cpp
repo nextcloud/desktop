@@ -370,7 +370,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
 void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *menu)
 {
-    auto actionOpenoC = menu->addAction(CommonStrings::showInWebBrowser(), this, [accountState] { QDesktopServices::openUrl(accountState->account()->url()); });
+    menu->addAction(CommonStrings::showInWebBrowser(), this, [accountState] { QDesktopServices::openUrl(accountState->account()->url()); });
 
     FolderMan *folderMan = FolderMan::instance();
     const auto &map = folderMan->folders();

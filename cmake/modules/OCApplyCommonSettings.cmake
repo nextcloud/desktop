@@ -48,12 +48,22 @@ function(apply_common_target_settings targetName)
                 /we4062
                 # Worder
                 /w15038
+                # werror on unused function
+                # The given function is local and not referenced in the body of the module; therefore, the function is dead code.
+                /we4505
+                # 4505 for anonymous namespaces, apparently undocumented https://developercommunity.visualstudio.com/t/warning-C4505-missing-on-anonymous-names/10413660
+                /we5245
+                /we4930
+                # A variable is declared and initialized but not used.
+                /we4189
         )
     elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
         target_compile_options(${targetName}
             PRIVATE
                 # treat unhandled switch cases as error
                 -Werror=switch
+                -Werror=unused-function
+                -Werror=unused-but-set-variable
         )
     endif()
 endfunction()

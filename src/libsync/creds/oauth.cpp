@@ -484,7 +484,7 @@ QUrl OAuth::authorisationLink() const
 
 void OAuth::saveDynamicRegistrationDataForAccount(const OCC::AccountPtr &accountPtr, const QVariantMap &dynamicRegistrationData)
 {
-    auto credentialsJob = accountPtr->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
+    accountPtr->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
 }
 
 void OAuth::fetchWellKnown()
