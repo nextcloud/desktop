@@ -1200,16 +1200,13 @@ void PropagateDownloadFile::downloadFinished()
 
     if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
         qCDebug(lcPropagateDownload()) << _tmpFile << "file is locked: making it read only";
-        FileSystem::setFileReadOnly(filename, true);
+        FileSystem::setFileReadOnly(_tmpFile.fileName(), true);
     } else {
         qCDebug(lcPropagateDownload()) << _tmpFile << "file is not locked: making it"
                                        << ((!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
                                                                                                                                             : "read write");
-        FileSystem::setFileReadOnlyWeak(filename, (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+        FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
     }
-
-    // Apply the remote permissions
-    FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
 
     const auto isConflict = (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
                              && (QFileInfo(filename).isDir() || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
