@@ -172,4 +172,9 @@ void FileDetails::updateFileTagModel(const Folder * const folder)
     Q_EMIT fileTagModelChanged();
 }
 
+bool FileDetails::sharingAvailable() const
+{
+    return _sharingAvailable;
+}
+
 } // namespace OCC
