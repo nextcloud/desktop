@@ -1962,7 +1962,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/folderman.cpp" line="1664"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Vostede non ten permiso para escribir neste cartafol!</translation>
+        <translation>Vde. non ten permiso para escribir neste cartafol!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1716"/>
@@ -3574,12 +3574,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1669"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Non se lle permite porque vostede non ten permiso para engadir subcartafoles neste cartafol</translation>
+        <translation>Non se lle permite porque Vde. non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1674"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Non se lle permite porque vostede non ten permiso para engadir ficheiros neste cartafol</translation>
+        <translation>Non se lle permite porque Vde. non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1687"/>
@@ -3644,13 +3644,13 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
         <source>File has changed since discovery</source>
         <translation>O ficheiro cambiou após ser atopado</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Non foi posíbel eliminar o rexistro do ficheiro %1 da base de datos local</translation>
     </message>
@@ -3691,17 +3691,17 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>O ficheiro %1 ten unha hora de modificación incorrecta. Non o envíe ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Descargouse o ficheiro %1 mais provocou unha colisión no nome do ficheiro local!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>Error updating metadata: %1</source>
         <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
         <source>The file %1 is currently in use</source>
         <translation>O ficheiro %1 está en uso neste momento</translation>
     </message>
@@ -4254,7 +4254,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1120"/>
         <source>I shared something with you</source>
-        <translation>Compartín algo con vostede</translation>
+        <translation>Compartín algo con Vde.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1133"/>
@@ -5331,22 +5331,22 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="748"/>
         <source>You renamed %1</source>
-        <translation>Vostede cambiou o nome de %1</translation>
+        <translation>Vde. cambiou o nome de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="750"/>
         <source>You deleted %1</source>
-        <translation>Vostede eliminou %1</translation>
+        <translation>Vde. eliminou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="752"/>
         <source>You created %1</source>
-        <translation>Vostede creou %1</translation>
+        <translation>Vde. creou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="754"/>
         <source>You changed %1</source>
-        <translation>Vostede cambiou %1</translation>
+        <translation>Vde. cambiou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="778"/>
