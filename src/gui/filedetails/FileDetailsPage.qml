@@ -47,7 +47,11 @@ Page {
     Connections {
         target: Systray
         function onShowFileDetailsPage(fileLocalPath, page) {
-            if(fileLocalPath === root.localPath) {
+            if (!root.fileDetails.sharingAvailable && page == Systray.FileDetailsPage.Sharing) {
+                return;
+            }
+
+            if (fileLocalPath === root.localPath) {
                 switch(page) {
                 case Systray.FileDetailsPage.Activity:
                     swipeView.currentIndex = fileActivityView.swipeIndex;
