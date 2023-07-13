@@ -203,7 +203,8 @@ def gui_test_pipeline(ctx):
         steps += installPnpm() + \
                  setGuiTestReportDir() + \
                  gui_tests(squish_parameters, server) + \
-                 uploadGuiTestLogs(ctx, server)
+                 uploadGuiTestLogs(ctx, server) + \
+                 logGuiReports(ctx, server)
 
         pipelines.append({
             "kind": "pipeline",
@@ -613,6 +614,7 @@ def uploadGuiTestLogs(ctx, server_type = "oc10"):
         "event": [
             "cron",
             "tag",
+            "pull_request",
         ],
     }
     if ctx.build.event == "tag":
@@ -633,6 +635,29 @@ def uploadGuiTestLogs(ctx, server_type = "oc10"):
             "AWS_ACCESS_KEY_ID": from_secret("AWS_ACCESS_KEY_ID"),
             "AWS_SECRET_ACCESS_KEY": from_secret("AWS_SECRET_ACCESS_KEY"),
         },
+        "when": trigger,
+    }]
+
+def logGuiReports(ctx, server_type):
+    trigger = {
+        "status": [
+            "failure",
+        ],
+        "event": [
+            "cron",
+            "tag",
+            "pull_request",
+        ],
+    }
+    if ctx.build.event == "tag":
+        trigger["status"].append("success")
+
+    return [{
+        "name": "log-GUI-reports",
+        "image": OC_UBUNTU,
+        "commands": [
+            "bash %s/drone/log_reports.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER} %s" % (dir["guiTest"], dir["guiTestReport"], server_type),
+        ],
         "when": trigger,
     }]
 
