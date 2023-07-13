@@ -250,7 +250,7 @@ Page {
         FileActivityView {
             id: fileActivityView
 
-            property int swipeIndex: SwipeView.index
+            readonly property int swipeIndex: SwipeView.index
 
             delegateHorizontalPadding: root.intendedPadding
 
@@ -262,7 +262,7 @@ Page {
         Loader {
             id: shareViewLoader
 
-            property int swipeIndex: SwipeView.index
+            readonly property int swipeIndex: SwipeView.index
 
             width: swipeView.width
             height: swipeView.height
