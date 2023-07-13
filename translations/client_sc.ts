@@ -3642,13 +3642,13 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
         <source>File has changed since discovery</source>
         <translation>Archìviu cambiadu in pessu rilevadu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
@@ -3689,17 +3689,17 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>Error updating metadata: %1</source>
         <translation>Errore agiornende is metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
         <source>The file %1 is currently in use</source>
         <translation>S&apos;archìviu %1 est giai impreadu</translation>
     </message>

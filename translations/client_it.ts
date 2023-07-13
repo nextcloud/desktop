@@ -3633,13 +3633,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
         <source>File has changed since discovery</source>
         <translation>Il file è stato modificato dal suo rilevamento</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Impossibile eliminare il record del file %1 dal DB locale</translation>
     </message>
@@ -3680,17 +3680,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il file %1 ha un orario di modifica non valido segnalato dal server. Non salvarlo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>Error updating metadata: %1</source>
         <translation>Errore di invio dei metadati: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
         <source>The file %1 is currently in use</source>
         <translation>Il file %1 è attualmente in uso</translation>
     </message>

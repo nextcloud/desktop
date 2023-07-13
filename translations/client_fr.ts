@@ -3643,13 +3643,13 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
         <source>File has changed since discovery</source>
         <translation>Le fichier a changé depuis sa découverte</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Impossible de supprimer l&apos;enregistrement du fichier %1 depuis la base de données locale</translation>
     </message>
@@ -3690,17 +3690,17 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le fichier %1 présente une date de modification invalide sur le serveur. Enregistrement impossible.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Fichier %1 téléchargé, mais a abouti à un conflit de casse du nom de fichier local !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>Error updating metadata: %1</source>
         <translation>Erreur lors de la mise à jour des métadonnées : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
         <source>The file %1 is currently in use</source>
         <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>

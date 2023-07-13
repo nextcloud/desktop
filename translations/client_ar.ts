@@ -3625,13 +3625,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
         <source>File has changed since discovery</source>
         <translation>تغير الملف منذ اكتشافه</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>تعذّر حذف الملف %1 من قاعدة البيانات المحلية</translation>
     </message>
@@ -3672,17 +3672,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>الخادوم أبلغ أن &quot;وقت آخر تعديل&quot; في الملف %1 غير صحيح. لا تقم بحفظه.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>الملف %1 تمّ تنزيله، لكنه تسبب في حدوث تضارب مع اسم ملف محلي!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>Error updating metadata: %1</source>
         <translation>خطأ في تحديث البيانات الوصفية: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
         <source>The file %1 is currently in use</source>
         <translation>الملف %1 في حالة استعمال حاليّاً</translation>
     </message>
@@ -5619,17 +5619,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>فتح المجلد المحلي &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>فتح مجلد المجموعة &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
         <source>Open %1 in file explorer</source>
-        <translation type="unfinished"/>
+        <translation>فتح %1 في مستكشف الملفات</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="203"/>

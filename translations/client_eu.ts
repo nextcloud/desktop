@@ -3644,13 +3644,13 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1243"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
         <source>File has changed since discovery</source>
         <translation>Fitxategia aldatu egin da aurkitu zenetik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1293"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategiaren erregistroa datu-base lokaletik ezabatu</translation>
     </message>
@@ -3691,17 +3691,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>% 1 fitxategiak zerbitzariak jakinarazitako aldaketa-ordu baliogabea du. Ez gorde.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>%1 fitxategia deskargatu da, baina fitxategi lokal batekin gatazka du!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1328"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia erabiltzen ari da</translation>
     </message>
