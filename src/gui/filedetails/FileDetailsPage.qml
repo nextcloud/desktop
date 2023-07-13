@@ -232,6 +232,8 @@ Page {
             }
 
             NCTabButton {
+                width: visible ? implicitWidth : 0
+                height: visible ? implicitHeight : 0
                 svgCustomColorSource: "image://svgimage-custom-color/share.svg"
                 text: qsTr("Sharing")
                 checked: swipeView.currentIndex === shareViewLoader.swipeIndex
