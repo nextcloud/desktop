@@ -120,7 +120,15 @@ private:
             /* Announces that the system is beginning to power the device tree; most devices
              * are still unavailable at this point.
              */
-            qCInfo(OCC::lcPlatform) << "System power message: system will power on.";
+            /* From the documentation:
+             *
+             * - kIOMessageSystemWillPowerOn is delivered at early wakeup time, before most hardware
+             * has been powered on. Be aware that any attempts to access disk, network, the display,
+             * etc. may result in errors or blocking your process until those resources become
+             * available.
+             *
+             * So we do NOT log this event.
+             */
             break;
 
         case kIOMessageSystemHasPoweredOn:
