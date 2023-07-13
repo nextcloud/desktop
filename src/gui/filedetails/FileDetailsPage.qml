@@ -53,7 +53,7 @@ Page {
                     swipeView.currentIndex = fileActivityView.swipeIndex;
                     break;
                 case Systray.FileDetailsPage.Sharing:
-                    swipeView.currentIndex = shareView.swipeIndex;
+                    swipeView.currentIndex = shareViewLoader.swipeIndex;
                     break;
                 }
             }
@@ -229,8 +229,9 @@ Page {
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/share.svg"
                 text: qsTr("Sharing")
-                checked: swipeView.currentIndex === shareView.swipeIndex
-                onClicked: swipeView.currentIndex = shareView.swipeIndex
+                checked: swipeView.currentIndex === shareViewLoader.swipeIndex
+                onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
+                visible: root.fileDetails.sharingAvailable
             }
         }
     }
@@ -253,18 +254,28 @@ Page {
             iconSize: root.iconSize
         }
 
-        ShareView {
-            id: shareView
+        Loader {
+            id: shareViewLoader
 
             property int swipeIndex: SwipeView.index
 
-            accountState: root.accountState
-            localPath: root.localPath
-            fileDetails: root.fileDetails
-            horizontalPadding: root.intendedPadding
-            iconSize: root.iconSize
-            rootStackView: root.rootStackView
-            backgroundsVisible: root.backgroundsVisible
+            width: swipeView.width
+            height: swipeView.height
+            active: root.fileDetails.sharingAvailable
+
+            sourceComponent: ShareView {
+                id: shareView
+
+                anchors.fill: parent
+
+                accountState: root.accountState
+                localPath: root.localPath
+                fileDetails: root.fileDetails
+                horizontalPadding: root.intendedPadding
+                iconSize: root.iconSize
+                rootStackView: root.rootStackView
+                backgroundsVisible: root.backgroundsVisible
+            }
         }
     }
 }
