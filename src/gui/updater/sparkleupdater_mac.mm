@@ -270,8 +270,7 @@ SparkleUpdater::~SparkleUpdater() = default;
 
 void SparkleUpdater::setUpdateUrl(const QUrl &url)
 {
-    NSURL* nsurl = [NSURL URLWithString:url.toString().toNSString()];
-    [_interface->updater setFeedURL: nsurl];
+    [_interface->updater setFeedURL:url.toNSURL()];
 }
 
 bool SparkleUpdater::autoUpdaterAllowed()
