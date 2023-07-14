@@ -253,9 +253,7 @@ void ShareModel::updateData()
     qCDebug(lcShareModel) << "Updating share model data now.";
 
     const auto relPath = _localPath.mid(_folder->cleanPath().length() + 1);
-    const auto sharePath = _folder->remotePathTrailingSlash() + relPath;
-    const auto percentEncoded = QUrl::toPercentEncoding(sharePath);
-    _sharePath = QString::fromUtf8(percentEncoded);
+    updateRelativeSharePath(relPath);
 
     SyncJournalFileRecord fileRecord;
     auto resharingAllowed = true; // lets assume the good
@@ -321,6 +319,13 @@ void ShareModel::updateData()
     job->start();
 
     initShareManager();
+}
+
+void ShareModel::updateRelativeSharePath(const QString &relativePath)
+{
+    const auto unsanitisedSharePath = _folder->remotePathTrailingSlash() + relativePath;
+    const auto sanitisedSharePath = QUrl::toPercentEncoding(unsanitisedSharePath);
+    _sharePath = QString::fromUtf8(sanitisedSharePath);
 }
 
 void ShareModel::initShareManager()

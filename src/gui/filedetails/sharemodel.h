@@ -187,6 +187,7 @@ private slots:
     void handleSecureFileDropLinkShare();
     void handleLinkShare();
     void setupInternalLinkShare();
+    void updateRelativeSharePath(const QString &relativePath);
     void setSharePermissionChangeInProgress(const QString &shareId, const bool isInProgress);
     void setHideDownloadEnabledChangeInProgress(const QString &shareId, const bool isInProgress);
 
