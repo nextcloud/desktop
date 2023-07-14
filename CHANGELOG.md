@@ -13,12 +13,18 @@ Summary
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 * Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
+* Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
+* Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
+* Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
+* Enhancement - Enable crash reporter in commandline client: [#8991](https://github.com/owncloud/client/issues/8991)
 * Enhancement - Make "Show files versions..." context menu action available: [#10197](https://github.com/owncloud/client/issues/10197)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
+* Enhancement - Send a language header in all http requests: [#10619](https://github.com/owncloud/client/issues/10619)
+* Enhancement - Display a progress spinner during the initial setup: [#10751](https://github.com/owncloud/client/issues/10751)
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
 * Enhancement - Persist filter settings for Not Synced tab: [#10928](https://github.com/owncloud/client/pull/10928)
 
@@ -59,6 +65,19 @@ Details
 
    https://github.com/owncloud/client/issues/10990
 
+* Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
+
+   We fixed a where the main instance was accessed after it was destroyed.
+
+   https://github.com/owncloud/client/issues/11016
+
+* Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
+
+   For vfs setups, this is handled by Windows itself.
+
+   https://github.com/owncloud/client/issues/10788
+   https://github.com/owncloud/client/pull/10910
+
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 
    We removed the support to query and store credentials for the system proxy.
@@ -70,10 +89,22 @@ Details
    We had a closer look on the system tray and cleaned it up.
 
    https://github.com/owncloud/client/issues/10939
+   https://github.com/owncloud/client/pull/10949
+   https://github.com/owncloud/client/pull/10999
 
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 
    https://github.com/owncloud/client/issues/261
+
+* Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
+
+   When the client detects that all files are deleted on either side of the sync, the client now
+   aborts the sync and asks for a user decision. Afterwords a new sync is started.
+
+   Previously we blocked the current sync until the user responded which could lead to unwanted
+   side effects.
+
+   https://github.com/owncloud/client/issues/8360
 
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 
@@ -83,6 +114,13 @@ Details
    https://github.com/owncloud/client/issues/8432
    https://github.com/owncloud/client/pull/10754
    https://github.com/owncloud/client/pull/10758
+
+* Enhancement - Enable crash reporter in commandline client: [#8991](https://github.com/owncloud/client/issues/8991)
+
+   While the crash reporter still requires a graphical user interface to work, this change
+   nevertheless simplifies reporting crashes from the commandline client a lot.
+
+   https://github.com/owncloud/client/issues/8991
 
 * Enhancement - Make "Show files versions..." context menu action available: [#10197](https://github.com/owncloud/client/issues/10197)
 
@@ -94,6 +132,21 @@ Details
    more headers set by the platform and messaure the request time more accurately.
 
    https://github.com/owncloud/client/issues/10313
+
+* Enhancement - Send a language header in all http requests: [#10619](https://github.com/owncloud/client/issues/10619)
+
+   All http requests to the server will now contain the language for the client. This can be used by
+   the server to localize responses like error messages.
+
+   https://github.com/owncloud/client/issues/10619
+   https://github.com/owncloud/client/pull/11020
+
+* Enhancement - Display a progress spinner during the initial setup: [#10751](https://github.com/owncloud/client/issues/10751)
+
+   We now display a progress spinner after the setup wizard, until the client is done setting the
+   account up.
+
+   https://github.com/owncloud/client/issues/10751
 
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
 
