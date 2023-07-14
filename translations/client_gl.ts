@@ -3716,7 +3716,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Un ficheiro ou cartafol foi eliminado dun recurso compartido só de lectura, pero fallou a restauración: %1</translation>
+        <translation>Un ficheiro ou cartafol foi eliminado dunha compartición só de lectura, pero fallou a restauración: %1</translation>
     </message>
 </context>
 <context>

@@ -5624,7 +5624,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open group folder &quot;%1&quot;</source>
-        <translation>فتح مجلد المجموعة &quot;%1&quot;</translation>
+        <translation>فتح المجلد الجماعي &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="198"/>
