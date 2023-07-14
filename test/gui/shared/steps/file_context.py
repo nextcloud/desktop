@@ -146,7 +146,6 @@ def step(context, filePath):
 @Then(r'^the (file|folder) "([^"]*)" should exist on the file system$', regexp=True)
 def step(context, resourceType, resource):
     resourcePath = getResourcePath(resource)
-    print(resourcePath)
     resourceExists = False
     if resourceType == 'file':
         resourceExists = fileExists(resourcePath, get_config('maxSyncTimeout') * 1000)

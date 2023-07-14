@@ -154,7 +154,10 @@ def step(context, resource_name, public_link_password, link_creator):
 def step(context, user_name, folder_name, items_number):
     total_items = webdav.get_folder_items_count(user_name, folder_name)
     test.compare(
-        total_items,
-        items_number,
-        f"Folder should contain {items_number} items",
+        total_items, items_number, f"Folder should contain {items_number} items"
     )
+
+
+@Given('user "|any|" has created folder "|any|" in the server')
+def step(context, user, folder_name):
+    webdav.create_folder(user, folder_name)
