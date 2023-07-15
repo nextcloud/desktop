@@ -120,6 +120,38 @@ private slots:
         QTest::newRow("skip local discovery") << false;
     }
 
+    void testReplaceOnlineOnlyFile()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        // Create a new local (non-placeholder) file
+        fakeFolder.localModifier().insert("file");
+        QVERIFY(!vfs->pinState("file").isValid());
+
+        CopyFile(QString(fakeFolder.localPath() + "file").toStdWString().data(), QString(fakeFolder.localPath() + "file1").toStdWString().data(), false);
+
+        // Sync the files: files should be converted to placeholder files
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file").isValid());
+
+        // Convert to Online Only
+        ::setPinState(fakeFolder.localPath() + "file", PinState::OnlineOnly, cfapi::Recurse);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("file"), PinState::OnlineOnly);
+        CFVERIFY_VIRTUAL(fakeFolder, "file");
+
+        // Replace the file
+        CopyFile(QString(fakeFolder.localPath() + "file1").toStdWString().data(), QString(fakeFolder.localPath() + "file").toStdWString().data(), false);
+
+        // Sync again: file should be correctly dehydrated again without error.
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file").isValid());
+        QCOMPARE(*vfs->pinState("file"), PinState::OnlineOnly);
+        CFVERIFY_VIRTUAL(fakeFolder, "file");
+    }
+
     void testVirtualFileLifecycle()
     {
         QFETCH(bool, doLocalDiscovery);
