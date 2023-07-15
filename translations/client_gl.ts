@@ -855,7 +855,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Este servidor probabelmente require un certificado SSL de cliente.</translation>
+        <translation>Este servidor probabelmente precisa dun certificado SSL de cliente.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -2441,7 +2441,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
         <source>Server notifications that require attention.</source>
-        <translation>Notificacións do servidor que requiren atención.</translation>
+        <translation>Notificacións do servidor que precisan atención.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="148"/>
@@ -3436,7 +3436,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>O URL requirido devolveu unha resposta JSON incorrecta</translation>
+        <translation>O URL solicitado devolveu unha resposta JSON incorrecta</translation>
     </message>
 </context>
 <context>
@@ -4973,7 +4973,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/common/vfs.cpp" line="75"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation>A funcionalidade do sistema de ficheiros virtual require un sistema de ficheiros NTFS, %1 está a usar %2</translation>
+        <translation>A funcionalidade do sistema de ficheiros virtual precisa dun sistema de ficheiros NTFS, %1 está a usar %2</translation>
     </message>
 </context>
 <context>
