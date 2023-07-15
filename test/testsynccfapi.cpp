@@ -120,6 +120,40 @@ private slots:
         QTest::newRow("skip local discovery") << false;
     }
 
+    void testUnexpectedNonPlaceholder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        // Create a new local (non-placeholder) file
+        fakeFolder.localModifier().insert("file0");
+        fakeFolder.localModifier().insert("file1");
+        QVERIFY(!vfs->pinState("file0").isValid());
+        QVERIFY(!vfs->pinState("file1").isValid());
+
+        // Sync the files: files should be converted to placeholder files
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(vfs->pinState("file1").isValid());
+
+        // Sync again to ensure items are fully synced, otherwise test may succeed due to those pending changes.
+        QVERIFY(fakeFolder.syncOnce());
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(completeSpy.isEmpty());
+
+        // Convert to regular file (may occur when file is replaced by another one)
+        QVERIFY(cfapi::revertPlaceholder(fakeFolder.localPath() + "file1"));
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(!vfs->pinState("file1").isValid());
+
+        // Sync again: file should be correctly converted to placeholders
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(vfs->pinState("file1").isValid());
+    }
+
     void testReplaceOnlineOnlyFile()
     {
         FakeFolder fakeFolder{FileInfo{}};
