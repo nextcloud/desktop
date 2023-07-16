@@ -5537,7 +5537,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
         <source>Copy share link</source>
-        <translation>Copiar a ligazón compartida</translation>
+        <translation>Copiar a ligazón para compartir</translation>
     </message>
 </context>
 <context>
