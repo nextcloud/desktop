@@ -118,10 +118,10 @@ void AccountState::setState(State state)
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
             checkConnectivity();
-        } else if (_state == ServiceUnavailable) {
-            // Check if we are actually down for maintenance.
+        } else if (_state == ServiceUnavailable || _state == RedirectDetected) {
+            // Check if we are actually down for maintenance/in a redirect state (captive portal?).
             // To do this we must clear the connection validator that just
-            // produced the 503. It's finished anyway and will delete itself.
+            // produced the 503/302. It's finished anyway and will delete itself.
             _connectionValidator.clear();
             checkConnectivity();
         }
@@ -150,6 +150,8 @@ QString AccountState::stateString(State state)
         return tr("Service unavailable");
     case MaintenanceMode:
         return tr("Maintenance mode");
+    case RedirectDetected:
+        return tr("Redirect detected");
     case NetworkError:
         return tr("Network error");
     case ConfigurationError:
@@ -342,10 +344,11 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
     _lastConnectionValidatorStatus = status;
 
-    // Come online gradually from 503 or maintenance mode
+    // Come online gradually from 503, captive portal(redirection) or maintenance mode
     if (status == ConnectionValidator::Connected
         && (_connectionStatus == ConnectionValidator::ServiceUnavailable
-            || _connectionStatus == ConnectionValidator::MaintenanceMode)) {
+            || _connectionStatus == ConnectionValidator::MaintenanceMode
+              || _connectionStatus == ConnectionValidator::StatusRedirect)) {
         if (!_timeSinceMaintenanceOver.isValid()) {
             qCInfo(lcAccountState) << "AccountState reconnection: delaying for"
                                    << _maintenanceToConnectedDelay << "ms";
@@ -410,6 +413,10 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::MaintenanceMode:
         _timeSinceMaintenanceOver.invalidate();
         setState(MaintenanceMode);
+        break;
+    case ConnectionValidator::StatusRedirect:
+        _timeSinceMaintenanceOver.invalidate();
+        setState(RedirectDetected);
         break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);

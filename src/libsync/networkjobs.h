@@ -364,6 +364,34 @@ private:
     int _permanentRedirects = 0;
 };
 
+/**
+ * @brief The CheckRedirectCostFreeUrlJob class
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT CheckRedirectCostFreeUrlJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit CheckRedirectCostFreeUrlJob(const AccountPtr &account, QObject *parent = nullptr);
+    void start() override;
+
+signals:
+    /**
+    * a check is finished
+    * \a statusCode cost-free URL GET HTTP response code
+    */
+    void jobFinished(int statusCode);
+    /** A timeout occurred.
+     *
+     * \a url The specific url where the timeout happened.
+     */
+    void timeout(const QUrl &url);
+
+private:
+    bool finished() override;
+    void onTimedOut() override;
+};
+
 
 /**
  * @brief The RequestEtagJob class
