@@ -604,7 +604,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Bu işlem sanal dosya desteğini devre dışı bırakır. Bunun sonucunda şu anda &quot;yalnızca çevrimiçi kullanılabilir&quot; olarak işaretlenmiş klasörlerin içeriği indirilir.
+        <translation>Bu işlem sanal dosya desteğini devre dışı bırakır. Bunun sonucunda şu anda &quot;yalnızca çevrim içi kullanılabilir&quot; olarak işaretlenmiş klasörlerin içeriği indirilir.
 
 Sanal dosya desteğini devre dışı bırakmanın tek faydası isteğe bağlı eşitleme özelliğinin yeniden kullanılabilmesidir.
 
@@ -3400,7 +3400,7 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>&quot;Sanal dosyalar&quot; kipi etkinleştirildiğinde, başlangıçta hiç bir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
 
-Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapırlır. Şu anda seçilmemiş klasörler yalnızca çevrimiçi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
+Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapırlır. Şu anda seçilmemiş klasörler yalnızca çevrim içi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
 
 Bu kipe geçildiğinde yürütülmekte olan eşitleme işlemleri iptal edilir.
 
@@ -4670,7 +4670,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation>Çevrimdışı</translation>
+        <translation>Çevrim dışı</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
@@ -5054,7 +5054,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Ekran paylaşımı, çevrimiçi görüşmeler ve internet toplantıları</translation>
+        <translation>Ekran paylaşımı, çevrim içi görüşmeler ve internet toplantıları</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
@@ -5715,7 +5715,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
         <source>Current account status is online</source>
-        <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
+        <translation>Hesabın geçerli durumu: Çevrim içi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="80"/>
@@ -5755,12 +5755,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
-        <translation>Çevrimiçi durumu</translation>
+        <translation>Çevrim içi durumu</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="60"/>
         <source>Online</source>
-        <translation>Çevrimiçi</translation>
+        <translation>Çevrim içi</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="71"/>
@@ -5785,7 +5785,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
-        <translation>Çevrimdışı görün</translation>
+        <translation>Çevrim dışı görün</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
@@ -5946,7 +5946,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Current account status is online</source>
-        <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
+        <translation>Hesabın geçerli durumu: Çevrim içi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
@@ -6192,12 +6192,12 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Some available online only</source>
-        <translation>Bazıları yalnızca çevrimiçi kullanılabilir</translation>
+        <translation>Bazıları yalnızca çevrim içi kullanılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>
         <source>Available online only</source>
-        <translation>Yalnızca çevrimiçi kullanılabilir</translation>
+        <translation>Yalnızca çevrim içi kullanılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
