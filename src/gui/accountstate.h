@@ -65,6 +65,10 @@ public:
         /// don't bother the user too much and try again.
         ServiceUnavailable,
 
+        /// Connection is being redirected (likely a captive portal is in effect)
+        /// Do not proceed with connecting and check back later
+        RedirectDetected,
+
         /// Similar to ServiceUnavailable, but we know the server is down
         /// for maintenance
         MaintenanceMode,
