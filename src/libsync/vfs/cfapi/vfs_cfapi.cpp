@@ -320,7 +320,7 @@ Optional<PinState> VfsCfApi::pinStateLocal(const QString &localPath) const
 {
     const auto info = cfapi::findPlaceholderInfo(localPath);
     if (!info) {
-        qCWarning(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
+        qCDebug(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
         return {};
     }
 
