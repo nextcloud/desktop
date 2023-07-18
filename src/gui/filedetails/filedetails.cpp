@@ -62,7 +62,11 @@ void FileDetails::setLocalPath(const QString &localPath)
     connect(&_fileWatcher, &QFileSystemWatcher::fileChanged, this, &FileDetails::refreshFileDetails);
 
     const auto folder = FolderMan::instance()->folderForPath(_localPath);
-    Q_ASSERT(folder);
+    if (!folder) {
+        qCWarning(lcFileDetails) << "No folder found for path:" << _localPath << "will not load file details.";
+        return;
+    }
+
     const auto file = _localPath.mid(folder->cleanPath().length() + 1);
 
     if (!folder->journalDb()->getFileRecord(file, &_fileRecord)) {
