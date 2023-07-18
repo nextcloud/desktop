@@ -47,13 +47,17 @@ Page {
     Connections {
         target: Systray
         function onShowFileDetailsPage(fileLocalPath, page) {
-            if(fileLocalPath === root.localPath) {
+            if (!root.fileDetails.sharingAvailable && page == Systray.FileDetailsPage.Sharing) {
+                return;
+            }
+
+            if (fileLocalPath === root.localPath) {
                 switch(page) {
                 case Systray.FileDetailsPage.Activity:
                     swipeView.currentIndex = fileActivityView.swipeIndex;
                     break;
                 case Systray.FileDetailsPage.Sharing:
-                    swipeView.currentIndex = shareView.swipeIndex;
+                    swipeView.currentIndex = shareViewLoader.swipeIndex;
                     break;
                 }
             }
@@ -218,6 +222,7 @@ Page {
             Layout.rightMargin: root.intendedPadding
 
             padding: 0
+            background: null
 
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
@@ -227,10 +232,13 @@ Page {
             }
 
             NCTabButton {
+                width: visible ? implicitWidth : 0
+                height: visible ? implicitHeight : 0
                 svgCustomColorSource: "image://svgimage-custom-color/share.svg"
                 text: qsTr("Sharing")
-                checked: swipeView.currentIndex === shareView.swipeIndex
-                onClicked: swipeView.currentIndex = shareView.swipeIndex
+                checked: swipeView.currentIndex === shareViewLoader.swipeIndex
+                onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
+                visible: root.fileDetails.sharingAvailable
             }
         }
     }
@@ -244,7 +252,7 @@ Page {
         FileActivityView {
             id: fileActivityView
 
-            property int swipeIndex: SwipeView.index
+            readonly property int swipeIndex: SwipeView.index
 
             delegateHorizontalPadding: root.intendedPadding
 
@@ -253,18 +261,28 @@ Page {
             iconSize: root.iconSize
         }
 
-        ShareView {
-            id: shareView
+        Loader {
+            id: shareViewLoader
 
-            property int swipeIndex: SwipeView.index
+            readonly property int swipeIndex: SwipeView.index
 
-            accountState: root.accountState
-            localPath: root.localPath
-            fileDetails: root.fileDetails
-            horizontalPadding: root.intendedPadding
-            iconSize: root.iconSize
-            rootStackView: root.rootStackView
-            backgroundsVisible: root.backgroundsVisible
+            width: swipeView.width
+            height: swipeView.height
+            active: root.fileDetails.sharingAvailable
+
+            sourceComponent: ShareView {
+                id: shareView
+
+                anchors.fill: parent
+
+                accountState: root.accountState
+                localPath: root.localPath
+                fileDetails: root.fileDetails
+                horizontalPadding: root.intendedPadding
+                iconSize: root.iconSize
+                rootStackView: root.rootStackView
+                backgroundsVisible: root.backgroundsVisible
+            }
         }
     }
 }
