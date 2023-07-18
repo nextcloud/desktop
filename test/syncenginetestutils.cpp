@@ -346,6 +346,12 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeStartElement(davUri, QStringLiteral("resourcetype"));
             xml.writeEmptyElement(davUri, QStringLiteral("collection"));
             xml.writeEndElement(); // resourcetype
+
+            auto totalSize = 0;
+            for (const auto &child : fileInfo.children.values()) {
+                totalSize += child.size;
+            }
+            xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
         } else
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
