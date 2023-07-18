@@ -124,6 +124,7 @@ public slots:
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
     void slotBuildNotificationDisplay(const OCC::ActivityList &list);
+    void slotNotificationFetchFinished();
     void slotBuildIncomingCallDialogs(const OCC::ActivityList &list);
     void slotRefreshNotifications();
     void slotRefreshActivitiesInitial();
@@ -163,6 +164,8 @@ private:
     bool notificationAlreadyShown(const long notificationId);
     bool canShowNotification(const long notificationId);
 
+    void checkAndRemoveSeenActivities(const ActivityList &list, const int numChatNotificationsReceived);
+
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
@@ -184,6 +187,8 @@ private:
     int _notificationRequestsRunning = 0;
 
     int _lastChatNotificationsReceivedCount = 0;
+
+    bool _isNotificationFetchRunning = false;
 };
 
 class UserModel : public QAbstractListModel
