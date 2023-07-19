@@ -326,32 +326,43 @@
 
 - (void)processInBuffer
 {
-    const NSUInteger inBufferLength = _inBuffer.length;
-    NSLog(@"Processing in buffer. In buffer length %li", inBufferLength);
+    NSLog(@"Processing in buffer. In buffer length %li", _inBuffer.length);
+
     UInt8 separator[] = {0xa}; // Byte value for "\n"
     NSData * const separatorData = [NSData dataWithBytes:separator length:1];
-    const NSRange inBufferLengthRange = NSMakeRange(0, inBufferLength);
 
-    while(true) {
+    while(_inBuffer.length > 0) {
+        const NSUInteger inBufferLength = _inBuffer.length;
+        const NSRange inBufferLengthRange = NSMakeRange(0, inBufferLength);
         const NSRange firstSeparatorIndex = [_inBuffer rangeOfData:separatorData
                                                            options:0
                                                              range:inBufferLengthRange];
 
-        if(firstSeparatorIndex.location == NSNotFound) {
-            NSLog(@"No separator found. Stopping.");
-            return; // No separator, nope out
+        unsigned char *buffer = [_inBuffer mutableBytes];
+        NSUInteger nullTerminatorIndex = NSUIntegerMax;
+
+        if (firstSeparatorIndex.location == NSNotFound) {
+            NSLog(@"No separator found. Creating new buffer qith space for null terminator.");
+            unsigned char newBuffer[inBufferLength + 1];
+            memcpy(&newBuffer, buffer, inBufferLength);
+            buffer = &newBuffer[0];
+            nullTerminatorIndex = inBufferLength;
         } else {
-            unsigned char * const buffer = [_inBuffer mutableBytes];
-            buffer[firstSeparatorIndex.location] = 0; // Add NULL terminator, so we can use C string methods
-            const NSUInteger nullTerminatorIndex = firstSeparatorIndex.location + 1;
-            const NSRange nullTerminatorRange = NSMakeRange(0, nullTerminatorIndex);
-
-            NSString * const newLine = [NSString stringWithUTF8String:[_inBuffer bytes]];
-
-            [_inBuffer replaceBytesInRange:nullTerminatorRange withBytes:NULL length:0];
-            [_lineProcessor process:newLine];
+            nullTerminatorIndex = firstSeparatorIndex.location;
         }
+
+        NSAssert(nullTerminatorIndex != NSUIntegerMax, @"Null terminator index should be valid.");
+
+        buffer[nullTerminatorIndex] = 0; // Add NULL terminator, so we can use C string methods
+
+        NSString * const newLine = [NSString stringWithUTF8String:[_inBuffer bytes]];
+        const NSRange nullTerminatorRange = NSMakeRange(0, nullTerminatorIndex + 1);
+
+        [_inBuffer replaceBytesInRange:nullTerminatorRange withBytes:NULL length:0];
+        [_lineProcessor process:newLine];
     }
+
+    NSLog(@"Finished processing inBuffer");
 }
     
 @end
