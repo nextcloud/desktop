@@ -338,7 +338,7 @@
                                                            options:0
                                                              range:inBufferLengthRange];
 
-        unsigned char *buffer = [_inBuffer mutableBytes];
+        unsigned char *buffer = _inBuffer.mutableBytes;
         NSUInteger nullTerminatorIndex = NSUIntegerMax;
 
         if (firstSeparatorIndex.location == NSNotFound) {
@@ -355,7 +355,7 @@
 
         buffer[nullTerminatorIndex] = 0; // Add NULL terminator, so we can use C string methods
 
-        NSString * const newLine = [NSString stringWithUTF8String:[_inBuffer bytes]];
+        NSString * const newLine = [NSString stringWithUTF8String:_inBuffer.bytes];
         const NSRange nullTerminatorRange = NSMakeRange(0, nullTerminatorIndex + 1);
 
         [_inBuffer replaceBytesInRange:nullTerminatorRange withBytes:NULL length:0];
