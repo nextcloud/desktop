@@ -21,13 +21,6 @@
 #import "FinderSyncSocketLineProcessor.h"
 
 @interface FinderSync : FIFinderSync <SyncClientDelegate>
-{
-    NSMutableSet *_registeredDirectories;
-    NSString *_shareMenuTitle;
-    NSMutableDictionary *_strings;
-    NSMutableArray *_menuItems;
-    NSCondition *_menuIsComplete;
-}
 
 @property FinderSyncSocketLineProcessor *lineProcessor;
 @property LocalSocketClient *localSocketClient;

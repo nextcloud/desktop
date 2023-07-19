@@ -15,6 +15,15 @@
 
 #import "FinderSync.h"
 
+@interface FinderSync()
+{
+    NSMutableSet *_registeredDirectories;
+    NSString *_shareMenuTitle;
+    NSMutableDictionary *_strings;
+    NSMutableArray *_menuItems;
+    NSCondition *_menuIsComplete;
+}
+@end
 
 @implementation FinderSync
 
