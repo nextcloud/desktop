@@ -193,17 +193,17 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="139"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="143"/>
         <source>Dismiss</source>
         <translation>رفض</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="224"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Activity</source>
         <translation>الحركات</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="231"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="238"/>
         <source>Sharing</source>
         <translation>مشاركة</translation>
     </message>
@@ -694,7 +694,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>تتم حاليًا إعادة توجيه الخادوم %1، أو أن اتصالك يعمل من وراء مدخلٍ مُقيّدٍ captive portal.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -805,7 +805,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="154"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>تمّ اكتشاف إعادة توجيه</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="156"/>
@@ -1543,43 +1543,43 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::FileDetails</name>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="102"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
         <translation><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform><numerusform>قبل %1 ثانية (ثواني)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="105"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
         <translation><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform><numerusform>قبل %1 دقيقة (دقائق)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="108"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
         <translation><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform><numerusform>قبل %1 ساعة (ساعات)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="111"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="118"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
         <translation><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform><numerusform>قبل %1 يوم (أيام)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="114"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="121"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
         <translation><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform><numerusform>قبل %1 شهر (أشهر)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="117"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="124"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
         <translation><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform><numerusform>قبل %1 سنة (سنوات)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/filedetails/filedetails.cpp" line="149"/>
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="156"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform><numerusform>مقفل من قبل %1- تنتهي صلاحيته بعد %2 دقيقة (دقائق)</numerusform></translation>
@@ -4071,12 +4071,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="119"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="122"/>
         <source>Reply</source>
         <translation>جواب</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="151"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="154"/>
         <source>Dismiss</source>
         <translation>رفض</translation>
     </message>
@@ -4826,13 +4826,13 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="631"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="646"/>
         <source>Retry all uploads</source>
         <translation>أعِد جميع عمليات الرفع</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="682"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="697"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="838"/>
         <source>Resolve conflict</source>
         <translation>حُلّ التعارض</translation>
     </message>
@@ -4840,22 +4840,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1388"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1403"/>
         <source>Confirm Account Removal</source>
         <translation>أكّد إزالة الحساب</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1404"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;هل ترغب حقاً في إزالة الاتصال بالحساب &lt;i&gt;%1&lt;/i&gt;؟&lt;/p&gt;&lt;p&gt;&lt;b&gt;ملاحظة:&lt;/b&gt; هذا سوف &lt;b&gt;لن&lt;/b&gt; يتسبب في حذف أي ملفّاتٍ.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1393"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
         <source>Remove connection</source>
         <translation>إزالة الاتصال</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1394"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
@@ -5318,27 +5318,27 @@ Server replied with error: %2</source>
         <translation>مجلد جديد</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="748"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="763"/>
         <source>You renamed %1</source>
         <translation>أنت غيّرت اسم %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="750"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="765"/>
         <source>You deleted %1</source>
         <translation>أنت حذفت %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="752"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="767"/>
         <source>You created %1</source>
         <translation>أنت أنشأت %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="754"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="769"/>
         <source>You changed %1</source>
         <translation>أنت غيّرت %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="778"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="793"/>
         <source>Synced %1</source>
         <translation>تمّت مزامنة %1</translation>
     </message>
