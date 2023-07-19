@@ -16,7 +16,7 @@ Feature: move file and folder
 
     Scenario: Move folder and file from level 5 sub-folder to sync root
         Given user "Alice" has created folder "folder1/folder2/folder3/folder4/folder5/test-folder" in the server
-        And user "Alice" has uploaded file with content "ownCloud" to "folder1/folder2/folder3/folder4/folder5/lorem.txt" on the server
+        And user "Alice" has uploaded file with content "ownCloud" to "folder1/folder2/folder3/folder4/folder5/lorem.txt" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" moves file "folder1/folder2/folder3/folder4/folder5/lorem.txt" to "/" in the sync folder
         And user "Alice" moves folder "folder1/folder2/folder3/folder4/folder5/test-folder" to "/" in the sync folder
@@ -30,7 +30,7 @@ Feature: move file and folder
     Scenario: Move two folders and a file down to the level 5 sub-folder
         And user "Alice" has created folder "test-folder1" in the server
         And user "Alice" has created folder "test-folder2" in the server
-        And user "Alice" has uploaded file with content "ownCloud test" to "testFile.txt" on the server
+        And user "Alice" has uploaded file with content "ownCloud test" to "testFile.txt" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" moves folder "test-folder1" to "folder1/folder2/folder3/folder4/folder5" in the sync folder
         And user "Alice" moves folder "test-folder2" to "folder1/folder2/folder3/folder4/folder5" in the sync folder
@@ -45,7 +45,7 @@ Feature: move file and folder
 
 
     Scenario: Rename a file and a folder
-        Given user "Alice" has uploaded file with content "test file 1" to "textfile.txt" on the server
+        Given user "Alice" has uploaded file with content "test file 1" to "textfile.txt" in the server
         And user "Alice" has set up a client with default settings
         When the user renames a file "textfile.txt" to "lorem.txt"
         And the user renames a folder "folder1" to "FOLDER"

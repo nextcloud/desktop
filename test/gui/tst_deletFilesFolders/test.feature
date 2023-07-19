@@ -10,7 +10,7 @@ Feature: deleting files and folders
 
     @issue-9439
     Scenario Outline: Delete a file
-        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "<fileName>" on the server
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "<fileName>" in the server
         And user "Alice" has set up a client with default settings
         When the user deletes the file "<fileName>"
         And the user waits for the files to sync
@@ -34,8 +34,8 @@ Feature: deleting files and folders
 
 
     Scenario: Delete a file and a folder
-        Given user "Alice" has uploaded file with content "test file 1" to "textfile1.txt" on the server
-        And user "Alice" has uploaded file with content "test file 2" to "textfile2.txt" on the server
+        Given user "Alice" has uploaded file with content "test file 1" to "textfile1.txt" in the server
+        And user "Alice" has uploaded file with content "test file 2" to "textfile2.txt" in the server
         And user "Alice" has created folder "test-folder1" in the server
         And user "Alice" has created folder "test-folder2" in the server
         And user "Alice" has set up a client with default settings

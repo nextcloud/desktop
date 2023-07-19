@@ -56,3 +56,11 @@ def create_folder(user, folder_name):
     assert (
         response.status_code == 201
     ), f"Could not create the folder: {folder_name} for user {user}"
+
+
+def create_file(user, file_name, contents):
+    url = get_resource_path(user, file_name)
+    response = request.put(url, body=contents, user=user)
+    assert (
+        response.status_code == 201
+    ), f"Could not create file '{file_name}' for user {user}"
