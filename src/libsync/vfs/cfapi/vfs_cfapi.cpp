@@ -229,8 +229,9 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
     if (item._type != ItemTypeDirectory && OCC::FileSystem::isLnkFile(filename)) {
         qCInfo(lcCfApi) << "File \"" << filename << "\" is a Windows shortcut. Not converting it to a placeholder.";
         const auto pinState = pinStateLocal(localPath);
-        if (!pinState || *pinState != PinState::Excluded)
+        if (!pinState || *pinState != PinState::Excluded) {
             setPinStateLocal(localPath, PinState::Excluded);
+        }
         return Vfs::ConvertToPlaceholderResult::Ok;
     }
 
