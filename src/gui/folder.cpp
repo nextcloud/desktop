@@ -564,15 +564,17 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
     if (pathIsIgnored(path)) {
         const auto pinState = _vfs->pinState(relativePath.toString());
         if (!pinState || *pinState != PinState::Excluded) {
-            if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded))
+            if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
                 qCWarning(lcFolder) << "Could not set pin state of" << relativePath << "to excluded";
+            }
         }
         return;
     } else {
         const auto pinState = _vfs->pinState(relativePath.toString());
         if (pinState && *pinState == PinState::Excluded) {
-            if (!_vfs->setPinState(relativePath.toString(), PinState::Inherited))
+            if (!_vfs->setPinState(relativePath.toString(), PinState::Inherited)) {
                 qCWarning(lcFolder) << "Could not switch pin state of" << relativePath << "from" << *pinState << "to inherited";
+            }
         }
     }
 
