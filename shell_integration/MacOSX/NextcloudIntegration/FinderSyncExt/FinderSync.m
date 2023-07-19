@@ -80,6 +80,10 @@
             NSLog(@"No socket path. Not initiating local socket client.");
             self.localSocketClient = nil;
         }
+
+        _registeredDirectories = NSMutableSet.set;
+        _strings = NSMutableDictionary.dictionary;
+        _menuIsComplete = [[NSCondition alloc] init];
     }
 
     return self;
