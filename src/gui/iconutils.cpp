@@ -91,7 +91,7 @@ QPixmap pixmapForBackground(const QString &fileName, const QColor &backgroundCol
     const auto pixmapColor = backgroundColor.isValid() && !Theme::isDarkColor(backgroundColor)
         ? QColorConstants::Svg::black
         : QColorConstants::Svg::white;
-    ;
+
     return createSvgPixmapWithCustomColorCached(fileName, pixmapColor);
 }
 
