@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>563</height>
+    <height>613</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -271,6 +271,17 @@
          <widget class="QCheckBox" name="newExternalStorage">
           <property name="text">
            <string>Ask for confirmation before synchronizing external storages</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QCheckBox" name="moveFilesToTrashCheckBox">
+          <property name="text">
+           <string>Move removed files to trash</string>
           </property>
          </widget>
         </item>
