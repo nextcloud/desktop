@@ -698,7 +698,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation>Sunucu %1 şu anda yeniden yönlendiriliyor veya bağlantınız bir kısıtlama portalı arkasında </translation>
+        <translation>%1 sunucusu yönlendiriliyor veya bağlantınız bir erişim sistemi arkasında.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -809,7 +809,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountstate.cpp" line="154"/>
         <source>Redirect detected</source>
-        <translation>Yönlendirme saptandı</translation>
+        <translation>Yönlendirme algılandı</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="156"/>
