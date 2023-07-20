@@ -403,7 +403,7 @@ Application::Application(int &argc, char **argv)
         }
     }
 
-#if defined(BUILD_FILE_PROVIDER_MODULE)
+#if (BUILD_FILE_PROVIDER_MODULE)
     _fileProvider.reset(new Mac::FileProvider);
 #endif
 
