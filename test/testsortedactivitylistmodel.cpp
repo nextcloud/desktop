@@ -67,6 +67,21 @@ public:
         QCOMPARE(model->rowCount(), originalRowCount + 1);
     }
 
+    void addActivity(QSharedPointer<OCC::SortedActivityListModel> model,
+                     void (OCC::ActivityListModel::*addingMethod)(const OCC::Activity &, OCC::ActivityListModel::ErrorType),
+                     OCC::Activity &activity,
+                     OCC::ActivityListModel::ErrorType type)
+    {
+        const auto originalRowCount = model->rowCount();
+        const auto sourceModel = dynamic_cast<TestingALM *>(model->sourceModel());
+
+        (sourceModel->*addingMethod)(activity, type);
+        QCOMPARE(model->rowCount(), originalRowCount + 1);
+
+        const auto index = model->index(0, 0);
+        QVERIFY(index.isValid());
+    }
+
 private slots:
     void initTestCase()
     {
@@ -125,7 +140,7 @@ private slots:
 
         addActivity(model, &TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
         addActivity(model, &TestingALM::addNotificationToActivityList, testNotificationActivity);
-        addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
+        addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
         addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     }
 
@@ -147,7 +162,7 @@ private slots:
         addActivity(model, &TestingALM::addSyncFileItemToActivityList, errorSyncFileItemActivity);
         addActivity(model, &TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
         addActivity(model, &TestingALM::addNotificationToActivityList, testNotificationActivity);
-        addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
+        addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
         addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
 
         const QVector<OCC::Activity::Type> activityDefaultTypeOrder {
