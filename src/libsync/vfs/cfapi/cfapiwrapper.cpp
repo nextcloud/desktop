@@ -292,6 +292,8 @@ OCC::PinState cfPinStateToPinState(CF_PIN_STATE state)
         return OCC::PinState::OnlineOnly;
     case CF_PIN_STATE_INHERIT:
         return OCC::PinState::Inherited;
+    case CF_PIN_STATE_EXCLUDED:
+        return OCC::PinState::Excluded;
     default:
         Q_UNREACHABLE();
         return OCC::PinState::Inherited;
@@ -309,6 +311,8 @@ CF_PIN_STATE pinStateToCfPinState(OCC::PinState state)
         return CF_PIN_STATE_UNPINNED;
     case OCC::PinState::Unspecified:
         return CF_PIN_STATE_UNSPECIFIED;
+    case OCC::PinState::Excluded:
+        return CF_PIN_STATE_EXCLUDED;
     default:
         Q_UNREACHABLE();
         return CF_PIN_STATE_UNSPECIFIED;

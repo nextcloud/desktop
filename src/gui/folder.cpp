@@ -561,6 +561,23 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 
     auto relativePath = path.midRef(this->path().size());
 
+    if (pathIsIgnored(path)) {
+        const auto pinState = _vfs->pinState(relativePath.toString());
+        if (!pinState || *pinState != PinState::Excluded) {
+            if (!_vfs->setPinState(relativePath.toString(), PinState::Excluded)) {
+                qCWarning(lcFolder) << "Could not set pin state of" << relativePath << "to excluded";
+            }
+        }
+        return;
+    } else {
+        const auto pinState = _vfs->pinState(relativePath.toString());
+        if (pinState && *pinState == PinState::Excluded) {
+            if (!_vfs->setPinState(relativePath.toString(), PinState::Inherited)) {
+                qCWarning(lcFolder) << "Could not switch pin state of" << relativePath << "from" << *pinState << "to inherited";
+            }
+        }
+    }
+
     // Add to list of locally modified paths
     //
     // We do this before checking for our own sync-related changes to make
@@ -804,6 +821,21 @@ void Folder::removeFromSettings() const
     settings->endGroup();
     settings->beginGroup(QLatin1String("FoldersWithPlaceholders"));
     settings->remove(FolderMan::escapeAlias(_definition.alias));
+}
+
+bool Folder::pathIsIgnored(const QString &path) const
+{
+    if (path.isEmpty()) {
+        return true;
+    }
+
+#ifndef OWNCLOUD_TEST
+    if (isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
+        qCDebug(lcFolder) << "* Ignoring file" << path;
+        return true;
+    }
+#endif
+    return false;
 }
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const

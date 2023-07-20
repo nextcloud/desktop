@@ -224,12 +224,17 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
 {
+    const auto localPath = QDir::toNativeSeparators(filename);
+
     if (item._type != ItemTypeDirectory && OCC::FileSystem::isLnkFile(filename)) {
         qCInfo(lcCfApi) << "File \"" << filename << "\" is a Windows shortcut. Not converting it to a placeholder.";
+        const auto pinState = pinStateLocal(localPath);
+        if (!pinState || *pinState != PinState::Excluded) {
+            setPinStateLocal(localPath, PinState::Excluded);
+        }
         return Vfs::ConvertToPlaceholderResult::Ok;
     }
 
-    const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
     if (cfapi::findPlaceholderInfo(localPath)) {
@@ -293,6 +298,11 @@ bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
 
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
 
+    return setPinStateLocal(localPath, state);
+}
+
+bool VfsCfApi::setPinStateLocal(const QString &localPath, PinState state)
+{
     if (cfapi::setPinState(localPath, state, cfapi::Recurse)) {
         return true;
     } else {
@@ -304,9 +314,14 @@ Optional<PinState> VfsCfApi::pinState(const QString &folderPath)
 {
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
 
+    return pinStateLocal(localPath);
+}
+
+Optional<PinState> VfsCfApi::pinStateLocal(const QString &localPath) const
+{
     const auto info = cfapi::findPlaceholderInfo(localPath);
     if (!info) {
-        qCWarning(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
+        qCDebug(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
         return {};
     }
 

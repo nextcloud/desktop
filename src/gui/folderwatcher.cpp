@@ -66,20 +66,9 @@ void FolderWatcher::init(const QString &root)
     _timer.start();
 }
 
-bool FolderWatcher::pathIsIgnored(const QString &path)
+bool FolderWatcher::pathIsIgnored(const QString &path) const
 {
-    if (path.isEmpty())
-        return true;
-    if (!_folder)
-        return false;
-
-#ifndef OWNCLOUD_TEST
-    if (_folder->isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
-        qCDebug(lcFolderWatcher) << "* Ignoring file" << path;
-        return true;
-    }
-#endif
-    return false;
+    return path.isEmpty();
 }
 
 bool FolderWatcher::isReliable() const

@@ -76,6 +76,9 @@ private:
     void onHydrationJobFinished(HydrationJob *job);
     HydrationJob *findHydrationJob(const QString &requestId) const;
 
+    bool setPinStateLocal(const QString &localPath, PinState state);
+    [[nodiscard]] Optional<PinState> pinStateLocal(const QString &localPath) const;
+
     struct HasHydratedDehydrated {
         bool hasHydrated = false;
         bool hasDehydrated = false;
