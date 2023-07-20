@@ -50,7 +50,7 @@ public:
         model->setAccountState(accountState.data());
 
         QSharedPointer<OCC::SortedActivityListModel> sortedModel(new OCC::SortedActivityListModel);
-        sortedModel->setActivityListModel(model);
+        sortedModel->setSourceModel(model);
         QAbstractItemModelTester sortedModelTester(sortedModel.data());
 
         return sortedModel;
