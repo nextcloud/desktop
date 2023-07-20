@@ -17,10 +17,12 @@
 #include <QFileInfo>
 #include <QTimeZone>
 
+#include <random>
+#include <openssl/rand.h>
+
 #include "account.h"
 #include "folderman.h"
 #include "theme.h"
-#include "wordlist.h"
 
 namespace {
 
@@ -28,16 +30,68 @@ static const auto placeholderLinkShareId = QStringLiteral("__placeholderLinkShar
 static const auto internalLinkShareId = QStringLiteral("__internalLinkShareId__");
 static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secureFileDropPlaceholderLinkShareId__");
 
+constexpr auto asciiMin = 33;
+constexpr auto asciiMax = 126;
+constexpr auto asciiRange = asciiMax - asciiMin;
+
 QString createRandomPassword()
 {
-    const auto words = OCC::WordList::getRandomWords(10);
+    static constexpr auto numChars = 24;
 
-    const auto addFirstLetter = [](const QString &current, const QString &next) -> QString {
-        return current + next.at(0);
+    static constexpr std::string_view lowercaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+    static constexpr std::string_view uppercaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    static constexpr std::string_view numbers = "0123456789";
+    static constexpr std::string_view specialChars = R"(ªº\\/|"'*+-_´¨{}·#$%&()=\[\]<>;:@~)";
+
+    static const QRegularExpression lowercaseMatch("[a-z]");
+    static const QRegularExpression uppercaseMatch("[A-Z]");
+    static const QRegularExpression numberMatch("[0-9]");
+    static const QRegularExpression specialCharMatch(QString("[%1]").arg(specialChars.data()));
+
+    static const std::map<std::string_view, QRegularExpression> matchMap {
+        { lowercaseAlphabet, lowercaseMatch },
+        { uppercaseAlphabet, uppercaseMatch },
+        { numbers, numberMatch },
+        { specialChars, specialCharMatch },
     };
 
-    return std::accumulate(std::cbegin(words), std::cend(words), QString(), addFirstLetter);
+    std::random_device rand_dev;
+    std::mt19937 rng(rand_dev());
+
+    QString passwd;
+    std::array<unsigned char, numChars> unsignedCharArray;
+
+    RAND_bytes(unsignedCharArray.data(), numChars);
+
+    for (const auto newChar : unsignedCharArray) {
+        // Ensure byte is within asciiRange
+        const auto byte = (newChar % (asciiRange + 1)) + asciiMin;
+        passwd.append(byte);
+    }
+
+    for (const auto &charsWithMatcher : matchMap) {
+        const auto selectionChars = charsWithMatcher.first;
+        const auto matcher = charsWithMatcher.second;
+        Q_ASSERT(matcher.isValid());
+
+        if (matcher.match(passwd).hasMatch()) {
+            continue;
+        }
+
+        // add random required character at random position
+        std::uniform_int_distribution<std::mt19937::result_type> passwdDist(0, passwd.length() - 1);
+        std::uniform_int_distribution<std::mt19937::result_type> charsDist(0, selectionChars.length() - 1);
+
+        const auto passwdInsertIndex = passwdDist(rng);
+        const auto charToInsertIndex = charsDist(rng);
+        const auto charToInsert = selectionChars.at(charToInsertIndex);
+
+        passwd.insert(passwdInsertIndex, charToInsert);
+    }
+
+    return passwd;
 }
+
 }
 
 namespace OCC
