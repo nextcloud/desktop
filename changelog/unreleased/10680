@@ -1,0 +1,8 @@
+Enhancement: Help user fix problems on the last setup wizard page
+
+When there are problems within the advanced configuration on the last setup
+wizard page, we no longer just show an error message but also "unhide" those
+settings to give the user a chance of fixing the problem.
+
+https://github.com/owncloud/client/issues/10680
+https://github.com/owncloud/client/pull/11029
