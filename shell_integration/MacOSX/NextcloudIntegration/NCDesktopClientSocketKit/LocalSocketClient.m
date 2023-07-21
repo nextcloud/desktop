@@ -343,9 +343,10 @@
 
         if (firstSeparatorIndex.location == NSNotFound) {
             NSLog(@"No separator found. Creating new buffer qith space for null terminator.");
-            unsigned char newBuffer[inBufferLength + 1];
-            memcpy(&newBuffer, buffer, inBufferLength);
-            buffer = &newBuffer[0];
+
+            unsigned char *newBuffer = malloc(sizeof(unsigned char) * (inBufferLength + 1));
+            memcpy(newBuffer, buffer, inBufferLength);
+            buffer = newBuffer;
             nullTerminatorIndex = inBufferLength;
         } else {
             nullTerminatorIndex = firstSeparatorIndex.location;
