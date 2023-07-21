@@ -16,6 +16,7 @@
 #include "accountfwd.h"
 #include <QDialog>
 #include <QTreeWidget>
+#include <QUrl>
 
 #include "csync_exclude.h"
 
@@ -53,6 +54,8 @@ public:
 
     QSize sizeHint() const override;
 
+    void setDavUrl(const QUrl &davUrl);
+
 private slots:
     void slotUpdateDirectories(QStringList);
     void slotItemExpanded(QTreeWidgetItem *);
@@ -62,12 +65,16 @@ private slots:
 private:
     void refreshFolders();
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size);
+    QUrl davUrl() const;
 
+private:
     AccountPtr _account;
 
     QString _folderPath;
     QString _rootName;
     QSet<QString> _oldBlackList;
+
+    QUrl _davUrl;
 
     bool _inserting; // set to true when we are inserting new items on the list
     QLabel *_loading;

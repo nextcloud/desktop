@@ -101,8 +101,7 @@ QSize SelectiveSyncWidget::sizeHint() const
 
 void SelectiveSyncWidget::refreshFolders()
 {
-    // TODO: legacy
-    PropfindJob *job = new PropfindJob(_account, _account->davUrl(), _folderPath, PropfindJob::Depth::One, this);
+    auto *job = new PropfindJob(_account, davUrl(), _folderPath, PropfindJob::Depth::One, this);
     job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
     connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
     connect(job, &PropfindJob::finishedWithError, this, &SelectiveSyncWidget::slotLscolFinishedWithError);
@@ -180,7 +179,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
-    const QString pathToRemove = Utility::concatUrlPath(_account->davUrl(), _folderPath).path();
+    const QString pathToRemove = Utility::concatUrlPath(davUrl(), _folderPath).path();
 
     // Check for excludes.
     list.erase(std::remove_if(list.begin(), list.end(),
@@ -263,8 +262,7 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     QString dir = item->data(0, Qt::UserRole).toString();
     if (dir.isEmpty())
         return;
-    // TODO: legacy
-    PropfindJob *job = new PropfindJob(_account, _account->davUrl(), _folderPath + dir, PropfindJob::Depth::One, this);
+    PropfindJob *job = new PropfindJob(_account, davUrl(), _folderPath + dir, PropfindJob::Depth::One, this);
     job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
     connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
     job->start();
@@ -399,4 +397,14 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
     return result;
 }
 
+void SelectiveSyncWidget::setDavUrl(const QUrl &davUrl)
+{
+    _davUrl = davUrl;
+}
+
+QUrl SelectiveSyncWidget::davUrl() const
+{
+    Q_ASSERT(!_davUrl.isEmpty());
+    return _davUrl;
+}
 }

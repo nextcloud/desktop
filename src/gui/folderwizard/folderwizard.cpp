@@ -88,16 +88,15 @@ FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountStatePtr 
     }
     q->setPage(FolderWizard::Page_Source, _folderWizardSourcePage);
     _folderWizardSourcePage->installEventFilter(q);
+
     // for now spaces are meant to be synced as a whole
     if (!_account->supportsSpaces() && !Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardRemotePath(this);
         q->setPage(FolderWizard::Page_Target, _folderWizardTargetPage);
         _folderWizardTargetPage->installEventFilter(q);
     }
-    if (!_account->supportsSpaces()) {
-        // TODO: add spaces support to selective sync
-        q->setPage(FolderWizard::Page_SelectiveSync, _folderWizardSelectiveSyncPage);
-    }
+
+    q->setPage(FolderWizard::Page_SelectiveSync, _folderWizardSelectiveSyncPage);
 }
 
 QString FolderWizardPrivate::initialLocalPath() const
