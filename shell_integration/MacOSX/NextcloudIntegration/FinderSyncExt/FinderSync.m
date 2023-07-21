@@ -207,7 +207,7 @@
 
 - (void)registerPath:(NSString*)path
 {
-	assert(_registeredDirectories);
+	NSAssert(_registeredDirectories, @"Registered directories should be a valid set!");
 	[_registeredDirectories addObject:[NSURL fileURLWithPath:path]];
 	[FIFinderSyncController defaultController].directoryURLs = _registeredDirectories;
 }
