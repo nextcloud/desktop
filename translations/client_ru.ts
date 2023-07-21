@@ -1772,7 +1772,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="925"/>
         <source>Could not read system exclude file</source>
-        <translation>Не удалось прочитать файл исключений сихнронизации</translation>
+        <translation>Не удалось прочитать файл исключений синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1208"/>
@@ -3460,7 +3460,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="337"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Файл присутствует в списке исключений из сихнронизации.</translation>
+        <translation>Файл присутствует в списке исключений из синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="341"/>
