@@ -1,0 +1,11 @@
+Enhancement: Allow selective sync of spaces in folder wizard
+
+When manually configuring the synchronization of spaces, we now show the
+selective sync page again to allow users to selectively disable the
+synchronization of remote directories.
+
+This prevents the unnecessary synchronization of files until the user can use
+the account settings dialog to configure selective sync.
+
+https://github.com/owncloud/client/issues/10596
+https://github.com/owncloud/client/pull/11044
