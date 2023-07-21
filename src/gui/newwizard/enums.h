@@ -15,7 +15,6 @@
 #pragma once
 
 #include "common/utility.h"
-#include "enums.h"
 
 #include <QObject>
 
