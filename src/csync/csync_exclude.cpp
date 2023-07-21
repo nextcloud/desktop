@@ -336,6 +336,10 @@ bool ExcludedFiles::isExcluded(
 
     const QFileInfo fileInfo(filePath);
     if (!fileInfo.exists()) {
+        if (excludeHidden && fileInfo.fileName().startsWith(QLatin1Char('.'))) {
+            return true;
+        }
+        // recursively call isExcluded with the path of non-existing file's parent directory
         return isExcluded(fileInfo.path(), basePath, excludeHidden);
     }
 

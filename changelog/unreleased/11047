@@ -1,0 +1,3 @@
+Bugfix: Hide hidden folders again in the selective sync view
+
+https://github.com/owncloud/client/issues/11047
