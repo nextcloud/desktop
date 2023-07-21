@@ -183,7 +183,7 @@ namespace FileSystem {
     /**
      * Returns whether a Path is a child of another
      */
-    bool OCSYNC_EXPORT isChildPathOf(const QString &child, const QString &parent);
+    bool OCSYNC_EXPORT isChildPathOf(QStringView child, QStringView parent);
 
     /**
      * Ensures the file name length is allowed on all platforms and the file name does not contain illegal characters

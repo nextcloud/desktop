@@ -82,7 +82,7 @@ private slots:
             if (create) {
                 createTree(a);
             }
-            return excluded.isExcluded(tmp.path() + a, tmp.path() + QStringLiteral("/a"), keepHidden);
+            return excluded.isExcluded(QString{tmp.path() + a}, QString{tmp.path() + QStringLiteral("/a")}, keepHidden);
         };
 
         QVERIFY(!check_isExcluded(QStringLiteral("/a/b"), keepHidden));

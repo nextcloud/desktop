@@ -589,7 +589,7 @@ bool FileSystem::isJunction(const QString &filename)
 #endif
 }
 
-bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
+bool FileSystem::isChildPathOf(QStringView child, QStringView parent)
 {
     // if it is a relative path assume a local file, resolve it based on root
     const auto sensitivity = Utility::fsCaseSensitivity();
@@ -623,7 +623,7 @@ bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
     }
 
     // Slow path (`QDir::cleanPath` does lots of string operations):
-    return QString::compare(QDir::cleanPath(parent), QDir::cleanPath(child), sensitivity) == 0;
+    return QString::compare(QDir::cleanPath(parent.toString()), QDir::cleanPath(child.toString()), sensitivity) == 0;
 }
 
 QString FileSystem::createPortableFileName(const QString &path, const QString &fileName, qsizetype reservedSize)

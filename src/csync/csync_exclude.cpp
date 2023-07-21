@@ -324,17 +324,14 @@ bool ExcludedFiles::versionDirectiveKeepNextLine(const QByteArray &directive) co
     return true;
 }
 
-bool ExcludedFiles::isExcluded(
-    const QString &filePath,
-    const QString &basePath,
-    bool excludeHidden) const
+bool ExcludedFiles::isExcluded(QStringView filePath, QStringView basePath, bool excludeHidden) const
 {
     if (!FileSystem::isChildPathOf(filePath, basePath)) {
         // Mark paths we're not responsible for as excluded...
         return true;
     }
 
-    const QFileInfo fileInfo(filePath);
+    const QFileInfo fileInfo(filePath.toString());
     if (!fileInfo.exists()) {
         if (excludeHidden && fileInfo.fileName().startsWith(QLatin1Char('.'))) {
             return true;
@@ -363,7 +360,7 @@ bool ExcludedFiles::isExcluded(
     return isExcludedRemote(filePath, basePath, excludeHidden, type);
 }
 
-bool ExcludedFiles::isExcludedRemote(const QString &filePath, const QString &basePath, bool excludeHidden, ItemType type) const
+bool ExcludedFiles::isExcludedRemote(QStringView filePath, QStringView basePath, bool excludeHidden, ItemType type) const
 {
     if (!FileSystem::isChildPathOf(filePath, basePath)) {
         // Mark paths we're not responsible for as excluded...

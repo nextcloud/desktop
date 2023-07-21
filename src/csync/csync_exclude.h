@@ -89,10 +89,7 @@ public:
      * @param filePath     the absolute path to the file
      * @param basePath     folder path from which to apply exclude rules, ends with a /
      */
-    bool isExcluded(
-        const QString &filePath,
-        const QString &basePath,
-        bool excludeHidden) const;
+    bool isExcluded(QStringView filePath, QStringView basePath, bool excludeHidden) const;
 
     /**
      * Checks whether a remote file or directory should be excluded.
@@ -100,8 +97,7 @@ public:
      * @param filePath     the absolute path to the file
      * @param basePath     folder path from which to apply exclude rules, ends with a /
      */
-    bool isExcludedRemote(const QString &filePath,
-        const QString &basePath, bool excludeHidden, ItemType type) const;
+    bool isExcludedRemote(QStringView filePath, QStringView basePath, bool excludeHidden, ItemType type) const;
 
     /**
      * Adds an exclude pattern.
