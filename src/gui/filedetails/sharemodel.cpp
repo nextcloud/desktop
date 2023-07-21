@@ -17,6 +17,7 @@
 #include <QFileInfo>
 #include <QTimeZone>
 
+#include <array>
 #include <random>
 #include <openssl/rand.h>
 
