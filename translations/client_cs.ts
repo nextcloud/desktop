@@ -4136,32 +4136,32 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Secure file drop link</source>
         <translation>Odkaz na bezpečný příjem souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Share link</source>
         <translation>Odkaz na sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="645"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="699"/>
         <source>Link share</source>
         <translation>Odkázat na sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="647"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="701"/>
         <source>Internal link</source>
         <translation>Interní odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="649"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="703"/>
         <source>Secure file drop</source>
         <translation>Bezpečný příjem souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="938"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="992"/>
         <source>Enter a note for the recipient</source>
         <translation>Zadejte poznámku pro příjemce</translation>
     </message>
@@ -5483,73 +5483,73 @@ Server odpověděl chybou: %2</translation>
         <translation>Došlo k chybě při nastavování hesla ke sdílení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="214"/>
         <source>Edit share</source>
         <translation>Upravit sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="230"/>
         <source>Dismiss</source>
         <translation>Zahodit</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="289"/>
         <source>Share label</source>
         <translation>Štítek sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="344"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="391"/>
         <source>Allow upload and editing</source>
         <translation>Povolit nahrávání a úpravy</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="377"/>
         <source>View only</source>
         <translation>Pouze prohlížet</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
         <source>File drop (upload only)</source>
         <translation>Předání souboru (pouze nahrání)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>Skrýt stažení</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="514"/>
         <source>Password protect</source>
         <translation>Chránit heslem</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="643"/>
         <source>Set expiration date</source>
         <translation>Nastavit datum skončení platnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
         <source>Note to recipient</source>
         <translation>Poznámka pro příjemce</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="939"/>
         <source>Unshare</source>
         <translation>Přestat sdílet</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="956"/>
         <source>Add another link</source>
         <translation>Přidat další odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Share link copied!</source>
         <translation>Odkaz na sdílení zkopírován!</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Copy share link</source>
         <translation>Zkopírovat odkaz na sdílení</translation>
     </message>

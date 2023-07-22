@@ -2430,7 +2430,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Flytta borttagna filer till papperskorgen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -4137,32 +4137,32 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Secure file drop link</source>
         <translation>Säker gömd fillista-länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Share link</source>
         <translation>Dela länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="645"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="699"/>
         <source>Link share</source>
         <translation>Länkdelning</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="647"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="701"/>
         <source>Internal link</source>
         <translation>Intern länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="649"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="703"/>
         <source>Secure file drop</source>
         <translation>Säker gömd fillista</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="938"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="992"/>
         <source>Enter a note for the recipient</source>
         <translation>Ange en notering till mottagaren</translation>
     </message>
@@ -5484,73 +5484,73 @@ Servern svarade med fel: %2</translation>
         <translation>Ett fel uppstod vid inställning av delningslösenordet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="214"/>
         <source>Edit share</source>
         <translation>Redigera delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="230"/>
         <source>Dismiss</source>
         <translation>Avfärda</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="289"/>
         <source>Share label</source>
         <translation>Delningsetikett</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="344"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="391"/>
         <source>Allow upload and editing</source>
         <translation>Tillåt uppladdning och redigering</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="377"/>
         <source>View only</source>
         <translation>Endast visa</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
         <source>File drop (upload only)</source>
         <translation>Gömd fillista (endast uppladdning)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>Dölj nedladdning</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="514"/>
         <source>Password protect</source>
         <translation>Lösenordsskydda</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="643"/>
         <source>Set expiration date</source>
         <translation>Välj utgångsdatum</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
         <source>Note to recipient</source>
         <translation>Notering till mottagare</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="939"/>
         <source>Unshare</source>
         <translation>Sluta dela</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="956"/>
         <source>Add another link</source>
         <translation>Lägg till en annan länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Share link copied!</source>
         <translation>Delningslänken har kopierats!</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Copy share link</source>
         <translation>Kopiera delningslänk</translation>
     </message>
