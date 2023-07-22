@@ -304,9 +304,15 @@ void GeneralSettings::slotUpdateInfo()
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
     }
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
+    else if (const auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
+        connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
+
+        const auto updaterState = sparkleUpdater->state();
+        const auto enableUpdateButton = updaterState == SparkleUpdater::State::Idle ||
+                                        updaterState == SparkleUpdater::State::Unknown;
+        _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
 
