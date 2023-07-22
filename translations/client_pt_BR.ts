@@ -4134,32 +4134,32 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Secure file drop link</source>
         <translation>Link para soltar arquivo seguro</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Share link</source>
         <translation>Compartilhar link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="645"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="699"/>
         <source>Link share</source>
         <translation>Link para compartilhar</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="647"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="701"/>
         <source>Internal link</source>
         <translation>Link interno</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="649"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="703"/>
         <source>Secure file drop</source>
         <translation>Secure file drop</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="938"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="992"/>
         <source>Enter a note for the recipient</source>
         <translation>Insira uma observação para o destinatário</translation>
     </message>
@@ -5481,73 +5481,73 @@ Servidor respondeu com erro: %2</translation>
         <translation>Ocorreu um erro ao definir a senha de compartilhamento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="214"/>
         <source>Edit share</source>
         <translation>Editar compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="230"/>
         <source>Dismiss</source>
         <translation>Dispensar</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="289"/>
         <source>Share label</source>
         <translation>Compartilhar etiqueta</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="344"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="391"/>
         <source>Allow upload and editing</source>
         <translation>Permitir envio e edição</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="377"/>
         <source>View only</source>
         <translation>Somente ver</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
         <source>File drop (upload only)</source>
         <translation>Descarte de arquivo (somente enviar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>Ocultar enviar</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="514"/>
         <source>Password protect</source>
         <translation>Proteger com senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="643"/>
         <source>Set expiration date</source>
         <translation>Definir data de validade</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
         <source>Note to recipient</source>
         <translation>Nota para o destinatário</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="939"/>
         <source>Unshare</source>
         <translation>Descompartilhar</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="956"/>
         <source>Add another link</source>
         <translation>Adicionar outro link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Share link copied!</source>
         <translation>Compartilhar link copiado!</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Copy share link</source>
         <translation>Copiar link de compartilhamento</translation>
     </message>

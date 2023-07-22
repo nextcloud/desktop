@@ -2429,7 +2429,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Gelöschte Dateien in den Papierkorb verschieben</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -4136,32 +4136,32 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Secure file drop link</source>
         <translation>Sicherer Link zur Dateiablage</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="637"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
         <source>Share link</source>
         <translation>Freigabe-Link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="645"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="699"/>
         <source>Link share</source>
         <translation>Link teilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="647"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="701"/>
         <source>Internal link</source>
         <translation>Interner Link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="649"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="703"/>
         <source>Secure file drop</source>
         <translation>Sichere Dateiablage</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="938"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="992"/>
         <source>Enter a note for the recipient</source>
         <translation>Geben Sie eine Notiz für den Empfänger ein</translation>
     </message>
@@ -5483,73 +5483,73 @@ Server antwortete mit Fehler: %2</translation>
         <translation>Es ist ein Fehler beim Festlegen des Freigabekennworts aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="204"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="214"/>
         <source>Edit share</source>
         <translation>Freigabe bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="230"/>
         <source>Dismiss</source>
         <translation>Verwerfen</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="279"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="289"/>
         <source>Share label</source>
         <translation>Freigabe-Label</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="333"/>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="380"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="344"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="391"/>
         <source>Allow upload and editing</source>
         <translation>Hochladen und Bearbeiten erlauben</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="366"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="377"/>
         <source>View only</source>
         <translation>Nur anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="401"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="412"/>
         <source>File drop (upload only)</source>
         <translation>Dateien ablegen (nur Hochladen)</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="452"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>Download verbergen</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="502"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="514"/>
         <source>Password protect</source>
         <translation>Passwortschutz</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="631"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="643"/>
         <source>Set expiration date</source>
         <translation>Ablaufdatum setzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="846"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
         <source>Note to recipient</source>
         <translation>Notiz an Empfänger</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="914"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="939"/>
         <source>Unshare</source>
         <translation>Freigabe aufheben</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="931"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="956"/>
         <source>Add another link</source>
         <translation>Weiteren Link hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Share link copied!</source>
         <translation>Freigabelink kopiert!</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="975"/>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="1000"/>
         <source>Copy share link</source>
         <translation>Freigabe-Link kopieren</translation>
     </message>
