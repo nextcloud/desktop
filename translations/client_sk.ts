@@ -4135,32 +4135,32 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Secure file drop link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="691"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="692"/>
         <source>Share link</source>
         <translation>Zdieľať odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="699"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="700"/>
         <source>Link share</source>
         <translation>Zdieľaný odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="701"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="702"/>
         <source>Internal link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="703"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="704"/>
         <source>Secure file drop</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="992"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="993"/>
         <source>Enter a note for the recipient</source>
         <translation>Zadajte poznámku pre príjemcu</translation>
     </message>
