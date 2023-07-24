@@ -1130,11 +1130,6 @@ void Folder::slotSyncFinished(bool success)
         qCInfo(lcFolder) << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
-    if (_syncResult.status() == SyncResult::Success && success) {
-        // Clear the white list as all the folders that should be on that list are sync-ed
-        journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
-    }
-
     if ((_syncResult.status() == SyncResult::Success
             || _syncResult.status() == SyncResult::Problem)
         && success) {
@@ -1264,7 +1259,6 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
     bool ok2 = false;
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
-
 
     const auto inDecidedLists = blacklist.contains(trailSlashFolderPath) || whitelist.contains(trailSlashFolderPath);
     if (inDecidedLists) {
