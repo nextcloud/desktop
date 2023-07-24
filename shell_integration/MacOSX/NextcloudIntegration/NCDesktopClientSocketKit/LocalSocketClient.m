@@ -328,7 +328,8 @@
 {
     NSLog(@"Processing in buffer. In buffer length %li", _inBuffer.length);
 
-    UInt8 separator[] = {0xa}; // Byte value for "\n"
+    static const UInt8 separator[] = {0xa}; // Byte value for "\n"
+    static const char terminator[] = {0};
     NSData * const separatorData = [NSData dataWithBytes:separator length:1];
 
     while(_inBuffer.length > 0) {
@@ -338,23 +339,20 @@
                                                            options:0
                                                              range:inBufferLengthRange];
 
-        unsigned char *buffer = _inBuffer.mutableBytes;
         NSUInteger nullTerminatorIndex = NSUIntegerMax;
 
+        // Add NULL terminator, so we can use C string methods
         if (firstSeparatorIndex.location == NSNotFound) {
             NSLog(@"No separator found. Creating new buffer qith space for null terminator.");
 
-            unsigned char *newBuffer = malloc(sizeof(unsigned char) * (inBufferLength + 1));
-            memcpy(newBuffer, buffer, inBufferLength);
-            buffer = newBuffer;
+            [_inBuffer appendBytes:terminator length:1];
             nullTerminatorIndex = inBufferLength;
         } else {
             nullTerminatorIndex = firstSeparatorIndex.location;
+            [_inBuffer replaceBytesInRange:NSMakeRange(nullTerminatorIndex, 1) withBytes:terminator];
         }
 
         NSAssert(nullTerminatorIndex != NSUIntegerMax, @"Null terminator index should be valid.");
-
-        buffer[nullTerminatorIndex] = 0; // Add NULL terminator, so we can use C string methods
 
         NSString * const newLine = [NSString stringWithUTF8String:_inBuffer.bytes];
         const NSRange nullTerminatorRange = NSMakeRange(0, nullTerminatorIndex + 1);
