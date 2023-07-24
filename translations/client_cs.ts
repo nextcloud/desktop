@@ -2429,7 +2429,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Přesouvat odebrané soubory do koše</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
