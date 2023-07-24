@@ -773,7 +773,6 @@ void Folder::saveToSettings() const
     removeFromSettings();
 
     auto settings = _accountState->settings();
-    QString settingsGroup = QStringLiteral("Multifolders");
 
     // True if the folder path appears in only one account
     bool oneAccountOnly = true;
@@ -784,12 +783,13 @@ void Folder::saveToSettings() const
         }
     }
 
+    QString settingsGroup;
     if (virtualFilesEnabled() || _saveInFoldersWithPlaceholders) {
         // If virtual files are enabled or even were enabled at some point,
         // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
         settingsGroup = QStringLiteral("FoldersWithPlaceholders");
-    } else if (oneAccountOnly) {
+    } else {
         settingsGroup = QStringLiteral("Folders");
     }
 

@@ -204,7 +204,8 @@ qsizetype FolderMan::setupFolders()
 
         process(QStringLiteral("Folders"), false);
         process(QStringLiteral("FoldersWithPlaceholders"), true);
-        // See Folder::saveToSettings for details about why these exists.
+        // We don't save to `Multifolders` anymore, but for backwards compatibility we will just
+        // read it like it is a `Folders` entry.
         process(QStringLiteral("Multifolders"), false);
 
         settings->endGroup(); // Finished processing this account.
