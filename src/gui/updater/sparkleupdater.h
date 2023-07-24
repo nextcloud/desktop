@@ -24,22 +24,40 @@ namespace OCC {
 class SparkleUpdater : public Updater
 {
     Q_OBJECT
+    Q_PROPERTY(QString statusString READ statusString NOTIFY statusChanged)
+    Q_PROPERTY(State state READ state NOTIFY statusChanged)
+
 public:
-    SparkleUpdater(const QUrl &appCastUrl);
+    class SparkleInterface;
+    enum class State {
+        Unknown = 0,
+        Idle,
+        Working,
+        AwaitingUserInput
+    };
+
+    explicit SparkleUpdater(const QUrl &appCastUrl);
     ~SparkleUpdater() override;
 
-    void setUpdateUrl(const QUrl &url);
+    [[nodiscard]] static bool autoUpdaterAllowed();
 
-    // unused in this updater
+    [[nodiscard]] bool handleStartup() override { return false; }
+    [[nodiscard]] QString statusString() const;
+    [[nodiscard]] State state() const;
+
+public slots:
+    void setUpdateUrl(const QUrl &url);
     void checkForUpdate() override;
     void backgroundCheckForUpdate() override;
-    bool handleStartup() override { return false; }
 
-    QString statusString();
+signals:
+    void statusChanged();
 
 private:
-    class Private;
-    Private *d;
+    std::unique_ptr<SparkleInterface> _interface;
+    QString _statusString;
+    State _state = State::Unknown;
+    friend class SparkleInterface;
 };
 
 } // namespace OCC
