@@ -29,7 +29,7 @@
 
 -(void)process:(NSString*)line
 {
-    NSLog(@"Processing line: %@", line);
+    NSLog(@"Processing line: '%@'", line);
     NSArray *split = [line componentsSeparatedByString:@":"];
     NSString *command = [split objectAtIndex:0];
     

@@ -15,6 +15,15 @@
 
 #import "FinderSync.h"
 
+@interface FinderSync()
+{
+    NSMutableSet *_registeredDirectories;
+    NSString *_shareMenuTitle;
+    NSMutableDictionary *_strings;
+    NSMutableArray *_menuItems;
+    NSCondition *_menuIsComplete;
+}
+@end
 
 @implementation FinderSync
 
@@ -71,6 +80,10 @@
             NSLog(@"No socket path. Not initiating local socket client.");
             self.localSocketClient = nil;
         }
+
+        _registeredDirectories = NSMutableSet.set;
+        _strings = NSMutableDictionary.dictionary;
+        _menuIsComplete = [[NSCondition alloc] init];
     }
 
     return self;
@@ -194,7 +207,7 @@
 
 - (void)registerPath:(NSString*)path
 {
-	assert(_registeredDirectories);
+	NSAssert(_registeredDirectories, @"Registered directories should be a valid set!");
 	[_registeredDirectories addObject:[NSURL fileURLWithPath:path]];
 	[FIFinderSyncController defaultController].directoryURLs = _registeredDirectories;
 }

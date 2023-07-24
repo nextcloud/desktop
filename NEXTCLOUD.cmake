@@ -78,5 +78,5 @@ if(WIN32)
 endif()
 
 if (APPLE)
-    set( BUILD_FILE_PROVIDER_MODULE OFF )
+    option( BUILD_FILE_PROVIDER_MODULE "Build the macOS virtual files File Provider module" OFF )
 endif()
