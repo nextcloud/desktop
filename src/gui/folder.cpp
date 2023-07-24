@@ -1268,6 +1268,8 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         if (stopSyncing) {
             blacklist.append(trailSlashFolderPath);
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
+            slotTerminateSync();
+            scheduleThisFolderSoon();
         } else {
             whitelist.append(trailSlashFolderPath);
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whitelist);
