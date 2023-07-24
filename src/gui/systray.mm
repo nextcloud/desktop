@@ -58,7 +58,8 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
                             << "Token:" << qToken
                             << "Account:" << qAccount;
 
-    const auto talkReply = QSharedPointer<OCC::TalkReply>(new OCC::TalkReply(accountState.data(), OCC::Systray::instance()));
+    const auto talkReply = QSharedPointer<OCC::TalkReply>::create(
+        accountState.data(), OCC::Systray::instance());
     talkReply->sendReplyMessage(qToken, qReply, qReplyTo);
 }
 
