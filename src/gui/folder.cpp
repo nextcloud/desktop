@@ -1257,6 +1257,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
 {
     const auto trailSlashFolderPath = Utility::trailingSlashPath(folderPath);
     const auto journal = journalDb();
+    const auto stopSyncing = ConfigFile().stopSyncingExistingFoldersOverLimit();
 
     // Add the entry to the whitelist if it is neither in the blacklist or whitelist already
     bool ok1 = false;
@@ -1264,8 +1265,13 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
     if (ok1 && ok2 && !blacklist.contains(trailSlashFolderPath) && !whitelist.contains(trailSlashFolderPath)) {
-        whitelist.append(trailSlashFolderPath);
-        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whitelist);
+        if (stopSyncing) {
+            blacklist.append(trailSlashFolderPath);
+            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
+        } else {
+            whitelist.append(trailSlashFolderPath);
+            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whitelist);
+        }
     }
 
     auto undecidedListQueryOk = false;
@@ -1277,20 +1283,27 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
             emit newBigFolderDiscovered(trailSlashFolderPath);
         }
 
-        const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n"
-                                "Please go into the settings and disable it if you wish to stop synchronising it.")
-                                 .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath);
+        const auto messageInstruction =
+            stopSyncing ? "Synchronisation of this folder has been disabled." : "Synchronisation of this folder can be disabled in the settings window.";
+        const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n%3")
+                                 .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath, messageInstruction);
         Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
-
-        auto blacklistActivityLink = ActivityLink();
-        blacklistActivityLink._label = tr("Stop syncing");
-        blacklistActivityLink._primary = true;
-        blacklistActivityLink._verb = "BLACKLIST_FOLDER";
 
         auto whitelistActivityLink = ActivityLink();
         whitelistActivityLink._label = tr("Keep syncing");
         whitelistActivityLink._primary = false;
         whitelistActivityLink._verb = "WHITELIST_FOLDER";
+
+        QVector<ActivityLink> activityLinks = {whitelistActivityLink};
+
+        if (!stopSyncing) {
+            auto blacklistActivityLink = ActivityLink();
+            blacklistActivityLink._label = tr("Stop syncing");
+            blacklistActivityLink._primary = true;
+            blacklistActivityLink._verb = "BLACKLIST_FOLDER";
+
+            activityLinks.append(blacklistActivityLink);
+        }
 
         auto existingFolderNowBigActivity = Activity();
         existingFolderNowBigActivity._type = Activity::NotificationType;
@@ -1301,7 +1314,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         existingFolderNowBigActivity._accName = _accountState->account()->displayName();
         existingFolderNowBigActivity._folder = alias();
         existingFolderNowBigActivity._file = cleanPath() + '/' + trailSlashFolderPath;
-        existingFolderNowBigActivity._links = {blacklistActivityLink, whitelistActivityLink};
+        existingFolderNowBigActivity._links = activityLinks;
         existingFolderNowBigActivity._id = qHash(existingFolderNowBigActivity._file);
 
         const auto user = UserModel::instance()->findUserForAccount(_accountState.data());

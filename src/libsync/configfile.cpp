@@ -100,6 +100,7 @@ static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
+static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
 static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
 static constexpr char moveToTrashC[] = "moveToTrash";
 
@@ -966,6 +967,18 @@ bool ConfigFile::notifyExistingFoldersOverLimit() const
 void ConfigFile::setNotifyExistingFoldersOverLimit(const bool notify)
 {
     setValue(notifyExistingFoldersOverLimitC, notify);
+}
+
+bool ConfigFile::stopSyncingExistingFoldersOverLimit() const
+{
+    const auto notifyExistingBigEnabled = notifyExistingFoldersOverLimit();
+    const auto fallback = getValue(stopSyncingExistingFoldersOverLimitC, {}, notifyExistingBigEnabled);
+    return getPolicySetting(QString(stopSyncingExistingFoldersOverLimitC), fallback).toBool();
+}
+
+void ConfigFile::setStopSyncingExistingFoldersOverLimit(const bool stopSyncing)
+{
+    setValue(stopSyncingExistingFoldersOverLimitC, stopSyncing);
 }
 
 void ConfigFile::setConfirmExternalStorage(bool isChecked)

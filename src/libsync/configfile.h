@@ -143,6 +143,8 @@ public:
     void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
     [[nodiscard]] bool notifyExistingFoldersOverLimit() const;
     void setNotifyExistingFoldersOverLimit(const bool notify);
+    [[nodiscard]] bool stopSyncingExistingFoldersOverLimit() const;
+    void setStopSyncingExistingFoldersOverLimit(const bool stopSyncing);
     [[nodiscard]] bool useNewBigFolderSizeLimit() const;
     [[nodiscard]] bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
