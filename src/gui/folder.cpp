@@ -1264,15 +1264,24 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
     bool ok2 = false;
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
-    if (ok1 && ok2 && !blacklist.contains(trailSlashFolderPath) && !whitelist.contains(trailSlashFolderPath)) {
+
+
+    const auto inDecidedLists = blacklist.contains(trailSlashFolderPath) || whitelist.contains(trailSlashFolderPath);
+    if (inDecidedLists) {
+        return;
+    }
+
+    auto relevantList = stopSyncing ? blacklist : whitelist;
+    const auto relevantListType = stopSyncing ? SyncJournalDb::SelectiveSyncBlackList : SyncJournalDb::SelectiveSyncWhiteList;
+
+    if (ok1 && ok2 && !inDecidedLists) {
+        relevantList.append(trailSlashFolderPath);
+        journal->setSelectiveSyncList(relevantListType, relevantList);
+
         if (stopSyncing) {
-            blacklist.append(trailSlashFolderPath);
-            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
+            // Abort current down sync and start again
             slotTerminateSync();
             scheduleThisFolderSoon();
-        } else {
-            whitelist.append(trailSlashFolderPath);
-            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whitelist);
         }
     }
 
