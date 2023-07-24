@@ -917,6 +917,11 @@ bool Theme::enforceVirtualFilesSyncFolder() const
     return ENFORCE_VIRTUAL_FILES_SYNC_FOLDER && vfsMode != OCC::Vfs::Off;
 }
 
+bool Theme::isSettingsWidgetsVisible() const
+{
+    return NEXTCLOUD_SETTINGS_WIDGET_VISIBLE;
+}
+
 QColor Theme::defaultColor()
 {
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};

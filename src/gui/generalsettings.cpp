@@ -139,7 +139,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    const auto settingsWidgetVisible = ConfigFile().isNcSettingsWidgetsVisible();
+    const auto settingsWidgetVisible = OCC::Theme::instance()->isSettingsWidgetsVisible();
     _ui->callNotificationsCheckBox->setVisible(settingsWidgetVisible);
     _ui->newExternalStorage->setVisible(settingsWidgetVisible);
     _ui->showInExplorerNavigationPaneCheckBox->setVisible(settingsWidgetVisible);
@@ -279,7 +279,7 @@ void GeneralSettings::slotUpdateInfo()
     if (ConfigFile().skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesGroupBox->setVisible(false);
-        const auto settingsWidgetVisible = ConfigFile().isNcSettingsWidgetsVisible();
+        const auto settingsWidgetVisible = OCC::Theme::instance()->isSettingsWidgetsVisible();
         _ui->restartButton->setVisible(settingsWidgetVisible);
         _ui->updateButton->setVisible(settingsWidgetVisible);
         return;
@@ -509,9 +509,9 @@ void GeneralSettings::customizeStyle()
     slotUpdateInfo();
 #else
     _ui->updatesGroupBox->setVisible(false);
-    const auto widgetVisible = ConfigFile().isWidgetVisible();
-    _ui->restartButton->setVisible(widgetVisible);
-    _ui->updateButton->setVisible(widgetVisible);
+    const auto settingsWidgetVisible = OCC::Theme::instance()->isSettingsWidgetsVisible();
+    _ui->restartButton->setVisible(settingsWidgetVisible);
+    _ui->updateButton->setVisible(settingsWidgetVisible);
 #endif
 }
 

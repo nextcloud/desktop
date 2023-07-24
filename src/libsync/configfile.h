@@ -60,7 +60,6 @@ public:
     [[nodiscard]] bool showConfigBackupWarning() const;
 
     bool exists();
-    bool isNcSettingsWidgetsVisible() const;
 
     [[nodiscard]] QString defaultConnection() const;
 
@@ -245,7 +244,6 @@ private:
 
     static QString _confDir;
     static QString _discoveredLegacyConfigPath;
-    bool _isNcSettingWidgetsVisible = true;
 };
 }
 #endif // CONFIGFILE_H
