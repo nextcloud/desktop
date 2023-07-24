@@ -2430,7 +2430,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>將移除的檔案移動到垃圾桶</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
