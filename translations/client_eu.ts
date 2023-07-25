@@ -2386,13 +2386,13 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="321"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
         <source>stable</source>
         <translation>egonkorra</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="323"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -2449,7 +2449,7 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Create Debug Archive</source>
         <translation>Sortu arazketa fitxategia</translation>
     </message>
@@ -2469,12 +2469,12 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Ezin da abiarazte automatikoa desgaitu sistema osoaren abiarazte automatikoa gaituta dagoelako.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="344"/>
+        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>Eguneratze kanala aldatu nahi duzu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="345"/>
+        <location filename="../src/gui/generalsettings.cpp" line="351"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2483,27 +2483,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Kontuan izan honek bertsio berriak nondik hartu bakarrik hautatzen duela, ezin dela bertsio zaharretara itzuli: beraz, beta kanaletik batzuetan ezin da automatikoki kanal egonkorrera itzuli, jarrita dagoena baino berriagoa den bertsio egonkor bati itxaron behar zaio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="364"/>
         <source>Change update channel</source>
         <translation>Aldatu eguneratze kanala</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <location filename="../src/gui/generalsettings.cpp" line="365"/>
         <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Zip Archives</source>
         <translation>Zip fitxategiak</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="469"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug Archive Created</source>
         <translation>Arazketa fitxategia sortu da</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="469"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug archive is created at %1</source>
         <translation>Arazketa fitxategia sortuta dago, hemen: %1</translation>
     </message>

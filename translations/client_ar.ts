@@ -2377,13 +2377,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="321"/>
+        <location filename="../src/gui/generalsettings.cpp" line="327"/>
         <source>stable</source>
         <translation>مُستقِرٌ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="323"/>
+        <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>beta</source>
         <translation>بيتا</translation>
     </message>
@@ -2440,7 +2440,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Create Debug Archive</source>
         <translation>إنشيء أرشيفاً بالتنقيحات Debug Archive</translation>
     </message>
@@ -2460,39 +2460,39 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>لا يمكنك تعطيل التشغيل التلقائي لأنه تم تمكين التشغيل التلقائي على مستوى النظام.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="344"/>
+        <location filename="../src/gui/generalsettings.cpp" line="350"/>
         <source>Change update channel?</source>
         <translation>تغيير قناة التحديث؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="345"/>
+        <location filename="../src/gui/generalsettings.cpp" line="351"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>تُحدّد قناة التحديث أي تحديثات للعميل سيتم اقتراح تثبيتها. تحتوي القناة &quot;المستقرة&quot; فقط على الترقيات الموثوقة. في حين أن الإصدارات الموجودة في القناة &quot;التجريبية&quot; قد تحتوي على تحسيناتٍ و تصليحاتٍ أحدث؛ ولكن لم يتم اختبارها بدقة بعد.  لا حظ أنه لا يمكن عادةً العودة من القناة التجريبية إلى القناة الثابتة على الفور إلا بانتظار إصدار ثابت أحدث من الإصدار التجريبي المثبت حاليًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="364"/>
         <source>Change update channel</source>
         <translation>تغيير قناة التحديث</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="359"/>
+        <location filename="../src/gui/generalsettings.cpp" line="365"/>
         <source>Cancel</source>
         <translation>إلغاء</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="463"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Zip Archives</source>
         <translation>أراشيف مضغوطة Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="469"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug Archive Created</source>
         <translation>تم إنشاء أرشيف التنقيح debug archive</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="469"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Debug archive is created at %1</source>
         <translation>تمّ إنشاء أرشيف التنقيح في %1</translation>
     </message>
@@ -3135,17 +3135,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>حدد عنوان محدد موقع الموارد المُوحّد &quot;URL&quot; مختلفًا</translation>
+        <translation>حدد عنوان URL مختلفًا</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>إعادة المحاولة بدون تشفير عبر بروتوكول نقل النص التشعبي &quot;HTTP&quot;(غير آمن)</translation>
+        <translation>إعادة المحاولة بدون تشفير عبر بروتوكول نHTTP (غير آمن)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation>تكوين شهادة طبقة النقل الآمنة/ المفتاح العام &quot;TLS&quot; من جانب العميل</translation>
+        <translation>تكوين شهادة المفتاح العام &quot;TLS&quot; من جانب العميل</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
@@ -3318,7 +3318,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="591"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="593"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>نتج عن إنشاء المجلد رمز خطأ 1% لبروتوكول نقل النص التشعبي &quot;HTTP&quot;</translation>
+        <translation>نتج عن إنشاء المجلد رمز خطأ 1% لبروتوكول HTTP</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
@@ -3432,7 +3432,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>رد ملف جسون ‏&quot;ترميز الكائنات باستعمال جافا سكريبت JSON&quot;غير صالح من عنوان محدد موقع الموارد المُوحّد &quot;URL&quot; للاستطلاع</translation>
+        <translation>رد ملف JSON &quot;ترميز الكائنات باستعمال جافا سكريبت&quot;غير صالح من عنوان URL للاستطلاع</translation>
     </message>
 </context>
 <context>
@@ -3809,7 +3809,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="111"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>أرجع الخادم كود بروتوكول نقل النص التشعبي &quot;HTTP&quot;خاطئ. متوقع 204، ولكن تم تلقي &quot;٪ 1٪ 2&quot;.</translation>
+        <translation>أرجع الخادم كود بروتوكول HTTP خاطئ. متوقع 204، ولكن تم تلقي &quot;٪ 1٪ 2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="119"/>
@@ -3830,7 +3830,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="133"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>أرجع الخادم كود بروتوكول نقل النص التشعبي &quot;HTTP&quot;خاطئ. متوقع 201 ، ولكن تم تلقي &quot;٪ 1٪ 2&quot;.</translation>
+        <translation>أرجع الخادم كود بروتوكول HTTP خاطئ. متوقع 201 ، ولكن تم تلقي &quot;٪ 1٪ 2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
@@ -3985,7 +3985,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
         <source>Poll URL missing</source>
-        <translation>عنوان محدد موقع الموارد المُوحّد للاستطلاع مفقود</translation>
+        <translation>عنوان URL للاستطلاع مفقود</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
@@ -6162,7 +6162,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="47"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>حدث خطأ عند بدء تشغيل المستعرض للانتقال إلى عنوان محدد موقع الموارد المُوحّد ٪ 1. ربما لم يتم تهيئة متصفح افتراضي؟</translation>
+        <translation>حدث خطأ عند بدء تشغيل المستعرض للانتقال إلى عنوان URL ٪ 1. ربما لم يتم تهيئة متصفح افتراضي؟</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
