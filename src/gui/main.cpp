@@ -51,22 +51,11 @@ inline auto msgParseOptionsC()
     return QStringLiteral("MSG_PARSEOPTIONS:");
 }
 
-void warnSystray()
-{
-    QMessageBox::critical(nullptr, qApp->translate("main.cpp", "System Tray not available"),
-        qApp->translate("main.cpp",
-                "%1 requires on a working system tray. "
-                "If you are running XFCE, please follow "
-                "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "
-                "Otherwise, please install a system tray application such as 'trayer' and try again.")
-            .arg(Theme::instance()->appNameGUI()));
-}
-
 // Helpers for displaying messages. Note that there is probably no console on Windows.
-void displayHelpText(const QString &t, std::ostream &stream = std::cout)
+void displayHelpText(const QString &t)
 {
     Logger::instance()->attacheToConsole();
-    stream << qUtf8Printable(t) << std::endl;
+    std::cout << qUtf8Printable(t) << std::endl;
 #ifdef Q_OS_WIN
     // No console on Windows.
     QString spaces(80, QLatin1Char(' ')); // Add a line of non-wrapped space to make the messagebox wide enough.
