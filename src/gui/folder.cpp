@@ -1205,7 +1205,9 @@ void Folder::scheduleThisFolderSoon()
 
 void Folder::registerFolderWatcher()
 {
-    Q_ASSERT(!_folderWatcher);
+    if (!_folderWatcher.isNull()) {
+        return;
+    }
 
     _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged, this,
