@@ -16,7 +16,7 @@
 #define ACTIVITYDATA_H
 
 #include "syncfileitem.h"
-#include "folder.h"
+#include "syncresult.h"
 #include "account.h"
 
 #include <QtCore>

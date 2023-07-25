@@ -12,6 +12,7 @@ add_library(testutils
   testhelper.cpp
   sharetestutils.cpp
   endtoendtestutils.cpp
+  activitylistmodeltestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
@@ -63,6 +64,7 @@ nextcloud_add_test(IconUtils)
 nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(ActivityListModel)
+nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
