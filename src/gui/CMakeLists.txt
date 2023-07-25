@@ -1,6 +1,6 @@
 include(ECMAddAppIcon)
 
-find_package(KDSingleApplication REQUIRED)
+find_package(KDSingleApplication-qt6 1.0.0 REQUIRED)
 
 set(client_UI_SRCS
     aboutdialog.ui
