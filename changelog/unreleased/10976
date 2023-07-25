@@ -1,0 +1,7 @@
+Enhancement: `--cmd` argument added to the GUI client
+
+In 4.1 we added a `--cmd` argument to the AppImage to allow users to use the commandline client contained in the AppImage more easily.
+
+The `--cmd` argument is now supported on all platforms to support consistency.
+
+https://github.com/owncloud/client/issues/10976

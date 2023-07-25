@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QMessageBox>
+#include <QProcess>
 #include <QTimer>
 
 #include <iostream>
@@ -115,8 +116,9 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     showSettingsLegacyOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser.addOption(showSettingsLegacyOption);
 
-    auto showOption =
-        addOption({{QStringLiteral("s"), QStringLiteral("show")}, QStringLiteral("Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.")});
+    auto showOption = addOption({{QStringLiteral("s"), QStringLiteral("show")},
+        QStringLiteral(
+            "Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.")});
     auto quitInstanceOption = addOption({{QStringLiteral("q"), QStringLiteral("quit")}, QStringLiteral("Quit the running instance.")});
     auto logFileOption = addOption({QStringLiteral("logfile"), QStringLiteral("Write log to file (use - to write to stdout)."), QStringLiteral("filename")});
     auto logDirOption = addOption({QStringLiteral("logdir"), QStringLiteral("Write each sync log output in a new file in folder."), QStringLiteral("name")});
@@ -126,6 +128,7 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     auto listLanguagesOption = addOption({QStringLiteral("list-languages"), QStringLiteral("Lists available translations, see --language.")});
     auto confDirOption = addOption({QStringLiteral("confdir"), QStringLiteral("Use the given configuration folder."), QStringLiteral("dirname")});
     auto debugOption = addOption({QStringLiteral("debug"), QStringLiteral("Enable debug mode.")});
+    addOption({QStringLiteral("cmd"), QStringLiteral("Forward all arguments to the cmd client. This argument must be the first.")});
 
     // virtual file system parameters (optional)
     parser.addPositionalArgument(
@@ -263,6 +266,42 @@ void setupLogging(const CommandLineOptions &options)
 
 int main(int argc, char **argv)
 {
+    // when called with --cmd we run the cmd client in a sub process and forward everything
+    if (argc > 1 && argv[1] == QByteArrayLiteral("--cmd")) {
+#ifdef Q_OS_WIN
+        // On Windows ui applications don't have console access by default
+        // We can't use our normal workaround to attach to the parent console as it breaks the stdin handling.
+        // Therefore, we create a new console and redirect our streams.
+        AllocConsole();
+        freopen("CONIN$", "r", stdin);
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONOUT$", "w", stderr);
+#endif
+        QCoreApplication cmdApp(argc, argv);
+        QProcess cmd;
+        cmd.setProcessChannelMode(QProcess::ForwardedChannels);
+        cmd.setInputChannelMode(QProcess::ForwardedInputChannel);
+
+        const QString app = [] {
+#ifdef Q_OS_WIN
+            return QCoreApplication::applicationFilePath().chopped(4) + QStringLiteral("cmd.exe");
+#else
+            return QCoreApplication::applicationFilePath() + QStringLiteral("cmd");
+#endif
+        }();
+        cmd.start(app, cmdApp.arguments().mid(2));
+        if (!cmd.waitForFinished(-1)) {
+            std::cout << "Failed to start" << qPrintable(cmd.program()) << std::endl;
+        }
+#ifdef Q_OS_WIN
+        // readline to keep the console window open until closed by the user
+        std::string dummy;
+        std::cout << "Press enter to close";
+        std::getline(std::cin, dummy);
+#endif
+        return cmd.exitCode();
+    }
+
     // load the resources
     const OCC::ResourcesLoader resource;
 
