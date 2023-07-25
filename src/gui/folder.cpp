@@ -618,8 +618,9 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
                     spurious = false;
                 if (*pinState == PinState::OnlineOnly && record.isFile())
                     spurious = false;
-            } else
+            } else {
                 spurious = false;
+            }
         }
         if (spurious) {
             qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
