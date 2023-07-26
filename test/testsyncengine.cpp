@@ -765,21 +765,24 @@ private slots:
         cap.remove(QStringLiteral("dav"));
         fakeFolder.account()->setCapabilities(cap);
 
-        QObject parent;
-        int nPUT = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::PutOperation) {
-                ++nPUT;
-                return new FakeHangingReply(op, request, &parent);
-            }
-            return nullptr;
-        });
+        auto counter = std::make_unique<OperationCounter>();
+        fakeFolder.setServerOverride(
+            [counter = counter.get(), this](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
+                counter->serverOverride(op, request, device);
+                if (op == QNetworkAccessManager::PutOperation) {
+                    return new FakeHangingReply(op, request, this);
+                }
+                return nullptr;
+            });
 
-        fakeFolder.localModifier().insert(QStringLiteral("file"), 100_b, 'W');
-        QTimer::singleShot(400ms, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
+        fakeFolder.localModifier().insert(QStringLiteral("file"), 1_mb, 'W');
+        // wait until the sync engine is ready
+        // wait a second and abort
+        connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, &fakeFolder.syncEngine(),
+            [&]() { QTimer::singleShot(1s, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); }); });
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
-        QCOMPARE(nPUT, 3);
+        QCOMPARE(counter->nPUT, 3);
     }
 
 #ifndef Q_OS_WIN
