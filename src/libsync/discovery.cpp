@@ -473,7 +473,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
                               << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
-                              << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked;
+                              << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
+                              << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
 
     if (localEntry.isValid()
         && !serverEntry.isValid()
@@ -1073,6 +1074,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_type = ItemTypeVirtualFileDehydration;
             } else if (!serverModified
                 && (dbEntry._inode != localEntry.inode
+                    || localEntry.isMetadataMissing
                     || _discoveryData->_syncOptions._vfs->needsMetadataUpdate(*item))) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down;

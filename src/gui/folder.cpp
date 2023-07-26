@@ -618,6 +618,8 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
                     spurious = false;
                 if (*pinState == PinState::OnlineOnly && record.isFile())
                     spurious = false;
+            } else {
+                spurious = false;
             }
         }
         if (spurious) {

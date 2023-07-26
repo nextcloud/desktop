@@ -120,6 +120,45 @@ private slots:
         QTest::newRow("skip local discovery") << false;
     }
 
+    void testReplaceFileByIdenticalFile()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        // Create a new local (non-placeholder) file
+        fakeFolder.localModifier().insert("file0");
+        fakeFolder.localModifier().insert("file1");
+        CopyFile(QString(fakeFolder.localPath() + "file1").toStdWString().data(), QString(fakeFolder.localPath() + "file2").toStdWString().data(), false);
+        QVERIFY(!vfs->pinState("file0").isValid());
+        QVERIFY(!vfs->pinState("file1").isValid());
+        QVERIFY(!vfs->pinState("file2").isValid());
+
+        // Sync the files: files should be converted to placeholder files
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(vfs->pinState("file1").isValid());
+        QVERIFY(vfs->pinState("file2").isValid());
+
+        // Sync again to ensure items are fully synced, otherwise test may succeed due to those pending changes.
+        QVERIFY(fakeFolder.syncOnce());
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(completeSpy.isEmpty());
+
+        // Replace file1 by identical file2: Windows will convert file1 to a regular (non-placeholder) file again.
+        CopyFile(QString(fakeFolder.localPath() + "file2").toStdWString().data(), QString(fakeFolder.localPath() + "file1").toStdWString().data(), false);
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(!vfs->pinState("file1").isValid());
+        QVERIFY(vfs->pinState("file2").isValid());
+
+        // Sync again: file should be correctly converted to placeholders
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(vfs->pinState("file1").isValid());
+        QVERIFY(vfs->pinState("file2").isValid());
+    }
+
     void testReplaceOnlineOnlyFile()
     {
         FakeFolder fakeFolder{FileInfo{}};

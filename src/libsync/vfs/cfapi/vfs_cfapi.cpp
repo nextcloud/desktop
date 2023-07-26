@@ -264,17 +264,19 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     const auto isPinned = (ffd->dwFileAttributes & FILE_ATTRIBUTE_PINNED) != 0;
     const auto isUnpinned = (ffd->dwFileAttributes & FILE_ATTRIBUTE_UNPINNED) != 0;
     const auto hasReparsePoint = (ffd->dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) != 0;
-    const auto hasCloudTag = (ffd->dwReserved0 & IO_REPARSE_TAG_CLOUD) != 0;
+    const auto hasCloudTag = hasReparsePoint && (ffd->dwReserved0 & ~IO_REPARSE_TAG_CLOUD_MASK) == (IO_REPARSE_TAG_CLOUD & ~IO_REPARSE_TAG_CLOUD_MASK);
 
     const auto isWindowsShortcut = !isDirectory && FileSystem::isLnkFile(stat->path);
 
     const auto isExcludeFile = !isDirectory && FileSystem::isExcludeFile(stat->path);
 
+    stat->is_metadata_missing = !hasCloudTag;
+
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking
     // it is a file... let's prevent it
     if (isDirectory) {
-        if (hasReparsePoint && hasCloudTag) {
+        if (hasCloudTag) {
             ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
         }
         return false;
