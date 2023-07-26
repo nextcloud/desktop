@@ -695,8 +695,9 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
 inline QString toStringNoElide(const FileInfo &fi)
 {
     QStringList files;
-    for (const auto &fi : fi.children)
-        addFiles(files, fi);
+    for (const auto &childInfo : fi.children) {
+        addFiles(files, childInfo);
+    }
     files.sort();
     return QStringLiteral("FileInfo with %1 files(\n\t%2\n)").arg(files.size()).arg(files.join(QStringLiteral("\n\t")));
 }
