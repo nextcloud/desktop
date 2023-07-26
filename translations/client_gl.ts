@@ -525,7 +525,7 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <source>Choose what to sync</source>
-        <translation>Escolla que sincronizar</translation>
+        <translation>Escoller que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="619"/>
@@ -3584,7 +3584,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1635"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignorado por mor da lista de bloqueo de «escolla que sincronizar»</translation>
+        <translation>Ignorado por mor da lista de bloqueo de «Escoller que sincronizar»</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1669"/>
@@ -4055,7 +4055,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="507"/>
         <source>Choose What to Sync</source>
-        <translation>Escolla que sincronizar</translation>
+        <translation>Escoller que sincronizar</translation>
     </message>
 </context>
 <context>
@@ -5242,7 +5242,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
-        <translation>Pregunta antes de sincronizar cartafoles de máis de</translation>
+        <translation>Preguntar antes de sincronizar cartafoles de máis de</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
@@ -5253,12 +5253,12 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
-        <translation>Pregunta antes de sincronizar almacenamentos externos</translation>
+        <translation>Preguntar antes de sincronizar almacenamentos externos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
         <source>Choose what to sync</source>
-        <translation>Escolla que sincronizar</translation>
+        <translation>Escoller que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
