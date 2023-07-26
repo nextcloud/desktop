@@ -194,7 +194,7 @@ install(TARGETS owncloud ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 if(UNIX AND NOT APPLE)
     include(libcloudproviders/libcloudproviders.cmake)
 
-    configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
+    configure_file(${CMAKE_SOURCE_DIR}/owncloud.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
     install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications )
 
