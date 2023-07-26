@@ -766,14 +766,14 @@ private slots:
         fakeFolder.account()->setCapabilities(cap);
 
         auto counter = std::make_unique<OperationCounter>();
-        fakeFolder.setServerOverride(
-            [counter = counter.get(), this](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
-                counter->serverOverride(op, request, device);
-                if (op == QNetworkAccessManager::PutOperation) {
-                    return new FakeHangingReply(op, request, this);
-                }
-                return nullptr;
-            });
+        fakeFolder.setServerOverride([counter = counter.get(), fakeFolder = &fakeFolder](
+                                         QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
+            counter->serverOverride(op, request, device);
+            if (op == QNetworkAccessManager::PutOperation) {
+                return new FakeHangingReply(op, request, fakeFolder);
+            }
+            return nullptr;
+        });
 
         fakeFolder.localModifier().insert(QStringLiteral("file"), 1_mb, 'W');
         // wait until the sync engine is ready

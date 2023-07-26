@@ -32,9 +32,8 @@ private Q_SLOTS:
 
         auto dir = TestUtils::createTempDir();
 
-        auto account = TestUtils::createDummyAccount();
+        auto newAccountState = TestUtils::createDummyAccount();
 
-        auto newAccountState = AccountState::fromNewAccount(account);
         const QDir d(dir.path());
         QVERIFY(d.mkdir(QStringLiteral("foo")));
         QVERIFY(d.mkdir(QStringLiteral("bar")));

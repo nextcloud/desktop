@@ -8,8 +8,9 @@
 #include "syncenginetestutils.h"
 #include "testutils.h"
 
-#include "httplogger.h"
 #include "accessmanager.h"
+#include "gui/accountmanager.h"
+#include "httplogger.h"
 #include "libsync/configfile.h"
 
 #include <thread>
@@ -868,8 +869,9 @@ void FakeHangingReply::abort()
     emit finished();
 }
 
-FakeAM::FakeAM(FileInfo initialRoot)
-    : _remoteRootFileInfo { std::move(initialRoot) }
+FakeAM::FakeAM(FileInfo initialRoot, QObject *parent)
+    : OCC::AccessManager(parent)
+    , _remoteRootFileInfo{std::move(initialRoot)}
 {
     setCookieJar(new OCC::CookieJar);
 }
@@ -937,14 +939,14 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode, boo
     qDebug() << "FakeFolder operating on" << rootDir;
     toDisk(rootDir, filesAreDehydrated ? FileInfo() : fileTemplate);
 
-    _fakeAm = new FakeAM(fileTemplate);
-    _account = OCC::TestUtils::createDummyAccount();
-    _account->setCredentials(new FakeCredentials { _fakeAm });
+    _fakeAm = new FakeAM(fileTemplate, this);
+    _accountState = std::move(OCC::TestUtils::createDummyAccount());
+    account()->setCredentials(new FakeCredentials{_fakeAm});
 
     _journalDb.reset(new OCC::SyncJournalDb(localPath() + QStringLiteral(".sync_test.db")));
     // TODO: davUrl
 
-    _syncEngine.reset(new OCC::SyncEngine(_account, _account->davUrl(), localPath(), QString(), _journalDb.get()));
+    _syncEngine.reset(new OCC::SyncEngine(account(), account()->davUrl(), localPath(), QString(), _journalDb.get()));
     _syncEngine->setSyncOptions(OCC::SyncOptions { QSharedPointer<OCC::Vfs>(OCC::VfsPluginManager::instance().createVfsFromPlugin(vfsMode).release()) });
 
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
@@ -971,6 +973,8 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode, boo
     OC_ENFORCE(syncOnce())
 }
 
+FakeFolder::~FakeFolder() { }
+
 void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
 {
     auto opts = _syncEngine->syncOptions();
@@ -981,7 +985,7 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
     opts._vfs = vfs;
     _syncEngine->setSyncOptions(opts);
 
-    OCC::VfsSetupParams vfsParams(_account, _account->davUrl(), false);
+    OCC::VfsSetupParams vfsParams(account(), account()->davUrl(), false);
     vfsParams.filesystemPath = localPath();
     vfsParams.remotePath = QLatin1Char('/');
     vfsParams.journal = _journalDb.get();

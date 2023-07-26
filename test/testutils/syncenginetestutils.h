@@ -525,7 +525,7 @@ private:
     Override _override;
 
 public:
-    FakeAM(FileInfo initialRoot);
+    FakeAM(FileInfo initialRoot, QObject *parent);
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
     FileInfo &uploadState() { return _uploadFileInfo; }
 
@@ -561,22 +561,24 @@ private:
     OCC::AccessManager *_am;
 };
 
-class FakeFolder
+class FakeFolder : public QObject
 {
+    Q_OBJECT
     const QTemporaryDir _tempDir = OCC::TestUtils::createTempDir();
     DiskFileModifier _localModifier;
-    // FIXME: Clarify ownership, double delete
     FakeAM *_fakeAm;
-    OCC::AccountPtr _account;
+    OCC::TestUtils::TestUtilsPrivate::AccountStateRaii _accountState =
+        OCC::TestUtils::TestUtilsPrivate::AccountStateRaii{nullptr, &OCC::TestUtils::TestUtilsPrivate::accountStateDeleter};
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
 
 public:
     FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode = OCC::Vfs::Off, bool filesAreDehydrated = false);
+    ~FakeFolder();
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
-    OCC::AccountPtr account() const { return _account; }
+    OCC::AccountPtr account() const { return _accountState->account(); }
     OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
 

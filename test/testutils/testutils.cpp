@@ -25,7 +25,7 @@ public:
 namespace OCC {
 
 namespace TestUtils {
-    AccountPtr createDummyAccount()
+    TestUtilsPrivate::AccountStateRaii createDummyAccount()
     {
         // don't use the account manager to create the account, it would try to use widgets
         auto acc = Account::create(QUuid::createUuid());
@@ -34,8 +34,7 @@ namespace TestUtils {
         acc->setUrl(QUrl(QStringLiteral("http://localhost/owncloud")));
         acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString(QUuid::WithoutBraces));
         acc->setCapabilities(OCC::TestUtils::testCapabilities());
-        OCC::AccountManager::instance()->addAccount(acc);
-        return acc;
+        return {OCC::AccountManager::instance()->addAccount(acc).get(), &TestUtilsPrivate::accountStateDeleter};
     }
 
     FolderDefinition createDummyFolderDefinition(const AccountPtr &account, const QString &path)
@@ -105,6 +104,13 @@ namespace TestUtils {
                             {"productversion", "2.0.0-beta1+7c2e3201b"}}}}},
             {"files", QVariantList{}}, {"dav", QVariantMap{{"chunking", "1.0"}}},
             {"checksums", QVariantMap{{"preferredUploadType", Utility::enumToString(algo)}, {"supportedTypes", algorithmNames}}}};
+    }
+
+    void TestUtilsPrivate::accountStateDeleter(OCC::AccountState *acc)
+    {
+        if (acc) {
+            OCC::AccountManager::instance()->deleteAccount(acc);
+        }
     }
 }
 }

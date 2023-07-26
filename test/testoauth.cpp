@@ -122,7 +122,7 @@ public:
     QScopedPointer<OAuth> oauth;
 
     virtual void test() {
-        fakeAm = new FakeAM({});
+        fakeAm = new FakeAM({}, nullptr);
         account = Account::create(QUuid::createUuid());
         account->setUrl(sOAuthTestServer);
         // the account seizes ownership over the qnam in account->setCredentials(...) by keeping a shared pointer on it

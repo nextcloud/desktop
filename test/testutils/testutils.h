@@ -9,12 +9,20 @@
 #include <QJsonObject>
 #include <QTemporaryDir>
 
+#include <memory>
+
 namespace OCC {
 
 namespace TestUtils {
+    namespace TestUtilsPrivate {
+        void accountStateDeleter(OCC::AccountState *acc);
+
+        using AccountStateRaii = std::unique_ptr<AccountState, decltype(&TestUtilsPrivate::accountStateDeleter)>;
+    }
+
     FolderMan *folderMan();
     FolderDefinition createDummyFolderDefinition(const AccountPtr &account, const QString &path);
-    AccountPtr createDummyAccount();
+    TestUtilsPrivate::AccountStateRaii createDummyAccount();
     bool writeRandomFile(const QString &fname, int size = -1);
 
     /***

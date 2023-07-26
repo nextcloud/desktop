@@ -47,8 +47,7 @@ private slots:
         }
         QString dirPath = dir2.canonicalPath();
 
-        AccountPtr account = TestUtils::createDummyAccount();
-        auto newAccountState = AccountState::fromNewAccount(account);
+        auto newAccountState = TestUtils::createDummyAccount();
         FolderMan *folderman = TestUtils::folderMan();
         QCOMPARE(folderman, FolderMan::instance());
         QVERIFY(folderman->addFolder(
@@ -173,9 +172,8 @@ private slots:
         QVERIFY(dir2.mkpath(QStringLiteral("free2/sub")));
         QString dirPath = dir2.canonicalPath();
 
-        AccountPtr account = TestUtils::createDummyAccount();
+        auto newAccountState = TestUtils::createDummyAccount();
 
-        auto newAccountState = AccountState::fromNewAccount(account);
         FolderMan *folderman = TestUtils::folderMan();
         QVERIFY(folderman->addFolder(
             newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/sub/ownCloud/"))));
