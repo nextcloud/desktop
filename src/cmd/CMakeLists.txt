@@ -13,3 +13,8 @@ if(APPLE)
 else()
     install(TARGETS cmd ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 endif()
+
+if(UNIX AND NOT APPLE)
+    configure_file(${CMAKE_SOURCE_DIR}/owncloudcmd.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}cmd.desktop)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}cmd.desktop DESTINATION ${KDE_INSTALL_DATADIR}/applications)
+endif()

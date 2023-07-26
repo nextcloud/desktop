@@ -1,0 +1,11 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Terminal=true
+Exec=@APPLICATION_EXECUTABLE@cmd
+Name=@APPLICATION_NAME@ commandline sync client
+Comment=@APPLICATION_NAME@ commandline synchronization client
+GenericName=Folder Sync Commandline
+Icon=@APPLICATION_ICON_NAME@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-AppImage-Integrate=false
