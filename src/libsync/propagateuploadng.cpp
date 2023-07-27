@@ -287,6 +287,40 @@ void PropagateUploadFileNG::slotMkColFinished()
     startNextChunk();
 }
 
+void PropagateUploadFileNG::finishUpload()
+{
+    Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
+    _finished = true;
+
+    // Finish with a MOVE
+    // If we changed the file name, we must store the changed filename in the remote folder, not the original one.
+    const auto destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_fileToUpload._file));
+    auto headers = PropagateUploadFileCommon::headers();
+
+    // "If-Match applies to the source, but we are interested in comparing the etag of the destination
+    const auto ifMatch = headers.take(QByteArrayLiteral("If-Match"));
+    if (!ifMatch.isEmpty()) {
+        headers[QByteArrayLiteral("If")] = "<" + QUrl::toPercentEncoding(destination, "/") + "> ([" + ifMatch + "])";
+    }
+
+    if (!_transmissionChecksumHeader.isEmpty()) {
+        qCInfo(lcPropagateUpload) << destination << _transmissionChecksumHeader;
+        headers[checkSumHeaderC] = _transmissionChecksumHeader;
+    }
+
+    const auto fileSize = _fileToUpload._size;
+    headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
+
+    const auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"), destination, headers, this);
+    _jobs.append(job);
+    connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
+    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    propagator()->_activeJobList.append(this);
+    adjustLastJobTimeout(job, fileSize);
+    job->start();
+    return;
+}
+
 void PropagateUploadFileNG::startNextChunk()
 {
     if (propagator()->_abortRequested)
@@ -294,38 +328,11 @@ void PropagateUploadFileNG::startNextChunk()
 
     const auto fileSize = _fileToUpload._size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size")
-
-    const auto destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_fileToUpload._file));
-
     // prevent situation that chunk size is bigger then required one to send
     _currentChunkSize = qMin(propagator()->_chunkSize, fileSize - _sent);
 
     if (_currentChunkSize == 0) {
-        Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
-        _finished = true;
-
-        // Finish with a MOVE
-        // If we changed the file name, we must store the changed filename in the remote folder, not the original one.
-        auto headers = PropagateUploadFileCommon::headers();
-
-        // "If-Match applies to the source, but we are interested in comparing the etag of the destination
-        auto ifMatch = headers.take(QByteArrayLiteral("If-Match"));
-        if (!ifMatch.isEmpty()) {
-            headers[QByteArrayLiteral("If")] = "<" + QUrl::toPercentEncoding(destination, "/") + "> ([" + ifMatch + "])";
-        }
-        if (!_transmissionChecksumHeader.isEmpty()) {
-            qCInfo(lcPropagateUpload) << destination << _transmissionChecksumHeader;
-            headers[checkSumHeaderC] = _transmissionChecksumHeader;
-        }
-        headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
-
-        const auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"), destination, headers, this);
-        _jobs.append(job);
-        connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
-        connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
-        propagator()->_activeJobList.append(this);
-        adjustLastJobTimeout(job, fileSize);
-        job->start();
+        finishUpload();
         return;
     }
 

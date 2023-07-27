@@ -411,8 +411,11 @@ public:
 private:
     void startNewUpload();
     void startNextChunk();
+    void finishUpload();
+
 public slots:
     void abort(OCC::PropagateUploadFileNG::AbortType abortType) override;
+
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
