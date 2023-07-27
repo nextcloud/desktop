@@ -696,7 +696,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur %1 est actuellement redirigé ou votre connexion est derrière un portail captif.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -807,7 +807,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="154"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>Redirection détectée</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="156"/>
@@ -2429,7 +2429,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer les fichiers supprimés vers la corbeille</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
