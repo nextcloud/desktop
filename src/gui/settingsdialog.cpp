@@ -386,7 +386,11 @@ void SettingsDialog::accountAdded(AccountStatePtr accountStatePtr)
         accountAction->setToolTip(accountStatePtr->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(accountStatePtr->account().data()));
     }
-    _ui->toolBar->insertAction(_addAccountAction ? _ui->toolBar->actions().at(1) : _ui->toolBar->actions().at(0), accountAction);
+
+    // For single account: the add button is removed, place the account tab as the first item.
+    // For multi account: we keep the add button on the left, but place the account(s) right after the add button.
+    _ui->toolBar->insertAction(brandingSingleAccount ? _ui->toolBar->actions().at(0) : _ui->toolBar->actions().at(1), accountAction);
+
     auto accountSettings = new AccountSettings(accountStatePtr, this);
     QString objectName = QStringLiteral("accountSettings_");
     objectName += accountStatePtr->account()->displayName();
