@@ -99,9 +99,7 @@ std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QString
             model->setFilterFixedStringSignalled(filter);
         });
         action->setCheckable(true);
-        if (currentFilter == filter) {
-            action->setChecked(true);
-        }
+        action->setChecked(currentFilter == QRegularExpression::escape(filter));
         filterGroup->addAction(action);
         return action;
     };
