@@ -215,6 +215,7 @@ protected Q_SLOTS:
 private Q_SLOTS:
 
     void slotCheckConnection();
+    void slotCheckServerAvailibility();
     void slotPushNotificationsReady();
     void slotServerUserStatusChanged();
 
@@ -259,6 +260,8 @@ private:
 
     QTimer _checkConnectionTimer;
     QElapsedTimer _lastCheckConnectionTimer;
+
+    QTimer _checkServerAvailibilityTimer;
 
     explicit AccountState() = default;
 

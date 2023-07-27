@@ -72,6 +72,10 @@ AccountState::AccountState(AccountPtr account)
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
     _checkConnectionTimer.start();
 
+    connect(&_checkServerAvailibilityTimer, &QTimer::timeout, this, &AccountState::slotCheckServerAvailibility);
+    _checkServerAvailibilityTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
+    _checkServerAvailibilityTimer.start();
+
     QTimer::singleShot(0, this, &AccountState::slotCheckConnection);
 }
 
@@ -555,6 +559,28 @@ void AccountState::slotCheckConnection()
         qCWarning(lcAccountState()) << "Account is signed out due to SSL Handshake error. Going to perform a sign-in attempt...";
         trySignIn();
     }
+}
+
+void AccountState::slotCheckServerAvailibility()
+{
+    if (state() == AccountState::Connected
+        || state() == AccountState::SignedOut
+        || state() == AccountState::MaintenanceMode
+        || state() == AccountState::AskingCredentials) {
+        qCInfo(lcAccountState) << "Skipping server availibility check for account" << _account->davUser() << "with state" << state();
+        return;
+    }
+    qCInfo(lcAccountState) << "Checking server availibility for account" << _account->davUser();
+    const auto serverAvailibilityUrl = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/204"));
+    auto checkServerAvailibilityJob = _account->sendRequest(QByteArrayLiteral("GET"), serverAvailibilityUrl);
+    connect(checkServerAvailibilityJob, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+        if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 204) {
+            qCInfo(lcAccountState) << "Server is now available for account" << _account->davUser();
+            _lastCheckConnectionTimer.invalidate();
+            resetRetryCount();
+            QMetaObject::invokeMethod(this, &AccountState::slotCheckConnection, Qt::QueuedConnection);
+        }
+    });
 }
 
 void AccountState::slotPushNotificationsReady()
