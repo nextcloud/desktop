@@ -110,9 +110,6 @@ std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QString
     for (const auto &c : candidates) {
         addAction(c, c);
     }
-    QTimer::singleShot(0, menu, [menu] {
-        menu->popup(QCursor::pos());
-    });
 
     auto resetFunction = [noFilter]() {
         noFilter->setChecked(true);

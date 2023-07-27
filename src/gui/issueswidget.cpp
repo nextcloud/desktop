@@ -424,7 +424,7 @@ std::function<void(void)> IssuesWidget::addStatusFilter(QMenu *menu)
         return a.first < b.first;
     });
     for (const auto &item : otherStatusItems) {
-        auto action = menu->addAction(item.first, this, [this, item](bool checked) {
+        auto action = menu->addAction(item.first, menu, [this, item](bool checked) {
             auto currentFilter = _statusSortModel->filter();
             currentFilter[item.second] = checked;
             _statusSortModel->setFilter(currentFilter);
