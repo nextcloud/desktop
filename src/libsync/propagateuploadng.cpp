@@ -292,8 +292,10 @@ void PropagateUploadFileNG::startNextChunk()
     if (propagator()->_abortRequested)
         return;
 
-    qint64 fileSize = _fileToUpload._size;
-    ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
+    const auto fileSize = _fileToUpload._size;
+    ENFORCE(fileSize >= _sent, "Sent data exceeds file size")
+
+    const auto destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_fileToUpload._file));
 
     // prevent situation that chunk size is bigger then required one to send
     _currentChunkSize = qMin(propagator()->_chunkSize, fileSize - _sent);
@@ -304,8 +306,6 @@ void PropagateUploadFileNG::startNextChunk()
 
         // Finish with a MOVE
         // If we changed the file name, we must store the changed filename in the remote folder, not the original one.
-        QString destination = QDir::cleanPath(propagator()->account()->davUrl().path()
-            + propagator()->fullRemotePath(_fileToUpload._file));
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
@@ -319,8 +319,7 @@ void PropagateUploadFileNG::startNextChunk()
         }
         headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
 
-        auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"),
-            destination, headers, this);
+        const auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"), destination, headers, this);
         _jobs.append(job);
         connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
         connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
@@ -330,9 +329,8 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    const QString fileName = _fileToUpload._path;
-    auto device = std::make_unique<UploadDevice>(
-            fileName, _sent, _currentChunkSize, &propagator()->_bandwidthManager);
+    const auto fileName = _fileToUpload._path;
+    auto device = std::make_unique<UploadDevice>(fileName, _sent, _currentChunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
 
@@ -350,11 +348,11 @@ void PropagateUploadFileNG::startNextChunk()
     headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
 
     _sent += _currentChunkSize;
-    QUrl url = chunkUrl(_currentChunk);
+    const auto url = chunkUrl(_currentChunk);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    auto devicePtr = device.get(); // for connections later
-    auto *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, _currentChunk, this);
+    const auto devicePtr = device.get(); // for connections later
+    const auto job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,
