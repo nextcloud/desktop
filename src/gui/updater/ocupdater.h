@@ -15,6 +15,7 @@
 #ifndef OCUPDATER_H
 #define OCUPDATER_H
 
+#include <QDateTime>
 #include <QObject>
 #include <QTemporaryFile>
 #include <QTimer>
@@ -210,7 +211,7 @@ public:
 
 private:
     void versionInfoArrived(const UpdateInfo &info) override;
-    QString _runningAppVersion;
+    const QDateTime _initialAppMTime;
 };
 }
 

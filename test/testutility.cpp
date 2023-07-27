@@ -105,21 +105,6 @@ private slots:
         QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addDays(2).addSecs(23 * 60 * 60))), QString::fromLatin1("3 day(s)"));
     }
 
-    void testVersionOfInstalledBinary()
-    {
-        // pass the cmd client from our build dir
-        // this is a bit inaccurate as it does not test the "real thing"
-        // but cmd and gui have the same --version handler by now
-        // and cmd works without X in CI
-        QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUDCMD_BIN_PATH));
-        qDebug() << "Version of installed ownCloud Binary: " << ver;
-        QVERIFY(!ver.isEmpty());
-
-        QRegularExpression rx(QStringLiteral("ownCloud \\d+\\.\\d+\\.\\d+.*"), QRegularExpression::CaseInsensitiveOption);
-        qDebug() << rx.pattern() << rx.match(ver);
-        QVERIFY(rx.match(ver).isValid());
-    }
-
     void testTimeAgo()
     {
         // Both times in same timezone

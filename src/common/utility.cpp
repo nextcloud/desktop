@@ -362,33 +362,6 @@ void Utility::crash()
     *a = 1;
 }
 
-// read the output of the owncloud --version command from the owncloud
-// version that is on disk. This works for most versions of the client,
-// because clients that do not yet know the --version flag return the
-// version in the first line of the help output :-)
-//
-// This version only delivers output on linux, as Mac and Win get their
-// restarting from the installer.
-QString Utility::versionOfInstalledBinary(const QString &command)
-{
-    QString binary(command);
-    if (binary.isEmpty()) {
-        binary = qApp->arguments()[0];
-    }
-    QStringList params;
-    params << QStringLiteral("--version");
-    QProcess process;
-    process.start(binary, params);
-    process.waitForFinished(); // sets current thread to sleep and waits for pingProcess end
-    QByteArray re = process.readAllStandardOutput();
-    qCDebug(lcUtility) << Q_FUNC_INFO << re;
-    int newline = re.indexOf('\n');
-    if (newline > 0) {
-        re.truncate(newline);
-    }
-    return QString::fromUtf8(re.trimmed());
-}
-
 QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
 {
     QDateTime now = QDateTime::currentDateTimeUtc();

@@ -24,8 +24,8 @@
 
 #include <QObject>
 #include <QtCore>
-#include <QtNetwork>
 #include <QtGui>
+#include <QtNetwork>
 #include <QtWidgets>
 
 using namespace std::chrono_literals;
@@ -549,23 +549,29 @@ void NSISUpdater::slotSetPreviouslySkippedVersion()
 
 ////////////////////////////////////////////////////////////////////////
 
+namespace {
+    QDateTime applicationMTime()
+    {
+        return QFileInfo(QApplication::applicationFilePath()).lastModified().toUTC();
+    }
+}
+
 PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url)
     : OCUpdater(url)
+    , _initialAppMTime(applicationMTime())
 {
-    // remember the version of the currently running binary. On Linux it might happen that the
-    // package management updates the package while the app is running. This is detected in the
-    // updater slot: If the installed binary on the hd has a different version than the one
-    // running, the running app is restarted. That happens in folderman.
-    _runningAppVersion = Utility::versionOfInstalledBinary();
 }
 
 void PassiveUpdateNotifier::backgroundCheckForUpdate()
 {
-    if (Utility::isLinux()) {
-        // on linux, check if the installed binary is still the same version
-        // as the one that is running. If not, restart if possible.
-        const QString fsVersion = Utility::versionOfInstalledBinary();
-        if (!(fsVersion.isEmpty() || _runningAppVersion.isEmpty()) && fsVersion != _runningAppVersion) {
+    if (Utility::isLinux() && !Utility::runningInAppImage()) {
+        // a bit of a naive approach, since it doesn't exclude downgrades or forced reinstalls
+        // whenever the application binary's mtime changes, we assume it has changed, since users are expected not to call touch on it or otherwise change it
+        // manually
+        const auto currentMTime = applicationMTime();
+        qCDebug(lcUpdater) << "initial mtime:" << _initialAppMTime << "current mtime:" << currentMTime;
+        if (currentMTime != _initialAppMTime) {
+            qCInfo(lcUpdater) << "Binary mtime changed since application started, requesting restart";
             emit requestRestart();
         }
     }
