@@ -359,7 +359,6 @@ void Logger::setLogFileNoLock(const QString &name)
     }
 
     _logstream.reset(new QTextStream(&_logFile));
-    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
 }
 
 void Logger::enterNextLogFile()

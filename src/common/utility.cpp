@@ -676,7 +676,7 @@ QString Utility::makeCaseClashConflictFileName(const QString &filename, const QD
 
 bool Utility::isCaseClashConflictFile(const QString &name)
 {
-    const auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+    const auto bname = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
 
     return bname.contains(QStringLiteral("(case clash from"));
 }
