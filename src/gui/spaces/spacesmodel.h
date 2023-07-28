@@ -37,6 +37,7 @@ public:
         WebDavUrl,
         Priority,
         Enabled,
+        SpaceId,
 
         ColumnCount,
     };

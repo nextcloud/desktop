@@ -59,6 +59,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     header->hideSection(static_cast<int>(SpacesModel::Columns::Subtitle));
     header->hideSection(static_cast<int>(SpacesModel::Columns::Priority));
     header->hideSection(static_cast<int>(SpacesModel::Columns::Enabled));
+    header->hideSection(static_cast<int>(SpacesModel::Columns::SpaceId));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         auto menu = new QMenu(this);

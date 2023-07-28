@@ -103,7 +103,7 @@ QString FolderWizardPrivate::initialLocalPath() const
 {
     if (_account->supportsSpaces()) {
         return FolderMan::instance()->findGoodPathForNewSyncFolder(
-            defaultSyncRoot(), _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString());
+            defaultSyncRoot(), _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Name).toString());
     }
     return defaultSyncRoot();
 }
@@ -116,7 +116,7 @@ QString FolderWizardPrivate::remotePath() const
 uint32_t FolderWizardPrivate::priority() const
 {
     if (_account->supportsSpaces()) {
-        return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Priority).toInt();
+        return _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Priority).toInt();
     };
     return 0;
 }
@@ -124,7 +124,7 @@ uint32_t FolderWizardPrivate::priority() const
 QUrl FolderWizardPrivate::davUrl() const
 {
     if (_account->supportsSpaces()) {
-        auto url = _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
+        auto url = _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
         if (!url.path().endsWith(QLatin1Char('/'))) {
             url.setPath(url.path() + QLatin1Char('/'));
         }
@@ -133,10 +133,18 @@ QUrl FolderWizardPrivate::davUrl() const
     return _account->account()->davUrl();
 }
 
+QString FolderWizardPrivate::spaceId() const
+{
+    if (_account->supportsSpaces()) {
+        return _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::SpaceId).toString();
+    }
+    return {};
+}
+
 QString FolderWizardPrivate::displayName() const
 {
     if (_account->supportsSpaces()) {
-        return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
+        return _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Name).toString();
     };
     return QString();
 }
@@ -212,6 +220,7 @@ FolderWizard::Result FolderWizard::result()
 
     return {
         d->davUrl(), //
+        d->spaceId(), //
         localPath, //
         d->remotePath(), //
         d->displayName(), //

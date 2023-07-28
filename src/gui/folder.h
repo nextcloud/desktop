@@ -51,9 +51,9 @@ class LocalDiscoveryTracker;
 class FolderDefinition
 {
 public:
-    static auto createNewFolderDefinition(const QUrl &davUrl, const QString &displayName = {})
+    static auto createNewFolderDefinition(const QUrl &davUrl, const QString &spaceId, const QString &displayName = {})
     {
-        return FolderDefinition(QUuid::createUuid().toByteArray(QUuid::WithoutBraces), davUrl, displayName);
+        return FolderDefinition(QUuid::createUuid().toByteArray(QUuid::WithoutBraces), davUrl, spaceId, displayName);
     }
 
     /// path to the journal, usually relative to localPath
@@ -84,19 +84,20 @@ public:
     /// journalPath relative to localPath.
     QString absoluteJournalPath() const;
 
-    QString localPath() const
-    {
-        return _localPath;
-    }
-    QString targetPath() const
-    {
-        return _targetPath;
-    }
-    const QUrl &webDavUrl() const
-    {
-        Q_ASSERT(_webDavUrl.isValid());
-        return _webDavUrl;
-    }
+    QString localPath() const;
+
+    QString targetPath() const;
+
+    QUrl webDavUrl() const;
+
+    // could change in the case of spaces
+    void setWebDavUrl(const QUrl &url) { _webDavUrl = url; }
+
+    // when using spaces we don't store the dav url but the space id
+    // this id is then used to look up the dav url
+    QString spaceId() const;
+
+    void setSpaceId(const QString &spaceId) { _spaceId = spaceId; }
 
     const QByteArray &id() const;
 
@@ -108,7 +109,6 @@ public:
      */
     bool isDeployed() const;
 
-
     /**
      * Higher values mean more imortant
      * Used for sorting
@@ -118,9 +118,12 @@ public:
     void setPriority(uint32_t newPriority);
 
 private:
-    FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &displayName);
+    FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &spaceId, const QString &displayName);
 
+    // oc10 and as cache for ocis
     QUrl _webDavUrl;
+
+    QString _spaceId;
     /// For legacy reasons this can be a string, new folder objects will use a uuid
     QByteArray _id;
     QString _displayName;
@@ -194,6 +197,11 @@ public:
      * The full remote webdav url
      */
     QUrl webDavUrl() const;
+
+    /**
+     * The space Id (empty for oc10)
+     */
+    QString spaceId() const;
 
     /**
      * remote folder path, always with a trailing /

@@ -40,7 +40,7 @@ namespace TestUtils {
     FolderDefinition createDummyFolderDefinition(const AccountPtr &account, const QString &path)
     {
         // TODO: legacy
-        auto d = OCC::FolderDefinition::createNewFolderDefinition(account->davUrl());
+        auto d = OCC::FolderDefinition::createNewFolderDefinition(account->davUrl(), {});
         d.setLocalPath(path);
         d.setTargetPath(path);
         return d;

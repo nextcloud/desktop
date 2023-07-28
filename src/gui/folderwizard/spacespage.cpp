@@ -39,7 +39,7 @@ bool OCC::SpacesPage::isComplete() const
     return ui->widget->currentSpace().isValid();
 }
 
-QVariant OCC::SpacesPage::selectedSpace(Spaces::SpacesModel::Columns column) const
+QVariant OCC::SpacesPage::selectedSpaceData(Spaces::SpacesModel::Columns column) const
 {
     return ui->widget->currentSpace().siblingAtColumn(static_cast<int>(column)).data();
 }

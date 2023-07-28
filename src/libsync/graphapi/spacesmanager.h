@@ -42,7 +42,7 @@ namespace GraphApi {
         QVector<Space *> spaces() const;
 
         // deprecated: we need to migrate to id based spaces
-        Space *spaceByUrl(const QUrl &url) const;
+        [[deprecated("Use space(const QString &id)")]] Space *spaceByUrl(const QUrl &url) const;
 
         Account *account() const;
 

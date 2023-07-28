@@ -63,7 +63,7 @@ ETagWatcher::ETagWatcher(FolderMan *folderMan, QObject *parent)
             if (info.first->accountState()->supportsSpaces()) {
                 // we could also connect to the spaceChanged signal but for now this will keep it closer to oc10
                 // ensure we already know about the space (startup)
-                if (auto *space = info.first->accountState()->account()->spacesManager()->spaceByUrl(info.first->webDavUrl())) {
+                if (auto *space = info.first->accountState()->account()->spacesManager()->space(info.first->spaceId())) {
                     updateEtag(info.first, space->drive().getRoot().getETag());
                 }
             } else {

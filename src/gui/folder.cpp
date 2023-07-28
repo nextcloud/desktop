@@ -21,6 +21,7 @@
 #include "accountstate.h"
 #include "application.h"
 #include "common/checksums.h"
+#include "common/depreaction.h"
 #include "common/filesystembase.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/version.h"
@@ -30,6 +31,7 @@
 #include "filesystem.h"
 #include "folderman.h"
 #include "folderwatcher.h"
+#include "libsync/graphapi/spacesmanager.h"
 #include "localdiscoverytracker.h"
 #include "networkjobs.h"
 #include "scheduling/syncscheduler.h"
@@ -69,8 +71,14 @@ auto versionC()
 
 auto davUrlC()
 {
-    return QLatin1String("davUrl");
+    return QStringLiteral("davUrl");
 }
+
+auto spaceIdC()
+{
+    return QStringLiteral("spaceId");
+}
+
 auto displayNameC()
 {
     return QLatin1String("displayString");
@@ -368,6 +376,12 @@ QString Folder::remotePath() const
 
 QUrl Folder::webDavUrl() const
 {
+    const QString spaceId = _definition.spaceId();
+    if (!spaceId.isEmpty()) {
+        if (auto *space = _accountState->account()->spacesManager()->space(spaceId)) {
+            return QUrl(space->drive().getRoot().getWebDavUrl());
+        }
+    }
     return _definition.webDavUrl();
 }
 
@@ -774,15 +788,29 @@ void Folder::saveToSettings() const
     removeFromSettings();
 
     auto settings = _accountState->settings();
-
     settings->beginGroup(QStringLiteral("Folders"));
+
+    auto definitionToSave = _definition;
+
+    // migration
+    if (accountState()->supportsSpaces() && _definition.spaceId().isEmpty()) {
+        OC_DISABLE_DEPRECATED_WARNING
+        if (auto *space = accountState()->account()->spacesManager()->spaceByUrl(webDavUrl())) {
+            OC_ENABLE_DEPRECATED_WARNING
+            definitionToSave.setSpaceId(space->drive().getRoot().getId());
+        }
+    }
+    // with spaces we rely on the space id
+    // we save the dav url nevertheless to have it available during startup
+    definitionToSave.setWebDavUrl(webDavUrl());
+
     // Note: Each of these groups might have a "version" tag, but that's
     //       currently unused.
-    settings->beginGroup(QString::fromUtf8(_definition.id()));
-    FolderDefinition::save(*settings, _definition);
+    settings->beginGroup(QString::fromUtf8(definitionToSave.id()));
+    FolderDefinition::save(*settings, definitionToSave);
 
     settings->sync();
-    qCInfo(lcFolder) << "Saved folder" << _definition.localPath() << "to settings, status" << settings->status();
+    qCInfo(lcFolder) << "Saved folder" << definitionToSave.localPath() << "to settings, status" << settings->status();
 }
 
 void Folder::removeFromSettings() const
@@ -1244,8 +1272,9 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
     ownCloudGui::raiseDialog(msgBox);
 }
 
-FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &displayName)
+FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &spaceId, const QString &displayName)
     : _webDavUrl(davUrl)
+    , _spaceId(spaceId)
     , _id(id)
     , _displayName(displayName)
 {
@@ -1266,6 +1295,9 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QStringLiteral("localPath"), folder.localPath());
     settings.setValue(QStringLiteral("journalPath"), folder.journalPath);
     settings.setValue(QStringLiteral("targetPath"), folder.targetPath());
+    if (!folder.spaceId().isEmpty()) {
+        settings.setValue(spaceIdC(), folder.spaceId());
+    }
     settings.setValue(davUrlC(), folder.webDavUrl());
     settings.setValue(displayNameC(), folder.displayName());
     settings.setValue(QStringLiteral("paused"), folder.paused);
@@ -1281,7 +1313,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 
 FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &id)
 {
-    FolderDefinition folder(id, settings.value(davUrlC()).toUrl(), settings.value(displayNameC()).toString());
+    FolderDefinition folder{id, settings.value(davUrlC()).toUrl(), settings.value(spaceIdC()).toString(), settings.value(displayNameC()).toString()};
     folder.setLocalPath(settings.value(QStringLiteral("localPath")).toString());
     folder.journalPath = settings.value(QStringLiteral("journalPath")).toString();
     folder.setTargetPath(settings.value(QStringLiteral("targetPath")).toString());
@@ -1363,8 +1395,37 @@ bool Folder::groupInSidebar() const
     return false;
 }
 
+QString Folder::spaceId() const
+{
+    return _definition.spaceId();
+}
+
 bool FolderDefinition::isDeployed() const
 {
     return _deployed;
+}
+
+QUrl FolderDefinition::webDavUrl() const
+{
+    Q_ASSERT(_webDavUrl.isValid());
+    return _webDavUrl;
+}
+
+QString FolderDefinition::targetPath() const
+{
+    return _targetPath;
+}
+
+QString FolderDefinition::localPath() const
+{
+    return _localPath;
+}
+
+QString FolderDefinition::spaceId() const
+{
+    // we might call the function to check for the id
+    // anyhow one of the conditions needs to be true
+    Q_ASSERT(_webDavUrl.isValid() || !_spaceId.isEmpty());
+    return _spaceId;
 }
 } // namespace OCC

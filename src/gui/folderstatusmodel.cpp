@@ -47,36 +47,37 @@ namespace {
     const char propertyParentIndexC[] = "oc_parentIndex";
     const char propertyPermissionMap[] = "oc_permissionMap";
 
-    int64_t getQuota(const AccountStatePtr &accountState, const QUrl &davUrl, FolderStatusModel::Columns type)
+    int64_t getQuota(const AccountStatePtr &accountState, const QString &spaceId, FolderStatusModel::Columns type)
     {
-        if (accountState->supportsSpaces()) {
-            if (auto spacesManager = accountState->account()->spacesManager()) {
-                const auto *space = spacesManager->spaceByUrl(davUrl);
-                if (space) {
-                    const auto quota = space->drive().getQuota();
-                    if (quota.isValid()) {
-                        switch (type) {
-                        case FolderStatusModel::Columns::QuotaTotal:
-                            return quota.getTotal();
-                        case FolderStatusModel::Columns::QuotaUsed:
-                            return quota.getUsed();
-                        default:
-                            Q_UNREACHABLE();
-                        }
+        if (auto spacesManager = accountState->account()->spacesManager()) {
+            const auto *space = spacesManager->space(spaceId);
+            if (space) {
+                const auto quota = space->drive().getQuota();
+                if (quota.isValid()) {
+                    switch (type) {
+                    case FolderStatusModel::Columns::QuotaTotal:
+                        return quota.getTotal();
+                    case FolderStatusModel::Columns::QuotaUsed:
+                        return quota.getUsed();
+                    default:
+                        Q_UNREACHABLE();
                     }
                 }
             }
-        } else {
-            switch (type) {
-            case FolderStatusModel::Columns::QuotaTotal:
-                return accountState->quotaInfo()->lastQuotaTotalBytes();
-            case FolderStatusModel::Columns::QuotaUsed:
-                return accountState->quotaInfo()->lastQuotaUsedBytes();
-            default:
-                Q_UNREACHABLE();
-            }
         }
         return {};
+    }
+
+    int64_t getQuotaOc10(const AccountStatePtr &accountState, const QUrl &davUrl, FolderStatusModel::Columns type)
+    {
+        switch (type) {
+        case FolderStatusModel::Columns::QuotaTotal:
+            return accountState->quotaInfo()->lastQuotaTotalBytes();
+        case FolderStatusModel::Columns::QuotaUsed:
+            return accountState->quotaInfo()->lastQuotaUsedBytes();
+        default:
+            Q_UNREACHABLE();
+        }
     }
 }
 
@@ -246,7 +247,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
     const auto getSpace = [&]() -> GraphApi::Space * {
         if (_accountState->supportsSpaces()) {
-            return _accountState->account()->spacesManager()->spaceByUrl(f->webDavUrl());
+            return _accountState->account()->spacesManager()->space(f->spaceId());
         }
         return nullptr;
     };
@@ -323,9 +324,13 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Columns::Priority:
             return f->priority();
         case Columns::QuotaTotal:
-            return QVariant::fromValue(getQuota(_accountState, f->webDavUrl(), Columns::QuotaTotal));
+            [[fallthrough]];
         case Columns::QuotaUsed:
-            return QVariant::fromValue(getQuota(_accountState, f->webDavUrl(), Columns::QuotaUsed));
+            if (_accountState->supportsSpaces()) {
+                return QVariant::fromValue(getQuota(_accountState, f->spaceId(), column));
+            } else {
+                return QVariant::fromValue(getQuotaOc10(_accountState, f->webDavUrl(), column));
+            }
         case Columns::IsUsingSpaces: // handled before
             [[fallthrough]];
         case Columns::ItemType: // handled before

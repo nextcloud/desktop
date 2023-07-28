@@ -68,8 +68,12 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
     auto folderMan = FolderMan::instance();
 
     // saves a bit of duplicate code
-    auto addFolder = [folderMan, accountStatePtr, useVfs](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName = {}) {
-        return folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, displayName, useVfs);
+    auto addFolder = [folderMan, accountStatePtr, useVfs](const QString &localFolder, const QString &remotePath, const QUrl &davUrl,
+                         const QString &spaceId = {}, const QString &displayName = {}) {
+        auto def = FolderDefinition::createNewFolderDefinition(davUrl, spaceId, displayName);
+        def.setLocalPath(localFolder);
+        def.setTargetPath(remotePath);
+        return folderMan->addFolderFromWizard(accountStatePtr, std::move(def), useVfs);
     };
 
     auto finalize = [accountStatePtr] {
@@ -96,7 +100,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                     for (const auto *space : spaces) {
                         const QString name = space->displayName();
                         const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, name);
-                        auto folder = addFolder(folderName, {}, QUrl(space->drive().getRoot().getWebDavUrl()), name);
+                        auto folder = addFolder(folderName, {}, QUrl(space->drive().getRoot().getWebDavUrl()), space->drive().getRoot().getId(), name);
                         folder->setPriority(space->priority());
                         // save the new priority
                         folder->saveToSettings();

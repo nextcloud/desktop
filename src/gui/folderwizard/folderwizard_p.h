@@ -43,6 +43,7 @@ public:
     QString defaultSyncRoot() const;
 
     QUrl davUrl() const;
+    QString spaceId() const;
     bool useVirtualFiles() const;
     QString displayName() const;
 

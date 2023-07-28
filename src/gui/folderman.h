@@ -126,7 +126,7 @@ public:
      * Adds a folder for an account. Used to be part of the wizard code base. Constructs the folder definition from the parameters.
      * In case Wizard::SyncMode::SelectiveSync is used, nullptr is returned.
      */
-    Folder *addFolderFromWizard(const AccountStatePtr &accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs);
+    Folder *addFolderFromWizard(const AccountStatePtr &accountStatePtr, FolderDefinition &&definition, bool useVfs);
     Folder *addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config);
 
     /** Removes a folder */

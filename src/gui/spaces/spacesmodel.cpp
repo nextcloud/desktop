@@ -62,9 +62,10 @@ QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int r
                 return tr("Priority");
             case Columns::Enabled:
                 return tr("Enabled");
-            default:
+            case Columns::SpaceId:
+                return tr("SpaceId");
+            case Columns::ColumnCount:
                 Q_UNREACHABLE();
-                break;
             }
         }
     }
@@ -112,9 +113,12 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             return {};
         case Columns::Priority:
             return space->priority();
-        default:
+        case Columns::SpaceId:
+            return space->drive().getRoot().getId();
+        case Columns::Enabled:
+            return !space->disabled();
+        case Columns::ColumnCount:
             Q_UNREACHABLE();
-            break;
         }
         break;
     case Qt::DecorationRole:

@@ -150,6 +150,7 @@ void FolderMan::unloadAndDeleteAllFolders()
     // clear the list of existing folders.
     const auto folders = std::move(_folders);
     for (auto *folder : folders) {
+        folder->saveToSettings();
         _socketApi->slotUnregisterPath(folder);
         folder->deleteLater();
     }
@@ -875,16 +876,12 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
 }
 
-Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
+Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, FolderDefinition &&folderDefinition, bool useVfs)
 {
-    if (!FolderMan::prepareFolder(localFolder)) {
+    if (!FolderMan::prepareFolder(folderDefinition.localPath())) {
         return {};
     }
 
-    qCInfo(lcFolderMan) << "Adding folder definition for" << localFolder << remotePath;
-    auto folderDefinition = FolderDefinition::createNewFolderDefinition(webDavUrl, displayName);
-    folderDefinition.setLocalPath(localFolder);
-    folderDefinition.setTargetPath(remotePath);
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
     if (useVfs) {
@@ -896,13 +893,13 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
     if (newFolder) {
         // With spaces we only handle the main folder
         if (!newFolder->groupInSidebar()) {
-            Utility::setupFavLink(localFolder);
+            Utility::setupFavLink(folderDefinition.localPath());
         }
         if (!ConfigFile().newBigFolderSizeLimit().first) {
             // The user already accepted the selective sync dialog. everything is in the white list
             newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {QStringLiteral("/")});
         }
-        qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
+        qCDebug(lcFolderMan) << "Local sync folder" << folderDefinition.localPath() << "successfully created!";
         newFolder->saveToSettings();
     } else {
         qCWarning(lcFolderMan) << "Failed to create local sync folder!";
@@ -912,7 +909,10 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
 
 Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config)
 {
-    auto f = addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
+    FolderDefinition definition = FolderDefinition::createNewFolderDefinition(config.davUrl, config.spaceId, config.displayName);
+    definition.setLocalPath(config.localPath);
+    definition.setTargetPath(config.remotePath);
+    auto f = addFolderFromWizard(accountStatePtr, std::move(definition), config.useVirtualFiles);
     if (f) {
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);
         f->setPriority(config.priority);

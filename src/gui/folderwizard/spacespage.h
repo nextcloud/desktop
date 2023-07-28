@@ -36,7 +36,7 @@ public:
     bool isComplete() const override;
 
 
-    QVariant selectedSpace(Spaces::SpacesModel::Columns column) const;
+    QVariant selectedSpaceData(Spaces::SpacesModel::Columns column) const;
 
 private:
     Ui::SpacesPage *ui;
