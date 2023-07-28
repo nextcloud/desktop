@@ -141,7 +141,8 @@ void PropagateUploadFileNG::slotPropfindFinished()
     slotJobDestroyed(job); // remove it from the _jobs list
     propagator()->_activeJobList.removeOne(this);
 
-    _currentChunk = 0;
+    // Chunked upload v2: numbers range from 1 to 10000
+    _currentChunk = 1;
     _sent = 0;
     while (_serverChunks.contains(_currentChunk)) {
         _sent += _serverChunks[_currentChunk].size;
@@ -246,7 +247,7 @@ void PropagateUploadFileNG::startNewUpload()
     }
     _transferId = uint(Utility::rand() ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16) ^ qHash(_fileToUpload._file));
     _sent = 0;
-    _currentChunk = 0;
+    _currentChunk = 1; // Chunked upload v2: numbers range from 1 to 10000
 
     propagator()->reportProgress(*_item, 0);
 

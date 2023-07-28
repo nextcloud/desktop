@@ -419,7 +419,7 @@ private:
 
     qint64 _sent = 0; /// amount of data (bytes) that was already sent
     uint _transferId = 0; /// transfer id (part of the url)
-    int _currentChunk = 0; /// Id of the next chunk that will be sent
+    int _currentChunk = 1; /// Id of the next chunk that will be sent
     qint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// If not null, there was an error removing the job
 };
