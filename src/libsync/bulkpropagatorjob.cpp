@@ -140,7 +140,7 @@ void BulkPropagatorJob::doStartUpload(SyncFileItemPtr item,
     // in reconcile (issue #5106)
     SyncJournalDb::UploadInfo pi;
     pi._valid = true;
-    pi._chunk = 0;
+    pi._chunk = 0; // Relevant to PropagateUploadV1 only
     pi._transferid = 0; // We set a null transfer id because it is not chunked.
     pi._modtime = item->_modtime;
     pi._errorCount = 0;
