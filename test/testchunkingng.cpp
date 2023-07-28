@@ -5,8 +5,9 @@
  *
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
+#include <QtTest>
+#include <owncloudpropagator.h>
 #include <syncengine.h>
 
 using namespace OCC;
@@ -54,8 +55,44 @@ class TestChunkingNG : public QObject
     Q_OBJECT
 
 private slots:
+    void testChunkV2Restrictions()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({{"dav", QVariantMap{{"chunking", "1.0"}}}});
 
-    void testFileUpload() {
+        constexpr auto maxChunkSize = 5LL * 1000LL * 1000LL * 1000LL;
+        ::setChunkSize(fakeFolder.syncEngine(), 10LL * 1000LL * 1000LL * 1000LL);
+        QCOMPARE(fakeFolder.syncEngine().syncOptions().maxChunkSize(), maxChunkSize);
+
+        constexpr auto minChunkSize = 5 * 1000 * 1000;
+        ::setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        QCOMPARE(fakeFolder.syncEngine().syncOptions().minChunkSize(), minChunkSize);
+
+        auto hasDestinationHeader = false;
+        fakeFolder.setServerOverride(
+            [&hasDestinationHeader](const QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *const) -> QNetworkReply * {
+                if (op == QNetworkAccessManager::PutOperation) {
+                    qDebug() << "Request headers:" << request.rawHeaderList();
+                    hasDestinationHeader |= request.hasRawHeader("Destination");
+                }
+                return nullptr;
+            });
+
+        constexpr auto size = 1000 * 1000 * 1000; // 100 MB
+        ::partialUpload(fakeFolder, "A/a0", size);
+
+        QVERIFY(hasDestinationHeader);
+
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        const auto chunkingId = fakeFolder.uploadState().children.first().name;
+        const auto chunkMap = fakeFolder.uploadState().children.first().children;
+        const auto firstChunkName = chunkMap.first().name;
+        const auto expectedChunkName = QString("%1").arg(1, 5, 10, QChar('0'));
+        QCOMPARE(firstChunkName, expectedChunkName);
+    }
+
+    void testFileUpload()
+    {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
