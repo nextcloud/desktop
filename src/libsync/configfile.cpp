@@ -101,6 +101,13 @@ const QString issuesWidgetFilterC()
 {
     return QStringLiteral("issuesWidgetFilter");
 }
+
+QString excludeFileNameC()
+{
+    static_assert(!std::string_view(EXCLUDE_FILE_NAME).empty());
+    return QStringLiteral(EXCLUDE_FILE_NAME);
+}
+
 } // anonymous namespace
 
 QString ConfigFile::_confDir = QString();
@@ -271,8 +278,6 @@ QString ConfigFile::configPath()
     return dir;
 }
 
-static const QLatin1String exclFile(EXCLUDE_FILE_NAME);
-
 QString ConfigFile::excludeFile(Scope scope) const
 {
 #ifdef Q_OS_WIN
@@ -285,13 +290,13 @@ QString ConfigFile::excludeFile(Scope scope) const
 
     switch (scope) {
     case UserScope:
-        fi.setFile(configPath(), exclFile);
+        fi.setFile(configPath(), excludeFileNameC());
 
         if (!fi.isReadable()) {
             fi.setFile(configPath(), QStringLiteral("exclude.lst"));
         }
         if (!fi.isReadable()) {
-            fi.setFile(configPath(), exclFile);
+            fi.setFile(configPath(), excludeFileNameC());
         }
         return fi.absoluteFilePath();
     case SystemScope:
@@ -299,43 +304,37 @@ QString ConfigFile::excludeFile(Scope scope) const
     }
 
     OC_ASSERT(false);
-    return QString();
+    return {};
 }
 
 QString ConfigFile::excludeFileFromSystem()
 {
     QFileInfo fi;
 #ifdef Q_OS_WIN
-    fi.setFile(QCoreApplication::applicationDirPath(), exclFile);
+    fi.setFile(QCoreApplication::applicationDirPath(), excludeFileNameC());
 #endif
 #ifdef Q_OS_UNIX
-    fi.setFile(QStringLiteral(SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile);
+    fi.setFile(QStringLiteral(SYSCONFDIR "/%1").arg(Theme::instance()->appName()), excludeFileNameC());
     if (!fi.exists()) {
         // Prefer to return the preferred path! Only use the fallback location
         // if the other path does not exist and the fallback is valid.
-        QFileInfo nextToBinary(QCoreApplication::applicationDirPath(), exclFile);
+        QFileInfo nextToBinary(QCoreApplication::applicationDirPath(), excludeFileNameC());
         if (nextToBinary.exists()) {
             fi = nextToBinary;
         } else {
-            // For AppImage, the file might reside under a temporary mount path
-            QDir d(QCoreApplication::applicationDirPath()); // supposed to be /tmp/mount.xyz/usr/bin
-            d.cdUp(); // go out of bin
-            d.cdUp(); // go out of usr
-            if (!d.isRoot()) { // it is really a mountpoint
-                if (d.cd(QStringLiteral("etc")) && d.cd(Theme::instance()->appName())) {
-                    QFileInfo inMountDir(d, exclFile);
-                    if (inMountDir.exists()) {
-                        fi = inMountDir;
-                    }
-                };
+            // use from install tree (e.g., AppImage, local dev installation)
+            // for example, if the binary is in .../AppDir/usr/bin/<binary>, the exclude file will be in .../AppDir/usr/etc/<appname>/
+            QFileInfo relativeToBinary(
+                QStringLiteral("%1/../etc/%2/%3").arg(QCoreApplication::applicationDirPath(), Theme::instance()->appName(), excludeFileNameC()));
+            if (relativeToBinary.exists()) {
+                fi = relativeToBinary;
             }
         }
     }
 #endif
 #ifdef Q_OS_MAC
     // exec path is inside the bundle
-    fi.setFile(QCoreApplication::applicationDirPath(),
-        QLatin1String("../Resources/") + exclFile);
+    fi.setFile(QCoreApplication::applicationDirPath(), QLatin1String("../Resources/") + excludeFileNameC());
 #endif
 
     return fi.absoluteFilePath();

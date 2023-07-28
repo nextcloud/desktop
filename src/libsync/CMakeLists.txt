@@ -95,7 +95,10 @@ target_link_libraries(libsync
 
 apply_common_target_settings(libsync)
 
-target_compile_definitions(libsync PUBLIC "-DEXCLUDE_FILE_NAME=\"${EXCLUDE_FILE_NAME}\"")
+set_source_files_properties(configfile.cpp
+    PROPERTIES
+        COMPILE_DEFINITIONS EXCLUDE_FILE_NAME="${EXCLUDE_FILE_NAME}"
+)
 
 target_link_libraries(libsync PUBLIC $<BUILD_INTERFACE:OpenAPI::LibreGraphAPI>)
 add_subdirectory(graphapi)
