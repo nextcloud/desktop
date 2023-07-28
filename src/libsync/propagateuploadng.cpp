@@ -362,6 +362,9 @@ void PropagateUploadFileNG::startNextChunk()
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
 
+    const auto destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_fileToUpload._file));
+    headers["Destination"] = QUrl::toPercentEncoding(destination);
+
     _sent += _currentChunkSize;
     const auto url = chunkUrl(_currentChunk);
 
