@@ -282,7 +282,7 @@ void PropagateUploadFileNG::slotMkColFinished()
     auto job = qobject_cast<MkColJob *>(sender());
     slotJobDestroyed(job); // remove it from the _jobs list
     QNetworkReply::NetworkError err = job->reply()->error();
-    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toUInt();
 
     if (err != QNetworkReply::NoError || _item->_httpErrorCode != 201) {
         _item->_requestId = job->requestId();
