@@ -271,7 +271,7 @@ QString ConfigFile::configPath()
     return dir;
 }
 
-static const QLatin1String exclFile("sync-exclude.lst");
+static const QLatin1String exclFile(EXCLUDE_FILE_NAME);
 
 QString ConfigFile::excludeFile(Scope scope) const
 {
