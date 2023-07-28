@@ -174,7 +174,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     }
 
     if (csync_is_windows_reserved_word(bname)) {
-        return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
     // Filter out characters not allowed in a filename on windows
