@@ -36,11 +36,6 @@ bool itemConflict(const ItemCompletedSpy &spy, const QString &path)
     return item->_status == SyncFileItem::Conflict && item->_instruction == CSYNC_INSTRUCTION_CONFLICT;
 }
 
-bool itemSuccessfulMove(const ItemCompletedSpy &spy, const QString &path)
-{
-    return itemSuccessful(spy, path, CSYNC_INSTRUCTION_RENAME);
-}
-
 QStringList findConflicts(const FileInfo &dir)
 {
     QStringList conflicts;

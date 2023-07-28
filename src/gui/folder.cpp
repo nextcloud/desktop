@@ -778,15 +778,6 @@ void Folder::saveToSettings() const
 
     auto settings = _accountState->settings();
 
-    // True if the folder path appears in only one account
-    bool oneAccountOnly = true;
-    for (auto *other : FolderMan::instance()->folders()) {
-        if (other != this && other->cleanPath() == this->cleanPath()) {
-            oneAccountOnly = false;
-            break;
-        }
-    }
-
     QString settingsGroup;
     if (virtualFilesEnabled() || _saveInFoldersWithPlaceholders) {
         // If virtual files are enabled or even were enabled at some point,
