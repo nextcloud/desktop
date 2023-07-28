@@ -21,12 +21,11 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 si
     fakeFolder.localModifier().insert(name, size);
     // Abort when the upload is at 1/3
     qint64 sizeWhenAbort = -1;
-    auto con = QObject::connect(&fakeFolder.syncEngine(),  &SyncEngine::transmissionProgress,
-                                    [&](const ProgressInfo &progress) {
-                if (progress.completedSize() > (progress.totalSize() /3 )) {
-                    sizeWhenAbort = progress.completedSize();
-                    fakeFolder.syncEngine().abort();
-                }
+    const auto con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress, [&](const ProgressInfo &progress) {
+        if (progress.completedSize() > (progress.totalSize() / 3)) {
+            sizeWhenAbort = progress.completedSize();
+            fakeFolder.syncEngine().abort();
+        }
     });
 
     QVERIFY(!fakeFolder.syncOnce()); // there should have been an error
@@ -182,8 +181,10 @@ private slots:
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file completely uploaded
-        fakeFolder.uploadState().children.first().insert(
-            QString::number(chunkMap.size()).rightJustified(16, '0'), size - uploadedSize);
+        const auto testChunkNameNum = chunkMap.count() + 1; // Chunk nums start at 1 with Chunk V2, so size() == last num, add 1
+        const auto testChunkName = QString("%1").arg(testChunkNameNum, 5, 10, QChar('0'));
+        const auto testChunkSize = size - uploadedSize;
+        fakeFolder.uploadState().children.first().insert(testChunkName, testChunkSize);
 
         bool sawPut = false;
         bool sawDelete = false;
@@ -216,19 +217,27 @@ private slots:
     void testResume4() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
-        const int size = 30 * 1000 * 1000; // 30 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+
+        constexpr auto size = 30 * 1000 * 1000; // 30 MB
+        constexpr auto chunkSize = 5 * 1000 * 1000; // 5 MB
+        setChunkSize(fakeFolder.syncEngine(), chunkSize);
 
         partialUpload(fakeFolder, "A/a0", size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
-        auto chunkingId = fakeFolder.uploadState().children.first().name;
+
+        const auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
+
+        const auto uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) {
+            return s + f.size;
+        });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file more than completely uploaded
-        fakeFolder.uploadState().children.first().insert(
-            QString::number(chunkMap.size()).rightJustified(16, '0'), size - uploadedSize + 100);
+        const auto testChunkNameNum = chunkMap.count() + 1; // Chunk nums start at 1 with Chunk V2, so size() == last num, add 1
+        const auto testChunkName = QString("%1").arg(testChunkNameNum, 5, 10, QChar('0'));
+        const auto testChunkSize = size - uploadedSize + 100;
+        fakeFolder.uploadState().children.first().insert(testChunkName, testChunkSize);
 
         QVERIFY(fakeFolder.syncOnce());
 
