@@ -59,6 +59,7 @@ constexpr auto networkUploadLimitSettingC = "networkUploadLimitSetting";
 constexpr auto networkDownloadLimitSettingC = "networkDownloadLimitSetting";
 constexpr auto networkUploadLimitC = "networkUploadLimit";
 constexpr auto networkDownloadLimitC = "networkDownloadLimit";
+constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
 constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -350,7 +351,7 @@ void AccountManager::saveAccountHelper(Account *account, QSettings &settings, bo
     settings.setValue(QLatin1String(serverColorC), account->_serverColor);
     settings.setValue(QLatin1String(serverTextColorC), account->_serverTextColor);
     settings.setValue(QLatin1String(serverHasValidSubscriptionC), account->serverHasValidSubscription());
-
+    settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), account->encryptionCertificateFingerprint());
     if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
@@ -555,6 +556,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         }
     });
     job->start();
+
+    acc->setEncryptionCertificateFingerprint(settings.value(QLatin1String(encryptionCertificateSha256FingerprintC)).toByteArray());
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String(generalC));

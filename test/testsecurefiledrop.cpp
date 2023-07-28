@@ -80,9 +80,8 @@ private slots:
         QVERIFY(!publicKey.isNull());
         QVERIFY(!privateKey.isEmpty());
 
-        _account->e2e()->_certificate = cert;
-        _account->e2e()->_publicKey = publicKey;
-        _account->e2e()->_privateKey = privateKey;
+        _account->e2e()->setCertificate(cert);
+        _account->e2e()->setPrivateKey(privateKey);
 
         QScopedPointer<FolderMetadata> metadata(new FolderMetadata(_account, "/",  FolderMetadata::FolderType::Root));
         QSignalSpy metadataSetupCompleteSpy(metadata.data(), &FolderMetadata::setupComplete);
