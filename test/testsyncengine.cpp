@@ -851,8 +851,8 @@ private slots:
         FakeFolder fakeFolder{ FileInfo{} };
         SyncOptions options;
         options._initialChunkSize = 10;
-        options._maxChunkSize = 10;
-        options._minChunkSize = 10;
+        options.setMaxChunkSize(10);
+        options.setMinChunkSize(10);
         fakeFolder.syncEngine().setSyncOptions(options);
 
         QObject parent;

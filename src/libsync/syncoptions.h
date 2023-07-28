@@ -57,12 +57,6 @@ public:
      */
     qint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
 
-    /** The minimum chunk size in bytes for chunked uploads */
-    qint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
-
-    /** The maximum chunk size in bytes for chunked uploads */
-    qint64 _maxChunkSize = 1000 * 1000 * 1000; // 1000MB
-
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
      * Set to 0 it will disable dynamic chunk sizing.
@@ -71,6 +65,17 @@ public:
 
     /** The maximum number of active jobs in parallel  */
     int _parallelNetworkJobs = 6;
+
+    static constexpr auto chunkV2MinChunkSize = 5LL * 1000LL * 1000LL; // 5 MB
+    static constexpr auto chunkV2MaxChunkSize = 5LL * 1000LL * 1000LL * 1000LL; // 5 GB
+
+    /** The minimum chunk size in bytes for chunked uploads */
+    qint64 minChunkSize() const;
+    void setMinChunkSize(const qint64 minChunkSize);
+
+    /** The maximum chunk size in bytes for chunked uploads */
+    qint64 maxChunkSize() const;
+    void setMaxChunkSize(const qint64 maxChunkSize);
 
     /** Reads settings from env vars where available.
      *
@@ -110,6 +115,9 @@ private:
      * Invalid pattern by default.
      */
     QRegularExpression _fileRegex = QRegularExpression(QStringLiteral("("));
+
+    qint64 _minChunkSize = chunkV2MinChunkSize;
+    qint64 _maxChunkSize = chunkV2MaxChunkSize;
 };
 
 }

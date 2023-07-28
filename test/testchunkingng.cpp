@@ -43,9 +43,9 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 si
 static void setChunkSize(SyncEngine &engine, qint64 size)
 {
     SyncOptions options;
-    options._maxChunkSize = size;
+    options.setMaxChunkSize(size);
+    options.setMinChunkSize(size);
     options._initialChunkSize = size;
-    options._minChunkSize = size;
     engine.setSyncOptions(options);
 }
 
@@ -607,6 +607,13 @@ private slots:
     void testVeryBigFiles() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+
+        // Dynamic chunk sizing tries to go for biggest chunks possible depending on upload speed.
+        // In the tests this is immediate, so we need to give a file larger than the max chunk size
+        // and cap the max chunk size a bit
+        auto opts = fakeFolder.syncEngine().syncOptions();
+        opts.setMaxChunkSize(500LL * 1000LL * 1000LL); // 500MB
+        fakeFolder.syncEngine().setSyncOptions(opts);
         const qint64 size = 2.5 * 1024 * 1024 * 1024; // 2.5 GiB
 
         // Partial upload of big files
@@ -622,7 +629,6 @@ private slots:
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
-
 
         // Upload another file again, this time without interruption
         fakeFolder.localModifier().appendByte("A/a0");

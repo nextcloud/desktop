@@ -427,10 +427,7 @@ void PropagateUploadFileNG::slotPutFinished()
         qint64 targetSize = propagator()->_chunkSize / 2 + predictedGoodSize / 2;
 
         // Adjust the dynamic chunk size _chunkSize used for sizing of the item's chunks to be send
-        propagator()->_chunkSize = qBound(
-            propagator()->syncOptions()._minChunkSize,
-            targetSize,
-            propagator()->syncOptions()._maxChunkSize);
+        propagator()->_chunkSize = ::qBound(propagator()->syncOptions().minChunkSize(), targetSize, propagator()->syncOptions().maxChunkSize());
 
         qCInfo(lcPropagateUploadNG) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime.count()
                                   << "ms, desired is" << targetDuration.count() << "ms, expected good chunk size is"
