@@ -37,6 +37,9 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QTimer>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 
 #include <iostream>
 
