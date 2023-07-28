@@ -222,6 +222,10 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showFirstPage()
 {
+    foreach(auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
+
     QList<QAction *> actions = _toolBar->actions();
     if (!actions.empty()) {
         actions.first()->trigger();

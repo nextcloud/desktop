@@ -261,6 +261,7 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished(int status, EncryptionStatu
     qCDebug(lcPropagateRemoteMkdir) << "Success making the new folder encrypted";
     propagator()->_activeJobList.removeOne(this);
     _item->_e2eEncryptionStatus = encryptionStatus;
+    _item->_e2eCertificateFingerprint = propagator()->account()->encryptionCertificateFingerprint();
     _item->_e2eEncryptionStatusRemote = encryptionStatus;
     if (_item->isEncrypted()) {
         _item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(propagator()->account()->capabilities().clientSideEncryptionVersion());

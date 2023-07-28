@@ -97,7 +97,7 @@ void EncryptedFolderMetadataHandler::lockFolder()
         return;
     }
 
-    const auto lockJob = new LockEncryptFolderApiJob(_account, _folderId, _journalDb, _account->e2e()->_publicKey, this);
+    const auto lockJob = new LockEncryptFolderApiJob(_account, _folderId, _account->e2e()->certificateSha256Fingerprint(), _journalDb, _account->e2e()->getPublicKey(), this);
     connect(lockJob, &LockEncryptFolderApiJob::success, this, &EncryptedFolderMetadataHandler::slotFolderLockedSuccessfully);
     connect(lockJob, &LockEncryptFolderApiJob::error, this, &EncryptedFolderMetadataHandler::slotFolderLockedError);
     if (_account->capabilities().clientSideEncryptionVersion() >= 2.0) {

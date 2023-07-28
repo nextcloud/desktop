@@ -11,18 +11,28 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
 #pragma once
-#include <openssl/evp.h>
+
 #include <QtCore/qglobal.h>
+
+#include <openssl/evp.h>
+#include <libp11.h>
 
 namespace OCC
 {
 class Bio
 {
 public:
-    Bio();
+    Bio()
+        : _bio(BIO_new(BIO_s_mem()))
+    {
+    }
 
-    ~Bio();
+    ~Bio()
+    {
+        BIO_free_all(_bio);
+    }
 
     operator const BIO *() const;
     operator BIO *();
@@ -74,7 +84,11 @@ public:
 
     static PKey readPublicKey(Bio &bio);
 
+    static PKey readHardwarePublicKey(PKCS11_KEY *key);
+
     static PKey readPrivateKey(Bio &bio);
+
+    static PKey readHardwarePrivateKey(PKCS11_KEY *key);
 
     static PKey generate(PKeyCtx &ctx);
 
@@ -89,4 +103,50 @@ private:
 
     EVP_PKEY *_pkey = nullptr;
 };
+
+class Pkcs11Context {
+public:
+    enum class State {
+        CreateContext,
+        EmptyContext,
+    };
+
+    explicit Pkcs11Context(State initState);
+
+    Pkcs11Context(Pkcs11Context &&otherContext);
+
+    Pkcs11Context(const Pkcs11Context&) = delete;
+
+
+    ~Pkcs11Context();
+
+    Pkcs11Context& operator=(Pkcs11Context &&otherContext)
+    {
+        if (&otherContext != this) {
+            if (_pkcsS11Ctx) {
+                PKCS11_CTX_free(_pkcsS11Ctx);
+                _pkcsS11Ctx = nullptr;
+            }
+            std::swap(_pkcsS11Ctx, otherContext._pkcsS11Ctx);
+        }
+
+        return *this;
+    }
+
+    Pkcs11Context& operator=(const Pkcs11Context&) = delete;
+
+    operator const PKCS11_CTX*() const
+    {
+        return _pkcsS11Ctx;
+    }
+
+    operator PKCS11_CTX*()
+    {
+        return _pkcsS11Ctx;
+    }
+
+private:
+    PKCS11_CTX* _pkcsS11Ctx = nullptr;
+};
+
 }

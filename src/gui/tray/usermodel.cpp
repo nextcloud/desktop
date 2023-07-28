@@ -93,8 +93,25 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
 
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
-    
+
     connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
+
+    connect(_account->account().data(), &Account::userCertificateNeedsMigrationChanged, this, [this] () {
+        auto certificateNeedMigration = Activity{};
+        certificateNeedMigration._type = Activity::OpenSettingsNotificationType;
+        certificateNeedMigration._subject = tr("End-to-end certificate needs to be migrated to a new one");
+        certificateNeedMigration._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        certificateNeedMigration._message = tr("Trigger the migration");
+        certificateNeedMigration._accName = _account->account()->displayName();
+        certificateNeedMigration._id = qHash("migrate-certificate");
+
+        _activityModel->removeActivityFromActivityList(certificateNeedMigration);
+
+        if (_account->account()->e2e()->userCertificateNeedsMigration()) {
+            _activityModel->addNotificationToActivityList(certificateNeedMigration);
+            showDesktopNotification(certificateNeedMigration);
+        }
+    });
 }
 
 void User::checkNotifiedNotifications()

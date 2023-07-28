@@ -16,14 +16,6 @@
 
 namespace OCC
 {
-Bio::Bio()
-    : _bio(BIO_new(BIO_s_mem()))
-{
-}
-Bio::~Bio()
-{
-    BIO_free_all(_bio);
-}
 Bio::operator const BIO *() const
 {
     return _bio;
@@ -53,6 +45,7 @@ PKeyCtx PKeyCtx::forKey(EVP_PKEY *pkey, ENGINE *e)
 {
     PKeyCtx ctx;
     ctx._ctx = EVP_PKEY_CTX_new(pkey, e);
+    Q_ASSERT(ctx._ctx);
     return ctx;
 }
 
@@ -78,10 +71,24 @@ PKey PKey::readPublicKey(Bio &bio)
     return result;
 }
 
+PKey PKey::readHardwarePublicKey(PKCS11_KEY *key)
+{
+    PKey result;
+    result._pkey = PKCS11_get_public_key(key);
+    return result;
+}
+
 PKey PKey::readPrivateKey(Bio &bio)
 {
     PKey result;
     result._pkey = PEM_read_bio_PrivateKey(bio, nullptr, nullptr, nullptr);
+    return result;
+}
+
+PKey PKey::readHardwarePrivateKey(PKCS11_KEY *key)
+{
+    PKey result;
+    result._pkey = PKCS11_get_private_key(key);
     return result;
 }
 

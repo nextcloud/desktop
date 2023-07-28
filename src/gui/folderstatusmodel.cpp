@@ -758,8 +758,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
         newInfo._isNonDecryptable = newInfo.isEncrypted()
             && _accountState->account()->e2e()
-            && !_accountState->account()->e2e()->_publicKey.isNull()
-            && _accountState->account()->e2e()->_privateKey.isNull();
+            && !_accountState->account()->e2e()->isInitialized();
 
         SyncJournalFileRecord rec;
         if (!parentInfo->_folder->journalDb()->getFileRecordByE2eMangledName(removeTrailingSlash(relativePath), &rec)) {

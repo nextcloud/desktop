@@ -149,6 +149,7 @@ public:
     // Note that these are in the order we want to present them in the model!
     enum Type {
         DummyFetchingActivityType,
+        OpenSettingsNotificationType,
         NotificationType,
         SyncResultType,
         SyncFileItemType,

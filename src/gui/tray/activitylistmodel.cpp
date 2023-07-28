@@ -41,6 +41,8 @@ Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 ActivityListModel::ActivityListModel(QObject *parent)
     : QAbstractListModel(parent)
 {
+    connect(this, &ActivityListModel::showSettingsDialog,
+            Systray::instance(), &Systray::openSettings);
 }
 
 ActivityListModel::ActivityListModel(AccountState *accountState,
@@ -48,6 +50,8 @@ ActivityListModel::ActivityListModel(AccountState *accountState,
     : QAbstractListModel(parent)
     , _accountState(accountState)
 {
+    connect(this, &ActivityListModel::showSettingsDialog,
+            Systray::instance(), &Systray::openSettings);
     if (_accountState) {
         connect(_accountState, &AccountState::stateChanged,
                 this, &ActivityListModel::accountStateChanged);
@@ -313,14 +317,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         case Activity::DummyMoreActivitiesAvailableType:
             return "Activity";
         case Activity::NotificationType:
+        case Activity::OpenSettingsNotificationType:
             return "Notification";
         case Activity::SyncFileItemType:
             return "File";
         case Activity::SyncResultType:
             return "Sync";
-        default:
-            return QVariant();
         }
+        break;
     }
     case ActionTextRole:
         if(a._subjectDisplay.isEmpty()) {
@@ -364,7 +368,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
     case ThumbnailRole: {
-        if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
+        if ((a._type == Activity::NotificationType || a._type == Activity::OpenSettingsNotificationType) &&
+            !a._talkNotificationData.userAvatar.isEmpty()) {
             return generateAvatarThumbnailMap(a._talkNotificationData.userAvatar);
         }
 
@@ -389,7 +394,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(a);
     }
 
-    return QVariant();
+    return {};
 }
 
 int ActivityListModel::rowCount(const QModelIndex &parent) const
@@ -664,9 +669,10 @@ void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
     }
 
     if (activity._type != Activity::ActivityType &&
-            activity._type != Activity::DummyFetchingActivityType &&
-            activity._type != Activity::DummyMoreActivitiesAvailableType &&
-            activity._type != Activity::NotificationType) {
+        activity._type != Activity::DummyFetchingActivityType &&
+        activity._type != Activity::DummyMoreActivitiesAvailableType &&
+        activity._type != Activity::NotificationType &&
+        activity._type != Activity::OpenSettingsNotificationType) {
 
         const auto notificationErrorsListIndex = _notificationErrorsLists.indexOf(activity);
         if (notificationErrorsListIndex != -1)
@@ -735,6 +741,8 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
+    } else if (activity._type == Activity::OpenSettingsNotificationType) {
+        Q_EMIT showSettingsDialog();
     }
 
     if (!path.isEmpty()) {

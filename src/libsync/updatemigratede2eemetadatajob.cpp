@@ -48,7 +48,7 @@ void UpdateMigratedE2eeMetadataJob::start()
                                                                                      UpdateE2eeFolderUsersMetadataJob::Add,
                                                                                      _fullRemotePath,
                                                                                      propagator()->account()->davUser(),
-                                                                                     propagator()->account()->e2e()->_certificate);
+                                                                                     propagator()->account()->e2e()->getCertificate());
     updateMedatadaAndSubfoldersJob->setParent(this);
     updateMedatadaAndSubfoldersJob->setSubJobSyncItems(_subJobItems);
     _subJobItems.clear();

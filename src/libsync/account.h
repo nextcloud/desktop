@@ -102,6 +102,9 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(AccountNetworkTransferLimitSetting downloadLimitSetting READ downloadLimitSetting WRITE setDownloadLimitSetting NOTIFY downloadLimitSettingChanged)
     Q_PROPERTY(unsigned int uploadLimit READ uploadLimit WRITE setUploadLimit NOTIFY uploadLimitChanged)
     Q_PROPERTY(unsigned int downloadLimit READ downloadLimit WRITE setDownloadLimit NOTIFY downloadLimitChanged)
+    Q_PROPERTY(bool enforceUseHardwareTokenEncryption READ enforceUseHardwareTokenEncryption NOTIFY enforceUseHardwareTokenEncryptionChanged)
+    Q_PROPERTY(QString encryptionHardwareTokenDriverPath READ encryptionHardwareTokenDriverPath NOTIFY encryptionHardwareTokenDriverPathChanged)
+    Q_PROPERTY(QByteArray encryptionCertificateFingerprint READ encryptionCertificateFingerprint WRITE setEncryptionCertificateFingerprint NOTIFY encryptionCertificateFingerprintChanged)
 
 public:
     // We need to decide whether to use the client's global proxy settings or whether to use
@@ -412,6 +415,13 @@ public:
     [[nodiscard]] bool serverHasValidSubscription() const;
     void setServerHasValidSubscription(bool valid);
 
+    [[nodiscard]] bool enforceUseHardwareTokenEncryption() const;
+
+    [[nodiscard]] QString encryptionHardwareTokenDriverPath() const;
+
+    [[nodiscard]] QByteArray encryptionCertificateFingerprint() const;
+    void setEncryptionCertificateFingerprint(const QByteArray &fingerprint);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -434,12 +444,16 @@ signals:
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(OCC::Account *acc);
 
+    void wantsFoldersSynced();
+
     void serverVersionChanged(OCC::Account *account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
     void prettyNameChanged();
     void askUserForMnemonicChanged();
+    void enforceUseHardwareTokenEncryptionChanged();
+    void encryptionHardwareTokenDriverPathChanged();
 
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
@@ -468,6 +482,9 @@ signals:
     void uploadLimitChanged();
     void downloadLimitChanged();
     void termsOfServiceNeedToBeChecked();
+
+    void encryptionCertificateFingerprintChanged();
+    void userCertificateNeedsMigrationChanged();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -556,8 +573,8 @@ private:
     AccountNetworkTransferLimitSetting _downloadLimitSetting = AccountNetworkTransferLimitSetting::GlobalLimit;
     unsigned int _uploadLimit = 0;
     unsigned int _downloadLimit = 0;
-
     bool _serverHasValidSubscription = false;
+    QByteArray _encryptionCertificateFingerprint;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
