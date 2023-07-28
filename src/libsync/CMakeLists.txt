@@ -74,7 +74,7 @@ INSTALL(
         ${CMAKE_CURRENT_BINARY_DIR}/owncloudlib.h
         logger.h
         accessmanager.h
-    DESTINATION ${INCLUDE_INSTALL_DIR}/${APPLICATION_SHORTNAME}/libsync
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/${APPLICATION_SHORTNAME}/libsync
 )
 
 add_library(libsync SHARED ${libsync_SRCS})

@@ -85,7 +85,7 @@ INSTALL(
         ../common/filesystembase.h
         ../common/utility.h
     DESTINATION
-        ${INCLUDE_INSTALL_DIR}/${APPLICATION_SHORTNAME}/common
+        ${KDE_INSTALL_INCLUDEDIR}/${APPLICATION_SHORTNAME}/common
 )
 
 INSTALL(TARGETS csync EXPORT ${APPLICATION_SHORTNAME}Config ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
