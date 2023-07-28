@@ -39,8 +39,8 @@ constexpr auto relativeUploadsPath = "remote.php/dav/uploads/";
 
 QUrl PropagateUploadFileNG::chunkUploadFolderUrl() const
 {
-    const auto userUploadPath = relativeUploadsPath + propagator()->account()->davUser();
-    const auto chunksUploadPath = userUploadPath + QLatin1Char('/') + QString::number(_transferId);
+    const QString userUploadPath = relativeUploadsPath + propagator()->account()->davUser();
+    const QString chunksUploadPath = userUploadPath + QLatin1Char('/') + QString::number(_transferId);
     return Utility::concatUrlPath(propagator()->account()->url(), chunksUploadPath);
 }
 
