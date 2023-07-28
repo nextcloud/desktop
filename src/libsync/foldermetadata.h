@@ -116,6 +116,8 @@ public:
 
     [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
+    [[nodiscard]] QByteArray certificateSha256Fingerprint() const;
+
     [[nodiscard]] bool moveFromFileDropToFiles();
 
     // adds a user to have access to this folder (always generates new metadata key)
@@ -150,7 +152,8 @@ private:
 
     [[nodiscard]] bool verifyMetadataKey(const QByteArray &metadataKey) const;
 
-    [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data, const QSslKey &key) const;
+    [[nodiscard]] QByteArray encryptDataWithPublicKey(const QByteArray &data,
+                                                      const QSslKey &key) const;
     [[nodiscard]] QByteArray decryptDataWithPrivateKey(const QByteArray &data) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
@@ -231,6 +234,8 @@ private:
     QByteArray _metadataSignature;
     // signature from server-side metadata
     QByteArray _initialSignature;
+
+    QByteArray _e2eCertificateFingerprint;
 
     // both files and folders info
     QVector<EncryptedFile> _files;

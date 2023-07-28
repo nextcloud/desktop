@@ -457,6 +457,11 @@ SyncFileItem::EncryptionStatus DiscoverySingleDirectoryJob::requiredEncryptionSt
     return _encryptionStatusRequired;
 }
 
+QByteArray DiscoverySingleDirectoryJob::certificateSha256Fingerprint() const
+{
+    return _e2eCertificateFingerprint;
+}
+
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemotePermissions::MountedPermissionAlgorithm algorithm, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {

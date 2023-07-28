@@ -129,6 +129,11 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_accountState->account().data(), &Account::capabilitiesChanged, this, &Folder::slotCapabilitiesChanged);
 
+    connect(_accountState->account().data(), &Account::wantsFoldersSynced, this, [this] () {
+        _engine->setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
+    });
+
     // Potentially upgrade suffix vfs to windows vfs
     ENFORCE(_vfs);
     if (_definition.virtualFilesMode == Vfs::WithSuffix

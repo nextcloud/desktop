@@ -24,7 +24,7 @@
 
 namespace OCC
 {
-Q_LOGGING_CATEGORY(lcCseMetadata, "nextcloud.metadata", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseMetadata, "nextcloud.sync.clientsideencryption.metadata", QtInfoMsg)
 
 namespace
 {
@@ -188,7 +188,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray &metadata)
 
     if (_folderUsers.contains(_account->davUser())) {
         const auto currentFolderUser = _folderUsers.value(_account->davUser());
-        _metadataKeyForEncryption = decryptDataWithPrivateKey(currentFolderUser.encryptedMetadataKey);
+        _metadataKeyForEncryption = QByteArray::fromBase64(decryptDataWithPrivateKey(currentFolderUser.encryptedMetadataKey));
         _metadataKeyForDecryption = _metadataKeyForEncryption;
     }
 
@@ -423,29 +423,23 @@ void FolderMetadata::emitSetupComplete()
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
-QByteArray FolderMetadata::encryptDataWithPublicKey(const QByteArray &data, const QSslKey &key) const
+QByteArray FolderMetadata::encryptDataWithPublicKey(const QByteArray &binaryData,
+                                                    const QSslKey &key) const
 {
-    Bio publicKeyBio;
-    const auto publicKeyPem = key.toPem();
-    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
-    const auto publicKey = PKey::readPublicKey(publicKeyBio);
-
-    // The metadata key is binary so base64 encode it first
-    return EncryptionHelper::encryptStringAsymmetric(publicKey, data);
+    const auto encryptBase64Result = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getCertificateInformation(), *_account->e2e(), key, binaryData);
+    qCDebug(lcCseMetadata()) << "encryptDataWithPublicKey" << binaryData.toBase64() << *encryptBase64Result;
+    return *encryptBase64Result;
 }
 
-QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &data) const
+QByteArray FolderMetadata::decryptDataWithPrivateKey(const QByteArray &base64Data) const
 {
-    Bio privateKeyBio;
-    BIO_write(privateKeyBio, _account->e2e()->_privateKey.constData(), _account->e2e()->_privateKey.size());
-    const auto privateKey = PKey::readPrivateKey(privateKeyBio);
-
-    const auto decryptResult = EncryptionHelper::decryptStringAsymmetric(privateKey, data);
-    if (decryptResult.isEmpty()) {
+    const auto decryptBase64Result = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), *_account->e2e(), base64Data, _account->e2e()->certificateSha256Fingerprint());
+    if (!decryptBase64Result) {
         qCDebug(lcCseMetadata()) << "ERROR. Could not decrypt the metadata key";
         _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
     }
-    return decryptResult;
+    qCDebug(lcCseMetadata()) << "decryptDataWithPrivateKey" << base64Data << *decryptBase64Result;
+    return *decryptBase64Result;
 }
 
 // AES/GCM/NoPadding (128 bit key size)
@@ -470,7 +464,8 @@ QByteArray FolderMetadata::computeMetadataKeyChecksum(const QByteArray &metadata
 {
     auto hashAlgorithm = QCryptographicHash{QCryptographicHash::Sha256};
 
-    hashAlgorithm.addData(_account->e2e()->_mnemonic.remove(' ').toUtf8());
+    auto mnemonic = _account->e2e()->getMnemonic();
+    hashAlgorithm.addData(mnemonic.remove(' ').toUtf8());
     auto sortedFiles = _files;
     std::sort(sortedFiles.begin(), sortedFiles.end(), [](const auto &first, const auto &second) {
         return first.encryptedFilename < second.encryptedFilename;
@@ -548,7 +543,7 @@ void FolderMetadata::initEmptyMetadata()
     }
     qCDebug(lcCseMetadata()) << "Setting up empty metadata v2";
     if (_isRootEncryptedFolder) {
-        if (!addUser(_account->davUser(), _account->e2e()->_certificate)) {
+        if (!addUser(_account->davUser(), _account->e2e()->getCertificate())) {
             qCDebug(lcCseMetadata) << "Empty metadata setup failed. Could not add first user.";
             _account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
             return;
@@ -565,7 +560,7 @@ void FolderMetadata::initEmptyMetadataLegacy()
     qCDebug(lcCseMetadata) << "Settint up legacy empty metadata";
     _metadataKeyForEncryption = EncryptionHelper::generateRandom(metadataKeySize);
     _metadataKeyForDecryption = _metadataKeyForEncryption;
-    QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
+    QString publicKey = _account->e2e()->getPublicKey().toPem().toBase64();
     QString displayName = _account->displayName();
 
     _isMetadataValid = true;
@@ -697,7 +692,7 @@ QByteArray FolderMetadata::encryptedMetadataLegacy()
     }
     const auto version = _account->capabilities().clientSideEncryptionVersion();
     // multiple toBase64() just to keep with the old (wrong way)
-    const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption().toBase64().toBase64(), _account->e2e()->_publicKey).toBase64();
+    const auto encryptedMetadataKey = encryptDataWithPublicKey(metadataKeyForEncryption().toBase64().toBase64(), _account->e2e()->getPublicKey()).toBase64();
     const QJsonObject metadata{
         {versionKey, version},
         {metadataKeyKey, QJsonValue::fromVariant(encryptedMetadataKey)},
@@ -951,6 +946,11 @@ bool FolderMetadata::encryptedMetadataNeedUpdate() const
     return !foundNestedFoldersOrIsNestedFolder;
 }
 
+QByteArray FolderMetadata::certificateSha256Fingerprint() const
+{
+    return _e2eCertificateFingerprint;
+}
+
 bool FolderMetadata::moveFromFileDropToFiles()
 {
     if (_fileDropEntries.isEmpty()) {
@@ -1031,6 +1031,7 @@ void FolderMetadata::slotRootE2eeFolderMetadataReceived(int statusCode, const QS
 bool FolderMetadata::addUser(const QString &userId, const QSslCertificate &certificate)
 {
     Q_ASSERT(_isRootEncryptedFolder);
+    Q_ASSERT(!certificate.isNull());
     if (!_isRootEncryptedFolder) {
         qCWarning(lcCseMetadata()) << "Could not add a folder user to a non top level folder.";
         return false;

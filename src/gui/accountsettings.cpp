@@ -73,6 +73,7 @@ constexpr auto e2eUiActionIdKey = "id";
 constexpr auto e2EeUiActionEnableEncryptionId = "enable_encryption";
 constexpr auto e2EeUiActionDisableEncryptionId = "disable_encryption";
 constexpr auto e2EeUiActionDisplayMnemonicId = "display_mnemonic";
+constexpr auto e2EeUiActionMigrateCertificateId = "migrate_certificate";
 }
 
 namespace OCC {
@@ -282,6 +283,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         this, &AccountSettings::slotUpdateQuota);
 
     customizeStyle();
+
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::startingDiscoveryEncryptionUsbToken,
+            Systray::instance(), &Systray::createEncryptionTokenDiscoveryDialog);
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::finishedDiscoveryEncryptionUsbToken,
+            Systray::instance(), &Systray::destroyEncryptionTokenDiscoveryDialog);
 }
 
 void AccountSettings::slotE2eEncryptionMnemonicReady()
@@ -291,10 +297,16 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
         disableEncryptionForAccount(_accountState->account());
     });
 
-    const auto actionDisplayMnemonic = addActionToEncryptionMessage(tr("Display mnemonic"), e2EeUiActionDisplayMnemonicId);
-    connect(actionDisplayMnemonic, &QAction::triggered, this, [this]() {
-        displayMnemonic(_accountState->account()->e2e()->_mnemonic);
-    });
+    if (_accountState->account()->e2e()->userCertificateNeedsMigration()) {
+        slotE2eEncryptionCertificateNeedMigration();
+    }
+
+    if (!_accountState->account()->e2e()->getMnemonic().isEmpty()) {
+        const auto actionDisplayMnemonic = addActionToEncryptionMessage(tr("Display mnemonic"), e2EeUiActionDisplayMnemonicId);
+        connect(actionDisplayMnemonic, &QAction::triggered, this, [this]() {
+            displayMnemonic(_accountState->account()->e2e()->getMnemonic());
+        });
+    }
 
     _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
     _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled for this account"));
@@ -307,18 +319,19 @@ void AccountSettings::slotE2eEncryptionGenerateKeys()
     connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotE2eEncryptionInitializationFinished);
     _accountState->account()->setE2eEncryptionKeysGenerationAllowed(true);
     _accountState->account()->setAskUserForMnemonic(true);
-    _accountState->account()->e2e()->initialize(_accountState->account());
+    _accountState->account()->e2e()->initialize(this, _accountState->account());
 }
 
 void AccountSettings::slotE2eEncryptionInitializationFinished(bool isNewMnemonicGenerated)
 {
     disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotE2eEncryptionInitializationFinished);
-    if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+    if (_accountState->account()->e2e()->isInitialized()) {
         removeActionFromEncryptionMessage(e2EeUiActionEnableEncryptionId);
         slotE2eEncryptionMnemonicReady();
         if (isNewMnemonicGenerated) {
-            displayMnemonic(_accountState->account()->e2e()->_mnemonic);
+            displayMnemonic(_accountState->account()->e2e()->getMnemonic());
         }
+        Q_EMIT _accountState->account()->wantsFoldersSynced();
     }
     _accountState->account()->setAskUserForMnemonic(false);
 }
@@ -388,7 +401,7 @@ bool AccountSettings::canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo
         return false;
     }
 
-    if (!_accountState->account()->e2e() || _accountState->account()->e2e()->_mnemonic.isEmpty()) {
+    if (!_accountState->account()->e2e() || !_accountState->account()->e2e()->isInitialized()) {
         QMessageBox msgBox;
         msgBox.setText(tr("End-to-end encryption is not configured on this device. "
                           "Once it is configured, you will be able to encrypt this folder.\n"
@@ -1114,6 +1127,16 @@ void AccountSettings::disableEncryptionForAccount(const AccountPtr &account) con
     }
 }
 
+void AccountSettings::migrateCertificateForAccount(const AccountPtr &account)
+{
+    for (const auto action : _ui->encryptionMessage->actions()) {
+        _ui->encryptionMessage->removeAction(action);
+    }
+
+    account->e2e()->migrateCertificate();
+    slotE2eEncryptionGenerateKeys();
+}
+
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
     const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
@@ -1458,7 +1481,7 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
 
 void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
 {
-    if (_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+    if (!_accountState->account()->e2e()->isInitialized()) {
         return;
     }
 
@@ -1489,6 +1512,14 @@ void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
             updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
         }
     }
+}
+
+void AccountSettings::slotE2eEncryptionCertificateNeedMigration()
+{
+    const auto actionMigrateCertificate = addActionToEncryptionMessage(tr("Migrate certificate to a new one"), e2EeUiActionMigrateCertificateId);
+    connect(actionMigrateCertificate, &QAction::triggered, this, [this] {
+        migrateCertificateForAccount(_accountState->account());
+    });
 }
 
 void AccountSettings::updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const
@@ -1636,13 +1667,13 @@ void AccountSettings::initializeE2eEncryption()
 {
     connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
 
-    if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+    if (_accountState->account()->e2e()->isInitialized()) {
         slotE2eEncryptionMnemonicReady();
     } else {
         initializeE2eEncryptionSettingsMessage();
 
         connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
-            if (!_accountState->account()->e2e()->_publicKey.isNull()) {
+            if (!_accountState->account()->e2e()->getPublicKey().isNull()) {
                 _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled on this account with another device."
                                                    "<br>"
                                                    "It can be enabled on this device by entering your mnemonic."
@@ -1651,7 +1682,7 @@ void AccountSettings::initializeE2eEncryption()
             }
         });
         _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
-        _accountState->account()->e2e()->initialize(_accountState->account());
+        _accountState->account()->e2e()->initialize(this, _accountState->account());
     }
 }
 
@@ -1666,7 +1697,7 @@ void AccountSettings::resetE2eEncryption()
     checkClientSideEncryptionState();
 
     const auto account = _accountState->account();
-    if (account->e2e()->_mnemonic.isEmpty()) {
+    if (!account->e2e()->isInitialized()) {
         FolderMan::instance()->removeE2eFiles(account);
     }
 }

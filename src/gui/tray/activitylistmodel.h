@@ -153,6 +153,8 @@ signals:
 
     void interactiveActivityReceived();
 
+    void showSettingsDialog();
+
 protected:
     [[nodiscard]] bool currentlyFetching() const;
 

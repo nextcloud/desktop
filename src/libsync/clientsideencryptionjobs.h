@@ -3,9 +3,10 @@
 
 #include "networkjobs.h"
 #include "accountfwd.h"
+
+#include <QSslKey>
 #include <QString>
 #include <QJsonDocument>
-#include <QSslKey>
 
 namespace OCC {
 /* Here are all of the network jobs for the client side encryption.
@@ -145,7 +146,12 @@ class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray &fileId, SyncJournalDb *journalDb, const QSslKey publicKey, QObject *parent = nullptr);
+    explicit LockEncryptFolderApiJob(const AccountPtr &account,
+                                     const QByteArray &fileId,
+                                     const QByteArray &certificateSha256Fingerprint,
+                                     SyncJournalDb *journalDb,
+                                     const QSslKey &sslkey,
+                                     QObject *parent = nullptr);
 
     void setCounter(const quint64 counter);
 
@@ -163,6 +169,7 @@ signals:
 
 private:
     QByteArray _fileId;
+    QByteArray _certificateSha256Fingerprint;
     QPointer<SyncJournalDb> _journalDb;
     QSslKey _publicKey;
     quint64 _counter = 0;
