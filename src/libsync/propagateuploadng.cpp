@@ -35,16 +35,22 @@
 
 namespace OCC {
 
-QUrl PropagateUploadFileNG::chunkUrl(int chunk)
+constexpr auto relativeUploadsPath = "remote.php/dav/uploads/";
+
+QUrl PropagateUploadFileNG::chunkUploadFolderUrl() const
 {
-    QString path = QLatin1String("remote.php/dav/uploads/")
-        + propagator()->account()->davUser()
-        + QLatin1Char('/') + QString::number(_transferId);
-    if (chunk >= 0) {
-        // We need to do add leading 0 because the server orders the chunk alphabetically
-        path += QLatin1Char('/') + QString::number(chunk).rightJustified(16, '0'); // 1e16 is 10 petabyte
-    }
-    return Utility::concatUrlPath(propagator()->account()->url(), path);
+    const auto userUploadPath = relativeUploadsPath + propagator()->account()->davUser();
+    const auto chunksUploadPath = userUploadPath + QLatin1Char('/') + QString::number(_transferId);
+    return Utility::concatUrlPath(propagator()->account()->url(), chunksUploadPath);
+}
+
+QUrl PropagateUploadFileNG::chunkUrl(const int chunk) const
+{
+    constexpr auto maxChunkDigits = 5; // Chunk V2: max num of chunks is 10000
+
+    // We need to do add leading 0 because the server orders the chunk alphabetically
+    const auto chunkNumString = QString("%1").arg(chunk, maxChunkDigits, 10, QChar('0'));
+    return Utility::concatUrlPath(chunkUploadFolderUrl(), chunkNumString);
 }
 
 /*
@@ -87,11 +93,10 @@ void PropagateUploadFileNG::doStartUpload()
     if (_item->_modtime <= 0) {
         qCWarning(lcPropagateUpload()) << "invalid modified time" << _item->_file << _item->_modtime;
     }
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
-            && progressInfo._size == _item->_size) {
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size) {
         _transferId = progressInfo._transferid;
-        auto url = chunkUrl();
-        auto job = new LsColJob(propagator()->account(), url, this);
+
+        const auto job = new LsColJob(propagator()->account(), chunkUploadFolderUrl(), this);
         _jobs.append(job);
         job->setProperties(QList<QByteArray>() << "resourcetype"
                                                << "getcontentlength");
@@ -107,7 +112,7 @@ void PropagateUploadFileNG::doStartUpload()
         // The upload info is stale. remove the stale chunks on the server
         _transferId = progressInfo._transferid;
         // Fire and forget. Any error will be ignored.
-        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+        (new DeleteJob(propagator()->account(), chunkUploadFolderUrl(), this))->start();
         // startNewUpload will reset the _transferId and the UploadInfo in the db.
     }
 
@@ -116,12 +121,14 @@ void PropagateUploadFileNG::doStartUpload()
 
 void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<QString, QString> &properties)
 {
-    if (name == chunkUrl().path()) {
+    if (name == chunkUploadFolderUrl().path()) {
         return; // skip the info about the path itself
     }
+
     bool ok = false;
     QString chunkName = name.mid(name.lastIndexOf('/') + 1);
     auto chunkId = chunkName.toLongLong(&ok);
+
     if (ok) {
         ServerChunkInfo chunkinfo = { properties["getcontentlength"].toLongLong(), chunkName };
         _serverChunks[chunkId] = chunkinfo;
@@ -151,7 +158,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
 
         // Wipe the old chunking data.
         // Fire and forget. Any error will be ignored.
-        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+        (new DeleteJob(propagator()->account(), chunkUploadFolderUrl(), this))->start();
 
         propagator()->_activeJobList.append(this);
         startNewUpload();
@@ -169,7 +176,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
         for (const auto &serverChunk : qAsConst(_serverChunks)) {
-            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), serverChunk.originalName), this);
+            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUploadFolderUrl(), serverChunk.originalName), this);
             QObject::connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileNG::slotDeleteJobFinished);
             _jobs.append(job);
             job->start();
@@ -259,7 +266,7 @@ void PropagateUploadFileNG::startNewUpload()
 
     // But we should send the temporary (or something) one.
     headers["OC-Total-Length"] = QByteArray::number(_fileToUpload._size);
-    auto job = new MkColJob(propagator()->account(), chunkUrl(), headers, this);
+    const auto job = new MkColJob(propagator()->account(), chunkUploadFolderUrl(), headers, this);
 
     connect(job, &MkColJob::finishedWithError,
         this, &PropagateUploadFileNG::slotMkColFinished);
@@ -311,7 +318,7 @@ void PropagateUploadFileNG::finishUpload()
     const auto fileSize = _fileToUpload._size;
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
 
-    const auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"), destination, headers, this);
+    const auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUploadFolderUrl(), "/.file"), destination, headers, this);
     _jobs.append(job);
     connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);

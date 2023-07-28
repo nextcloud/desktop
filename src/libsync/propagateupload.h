@@ -408,11 +408,8 @@ private:
         QString originalName;
     };
 
-    /**
-     * Return the URL of a chunk.
-     * If chunk == -1, returns the URL of the parent folder containing the chunks
-     */
-    QUrl chunkUrl(int chunk = -1);
+    QUrl chunkUploadFolderUrl() const;
+    QUrl chunkUrl(const int chunk) const;
 
     void startNewUpload();
     void startNextChunk();
