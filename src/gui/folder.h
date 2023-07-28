@@ -294,17 +294,6 @@ public:
       */
     bool isFileExcludedRelative(const QString &relativePath) const;
 
-    /** Calls schedules this folder on the FolderMan after a short delay.
-     *
-     * This should be used in situations where a sync should be triggered
-     * because a local file was modified. Syncs don't upload files that were
-     * modified too recently, and this delay ensures the modification is
-     * far enough in the past.
-     *
-     * The delay doesn't reset with subsequent calls.
-     */
-    void scheduleThisFolderSoon();
-
     /** virtual files of some kind are enabled
      *
      * This is independent of whether new files will be virtual. It's possible to have this enabled

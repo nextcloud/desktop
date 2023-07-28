@@ -1178,13 +1178,6 @@ void Folder::slotWatcherUnreliable(const QString &message)
     ocApp()->gui()->raiseDialog(msgBox);
 }
 
-void Folder::scheduleThisFolderSoon()
-{
-    if (!_scheduleSelfTimer.isActive()) {
-        _scheduleSelfTimer.start();
-    }
-}
-
 void Folder::registerFolderWatcher()
 {
     if (!_folderWatcher.isNull()) {
