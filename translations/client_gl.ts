@@ -5118,7 +5118,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Please sign in</source>
-        <translation>Ten que rexistrarse</translation>
+        <translation>Ten que acceder</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="336"/>
