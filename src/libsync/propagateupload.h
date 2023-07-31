@@ -408,8 +408,8 @@ private:
         QString originalName;
     };
 
-    QUrl chunkUploadFolderUrl() const;
-    QUrl chunkUrl(const int chunk) const;
+    [[nodiscard]] QUrl chunkUploadFolderUrl() const;
+    [[nodiscard]] QUrl chunkUrl(const int chunk) const;
 
     void startNewUpload();
     void startNextChunk();

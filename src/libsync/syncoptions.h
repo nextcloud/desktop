@@ -70,11 +70,11 @@ public:
     static constexpr auto chunkV2MaxChunkSize = 5LL * 1000LL * 1000LL * 1000LL; // 5 GB
 
     /** The minimum chunk size in bytes for chunked uploads */
-    qint64 minChunkSize() const;
+    [[nodiscard]] qint64 minChunkSize() const;
     void setMinChunkSize(const qint64 minChunkSize);
 
     /** The maximum chunk size in bytes for chunked uploads */
-    qint64 maxChunkSize() const;
+    [[nodiscard]] qint64 maxChunkSize() const;
     void setMaxChunkSize(const qint64 maxChunkSize);
 
     /** Reads settings from env vars where available.
