@@ -3519,7 +3519,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Conflito: Versión do servidor descargada, a copia local cambiou o nome e non se cargou.</translation>
+        <translation>Conflito: descargada a versión do servidor, cambiou o nome da copia local e non foi enviada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
@@ -3574,12 +3574,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1263"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation>Produciuse un conflito ao cargar un cartafol. Vai ser limpado!</translation>
+        <translation>Produciuse un conflito ao enviar un cartafol. Vai ser limpado!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1266"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation>Produciuse un conflito ao cargar un ficheiro. Vai ser retirado!</translation>
+        <translation>Produciuse un conflito ao enviar un ficheiro. Vai ser retirado!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1635"/>
