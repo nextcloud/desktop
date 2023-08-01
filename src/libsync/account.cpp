@@ -13,15 +13,14 @@
  */
 
 #include "account.h"
-#include "accountfwd.h"
-#include "clientsideencryptionjobs.h"
-#include "cookiejar.h"
-#include "networkjobs.h"
-#include "configfile.h"
 #include "accessmanager.h"
-#include "creds/abstractcredentials.h"
+#include "accountfwd.h"
 #include "capabilities.h"
-#include "theme.h"
+#include "clientsideencryptionjobs.h"
+#include "configfile.h"
+#include "cookiejar.h"
+#include "creds/abstractcredentials.h"
+#include "networkjobs.h"
 #include "pushnotifications.h"
 #include "version.h"
 
@@ -197,32 +196,30 @@ QString Account::prettyName() const
     return name;
 }
 
+QColor Account::serverColor() const
+{
+    return _serverColor;
+}
+
 QColor Account::headerColor() const
 {
-    const auto serverColor = capabilities().serverColor();
-    return serverColor.isValid() ? serverColor : Theme::defaultColor();
+    return serverColor();
 }
 
 QColor Account::headerTextColor() const
 {
-    const auto headerTextColor = capabilities().serverTextColor();
-    return headerTextColor.isValid() ? headerTextColor : QColor(255,255,255);
+    return _serverTextColor;
 }
 
 QColor Account::accentColor() const
 {
-    // This will need adjusting when dark theme is a thing
-    auto serverColor = capabilities().serverColor();
+    const auto accentColor = serverColor();
+    constexpr auto effectMultiplier = 8;
 
-    if(!serverColor.isValid()) {
-        serverColor = Theme::defaultColor();
-    }
-
-    const auto effectMultiplier = 8;
-    auto darknessAdjustment = static_cast<int>((1 - Theme::getColorDarkness(serverColor)) * effectMultiplier);
+    auto darknessAdjustment = static_cast<int>((1 - Theme::getColorDarkness(accentColor)) * effectMultiplier);
     darknessAdjustment *= darknessAdjustment; // Square the value to pronounce the darkness more in lighter colours
     const auto baseAdjustment = 125;
-    const auto adjusted = Theme::isDarkColor(serverColor) ? serverColor : serverColor.darker(baseAdjustment + darknessAdjustment);
+    const auto adjusted = Theme::isDarkColor(accentColor) ? accentColor : accentColor.darker(baseAdjustment + darknessAdjustment);
     return adjusted;
 }
 
@@ -652,6 +649,8 @@ const Capabilities &Account::capabilities() const
 void Account::setCapabilities(const QVariantMap &caps)
 {
     _capabilities = Capabilities(caps);
+    _serverColor = _capabilities.serverColor();
+    _serverTextColor = _capabilities.serverTextColor();
 
     emit capabilitiesChanged();
 
