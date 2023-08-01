@@ -646,11 +646,22 @@ const Capabilities &Account::capabilities() const
     return _capabilities;
 }
 
+void Account::updateServerColors()
+{
+    if (const auto capServerColor = _capabilities.serverColor(); capServerColor.isValid()) {
+        _serverColor = capServerColor;
+    }
+
+    if (const auto capServerTextColor = _capabilities.serverTextColor(); capServerTextColor.isValid()) {
+        _serverTextColor = capServerTextColor;
+    }
+}
+
 void Account::setCapabilities(const QVariantMap &caps)
 {
     _capabilities = Capabilities(caps);
-    _serverColor = _capabilities.serverColor();
-    _serverTextColor = _capabilities.serverTextColor();
+
+    updateServerColors();
 
     emit capabilitiesChanged();
 
