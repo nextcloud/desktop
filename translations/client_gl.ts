@@ -5622,7 +5622,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="52"/>
         <source>Send reply to chat message</source>
-        <translation>Enviar resposta á mensaxe de conversa</translation>
+        <translation>Enviar resposta á mensaxe de parola</translation>
     </message>
 </context>
 <context>
