@@ -9,3 +9,4 @@ GenericName=Folder Sync Commandline
 Icon=@APPLICATION_ICON_NAME@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-AppImage-Integrate=false
+NoDisplay=true
