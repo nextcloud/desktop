@@ -114,7 +114,7 @@ void HttpCredentialsGui::showDialog()
     // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
     dialog->setAttribute(Qt::WA_DeleteOnClose);
 
-    dialog->setTopLabelText(tr("Please enter your password to log in to your account."));
+    dialog->setTopLabelText(tr("Please enter your password to log in to the account %1.").arg(_account->displayName()));
 
     auto *contentWidget = qobject_cast<BasicLoginWidget *>(dialog->contentWidget());
     contentWidget->forceUsername(user());
