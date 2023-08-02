@@ -5527,7 +5527,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="643"/>
         <source>Set expiration date</source>
-        <translation>Estabelecer a data de caducidade</translation>
+        <translation>Definir a data de caducidade</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="871"/>
