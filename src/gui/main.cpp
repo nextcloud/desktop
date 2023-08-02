@@ -285,7 +285,7 @@ int main(int argc, char **argv)
         cmd.setProcessChannelMode(QProcess::ForwardedChannels);
         cmd.setInputChannelMode(QProcess::ForwardedInputChannel);
 
-        const QString app = [] {
+        const QString app = []() -> QString {
 #ifdef Q_OS_WIN
             return QCoreApplication::applicationFilePath().chopped(4) + QStringLiteral("cmd.exe");
 #else
