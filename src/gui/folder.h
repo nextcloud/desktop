@@ -474,6 +474,8 @@ private:
     void appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
     void removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
 
+    static void postExistingFolderNowBigNotification(const QString &folderPath);
+
     AccountStatePtr _accountState;
     FolderDefinition _definition;
     QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"

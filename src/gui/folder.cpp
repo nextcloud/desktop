@@ -1288,11 +1288,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
             emit newBigFolderDiscovered(trailSlashFolderPath);
         }
 
-        const auto messageInstruction =
-            stopSyncing ? "Synchronisation of this folder has been disabled." : "Synchronisation of this folder can be disabled in the settings window.";
-        const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n%3")
-                                 .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath, messageInstruction);
-        Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
+        postExistingFolderNowBigNotification(folderPath);
 
         auto whitelistActivityLink = ActivityLink();
         whitelistActivityLink._label = tr("Keep syncing");
@@ -1325,6 +1321,16 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         const auto user = UserModel::instance()->findUserForAccount(_accountState.data());
         user->slotAddNotification(this, existingFolderNowBigActivity);
     }
+}
+
+void Folder::postExistingFolderNowBigNotification(const QString &folderPath)
+{
+    const auto stopSyncing = ConfigFile().stopSyncingExistingFoldersOverLimit();
+    const auto messageInstruction =
+        stopSyncing ? "Synchronisation of this folder has been disabled." : "Synchronisation of this folder can be disabled in the settings window.";
+    const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n%3")
+                             .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath, messageInstruction);
+    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 void Folder::slotLogPropagationStart()
