@@ -871,7 +871,9 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
 {
     QVariantList customList;
 
-    for (const auto &activityLink : activity._links) {
+    for (int i = 0; i < activity._links.size() && static_cast<quint32>(i) <= maxActionButtons(); ++i) {
+        const auto activityLink = activity._links[i];
+
         // Use the isDismissable model role to present custom dismiss button if needed
         // Also don't show "View chat" for talk activities, default action will open chat anyway
         if (activityLink._verb == "DELETE" || (activityLink._verb == "WEB" && activity._objectType == "chat")) {
