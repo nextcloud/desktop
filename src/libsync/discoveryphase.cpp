@@ -84,6 +84,7 @@ void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::functi
     connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
         const auto result = values.value(QLatin1String("size")).toLongLong();
         const auto limit = _syncOptions._newBigFolderSizeLimit;
+        qCDebug(lcDiscovery) << "Folder size check complete for" << path << "result:" << result << "limit:" << limit;
         return completionCallback(result >= limit);
     });
     propfindJob->start();
