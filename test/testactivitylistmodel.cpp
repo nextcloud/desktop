@@ -268,8 +268,7 @@ private slots:
 
                 const auto actionsLinks = index.data(OCC::ActivityListModel::ActionsLinksRole).toList();
                 if (!actionsLinks.isEmpty()) {
-                    const auto actionsLinksContextMenu =
-                        index.data(OCC::ActivityListModel::ActionsLinksContextMenuRole).toList();
+                    const auto actionsLinksContextMenu = index.data(OCC::ActivityListModel::ActionsLinksContextMenuRole).toList();
 
                     // context menu must be shorter than total action links
                     QVERIFY(actionsLinksContextMenu.isEmpty() || actionsLinksContextMenu.size() < actionsLinks.size());
@@ -281,8 +280,7 @@ private slots:
 
                     const auto objectType = index.data(OCC::ActivityListModel::ObjectTypeRole).toString();
 
-                    const auto actionButtonsLinks =
-                        index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
+                    const auto actionButtonsLinks = index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
 
                     // Login attempt notification
                     if (objectType == QStringLiteral("2fa_id")) {
@@ -323,15 +321,12 @@ private slots:
                             QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QObject::tr("Reply"));
 
                             if (static_cast<quint32>(actionsLinks.size()) > OCC::ActivityListModel::maxActionButtons()) {
-                                // in case total actions is longer than ActivityListModel::maxActionButtons, only one button must be present in a list of action buttons
-                                QVERIFY(actionButtonsLinks.size() == 1);
-                                const auto actionButtonsAndContextMenuEntries = actionButtonsLinks + actionsLinksContextMenu;
+                                QCOMPARE(actionButtonsLinks.size(), OCC::ActivityListModel::maxActionButtons());
                                 // in case total actions is longer than ActivityListModel::maxActionButtons, then a sum of action buttons and action menu entries must be equal to a total of action links
-                                QVERIFY(actionButtonsLinks.size() + actionsLinksContextMenu.size() == actionsLinks.size());
+                                QCOMPARE(actionButtonsLinks.size() + actionsLinksContextMenu.size(), actionsLinks.size());
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
-                            QVERIFY(
-                                actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
+                            QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
                         }
                     }
                 }
