@@ -1259,7 +1259,7 @@ Folder *FolderMan::folderForPath(const QString &path)
     return it != folders.cend() ? *it : nullptr;
 }
 
-void FolderMan::whitelistFolderPath(const QString &path)
+void FolderMan::addFolderToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType list)
 {
     const auto folder = folderForPath(path);
     if (!folder) {
@@ -1268,19 +1268,27 @@ void FolderMan::whitelistFolderPath(const QString &path)
 
     const QString folderPath = folder->cleanPath() + QLatin1Char('/');
     const auto relPath = path.mid(folderPath.length());
-    folder->whitelistPath(relPath);
+
+    switch (list) {
+    case SyncJournalDb::SelectiveSyncListType::SelectiveSyncWhiteList:
+        folder->whitelistPath(relPath);
+        break;
+    case SyncJournalDb::SelectiveSyncListType::SelectiveSyncBlackList:
+        folder->blacklistPath(relPath);
+        break;
+    default:
+        Q_UNREACHABLE();
+    }
+}
+
+void FolderMan::whitelistFolderPath(const QString &path)
+{
+    addFolderToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncListType::SelectiveSyncWhiteList);
 }
 
 void FolderMan::blacklistFolderPath(const QString &path)
 {
-    const auto folder = folderForPath(path);
-    if (!folder) {
-        return;
-    }
-
-    const QString folderPath = folder->cleanPath() + QLatin1Char('/');
-    const auto relPath = path.mid(folderPath.length());
-    folder->blacklistPath(relPath);
+    addFolderToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncListType::SelectiveSyncBlackList);
 }
 
 QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const AccountPtr acc)

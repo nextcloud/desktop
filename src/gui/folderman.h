@@ -358,6 +358,8 @@ private:
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
 
+    void addFolderToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType list);
+
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
     QString _folderConfigPath;
