@@ -1289,37 +1289,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         }
 
         postExistingFolderNowBigNotification(folderPath);
-
-        auto whitelistActivityLink = ActivityLink();
-        whitelistActivityLink._label = tr("Keep syncing");
-        whitelistActivityLink._primary = false;
-        whitelistActivityLink._verb = ActivityLink::WhitelistFolderVerb;
-
-        QVector<ActivityLink> activityLinks = {whitelistActivityLink};
-
-        if (!stopSyncing) {
-            auto blacklistActivityLink = ActivityLink();
-            blacklistActivityLink._label = tr("Stop syncing");
-            blacklistActivityLink._primary = true;
-            blacklistActivityLink._verb = ActivityLink::BlacklistFolderVerb;
-
-            activityLinks.append(blacklistActivityLink);
-        }
-
-        auto existingFolderNowBigActivity = Activity();
-        existingFolderNowBigActivity._type = Activity::NotificationType;
-        existingFolderNowBigActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
-        existingFolderNowBigActivity._subject =
-            tr("The folder %1 has surpassed the set folder size limit of %2MB.").arg(folderPath, QString::number(ConfigFile().newBigFolderSizeLimit().second));
-        existingFolderNowBigActivity._message = tr("Would you like to stop syncing this folder?");
-        existingFolderNowBigActivity._accName = _accountState->account()->displayName();
-        existingFolderNowBigActivity._folder = alias();
-        existingFolderNowBigActivity._file = cleanPath() + '/' + trailSlashFolderPath;
-        existingFolderNowBigActivity._links = activityLinks;
-        existingFolderNowBigActivity._id = qHash(existingFolderNowBigActivity._file);
-
-        const auto user = UserModel::instance()->findUserForAccount(_accountState.data());
-        user->slotAddNotification(this, existingFolderNowBigActivity);
+        postExistingFolderNowBigActivity(folderPath);
     }
 }
 
@@ -1331,6 +1301,43 @@ void Folder::postExistingFolderNowBigNotification(const QString &folderPath)
     const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n%3")
                              .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath, messageInstruction);
     Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
+}
+
+void Folder::postExistingFolderNowBigActivity(const QString &folderPath) const
+{
+    const auto stopSyncing = ConfigFile().stopSyncingExistingFoldersOverLimit();
+    const auto trailSlashFolderPath = Utility::trailingSlashPath(folderPath);
+
+    auto whitelistActivityLink = ActivityLink();
+    whitelistActivityLink._label = tr("Keep syncing");
+    whitelistActivityLink._primary = false;
+    whitelistActivityLink._verb = ActivityLink::WhitelistFolderVerb;
+
+    QVector<ActivityLink> activityLinks = {whitelistActivityLink};
+
+    if (!stopSyncing) {
+        auto blacklistActivityLink = ActivityLink();
+        blacklistActivityLink._label = tr("Stop syncing");
+        blacklistActivityLink._primary = true;
+        blacklistActivityLink._verb = ActivityLink::BlacklistFolderVerb;
+
+        activityLinks.append(blacklistActivityLink);
+    }
+
+    auto existingFolderNowBigActivity = Activity();
+    existingFolderNowBigActivity._type = Activity::NotificationType;
+    existingFolderNowBigActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+    existingFolderNowBigActivity._subject =
+        tr("The folder %1 has surpassed the set folder size limit of %2MB.").arg(folderPath, QString::number(ConfigFile().newBigFolderSizeLimit().second));
+    existingFolderNowBigActivity._message = tr("Would you like to stop syncing this folder?");
+    existingFolderNowBigActivity._accName = _accountState->account()->displayName();
+    existingFolderNowBigActivity._folder = alias();
+    existingFolderNowBigActivity._file = cleanPath() + '/' + trailSlashFolderPath;
+    existingFolderNowBigActivity._links = activityLinks;
+    existingFolderNowBigActivity._id = qHash(existingFolderNowBigActivity._file);
+
+    const auto user = UserModel::instance()->findUserForAccount(_accountState.data());
+    user->slotAddNotification(this, existingFolderNowBigActivity);
 }
 
 void Folder::slotLogPropagationStart()

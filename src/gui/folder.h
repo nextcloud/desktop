@@ -475,6 +475,7 @@ private:
     void removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
 
     static void postExistingFolderNowBigNotification(const QString &folderPath);
+    void postExistingFolderNowBigActivity(const QString &folderPath) const;
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;
