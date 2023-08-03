@@ -904,16 +904,16 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
 
 QVariantList ActivityListModel::convertLinksToMenuEntries(const Activity &activity)
 {
+    if (static_cast<quint32>(activity._links.size()) <= maxActionButtons()) {
+        return {};
+    }
+
     QVariantList customList;
 
-    if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
-        for (int i = 0; i < activity._links.size(); ++i) {
-            const auto &activityLink = activity._links[i];
-            if (!activityLink._primary) {
-                customList << QVariantMap{
-                    {QStringLiteral("actionIndex"), i}, {QStringLiteral("label"), activityLink._label}};
-            }
-        }
+    for (int i = maxActionButtons(); i < activity._links.size(); ++i) {
+        const auto activityLinkLabel = activity._links[i]._label;
+        const auto menuEntry = QVariantMap{{"actionIndex", i}, {"label", activityLinkLabel}};
+        customList << menuEntry;
     }
 
     return customList;
