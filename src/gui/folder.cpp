@@ -1297,7 +1297,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
         auto whitelistActivityLink = ActivityLink();
         whitelistActivityLink._label = tr("Keep syncing");
         whitelistActivityLink._primary = false;
-        whitelistActivityLink._verb = "WHITELIST_FOLDER";
+        whitelistActivityLink._verb = ActivityLink::WhitelistFolderVerb;
 
         QVector<ActivityLink> activityLinks = {whitelistActivityLink};
 
@@ -1305,7 +1305,7 @@ void Folder::slotExistingFolderNowBig(const QString &folderPath)
             auto blacklistActivityLink = ActivityLink();
             blacklistActivityLink._label = tr("Stop syncing");
             blacklistActivityLink._primary = true;
-            blacklistActivityLink._verb = "BLACKLIST_FOLDER";
+            blacklistActivityLink._verb = ActivityLink::BlacklistFolderVerb;
 
             activityLinks.append(blacklistActivityLink);
         }

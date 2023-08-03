@@ -836,11 +836,11 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
                (activity._syncFileItemStatus == SyncFileItem::Conflict || activity._syncFileItemStatus == SyncFileItem::FileNameClash)) {
         slotTriggerDefaultAction(activityIndex);
         return;
-    } else if (action._verb == "WHITELIST_FOLDER" && !activity._file.isEmpty()) { // _folder == folder alias/name, _file == folder/file path
+    } else if (action._verb == ActivityLink::WhitelistFolderVerb && !activity._file.isEmpty()) { // _folder == folder alias/name, _file == folder/file path
         FolderMan::instance()->whitelistFolderPath(activity._file);
         removeActivityFromActivityList(activity);
         return;
-    } else if (action._verb == "BLACKLIST_FOLDER" && !activity._file.isEmpty()) {
+    } else if (action._verb == ActivityLink::BlacklistFolderVerb && !activity._file.isEmpty()) {
         FolderMan::instance()->blacklistFolderPath(activity._file);
         removeActivityFromActivityList(activity);
         return;
