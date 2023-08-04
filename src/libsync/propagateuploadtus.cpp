@@ -86,7 +86,11 @@ SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequ
     addMetaData(QByteArrayLiteral("filename"), propagator()->fullRemotePath(_item->_file).toUtf8());
     // in difference to the old protocol the algrithm and the value are space seperated
     addMetaData(QByteArrayLiteral("checksum"), CheckSums::toQString(checksumHeader.type()).toUtf8() + ' ' + checksumHeader.checksum());
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    addMetaData(QByteArrayLiteral("mtime"), QByteArray::number(static_cast<qint64>(_item->_modtime)));
+#else
     addMetaData(QByteArrayLiteral("mtime"), QByteArray::number(_item->_modtime));
+#endif
 
     request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), encodedMetaData.join(','));
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
