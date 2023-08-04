@@ -10,7 +10,7 @@ Feature: deleting files and folders
 
     @issue-9439
     Scenario Outline: Delete a file
-        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "<fileName>" on the server
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "<fileName>" in the server
         And user "Alice" has set up a client with default settings
         When the user deletes the file "<fileName>"
         And the user waits for the files to sync
@@ -22,7 +22,7 @@ Feature: deleting files and folders
 
     @issue-9439
     Scenario Outline: Delete a folder
-        Given user "Alice" has created folder "<folderName>" on the server
+        Given user "Alice" has created folder "<folderName>" in the server
         And user "Alice" has set up a client with default settings
         When the user deletes the folder "<folderName>"
         And the user waits for the files to sync
@@ -34,13 +34,13 @@ Feature: deleting files and folders
 
 
     Scenario: Delete a file and a folder
-        Given user "Alice" has uploaded file with content "test file 1" to "textfile1.txt" on the server
-        And user "Alice" has uploaded file with content "test file 2" to "textfile2.txt" on the server
-        And user "Alice" has created folder "test-folder1" on the server
-        And user "Alice" has created folder "test-folder2" on the server
+        Given user "Alice" has uploaded file with content "test file 1" to "textfile1.txt" in the server
+        And user "Alice" has uploaded file with content "test file 2" to "textfile2.txt" in the server
+        And user "Alice" has created folder "test-folder1" in the server
+        And user "Alice" has created folder "test-folder2" in the server
         And user "Alice" has set up a client with default settings
         When the user deletes the file "textfile1.txt"
-        And the user deletes the folder "test-folder1" 
+        And the user deletes the folder "test-folder1"
         And the user waits for the files to sync
         Then as "Alice" file "textfile1.txt" should not exist in the server
         And as "Alice" folder "test-folder1" should not exist in the server

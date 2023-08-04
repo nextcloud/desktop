@@ -8,7 +8,6 @@
 DEFAULT_PHP_VERSION = "7.4"
 
 CYTOPIA_BLACK = "cytopia/black"
-DOCKER_GIT = "docker:git"
 MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
@@ -17,7 +16,6 @@ OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 OC_CI_NODEJS = "owncloudci/nodejs:16"
 OC_CI_PHP = "owncloudci/php:%s"
-OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
 OC_OCIS = "owncloud/ocis:%s"
 OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.3"
@@ -32,9 +30,19 @@ OC_CI_SQUISH = "owncloudci/squish:fedora-38-6.7-20220106-1008-qt515x-linux64"
 PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
 PLUGINS_SLACK = "plugins/slack"
-PYTHON = "python"
-THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
+
+# secrets used in the pipeline
+secrets = {
+    "SQUISH_LICENSEKEY": "squish_license_server",
+    "GITHUB_USERNAME": "github_username",
+    "GITHUB_TOKEN": "github_token",  # not available for PRs
+    "CACHE_ENDPOINT": "cache_public_s3_server",
+    "CACHE_BUCKET": "cache_public_s3_bucket",
+    "AWS_ACCESS_KEY_ID": "cache_public_s3_access_key",
+    "AWS_SECRET_ACCESS_KEY": "cache_public_s3_secret_key",
+    "ROCKETCHAT_WEBHOOK": "rocketchat_chat_webhook",
+}
 
 dir = {
     "base": "/drone/src",
@@ -108,7 +116,7 @@ def main(ctx):
 
 def from_secret(name):
     return {
-        "from_secret": name,
+        "from_secret": secrets[name],
     }
 
 def check_starlark():
@@ -200,8 +208,7 @@ def gui_test_pipeline(ctx):
                  setGuiTestReportDir() + \
                  gui_tests(squish_parameters, server) + \
                  uploadGuiTestLogs(ctx, server) + \
-                 buildGithubComment(pipeline_name, server) + \
-                 githubComment(pipeline_name, server)
+                 logGuiReports(ctx, server)
 
         pipelines.append({
             "kind": "pipeline",
@@ -272,7 +279,7 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
         "name": "GUItests",
         "image": OC_CI_SQUISH,
         "environment": {
-            "LICENSEKEY": from_secret("squish_license_server"),
+            "LICENSEKEY": from_secret("SQUISH_LICENSEKEY"),
             "GUI_TEST_REPORT_DIR": dir["guiTestReport"],
             "CLIENT_REPO": dir["base"],
             "MIDDLEWARE_URL": "http://testmiddleware:3000/",
@@ -349,8 +356,8 @@ def changelog(ctx):
                     "author_email": "devops@owncloud.com",
                     "author_name": "ownClouders",
                     "netrc_machine": "github.com",
-                    "netrc_username": from_secret("github_username"),
-                    "netrc_password": from_secret("github_token"),
+                    "netrc_username": from_secret("GITHUB_USERNAME"),
+                    "netrc_password": from_secret("GITHUB_TOKEN"),
                 },
                 "when": {
                     "ref": {
@@ -377,12 +384,8 @@ def notification():
         "name": "create-template",
         "image": OC_CI_ALPINE,
         "environment": {
-            "CACHE_ENDPOINT": {
-                "from_secret": "cache_public_s3_server",
-            },
-            "CACHE_BUCKET": {
-                "from_secret": "cache_public_s3_bucket",
-            },
+            "CACHE_ENDPOINT": from_secret("CACHE_ENDPOINT"),
+            "CACHE_BUCKET": from_secret("CACHE_BUCKET"),
         },
         "commands": [
             "bash %s/drone/notification_template.sh %s" % (dir["guiTest"], dir["base"]),
@@ -391,7 +394,7 @@ def notification():
 
     for channel, params in notify_channels.items():
         settings = {
-            "webhook": from_secret("private_rocketchat"),
+            "webhook": from_secret("ROCKETCHAT_WEBHOOK"),
             "template": "file:%s/template.md" % dir["base"],
         }
         if params["type"] == "user":
@@ -607,24 +610,15 @@ def setGuiTestReportDir():
         ],
     }]
 
-def showGuiTestResult():
-    return [{
-        "name": "show-gui-test-result",
-        "image": PYTHON,
-        "commands": [
-            "python %s/TestLogParser.py %s/results.json" % (dir["guiTest"], dir["guiTestReport"]),
-        ],
-        "when": {
-            "status": [
-                "failure",
-            ],
-        },
-    }]
-
 def uploadGuiTestLogs(ctx, server_type = "oc10"):
     trigger = {
         "status": [
             "failure",
+        ],
+        "event": [
+            "cron",
+            "tag",
+            "pull_request",
         ],
     }
     if ctx.build.event == "tag":
@@ -634,78 +628,41 @@ def uploadGuiTestLogs(ctx, server_type = "oc10"):
         "name": "upload-gui-test-result",
         "image": PLUGINS_S3,
         "settings": {
-            "bucket": {
-                "from_secret": "cache_public_s3_bucket",
-            },
-            "endpoint": {
-                "from_secret": "cache_public_s3_server",
-            },
+            "bucket": from_secret("CACHE_BUCKET"),
+            "endpoint": from_secret("CACHE_ENDPOINT"),
             "path_style": True,
             "source": "%s/**/*" % dir["guiTestReport"],
             "strip_prefix": "%s" % dir["guiTestReport"],
             "target": "/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/%s/guiReportUpload" % server_type,
         },
         "environment": {
-            "AWS_ACCESS_KEY_ID": {
-                "from_secret": "cache_public_s3_access_key",
-            },
-            "AWS_SECRET_ACCESS_KEY": {
-                "from_secret": "cache_public_s3_secret_key",
-            },
+            "AWS_ACCESS_KEY_ID": from_secret("AWS_ACCESS_KEY_ID"),
+            "AWS_SECRET_ACCESS_KEY": from_secret("AWS_SECRET_ACCESS_KEY"),
         },
         "when": trigger,
     }]
 
-def buildGithubComment(suite = "", server_type = "oc10"):
+def logGuiReports(ctx, server_type):
+    trigger = {
+        "status": [
+            "failure",
+        ],
+        "event": [
+            "cron",
+            "tag",
+            "pull_request",
+        ],
+    }
+    if ctx.build.event == "tag":
+        trigger["status"].append("success")
+
     return [{
-        "name": "build-github-comment",
+        "name": "log-GUI-reports",
         "image": OC_UBUNTU,
         "commands": [
-            "bash %s/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER} %s" % (dir["guiTest"], dir["guiTestReport"], server_type),
+            "bash %s/drone/log_reports.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER} %s" % (dir["guiTest"], dir["guiTestReport"], server_type),
         ],
-        "environment": {
-            "TEST_CONTEXT": suite,
-            "CACHE_ENDPOINT": {
-                "from_secret": "cache_public_s3_server",
-            },
-            "CACHE_BUCKET": {
-                "from_secret": "cache_public_s3_bucket",
-            },
-        },
-        "when": {
-            "status": [
-                "failure",
-            ],
-            "event": [
-                "pull_request",
-            ],
-        },
-    }]
-
-def githubComment(alternateSuiteName, server_type = "oc10"):
-    prefix = "Results for <strong>%s</strong> ${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1" % alternateSuiteName
-    return [{
-        "name": "github-comment",
-        "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
-        "settings": {
-            "message": "%s/comments.file" % dir["guiTestReport"],
-            "key": "pr-${DRONE_PULL_REQUEST}-%s" % server_type,
-            "update": "true",
-            "api_key": {
-                "from_secret": "github_token",
-            },
-        },
-        "commands": [
-            "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (dir["guiTestReport"], prefix, dir["guiTestReport"], dir["guiTestReport"]),
-        ],
-        "when": {
-            "status": [
-                "failure",
-            ],
-            "event": [
-                "pull_request",
-            ],
-        },
+        "when": trigger,
     }]
 
 def skipIfUnchanged(ctx, type):

@@ -48,3 +48,19 @@ def get_folder_items_count(user, folder_name):
             ):
                 total_items += 1
     return str(total_items)
+
+
+def create_folder(user, folder_name):
+    url = get_resource_path(user, folder_name)
+    response = request.mkcol(url, user=user)
+    assert (
+        response.status_code == 201
+    ), f"Could not create the folder: {folder_name} for user {user}"
+
+
+def create_file(user, file_name, contents):
+    url = get_resource_path(user, file_name)
+    response = request.put(url, body=contents, user=user)
+    assert (
+        response.status_code == 201
+    ), f"Could not create file '{file_name}' for user {user}"

@@ -15,12 +15,12 @@ Feature: Syncing files
             test content
             """
         And the user waits for file "lorem-for-upload.txt" to be synced
-        Then as "Alice" the file "lorem-for-upload.txt" should have the content "test content" in the server 
+        Then as "Alice" the file "lorem-for-upload.txt" should have the content "test content" in the server
 
 
     Scenario: Syncing all files and folders from the server
-        Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has created folder "large-folder" on the server
+        Given user "Alice" has created folder "simple-folder" in the server
+        And user "Alice" has created folder "large-folder" in the server
         And user "Alice" has uploaded file on the server with content "test content" to "uploaded-lorem.txt"
         And user "Alice" has set up a client with default settings
         Then the file "uploaded-lorem.txt" should exist on the file system
@@ -56,8 +56,8 @@ Feature: Syncing files
 
     @skipOnOCIS
     Scenario: Sync all is selected by default
-        Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has created folder "large-folder" on the server
+        Given user "Alice" has created folder "simple-folder" in the server
+        And user "Alice" has created folder "large-folder" in the server
         And the user has started the client
         And the user has added the following account information:
             | server   | %local_server% |
@@ -70,8 +70,8 @@ Feature: Syncing files
 
     @skipOnOCIS
     Scenario: Sync only one folder from the server
-        Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has created folder "large-folder" on the server
+        Given user "Alice" has created folder "simple-folder" in the server
+        And user "Alice" has created folder "large-folder" in the server
         And the user has started the client
         And the user has added the following account information:
             | server   | %local_server% |
@@ -88,11 +88,11 @@ Feature: Syncing files
 
     @issue-9733 @skipOnOCIS
     Scenario: sort folders list by name and size
-        Given user "Alice" has created folder "123Folder" on the server
+        Given user "Alice" has created folder "123Folder" in the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
-        And user "Alice" has created folder "aFolder" on the server
+        And user "Alice" has created folder "aFolder" in the server
         And user "Alice" has uploaded file on the server with content "more contents" to "aFolder/lorem.txt"
-        And user "Alice" has created folder "bFolder" on the server
+        And user "Alice" has created folder "bFolder" in the server
         And the user has started the client
         And the user has added the following account information:
             | server   | %local_server% |
@@ -143,7 +143,7 @@ Feature: Syncing files
 
 
     Scenario: Many subfolders can be synced
-        Given user "Alice" has created folder "parent" on the server
+        Given user "Alice" has created folder "parent" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "parent/subfolderEmpty1" inside the sync folder
         And user "Alice" creates a folder "parent/subfolderEmpty2" inside the sync folder
@@ -198,7 +198,7 @@ Feature: Syncing files
 
     @issue-9281
     Scenario: Verify that you can create a subfolder with long name
-        Given user "Alice" has created folder "Folder1" on the server
+        Given user "Alice" has created folder "Folder1" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" inside the sync folder
         And the user waits for folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" to be synced
@@ -216,7 +216,7 @@ Feature: Syncing files
 
 
     Scenario: Filenames that are rejected by the server are reported
-        Given user "Alice" has created folder "Folder1" on the server
+        Given user "Alice" has created folder "Folder1" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a file "Folder1/a\\a.txt" with the following content inside the sync folder
             """
@@ -229,7 +229,7 @@ Feature: Syncing files
 
 
     Scenario Outline: Verify one empty folder with a length longer than the allowed limit will not be synced
-        Given user "Alice" has created folder "<foldername>" on the server
+        Given user "Alice" has created folder "<foldername>" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "<foldername>/<foldername>" inside the sync folder
         And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>" inside the sync folder
@@ -246,8 +246,8 @@ Feature: Syncing files
 
 
     Scenario: Invalid system names are synced in linux
-        Given user "Alice" has created folder "CON" on the server
-        And user "Alice" has created folder "test%" on the server
+        Given user "Alice" has created folder "CON" in the server
+        And user "Alice" has created folder "test%" in the server
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
         And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
         And user "Alice" has set up a client with default settings
@@ -262,7 +262,7 @@ Feature: Syncing files
 
 
     Scenario: various types of files can be synced from server to client
-        Given user "Alice" has created folder "simple-folder" on the server
+        Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has uploaded file "testavatar.png" to "simple-folder/testavatar.png" on the server
         And user "Alice" has uploaded file "testavatar.jpg" to "simple-folder/testavatar.jpg" on the server
         And user "Alice" has uploaded file "testavatar.jpeg" to "simple-folder/testavatar.jpeg" on the server
