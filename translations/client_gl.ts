@@ -1624,7 +1624,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de inicio de sesión comezou con HTTPS. Non será posíbel acceder porque isto pode ser un problema de seguranza. Póñase en contacto coa administración desta instancia.</translation>
+        <translation>O URL do servidor devolto non comeza con HTTPS a pesar de que o URL de acceso comezou con HTTPS. Non será posíbel acceder porque isto pode ser un problema de seguranza. Póñase en contacto coa administración desta instancia.</translation>
     </message>
 </context>
 <context>

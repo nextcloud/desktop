@@ -2479,7 +2479,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>Le canal de mise à jour détermine quelles mises à jour du client seront proposées pour l&apos;installation. Le canal &quot;stable&quot; ne contient que les mises à jour considérées comme fiables, tandis que les versions du canal &quot;bêta&quot; peuvent contenir des fonctionnalités plus récentes et des corrections de bogues, mais n&apos;ont pas encore été testées de manière approfondie.
 
-Notez que cela ne permet seulement de sélectionner où sont récupérées les mises à jour et qu&apos;il n&apos;y a pas de possibilité de rétrograder : Ainsi, le retour du canal &quot;bêta&quot; au canal &quot;stable&quot; ne peut généralement pas être fait immédiatement et implique d&apos;attendre une version stable plus récente que la version bêta actuellement installée.</translation>
+Notez que cela ne permet seulement que de sélectionner où sont récupérées les mises à jour et qu&apos;il n&apos;y a pas de possibilité de rétrograder : ainsi, le retour du canal &quot;bêta&quot; au canal &quot;stable&quot; ne peut généralement pas être fait immédiatement, et implique d&apos;attendre une version stable plus récente que la version bêta actuellement installée.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="364"/>
