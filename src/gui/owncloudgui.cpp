@@ -107,12 +107,8 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(folderMan, &FolderMan::folderSyncStateChange,
         this, &ownCloudGui::slotSyncStateChange);
 
-    connect(Logger::instance(), &Logger::guiLog,
-        this, &ownCloudGui::slotShowTrayMessage);
-    connect(Logger::instance(), &Logger::optionalGuiLog,
-        this, &ownCloudGui::slotShowOptionalTrayMessage);
-    connect(Logger::instance(), &Logger::guiMessage,
-        this, &ownCloudGui::slotShowGuiMessage);
+    connect(Logger::instance(), &Logger::guiLog, this, &ownCloudGui::slotShowTrayMessage);
+    connect(Logger::instance(), &Logger::guiMessage, this, &ownCloudGui::slotShowGuiMessage);
 
     qmlRegisterType<SyncStatusSummary>("com.nextcloud.desktopclient", 1, 0, "SyncStatusSummary");
     qmlRegisterType<EmojiModel>("com.nextcloud.desktopclient", 1, 0, "EmojiModel");
@@ -424,11 +420,6 @@ void ownCloudGui::slotShowTrayUpdateMessage(const QString &title, const QString 
     } else {
         qCWarning(lcApplication) << "Tray not ready: " << msg;
     }
-}
-
-void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
-{
-    slotShowTrayMessage(title, msg);
 }
 
 /*

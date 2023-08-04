@@ -99,6 +99,8 @@ static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
+static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
+static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
 static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
 static constexpr char moveToTrashC[] = "moveToTrash";
 
@@ -362,11 +364,8 @@ QString ConfigFile::configPath() const
             _confDir = newLocation;
         }
     }
-    QString dir = _confDir;
 
-    if (!dir.endsWith(QLatin1Char('/')))
-        dir.append(QLatin1Char('/'));
-    return dir;
+    return Utility::trailingSlashPath(_confDir);
 }
 
 static const QLatin1String exclFile("sync-exclude.lst");
@@ -957,6 +956,29 @@ bool ConfigFile::useNewBigFolderSizeLimit() const
 {
     const auto fallback = getValue(useNewBigFolderSizeLimitC, QString(), true);
     return getPolicySetting(QLatin1String(useNewBigFolderSizeLimitC), fallback).toBool();
+}
+
+bool ConfigFile::notifyExistingFoldersOverLimit() const
+{
+    const auto fallback = getValue(notifyExistingFoldersOverLimitC, {}, false);
+    return getPolicySetting(QString(notifyExistingFoldersOverLimitC), fallback).toBool();
+}
+
+void ConfigFile::setNotifyExistingFoldersOverLimit(const bool notify)
+{
+    setValue(notifyExistingFoldersOverLimitC, notify);
+}
+
+bool ConfigFile::stopSyncingExistingFoldersOverLimit() const
+{
+    const auto notifyExistingBigEnabled = notifyExistingFoldersOverLimit();
+    const auto fallback = getValue(stopSyncingExistingFoldersOverLimitC, {}, notifyExistingBigEnabled);
+    return getPolicySetting(QString(stopSyncingExistingFoldersOverLimitC), fallback).toBool();
+}
+
+void ConfigFile::setStopSyncingExistingFoldersOverLimit(const bool stopSyncing)
+{
+    setValue(stopSyncingExistingFoldersOverLimitC, stopSyncing);
 }
 
 void ConfigFile::setConfirmExternalStorage(bool isChecked)

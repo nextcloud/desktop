@@ -205,6 +205,33 @@ bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &abso
     return true;
 }
 
+bool SyncJournalDb::findPathInSelectiveSyncList(const QStringList &list, const QString &path)
+{
+    Q_ASSERT(std::is_sorted(list.cbegin(), list.cend()));
+
+    if (list.size() == 1 && list.first() == QStringLiteral("/")) {
+        // Special case for the case "/" is there, it matches everything
+        return true;
+    }
+
+    const QString pathSlash = path + QLatin1Char('/');
+
+    // Since the list is sorted, we can do a binary search.
+    // If the path is a prefix of another item or right after in the lexical order.
+    auto it = std::lower_bound(list.cbegin(), list.cend(), pathSlash);
+
+    if (it != list.cend() && *it == pathSlash) {
+        return true;
+    }
+
+    if (it == list.cbegin()) {
+        return false;
+    }
+    --it;
+    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
+    return pathSlash.startsWith(*it);
+}
+
 bool SyncJournalDb::exists()
 {
     QMutexLocker locker(&_mutex);
@@ -1958,10 +1985,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         if (!next.hasData)
             break;
 
-        auto entry = query->stringValue(0);
-        if (!entry.endsWith(QLatin1Char('/'))) {
-            entry.append(QLatin1Char('/'));
-        }
+        const auto entry = Utility::trailingSlashPath(query->stringValue(0));
         result.append(entry);
     }
     *ok = true;
@@ -1986,7 +2010,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     }
 
     SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)", _db);
-    foreach (const auto &path, list) {
+    for (const auto &path : list) {
         insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
         insQuery.bindValue(2, int(type));

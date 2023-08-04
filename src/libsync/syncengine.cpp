@@ -617,12 +617,8 @@ void SyncEngine::startSync()
         _discoveryPhase->_excludes->reloadExcludeFiles();
     }
     _discoveryPhase->_statedb = _journal;
-    _discoveryPhase->_localDir = _localPath;
-    if (!_discoveryPhase->_localDir.endsWith('/'))
-        _discoveryPhase->_localDir+='/';
-    _discoveryPhase->_remoteFolder = _remotePath;
-    if (!_discoveryPhase->_remoteFolder.endsWith('/'))
-        _discoveryPhase->_remoteFolder+='/';
+    _discoveryPhase->_localDir = Utility::trailingSlashPath(_localPath);
+    _discoveryPhase->_remoteFolder = Utility::trailingSlashPath(_remotePath);
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &path) {
         const auto result = shouldDiscoverLocally(path);
@@ -656,6 +652,7 @@ void SyncEngine::startSync()
 
     connect(_discoveryPhase.data(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
     connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::existingFolderNowBig, this, &SyncEngine::existingFolderNowBig);
     connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString, ErrorCategory errorCategory) {
         Q_EMIT syncError(errorString, errorCategory);
         finalize(false);

@@ -836,6 +836,14 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
                (activity._syncFileItemStatus == SyncFileItem::Conflict || activity._syncFileItemStatus == SyncFileItem::FileNameClash)) {
         slotTriggerDefaultAction(activityIndex);
         return;
+    } else if (action._verb == ActivityLink::WhitelistFolderVerb && !activity._file.isEmpty()) { // _folder == folder alias/name, _file == folder/file path
+        FolderMan::instance()->whitelistFolderPath(activity._file);
+        removeActivityFromActivityList(activity);
+        return;
+    } else if (action._verb == ActivityLink::BlacklistFolderVerb && !activity._file.isEmpty()) {
+        FolderMan::instance()->blacklistFolderPath(activity._file);
+        removeActivityFromActivityList(activity);
+        return;
     }
 
     emit sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
@@ -863,13 +871,16 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
 {
     QVariantList customList;
 
-    for (const auto &activityLink : activity._links) {
-        if (!activityLink._primary) {
+    for (int i = 0; i < activity._links.size() && static_cast<quint32>(i) <= maxActionButtons(); ++i) {
+        const auto activityLink = activity._links[i];
+
+        // Use the isDismissable model role to present custom dismiss button if needed
+        // Also don't show "View chat" for talk activities, default action will open chat anyway
+        if (activityLink._verb == "DELETE" || (activityLink._verb == "WEB" && activity._objectType == "chat")) {
             continue;
         }
 
         customList << ActivityListModel::convertLinkToActionButton(activityLink);
-        break;
     }
 
     return customList;
@@ -893,16 +904,16 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
 
 QVariantList ActivityListModel::convertLinksToMenuEntries(const Activity &activity)
 {
+    if (static_cast<quint32>(activity._links.size()) <= maxActionButtons()) {
+        return {};
+    }
+
     QVariantList customList;
 
-    if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
-        for (int i = 0; i < activity._links.size(); ++i) {
-            const auto &activityLink = activity._links[i];
-            if (!activityLink._primary) {
-                customList << QVariantMap{
-                    {QStringLiteral("actionIndex"), i}, {QStringLiteral("label"), activityLink._label}};
-            }
-        }
+    for (int i = maxActionButtons(); i < activity._links.size(); ++i) {
+        const auto activityLinkLabel = activity._links[i]._label;
+        const auto menuEntry = QVariantMap{{"actionIndex", i}, {"label", activityLinkLabel}};
+        customList << menuEntry;
     }
 
     return customList;

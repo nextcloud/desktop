@@ -100,11 +100,6 @@ void Logger::postGuiLog(const QString &title, const QString &message)
     emit guiLog(title, message);
 }
 
-void Logger::postOptionalGuiLog(const QString &title, const QString &message)
-{
-    emit optionalGuiLog(title, message);
-}
-
 void Logger::postGuiMessage(const QString &title, const QString &message)
 {
     emit guiMessage(title, message);

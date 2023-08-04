@@ -45,6 +45,9 @@ class ActivityLink
 public:
     static ActivityLink createFomJsonObject(const QJsonObject &obj);
 
+    static constexpr auto WhitelistFolderVerb = "WHITELIST_FOLDER";
+    static constexpr auto BlacklistFolderVerb = "BLACKLIST_FOLDER";
+
 public:
     QString _imageSource;
     QString _imageSourceHovered;

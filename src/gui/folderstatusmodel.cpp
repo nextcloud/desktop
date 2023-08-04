@@ -13,12 +13,13 @@
  */
 
 #include "folderstatusmodel.h"
-#include "folderman.h"
 #include "accountstate.h"
 #include "common/asserts.h"
-#include <theme.h>
-#include <account.h>
+#include "common/utility.h"
+#include "folderman.h"
 #include "folderstatusdelegate.h"
+#include <account.h>
+#include <theme.h>
 
 #include <QFileIconProvider>
 #include <QVarLengthArray>
@@ -703,9 +704,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     parentInfo->_fetched = true;
 
     QUrl url = parentInfo->_folder->remoteUrl();
-    QString pathToRemove = url.path();
-    if (!pathToRemove.endsWith('/'))
-        pathToRemove += '/';
+    const auto pathToRemove = Utility::trailingSlashPath(url.path());
 
     QStringList selectiveSyncBlackList;
     bool ok1 = true;

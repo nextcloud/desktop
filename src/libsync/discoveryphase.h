@@ -255,10 +255,19 @@ class DiscoveryPhase : public QObject
 
     [[nodiscard]] bool isInSelectiveSyncBlackList(const QString &path) const;
 
+    [[nodiscard]] bool activeFolderSizeLimit() const;
+    [[nodiscard]] bool notifyExistingFolderOverLimit() const;
+
+    void checkFolderSizeLimit(const QString &path,
+			      const std::function<void(bool)> callback);
+
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
-    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
-        std::function<void(bool)> callback);
+    void checkSelectiveSyncNewFolder(const QString &path,
+                                     const RemotePermissions rp,
+                                     const std::function<void(bool)> callback);
+
+    void checkSelectiveSyncExistingFolder(const QString &path);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *
@@ -316,6 +325,7 @@ signals:
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
+    void existingFolderNowBig(const QString &folder);
 
     /** For excluded items that don't show up in itemDiscovered()
       *

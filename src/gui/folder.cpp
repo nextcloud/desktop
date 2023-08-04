@@ -13,6 +13,7 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include "common/syncjournaldb.h"
 #include "config.h"
 
 #include "account.h"
@@ -52,6 +53,7 @@ namespace {
 constexpr auto versionC = "version";
 #endif
 }
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolder, "nextcloud.gui.folder", QtInfoMsg)
@@ -102,6 +104,7 @@ Folder::Folder(const FolderDefinition &definition,
         this, &Folder::slotItemCompleted);
     connect(_engine.data(), &SyncEngine::newBigFolder,
         this, &Folder::slotNewBigFolderDiscovered);
+    connect(_engine.data(), &SyncEngine::existingFolderNowBig, this, &Folder::slotExistingFolderNowBig);
     connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
     connect(_engine.data(), &SyncEngine::aboutToPropagate,
         this, &Folder::slotLogPropagationStart);
@@ -167,9 +170,9 @@ void Folder::checkLocalPath()
     if (_canonicalLocalPath.isEmpty()) {
         qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath;
         _canonicalLocalPath = _definition.localPath;
-    } else if (!_canonicalLocalPath.endsWith('/')) {
-        _canonicalLocalPath.append('/');
     }
+
+    _canonicalLocalPath = Utility::trailingSlashPath(_canonicalLocalPath);
 
     if (fi.isDir() && fi.isReadable()) {
         qCDebug(lcFolder) << "Checked local path ok";
@@ -214,10 +217,8 @@ QString Folder::path() const
 QString Folder::shortGuiLocalPath() const
 {
     QString p = _definition.localPath;
-    QString home = QDir::homePath();
-    if (!home.endsWith('/')) {
-        home.append('/');
-    }
+    const auto home = Utility::trailingSlashPath(QDir::homePath());
+
     if (p.startsWith(home)) {
         p = p.mid(home.length());
     }
@@ -266,10 +267,7 @@ QString Folder::remotePath() const
 
 QString Folder::remotePathTrailingSlash() const
 {
-    QString result = remotePath();
-    if (!result.endsWith('/'))
-        result.append('/');
-    return result;
+    return Utility::trailingSlashPath(remotePath());
 }
 
 QUrl Folder::remoteUrl() const
@@ -484,7 +482,7 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
         if (!text.isEmpty()) {
             // Ignores the settings in case of an error or conflict
             if(status == LogStatusError || status == LogStatusConflict)
-                logger->postOptionalGuiLog(tr("Sync Activity"), text);
+                logger->postGuiLog(tr("Sync Activity"), text);
         }
     }
 }
@@ -840,6 +838,46 @@ bool Folder::pathIsIgnored(const QString &path) const
     return false;
 }
 
+void Folder::appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType)
+{
+    const auto folderPath = Utility::trailingSlashPath(path);
+    const auto journal = journalDb();
+    auto ok = false;
+    auto list = journal->getSelectiveSyncList(listType, &ok);
+
+    if (ok) {
+        list.append(folderPath);
+        journal->setSelectiveSyncList(listType, list);
+    }
+}
+
+void Folder::removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType)
+{
+    const auto folderPath = Utility::trailingSlashPath(path);
+    const auto journal = journalDb();
+    auto ok = false;
+    auto list = journal->getSelectiveSyncList(listType, &ok);
+
+    if (ok) {
+        list.removeAll(folderPath);
+        journal->setSelectiveSyncList(listType, list);
+    }
+}
+
+void Folder::whitelistPath(const QString &path)
+{
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
+    appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
+}
+
+void Folder::blacklistPath(const QString &path)
+{
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
+    removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
+    appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
+}
+
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
     return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
@@ -1092,11 +1130,6 @@ void Folder::slotSyncFinished(bool success)
         qCInfo(lcFolder) << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
-    if (_syncResult.status() == SyncResult::Success && success) {
-        // Clear the white list as all the folders that should be on that list are sync-ed
-        journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
-    }
-
     if ((_syncResult.status() == SyncResult::Success
             || _syncResult.status() == SyncResult::Problem)
         && success) {
@@ -1183,10 +1216,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item, ErrorCategory errorC
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 {
-    auto newFolder = newF;
-    if (!newFolder.endsWith(QLatin1Char('/'))) {
-        newFolder += QLatin1Char('/');
-    }
+    const auto newFolder = Utility::trailingSlashPath(newF);
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
@@ -1214,8 +1244,100 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
         message += tr("Please go in the settings to select it if you wish to download it.");
 
         auto logger = Logger::instance();
-        logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+        logger->postGuiLog(Theme::instance()->appNameGUI(), message);
     }
+}
+
+void Folder::slotExistingFolderNowBig(const QString &folderPath)
+{
+    const auto trailSlashFolderPath = Utility::trailingSlashPath(folderPath);
+    const auto journal = journalDb();
+    const auto stopSyncing = ConfigFile().stopSyncingExistingFoldersOverLimit();
+
+    // Add the entry to the whitelist if it is neither in the blacklist or whitelist already
+    bool ok1 = false;
+    bool ok2 = false;
+    auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
+    auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
+
+    const auto inDecidedLists = blacklist.contains(trailSlashFolderPath) || whitelist.contains(trailSlashFolderPath);
+    if (inDecidedLists) {
+        return;
+    }
+
+    auto relevantList = stopSyncing ? blacklist : whitelist;
+    const auto relevantListType = stopSyncing ? SyncJournalDb::SelectiveSyncBlackList : SyncJournalDb::SelectiveSyncWhiteList;
+
+    if (ok1 && ok2 && !inDecidedLists) {
+        relevantList.append(trailSlashFolderPath);
+        journal->setSelectiveSyncList(relevantListType, relevantList);
+
+        if (stopSyncing) {
+            // Abort current down sync and start again
+            slotTerminateSync();
+            scheduleThisFolderSoon();
+        }
+    }
+
+    auto undecidedListQueryOk = false;
+    auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &undecidedListQueryOk);
+    if (undecidedListQueryOk) {
+        if (!undecidedList.contains(trailSlashFolderPath)) {
+            undecidedList.append(trailSlashFolderPath);
+            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
+            emit newBigFolderDiscovered(trailSlashFolderPath);
+        }
+
+        postExistingFolderNowBigNotification(folderPath);
+        postExistingFolderNowBigActivity(folderPath);
+    }
+}
+
+void Folder::postExistingFolderNowBigNotification(const QString &folderPath)
+{
+    const auto stopSyncing = ConfigFile().stopSyncingExistingFoldersOverLimit();
+    const auto messageInstruction =
+        stopSyncing ? "Synchronisation of this folder has been disabled." : "Synchronisation of this folder can be disabled in the settings window.";
+    const auto message = tr("A folder has surpassed the set folder size limit of %1MB: %2.\n%3")
+                             .arg(QString::number(ConfigFile().newBigFolderSizeLimit().second), folderPath, messageInstruction);
+    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
+}
+
+void Folder::postExistingFolderNowBigActivity(const QString &folderPath) const
+{
+    const auto stopSyncing = ConfigFile().stopSyncingExistingFoldersOverLimit();
+    const auto trailSlashFolderPath = Utility::trailingSlashPath(folderPath);
+
+    auto whitelistActivityLink = ActivityLink();
+    whitelistActivityLink._label = tr("Keep syncing");
+    whitelistActivityLink._primary = false;
+    whitelistActivityLink._verb = ActivityLink::WhitelistFolderVerb;
+
+    QVector<ActivityLink> activityLinks = {whitelistActivityLink};
+
+    if (!stopSyncing) {
+        auto blacklistActivityLink = ActivityLink();
+        blacklistActivityLink._label = tr("Stop syncing");
+        blacklistActivityLink._primary = true;
+        blacklistActivityLink._verb = ActivityLink::BlacklistFolderVerb;
+
+        activityLinks.append(blacklistActivityLink);
+    }
+
+    auto existingFolderNowBigActivity = Activity();
+    existingFolderNowBigActivity._type = Activity::NotificationType;
+    existingFolderNowBigActivity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+    existingFolderNowBigActivity._subject =
+        tr("The folder %1 has surpassed the set folder size limit of %2MB.").arg(folderPath, QString::number(ConfigFile().newBigFolderSizeLimit().second));
+    existingFolderNowBigActivity._message = tr("Would you like to stop syncing this folder?");
+    existingFolderNowBigActivity._accName = _accountState->account()->displayName();
+    existingFolderNowBigActivity._folder = alias();
+    existingFolderNowBigActivity._file = cleanPath() + '/' + trailSlashFolderPath;
+    existingFolderNowBigActivity._links = activityLinks;
+    existingFolderNowBigActivity._id = qHash(existingFolderNowBigActivity._file);
+
+    const auto user = UserModel::instance()->findUserForAccount(_accountState.data());
+    user->slotAddNotification(this, existingFolderNowBigActivity);
 }
 
 void Folder::slotLogPropagationStart()
@@ -1283,7 +1405,7 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
              "It will not be synchronized.")
               .arg(fi.filePath());
 
-    Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 void Folder::slotWatcherUnreliable(const QString &message)
@@ -1451,7 +1573,7 @@ void Folder::removeLocalE2eFiles()
             }
 
             if (!parentPathEncrypted) {
-                const auto pathAdjusted = rec._path.endsWith('/') ? rec._path : QString(rec._path + QStringLiteral("/"));
+                const auto pathAdjusted = Utility::trailingSlashPath(rec._path);
                 e2eFoldersToBlacklist.append(pathAdjusted);
             }
         }
@@ -1566,11 +1688,8 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
 
 QString FolderDefinition::prepareLocalPath(const QString &path)
 {
-    QString p = QDir::fromNativeSeparators(path);
-    if (!p.endsWith(QLatin1Char('/'))) {
-        p.append(QLatin1Char('/'));
-    }
-    return p;
+    const auto normalisedPath = QDir::fromNativeSeparators(path);
+    return Utility::trailingSlashPath(normalisedPath);
 }
 
 QString FolderDefinition::prepareTargetPath(const QString &path)

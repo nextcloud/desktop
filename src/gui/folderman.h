@@ -104,6 +104,10 @@ public:
     /** Returns the folder which the file or directory stored in path is in */
     Folder *folderForPath(const QString &path);
 
+    // Takes local file paths and finds the corresponding folder, adding to correct selective sync list
+    void whitelistFolderPath(const QString &path);
+    void blacklistFolderPath(const QString &path);
+
     /**
       * returns a list of local files that exist on the local harddisk for an
       * incoming relative server path. The method checks with all existing sync
@@ -353,6 +357,8 @@ private:
     bool pushNotificationsFilesReady(Account *account);
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
+
+    void addFolderToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType list);
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;

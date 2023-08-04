@@ -186,6 +186,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->existingFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->stopExistingFolderNowBigSyncCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
 
@@ -261,6 +263,12 @@ void GeneralSettings::loadMiscSettings()
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
+    _ui->existingFolderLimitCheckBox->setEnabled(_ui->newFolderLimitCheckBox->isChecked());
+    _ui->existingFolderLimitCheckBox->setChecked(_ui->newFolderLimitCheckBox->isChecked() && cfgFile.notifyExistingFoldersOverLimit());
+    _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
+    _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
+    _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
+    _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
 
 #if defined(BUILD_UPDATER)
@@ -274,8 +282,12 @@ void GeneralSettings::slotUpdateInfo()
     }
 
     if (updater) {
-        connect(_ui->updateButton, &QAbstractButton::clicked, this,
-                &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+        connect(_ui->updateButton,
+                &QAbstractButton::clicked,
+                this,
+
+                &GeneralSettings::slotUpdateCheckNow,
+                Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
                 &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
         _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
@@ -422,14 +434,22 @@ void GeneralSettings::saveMiscSettings()
 
     ConfigFile cfgFile;
 
-    const auto monoIconsChecked = _ui->monoIconsCheckBox->isChecked();
-    cfgFile.setMonoIcons(monoIconsChecked);
-    Theme::instance()->setSystrayUseMonoIcons(monoIconsChecked);
+    const auto useMonoIcons = _ui->monoIconsCheckBox->isChecked();
+    const auto newFolderLimitEnabled = _ui->newFolderLimitCheckBox->isChecked();
+    const auto existingFolderLimitEnabled = newFolderLimitEnabled && _ui->existingFolderLimitCheckBox->isChecked();
+    const auto stopSyncingExistingFoldersOverLimit = existingFolderLimitEnabled && _ui->stopExistingFolderNowBigSyncCheckBox->isChecked();
+    Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
 
+    cfgFile.setMonoIcons(useMonoIcons);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
-    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(), _ui->newFolderLimitSpinBox->value());
-    cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
     cfgFile.setMoveToTrash(_ui->moveFilesToTrashCheckBox->isChecked());
+    cfgFile.setNewBigFolderSizeLimit(newFolderLimitEnabled, _ui->newFolderLimitSpinBox->value());
+    cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
+    cfgFile.setNotifyExistingFoldersOverLimit(existingFolderLimitEnabled);
+    cfgFile.setStopSyncingExistingFoldersOverLimit(stopSyncingExistingFoldersOverLimit);
+
+    _ui->existingFolderLimitCheckBox->setEnabled(newFolderLimitEnabled);
+    _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(existingFolderLimitEnabled);
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)

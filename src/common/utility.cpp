@@ -723,4 +723,10 @@ bool Utility::isCaseClashConflictFile(const QString &name)
     return bname.contains(QStringLiteral("(case clash from"));
 }
 
+QString Utility::trailingSlashPath(const QString &path)
+{
+    static const auto slash = QLatin1Char('/');
+    return path.endsWith(slash) ? path : QString(path + slash);
+}
+
 } // namespace OCC

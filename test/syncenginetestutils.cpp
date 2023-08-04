@@ -6,9 +6,10 @@
  */
 
 #include "syncenginetestutils.h"
-#include "httplogger.h"
 #include "accessmanager.h"
+#include "common/utility.h"
 #include "gui/sharepermissions.h"
+#include "httplogger.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -285,11 +286,7 @@ QString FileInfo::path() const
 
 QString FileInfo::absolutePath() const
 {
-    if (parentPath.endsWith(QLatin1Char('/'))) {
-        return parentPath + name;
-    } else {
-        return parentPath + QLatin1Char('/') + name;
-    }
+    return OCC::Utility::trailingSlashPath(parentPath) + name;
 }
 
 void FileInfo::fixupParentPathRecursively()
@@ -339,10 +336,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
         xml.writeStartElement(davUri, QStringLiteral("response"));
 
-        auto url = QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/"));
-        if (!url.endsWith(QChar('/'))) {
-            url.append(QChar('/'));
-        }
+        const auto url = OCC::Utility::trailingSlashPath(QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/")));
         const auto href = OCC::Utility::concatUrlPath(prefix, url).path();
         xml.writeTextElement(davUri, QStringLiteral("href"), href);
         xml.writeStartElement(davUri, QStringLiteral("propstat"));
@@ -352,6 +346,12 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeStartElement(davUri, QStringLiteral("resourcetype"));
             xml.writeEmptyElement(davUri, QStringLiteral("collection"));
             xml.writeEndElement(); // resourcetype
+
+            auto totalSize = 0;
+            for (const auto &child : fileInfo.children.values()) {
+                totalSize += child.size;
+            }
+            xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
         } else
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
@@ -1178,9 +1178,7 @@ FileInfo FakeFolder::currentLocalState()
 QString FakeFolder::localPath() const
 {
     // SyncEngine wants a trailing slash
-    if (_tempDir.path().endsWith(QLatin1Char('/')))
-        return _tempDir.path();
-    return _tempDir.path() + QLatin1Char('/');
+    return OCC::Utility::trailingSlashPath(_tempDir.path());
 }
 
 void FakeFolder::scheduleSync()

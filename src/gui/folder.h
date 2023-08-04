@@ -301,6 +301,9 @@ public:
 
     QString fileFromLocalPath(const QString &localPath) const;
 
+    void whitelistPath(const QString &path);
+    void blacklistPath(const QString &path);
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -405,6 +408,7 @@ private slots:
     void slotEmitFinishedDelayed();
 
     void slotNewBigFolderDiscovered(const QString &, bool isExternal);
+    void slotExistingFolderNowBig(const QString &folderPath);
 
     void slotLogPropagationStart();
 
@@ -466,6 +470,12 @@ private:
     void startVfs();
 
     void correctPlaceholderFiles();
+
+    void appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+    void removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+
+    static void postExistingFolderNowBigNotification(const QString &folderPath);
+    void postExistingFolderNowBigActivity(const QString &folderPath) const;
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;

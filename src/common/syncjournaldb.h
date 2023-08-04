@@ -58,6 +58,9 @@ public:
     /// Migrate a csync_journal to the new path, if necessary. Returns false on error
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
+    /// Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list
+    static bool findPathInSelectiveSyncList(const QStringList &list, const QString &path);
+
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()
     [[nodiscard]] bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
     [[nodiscard]] bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
