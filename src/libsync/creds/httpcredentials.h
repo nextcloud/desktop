@@ -46,7 +46,6 @@ class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
 {
     Q_OBJECT
     friend class HttpCredentialsAccessManager;
-    friend class HttpLegacyCredentials;
 
 public:
     /// Don't add credentials if this is set on a QNetworkRequest
@@ -89,14 +88,11 @@ protected:
     QString _fetchErrorString;
     bool _ready = false;
     QPointer<AccountBasedOAuth> _oAuthJob;
-    bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 
 private:
     bool refreshAccessTokenInternal(int tokenRefreshRetriesCount);
-    // HttpLegacyCredentials is incompelte
-    QPointer<QObject> _credentialMigration;
 };
 
 

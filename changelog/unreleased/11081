@@ -1,0 +1,5 @@
+Change: We removed the pre 2.9 credentials migration
+
+Migrating credentials from a 2.8 or older client is no longer possible.
+
+https://github.com/owncloud/client/pull/11081

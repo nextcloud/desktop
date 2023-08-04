@@ -13,7 +13,6 @@
  * for more details.
  */
 #include "creds/httpcredentials.h"
-#include "creds/httpcredentials_p.h"
 
 #include "accessmanager.h"
 #include "account.h"
@@ -21,7 +20,6 @@
 #include "creds/credentialmanager.h"
 #include "oauth.h"
 #include "syncengine.h"
-#include "theme.h"
 
 #include <QAuthenticator>
 #include <QBuffer>
@@ -30,15 +28,12 @@
 #include <QLoggingCategory>
 #include <QMutex>
 #include <QNetworkReply>
-#include <QSettings>
-#include <QSslKey>
 
 #include <chrono>
 
 using namespace std::chrono_literals;
 
 Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcHttpLegacyCredentials, "sync.credentials.http.legacy", QtInfoMsg)
 
 namespace {
 constexpr int TokenRefreshMaxRetries = 3;
@@ -110,7 +105,6 @@ HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType, const 
     : _user(user)
     , _password(password)
     , _ready(true)
-    , _retryOnKeyChainError(false)
     , _authType(authType)
 {
 }
@@ -188,14 +182,6 @@ void HttpCredentials::fetchFromKeychain()
 void HttpCredentials::fetchFromKeychainHelper()
 {
     Q_ASSERT(!_user.isEmpty());
-    const int version = _account->credentialSetting(CredentialVersionKey()).toInt();
-    if (version < CredentialVersion && !_credentialMigration) {
-        auto migration = new HttpLegacyCredentials(this);
-        _credentialMigration = migration;
-        migration->fetchFromKeychainHelper();
-        return;
-    }
-
     auto job = _account->credentialManager()->get(isUsingOAuth() ? refreshTokenKeyC() : passwordKeyC());
     connect(job, &CredentialJob::finished, this, [job, this] {
         auto handleError = [job, this] {
