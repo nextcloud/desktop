@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="90"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1&apos;yi webte açma başarısız. Hata: %2.</translation>
     </message>
 </context>
 <context>
@@ -517,7 +517,7 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
-        <translation type="unfinished"/>
+        <translation>Senkronizasyon işlemi çalışıyor. &lt;br/&gt;Durdurmak ister misiniz?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="822"/>
@@ -1094,7 +1094,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     <message>
         <location filename="../src/gui/folder.cpp" line="227"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; yolu çok uzun. Lütfen Windows ayarlarındaki uzun yolları etkinleştirin veya farklı bir klasör seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="235"/>
@@ -1330,7 +1330,7 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
     <message>
         <location filename="../src/gui/folderman.cpp" line="1167"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; yolu çok uzun. Lütfen Windows ayarlarındaki uzun yolları etkinleştirin veya farklı bir klasör seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1173"/>
@@ -2006,7 +2006,8 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>İstemci geçici bir klasöre hata ayıklama günlükleri yazabilir. Bu günlükler problemleri teşhis etmek için çok yararlıdır.
+Günlük dosyaları büyüdüğünde, istemci her senkronizasyon için yeni bir tane başlatır ve eski olanları sıkıştırır.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -3702,7 +3703,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="447"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versiyon %1. Daha fazla bilgi için &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt; adresini ziyaret edin&lt;/p&gt;&lt;p&gt;Bilinen sorunlar ve yardım için lütfen şu adresi ziyaret edin: &lt;a href=&quot;https://central.owncloud.com/c/desktop-client&quot;&gt;https://central.owncloud.com&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth ve diğerleri.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud GmbH&lt;/p&gt;&lt;p&gt;%4 tarafından dağıtılır ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 altında lisanslanır.&lt;br/&gt;%5 ve %5 logosu ABD&apos;de, diğer ülkelerde veya her ikisinde %4&apos;ün tescilli ticari markalarıdır.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3985,7 +3986,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="190"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan kullanıcı bilgilerini alma başarısız</translation>
     </message>
 </context>
 <context>
@@ -4556,7 +4557,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Kütüphaneler Qt %3, %4%7%9Sanal dosya eklentisi kullanıyor: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4564,7 +4565,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="418"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Eklenti dizini: %1%2</translation>
     </message>
 </context>
 <context>
@@ -4572,7 +4573,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="405"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Qt %2&apos;e göre oluşturuldu)</translation>
     </message>
 </context>
 <context>
