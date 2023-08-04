@@ -1,0 +1,7 @@
+Bugfix: Missing mtime in ocis uploads
+
+When uploading a file to ocis the server ignores the X-OC-Mtime header
+and expects the mtime to be part of the Upload-Metadata header.
+We now provide both.
+
+https://github.com/owncloud/client/issues/10950
