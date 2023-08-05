@@ -744,6 +744,11 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <translation>Există dosare ce nu au fost sinscronizate deoarece acestea sunt prea mari sau se află pe stocarea externă:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <source>There are folders that have grown in size beyond %1MB: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation type="unfinished"/>
@@ -1793,6 +1798,32 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
         <translation>Vă rugăm să selectați în setări dacă doriți să descărcați acest fișier.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <source>Keep syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1320"/>
+        <source>Stop syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1331"/>
+        <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1332"/>
+        <source>Would you like to stop syncing this folder?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Dosarul %1 a fost creeat dar a fost exclus, în trecut de la sincronizare. Conținutul nu va fii sincronizat.</translation>
@@ -2412,10 +2443,25 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Cereți o confirmare înainte de a sincroniza foldere mai mari de</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="234"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <source>Notify when synchronised folders grow larger than specified limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <source>Automatically disable synchronisation of folders that overcome limit</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2423,7 +2469,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>Move removed files to trash</source>
         <translation type="unfinished"/>
     </message>

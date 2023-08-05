@@ -745,6 +745,11 @@ This action will abort any currently running synchronization.</source>
         <translation>사이즈가 너무 크거나 외부 저장소이므로 동기화되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <source>There are folders that have grown in size beyond %1MB: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>이 계정 및 다른 장치에서 종단간 암호화를 사용하고 있습니다.&lt;br&gt;니모닉을 입력하면 이 장치에서 종단간 암호화를 활성화하여 기존의 암호화된 폴더들을 동기화할 수 있습니다.</translation>
@@ -1795,6 +1800,32 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <translation>다운로드하려면 설정으로 이동하여 선택하십시오.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <source>Keep syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1320"/>
+        <source>Stop syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1331"/>
+        <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1332"/>
+        <source>Would you like to stop syncing this folder?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 폴더가 생성되었으나 이전에 동기화에서 제외되었습니다. 그 안의 데이터는 동기화되지 않습니다.</translation>
@@ -2417,10 +2448,25 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>다음 보다 큰 폴더를 동기화하기 전에 확인하십시오.</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="234"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <source>Notify when synchronised folders grow larger than specified limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <source>Automatically disable synchronisation of folders that overcome limit</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2428,7 +2474,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>외부 저장소를 동기화하기 전에 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>Move removed files to trash</source>
         <translation type="unfinished"/>
     </message>
