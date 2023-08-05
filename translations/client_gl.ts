@@ -2871,12 +2871,12 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="123"/>
         <source>Checksum computation failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="229"/>
         <source>The local file was removed during sync.</source>
         <translation>O ficheiro local retirarase durante a sincronización.</translation>
     </message>

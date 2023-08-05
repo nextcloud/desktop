@@ -2872,12 +2872,12 @@ for additional privileges during the process.</source>
         <translation>%1 文件当前正在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="123"/>
         <source>Checksum computation failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="229"/>
         <source>The local file was removed during sync.</source>
         <translation>本地文件在同步时已删除。</translation>
     </message>

@@ -2885,12 +2885,12 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>%1 is in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="123"/>
         <source>Checksum computation failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="229"/>
         <source>The local file was removed during sync.</source>
         <translation>Het lokale bestand werd verwijderd tijdens sync.</translation>
     </message>

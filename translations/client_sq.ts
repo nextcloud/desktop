@@ -2885,12 +2885,12 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>%1 kartela është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="123"/>
         <source>Checksum computation failed</source>
         <translation>Njehsimi i checksum-it dështoi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="229"/>
         <source>The local file was removed during sync.</source>
         <translation>Kartela vendore u hoq gjatë njëkohësimit.</translation>
     </message>
