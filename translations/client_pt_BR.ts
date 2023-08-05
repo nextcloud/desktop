@@ -745,6 +745,11 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Existem pastas que não foram sincronizadas porque são muito grandes ou são armazenamentos externos: </translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <source>There are folders that have grown in size beyond %1MB: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>A criptografia de ponta a ponta foi habilitada nesta conta com outro dispositivo.&lt;br&gt;Ele pode ser ativado neste dispositivo inserindo seu mnemônico.&lt;br&gt;Isso permitirá a sincronização de pastas criptografadas existentes.</translation>
@@ -1795,6 +1800,32 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
         <translation>Por favor, vá às configurações para selecioná-la se desejar baixá-la.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1301"/>
+        <source>A folder has surpassed the set folder size limit of %1MB: %2.
+%3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <source>Keep syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1320"/>
+        <source>Stop syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1331"/>
+        <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1332"/>
+        <source>Would you like to stop syncing this folder?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>A pasta %1 foi criada, mas foi excluída da sincronização anteriormente. Dados dentro dela não serão sincronizados.</translation>
@@ -2414,10 +2445,25 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Pedir confirmação antes de sincronizar pastas maiores que</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="234"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <source>Notify when synchronised folders grow larger than specified limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <source>Automatically disable synchronisation of folders that overcome limit</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2425,7 +2471,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Pedir confirmação antes de sincronizar armazenamentos externos</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="284"/>
+        <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>Move removed files to trash</source>
         <translation>Mover arquivos removidos para a lixeira</translation>
     </message>
