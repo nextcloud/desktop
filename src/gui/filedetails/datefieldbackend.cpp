@@ -19,5 +19,19 @@ namespace OCC
 namespace Quick
 {
 
+QDateTime DateFieldBackend::dateTime() const
+{
+    return m_dateTime;
+}
+
+void DateFieldBackend::setDateTime(const QDateTime &dateTime)
+{
+    if (m_dateTime == dateTime) {
+        return;
+    }
+
+    m_dateTime = dateTime;
+    Q_EMIT dateTimeChanged();
+}
 }
 }
