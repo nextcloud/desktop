@@ -357,7 +357,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
         // mini-jobs later on, we just update metadata right now.
 
         if (item->_direction == SyncFileItem::Down) {
-            auto modificationHappened = false;
+            auto modificationHappened = false; // Decides whether or not we modify file metadata
             QString filePath = _localPath + item->_file;
 
             // If the 'W' remote permission changed, update the local filesystem
@@ -368,6 +368,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
                 modificationHappened = FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
+
+            modificationHappened |= item->_size != prev._fileSize;
 
             auto rec = item->toSyncJournalFileRecordWithInode(filePath);
             if (rec._checksumHeader.isEmpty())
