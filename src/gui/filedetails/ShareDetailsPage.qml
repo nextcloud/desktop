@@ -682,127 +682,24 @@ Page {
                     sourceSize.height: scrollContentsColumn.rowIconWidth
                 }
 
-                // QML dates are essentially JavaScript dates, which makes them very finicky and unreliable.
-                // Instead, we exclusively deal with msecs from epoch time to make things less painful when editing.
-                // We only use the QML Date when showing the nice string to the user.
-                NCInputTextField {
+                NCInputDateField {
                     id: expireDateField
 
-                    function updateText() {
-                        text = textFromValue(value, locale);
-                    }
-
-                    // Work arounds the limitations of QML's 32 bit integer when handling msecs from epoch
-                    // Instead, we handle everything as days since epoch
-                    readonly property int dayInMSecs: 24 * 60 * 60 * 1000
-                    readonly property int expireDateReduced: Math.floor(root.expireDate / dayInMSecs)
-                    // Reset the model data after binding broken on user interact
-                    onExpireDateReducedChanged: {
-                        value = expireDateReduced;
-                        updateText();
-                    }
-
-                    // We can't use JS's convenient Infinity or Number.MAX_VALUE as
-                    // JS Number type is 64 bits, whereas QML's int type is only 32 bits
-                    readonly property IntValidator intValidator: IntValidator {}
-                    readonly property int maximumExpireDateReduced: root.expireDateEnforced ?
-                                                                        Math.floor(root.maximumExpireDate / dayInMSecs) :
-                                                                        intValidator.top
-                    readonly property int minimumExpireDateReduced: {
-                        const currentDate = new Date();
-                        const minDateUTC = new Date(Date.UTC(currentDate.getFullYear(),
-                                                             currentDate.getMonth(),
-                                                             currentDate.getDate() + 1));
-                        return Math.floor(minDateUTC / dayInMSecs) // Start of day at 00:00:0000 UTC
-                    }
-
-                    readonly property var from: minimumExpireDateReduced
-                    readonly property var to: maximumExpireDateReduced
-                    property var value: expireDateReduced
-
-                    // Taken from Kalendar 22.08
-                    // https://invent.kde.org/pim/kalendar/-/blob/release/22.08/src/contents/ui/KalendarUtils/dateutils.js
-                    function parseDateString(dateString) {
-                        function defaultParse() {
-                            const defaultParsedDate = Date.fromLocaleDateString(Qt.locale(), dateString, Locale.NarrowFormat);
-                            // JS always generates date in system locale, eliminate timezone difference to UTC
-                            const msecsSinceEpoch = defaultParsedDate.getTime() - (defaultParsedDate.getTimezoneOffset() * 60 * 1000);
-                            return new Date(msecsSinceEpoch);
-                        }
-
-                        const dateStringDelimiterMatches = dateString.match(/\D/);
-                        if(dateStringDelimiterMatches.length === 0) {
-                            // Let the date method figure out this weirdness
-                            return defaultParse();
-                        }
-
-                        const dateStringDelimiter = dateStringDelimiterMatches[0];
-
-                        const localisedDateFormatSplit = Qt.locale().dateFormat(Locale.NarrowFormat).split(dateStringDelimiter);
-                        const localisedDateDayPosition = localisedDateFormatSplit.findIndex((x) => /d/gi.test(x));
-                        const localisedDateMonthPosition = localisedDateFormatSplit.findIndex((x) => /m/gi.test(x));
-                        const localisedDateYearPosition = localisedDateFormatSplit.findIndex((x) => /y/gi.test(x));
-
-                        let splitDateString = dateString.split(dateStringDelimiter);
-                        let userProvidedYear = splitDateString[localisedDateYearPosition]
-
-                        const dateNow = new Date();
-                        const stringifiedCurrentYear = dateNow.getFullYear().toString();
-
-                        // If we have any input weirdness, or if we have a fully-written year
-                        // (e.g. 2022 instead of 22) then use default parse
-                        if(splitDateString.length === 0 ||
-                                splitDateString.length > 3 ||
-                                userProvidedYear.length >= stringifiedCurrentYear.length) {
-
-                            return defaultParse();
-                        }
-
-                        let fullyWrittenYear = userProvidedYear.split("");
-                        const digitsToAdd = stringifiedCurrentYear.length - fullyWrittenYear.length;
-                        for(let i = 0; i < digitsToAdd; i++) {
-                            fullyWrittenYear.splice(i, 0, stringifiedCurrentYear[i])
-                        }
-                        fullyWrittenYear = fullyWrittenYear.join("");
-
-                        const fixedYearNum = Number(fullyWrittenYear);
-                        const monthIndexNum = Number(splitDateString[localisedDateMonthPosition]) - 1;
-                        const dayNum = Number(splitDateString[localisedDateDayPosition]);
-
-                        console.log(dayNum, monthIndexNum, fixedYearNum);
-
-                        // Modification: return date in UTC
-                        return new Date(Date.UTC(fixedYearNum, monthIndexNum, dayNum));
-                    }
-
-                    function textFromValue(value, locale) {
-                        const dateFromValue = new Date(value * dayInMSecs);
-                        return dateFromValue.toLocaleDateString(Qt.locale(), Locale.NarrowFormat);
-                    }
-                    
-                    function valueFromText(text, locale) {
-                        const dateFromText = parseDateString(text);
-                        return Math.floor(dateFromText.getTime() / dayInMSecs);
-                    }
-
-                    Layout.fillWidth: true
-                    height: visible ? implicitHeight : 0
-
-                    validInput: {
-                        const value = valueFromText(text);
-                        return value >= from && value <= to;
-                    }
-
-                    text: textFromValue(expireDateSpinBox.value, expireDateSpinBox.locale)
-                    inputMethodHints: expireDateSpinBox.inputMethodHints
-
-                    onAccepted: {
+                    date: root.expireDate
+                    onDateChanged: {
                         const value = valueFromText(text, expireDateSpinBox.locale);
                         root.setExpireDate(value * dayInMSecs);
                         root.waitingForExpireDateChange = true;
                     }
 
-                    inputMethodHints: Qt.ImhDate
+                    maximumDate: root.maximumExpireDate
+                    minimumDate: {
+                        const currentDate = new Date();
+                        // Start of day at 00:00:0000 UTC
+                        return new Date(Date.UTC(currentDate.getFullYear(),
+                                                 currentDate.getMonth(),
+                                                 currentDate.getDate() + 1));
+                    }
 
                     enabled: root.expireDateEnabled &&
                              !root.waitingForExpireDateChange &&
