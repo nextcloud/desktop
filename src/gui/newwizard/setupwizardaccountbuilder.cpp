@@ -179,12 +179,12 @@ AbstractAuthenticationStrategy *SetupWizardAccountBuilder::authenticationStrateg
     return _authenticationStrategy.get();
 }
 
-void SetupWizardAccountBuilder::setDefaultSyncTargetDir(const QString &syncTargetDir)
+void SetupWizardAccountBuilder::setSyncTargetDir(const QString &syncTargetDir)
 {
     _defaultSyncTargetDir = syncTargetDir;
 }
 
-QString SetupWizardAccountBuilder::defaultSyncTargetDir() const
+QString SetupWizardAccountBuilder::syncTargetDir() const
 {
     return _defaultSyncTargetDir;
 }

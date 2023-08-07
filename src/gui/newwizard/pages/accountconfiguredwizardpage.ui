@@ -220,6 +220,26 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QPushButton" name="resetLocalDirectoryButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>Restore default value</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../../resources/client.qrc">
+                  <normaloff>:/client/resources/light/undo.svg</normaloff>:/client/resources/light/undo.svg</iconset>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
            </layout>
@@ -233,6 +253,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../resources/client.qrc"/>
+ </resources>
  <connections/>
 </ui>

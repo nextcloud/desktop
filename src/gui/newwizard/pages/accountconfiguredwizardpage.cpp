@@ -15,14 +15,15 @@
 
 namespace OCC::Wizard {
 
-AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultSyncTargetDir, bool vfsIsAvailable, bool enableVfsByDefault, bool vfsModeIsExperimental)
+AccountConfiguredWizardPage::AccountConfiguredWizardPage(
+    const QString &defaultSyncTargetDir, const QString &userChosenSyncTargetDir, bool vfsIsAvailable, bool enableVfsByDefault, bool vfsModeIsExperimental)
     : _ui(new ::Ui::AccountConfiguredWizardPage)
 {
     _ui->setupUi(this);
 
     // by default, sync everything to an automatically chosen directory, VFS use depends on the OS
     // the defaults are provided by the controller
-    _ui->localDirectoryLineEdit->setText(QDir::toNativeSeparators(defaultSyncTargetDir));
+    _ui->localDirectoryLineEdit->setText(QDir::toNativeSeparators(userChosenSyncTargetDir));
     _ui->syncEverythingRadioButton->setChecked(true);
 
     // could also make it invisible, but then the UX is different for different installations
@@ -78,7 +79,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     }
 
     connect(_ui->chooseLocalDirectoryButton, &QToolButton::clicked, this, [=]() {
-        auto dialog = new QFileDialog(this, tr("Select the local folder"), defaultSyncTargetDir);
+        auto dialog = new QFileDialog(this, tr("Select the local folder"), _ui->localDirectoryLineEdit->text());
         dialog->setFileMode(QFileDialog::Directory);
         dialog->setOption(QFileDialog::ShowDirsOnly);
 
@@ -155,6 +156,17 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     // toggle once to have the according handlers set up the initial UI state
     _ui->advancedConfigGroupBox->setChecked(true);
     _ui->advancedConfigGroupBox->setChecked(false);
+
+    // allows resetting local directory to default value once changed
+    _ui->resetLocalDirectoryButton->setIcon(Resources::getCoreIcon(QStringLiteral("undo")));
+    auto enableResetLocalDirectoryButton = [this, defaultSyncTargetDir]() {
+        return _ui->localDirectoryLineEdit->text() != QDir::toNativeSeparators(defaultSyncTargetDir);
+    };
+    _ui->resetLocalDirectoryButton->setEnabled(enableResetLocalDirectoryButton());
+    connect(_ui->localDirectoryLineEdit, &QLineEdit::textChanged, this,
+        [this, enableResetLocalDirectoryButton]() { _ui->resetLocalDirectoryButton->setEnabled(enableResetLocalDirectoryButton()); });
+    connect(_ui->resetLocalDirectoryButton, &QPushButton::clicked, this,
+        [this, defaultSyncTargetDir]() { _ui->localDirectoryLineEdit->setText(QDir::toNativeSeparators(defaultSyncTargetDir)); });
 }
 
 AccountConfiguredWizardPage::~AccountConfiguredWizardPage() noexcept

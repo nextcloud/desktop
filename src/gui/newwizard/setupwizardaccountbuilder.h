@@ -143,9 +143,8 @@ public:
     QString displayName() const;
     void setDisplayName(const QString &displayName);
 
-    // getter is not needed at the moment
-    void setDefaultSyncTargetDir(const QString &syncTargetDir);
-    QString defaultSyncTargetDir() const;
+    void setSyncTargetDir(const QString &syncTargetDir);
+    QString syncTargetDir() const;
 
     /**
      * Store custom CA certificate for the newly built account.
