@@ -12,9 +12,6 @@
  * for more details.
  */
 
-// QML dates are essentially JavaScript dates, which makes them very finicky and unreliable.
-// Instead, we exclusively deal with msecs from epoch time to make things less painful when editing.
-// We only use the QML Date when showing the nice string to the user.
 NCInputTextField {
     id: root
 
@@ -88,29 +85,14 @@ NCInputTextField {
     }
 
     property var date: new Date().getTime() * 1000 // QDateTime msecsFromEpoch
+    onDateChanged: updateText()
+
     property var minimumDate: 0
     property var maximumDate: Number.MAX_SAFE_INTEGER
 
-    // Work arounds the limitations of QML's 32 bit integer when handling msecs from epoch
-    // Instead, we handle everything as days since epoch
-    readonly property int _dayInMSecs: 24 * 60 * 60 * 1000
-    readonly property int _expireDateReduced: Math.floor(root.date / dayInMSecs)
-    // Reset the model data after binding broken on user interact
-    onExpireDateReducedChanged: {
-        value = expireDateReduced;
-        updateText();
-    }
-
-    readonly property int _maximumExpireDateReduced: Math.floor(maximumDate / dayInMSecs)
-    readonly property int _minimumExpireDateReduced: Math.floor(minimumDate / dayInMSecs)
-
-    readonly property var _from: minimumExpireDateReduced
-    readonly property var _to: maximumExpireDateReduced
-    readonly property var _value: expireDateReduced
-
     validInput: {
         const value = valueFromText(text);
-        return value >= _from && value <= _to;
+        return value >= minimumDate && value <= maximumDate;
     }
 
     text: _textFromValue(_value, locale)
