@@ -685,11 +685,11 @@ Page {
                 // QML dates are essentially JavaScript dates, which makes them very finicky and unreliable.
                 // Instead, we exclusively deal with msecs from epoch time to make things less painful when editing.
                 // We only use the QML Date when showing the nice string to the user.
-                SpinBox {
-                    id: expireDateSpinBox
+                NCInputTextField {
+                    id: expireDateField
 
                     function updateText() {
-                        expireDateSpinBoxTextField.text = textFromValue(value, locale);
+                        text = textFromValue(value, locale);
                     }
 
                     // Work arounds the limitations of QML's 32 bit integer when handling msecs from epoch
@@ -715,6 +715,10 @@ Page {
                                                              currentDate.getDate() + 1));
                         return Math.floor(minDateUTC / dayInMSecs) // Start of day at 00:00:0000 UTC
                     }
+
+                    readonly property var from: minimumExpireDateReduced
+                    readonly property var to: maximumExpireDateReduced
+                    property var value: expireDateReduced
 
                     // Taken from Kalendar 22.08
                     // https://invent.kde.org/pim/kalendar/-/blob/release/22.08/src/contents/ui/KalendarUtils/dateutils.js
@@ -771,62 +775,38 @@ Page {
                         return new Date(Date.UTC(fixedYearNum, monthIndexNum, dayNum));
                     }
 
-                    Layout.fillWidth: true
-                    height: visible ? implicitHeight : 0
-
-                    // We want all the internal benefits of the spinbox but don't actually want the
-                    // buttons, so set an empty item as a dummy
-                    up.indicator: Item {}
-                    down.indicator: Item {}
-
-                    padding: 0
-                    background: null
-                    contentItem: NCInputTextField {
-                        id: expireDateSpinBoxTextField
-
-                        validInput: {
-                            const value = expireDateSpinBox.valueFromText(text);
-                            return value >= expireDateSpinBox.from && value <= expireDateSpinBox.to;
-                        }
-
-                        text: expireDateSpinBox.textFromValue(expireDateSpinBox.value, expireDateSpinBox.locale)
-                        readOnly: !expireDateSpinBox.editable
-                        validator: expireDateSpinBox.validator
-                        inputMethodHints: Qt.ImhFormattedNumbersOnly
-                        onAccepted: {
-                            expireDateSpinBox.value = expireDateSpinBox.valueFromText(text, expireDateSpinBox.locale);
-                            expireDateSpinBox.valueModified();
-                        }
-                    }
-
-                    value: expireDateReduced
-                    from: minimumExpireDateReduced
-                    to: maximumExpireDateReduced
-
-                    textFromValue: (value, locale) => {
+                    function textFromValue(value, locale) {
                         const dateFromValue = new Date(value * dayInMSecs);
                         return dateFromValue.toLocaleDateString(Qt.locale(), Locale.NarrowFormat);
                     }
-                    valueFromText: (text, locale) => {
+                    
+                    function valueFromText(text, locale) {
                         const dateFromText = parseDateString(text);
                         return Math.floor(dateFromText.getTime() / dayInMSecs);
                     }
 
-                    editable: true
-                    inputMethodHints: Qt.ImhDate | Qt.ImhFormattedNumbersOnly
+                    Layout.fillWidth: true
+                    height: visible ? implicitHeight : 0
+
+                    validInput: {
+                        const value = valueFromText(text);
+                        return value >= from && value <= to;
+                    }
+
+                    text: textFromValue(expireDateSpinBox.value, expireDateSpinBox.locale)
+                    inputMethodHints: expireDateSpinBox.inputMethodHints
+
+                    onAccepted: {
+                        const value = valueFromText(text, expireDateSpinBox.locale);
+                        root.setExpireDate(value * dayInMSecs);
+                        root.waitingForExpireDateChange = true;
+                    }
+
+                    inputMethodHints: Qt.ImhDate
 
                     enabled: root.expireDateEnabled &&
                              !root.waitingForExpireDateChange &&
                              !root.waitingForExpireDateEnabledChange
-
-                    onValueModified: {
-                        if (!enabled || !activeFocus) {
-                            return;
-                        }
-
-                        root.setExpireDate(value * dayInMSecs);
-                        root.waitingForExpireDateChange = true;
-                    }
 
                     NCBusyIndicator {
                         anchors.fill: parent
