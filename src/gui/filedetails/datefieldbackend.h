@@ -30,6 +30,8 @@ class DateFieldBackend : public QObject
     Q_PROPERTY(qint64 dateTimeMsecs READ dateTimeMsecs WRITE setDateTimeMsecs NOTIFY dateTimeChanged)
     Q_PROPERTY(QString dateTimeString READ dateTimeString WRITE setDateTimeString NOTIFY dateTimeChanged)
 
+    Q_PROPERTY(QDateTime minimumDateTime READ minimumDateTime WRITE setMinimumDateTime NOTIFY minimumDateTimeChanged)
+    Q_PROPERTY(qint64 minimumDateTimeMsecs READ minimumDateTimeMsecs WRITE setMinimumDateTimeMsecs NOTIFY minimumDateTimeChanged)
 public:
     explicit DateFieldBackend() = default;
 
@@ -37,16 +39,24 @@ public:
     [[nodiscard]] qint64 dateTimeMsecs() const;
     [[nodiscard]] QString dateTimeString() const;
 
+    [[nodiscard]] QDateTime minimumDateTime() const;
+    [[nodiscard]] qint64 minimumDateTimeMsecs() const;
+
 public slots:
     void setDateTime(const QDateTime &dateTime);
     void setDateTimeMsecs(const qint64 dateTimeMsecs);
     void setDateTimeString(const QString &dateTimeString);
 
+    void setMinimumDateTime(const QDateTime &minimumDateTime);
+    void setMinimumDateTimeMsecs(const qint64 minimumDateTimeMsecs);
+
 signals:
     void dateTimeChanged();
+    void minimumDateTimeChanged();
 
 private:
-    QDateTime m_dateTime;
+    QDateTime _dateTime;
+    QDateTime _minimumDateTime;
 };
 
 } // namespace Quick
