@@ -93,5 +93,35 @@ void DateFieldBackend::setMinimumDateTimeMsecs(const qint64 minimumDateTimeMsecs
     const auto dt = QDateTime::fromMSecsSinceEpoch(minimumDateTimeMsecs);
     setMinimumDateTime(dt);
 }
+
+QDateTime DateFieldBackend::maximumDateTime() const
+{
+    return _maximumDateTime;
+}
+
+void DateFieldBackend::setMaximumDateTime(const QDateTime &maximumDateTime)
+{
+    if (_maximumDateTime == maximumDateTime) {
+        return;
+    }
+
+    _maximumDateTime = maximumDateTime;
+    Q_EMIT maximumDateTimeChanged();
+}
+
+qint64 DateFieldBackend::maximumDateTimeMsecs() const
+{
+    return _maximumDateTime.toMSecsSinceEpoch();
+}
+
+void DateFieldBackend::setMaximumDateTimeMsecs(const qint64 maximumDateTimeMsecs)
+{
+    if (_maximumDateTime.toMSecsSinceEpoch() == maximumDateTimeMsecs) {
+        return;
+    }
+
+    const auto dt = QDateTime::fromMSecsSinceEpoch(maximumDateTimeMsecs);
+    setMaximumDateTime(dt);
+}
 }
 }
