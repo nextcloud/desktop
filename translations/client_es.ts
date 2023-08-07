@@ -749,7 +749,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Existen carpetas que han aumentado de tamaño más alla de %1MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -1805,27 +1805,28 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
         <location filename="../src/gui/folder.cpp" line="1301"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Una carpeta ha sobrepasado el límite establecido de tamaño de %1MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1312"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Continuar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1320"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Detener sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta %1 ha sobrepasado el límite establecido de tamaño de %2MB.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>¿Desea detener la sincronización de esta carpeta?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
@@ -2452,7 +2453,7 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Pedir confirmación antes de sincronizar carpetas nuevas mayores a</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2463,12 +2464,12 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
     <message>
         <location filename="../src/gui/generalsettings.ui" line="281"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Notificar cuando las carpetas sincronizadas aumenten su tamaño más allá del límite especificado</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Deshabilitar sincronización de manera automática para las carpetas que sobrepasen el límite</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2478,7 +2479,7 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
     <message>
         <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Mover archivos eliminados a la papelera</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>

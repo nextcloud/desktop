@@ -748,7 +748,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>有些資料夾的大小已超過 %1MB：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -1804,27 +1804,28 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="1301"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>資料夾已超過設定的資料夾大小限制 %1MB：%2。
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1312"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>保持同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1320"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>停止同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾 %1 已超過設定的資料夾大小限制 %2MB</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>您想要停止同步此資料夾嗎？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
@@ -2450,7 +2451,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>先詢問，當要同步的新資料夾大小超過</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2461,12 +2462,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="281"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>當同步資料夾的大小超過指定限制時發出通知</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>自動停用超出限制的資料夾同步</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
