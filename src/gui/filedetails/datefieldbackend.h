@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <QDateTime>
 #include <QObject>
 
 namespace OCC
@@ -25,8 +26,21 @@ class DateFieldBackend : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QDateTime dateTime READ dateTime WRITE setDateTime NOTIFY dateTimeChanged)
+
 public:
     explicit DateFieldBackend() = default;
+
+    [[nodiscard]] QDateTime dateTime() const;
+
+public slots:
+    void setDateTime(const QDateTime &dateTime);
+
+signals:
+    void dateTimeChanged();
+
+private:
+    QDateTime m_dateTime;
 };
 
 } // namespace Quick
