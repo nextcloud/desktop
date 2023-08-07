@@ -190,6 +190,8 @@ set(client_SRCS
     syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
+    filedetails/datefieldbackend.h
+    filedetails/datefieldbackend.cpp
     filedetails/filedetails.h
     filedetails/filedetails.cpp
     filedetails/sharemodel.h
