@@ -33,5 +33,21 @@ void DateFieldBackend::setDateTime(const QDateTime &dateTime)
     m_dateTime = dateTime;
     Q_EMIT dateTimeChanged();
 }
+
+qint64 DateFieldBackend::dateTimeMsecs() const
+{
+    return m_dateTime.toMSecsSinceEpoch();
+}
+
+void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
+{
+    if (m_dateTime.toMSecsSinceEpoch() == dateTimeMsecs) {
+        return;
+    }
+
+    const auto dt = QDateTime::fromMSecsSinceEpoch(dateTimeMsecs);
+    setDateTime(dt);
+}
+
 }
 }
