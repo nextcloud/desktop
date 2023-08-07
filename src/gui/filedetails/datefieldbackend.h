@@ -28,16 +28,19 @@ class DateFieldBackend : public QObject
 
     Q_PROPERTY(QDateTime dateTime READ dateTime WRITE setDateTime NOTIFY dateTimeChanged)
     Q_PROPERTY(qint64 dateTimeMsecs READ dateTimeMsecs WRITE setDateTimeMsecs NOTIFY dateTimeChanged)
+    Q_PROPERTY(QString dateTimeString READ dateTimeString WRITE setDateTimeString NOTIFY dateTimeChanged)
 
 public:
     explicit DateFieldBackend() = default;
 
     [[nodiscard]] QDateTime dateTime() const;
     [[nodiscard]] qint64 dateTimeMsecs() const;
+    [[nodiscard]] QString dateTimeString() const;
 
 public slots:
     void setDateTime(const QDateTime &dateTime);
     void setDateTimeMsecs(const qint64 dateTimeMsecs);
+    void setDateTimeString(const QString &dateTimeString);
 
 signals:
     void dateTimeChanged();
