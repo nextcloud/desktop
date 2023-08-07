@@ -59,5 +59,6 @@
         <file>src/gui/ResolveConflictsDialog.qml</file>
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
+        <file>src/gui/filedetails/NCInputDateField.qml</file>
     </qresource>
 </RCC>
