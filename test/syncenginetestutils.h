@@ -108,6 +108,8 @@ public:
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
     void setE2EE(const QString &relativepath, const bool enabled) override;
+
+    [[nodiscard]] QFile find(const QString &relativePath) const;
 };
 
 class FileInfo : public FileModifier
