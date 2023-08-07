@@ -23,27 +23,27 @@ namespace Quick
 
 QDateTime DateFieldBackend::dateTime() const
 {
-    return m_dateTime;
+    return _dateTime;
 }
 
 void DateFieldBackend::setDateTime(const QDateTime &dateTime)
 {
-    if (m_dateTime == dateTime) {
+    if (_dateTime == dateTime) {
         return;
     }
 
-    m_dateTime = dateTime;
+    _dateTime = dateTime;
     Q_EMIT dateTimeChanged();
 }
 
 qint64 DateFieldBackend::dateTimeMsecs() const
 {
-    return m_dateTime.toMSecsSinceEpoch();
+    return _dateTime.toMSecsSinceEpoch();
 }
 
 void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
 {
-    if (m_dateTime.toMSecsSinceEpoch() == dateTimeMsecs) {
+    if (_dateTime.toMSecsSinceEpoch() == dateTimeMsecs) {
         return;
     }
 
@@ -54,7 +54,7 @@ void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
 QString DateFieldBackend::dateTimeString() const
 {
     const auto locale = QLocale::system();
-    return m_dateTime.toString(locale.dateTimeFormat(QLocale::ShortFormat));
+    return _dateTime.toString(locale.dateTimeFormat(QLocale::ShortFormat));
 }
 
 void DateFieldBackend::setDateTimeString(const QString &dateTimeString)
@@ -64,5 +64,34 @@ void DateFieldBackend::setDateTimeString(const QString &dateTimeString)
     setDateTime(dt);
 }
 
+QDateTime DateFieldBackend::minimumDateTime() const
+{
+    return _minimumDateTime;
+}
+
+void DateFieldBackend::setMinimumDateTime(const QDateTime &minimumDateTime)
+{
+    if (_minimumDateTime == minimumDateTime) {
+        return;
+    }
+
+    _minimumDateTime = minimumDateTime;
+    Q_EMIT minimumDateTimeChanged();
+}
+
+qint64 DateFieldBackend::minimumDateTimeMsecs() const
+{
+    return _minimumDateTime.toMSecsSinceEpoch();
+}
+
+void DateFieldBackend::setMinimumDateTimeMsecs(const qint64 minimumDateTimeMsecs)
+{
+    if (_minimumDateTime.toMSecsSinceEpoch() == minimumDateTimeMsecs) {
+        return;
+    }
+
+    const auto dt = QDateTime::fromMSecsSinceEpoch(minimumDateTimeMsecs);
+    setMinimumDateTime(dt);
+}
 }
 }
