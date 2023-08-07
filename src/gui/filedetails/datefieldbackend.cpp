@@ -14,6 +14,8 @@
 
 #include "datefieldbackend.h"
 
+#include <QLocale>
+
 namespace OCC
 {
 namespace Quick
@@ -46,6 +48,19 @@ void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
     }
 
     const auto dt = QDateTime::fromMSecsSinceEpoch(dateTimeMsecs);
+    setDateTime(dt);
+}
+
+QString DateFieldBackend::dateTimeString() const
+{
+    const auto locale = QLocale::system();
+    return m_dateTime.toString(locale.dateTimeFormat(QLocale::ShortFormat));
+}
+
+void DateFieldBackend::setDateTimeString(const QString &dateTimeString)
+{
+    const auto locale = QLocale::system();
+    const auto dt = locale.toDateTime(dateTimeString, locale.dateTimeFormat(QLocale::ShortFormat));
     setDateTime(dt);
 }
 
