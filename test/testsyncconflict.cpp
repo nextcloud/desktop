@@ -516,9 +516,19 @@ private slots:
         QCOMPARE(conflictRecords.size(), 3);
         std::sort(conflictRecords.begin(), conflictRecords.end());
 
+        // The way the local state is after syncing with conflicts is that the local modifications get
+        // renamed as "conflicted copy", and the files/folders from the server take their place. Note
+        // that for a dehydrated VFS, this means that placeholders will be created for files that are
+        // on the server.
+
         // 1)
         QVERIFY(itemConflict(completeSpy, QStringLiteral("Z")));
-        QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("Z"))->contentSize, 63);
+        if (filesAreDehydrated) {
+            // New remote file shows up as placeholder.
+            QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("Z"))->isDehydratedPlaceholder);
+        } else {
+            QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("Z"))->contentSize, 63);
+        }
         QVERIFY(conflicts[2].contains(QStringLiteral("Z")));
         QCOMPARE(conflicts[2].toUtf8(), conflictRecords[2]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[2]).isDir());
@@ -526,7 +536,14 @@ private slots:
 
         // 2)
         QVERIFY(itemConflict(completeSpy, QStringLiteral("A/a1")));
-        QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("A/a1"))->contentSize, 5);
+        if (filesAreDehydrated) {
+            // This was a placeholder, got removed (changed into a directory) locally, then saved
+            // as "conflicted copy" during the sync, and a new placeholder is created for the file
+            // on the server.
+            QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1"))->isDehydratedPlaceholder);
+        } else {
+            QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("A/a1"))->contentSize, 5);
+        }
         QVERIFY(conflicts[0].contains(QStringLiteral("A/a1")));
         QCOMPARE(conflicts[0].toUtf8(), conflictRecords[0]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[0]).isDir());
@@ -534,7 +551,12 @@ private slots:
 
         // 3)
         QVERIFY(itemConflict(completeSpy, QStringLiteral("B")));
-        QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("B"))->contentSize, 31);
+        if (filesAreDehydrated) {
+            // New remote file shows up as placeholder.
+            QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("B"))->isDehydratedPlaceholder);
+        } else {
+            QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("B"))->contentSize, 31);
+        }
         QVERIFY(conflicts[1].contains(QStringLiteral("B")));
         QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[1]).isDir());
