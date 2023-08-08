@@ -11,6 +11,7 @@
 #include "propagatorjobs.h"
 #include "caseclashconflictsolver.h"
 
+#include <QFile>
 #include <QtTest>
 
 using namespace OCC;
@@ -918,6 +919,29 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
+    }
+
+    // A local file should not be modified after upload to server if nothing has changed.
+    void testLocalFileInitialMtime()
+    {
+        constexpr auto fooFolder = "foo/";
+        constexpr auto barFile = "foo/bar";
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(fooFolder);
+        fakeFolder.localModifier().insert(barFile);
+
+        const auto localDiskFileModifier = dynamic_cast<DiskFileModifier &>(fakeFolder.localModifier());
+
+        const auto localFile = localDiskFileModifier.find(barFile);
+        const auto localFileInfo = QFileInfo(localFile);
+        const auto expectedMtime = localFileInfo.metadataChangeTime();
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto currentMtime = localFileInfo.metadataChangeTime();
+        QCOMPARE(currentMtime, expectedMtime);
     }
 
     /**

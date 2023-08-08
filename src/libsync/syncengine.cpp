@@ -357,6 +357,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
         // mini-jobs later on, we just update metadata right now.
 
         if (item->_direction == SyncFileItem::Down) {
+            auto modificationHappened = false; // Decides whether or not we modify file metadata
             QString filePath = _localPath + item->_file;
 
             // If the 'W' remote permission changed, update the local filesystem
@@ -365,15 +366,18 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 && prev.isValid()
                 && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
                 const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
-                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+                modificationHappened = FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
+
+            modificationHappened |= item->_size != prev._fileSize;
+
             auto rec = item->toSyncJournalFileRecordWithInode(filePath);
             if (rec._checksumHeader.isEmpty())
                 rec._checksumHeader = prev._checksumHeader;
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
 
             // Ensure it's a placeholder file on disk
-            if (item->_type == ItemTypeFile) {
+            if (item->_type == ItemTypeFile && _syncOptions._vfs->mode() != Vfs::Off) {
                 const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
                 if (!result) {
                     item->_status = SyncFileItem::Status::NormalError;
@@ -382,10 +386,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
+                modificationHappened = true;
             }
 
             // Update on-disk virtual file metadata
-            if (item->_type == ItemTypeVirtualFile) {
+            if (modificationHappened && item->_type == ItemTypeVirtualFile) {
                 auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
                 if (!r) {
                     item->_status = SyncFileItem::Status::NormalError;
@@ -394,7 +399,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
-            } else {
+            } else if (modificationHappened || prev._modtime != item->_modtime) {
                 if (!FileSystem::setModTime(filePath, item->_modtime)) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
                     item->_errorString = tr("Could not update file metadata: %1").arg(filePath);

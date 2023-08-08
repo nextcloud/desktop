@@ -112,6 +112,12 @@ void DiskFileModifier::setE2EE([[maybe_unused]] const QString &relativePath, [[m
 {
 }
 
+QFile DiskFileModifier::find(const QString &relativePath) const
+{
+    const auto path = _rootDir.filePath(relativePath);
+    return QFile(path);
+}
+
 FileInfo FileInfo::A12_B12_C12_S12()
 {
     FileInfo fi { QString {}, {
