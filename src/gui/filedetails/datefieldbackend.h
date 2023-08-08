@@ -83,6 +83,7 @@ private:
     QDate _maximumDate;
 
     QString _dateFormat;
+    QString _leadingZeroMonthDateFormat;
 };
 
 } // namespace Quick
