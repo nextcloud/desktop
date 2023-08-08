@@ -36,6 +36,8 @@ class DateFieldBackend : public QObject
     Q_PROPERTY(QDateTime maximumDateTime READ maximumDateTime WRITE setMaximumDateTime NOTIFY maximumDateTimeChanged)
     Q_PROPERTY(qint64 maximumDateTimeMsecs READ maximumDateTimeMsecs WRITE setMaximumDateTimeMsecs NOTIFY maximumDateTimeChanged)
 
+    Q_PROPERTY(bool validDateTime READ validDateTime NOTIFY dateTimeChanged NOTIFY minimumDateTimeChanged NOTIFY maximumDateTimeChanged)
+
 public:
     explicit DateFieldBackend() = default;
 
@@ -48,6 +50,8 @@ public:
 
     [[nodiscard]] QDateTime maximumDateTime() const;
     [[nodiscard]] qint64 maximumDateTimeMsecs() const;
+
+    [[nodiscard]] bool validDateTime() const;
 
 public slots:
     void setDateTime(const QDateTime &dateTime);
@@ -66,7 +70,7 @@ signals:
     void maximumDateTimeChanged();
 
 private:
-    QDateTime _dateTime;
+    QDateTime _dateTime = QDateTime::currentDateTimeUtc();
     QDateTime _minimumDateTime;
     QDateTime _maximumDateTime;
 };

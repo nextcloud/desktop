@@ -54,13 +54,13 @@ void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
 QString DateFieldBackend::dateTimeString() const
 {
     const auto locale = QLocale::system();
-    return _dateTime.toString(locale.dateTimeFormat(QLocale::ShortFormat));
+    return _dateTime.toString(locale.dateFormat(QLocale::ShortFormat));
 }
 
 void DateFieldBackend::setDateTimeString(const QString &dateTimeString)
 {
     const auto locale = QLocale::system();
-    const auto dt = locale.toDateTime(dateTimeString, locale.dateTimeFormat(QLocale::ShortFormat));
+    const auto dt = locale.toDateTime(dateTimeString, locale.dateFormat(QLocale::ShortFormat));
     setDateTime(dt);
 }
 
@@ -122,6 +122,21 @@ void DateFieldBackend::setMaximumDateTimeMsecs(const qint64 maximumDateTimeMsecs
 
     const auto dt = QDateTime::fromMSecsSinceEpoch(maximumDateTimeMsecs);
     setMaximumDateTime(dt);
+}
+
+bool DateFieldBackend::validDateTime() const
+{
+    auto valid = _dateTime.isValid();
+
+    if (_minimumDateTime.isValid()) {
+        valid &= _dateTime >= _minimumDateTime;
+    }
+
+    if (_maximumDateTime.isValid()) {
+        valid &= _dateTime <= _maximumDateTime;
+    }
+
+    return valid;
 }
 }
 }
