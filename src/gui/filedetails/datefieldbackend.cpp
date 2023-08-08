@@ -16,6 +16,7 @@
 
 #include <QLocale>
 #include <QRegularExpression>
+#include <QTimeZone>
 
 namespace OCC
 {
@@ -71,16 +72,16 @@ void DateFieldBackend::setDate(const QDate &date)
 
 qint64 DateFieldBackend::dateMsecs() const
 {
-    return _date.startOfDay().toMSecsSinceEpoch();
+    return _date.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
 }
 
 void DateFieldBackend::setDateMsecs(const qint64 dateMsecs)
 {
-    if (_date.startOfDay().toMSecsSinceEpoch() == dateMsecs) {
+    if (_date.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch() == dateMsecs) {
         return;
     }
 
-    const auto dt = QDateTime::fromMSecsSinceEpoch(dateMsecs);
+    const auto dt = QDateTime::fromMSecsSinceEpoch(dateMsecs).toUTC();
     setDate(dt.date());
 }
 
@@ -120,12 +121,12 @@ void DateFieldBackend::setMinimumDate(const QDate &minimumDate)
 
 qint64 DateFieldBackend::minimumDateMsecs() const
 {
-    return _minimumDate.startOfDay().toMSecsSinceEpoch();
+    return _minimumDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
 }
 
 void DateFieldBackend::setMinimumDateMsecs(const qint64 minimumDateMsecs)
 {
-    if (_minimumDate.startOfDay().toMSecsSinceEpoch() == minimumDateMsecs) {
+    if (_minimumDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch() == minimumDateMsecs) {
         return;
     }
 
@@ -152,12 +153,12 @@ void DateFieldBackend::setMaximumDate(const QDate &maximumDate)
 
 qint64 DateFieldBackend::maximumDateMsecs() const
 {
-    return _maximumDate.startOfDay().toMSecsSinceEpoch();
+    return _maximumDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch();
 }
 
 void DateFieldBackend::setMaximumDateMsecs(const qint64 maximumDateMsecs)
 {
-    if (_maximumDate.startOfDay().toMSecsSinceEpoch() == maximumDateMsecs) {
+    if (_maximumDate.startOfDay(QTimeZone::utc()).toMSecsSinceEpoch() == maximumDateMsecs) {
         return;
     }
 
