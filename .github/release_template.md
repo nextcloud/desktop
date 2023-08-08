@@ -9,7 +9,7 @@ __TODO__:
 * Check if anything is missing from [release_template_outdated_2020.md](https://github.com/owncloud/client/blob/master/.github/release_template_outdated_2020.md) and merge here. We use the same template for a patch, minor or major release now.
 * For each item add a link to the respective action if available
 
-### Prerequisites
+### Administration
 
 * [ ] QA: Update [Test Plans](https://confluence.owncloud.com/display/OG/Desktop+Client+Test+Plan+Maintenance)
 * [ ] Update [supported platforms](https://doc.owncloud.com/desktop/next/installing.html#system-requirements) @michaelstingl
@@ -19,17 +19,6 @@ __TODO__:
 * [ ] DEV: Update [SBOM](https://cloud.owncloud.com/f/6072843)
 * [ ] DEV: For a major release create `X` version branch
   * [ ] QA: In drone adjust the branch for nightly [GUI tests](https://confluence.owncloud.com/display/OG/Squish+Testing#SquishTesting-Prerequisite) @individual-it
-* [ ] DEV: Create a tag 
-* [ ] DEV: bump VERSION.cmake in master to say 3.(x+1).x unless already done.
-
-### Build
-
-* [ ] QA: [Antivirus scan](https://confluence.owncloud.com/display/OG/Virus+Scanning)
-* [ ] QA: [Upload](https://confluence.owncloud.com/display/OG/Upload+linux+gpg+keys+to+key+server) linux gpg keys to key server
-* [ ] QA: Check Crash reporter:  start 'owncloud --debug' on cmd line, system tray right click menu: 'Crash now - qt fatal' -> report window not empty, sending the report works)
-  * [ ] Windows  
-  * [ ] macOS
-  * [ ] AppImage (Linux)
 * [ ] QA: Communicate documentation changes  
    * [ ] Inform ``#documentation-internal`` (@mmattel) about the start of testing phase (latest a week before the release!). They'll prepare a PR with respective doc version
    * [ ] Open issues in ``docs-client-desktop`` repo for already known doc-relevant items and mark them accordingly, e.g. backport to 2.X.x necessary
@@ -41,23 +30,34 @@ __TODO__:
 ### Copy for Each Build (Beta/RC)
 
 * [ ] DEV: Tag (Beta or RC) and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud' (includes ChangeLog for the tag on https://github.com/owncloud/client/releases/)
+* [ ] Smoke test
 * [ ] Beta/RC [Communication](https://confluence.owncloud.com/x/loJK)
     * [ ] Inform ``#updates`` and ``#marketing`` that we have Beta/RC    
     * [ ] For public prerelease: Tell marketing to send email to beta testers
     * [ ] For public prerelease: Write Central post https://central.owncloud.org/tags/c/news/desktop with link to github release 
 * [ ] DEV: Prepare the update server for new version (AppImages included)
    * [ ] DEV: Provide 'testpilotcloud' on **Beta** update channel
+     
+### QA 
 
-
-### QA
-
-* [Automated tests](https://confluence.owncloud.com/display/OG/Automated+Tests) (copy for the first beta and the last RC):
+* [ ] QA: [Antivirus scan](https://confluence.owncloud.com/display/OG/Virus+Scanning) the first RC
+* [ ] QA: [Upload](https://confluence.owncloud.com/display/OG/Upload+linux+gpg+keys+to+key+server) linux gpg keys to key server
+* [ ] QA: Check Crash reporter:  start 'owncloud --debug' on cmd line, system tray right click menu: 'Crash now - qt fatal' -> report window not empty, sending the report works)
+  * [ ] Windows  
+  * [ ] macOS
+  * [ ] AppImage (Linux)
+* [Automated tests](https://confluence.owncloud.com/display/OG/Automated+Tests) (for the first beta and the last RC):
    * [ ] QA: GUI tests passed on a tag
    * [ ] QA: All [Linux platform install](https://confluence.owncloud.com/display/OG/Automated+Tests#AutomatedTests-LinuxInstallTest)
 * Manual tests:
    * [ ] QA: [Changelog](https://github.com/owncloud/client/blob/master/CHANGELOG.md) test
    * [ ] QA: Regression test
    * [ ] QA: Branded regression test
+
+### Prerequisites for final release
+
+* [ ] DEV: Create vX.Y.Z release tag in client repo and everywhere else
+* [ ] DEV: bump VERSION.cmake in master to say 3.(x+1).x unless already done.
 
 ### Final Rebuild after QA Approval
 
