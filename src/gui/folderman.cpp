@@ -185,17 +185,21 @@ qsizetype FolderMan::setupFolders()
 
         settings->beginGroup(id); // Process settings for this account.
 
-        auto process = [&](const QString &groupName, bool foldersWithPlaceholders) {
+        auto process = [&](const QString &groupName) {
             settings->beginGroup(groupName);
-            setupFoldersHelper(*settings, account, foldersWithPlaceholders);
+            setupFoldersHelper(*settings, account);
             settings->endGroup();
         };
 
-        process(QStringLiteral("Folders"), false);
-        process(QStringLiteral("FoldersWithPlaceholders"), true);
-        // We don't save to `Multifolders` anymore, but for backwards compatibility we will just
-        // read it like it is a `Folders` entry.
-        process(QStringLiteral("Multifolders"), false);
+        process(QStringLiteral("Folders"));
+
+        // removed in 5.0
+        {
+            process(QStringLiteral("FoldersWithPlaceholders"));
+            // We don't save to `Multifolders` anymore, but for backwards compatibility we will just
+            // read it like it is a `Folders` entry.
+            process(QStringLiteral("Multifolders"));
+        }
 
         settings->endGroup(); // Finished processing this account.
     }
@@ -205,7 +209,7 @@ qsizetype FolderMan::setupFolders()
     return _folders.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool foldersWithPlaceholders)
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account)
 {
     const auto &childGroups = settings.childGroups();
     for (const auto &folderAlias : childGroups) {
@@ -262,9 +266,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         }
 
         if (Folder *f = addFolderInternal(std::move(folderDefinition), account, std::move(vfs))) {
-            if (foldersWithPlaceholders)
-                f->setSaveInFoldersWithPlaceholders();
-
             // save possible changes from the migration
             f->saveToSettings();
             emit folderSyncStateChange(f);

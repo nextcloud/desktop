@@ -305,10 +305,6 @@ public:
      */
     void scheduleThisFolderSoon();
 
-    /** Used to have placeholders: save in placeholder config section */
-    void setSaveInFoldersWithPlaceholders() { _saveInFoldersWithPlaceholders = true; }
-
-
     /** virtual files of some kind are enabled
      *
      * This is independent of whether new files will be virtual. It's possible to have this enabled
@@ -503,15 +499,6 @@ private:
     QScopedPointer<SyncRunFileLog> _fileLog;
 
     QTimer _scheduleSelfTimer;
-
-    /** Whether the folder should be saved in that settings group
-     *
-     * If it was read from there it had virtual files enabled at some
-     * point and might still have db entries or suffix-virtual files even
-     * if they are disabled right now. This flag ensures folders that
-     * were in that group once never go back.
-     */
-    bool _saveInFoldersWithPlaceholders = false;
 
     /** Whether a vfs mode switch is pending
      *

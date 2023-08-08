@@ -293,7 +293,7 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool foldersWithPlaceholders);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account);
 
     QSet<Folder *> _disabledFolders;
     QVector<Folder *> _folders;

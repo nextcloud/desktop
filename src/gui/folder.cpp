@@ -754,9 +754,6 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
         _definition.virtualFilesMode = newMode;
         startVfs();
-        if (newMode != Vfs::Off) {
-            _saveInFoldersWithPlaceholders = true;
-        }
         saveToSettings();
     }
 }
@@ -778,17 +775,7 @@ void Folder::saveToSettings() const
 
     auto settings = _accountState->settings();
 
-    QString settingsGroup;
-    if (virtualFilesEnabled() || _saveInFoldersWithPlaceholders) {
-        // If virtual files are enabled or even were enabled at some point,
-        // save the folder to a group that will not be read by older (<2.5.0) clients.
-        // The name is from when virtual files were called placeholders.
-        settingsGroup = QStringLiteral("FoldersWithPlaceholders");
-    } else {
-        settingsGroup = QStringLiteral("Folders");
-    }
-
-    settings->beginGroup(settingsGroup);
+    settings->beginGroup(QStringLiteral("Folders"));
     // Note: Each of these groups might have a "version" tag, but that's
     //       currently unused.
     settings->beginGroup(QString::fromUtf8(_definition.id()));
