@@ -32,6 +32,7 @@
 #include "theme.h"
 #include "wheelhandler.h"
 #include "syncconflictsmodel.h"
+#include "filedetails/datefieldbackend.h"
 #include "filedetails/filedetails.h"
 #include "filedetails/shareemodel.h"
 #include "filedetails/sharemodel.h"
@@ -118,6 +119,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
     qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<Quick::DateFieldBackend>("com.nextcloud.desktopclient", 1, 0, "DateFieldBackend");
     qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
     qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
