@@ -22,27 +22,27 @@ NCInputTextField {
     signal userAcceptedDate
 
     function updateText() {
-        text = backend.dateTimeString;
+        text = backend.dateString;
     }
 
     property DateFieldBackend backend: DateFieldBackend { 
         id: backend
-        onDateTimeStringChanged: if (!root.activeFocus) root.updateText()
+        onDateStringChanged: if (!root.activeFocus) root.updateText()
     }
 
-    property alias date: backend.dateTime
-    property alias dateInMs: backend.dateTimeMsecs
-    property alias minimumDate: backend.minimumDateTime
-    property alias minimumDateMs: backend.minimumDateTimeMsecs
-    property alias maximumDate: backend.maximumDateTime
-    property alias maximumDateMs: backend.maximumDateTimeMsecs
+    property alias date: backend.date
+    property alias dateInMs: backend.dateMsecs
+    property alias minimumDate: backend.minimumDate
+    property alias minimumDateMs: backend.minimumDateMsecs
+    property alias maximumDate: backend.maximumDate
+    property alias maximumDateMs: backend.maximumDateMsecs
 
-    validInput: backend.validDateTime
-    text: backend.dateTimeString
-    onTextChanged: backend.dateTimeString = text
+    validInput: backend.validDate
+    text: backend.dateString
+    onTextChanged: backend.dateString = text
 
     onAccepted: {
-        backend.dateTimeString = text;
+        backend.dateString = text;
         root.userAcceptedDate();
     }
 }

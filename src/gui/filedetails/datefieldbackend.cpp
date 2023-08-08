@@ -37,125 +37,126 @@ DateFieldBackend::DateFieldBackend(QObject *const parent)
     }
 }
 
-QDateTime DateFieldBackend::dateTime() const
+QDate DateFieldBackend::date() const
 {
-    return _dateTime;
+    return _date;
 }
 
-void DateFieldBackend::setDateTime(const QDateTime &dateTime)
+void DateFieldBackend::setDate(const QDate &date)
 {
-    if (_dateTime == dateTime) {
+    if (_date == date) {
         return;
     }
 
-    _dateTime = dateTime;
-    Q_EMIT dateTimeChanged();
-    Q_EMIT dateTimeMsecsChanged();
-    Q_EMIT dateTimeStringChanged();
-    Q_EMIT validDateTimeChanged();
+    _date = date;
+
+    Q_EMIT dateChanged();
+    Q_EMIT dateMsecsChanged();
+    Q_EMIT dateStringChanged();
+    Q_EMIT validDateChanged();
 }
 
-qint64 DateFieldBackend::dateTimeMsecs() const
+qint64 DateFieldBackend::dateMsecs() const
 {
-    return _dateTime.toMSecsSinceEpoch();
+    return _date.startOfDay().toMSecsSinceEpoch();
 }
 
-void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
+void DateFieldBackend::setDateMsecs(const qint64 dateMsecs)
 {
-    if (_dateTime.toMSecsSinceEpoch() == dateTimeMsecs) {
+    if (_date.startOfDay().toMSecsSinceEpoch() == dateMsecs) {
         return;
     }
 
-    const auto dt = QDateTime::fromMSecsSinceEpoch(dateTimeMsecs);
-    setDateTime(dt);
+    const auto dt = QDateTime::fromMSecsSinceEpoch(dateMsecs);
+    setDate(dt.date());
 }
 
-QString DateFieldBackend::dateTimeString() const
+QString DateFieldBackend::dateString() const
 {
-    return _dateTime.toString(_dateFormat);
+    return _date.toString(_dateFormat);
 }
 
-void DateFieldBackend::setDateTimeString(const QString &dateTimeString)
+void DateFieldBackend::setDateString(const QString &dateString)
 {
     const auto locale = QLocale::system();
-    const auto dt = locale.toDateTime(dateTimeString, _dateFormat);
-    setDateTime(dt);
+    const auto date = locale.toDate(dateString, _dateFormat);
+    setDate(date);
 }
 
-QDateTime DateFieldBackend::minimumDateTime() const
+QDate DateFieldBackend::minimumDate() const
 {
-    return _minimumDateTime;
+    return _minimumDate;
 }
 
-void DateFieldBackend::setMinimumDateTime(const QDateTime &minimumDateTime)
+void DateFieldBackend::setMinimumDate(const QDate &minimumDate)
 {
-    if (_minimumDateTime == minimumDateTime) {
+    if (_minimumDate == minimumDate) {
         return;
     }
 
-    _minimumDateTime = minimumDateTime;
-    Q_EMIT minimumDateTimeChanged();
-    Q_EMIT minimumDateTimeMsecsChanged();
-    Q_EMIT validDateTimeChanged();
+    _minimumDate = minimumDate;
+    Q_EMIT minimumDateChanged();
+    Q_EMIT minimumDateMsecsChanged();
+    Q_EMIT validDateChanged();
 }
 
-qint64 DateFieldBackend::minimumDateTimeMsecs() const
+qint64 DateFieldBackend::minimumDateMsecs() const
 {
-    return _minimumDateTime.toMSecsSinceEpoch();
+    return _minimumDate.startOfDay().toMSecsSinceEpoch();
 }
 
-void DateFieldBackend::setMinimumDateTimeMsecs(const qint64 minimumDateTimeMsecs)
+void DateFieldBackend::setMinimumDateMsecs(const qint64 minimumDateMsecs)
 {
-    if (_minimumDateTime.toMSecsSinceEpoch() == minimumDateTimeMsecs) {
+    if (_minimumDate.startOfDay().toMSecsSinceEpoch() == minimumDateMsecs) {
         return;
     }
 
-    const auto dt = QDateTime::fromMSecsSinceEpoch(minimumDateTimeMsecs);
-    setMinimumDateTime(dt);
+    const auto dt = QDateTime::fromMSecsSinceEpoch(minimumDateMsecs);
+    setMinimumDate(dt.date());
 }
 
-QDateTime DateFieldBackend::maximumDateTime() const
+QDate DateFieldBackend::maximumDate() const
 {
-    return _maximumDateTime;
+    return _maximumDate;
 }
 
-void DateFieldBackend::setMaximumDateTime(const QDateTime &maximumDateTime)
+void DateFieldBackend::setMaximumDate(const QDate &maximumDate)
 {
-    if (_maximumDateTime == maximumDateTime) {
+    if (_maximumDate == maximumDate) {
         return;
     }
 
-    _maximumDateTime = maximumDateTime;
-    Q_EMIT maximumDateTimeChanged();
-    Q_EMIT maximumDateTimeMsecsChanged();
-    Q_EMIT validDateTimeChanged();
+    _maximumDate = maximumDate;
+    Q_EMIT maximumDateChanged();
+    Q_EMIT maximumDateMsecsChanged();
+    Q_EMIT validDateChanged();
 }
 
-qint64 DateFieldBackend::maximumDateTimeMsecs() const
+qint64 DateFieldBackend::maximumDateMsecs() const
 {
-    return _maximumDateTime.toMSecsSinceEpoch();
+    return _maximumDate.startOfDay().toMSecsSinceEpoch();
 }
 
-void DateFieldBackend::setMaximumDateTimeMsecs(const qint64 maximumDateTimeMsecs)
+void DateFieldBackend::setMaximumDateMsecs(const qint64 maximumDateMsecs)
 {
-    if (_maximumDateTime.toMSecsSinceEpoch() == maximumDateTimeMsecs) {
+    if (_maximumDate.startOfDay().toMSecsSinceEpoch() == maximumDateMsecs) {
         return;
     }
 
-    const auto dt = QDateTime::fromMSecsSinceEpoch(maximumDateTimeMsecs);
-    setMaximumDateTime(dt);
+    const auto dt = QDateTime::fromMSecsSinceEpoch(maximumDateMsecs);
+    setMaximumDate(dt.date());
 }
 
-bool DateFieldBackend::validDateTime() const
+bool DateFieldBackend::validDate() const
 {
-    auto valid = _dateTime.isValid();
+    auto valid = _date.isValid();
 
-    if (_minimumDateTime.isValid()) {
-        valid &= _dateTime >= _minimumDateTime;
+    if (_minimumDate.isValid()) {
+        valid &= _date >= _minimumDate;
     }
 
-    if (_maximumDateTime.isValid()) {
-        valid &= _dateTime <= _maximumDateTime;
+    if (_maximumDate.isValid()) {
+        valid &= _date <= _maximumDate;
     }
 
     return valid;
