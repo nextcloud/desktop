@@ -15,11 +15,27 @@
 #include "datefieldbackend.h"
 
 #include <QLocale>
+#include <QRegularExpression>
 
 namespace OCC
 {
 namespace Quick
 {
+
+DateFieldBackend::DateFieldBackend(QObject *const parent)
+    : QObject(parent)
+{
+    // Ensure the date format is for a full year. QLocale::ShortFormat often
+    // provides a short year format that is only two years, which is an absolute
+    // pain to work with -- ensure instead we have the full, unambiguous year
+    _dateFormat = QLocale::system().dateFormat(QLocale::ShortFormat);
+    // Check for specifically two y's, no more and no fewer, within format date
+    const QRegularExpression re("(?<!y)y{2}(?!y)");
+
+    if (auto match = re.match(_dateFormat); match.hasMatch()) {
+        _dateFormat.replace(match.capturedStart(), match.capturedLength(), "yyyy");
+    }
+}
 
 QDateTime DateFieldBackend::dateTime() const
 {
@@ -53,14 +69,13 @@ void DateFieldBackend::setDateTimeMsecs(const qint64 dateTimeMsecs)
 
 QString DateFieldBackend::dateTimeString() const
 {
-    const auto locale = QLocale::system();
-    return _dateTime.toString(locale.dateFormat(QLocale::ShortFormat));
+    return _dateTime.toString(_dateFormat);
 }
 
 void DateFieldBackend::setDateTimeString(const QString &dateTimeString)
 {
     const auto locale = QLocale::system();
-    const auto dt = locale.toDateTime(dateTimeString, locale.dateFormat(QLocale::ShortFormat));
+    const auto dt = locale.toDateTime(dateTimeString, _dateFormat);
     setDateTime(dt);
 }
 

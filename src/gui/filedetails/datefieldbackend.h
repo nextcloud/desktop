@@ -39,7 +39,7 @@ class DateFieldBackend : public QObject
     Q_PROPERTY(bool validDateTime READ validDateTime NOTIFY dateTimeChanged NOTIFY minimumDateTimeChanged NOTIFY maximumDateTimeChanged)
 
 public:
-    explicit DateFieldBackend() = default;
+    explicit DateFieldBackend(QObject *const parent = nullptr);
 
     [[nodiscard]] QDateTime dateTime() const;
     [[nodiscard]] qint64 dateTimeMsecs() const;
@@ -73,6 +73,8 @@ private:
     QDateTime _dateTime = QDateTime::currentDateTimeUtc();
     QDateTime _minimumDateTime;
     QDateTime _maximumDateTime;
+
+    QString _dateFormat;
 };
 
 } // namespace Quick
