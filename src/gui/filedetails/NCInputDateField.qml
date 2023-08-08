@@ -37,6 +37,7 @@ NCInputTextField {
     property alias maximumDate: backend.maximumDate
     property alias maximumDateMs: backend.maximumDateMsecs
 
+    inputMethodHints: Qt.ImhDate
     validInput: backend.validDate
     text: backend.dateString
     onTextChanged: backend.dateString = text
