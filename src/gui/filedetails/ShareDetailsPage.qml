@@ -62,7 +62,7 @@ Page {
     readonly property string passwordPlaceholder: "●●●●●●●●●●"
 
     readonly property var expireDate: shareModelData.expireDate // Don't use int as we are limited
-    readonly property var maximumExpireDate: shareModelData.enforcedMaximumExpireDate
+    readonly property var maximumExpireDate: shareModelData.enforcedMaximumExpireDate // msecs epoch
 
     readonly property string linkShareLabel: shareModelData.linkShareLabel ?? ""
 
@@ -124,7 +124,7 @@ Page {
         //
         // So to ensure that the text of the spin box is correctly updated, force an update of the
         // contents of the expire date text field.
-        expireDateSpinBox.updateText();
+        expireDateField.updateText();
         waitingForExpireDateChange = false;
     }
 
@@ -685,25 +685,28 @@ Page {
                 NCInputDateField {
                     id: expireDateField
 
-                    date: root.expireDate
-                    onDateChanged: {
-                        const value = valueFromText(text, expireDateSpinBox.locale);
-                        root.setExpireDate(value * dayInMSecs);
-                        root.waitingForExpireDateChange = true;
-                    }
+                    Layout.fillWidth: true
+                    height: visible ? implicitHeight : 0
 
-                    maximumDate: root.maximumExpireDate
-                    minimumDate: {
+                    dateInMs: root.expireDate
+                    maximumDateMs: root.maximumExpireDate
+                    minimumDateMs: {
                         const currentDate = new Date();
+                        const currentYear = currentDate.getFullYear();
+                        const currentMonth = currentDate.getMonth();
+                        const currentMonthDay = currentDate.getDate();
                         // Start of day at 00:00:0000 UTC
-                        return new Date(Date.UTC(currentDate.getFullYear(),
-                                                 currentDate.getMonth(),
-                                                 currentDate.getDate() + 1));
+                        return Date.UTC(currentYear, currentMonth, currentMonthDay + 1);
                     }
 
                     enabled: root.expireDateEnabled &&
                              !root.waitingForExpireDateChange &&
                              !root.waitingForExpireDateEnabledChange
+
+                    onUserAcceptedDate: {
+                        root.setExpireDate(dateInMs);
+                        root.waitingForExpireDateChange = true;
+                    }
 
                     NCBusyIndicator {
                         anchors.fill: parent
