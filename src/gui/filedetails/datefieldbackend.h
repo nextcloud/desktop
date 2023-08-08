@@ -27,16 +27,16 @@ class DateFieldBackend : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QDateTime dateTime READ dateTime WRITE setDateTime NOTIFY dateTimeChanged)
-    Q_PROPERTY(qint64 dateTimeMsecs READ dateTimeMsecs WRITE setDateTimeMsecs NOTIFY dateTimeChanged)
-    Q_PROPERTY(QString dateTimeString READ dateTimeString WRITE setDateTimeString NOTIFY dateTimeChanged)
+    Q_PROPERTY(qint64 dateTimeMsecs READ dateTimeMsecs WRITE setDateTimeMsecs NOTIFY dateTimeMsecsChanged)
+    Q_PROPERTY(QString dateTimeString READ dateTimeString WRITE setDateTimeString NOTIFY dateTimeStringChanged)
 
     Q_PROPERTY(QDateTime minimumDateTime READ minimumDateTime WRITE setMinimumDateTime NOTIFY minimumDateTimeChanged)
-    Q_PROPERTY(qint64 minimumDateTimeMsecs READ minimumDateTimeMsecs WRITE setMinimumDateTimeMsecs NOTIFY minimumDateTimeChanged)
+    Q_PROPERTY(qint64 minimumDateTimeMsecs READ minimumDateTimeMsecs WRITE setMinimumDateTimeMsecs NOTIFY minimumDateTimeMsecsChanged)
 
     Q_PROPERTY(QDateTime maximumDateTime READ maximumDateTime WRITE setMaximumDateTime NOTIFY maximumDateTimeChanged)
-    Q_PROPERTY(qint64 maximumDateTimeMsecs READ maximumDateTimeMsecs WRITE setMaximumDateTimeMsecs NOTIFY maximumDateTimeChanged)
+    Q_PROPERTY(qint64 maximumDateTimeMsecs READ maximumDateTimeMsecs WRITE setMaximumDateTimeMsecs NOTIFY maximumDateTimeMsecsChanged)
 
-    Q_PROPERTY(bool validDateTime READ validDateTime NOTIFY dateTimeChanged NOTIFY minimumDateTimeChanged NOTIFY maximumDateTimeChanged)
+    Q_PROPERTY(bool validDateTime READ validDateTime NOTIFY validDateTimeChanged)
 
 public:
     explicit DateFieldBackend(QObject *const parent = nullptr);
@@ -66,8 +66,16 @@ public slots:
 
 signals:
     void dateTimeChanged();
+    void dateTimeMsecsChanged();
+    void dateTimeStringChanged();
+
     void minimumDateTimeChanged();
+    void minimumDateTimeMsecsChanged();
+
     void maximumDateTimeChanged();
+    void maximumDateTimeMsecsChanged();
+
+    void validDateTimeChanged();
 
 private:
     QDateTime _dateTime = QDateTime::currentDateTimeUtc();
