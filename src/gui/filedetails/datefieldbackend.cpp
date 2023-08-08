@@ -50,6 +50,9 @@ void DateFieldBackend::setDateTime(const QDateTime &dateTime)
 
     _dateTime = dateTime;
     Q_EMIT dateTimeChanged();
+    Q_EMIT dateTimeMsecsChanged();
+    Q_EMIT dateTimeStringChanged();
+    Q_EMIT validDateTimeChanged();
 }
 
 qint64 DateFieldBackend::dateTimeMsecs() const
@@ -92,6 +95,8 @@ void DateFieldBackend::setMinimumDateTime(const QDateTime &minimumDateTime)
 
     _minimumDateTime = minimumDateTime;
     Q_EMIT minimumDateTimeChanged();
+    Q_EMIT minimumDateTimeMsecsChanged();
+    Q_EMIT validDateTimeChanged();
 }
 
 qint64 DateFieldBackend::minimumDateTimeMsecs() const
@@ -122,6 +127,8 @@ void DateFieldBackend::setMaximumDateTime(const QDateTime &maximumDateTime)
 
     _maximumDateTime = maximumDateTime;
     Q_EMIT maximumDateTimeChanged();
+    Q_EMIT maximumDateTimeMsecsChanged();
+    Q_EMIT validDateTimeChanged();
 }
 
 qint64 DateFieldBackend::maximumDateTimeMsecs() const
