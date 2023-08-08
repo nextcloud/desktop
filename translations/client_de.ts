@@ -1814,17 +1814,17 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1320"/>
         <source>Stop syncing</source>
-        <translation>Synchronisation beenden</translation>
+        <translation>Synchronisation stoppen</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation>Der Ordner %1 hat die festgelegte Ordnergrößenbeschränkung von %2 MB überschritten.</translation>
+        <translation>Der Ordner %1 hat die festgelegte Größenbeschränkung von %2 MB überschritten.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation>Möchten Sie die Synchronisierung dieses Ordners beenden?</translation>
+        <translation>Möchten Sie die Synchronisierung dieses Ordners stoppen?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
@@ -2461,7 +2461,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/generalsettings.ui" line="281"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Benachrichtigen, wenn synchronisierte Ordner größer werden als das angegebene Limit</translation>
+        <translation>Benachrichtigen, wenn synchronisierte Ordner größer werden als die angegebene Grenze</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>

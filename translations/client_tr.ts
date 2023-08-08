@@ -748,7 +748,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Boyutu %1MB değerini aşan klasörler var: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -1804,27 +1804,28 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
         <location filename="../src/gui/folder.cpp" line="1301"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Bir klasörün boyutu %1MB olan klasör boyutu sınırını aştı : %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1312"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlemeyi sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1320"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlemeyi durdur</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>%1 klasörünün boyutu %2MB olan klasör boyutu sınırını aştı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasörün eşitlenmesini durdurmak ister misiniz?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
@@ -2449,7 +2450,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Şu boyuttan büyük yeni klasörlerin eşitlenmesi için onay istensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2460,12 +2461,12 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/generalsettings.ui" line="281"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Klasörler eşitlenirken belirtilen sınır aşılırsa bildirilsin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Sınırı aşan klasörlerin eşitlenmesi otomatik olarak durdurulsun</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
