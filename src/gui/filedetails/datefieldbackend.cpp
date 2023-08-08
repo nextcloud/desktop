@@ -25,15 +25,28 @@ namespace Quick
 DateFieldBackend::DateFieldBackend(QObject *const parent)
     : QObject(parent)
 {
+    _dateFormat = QLocale::system().dateFormat(QLocale::ShortFormat);
+
     // Ensure the date format is for a full year. QLocale::ShortFormat often
     // provides a short year format that is only two years, which is an absolute
-    // pain to work with -- ensure instead we have the full, unambiguous year
-    _dateFormat = QLocale::system().dateFormat(QLocale::ShortFormat);
+    // pain to work with -- ensure instead we have the full, unambiguous year.
     // Check for specifically two y's, no more and no fewer, within format date
-    const QRegularExpression re("(?<!y)y{2}(?!y)");
+    const QRegularExpression yearRe("(?<!y)y{2}(?!y)");
 
-    if (auto match = re.match(_dateFormat); match.hasMatch()) {
+    // To prevent invalid parsings when the user submits a month with a leading
+    // zero, also add an alternative date format that checks with a leading zero
+    // This regex only matches, e.g. dd/M/yyyy which often is the default for
+    // short locale date formats, which removes the leading 0
+    const QRegularExpression monthRe("(?<!M)M{1}(?!M)");
+
+    if (const auto match = yearRe.match(_dateFormat); match.hasMatch()) {
         _dateFormat.replace(match.capturedStart(), match.capturedLength(), "yyyy");
+    }
+
+    _leadingZeroMonthDateFormat = _dateFormat;
+
+    if (const auto match = monthRe.match(_dateFormat); match.hasMatch()) {
+        _leadingZeroMonthDateFormat.replace(match.capturedStart(), match.capturedLength(), "MM");
     }
 }
 
@@ -79,7 +92,12 @@ QString DateFieldBackend::dateString() const
 void DateFieldBackend::setDateString(const QString &dateString)
 {
     const auto locale = QLocale::system();
-    const auto date = locale.toDate(dateString, _dateFormat);
+    auto date = locale.toDate(dateString, _dateFormat);
+
+    if (!date.isValid()) {
+        date = locale.toDate(dateString, _leadingZeroMonthDateFormat);
+    }
+
     setDate(date);
 }
 
