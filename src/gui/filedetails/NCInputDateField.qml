@@ -27,7 +27,7 @@ NCInputTextField {
 
     property DateFieldBackend backend: DateFieldBackend { 
         id: backend
-        onDateTimeChanged: if (!root.activeFocus) root.updateText()
+        onDateTimeStringChanged: if (!root.activeFocus) root.updateText()
     }
 
     property alias date: backend.dateTime
