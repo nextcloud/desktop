@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <QDateTime>
+#include <QDate>
 #include <QObject>
 
 namespace OCC
@@ -26,61 +26,61 @@ class DateFieldBackend : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QDateTime dateTime READ dateTime WRITE setDateTime NOTIFY dateTimeChanged)
-    Q_PROPERTY(qint64 dateTimeMsecs READ dateTimeMsecs WRITE setDateTimeMsecs NOTIFY dateTimeMsecsChanged)
-    Q_PROPERTY(QString dateTimeString READ dateTimeString WRITE setDateTimeString NOTIFY dateTimeStringChanged)
+    Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged)
+    Q_PROPERTY(qint64 dateMsecs READ dateMsecs WRITE setDateMsecs NOTIFY dateMsecsChanged)
+    Q_PROPERTY(QString dateString READ dateString WRITE setDateString NOTIFY dateStringChanged)
 
-    Q_PROPERTY(QDateTime minimumDateTime READ minimumDateTime WRITE setMinimumDateTime NOTIFY minimumDateTimeChanged)
-    Q_PROPERTY(qint64 minimumDateTimeMsecs READ minimumDateTimeMsecs WRITE setMinimumDateTimeMsecs NOTIFY minimumDateTimeMsecsChanged)
+    Q_PROPERTY(QDate minimumDate READ minimumDate WRITE setMinimumDate NOTIFY minimumDateChanged)
+    Q_PROPERTY(qint64 minimumDateMsecs READ minimumDateMsecs WRITE setMinimumDateMsecs NOTIFY minimumDateMsecsChanged)
 
-    Q_PROPERTY(QDateTime maximumDateTime READ maximumDateTime WRITE setMaximumDateTime NOTIFY maximumDateTimeChanged)
-    Q_PROPERTY(qint64 maximumDateTimeMsecs READ maximumDateTimeMsecs WRITE setMaximumDateTimeMsecs NOTIFY maximumDateTimeMsecsChanged)
+    Q_PROPERTY(QDate maximumDate READ maximumDate WRITE setMaximumDate NOTIFY maximumDateChanged)
+    Q_PROPERTY(qint64 maximumDateMsecs READ maximumDateMsecs WRITE setMaximumDateMsecs NOTIFY maximumDateMsecsChanged)
 
-    Q_PROPERTY(bool validDateTime READ validDateTime NOTIFY validDateTimeChanged)
+    Q_PROPERTY(bool validDate READ validDate NOTIFY validDateChanged)
 
 public:
     explicit DateFieldBackend(QObject *const parent = nullptr);
 
-    [[nodiscard]] QDateTime dateTime() const;
-    [[nodiscard]] qint64 dateTimeMsecs() const;
-    [[nodiscard]] QString dateTimeString() const;
+    [[nodiscard]] QDate date() const;
+    [[nodiscard]] qint64 dateMsecs() const;
+    [[nodiscard]] QString dateString() const;
 
-    [[nodiscard]] QDateTime minimumDateTime() const;
-    [[nodiscard]] qint64 minimumDateTimeMsecs() const;
+    [[nodiscard]] QDate minimumDate() const;
+    [[nodiscard]] qint64 minimumDateMsecs() const;
 
-    [[nodiscard]] QDateTime maximumDateTime() const;
-    [[nodiscard]] qint64 maximumDateTimeMsecs() const;
+    [[nodiscard]] QDate maximumDate() const;
+    [[nodiscard]] qint64 maximumDateMsecs() const;
 
-    [[nodiscard]] bool validDateTime() const;
+    [[nodiscard]] bool validDate() const;
 
 public slots:
-    void setDateTime(const QDateTime &dateTime);
-    void setDateTimeMsecs(const qint64 dateTimeMsecs);
-    void setDateTimeString(const QString &dateTimeString);
+    void setDate(const QDate &date);
+    void setDateMsecs(const qint64 dateMsecs);
+    void setDateString(const QString &dateString);
 
-    void setMinimumDateTime(const QDateTime &minimumDateTime);
-    void setMinimumDateTimeMsecs(const qint64 minimumDateTimeMsecs);
+    void setMinimumDate(const QDate &minimumDate);
+    void setMinimumDateMsecs(const qint64 minimumDateMsecs);
 
-    void setMaximumDateTime(const QDateTime &maximumDateTime);
-    void setMaximumDateTimeMsecs(const qint64 maximumDateTimeMsecs);
+    void setMaximumDate(const QDate &maximumDate);
+    void setMaximumDateMsecs(const qint64 maximumDateMsecs);
 
 signals:
-    void dateTimeChanged();
-    void dateTimeMsecsChanged();
-    void dateTimeStringChanged();
+    void dateChanged();
+    void dateMsecsChanged();
+    void dateStringChanged();
 
-    void minimumDateTimeChanged();
-    void minimumDateTimeMsecsChanged();
+    void minimumDateChanged();
+    void minimumDateMsecsChanged();
 
-    void maximumDateTimeChanged();
-    void maximumDateTimeMsecsChanged();
+    void maximumDateChanged();
+    void maximumDateMsecsChanged();
 
-    void validDateTimeChanged();
+    void validDateChanged();
 
 private:
-    QDateTime _dateTime = QDateTime::currentDateTimeUtc();
-    QDateTime _minimumDateTime;
-    QDateTime _maximumDateTime;
+    QDate _date = QDate::currentDate();
+    QDate _minimumDate;
+    QDate _maximumDate;
 
     QString _dateFormat;
 };
