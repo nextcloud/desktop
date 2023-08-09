@@ -31,6 +31,7 @@ __TODO__:
 
 * [ ] DEV: Tag (Beta or RC) and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud' (includes ChangeLog for the tag on https://github.com/owncloud/client/releases/)
 * [ ] Smoke test
+* [ ] GitHub release
 * [ ] Beta/RC [Communication](https://confluence.owncloud.com/x/loJK)
     * [ ] Inform ``#updates`` and ``#marketing`` that we have Beta/RC    
     * [ ] For public prerelease: Tell marketing to send email to beta testers
