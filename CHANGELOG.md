@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
+* Bugfix - Authentication dialog no longer appears again and again: [#10351](https://github.com/owncloud/client/issues/10351)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 * Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
@@ -43,6 +44,10 @@ Details
    were excluded by the users.
 
    https://github.com/owncloud/enterprise/issues/5682
+
+* Bugfix - Authentication dialog no longer appears again and again: [#10351](https://github.com/owncloud/client/issues/10351)
+
+   https://github.com/owncloud/client/issues/10351
 
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 
