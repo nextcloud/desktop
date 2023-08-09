@@ -11,22 +11,28 @@ Summary
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
+* Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 * Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
 * Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
+* Bugfix - Hide hidden folders again in the selective sync view: [#11047](https://github.com/owncloud/client/issues/11047)
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
+* Change - We removed the pre 2.9 credentials migration: [#11081](https://github.com/owncloud/client/pull/11081)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Enable crash reporter in commandline client: [#8991](https://github.com/owncloud/client/issues/8991)
 * Enhancement - Make "Show files versions..." context menu action available: [#10197](https://github.com/owncloud/client/issues/10197)
 * Enhancement - Log http request when it is send: [#10313](https://github.com/owncloud/client/issues/10313)
+* Enhancement - Allow selective sync of spaces in folder wizard: [#10596](https://github.com/owncloud/client/issues/10596)
 * Enhancement - Send a language header in all http requests: [#10619](https://github.com/owncloud/client/issues/10619)
+* Enhancement - Help user fix problems on the last setup wizard page: [#10680](https://github.com/owncloud/client/issues/10680)
 * Enhancement - Display a progress spinner during the initial setup: [#10751](https://github.com/owncloud/client/issues/10751)
 * Enhancement - Reduce how often file changes are handled: [#10825](https://github.com/owncloud/client/pull/10825)
 * Enhancement - Persist filter settings for Not Synced tab: [#10928](https://github.com/owncloud/client/pull/10928)
+* Enhancement - `--cmd` argument added to the GUI client: [#10976](https://github.com/owncloud/client/issues/10976)
 
 Details
 -------
@@ -52,6 +58,13 @@ Details
 
    https://github.com/owncloud/client/issues/10946
 
+* Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
+
+   When uploading a file to ocis the server ignores the X-OC-Mtime header and expects the mtime to
+   be part of the Upload-Metadata header. We now provide both.
+
+   https://github.com/owncloud/client/issues/10950
+
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 
    We fixed a bug where server infos might have only been updated several minutes after the client
@@ -70,6 +83,10 @@ Details
    We fixed a where the main instance was accessed after it was destroyed.
 
    https://github.com/owncloud/client/issues/11016
+
+* Bugfix - Hide hidden folders again in the selective sync view: [#11047](https://github.com/owncloud/client/issues/11047)
+
+   https://github.com/owncloud/client/issues/11047
 
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 
@@ -91,6 +108,12 @@ Details
    https://github.com/owncloud/client/issues/10939
    https://github.com/owncloud/client/pull/10949
    https://github.com/owncloud/client/pull/10999
+
+* Change - We removed the pre 2.9 credentials migration: [#11081](https://github.com/owncloud/client/pull/11081)
+
+   Migrating credentials from a 2.8 or older client is no longer possible.
+
+   https://github.com/owncloud/client/pull/11081
 
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 
@@ -133,6 +156,17 @@ Details
 
    https://github.com/owncloud/client/issues/10313
 
+* Enhancement - Allow selective sync of spaces in folder wizard: [#10596](https://github.com/owncloud/client/issues/10596)
+
+   When manually configuring the synchronization of spaces, we now show the selective sync page
+   again to allow users to selectively disable the synchronization of remote directories.
+
+   This prevents the unnecessary synchronization of files until the user can use the account
+   settings dialog to configure selective sync.
+
+   https://github.com/owncloud/client/issues/10596
+   https://github.com/owncloud/client/pull/11044
+
 * Enhancement - Send a language header in all http requests: [#10619](https://github.com/owncloud/client/issues/10619)
 
    All http requests to the server will now contain the language for the client. This can be used by
@@ -140,6 +174,15 @@ Details
 
    https://github.com/owncloud/client/issues/10619
    https://github.com/owncloud/client/pull/11020
+
+* Enhancement - Help user fix problems on the last setup wizard page: [#10680](https://github.com/owncloud/client/issues/10680)
+
+   When there are problems within the advanced configuration on the last setup wizard page, we no
+   longer just show an error message but also "unhide" those settings to give the user a chance of
+   fixing the problem.
+
+   https://github.com/owncloud/client/issues/10680
+   https://github.com/owncloud/client/pull/11029
 
 * Enhancement - Display a progress spinner during the initial setup: [#10751](https://github.com/owncloud/client/issues/10751)
 
@@ -163,6 +206,15 @@ Details
 
    https://github.com/owncloud/client/issues/10884
    https://github.com/owncloud/client/pull/10928
+
+* Enhancement - `--cmd` argument added to the GUI client: [#10976](https://github.com/owncloud/client/issues/10976)
+
+   In 4.1 we added a `--cmd` argument to the AppImage to allow users to use the commandline client
+   contained in the AppImage more easily.
+
+   The `--cmd` argument is now supported on all platforms to support consistency.
+
+   https://github.com/owncloud/client/issues/10976
 
 Changelog for ownCloud Desktop Client [4.1.0] (2023-06-15)
 =======================================
