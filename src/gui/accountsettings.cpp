@@ -536,7 +536,8 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             }
             folder->slotNextSyncFullLocalDiscovery();
 
-            FolderMan::instance()->scheduler()->enqueueFolder(folder);
+            // don't schedule the folder, it might not be ready yet.
+            // it will schedule its self once set up
 
             ui->_folderList->doItemsLayout();
             ui->selectiveSyncStatus->setVisible(false);

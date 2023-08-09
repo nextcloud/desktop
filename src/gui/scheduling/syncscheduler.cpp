@@ -132,7 +132,11 @@ void SyncScheduler::startNext()
     if (!_running || !_currentSync.isNull()) {
         return;
     }
-    _currentSync = _queue->pop();
+    auto nextSync = _queue->pop();
+    while (nextSync && !nextSync->isReady()) {
+        nextSync = _queue->pop();
+    }
+    _currentSync = nextSync;
     if (!_currentSync.isNull()) {
         connect(
             _currentSync, &Folder::syncFinished, this,
