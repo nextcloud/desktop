@@ -32,8 +32,9 @@ int main(int argc, char *argv[])
     // though it looks slightly less native. Check here after the
     // QApplication was constructed, but before any QWidget is
     // constructed.
-    if (app.devicePixelRatio() > 1)
+    if (qFuzzyCompare(app.devicePixelRatio(), 1)) {
         QApplication::setStyle(QStringLiteral("fusion"));
+    }
 #endif // Q_OS_WIN
 
     if (app.arguments().size() != 2) {

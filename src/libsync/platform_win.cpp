@@ -71,7 +71,7 @@ void WinPlatform::setApplication(QCoreApplication *application)
     // QApplication was constructed, but before any QWidget is
     // constructed.
     if (auto guiApp = qobject_cast<QGuiApplication *>(application)) {
-        if (guiApp->devicePixelRatio() > 1) {
+        if (qFuzzyCompare(guiApp->devicePixelRatio(), 1)) {
             QApplication::setStyle(QStringLiteral("fusion"));
         }
     }
