@@ -4656,68 +4656,68 @@ Server replied with error: %2</source>
         <translation>%1 (пропущено из-за предыдущей ошибки, повторная попытка через %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="381"/>
+        <location filename="../src/libsync/syncengine.cpp" line="385"/>
         <source>Could not update file: %1</source>
         <translation>Не удалось обновить файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="393"/>
+        <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>Не удалось обновить метаданные виртуального файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="400"/>
+        <location filename="../src/libsync/syncengine.cpp" line="405"/>
         <source>Could not update file metadata: %1</source>
         <translation>Не удалось обновить метаданные файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="410"/>
+        <location filename="../src/libsync/syncengine.cpp" line="415"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>Не удалось сохранить запись о файле %1 в локальную базу данных</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="440"/>
+        <location filename="../src/libsync/syncengine.cpp" line="445"/>
         <source>Unresolved conflict.</source>
         <translation>Неразрешённый конфликт.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="532"/>
+        <location filename="../src/libsync/syncengine.cpp" line="537"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Только %1 доступно, нужно как минимум %2 чтобы начать</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="565"/>
+        <location filename="../src/libsync/syncengine.cpp" line="570"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Не могу открыть или создать локальную базу данных синхронизации. Удостоверьтесь, что у вас есть доступ на запись в каталог синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="581"/>
+        <location filename="../src/libsync/syncengine.cpp" line="586"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Для виртуальных файлов настроено использование специального суффикса, но суффикс не указан</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="593"/>
+        <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Не удалось прочитать файл чёрного списка из локальной базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="636"/>
+        <location filename="../src/libsync/syncengine.cpp" line="641"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Не удалось прочитать из журнала синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="765"/>
+        <location filename="../src/libsync/syncengine.cpp" line="770"/>
         <source>Cannot open the sync journal</source>
         <translation>Не удаётся открыть журнал синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1244"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Мало места на диске: Скачивания, которые сократят свободное место ниже %1, будут пропущены.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1251"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сервере недостаточно места для некоторых закачек.</translation>
     </message>

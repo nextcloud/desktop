@@ -4662,68 +4662,68 @@ Server replied with error: %2</source>
         <translation>%1 (이전 오류로 인해 스킵되었으며 %2에서 다시 시도)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="381"/>
+        <location filename="../src/libsync/syncengine.cpp" line="385"/>
         <source>Could not update file: %1</source>
         <translation>파일을 업데이트할 수 없음: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="393"/>
+        <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>가상 파일 메타데이터를 업데이트할 수 없음: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="400"/>
+        <location filename="../src/libsync/syncengine.cpp" line="405"/>
         <source>Could not update file metadata: %1</source>
         <translation>파일 메타데이터를 업로드할 수 없음: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="410"/>
+        <location filename="../src/libsync/syncengine.cpp" line="415"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 설정할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="440"/>
+        <location filename="../src/libsync/syncengine.cpp" line="445"/>
         <source>Unresolved conflict.</source>
         <translation>해결되지 않은 충돌</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="532"/>
+        <location filename="../src/libsync/syncengine.cpp" line="537"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>%1 만 사용할 수 있습니다. 시작하려면 %2 이상이 필요합니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="565"/>
+        <location filename="../src/libsync/syncengine.cpp" line="570"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="581"/>
+        <location filename="../src/libsync/syncengine.cpp" line="586"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>가상 파일에 접미사를 사용 중이나, 접미사가 설정되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="593"/>
+        <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="636"/>
+        <location filename="../src/libsync/syncengine.cpp" line="641"/>
         <source>Unable to read from the sync journal.</source>
         <translation>동기화 저널에서 읽을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="765"/>
+        <location filename="../src/libsync/syncengine.cpp" line="770"/>
         <source>Cannot open the sync journal</source>
         <translation>동기화 저널을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1244"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>디스크 공간이 부족합니다. 여유 공간이 %1 미만으로 남으면 다운로드를 건너 뜁니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1251"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>일부 업로드를 위해 서버에 사용 가능한 공간이 부족합니다.</translation>
     </message>

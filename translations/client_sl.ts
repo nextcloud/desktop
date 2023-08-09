@@ -4656,68 +4656,68 @@ Server replied with error: %2</source>
         <translation>%1 (prenos je zadržan zaradi predhodne napake; poskus bo ponovljen čez %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="381"/>
+        <location filename="../src/libsync/syncengine.cpp" line="385"/>
         <source>Could not update file: %1</source>
         <translation>Ni mogoče posodobiti datoteke: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="393"/>
+        <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>Ni mogoče posodobiti metapodatkov navidezne datoteke: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="400"/>
+        <location filename="../src/libsync/syncengine.cpp" line="405"/>
         <source>Could not update file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="410"/>
+        <location filename="../src/libsync/syncengine.cpp" line="415"/>
         <source>Could not set file record to local DB: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="440"/>
+        <location filename="../src/libsync/syncengine.cpp" line="445"/>
         <source>Unresolved conflict.</source>
         <translation>Nerazrešen spor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="532"/>
+        <location filename="../src/libsync/syncengine.cpp" line="537"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Na voljo je le %1, za zagon pa je zahtevanih vsaj %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="565"/>
+        <location filename="../src/libsync/syncengine.cpp" line="570"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Ni mogoče odpreti ali ustvariti krajevne usklajevalne podatkovne zbirke. Prepričajte se, da imate ustrezna dovoljenja za pisanje v usklajevani mapi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="581"/>
+        <location filename="../src/libsync/syncengine.cpp" line="586"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>V uporabi so navidezne datoteke s pripono, a ta ni nastavljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="593"/>
+        <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Ni mogoče prebrati črnega seznama iz krajevne mape</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="636"/>
+        <location filename="../src/libsync/syncengine.cpp" line="641"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Ni mogoče brati iz dnevnika usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="765"/>
+        <location filename="../src/libsync/syncengine.cpp" line="770"/>
         <source>Cannot open the sync journal</source>
         <translation>Ni mogoče odpreti dnevnika usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1244"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Zmanjkuje prostora na disku: prejem predmetov, ki bi zmanjšali prostor na disku pod %1 bo prekinjen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1251"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Za usklajevanje je na strežniku premalo prostora.</translation>
     </message>

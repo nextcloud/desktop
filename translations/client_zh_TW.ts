@@ -4661,68 +4661,68 @@ Server replied with error: %2</source>
         <translation>%1（因先前錯誤而跳過，%2 後重試）</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="381"/>
+        <location filename="../src/libsync/syncengine.cpp" line="385"/>
         <source>Could not update file: %1</source>
         <translation>無法更新檔案：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="393"/>
+        <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>無法更新虛擬檔案詮釋資料：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="400"/>
+        <location filename="../src/libsync/syncengine.cpp" line="405"/>
         <source>Could not update file metadata: %1</source>
         <translation>無法更新檔案詮釋資料：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="410"/>
+        <location filename="../src/libsync/syncengine.cpp" line="415"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>無法將檔案紀錄設定至本機資料庫：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="440"/>
+        <location filename="../src/libsync/syncengine.cpp" line="445"/>
         <source>Unresolved conflict.</source>
         <translation>未解決的衝突。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="532"/>
+        <location filename="../src/libsync/syncengine.cpp" line="537"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>目前僅有 %1 可以使用，至少需要 %2 才能開始</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="565"/>
+        <location filename="../src/libsync/syncengine.cpp" line="570"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>無法開啟或建立本機同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="581"/>
+        <location filename="../src/libsync/syncengine.cpp" line="586"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>正在使用有後綴的虛擬檔案，但未設定後綴</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="593"/>
+        <location filename="../src/libsync/syncengine.cpp" line="598"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>無法從本機資料庫讀取黑名單</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="636"/>
+        <location filename="../src/libsync/syncengine.cpp" line="641"/>
         <source>Unable to read from the sync journal.</source>
         <translation>無法讀取同步日誌。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="765"/>
+        <location filename="../src/libsync/syncengine.cpp" line="770"/>
         <source>Cannot open the sync journal</source>
         <translation>無法開啟同步日誌</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1244"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>剩餘空間不足：下載後將使剩餘空間降至低於 %1 的檔案一律跳過。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1251"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>伺服器上的剩餘空間不足以容納某些要上傳的檔案。</translation>
     </message>
