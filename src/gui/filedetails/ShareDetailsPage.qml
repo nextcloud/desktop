@@ -49,7 +49,7 @@ Page {
     property var shareModelData: ({})
 
     property bool canCreateLinkShares: true
-    property bool canReshare: true
+    property bool serverAllowsResharing: true
 
     readonly property var share: shareModelData.share ?? ({})
 
@@ -448,8 +448,8 @@ Page {
                         checkable: true
                         checked: root.resharingAllowed
                         text: qsTr("Allow resharing")
-                        enabled: !root.isSharePermissionChangeInProgress && root.canReshare
-                        visible: root.canReshare
+                        enabled: !root.isSharePermissionChangeInProgress && root.serverAllowsResharing
+                        visible: root.serverAllowsResharing
                         onClicked: root.toggleAllowResharing(checked);
 
                         Connections {

@@ -52,7 +52,7 @@ GridLayout {
     property bool backgroundsVisible: true
 
     property bool canCreateLinkShares: true
-    property bool canReshare: true
+    property bool serverAllowsResharing: true
 
     readonly property bool isLinkShare: model.shareType === ShareModel.ShareTypeLink
     readonly property bool isPlaceholderLinkShare: model.shareType === ShareModel.ShareTypePlaceholderLink
@@ -269,7 +269,7 @@ GridLayout {
                     shareModelData: model
 
                     canCreateLinkShares: root.canCreateLinkShares
-                    canReshare: root.canReshare
+                    serverAllowsResharing: root.serverAllowsResharing
 
                     onCloseShareDetails: root.rootStackView.pop(root.rootStackView.initialItem, StackView.PopTransition)
 

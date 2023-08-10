@@ -35,7 +35,7 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(bool canShare READ canShare NOTIFY sharePermissionsChanged)
     Q_PROPERTY(bool fetchOngoing READ fetchOngoing NOTIFY fetchOngoingChanged)
     Q_PROPERTY(bool hasInitialShareFetchCompleted READ hasInitialShareFetchCompleted NOTIFY hasInitialShareFetchCompletedChanged)
-    Q_PROPERTY(bool resharingAllowed READ resharingAllowed NOTIFY resharingAllowedChanged)
+    Q_PROPERTY(bool serverAllowsResharing READ serverAllowsResharing NOTIFY serverAllowsResharingChanged)
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
 
 public:
@@ -117,7 +117,7 @@ public:
     [[nodiscard]] bool publicLinkSharesEnabled() const;
     [[nodiscard]] bool userGroupSharingEnabled() const;
     [[nodiscard]] bool canShare() const;
-    [[nodiscard]] bool resharingAllowed() const;
+    [[nodiscard]] bool serverAllowsResharing() const;
 
     [[nodiscard]] bool fetchOngoing() const;
     [[nodiscard]] bool hasInitialShareFetchCompleted() const;
@@ -137,7 +137,7 @@ signals:
     void hasInitialShareFetchCompletedChanged();
     void shareesChanged();
     void internalLinkReady();
-    void resharingAllowedChanged();
+    void serverAllowsResharingChanged();
 
     void serverError(const int code, const QString &message);
     void passwordSetError(const QString &shareId, const int code, const QString &message);
