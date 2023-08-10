@@ -35,6 +35,7 @@ ColumnLayout {
     readonly property bool sharingPossible: shareModel && shareModel.canShare && shareModel.sharingEnabled
     readonly property bool userGroupSharingPossible: sharingPossible && shareModel.userGroupSharingEnabled
     readonly property bool publicLinkSharingPossible: sharingPossible && shareModel.publicLinkSharesEnabled
+    readonly property bool resharingAllowed: shareModel && shareModel.resharingAllowed
 
     readonly property bool loading: sharingPossible && (!shareModel ||
                                                         shareModel.fetchOngoing ||
@@ -214,6 +215,7 @@ ColumnLayout {
                     rootStackView: root.rootStackView
                     backgroundsVisible: root.backgroundsVisible
                     canCreateLinkShares: root.publicLinkSharingPossible
+                    canReshare: root.resharingAllowed
 
                     onCreateNewLinkShare: {
                         root.waitingForSharesToChange = true;
