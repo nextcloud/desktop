@@ -143,7 +143,6 @@ Page {
     }
 
     function resetMenu() {
-
         resetNoteField();
         resetPasswordField();
         resetLinkShareLabelField();
@@ -395,13 +394,6 @@ Page {
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
-
-                        NCBusyIndicator {
-                            anchors.fill: parent
-                            visible: root.isSharePermissionChangeInProgress
-                            running: visible
-                            z: 1
-                        }
                     }
 
                     NCRadioButton {
@@ -463,6 +455,13 @@ Page {
                             onResharingAllowedChanged: allowResharingCheckBox.checked = root.resharingAllowed
                         }
                     }
+                }
+
+                NCBusyIndicator {
+                    anchors.fill: parent
+                    visible: root.isSharePermissionChangeInProgress
+                    running: visible
+                    z: 1
                 }
             }
 
