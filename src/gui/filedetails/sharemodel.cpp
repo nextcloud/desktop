@@ -1251,6 +1251,7 @@ void ShareModel::setAccountState(AccountState *accountState)
     Q_EMIT sharingEnabledChanged();
     Q_EMIT publicLinkSharesEnabledChanged();
     Q_EMIT userGroupSharingEnabledChanged();
+    Q_EMIT resharingAllowedChanged();
     updateData();
 }
 
@@ -1308,6 +1309,12 @@ bool ShareModel::hasInitialShareFetchCompleted() const
 bool ShareModel::canShare() const
 {
     return _maxSharingPermissions & SharePermissionShare;
+}
+
+bool ShareModel::resharingAllowed() const
+{
+    return _accountState && _accountState->account() && _accountState->account()->capabilities().isValid()
+        && _accountState->account()->capabilities().shareResharing();
 }
 
 QVariantList ShareModel::sharees() const
