@@ -17,6 +17,7 @@ Summary
 * Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
 * Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
 * Bugfix - Hide hidden folders again in the selective sync view: [#11047](https://github.com/owncloud/client/issues/11047)
+* Bugfix - Fix check if a file is a placeholder: [#11107](https://github.com/owncloud/client/issues/11107)
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
@@ -92,6 +93,13 @@ Details
 * Bugfix - Hide hidden folders again in the selective sync view: [#11047](https://github.com/owncloud/client/issues/11047)
 
    https://github.com/owncloud/client/issues/11047
+
+* Bugfix - Fix check if a file is a placeholder: [#11107](https://github.com/owncloud/client/issues/11107)
+
+   Previously, files with zero bytes in size were considered placeholders. This is not correct,
+   and has been fixed by using the correct API to check for placeholders.
+
+   https://github.com/owncloud/client/issues/11107
 
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 
