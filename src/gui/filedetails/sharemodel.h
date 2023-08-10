@@ -62,6 +62,7 @@ public:
         IsSharePermissionsChangeInProgress,
         HideDownloadEnabledRole,
         IsHideDownloadEnabledChangeInProgress,
+        ResharingAllowedRole,
     };
     Q_ENUM(Roles)
 

@@ -23,6 +23,7 @@
 
 #include "account.h"
 #include "folderman.h"
+#include "sharepermissions.h"
 #include "theme.h"
 
 namespace {
@@ -141,6 +142,7 @@ QHash<int, QByteArray> ShareModel::roleNames() const
     roles[IsSharePermissionsChangeInProgress] = "isSharePermissionChangeInProgress";
     roles[HideDownloadEnabledRole] = "hideDownload";
     roles[IsHideDownloadEnabledChangeInProgress] = "isHideDownloadInProgress";
+    roles[ResharingAllowedRole] = "resharingAllowed";
 
     return roles;
 }
@@ -241,6 +243,8 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
                 || (share->getShareType() == Share::TypeLink && _accountState->account()->capabilities().sharePublicLinkEnforcePassword()));
     case EditingAllowedRole:
         return share->getPermissions().testFlag(SharePermissionUpdate);
+    case ResharingAllowedRole:
+        return share->getPermissions().testFlag(SharePermissionShare);
 
     // Deal with roles that only return certain values for link or user/group share types
     case NoteEnabledRole:
