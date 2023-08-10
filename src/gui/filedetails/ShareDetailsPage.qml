@@ -66,6 +66,7 @@ Page {
 
     readonly property string linkShareLabel: shareModelData.linkShareLabel ?? ""
 
+    readonly property bool resharingAllowed: shareModelData.resharingAllowed
     readonly property bool editingAllowed: shareModelData.editingAllowed
     readonly property bool hideDownload: shareModelData.hideDownload
     readonly property bool noteEnabled: shareModelData.noteEnabled
@@ -415,6 +416,52 @@ Page {
                         spacing: scrollContentsColumn.indicatorSpacing
                         padding: scrollContentsColumn.itemPadding
                         onClicked: root.permissionModeChanged(permissionMode)
+                    }
+
+                    CheckBox {
+                        id: allowResharingCheckBox
+
+                        Layout.fillWidth: true
+
+                        // TODO: Rather than setting all these palette colours manually,
+                        // create a custom style and do it for all components globally.
+                        //
+                        // Additionally, we need to override the entire palette when we
+                        // set one palette property, as otherwise we default back to the
+                        // theme palette -- not the parent palette
+                        palette {
+                            text: Style.ncTextColor
+                            windowText: Style.ncTextColor
+                            buttonText: Style.ncTextColor
+                            brightText: Style.ncTextBrightColor
+                            highlight: Style.lightHover
+                            highlightedText: Style.ncTextColor
+                            light: Style.lightHover
+                            midlight: Style.ncSecondaryTextColor
+                            mid: Style.darkerHover
+                            dark: Style.menuBorder
+                            button: Style.buttonBackgroundColor
+                            window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the checkbox
+                            base: Style.backgroundColor
+                            toolTipBase: Style.backgroundColor
+                            toolTipText: Style.ncTextColor
+                        }
+
+                        spacing: scrollContentsColumn.indicatorSpacing
+                        padding: scrollContentsColumn.itemPadding
+                        indicator.width: scrollContentsColumn.indicatorItemWidth
+                        indicator.height: scrollContentsColumn.indicatorItemWidth
+
+                        checkable: true
+                        checked: root.resharingAllowed
+                        text: qsTr("Allow resharing")
+                        enabled: !root.isSharePermissionChangeInProgress
+                        onClicked: root.toggleAllowResharing(checked);
+
+                        Connections {
+                            target: root
+                            onResharingAllowedChanged: allowResharingCheckBox.checked = root.resharingAllowed
+                        }
                     }
                 }
             }
