@@ -15,7 +15,13 @@
 
 #pragma once
 
-#include <stdint.h>
+#include "accountfwd.h"
+#include "common/checksums.h"
+#include "common/utility.h"
+#include "discoveryphase.h"
+#include "progressdispatcher.h"
+#include "syncfileitem.h"
+#include "syncfilestatustracker.h"
 
 #include <QMutex>
 #include <QThread>
@@ -24,16 +30,6 @@
 #include <QMap>
 #include <QStringList>
 #include <QSharedPointer>
-
-#include "csync/csync_exclude.h"
-
-#include "syncfileitem.h"
-#include "progressdispatcher.h"
-#include "common/utility.h"
-#include "syncfilestatustracker.h"
-#include "accountfwd.h"
-#include "discoveryphase.h"
-#include "common/checksums.h"
 
 #include <optional>
 #include <set>
@@ -85,7 +81,13 @@ public:
     bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
-    ExcludedFiles &excludedFiles() { return *_excludedFiles; }
+    bool isExcluded(QStringView filePath) const;
+    void addManualExclude(const QString &filePath);
+    void addExcludeList(const QString &filePath);
+    bool loadDefaultExcludes();
+    bool reloadExcludes();
+    void clearManualExcludes();
+
     Utility::StopWatch &stopWatch() { return _stopWatch; }
     SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
 
@@ -163,7 +165,7 @@ signals:
 
     /// We've produced a new sync error of a type.
     void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
-    void excluded(const QString &path, CSYNC_EXCLUDE_TYPE reason);
+    void excluded(const QString &path);
 
     void finished(bool success);
     void started();
@@ -250,7 +252,7 @@ private:
 
     QScopedPointer<ProgressInfo> _progressInfo;
 
-    QScopedPointer<ExcludedFiles> _excludedFiles;
+    std::unique_ptr<class ExcludedFiles> _excludedFiles;
     QScopedPointer<SyncFileStatusTracker> _syncFileStatusTracker;
     Utility::StopWatch _stopWatch;
 

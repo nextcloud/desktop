@@ -207,14 +207,14 @@ void sync(const SyncCTX &ctx)
 
     // Always try to load the user-provided exclude list if one is specified
     if (hasUserExcludeFile) {
-        engine->excludedFiles().addExcludeFilePath(ctx.options.exclude);
+        engine->addExcludeList(ctx.options.exclude);
     }
     // Load the system list if available, or if there's no user-provided list
     if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
-        engine->excludedFiles().addExcludeFilePath(systemExcludeFile);
+        engine->addExcludeList(systemExcludeFile);
     }
 
-    if (!engine->excludedFiles().reloadExcludeFiles()) {
+    if (!engine->reloadExcludes()) {
         qCritical() << "Cannot load system exclude list or list supplied via --exclude";
         exit(EXIT_FAILURE);
     }

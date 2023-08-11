@@ -201,8 +201,7 @@ IssuesWidget::IssuesWidget(QWidget *parent)
             _model->addProtocolItem(ProtocolItem { folder, item });
         });
 
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::excluded, this, [this](Folder *f, const QString &file, CSYNC_EXCLUDE_TYPE reason) {
-        Q_ASSERT(reason == CSYNC_FILE_EXCLUDE_RESERVED);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::excluded, this, [this](Folder *f, const QString &file) {
         auto item = SyncFileItemPtr::create();
         item->_status = SyncFileItem::FilenameReserved;
         item->_file = file;

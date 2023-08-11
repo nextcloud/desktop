@@ -28,7 +28,7 @@
 #include "syncoptions.h"
 #include "syncfileitem.h"
 
-#include "csync/csync_exclude.h"
+class ExcludedFiles;
 
 namespace OCC {
 
@@ -286,7 +286,7 @@ signals:
       * The path is relative to the sync folder, similar to item->_file
       */
     void silentlyExcluded(const QString &folderPath);
-    void excluded(const QString &folderPath, CSYNC_EXCLUDE_TYPE reason);
+    void excluded(const QString &folderPath);
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath

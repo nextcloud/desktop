@@ -15,6 +15,7 @@
 
 #include "assert.h"
 #include "csync/csync.h"
+#include "libsync/accountfwd.h"
 #include "ocsynclib.h"
 #include "pinstate.h"
 #include "result.h"

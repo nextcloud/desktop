@@ -950,7 +950,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode, boo
     _syncEngine->setSyncOptions(OCC::SyncOptions { QSharedPointer<OCC::Vfs>(OCC::VfsPluginManager::instance().createVfsFromPlugin(vfsMode).release()) });
 
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
-    _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
+    _syncEngine->addManualExclude(QStringLiteral("]*.~*"));
 
     auto vfs = _syncEngine->syncOptions()._vfs;
     if (vfsMode != vfs->mode()) {

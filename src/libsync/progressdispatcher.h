@@ -25,8 +25,6 @@
 
 #include "syncfileitem.h"
 
-#include "csync/csync_exclude.h"
-
 namespace OCC {
 class Folder;
 /**
@@ -313,7 +311,7 @@ signals:
      */
     void syncError(Folder *folder, const QString &message, ErrorCategory category);
 
-    void excluded(Folder *folder, const QString &path, CSYNC_EXCLUDE_TYPE reason);
+    void excluded(Folder *folder, const QString &path);
 
 
     /**

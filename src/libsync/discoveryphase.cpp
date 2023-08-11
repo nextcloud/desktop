@@ -19,7 +19,6 @@
 #include "common/asserts.h"
 #include "common/checksums.h"
 
-#include <csync_exclude.h>
 #include "vio/csync_vio_local.h"
 
 #include <QDateTime>

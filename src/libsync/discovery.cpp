@@ -14,11 +14,11 @@
 
 #include "discovery.h"
 #include "csync.h"
-#include "csync_exclude.h"
 #include "owncloudpropagator.h"
 #include "syncfileitem.h"
 
-#include "vio/csync_vio_local.h"
+#include "csync/csync_exclude.h"
+#include "csync/vio/csync_vio_local.h"
 
 #include "common/checksums.h"
 #include "common/syncjournaldb.h"
@@ -222,7 +222,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
         emit _discoveryData->silentlyExcluded(path);
         return true;
     } else if (excluded == CSYNC_FILE_EXCLUDE_RESERVED) {
-        emit _discoveryData->excluded(path, excluded);
+        emit _discoveryData->excluded(path);
         return true;
     }
 

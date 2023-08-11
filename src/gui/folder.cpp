@@ -27,7 +27,6 @@
 #include "common/version.h"
 #include "common/vfs.h"
 #include "configfile.h"
-#include "csync_exclude.h"
 #include "filesystem.h"
 #include "folderman.h"
 #include "folderwatcher.h"
@@ -131,8 +130,7 @@ Folder::Folder(const FolderDefinition &definition,
         // pass the setting if hidden files are to be ignored, will be read in csync_update
         _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
-        ConfigFile::setupDefaultExcludeFilePaths(_engine->excludedFiles());
-        if (!reloadExcludes()) {
+        if (!_engine->loadDefaultExcludes()) {
             qCWarning(lcFolder, "Could not read system exclude file");
         }
 
@@ -157,9 +155,7 @@ Folder::Folder(const FolderDefinition &definition,
 
         connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
             this, &Folder::slotFolderConflicts);
-        connect(_engine.data(), &SyncEngine::excluded, this, [this](const QString &path, CSYNC_EXCLUDE_TYPE reason) {
-            Q_EMIT ProgressDispatcher::instance()->excluded(this, path, reason);
-        });
+        connect(_engine.data(), &SyncEngine::excluded, this, [this](const QString &path) { Q_EMIT ProgressDispatcher::instance()->excluded(this, path); });
 
         _localDiscoveryTracker.reset(new LocalDiscoveryTracker);
         connect(_engine.data(), &SyncEngine::finished,
@@ -829,10 +825,10 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
-    if (!_engine) {
-        return true;
+    if (OC_ENSURE_NOT(_engine.isNull())) {
+        return _engine->isExcluded(fullPath);
     }
-    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
+    return true;
 }
 
 bool Folder::isFileExcludedRelative(const QString &relativePath) const
@@ -901,7 +897,7 @@ bool Folder::reloadExcludes()
     if (!_engine) {
         return true;
     }
-    return _engine->excludedFiles().reloadExcludeFiles();
+    return _engine->reloadExcludes();
 }
 
 void Folder::startSync()

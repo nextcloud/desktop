@@ -14,11 +14,10 @@
  */
 
 #include "syncfilestatustracker.h"
-#include "syncengine.h"
+#include "common/asserts.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
-#include "common/asserts.h"
-#include "csync_exclude.h"
+#include "syncengine.h"
 
 #include <QFileInfo>
 #include <QLoggingCategory>
@@ -125,9 +124,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // it's an acceptable compromize to treat all exclude types the same.
     // Update: This extra check shouldn't hurt even though silently excluded files
     // are now available via slotAddSilentlyExcluded().
-    if (_syncEngine->excludedFiles().isExcluded(_syncEngine->syncOptions()._vfs->underlyingFileName(absolutePath),
-            _syncEngine->localPath(),
-            _syncEngine->ignoreHiddenFiles())) {
+    if (_syncEngine->isExcluded(_syncEngine->syncOptions()._vfs->underlyingFileName(absolutePath))) {
         return SyncFileStatus(SyncFileStatus::StatusExcluded);
     }
 

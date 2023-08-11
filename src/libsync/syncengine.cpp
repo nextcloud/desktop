@@ -20,6 +20,7 @@
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/vfs.h"
+#include "configfile.h"
 #include "creds/abstractcredentials.h"
 #include "csync_exclude.h"
 #include "discovery.h"
@@ -430,7 +431,7 @@ void SyncEngine::startSync()
     // TODO: add a constructor to DiscoveryPhase
     // pass a syncEngine object rather than copying everyhting to another object
     _discoveryPhase.reset(new DiscoveryPhase(_account, syncOptions(), _baseUrl));
-    _discoveryPhase->_excludes = _excludedFiles.data();
+    _discoveryPhase->_excludes = _excludedFiles.get();
     _discoveryPhase->_statedb = _journal;
     _discoveryPhase->_localDir = _localPath;
     if (!_discoveryPhase->_localDir.endsWith(QLatin1Char('/')))
@@ -940,6 +941,38 @@ bool SyncEngine::isPromtRemoveAllFiles() const
 void SyncEngine::setPromtRemoveAllFiles(bool promtRemoveAllFiles)
 {
     _promptRemoveAllFiles = promtRemoveAllFiles;
+}
+
+bool SyncEngine::isExcluded(QStringView filePath) const
+{
+    Q_ASSERT(QDir::isAbsolutePath(filePath.toString()));
+    return _excludedFiles->isExcluded(filePath, localPath(), ignoreHiddenFiles());
+}
+
+bool SyncEngine::loadDefaultExcludes()
+{
+    ConfigFile::setupDefaultExcludeFilePaths(*_excludedFiles);
+    return _excludedFiles->reloadExcludeFiles();
+}
+
+void SyncEngine::clearManualExcludes()
+{
+    _excludedFiles->clearManualExcludes();
+}
+
+bool SyncEngine::reloadExcludes()
+{
+    return _excludedFiles->reloadExcludeFiles();
+}
+
+void SyncEngine::addExcludeList(const QString &filePath)
+{
+    _excludedFiles->addExcludeFilePath(filePath);
+}
+
+void SyncEngine::addManualExclude(const QString &filePath)
+{
+    _excludedFiles->addManualExclude(filePath);
 }
 
 } // namespace OCC

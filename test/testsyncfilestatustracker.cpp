@@ -231,8 +231,8 @@ private slots:
 
     void warningStatusForExcludedFile() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("A/a1"));
-        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("B"));
+        fakeFolder.syncEngine().addManualExclude(QStringLiteral("A/a1"));
+        fakeFolder.syncEngine().addManualExclude(QStringLiteral("B"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
         fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
         fakeFolder.applyLocalModificationsWithoutSync();
@@ -259,7 +259,7 @@ private slots:
         statusSpy.clear();
 
         // Clears the exclude expr above
-        fakeFolder.syncEngine().excludedFiles().clearManualExcludes();
+        fakeFolder.syncEngine().clearManualExcludes();
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
         QCOMPARE(statusSpy.statusOf(QString()), SyncFileStatus(SyncFileStatus::StatusSync));
@@ -282,7 +282,7 @@ private slots:
 
     void warningStatusForExcludedFile_CasePreserving() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().excludedFiles().addManualExclude(QStringLiteral("B"));
+        fakeFolder.syncEngine().addManualExclude(QStringLiteral("B"));
         fakeFolder.serverErrorPaths().append(QStringLiteral("A/a1"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
         fakeFolder.applyLocalModificationsWithoutSync();
