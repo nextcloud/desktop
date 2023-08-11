@@ -124,6 +124,8 @@ public:
 
     [[nodiscard]] QVariantList sharees() const;
 
+    [[nodiscard]] Q_INVOKABLE static QString generatePassword();
+
 signals:
     void localPathChanged();
     void accountStateChanged();
