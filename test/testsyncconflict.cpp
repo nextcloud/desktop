@@ -59,7 +59,7 @@ bool expectAndWipeConflict(FakeFolder &fFolder, const QString &path)
     for (const auto &item : qAsConst(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains(QLatin1String("(conflicted copy"))) {
             fFolder.localModifier().remove(item.path());
-            fFolder.applyLocalModificationsWithoutSync();
+            OC_ASSERT(fFolder.applyLocalModificationsWithoutSync());
             return true;
         }
     }

@@ -1091,8 +1091,8 @@ private slots:
         QCOMPARE(*vfs->availability(QStringLiteral("local")), VfsItemAvailability::Mixed);
         QCOMPARE(*vfs->availability(QStringLiteral("online")), VfsItemAvailability::Mixed);
 
-        vfs->setPinState(QStringLiteral("local"), PinState::AlwaysLocal);
-        vfs->setPinState(QStringLiteral("online"), PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState(QStringLiteral("local"), PinState::AlwaysLocal));
+        QVERIFY(vfs->setPinState(QStringLiteral("online"), PinState::OnlineOnly));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(*vfs->availability(QStringLiteral("online")), VfsItemAvailability::OnlineOnly);
@@ -1173,13 +1173,13 @@ private slots:
         QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix()), PinState::OnlineOnly);
 
         // When a file is hydrated or dehydrated due to pin state it retains its pin state
-        vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix(), PinState::AlwaysLocal);
+        QVERIFY(vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix(), PinState::AlwaysLocal));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("onlinerenamed2/file1rename")));
         QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename")), PinState::AlwaysLocal);
 
-        vfs->setPinState(QStringLiteral("onlinerenamed2"), PinState::Unspecified);
-        vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename"), PinState::OnlineOnly);
+        QVERIFY(vfs->setPinState(QStringLiteral("onlinerenamed2"), PinState::Unspecified));
+        QVERIFY(vfs->setPinState(QStringLiteral("onlinerenamed2/file1rename"), PinState::OnlineOnly));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix()));
         QCOMPARE(*vfs->pinState(QStringLiteral("onlinerenamed2/file1rename") + Theme::instance()->appDotVirtualFileSuffix()), PinState::OnlineOnly);
