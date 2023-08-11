@@ -8,10 +8,9 @@
 
 #include "testutils/syncenginetestutils.h"
 
+#include "common/depreaction.h"
 #include "gui/spacemigration.h"
 
-
-#include <QJsonArray>
 #include <QJsonObject>
 
 using namespace OCC;
@@ -104,7 +103,9 @@ private slots:
         QCOMPARE(count.value(), expectedSize);
 
         // was the folder correctly persisted
+        OC_DISABLE_DEPRECATED_WARNING
         const auto folder = FolderMan::instance()->folder(folder1Uuid);
+        OC_ENABLE_DEPRECATED_WARNING
         QVERIFY(folder);
         QCOMPARE(folder->webDavUrl(), personalUrl);
         QCOMPARE(folder->remotePath(), QStringLiteral("/"));
