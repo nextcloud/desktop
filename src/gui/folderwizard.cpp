@@ -162,9 +162,10 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
-    const auto warnYellow = Theme::isDarkColor(QGuiApplication::palette().base().color()) ? QColor(63, 63, 0) : QColor(255, 255, 192);
+    const auto warnYellow = Theme::instance()->darkMode() ? QColor(63, 63, 0) : QColor(255, 255, 192);
     auto modifiedPalette = _ui.warnLabel->palette();
     modifiedPalette.setColor(QPalette::Window, warnYellow);
+    modifiedPalette.setColor(QPalette::Base, warnYellow);
     _ui.warnLabel->setPalette(modifiedPalette);
 }
 
