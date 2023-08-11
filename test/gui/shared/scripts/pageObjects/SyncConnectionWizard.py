@@ -184,6 +184,7 @@ class SyncConnectionWizard:
             SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
             path.join(getCurrentUserSyncPath(), spaceName),
         )
+        SyncConnectionWizard.nextStep()
 
     @staticmethod
     def syncSpace(spaceName):

@@ -60,6 +60,10 @@ def step(context, item):
 @Given("the user has enabled virtual file support")
 def step(context):
     SyncConnection.enableVFS()
+    if get_config('ocis'):
+        test.vp("VP_VFS_enabled_oCIS")
+    else:
+        test.vp("VP_VFS_enabled")
 
 
 @When("the user disables virtual file support")

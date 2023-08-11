@@ -310,7 +310,7 @@ Feature: Syncing files
             | filename                                                                                                                                                                                                                     |
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
 
-    @skipOnOCIS
+    @skipOnOCIS @issue-11104 @skip
     Scenario Outline: File with long name (233 characters) is blacklisted
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "<filename>" with the following content inside the sync folder

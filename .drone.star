@@ -25,7 +25,7 @@ OC_UBUNTU = "owncloud/ubuntu:20.04"
 # Todo: update or remove the following images
 # https://github.com/owncloud/client/issues/10070
 OC_CI_CLIENT_FEDORA = "owncloudci/client:fedora-38-amd64"
-OC_CI_SQUISH = "owncloudci/squish:fedora-38-6.7-20220106-1008-qt515x-linux64"
+OC_CI_SQUISH = "owncloudci/squish:fedora-38-7.1.1-qt64x-linux64"
 
 PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
@@ -90,13 +90,13 @@ config = {
                     },
                 },
                 "skip_in_pr": True,
-                "skip": True,
+                "skip": False,
             },
             "ocis": {
                 "version": "3.0.0",
                 # comma separated list of tags to be used for filtering. E.g. "@tag1,@tag2"
                 "tags": "~@skipOnOCIS",
-                "skip": True,
+                "skip": False,
             },
         },
     },

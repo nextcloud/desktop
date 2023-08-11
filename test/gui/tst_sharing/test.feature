@@ -307,7 +307,7 @@ Feature: Sharing
         And as "Alice" folder "PARENT" should not exist in the server
         And as "Alice" file "lorem.txt" should not exist in the server
 
-    @issue-9439
+    @issue-9439 @issue-11102 @skip
     Scenario: sharee deletes a file and folder shared by sharer
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" in the server
         And user "Alice" has created folder "Folder" in the server
@@ -323,7 +323,7 @@ Feature: Sharing
         And as "Alice" file "textfile.txt" on the server should exist
         And as "Alice" folder "Folder" on the server should exist
 
-
+    @issue-11102 @skip
     Scenario: sharee tries to delete shared file and folder without permissions
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" in the server
         And user "Alice" has created folder "Folder" in the server

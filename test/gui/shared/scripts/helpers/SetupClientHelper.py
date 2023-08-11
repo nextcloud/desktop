@@ -4,6 +4,7 @@ from os import makedirs
 from os.path import exists, join
 from helpers.SpaceHelper import get_space_id
 from helpers.ConfigHelper import get_config, set_config
+from helpers.SyncHelper import listenSyncStatusForItem
 
 
 def substituteInLineCodes(value):
@@ -146,3 +147,4 @@ def setUpClient(username, displayName, space="Personal"):
     configFile.close()
 
     startClient()
+    listenSyncStatusForItem(syncPath)
