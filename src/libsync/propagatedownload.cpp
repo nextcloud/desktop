@@ -998,15 +998,16 @@ void PropagateDownloadFile::downloadFinished()
             // Move the pin state to the new location
             auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());
             if (pin && *pin != PinState::Inherited) {
-                vfs->setPinState(_item->_file, *pin);
-                vfs->setPinState(virtualFile, PinState::Inherited);
+                std::ignore = vfs->setPinState(_item->_file, *pin);
+                std::ignore = vfs->setPinState(virtualFile, PinState::Inherited);
             }
         }
 
         // Ensure the pin state isn't contradictory
         auto pin = vfs->pinState(_item->_file);
-        if (pin && *pin == PinState::OnlineOnly)
-            vfs->setPinState(_item->_file, PinState::Unspecified);
+        if (pin && *pin == PinState::OnlineOnly) {
+            std::ignore = vfs->setPinState(_item->_file, PinState::Unspecified);
+        }
     }
 
     updateMetadata(isConflict);

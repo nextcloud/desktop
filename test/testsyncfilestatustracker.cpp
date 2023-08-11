@@ -78,7 +78,7 @@ private slots:
     void parentsGetSyncStatusUploadDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         fakeFolder.remoteModifier().appendByte(QStringLiteral("C/c1"));
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
@@ -110,7 +110,7 @@ private slots:
     void parentsGetSyncStatusNewFileUploadDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.localModifier().insert(QStringLiteral("B/b0"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         fakeFolder.remoteModifier().insert(QStringLiteral("C/c0"));
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
@@ -173,7 +173,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.localModifier().mkdir(QStringLiteral("D"));
         fakeFolder.localModifier().insert(QStringLiteral("D/d0"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
         fakeFolder.scheduleSync();
@@ -204,7 +204,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.remoteModifier().remove(QStringLiteral("B/b1"));
         fakeFolder.localModifier().remove(QStringLiteral("C/c1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
         fakeFolder.scheduleSync();
@@ -235,7 +235,7 @@ private slots:
         fakeFolder.syncEngine().addManualExclude(QStringLiteral("B"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
         fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
         fakeFolder.scheduleSync();
@@ -285,7 +285,7 @@ private slots:
         fakeFolder.syncEngine().addManualExclude(QStringLiteral("B"));
         fakeFolder.serverErrorPaths().append(QStringLiteral("A/a1"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         fakeFolder.syncOnce();
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(QString()), SyncFileStatus(SyncFileStatus::StatusWarning));
@@ -308,7 +308,7 @@ private slots:
         fakeFolder.serverErrorPaths().append(QStringLiteral("B/b0"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
         fakeFolder.localModifier().insert(QStringLiteral("B/b0"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
         fakeFolder.scheduleSync();
@@ -355,7 +355,7 @@ private slots:
 
         // Start a third sync, this time together with a real file to sync
         fakeFolder.localModifier().appendByte(QStringLiteral("C/c1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
@@ -413,7 +413,7 @@ private slots:
             }}}}};
         fakeFolder.serverErrorPaths().append(QStringLiteral("A/a1"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
@@ -438,7 +438,7 @@ private slots:
     void childOKEmittedBeforeParent() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         fakeFolder.remoteModifier().appendByte(QStringLiteral("C/c1"));
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
@@ -497,7 +497,7 @@ private slots:
         fakeFolder.serverErrorPaths().append(QStringLiteral("A/a1"));
         fakeFolder.localModifier().rename(QStringLiteral("A/a1"), QStringLiteral("A/a1m"));
         fakeFolder.localModifier().rename(QStringLiteral("B/b1"), QStringLiteral("B/b1m"));
-        fakeFolder.applyLocalModificationsWithoutSync();
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
         fakeFolder.scheduleSync();

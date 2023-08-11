@@ -305,7 +305,7 @@ void Logger::rotateLog()
         // set the creation time to now
         _logFile.setFileTime(now, QFileDevice::FileTime::FileBirthTime);
 
-        QtConcurrent::run([now, previousLog, dir, maxLogFiles = _maxLogFiles] {
+        std::ignore = QtConcurrent::run([now, previousLog, dir, maxLogFiles = _maxLogFiles] {
             // Compress the previous log file.
             if (!previousLog.isEmpty() && QFileInfo::exists(previousLog)) {
                 QString compressedName = QStringLiteral("%1.gz").arg(previousLog);

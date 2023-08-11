@@ -529,7 +529,7 @@ namespace {
                 LARGE_INTEGER end;
                 end.QuadPart = -1;
                 if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
-                    OC_ENSURE(UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart));
+                    OC_ENFORCE(UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart));
                     return out;
                 } else {
                     return {};

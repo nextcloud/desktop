@@ -523,7 +523,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 
             for (const auto &entry : oldBlacklist) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(entry);
-                folder->vfs().setPinState(entry, PinState::OnlineOnly);
+                std::ignore = folder->vfs().setPinState(entry, PinState::OnlineOnly);
             }
             folder->slotNextSyncFullLocalDiscovery();
 

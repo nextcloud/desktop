@@ -255,7 +255,7 @@ void PropagateLocalRename::start()
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto pinState = vfs->pinState(_item->_originalFile);
-    vfs->setPinState(_item->_originalFile, PinState::Inherited);
+    std::ignore = vfs->setPinState(_item->_originalFile, PinState::Inherited);
 
     const auto oldFile = _item->_file;
 

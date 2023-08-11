@@ -187,7 +187,7 @@ void PropagateRemoteMove::finalize()
 
     // Delete old db data.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
-    vfs->setPinState(_item->_originalFile, PinState::Inherited);
+    std::ignore = vfs->setPinState(_item->_originalFile, PinState::Inherited);
 
     SyncFileItem newItem(*_item);
     newItem._type = _item->_type;

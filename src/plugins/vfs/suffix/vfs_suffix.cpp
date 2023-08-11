@@ -78,7 +78,7 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const
         // Move the item's pin state
         auto pin = params().journal->internalPinStates().rawForPath(item._file.toUtf8());
         if (pin && *pin != PinState::Inherited) {
-            setPinState(item._renameTarget, *pin);
+            std::ignore = setPinState(item._renameTarget, *pin);
         }
         if (item._file != item._renameTarget) { // can be the same when renaming foo -> foo.owncloud to dehydrate
             QString error;

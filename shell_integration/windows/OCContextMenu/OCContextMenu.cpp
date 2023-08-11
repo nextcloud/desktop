@@ -219,7 +219,7 @@ IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
         return E_FAIL;
     }
 
-    OCClientInterface::SendRequest(command, m_selectedFiles);
+    std::ignore = OCClientInterface::SendRequest(command, m_selectedFiles);
     return S_OK;
 }
 

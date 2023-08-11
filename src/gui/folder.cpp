@@ -736,7 +736,7 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     // (suffix-virtual file's pin state is stored at the hydrated path)
     const auto pin = _vfs->pinState(relativepath);
     if (pin && *pin == PinState::OnlineOnly) {
-        _vfs->setPinState(relativepath, PinState::Unspecified);
+        std::ignore = _vfs->setPinState(relativepath, PinState::Unspecified);
     }
 
     // Add to local discovery

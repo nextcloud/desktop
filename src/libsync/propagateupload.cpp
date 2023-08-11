@@ -603,7 +603,7 @@ void PropagateUploadFileCommon::finalize()
         auto &vfs = propagator()->syncOptions()._vfs;
         const auto pin = vfs->pinState(_item->_file);
         if (pin && *pin == PinState::OnlineOnly) {
-            vfs->setPinState(_item->_file, PinState::Unspecified);
+            std::ignore = vfs->setPinState(_item->_file, PinState::Unspecified);
         }
     }
 
