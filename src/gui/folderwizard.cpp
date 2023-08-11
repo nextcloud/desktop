@@ -193,6 +193,8 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
+
+    changeStyle();
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
@@ -522,6 +524,31 @@ void FolderWizardRemotePath::showWarn(const QString &msg) const
         _ui.warnFrame->show();
         _ui.warnLabel->setText(msg);
     }
+}
+
+void FolderWizardRemotePath::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        changeStyle();
+        break;
+    default:
+        break;
+    }
+
+    FormatWarningsWizardPage::changeEvent(e);
+}
+
+void FolderWizardRemotePath::changeStyle()
+{
+    const auto warnYellow = Theme::instance()->darkMode() ? QColor(63, 63, 0) : QColor(255, 255, 192);
+    auto modifiedPalette = _ui.warnLabel->palette();
+    modifiedPalette.setColor(QPalette::Window, warnYellow);
+    modifiedPalette.setColor(QPalette::Base, warnYellow);
+    _ui.warnLabel->setPalette(modifiedPalette);
 }
 
 // ====================================================================================
