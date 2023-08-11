@@ -38,8 +38,8 @@ Q_LOGGING_CATEGORY(lcNetworkSettings, "gui.networksettings.gui", QtInfoMsg)
 
 NetworkSettings::NetworkSettings(QWidget *parent)
     : QWidget(parent)
-    , _ui(new Ui::NetworkSettings)
     , _credentialManager(new CredentialManager(this))
+    , _ui(new Ui::NetworkSettings)
 {
     _ui->setupUi(this);
 
