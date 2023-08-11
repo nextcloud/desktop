@@ -51,9 +51,6 @@ public:
     Q_ENUM(Direction)
 
     enum Status : uint8_t { // stored in 4 bits
-        // IMPORTANT: if something changes in this enum, please check `IssuesWidget::addStatusFilter`
-        // if it needs adjustment. The same for `SyncFileItemStatusSetSortFilterProxyModel`.
-
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop
@@ -112,6 +109,27 @@ public:
         StatusCount
     };
     Q_ENUM(Status)
+
+    static constexpr std::array<Status, 4> ErrorStatusItems = {
+        FatalError,
+        NormalError,
+        SoftError,
+        DetailError,
+    };
+
+    static constexpr std::array<Status, 7> OtherDisplayableStatusItems = {
+        Conflict,
+        FileIgnored,
+        Restoration,
+        BlacklistedError,
+        Excluded,
+        Message,
+        FilenameReserved,
+    };
+
+    // We don't include NoStatus or Success in here
+    static_assert(
+        ErrorStatusItems.size() + OtherDisplayableStatusItems.size() == StatusCount - 2, "ErrorStatusItems or OtherDisplayableStatusItems is incomplete");
 
     SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 

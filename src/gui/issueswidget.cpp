@@ -384,40 +384,23 @@ std::function<void(void)> IssuesWidget::addStatusFilter(QMenu *menu)
     const auto initialFilter = _statusSortModel->filter();
 
     { // Add all errors under 1 action:
-        const std::vector<SyncFileItem::Status> ErrorStatusItems = {
-            SyncFileItem::Status::FatalError,
-            SyncFileItem::Status::NormalError,
-            SyncFileItem::Status::SoftError,
-            SyncFileItem::Status::DetailError,
-        };
-
-        auto action = menu->addAction(Utility::enumToDisplayName(SyncFileItem::NormalError), this, [this, ErrorStatusItems](bool checked) {
+        auto action = menu->addAction(Utility::enumToDisplayName(SyncFileItem::NormalError), this, [this](bool checked) {
             auto currentFilter = _statusSortModel->filter();
-            for (const auto &item : ErrorStatusItems) {
+            for (const auto &item : SyncFileItem::ErrorStatusItems) {
                 currentFilter[item] = checked;
             }
             _statusSortModel->setFilter(currentFilter);
         });
         action->setCheckable(true);
-        action->setChecked(initialFilter[ErrorStatusItems[0]]);
+        action->setChecked(initialFilter[SyncFileItem::ErrorStatusItems[0]]);
         statusFilterGroup->addAction(action);
     }
     menu->addSeparator();
 
-    // Add the other non-error items:
-    const std::vector<SyncFileItem::Status> OtherStatusItems = {
-        SyncFileItem::Status::Conflict, //
-        SyncFileItem::Status::FileIgnored, //
-        SyncFileItem::Status::Restoration, //
-        SyncFileItem::Status::BlacklistedError, //
-        SyncFileItem::Status::Excluded, //
-        SyncFileItem::Status::Message, //
-        SyncFileItem::Status::FilenameReserved, //
-    };
-    // list of OtherStatusItems with the localised name
+    // list of OtherDisplayableStatusItems with the localised name
     std::vector<std::pair<QString, SyncFileItem::Status>> otherStatusItems;
-    otherStatusItems.reserve(OtherStatusItems.size());
-    for (const auto &item : OtherStatusItems) {
+    otherStatusItems.reserve(SyncFileItem::OtherDisplayableStatusItems.size());
+    for (const auto &item : SyncFileItem::OtherDisplayableStatusItems) {
         otherStatusItems.emplace_back(Utility::enumToDisplayName(item), item);
     }
     std::sort(otherStatusItems.begin(), otherStatusItems.end(), [](const auto &a, const auto &b) {
