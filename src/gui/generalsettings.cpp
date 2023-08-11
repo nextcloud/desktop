@@ -188,7 +188,7 @@ void GeneralSettings::showEvent(QShowEvent *)
     reloadConfig();
 }
 
-void GeneralSettings::slotUpdateChannelChanged(int index)
+void GeneralSettings::slotUpdateChannelChanged([[maybe_unused]] int index)
 {
 #ifdef WITH_AUTO_UPDATER
     QString channel;

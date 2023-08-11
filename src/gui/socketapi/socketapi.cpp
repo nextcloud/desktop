@@ -779,7 +779,7 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     }
 }
 
-Q_INVOKABLE void OCC::SocketApi::command_OPEN_APP_LINK(const QString &localFile, SocketListener *listener)
+Q_INVOKABLE void OCC::SocketApi::command_OPEN_APP_LINK(const QString &localFile, [[maybe_unused]] SocketListener *listener)
 {
     const auto data = FileData::get(localFile);
     if (OC_ENSURE(data.folder)) {

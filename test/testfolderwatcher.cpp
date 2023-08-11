@@ -21,7 +21,7 @@ class FolderWatcherForTests : public OCC::FolderWatcher
 public:
     using OCC::FolderWatcher::FolderWatcher;
 
-    bool pathIsIgnored(const QString &path) const override { return false; }
+    bool pathIsIgnored(const QString &) const override { return false; }
 };
 
 void touch(const QString &file)

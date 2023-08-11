@@ -103,13 +103,12 @@ FolderMan::FolderMan(QObject *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &FolderMan::slotRemoveFoldersForAccount);
 
-    connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
-        this, [this](const QString &path, FileSystem::LockMode mode) {
-            if (Folder *f = folderForPath(path)) {
-                // Treat this equivalently to the file being reported by the file watcher
-                f->slotWatchedPathsChanged({path}, Folder::ChangeReason::UnLock);
-            }
-        });
+    connect(_lockWatcher.data(), &LockWatcher::fileUnlocked, this, [this](const QString &path, FileSystem::LockMode) {
+        if (Folder *f = folderForPath(path)) {
+            // Treat this equivalently to the file being reported by the file watcher
+            f->slotWatchedPathsChanged({path}, Folder::ChangeReason::UnLock);
+        }
+    });
 }
 
 FolderMan *FolderMan::instance()

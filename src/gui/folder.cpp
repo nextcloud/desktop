@@ -689,7 +689,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
                         compute->setChecksumType(header.type());
                         quint64 inode = 0;
                         FileSystem::getInode(path, &inode);
-                        connect(compute, &ComputeChecksum::done, this, [=](CheckSums::Algorithm checksumType, const QByteArray &checksum) {
+                        connect(compute, &ComputeChecksum::done, this, [=](CheckSums::Algorithm, const QByteArray &checksum) {
                             compute->deleteLater();
                             qWarning() << "Spurious notification:" << path << (checksum == header.checksum()) << checksum << header.checksum()
                                        << "Inode:" << record._inode << inode;
