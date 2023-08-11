@@ -461,7 +461,7 @@ void ShareManager::createShare(const QString &path,
     connect(job, &OcsShareJob::shareJobFinished, this,
         [=](const QJsonDocument &reply) {
             // Find existing share permissions (if this was shared with us)
-            Share::Permissions existingPermissions = SharePermissionDefault;
+            Share::Permissions existingPermissions = SharePermissionAll;
             foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
                 auto map = element.toObject();
                 if (map["file_target"] == path)
@@ -471,10 +471,10 @@ void ShareManager::createShare(const QString &path,
             // Limit the permissions we request for a share to the ones the item
             // was shared with initially.
             auto validPermissions = desiredPermissions;
-            if (validPermissions == SharePermissionDefault) {
+            if (validPermissions == SharePermissionAll) {
                 validPermissions = existingPermissions;
             }
-            if (existingPermissions != SharePermissionDefault) {
+            if (existingPermissions != SharePermissionAll) {
                 validPermissions &= existingPermissions;
             }
 

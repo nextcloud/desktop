@@ -71,14 +71,14 @@ public:
      * Constructor for shares
      */
     explicit Share(AccountPtr account,
-        const QString &id,
-        const QString &owner,
-        const QString &ownerDisplayName,
-        const QString &path,
-        const ShareType shareType,
-        bool isPasswordSet = false,
-        const Permissions permissions = SharePermissionDefault,
-        const ShareePtr shareWith = ShareePtr(nullptr));
+                   const QString &id,
+                   const QString &owner,
+                   const QString &ownerDisplayName,
+                   const QString &path,
+                   const ShareType shareType,
+                   bool isPasswordSet = false,
+                   const Permissions permissions = SharePermissionAll,
+                   const ShareePtr shareWith = ShareePtr(nullptr));
 
     /**
      * The account the share is defined on.
