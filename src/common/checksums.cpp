@@ -323,7 +323,6 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, CheckSums::Algorithm a
         return {};
     case CheckSums::Algorithm::NONE:
         Q_UNREACHABLE();
-        return {};
     }
     Q_UNREACHABLE();
 }
