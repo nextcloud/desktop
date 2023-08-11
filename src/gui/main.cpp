@@ -14,6 +14,7 @@
  */
 #include <QtGlobal>
 
+#include "accountmanager.h"
 #include "common/utility.h"
 #include "gui/application.h"
 #include "gui/logbrowser.h"
@@ -202,6 +203,17 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     return out;
 }
 
+void showDowngradeDialog()
+{
+    QMessageBox box(QMessageBox::Warning, Theme::instance()->appNameGUI(),
+        QCoreApplication::translate("version check",
+            "Some settings were configured in newer versions of this client "
+            "and use features that are not available in this version"));
+    box.addButton(OCC::Application::tr("Quit"), QMessageBox::AcceptRole);
+    box.exec();
+    QTimer::singleShot(0, qApp, &QApplication::quit);
+}
+
 /**
  * Check if the last version used to write the config file differs from the current version.
  * If the current version is newer, update the config file with our current version. If the
@@ -224,13 +236,7 @@ bool checkClientVersion()
 
     if (clientVersion.majorVersion() < configVersion.majorVersion()) {
         // We refuse to downgrade, too much can go wrong.
-        QMessageBox box(QMessageBox::Warning, Theme::instance()->appNameGUI(),
-            QCoreApplication::translate("version check",
-                "Some settings were configured in newer versions of this client "
-                "and use features that are not available in this version"));
-        box.addButton(OCC::Application::tr("Quit"), QMessageBox::AcceptRole);
-        box.exec();
-        QTimer::singleShot(0, qApp, &QApplication::quit);
+        showDowngradeDialog();
         return false;
     }
 
@@ -338,6 +344,21 @@ int main(int argc, char **argv)
         platform->setApplication(&app);
 
         auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
+
+        // Setup the folders. This includes a downgrade-detection, in which case the return value
+        // is empty. Note that the value 0 (zero) is a valid return value (non-empty), in which case
+        // the dialog is not shown.
+        if (!FolderMan::instance()->setupFolders().has_value()) {
+            // Empty return value: there was a downgrade detected on one of the databases
+            showDowngradeDialog();
+            return -1;
+        }
+
+        if (AccountManager::instance()->accounts().isEmpty()) {
+            // display the wizard if we don't have an account yet
+            QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
+        }
+
         QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
 
         QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {

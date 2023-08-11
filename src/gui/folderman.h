@@ -97,7 +97,9 @@ public:
     // TODO: use acces throug ocApp and remove that instance pointer
     static FolderMan *instance();
 
-    qsizetype setupFolders();
+    /// \returns empty if a downgrade of a folder was detected, otherwise it will return the number
+    ///          of folders that were set up (note: this can be zero when no folders were configured).
+    std::optional<qsizetype> setupFolders();
 
     /** Find folder setting keys that need to be ignored or deleted for being too new.
      *
@@ -293,7 +295,8 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account);
+    /// \returns false when a downgrade of the database is detected, true otherwise.
+    bool setupFoldersHelper(QSettings &settings, AccountStatePtr account);
 
     QSet<Folder *> _disabledFolders;
     QVector<Folder *> _folders;

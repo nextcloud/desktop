@@ -99,7 +99,9 @@ private slots:
         FolderMan::instance()->unloadAndDeleteAllFolders();
         QVERIFY(FolderMan::instance()->folders().isEmpty());
         // reload the folders from the settings
-        QCOMPARE(FolderMan::instance()->setupFolders(), expectedSize);
+        auto count = FolderMan::instance()->setupFolders();
+        QVERIFY(count.has_value());
+        QCOMPARE(count.value(), expectedSize);
 
         // was the folder correctly persisted
         const auto folder = FolderMan::instance()->folder(folder1Uuid);

@@ -169,7 +169,7 @@ void FolderMan::registerFolderWithSocketApi(Folder *folder)
         _socketApi->slotRegisterPath(folder);
 }
 
-qsizetype FolderMan::setupFolders()
+std::optional<qsizetype> FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
 
@@ -186,20 +186,28 @@ qsizetype FolderMan::setupFolders()
 
         settings->beginGroup(id); // Process settings for this account.
 
-        auto process = [&](const QString &groupName) {
+        auto process = [&](const QString &groupName) -> bool {
             settings->beginGroup(groupName);
-            setupFoldersHelper(*settings, account);
+            bool success = setupFoldersHelper(*settings, account);
             settings->endGroup();
+            return success;
         };
 
-        process(QStringLiteral("Folders"));
+        if (!process(QStringLiteral("Folders"))) {
+            return {};
+        }
 
         // removed in 5.0
         {
-            process(QStringLiteral("FoldersWithPlaceholders"));
+            if (!process(QStringLiteral("FoldersWithPlaceholders"))) {
+                return {};
+            }
+
             // We don't save to `Multifolders` anymore, but for backwards compatibility we will just
             // read it like it is a `Folders` entry.
-            process(QStringLiteral("Multifolders"));
+            if (!process(QStringLiteral("Multifolders"))) {
+                return {};
+            }
         }
 
         settings->endGroup(); // Finished processing this account.
@@ -210,7 +218,7 @@ qsizetype FolderMan::setupFolders()
     return _folders.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account)
+bool FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account)
 {
     const auto &childGroups = settings.childGroups();
     for (const auto &folderAlias : childGroups) {
@@ -259,6 +267,9 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account)
 
         // Migration: If an old .csync_journal.db is found, move it to the new name.
         SyncJournalDb::maybeMigrateDb(folderDefinition.localPath(), folderDefinition.absoluteJournalPath());
+        if (SyncJournalDb::dbIsTooNewForClient(folderDefinition.absoluteJournalPath())) {
+            return false;
+        }
 
         auto vfs = VfsPluginManager::instance().createVfsFromPlugin(folderDefinition.virtualFilesMode);
         if (!vfs) {
@@ -273,6 +284,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account)
         }
         settings.endGroup();
     }
+
+    return true;
 }
 
 bool FolderMan::ensureJournalGone(const QString &journalDbFile)

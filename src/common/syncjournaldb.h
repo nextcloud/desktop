@@ -56,6 +56,8 @@ public:
     /// Migrate a csync_journal to the new path, if necessary. Returns false on error
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
+    static bool dbIsTooNewForClient(const QString &dbFilePath);
+
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()
     bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
     bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);

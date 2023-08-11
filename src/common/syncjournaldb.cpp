@@ -192,6 +192,27 @@ bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &abso
     return true;
 }
 
+bool SyncJournalDb::dbIsTooNewForClient(const QString &dbFilePath)
+{
+    SqlDatabase db;
+    if (!db.openReadOnly(dbFilePath)) {
+        // No DB, we're not downgrading, so we're fine
+        return false;
+    }
+
+    SqlQuery versionQuery("SELECT major, minor, patch FROM version;", db);
+    if (!versionQuery.next().hasData) {
+        // Broken DB? Assume we're not upgrading.
+        return false;
+    }
+
+    int dbMajor = versionQuery.intValue(0);
+    //    int minor = versionQuery.intValue(1);
+    //    int patch = versionQuery.intValue(2);
+
+    return dbMajor > OCC::Version::versionWithBuildNumber().majorVersion();
+}
+
 bool SyncJournalDb::exists()
 {
     QMutexLocker locker(&_mutex);
