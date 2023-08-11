@@ -61,7 +61,7 @@ private slots:
 
     void testBasicLockFileWatcher()
     {
-        auto tmp = TestUtils::createTempDir();
+        auto temporaryDir = TestUtils::createTempDir();
         int count = 0;
         QString file;
 
@@ -69,10 +69,11 @@ private slots:
         watcher.setCheckInterval(std::chrono::milliseconds(50));
         connect(&watcher, &LockWatcher::fileUnlocked, &watcher, [&](const QString &f) { ++count; file = f; });
 
-        const QString tmpFile = tmp.path() + QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
-                                                               "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
-                                                               "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
-                                                               "olonglonglonglong/file🐷.txt");
+        const QString tmpFile = temporaryDir.path()
+            + QString::fromUtf8("/alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                "olonglonglonglong/file🐷.txt");
         {
             // use a long file path to ensure we handle that correctly
             QVERIFY(QFileInfo(tmpFile).dir().mkpath(QStringLiteral(".")));
@@ -118,7 +119,7 @@ private slots:
         QCOMPARE(file, tmpFile);
         QVERIFY(!watcher.contains(tmpFile, FileSystem::LockMode::Shared));
 #endif
-        QVERIFY(tmp.remove());
+        QVERIFY(temporaryDir.remove());
     }
 
 #ifdef Q_OS_WIN

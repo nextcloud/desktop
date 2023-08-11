@@ -186,11 +186,11 @@ bool FolderWizardRemotePath::selectByPath(QString path)
     QTreeWidgetItem *it = _ui->folderTreeWidget->topLevelItem(0);
     if (!path.isEmpty()) {
         const QStringList pathTrail = path.split(QLatin1Char('/'));
-        for (const auto &path : pathTrail) {
+        for (const auto &trail : pathTrail) {
             if (!it) {
                 return false;
             }
-            it = findFirstChild(it, path);
+            it = findFirstChild(it, trail);
         }
     }
     if (!it) {

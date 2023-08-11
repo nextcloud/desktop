@@ -265,9 +265,9 @@ void PropagateUploadFileV1::slotPutFinished()
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         auto currentChunk = job->_chunk;
-        for (auto *job : childJobs()) {
+        for (auto *childJob : childJobs()) {
             // Take the minimum finished one
-            if (auto putJob = qobject_cast<PUTFileJob *>(job)) {
+            if (auto putJob = qobject_cast<PUTFileJob *>(childJob)) {
                 currentChunk = qMin(currentChunk, putJob->_chunk - 1);
             }
         }

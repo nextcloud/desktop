@@ -685,8 +685,8 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
 {
     if (fi.isDir) {
         dest += QStringLiteral("%1 - dir").arg(fi.path());
-        for (const auto &fi : fi.children)
-            addFiles(dest, fi);
+        for (const auto &child : fi.children)
+            addFiles(dest, child);
     } else {
         dest += QStringLiteral("%1 - %2 %3-bytes (%4)").arg(fi.path(), QString::number(fi.contentSize), QChar::fromLatin1(fi.contentChar), fi.lastModifiedInUtc().toString());
     }
@@ -712,8 +712,8 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
     // could include etag, permissions etc, but would need extra work
     if (fi.isDir) {
         dest += QStringLiteral("%1 - %2 %3 %4").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.lastModifiedInSecondsUTC()), QString::fromUtf8(fi.fileId));
-        for (const auto &fi : fi.children)
-            addFilesDbData(dest, fi);
+        for (const auto &child : fi.children)
+            addFilesDbData(dest, child);
     } else {
         dest += QStringLiteral("%1 - %2 %3 %4 %5").arg(fi.name, fi.isDir ? QStringLiteral("dir") : QStringLiteral("file"), QString::number(fi.contentSize), QString::number(fi.lastModifiedInSecondsUTC()), QString::fromUtf8(fi.fileId));
     }
@@ -722,8 +722,8 @@ inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
 inline char *printDbData(const FileInfo &fi)
 {
     QStringList files;
-    for (const auto &fi : fi.children)
-        addFilesDbData(files, fi);
+    for (const auto &child : fi.children)
+        addFilesDbData(files, child);
     return QTest::toString(QStringLiteral("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(QStringLiteral(", "))));
 }
 

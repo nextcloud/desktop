@@ -661,12 +661,12 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
                 QString accessToken;
                 QString newRefreshToken = refreshToken;
                 // https://developer.okta.com/docs/reference/api/oidc/#response-properties-2
-                const QString error = data.value(QStringLiteral("error")).toString();
-                if (!error.isEmpty()) {
-                    if (error == QLatin1String("invalid_grant") || error == QLatin1String("invalid_request")) {
+                const QString errorString = data.value(QStringLiteral("error")).toString();
+                if (!errorString.isEmpty()) {
+                    if (errorString == QLatin1String("invalid_grant") || errorString == QLatin1String("invalid_request")) {
                         newRefreshToken.clear();
                     } else {
-                        qCWarning(lcOauth) << "Error while refreshing the token:" << error << data.value(QStringLiteral("error_description")).toString();
+                        qCWarning(lcOauth) << "Error while refreshing the token:" << errorString << data.value(QStringLiteral("error_description")).toString();
                     }
                 } else if (reply->error() != QNetworkReply::NoError) {
                     qCWarning(lcOauth) << "Error while refreshing the token:" << reply->error() << ":" << reply->errorString() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

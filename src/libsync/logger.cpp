@@ -54,12 +54,12 @@ namespace OCC {
 Logger *Logger::instance()
 {
     static auto *log = [] {
-        auto log = new Logger;
+        auto _log = new Logger;
         qAddPostRoutine([] {
             Logger::instance()->close();
             delete Logger::instance();
         });
-        return log;
+        return _log;
     }();
     return log;
 }

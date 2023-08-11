@@ -1387,27 +1387,27 @@ QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInf
         return empty_result;
     }
 
-    SqlQuery query(_db);
-    // The selected values *must* match the ones expected by toDownloadInfo().
-    query.prepare("SELECT tmpfile, etag, errorcount, path FROM downloadinfo");
-
-    if (!query.exec()) {
-        return empty_result;
-    }
-
     QStringList superfluousPaths;
     QVector<SyncJournalDb::DownloadInfo> deleted_entries;
+    {
+        SqlQuery query(_db);
+        // The selected values *must* match the ones expected by toDownloadInfo().
+        query.prepare("SELECT tmpfile, etag, errorcount, path FROM downloadinfo");
 
-    while (query.next().hasData) {
-        const QString file = query.stringValue(3); // path
-        if (!keep.contains(file)) {
-            superfluousPaths.append(file);
-            DownloadInfo info;
-            toDownloadInfo(query, &info);
-            deleted_entries.append(info);
+        if (!query.exec()) {
+            return empty_result;
+        }
+
+        while (query.next().hasData) {
+            const QString file = query.stringValue(3); // path
+            if (!keep.contains(file)) {
+                superfluousPaths.append(file);
+                DownloadInfo info;
+                toDownloadInfo(query, &info);
+                deleted_entries.append(info);
+            }
         }
     }
-
     {
         const auto query = _queryManager.get(PreparedSqlQueryManager::DeleteDownloadInfoQuery);
         if (!deleteBatch(*query, superfluousPaths, QStringLiteral("downloadinfo"))) {

@@ -161,16 +161,14 @@ bool FileSystem::rename(const QString &originFileName,
     bool success = false;
     QString error;
 #ifdef Q_OS_WIN
-    const QString orig = longWinPath(originFileName);
+    const QString originalFileNameLong = longWinPath(originFileName);
     const QString dest = longWinPath(destinationFileName);
     if (FileSystem::isFileLocked(dest, FileSystem::LockMode::Exclusive)) {
         error = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(destinationFileName);
-    } else if (FileSystem::isFileLocked(orig, FileSystem::LockMode::Exclusive)) {
+    } else if (FileSystem::isFileLocked(originalFileNameLong, FileSystem::LockMode::Exclusive)) {
         error = QCoreApplication::translate("FileSystem", "Can't rename %1, the file is currently in use").arg(originFileName);
     } else if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
-        success = MoveFileEx((wchar_t *)orig.utf16(),
-            (wchar_t *)dest.utf16(),
-            MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+        success = MoveFileEx((wchar_t *)originalFileNameLong.utf16(), (wchar_t *)dest.utf16(), MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
         if (!success) {
             error = Utility::formatWinError(GetLastError());
         }

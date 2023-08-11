@@ -331,10 +331,9 @@ void IssuesWidget::slotProgressInfo(Folder *folder, const ProgressInfo &progress
         // We keep track very well of pending conflicts.
         // Inform other components about them.
         QStringList conflicts;
-        for (const auto &data : _model->rawData()) {
-            if (data.folder() == folder
-                && data.status() == SyncFileItem::Conflict) {
-                conflicts.append(data.path());
+        for (const auto &rawData : _model->rawData()) {
+            if (rawData.folder() == folder && rawData.status() == SyncFileItem::Conflict) {
+                conflicts.append(rawData.path());
             }
         }
         emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
