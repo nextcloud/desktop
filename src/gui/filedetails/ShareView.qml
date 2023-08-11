@@ -95,6 +95,8 @@ ColumnLayout {
         closePolicy: Popup.NoAutoClose
 
         visible: false
+        onAboutToShow: dialogPasswordField.text = shareModel.generatePassword()
+        onClosed: dialogPasswordField.text = ""
 
         onAccepted: {
             if(sharee) {
