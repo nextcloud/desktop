@@ -182,6 +182,8 @@ private slots:
         add(QStringLiteral("/A/a"), QStringLiteral("/A"), true);
         add(QStringLiteral("/A/a"), QStringLiteral("/A/a"), true);
         add(QStringLiteral("/A/a"), QStringLiteral("/A/a/"), true);
+        add(QStringLiteral("/A/a/"), QStringLiteral("/A/a/"), true);
+        add(QStringLiteral("/A/a/"), QStringLiteral("/A/a"), true);
         add(QStringLiteral("C:/A/a"), QStringLiteral("C:/A"), true);
         add(QStringLiteral("C:/Aa"), QStringLiteral("C:/A"), false);
         add(QStringLiteral("C:/Aa"), QStringLiteral("C:/A"), false);
@@ -198,6 +200,13 @@ private slots:
         add(QStringLiteral("https://foo/bar"), QStringLiteral("https://foo"), true);
         add(QStringLiteral("https://foo/bar"), QStringLiteral("http://foo"), false);
         add(QStringLiteral("https://foo/bar"), QStringLiteral("http://foo/foo"), false);
+#ifdef Q_OS_WIN
+        // QDir::cleanPath converts \\ only on Windows
+        add(QStringLiteral("C:/Program Files/test)"), QStringLiteral("C:/Program Files"), true);
+        add(QStringLiteral(R"(C:\Program Files\test)"), QStringLiteral("C:/Program Files"), true);
+        add(QStringLiteral(R"(C:\Program Files\test\)"), QStringLiteral("C:/Program Files\\"), true);
+        add(QStringLiteral(R"(C:\Program Files\test\\\)"), QStringLiteral("C:/Program Files/test"), true);
+#endif
     }
 
     void testIsChildOf()

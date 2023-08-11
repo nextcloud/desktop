@@ -596,7 +596,11 @@ bool FileSystem::isChildPathOf(QStringView child, QStringView parent)
     if (parent.isEmpty()) {
         // The empty parent is often used as the sync root, as (child) items do not start with a `/`
         return true;
-    } else if (parent.endsWith(QLatin1Char('/'))) {
+    }
+
+    const auto isSeparator = [](QChar c) { return c == QLatin1Char('/') || (Utility::isWindows() && c == QLatin1Char('\\')); };
+
+    if (isSeparator(parent.back())) {
         // Here we can do a normal prefix check, because the parent is "terminated" with a slash,
         // and we can't walk into the case in the else below.
         if (child.startsWith(parent, sensitivity)) {
@@ -613,7 +617,7 @@ bool FileSystem::isChildPathOf(QStringView child, QStringView parent)
         // first check if the child string starts with the parent string
         if (child.startsWith(parent, sensitivity)) {
             // ok, now check if the character after the parent is a '/'
-            if (child.length() >= parent.length() + 1 && child.at(parent.length()) == QLatin1Char('/')) {
+            if (child.length() >= parent.length() + 1 && isSeparator(child.at(parent.length()))) {
                 return true;
             }
             // else: do the `cleanPath` version below
@@ -621,7 +625,18 @@ bool FileSystem::isChildPathOf(QStringView child, QStringView parent)
     }
 
     // Slow path (`QDir::cleanPath` does lots of string operations):
-    return QString::compare(QDir::cleanPath(parent.toString()), QDir::cleanPath(child.toString()), sensitivity) == 0;
+    const QString cleanParent = QDir::cleanPath(parent.toString());
+    const QString cleanChild = QDir::cleanPath(child.toString());
+    // cleanPath removes trailing slashes, add one to parent to be sure we handle a child path
+    // /root/foo/bar is not  a child of /root/fo, therefor the trailing slash is important
+    if (cleanChild.startsWith(cleanParent + QLatin1Char('/'), sensitivity)) {
+        return true;
+    }
+    // both paths are the same /root/foo == /root/foo
+    if (cleanChild.compare(cleanParent, sensitivity) == 0) {
+        return true;
+    }
+    return false;
 }
 
 QString FileSystem::createPortableFileName(const QString &path, const QString &fileName, qsizetype reservedSize)
