@@ -14,6 +14,11 @@
 #define MAXPAIR 80
 #define MAXLEN 70
 
+inline std::uint8_t operator"" _u8(unsigned long long value)
+{
+    return static_cast<std::uint8_t>(value);
+}
+
 class TestJHash : public QObject
 {
     Q_OBJECT
@@ -33,7 +38,7 @@ private Q_SLOTS:
                 for (j = 0; j < 8; ++j) { /*------------------------ for each input bit, */
                     for (m = 1; m < 8; ++m) { /*------------ for serveral possible initvals, */
                         for (l = 0; l < HASHSTATE; ++l)
-                            e[l] = f[l] = g[l] = h[l] = x[l] = y[l] = ~(0);
+                            e[l] = f[l] = g[l] = h[l] = x[l] = y[l] = ~0ull;
 
                         /*---- check that every output bit is affected by that input bit */
                         for (k = 0; k < MAXPAIR; k += 2) {
@@ -111,8 +116,8 @@ private Q_SLOTS:
 
                 /* these should all be equal */
                 ref = c_jhash64(b, len, 1);
-                *(b + i) = ~0;
-                *(b - 1) = ~0;
+                *(b + i) = ~0_u8;
+                *(b - 1) = ~0_u8;
                 x = c_jhash64(b, len, 1);
                 y = c_jhash64(b, len, 1);
                 QVERIFY(!(ref != x) || (ref != y));
@@ -126,7 +131,7 @@ private Q_SLOTS:
         uint64_t h, i, t;
 
 
-        buf[0] = ~0;
+        buf[0] = ~0_u8;
         for (i = 0, h = 0; i < 8; ++i) {
             t = h;
             h = c_jhash64(buf, 0, h);
@@ -153,7 +158,7 @@ private Q_SLOTS:
                 for (j = 0; j < 8; ++j) { /*------------------------ for each bit, */
                     for (m = 0; m < 8; ++m) { /*-------- for serveral possible levels, */
                         for (l = 0; l < HASHSTATE; ++l)
-                            e[l] = f[l] = g[l] = h[l] = x[l] = y[l] = ~(0);
+                            e[l] = f[l] = g[l] = h[l] = x[l] = y[l] = ~0ul;
 
                         /*---- check that every input bit affects every output bit */
                         for (k = 0; k < MAXPAIR; k += 2) {
@@ -263,8 +268,8 @@ private Q_SLOTS:
 
                 /* these should all be equal */
                 ref = c_jhash64(b, len, 1);
-                *(b + i) = ~0;
-                *(b - 1) = ~0;
+                *(b + i) = ~0_u8;
+                *(b - 1) = ~0_u8;
                 x = c_jhash64(b, len, 1);
                 y = c_jhash64(b, len, 1);
                 QVERIFY(!(ref != x) || (ref != y));
@@ -280,7 +285,7 @@ private Q_SLOTS:
         uint8_t buf[1];
         uint64_t h, i, t;
 
-        buf[0] = ~0;
+        buf[0] = ~0_u8;
         for (i = 0, h = 0; i < 8; ++i) {
             t = h;
             h = c_jhash64(buf, 0, h);

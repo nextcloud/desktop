@@ -409,6 +409,10 @@ void SqlQuery::bindValueInternal(int pos, const QVariant &value)
         return;
     }
 
+    const auto bindUtf16 = [this](int pos, const QString &str) {
+        return sqlite3_bind_text16(_stmt, pos, str.utf16(), static_cast<int>(str.size() * sizeof(ushort)), SQLITE_TRANSIENT);
+    };
+
     switch (value.typeId()) {
     case QMetaType::Int:
     case QMetaType::Bool:
@@ -425,23 +429,20 @@ void SqlQuery::bindValueInternal(int pos, const QVariant &value)
     case QMetaType::QDateTime: {
         const QDateTime dateTime = value.toDateTime();
         const QString str = dateTime.toString(QStringLiteral("yyyy-MM-ddThh:mm:ss.zzz"));
-        res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-            str.size() * sizeof(ushort), SQLITE_TRANSIENT);
+        res = bindUtf16(pos, str);
         break;
     }
     case QMetaType::QTime: {
         const QTime time = value.toTime();
         const QString str = time.toString(QStringLiteral("hh:mm:ss.zzz"));
-        res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-            str.size() * sizeof(ushort), SQLITE_TRANSIENT);
+        res = bindUtf16(pos, str);
         break;
     }
     case QMetaType::QString: {
         if (!value.toString().isNull()) {
             // lifetime of string == lifetime of its qvariant
             const QString *str = static_cast<const QString *>(value.constData());
-            res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
-                (str->size()) * sizeof(QChar), SQLITE_TRANSIENT);
+            res = bindUtf16(pos, *str);
         } else {
             res = sqlite3_bind_null(_stmt, pos);
         }
@@ -455,8 +456,7 @@ void SqlQuery::bindValueInternal(int pos, const QVariant &value)
     default: {
         QString str = value.toString();
         // SQLITE_TRANSIENT makes sure that sqlite buffers the data
-        res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-            (str.size()) * sizeof(QChar), SQLITE_TRANSIENT);
+        res = sqlite3_bind_text16(_stmt, pos, str.utf16(), static_cast<int>(str.size() * sizeof(ushort)), SQLITE_TRANSIENT);
         break;
     }
     }

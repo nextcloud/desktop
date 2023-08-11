@@ -42,16 +42,12 @@ public:
     {
     }
 
-    void storeHash(uint hash)
+    void storeHash(size_t hash)
     {
         hashBits.setBit((hash & 0xFFFF) % NumBits);
         hashBits.setBit((hash >> 16) % NumBits);
     }
-    bool isHashMaybeStored(uint hash) const
-    {
-        return hashBits.testBit((hash & 0xFFFF) % NumBits)
-            && hashBits.testBit((hash >> 16) % NumBits);
-    }
+    bool isHashMaybeStored(size_t hash) const { return hashBits.testBit((hash & 0xFFFF) % NumBits) && hashBits.testBit((hash >> 16) % NumBits); }
 
 private:
     QBitArray hashBits;
@@ -77,16 +73,13 @@ public:
         sendMessage(QStringLiteral("ERROR:") + message, doWait);
     }
 
-    void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
+    void sendMessageIfDirectoryMonitored(const QString &message, size_t systemDirectoryHash) const
     {
         if (_monitoredDirectoriesBloomFilter.isHashMaybeStored(systemDirectoryHash))
             sendMessage(message, false);
     }
 
-    void registerMonitoredDirectory(uint systemDirectoryHash)
-    {
-        _monitoredDirectoriesBloomFilter.storeHash(systemDirectoryHash);
-    }
+    void registerMonitoredDirectory(size_t systemDirectoryHash) { _monitoredDirectoriesBloomFilter.storeHash(systemDirectoryHash); }
 
 private:
     BloomFilter _monitoredDirectoriesBloomFilter;

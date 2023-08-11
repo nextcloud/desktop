@@ -683,7 +683,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
                 Q_ASSERT([&] {
                     Q_ASSERT(record.isValid());
                     // we don't intend to burn to many cpu cycles so limit this check on small files
-                    if (!record.isVirtualFile() && record._fileSize < 1_mb) {
+                    if (!record.isVirtualFile() && record._fileSize < static_cast<qint64>(1_mb)) {
                         const auto header = ChecksumHeader::parseChecksumHeader(record._checksumHeader);
                         auto *compute = new ComputeChecksum(this);
                         compute->setChecksumType(header.type());

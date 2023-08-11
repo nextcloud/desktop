@@ -427,7 +427,7 @@ void ShareUserLine::loadAvatar()
     double hue = static_cast<quint8>(hash[0]) / 255.;
 
     // See core/js/placeholder.js for details on colors and styling
-    const QColor bg = QColor::fromHslF(hue, 0.7, 0.68);
+    const QColor bg = QColor::fromHslF(hue, 0.7f, 0.68f);
     const QString style = QStringLiteral(R"(* {
         color: #fff;
         background-color: %1;

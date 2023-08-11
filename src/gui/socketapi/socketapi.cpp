@@ -457,7 +457,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
 {
     QString msg = buildMessage(QStringLiteral("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith(QLatin1Char('/')));
-    uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf(QLatin1Char('/'))));
+    auto directoryHash = qHash(systemPath.left(systemPath.lastIndexOf(QLatin1Char('/'))));
     for (const auto &listener : qAsConst(_listeners)) {
         listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
