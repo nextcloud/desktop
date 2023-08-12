@@ -5563,6 +5563,11 @@ Server replied with error: %2</source>
         <translation>파일 드롭 (업로드 전용)</translation>
     </message>
     <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
+        <source>Allow resharing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>다운로드 숨기기</translation>

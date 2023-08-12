@@ -5560,6 +5560,11 @@ Server odpověděl chybou: %2</translation>
         <translation>Předání souboru (pouze nahrání)</translation>
     </message>
     <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
+        <source>Allow resharing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>Skrýt stažení</translation>
