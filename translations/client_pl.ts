@@ -5561,6 +5561,11 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Upuszczanie pliku (tylko wysyłanie)</translation>
     </message>
     <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
+        <source>Allow resharing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
         <source>Hide download</source>
         <translation>Ukryj pobieranie</translation>
