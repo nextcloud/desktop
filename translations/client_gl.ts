@@ -2942,7 +2942,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Nota: os axustes do proxy non teñen efectos para as contas en localhost</translation>
+        <translation>Nota: Os axustes do proxy non teñen efectos para as contas en localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -3153,7 +3153,7 @@ Teña en conta que o uso de calquera opción da liña de ordes anulara este axus
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="303"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Advertencia: o cartafol local non está baleiro. Escolla unha resolución.</translation>
+        <translation>Advertencia: O cartafol local non está baleiro. Escolla unha resolución.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
@@ -5564,7 +5564,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Permitir volver compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>

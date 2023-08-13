@@ -4316,7 +4316,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1120"/>
         <source>I shared something with you</source>
-        <translation>Я чимось поділив(ла)ся з вами</translation>
+        <translation>Я надав(-ла) вам доступ до чогось</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1133"/>
@@ -4353,7 +4353,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Повторне надання доступу до цього каталого заборонено</translation>
+        <translation>Надання цього каталогу у спільний доступ іншим не дозволено</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
@@ -5564,7 +5564,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Дозволити передавати у спільний доступ іншим</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
