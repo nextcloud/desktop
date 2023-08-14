@@ -1717,6 +1717,15 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(spy.count(), 1);
     }
+
+    void testFileDownloadWithUnicodeCharacterInName() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.remoteModifier().insert("A/abcdęfg.txt");
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/abcdęfg.txt"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
