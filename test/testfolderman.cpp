@@ -180,22 +180,24 @@ private slots:
         QVERIFY(folderman->addFolder(
             newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/sub/ownCloud/"))));
         QVERIFY(folderman->addFolder(
-            newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/ownCloud2/"))));
+            newAccountState.get(), TestUtils::createDummyFolderDefinition(newAccountState->account(), dirPath + QStringLiteral("/ownCloud (2)/"))));
 
         // TEST
 
         QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("oc")), dirPath + QStringLiteral("/oc"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud")), dirPath + QStringLiteral("/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud2")), dirPath + QStringLiteral("/ownCloud22"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud")), dirPath + QStringLiteral("/ownCloud (3)"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud2")), dirPath + QStringLiteral("/ownCloud2 (2)"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud (2)")), dirPath + QStringLiteral("/ownCloud (2) (2)"));
         QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud2/foo")), dirPath + QStringLiteral("/ownCloud2_foo"));
         QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud2/bar")), dirPath + QStringLiteral("/ownCloud2_bar"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("sub")), dirPath + QStringLiteral("/sub2"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("sub")), dirPath + QStringLiteral("/sub (2)"));
 
         // REMOVE ownCloud2 from the filesystem, but keep a folder sync'ed to it.
         // We should still not suggest this folder as a new folder.
-        QDir(dirPath + QStringLiteral("/ownCloud2/")).removeRecursively();
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud")), dirPath + QStringLiteral("/ownCloud3"));
-        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud2")), QString(dirPath + QStringLiteral("/ownCloud22")));
+        QDir(dirPath + QStringLiteral("/ownCloud (2)/")).removeRecursively();
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud")), dirPath + QStringLiteral("/ownCloud (3)"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud2")), QString(dirPath + QStringLiteral("/ownCloud2 (2)")));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("ownCloud (2)")), QString(dirPath + QStringLiteral("/ownCloud (2) (2)")));
 
         // make sure people can't do evil stuff
         QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath, QStringLiteral("../../../Bo/b")), QString(dirPath + QStringLiteral("/___Bo_b")));

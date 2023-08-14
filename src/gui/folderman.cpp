@@ -800,8 +800,8 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
 
 QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder) const
 {
-    // reserve 3 characters to allow appending of a number 0-100
-    const QString normalisedPath = FileSystem::createPortableFileName(basePath, FileSystem::pathEscape(newFolder), 3);
+    // reserve extra characters to allow appending of a number
+    const QString normalisedPath = FileSystem::createPortableFileName(basePath, FileSystem::pathEscape(newFolder), std::string_view(" (100)").size());
 
     // If the parent folder is a sync folder or contained in one, we can't
     // possibly find a valid sync folder inside it.
@@ -815,12 +815,12 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
     // Count attempts and give up eventually
     {
         QString folder = normalisedPath;
-        for (int attempt = 2; attempt < 100; ++attempt) {
+        for (int attempt = 2; attempt <= 100; ++attempt) {
             if (!QFileInfo::exists(folder)
                 && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty()) {
                 return canonicalPath(folder);
             }
-            folder = normalisedPath + QString::number(attempt);
+            folder = normalisedPath + QStringLiteral(" (%1)").arg(attempt);
         }
     }
     // we failed to find a non existing path
