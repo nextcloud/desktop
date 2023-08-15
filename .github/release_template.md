@@ -16,6 +16,7 @@ __TODO__:
 * [ ] QA: Check the translations coming from transifex: https://github.com/owncloud/client/commits/ -> Filter based on a release branch/tag and search for `[tx] updated client translations from transifex [skip ci]`
 * [ ] DEV: Check for new OpenSSL version 
 * [ ] DEV: Check [dependencies](https://confluence.owncloud.com/display/OG/Dependencies) for updates
+* [ ] DEV: Update [SBOM](https://cloud.owncloud.com/f/6072843)
 * [ ] DEV: For a major release create `X` version branch
   * [ ] QA: In drone adjust the branch for nightly [GUI tests](https://confluence.owncloud.com/display/OG/Squish+Testing#SquishTesting-Prerequisite) @individual-it
 * [ ] DEV: Create a tag 
