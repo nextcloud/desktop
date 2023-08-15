@@ -231,6 +231,7 @@ ApplicationWindow {
                 height: parent.height
 
                 backgroundsVisible: false
+                accentColor: Style.currentUserHeaderColor
                 accountState: fileDetailsDrawer.folderAccountState
                 localPath: fileDetailsDrawer.fileLocalPath
                 showCloseButton: true

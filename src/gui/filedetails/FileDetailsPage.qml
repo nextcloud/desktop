@@ -38,6 +38,7 @@ Page {
     property StackView rootStackView: StackView {}
     property bool showCloseButton: false
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     property FileDetails fileDetails: FileDetails {
         id: fileDetails
@@ -227,6 +228,7 @@ Page {
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
                 text: qsTr("Activity")
+                accentColor: root.accentColor
                 checked: swipeView.currentIndex === fileActivityView.swipeIndex
                 onClicked: swipeView.currentIndex = fileActivityView.swipeIndex
             }
@@ -236,6 +238,7 @@ Page {
                 height: visible ? implicitHeight : 0
                 svgCustomColorSource: "image://svgimage-custom-color/share.svg"
                 text: qsTr("Sharing")
+                accentColor: root.accentColor
                 checked: swipeView.currentIndex === shareViewLoader.swipeIndex
                 onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
                 visible: root.fileDetails.sharingAvailable
