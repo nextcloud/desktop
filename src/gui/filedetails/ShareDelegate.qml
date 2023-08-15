@@ -265,6 +265,7 @@ GridLayout {
                     width: parent.width
                     height: parent.height
                     backgroundsVisible: root.backgroundsVisible
+                    accentColor: root.accentColor
 
                     fileDetails: root.fileDetails
                     shareModelData: model

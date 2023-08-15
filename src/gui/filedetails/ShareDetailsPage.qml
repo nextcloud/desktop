@@ -44,6 +44,7 @@ Page {
     signal setNote(string note)
 
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     property FileDetails fileDetails: FileDetails {}
     property var shareModelData: ({})
@@ -1005,14 +1006,14 @@ Page {
             CustomButton {
                 height: Style.standardPrimaryButtonHeight
 
-                icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncBlue
+                icon.source: "image://svgimage-custom-color/add.svg/" + root.accentColor
                 imageSourceHover: "image://svgimage-custom-color/add.svg/" + palette.brightText
                 text: qsTr("Add another link")
-                textColor: Style.ncBlue
+                textColor: root.accentColor
                 textColorHovered: palette.brightText
                 contentsFont.bold: true
                 bgNormalColor: palette.button
-                bgHoverColor: Style.ncBlue
+                bgHoverColor: root.accentColor
                 bgNormalOpacity: 1.0
                 bgHoverOpacity: 1.0
 
@@ -1054,7 +1055,7 @@ Page {
             text: shareLinkCopied ? qsTr("Share link copied!") : qsTr("Copy share link")
             textColor: palette.brightText
             contentsFont.bold: true
-            bgColor: shareLinkCopied ? Style.positiveColor : Style.ncBlue
+            bgColor: shareLinkCopied ? Style.positiveColor : root.accentColor
             bgNormalOpacity: 1.0
             bgHoverOpacity: shareLinkCopied ? 1.0 : Style.hoverOpacity
 
