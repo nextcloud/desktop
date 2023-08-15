@@ -271,6 +271,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         excluded = CSYNC_NOT_EXCLUDED;
     }
 
+    if (excluded == CSYNC_NOT_EXCLUDED && fileName.length() >= _discoveryData->_maxFilenameSize) {
+        excluded = CSYNC_FILE_EXCLUDE_LONG_FILENAME;
+    }
+
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;
     if (excluded == CSYNC_NOT_EXCLUDED && !_discoveryData->_invalidFilenameRx.pattern().isEmpty()) {

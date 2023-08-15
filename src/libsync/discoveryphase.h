@@ -300,6 +300,7 @@ public:
     SyncOptions _syncOptions;
     ExcludedFiles *_excludes = nullptr;
     QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
+    const unsigned char _maxFilenameSize = 255; // Max compatibility
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
     QStringList _leadingAndTrailingSpacesFilesAllowed;
     bool _ignoreHiddenFiles = false;
