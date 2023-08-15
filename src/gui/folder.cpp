@@ -561,7 +561,7 @@ void Folder::startVfs()
         return;
     }
 
-    VfsSetupParams vfsParams(_accountState->account(), webDavUrl(), groupInSidebar());
+    VfsSetupParams vfsParams(_accountState->account(), webDavUrl(), groupInSidebar(), _engine.get());
     vfsParams.filesystemPath = path();
     vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.journal = &_journal;

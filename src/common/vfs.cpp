@@ -263,3 +263,16 @@ QString Utility::enumToString(Vfs::Mode mode)
     }
     Q_UNREACHABLE();
 }
+
+VfsSetupParams::VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl, bool groupInSidebar, SyncEngine *syncEngine)
+    : account(account)
+    , _baseUrl(baseUrl)
+    , _groupInSidebar(groupInSidebar)
+    , _syncEngine(syncEngine)
+{
+}
+
+SyncEngine *VfsSetupParams::syncEngine() const
+{
+    return _syncEngine;
+}

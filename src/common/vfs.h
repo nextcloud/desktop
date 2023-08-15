@@ -33,20 +33,14 @@
 namespace OCC {
 
 class Account;
-typedef QSharedPointer<Account> AccountPtr;
 class SyncJournalDb;
-class VfsPrivate;
 class SyncFileItem;
+class SyncEngine;
 
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
 {
-    explicit VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl, bool groupInSidebar)
-        : account(account)
-        , _baseUrl(baseUrl)
-        , _groupInSidebar(groupInSidebar)
-    {
-    }
+    explicit VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl, bool groupInSidebar, SyncEngine *syncEngine);
     /** The full path to the folder on the local filesystem
      *
      * Always ends with /.
@@ -88,10 +82,12 @@ struct OCSYNC_EXPORT VfsSetupParams
         return _groupInSidebar;
     }
 
+    SyncEngine *syncEngine() const;
 
 private:
     QUrl _baseUrl;
     bool _groupInSidebar = false;
+    SyncEngine *_syncEngine;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.
