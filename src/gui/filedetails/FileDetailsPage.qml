@@ -285,6 +285,7 @@ Page {
                 iconSize: root.iconSize
                 rootStackView: root.rootStackView
                 backgroundsVisible: root.backgroundsVisible
+                accentColor: root.accentColor
             }
         }
     }
