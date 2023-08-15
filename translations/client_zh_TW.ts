@@ -5564,7 +5564,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>允許轉分享</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
