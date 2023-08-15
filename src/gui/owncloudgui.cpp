@@ -83,11 +83,9 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
     };
 
     if (accountStatePtr->supportsSpaces()) {
-        // Qt6: Qt::SingleShotConnection
-        auto *singleShotConnection = new QObject();
-        QObject::connect(accountStatePtr->account()->spacesManager(), &GraphApi::SpacesManager::ready, singleShotConnection,
-            [accountStatePtr, addFolder, finalize, singleShotConnection] {
-                delete singleShotConnection;
+        QObject::connect(
+            accountStatePtr->account()->spacesManager(), &GraphApi::SpacesManager::ready, accountStatePtr,
+            [accountStatePtr, addFolder, finalize] {
                 auto spaces = accountStatePtr->account()->spacesManager()->spaces();
                 // we do not want to set up folder sync connections for disabled spaces (#10173)
                 spaces.erase(std::remove_if(spaces.begin(), spaces.end(), [](auto *space) { return space->disabled(); }), spaces.end());
@@ -107,7 +105,8 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                     }
                     finalize();
                 }
-            });
+            },
+            Qt::SingleShotConnection);
         accountStatePtr->account()->spacesManager()->checkReady();
     } else {
         addFolder(accountStatePtr->account()->defaultSyncRoot(), Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
