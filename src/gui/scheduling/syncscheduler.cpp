@@ -112,6 +112,7 @@ SyncScheduler::SyncScheduler(FolderMan *parent)
             }
         }
     });
+    fullLocalDiscoveryTimer->start();
 }
 
 
