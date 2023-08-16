@@ -1808,12 +1808,12 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1312"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizovat</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1320"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Zastavit synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
@@ -5562,7 +5562,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="450"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Povolit sdílet dál dalším</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="464"/>
