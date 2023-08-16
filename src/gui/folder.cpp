@@ -632,6 +632,7 @@ int Folder::slotWipeErrorBlacklist()
 void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason reason)
 {
     Q_ASSERT(isReady());
+    bool needSync = false;
     for (const auto &path : paths) {
         Q_ASSERT(FileSystem::isChildPathOf(path, this->path()));
 
@@ -706,10 +707,10 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
         warnOnNewExcludedItem(record, relativePath);
 
         emit watchedFileChangedExternally(path);
-
-        // Also schedule this folder for a sync, but only after some delay:
-        // The sync will not upload files that were changed too recently.
-        QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [this] { FolderMan::instance()->scheduler()->enqueueFolder(this); });
+        needSync = true;
+    }
+    if (needSync) {
+        FolderMan::instance()->scheduler()->enqueueFolder(this);
     }
 }
 
