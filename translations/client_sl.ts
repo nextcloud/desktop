@@ -1043,7 +1043,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče preimenovati, ker datoteka z istim imenom na strežniku že obstaja. Prosimo izberite drugo ime.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
@@ -1434,12 +1434,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Podana pot datoteke je neveljavna.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Računa za lokalno urejanje ni bilo mogoče najti.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="93"/>
@@ -1451,12 +1451,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <location filename="../src/gui/editlocallyjob.cpp" line="557"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="577"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Lokalnega urejanja ni bilo mogoče začeti. </translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation type="unfinished"/>
+        <translation>Napaka pri preverjanju prošnje za lokalno urejanje.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
@@ -1519,23 +1519,23 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="669"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je že zaklenjena</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="670"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="681"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka bo zaklenjena za %1 min. Lahko pa jo ročno odklenete po končanem urejanju.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="680"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je sedaj zaklenjena.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="689"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke %1 s ni mogoče zakleniti.</translation>
     </message>
 </context>
 <context>
@@ -1807,12 +1807,12 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1312"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljuj sinhronizacijo</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1320"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Zaustavi sinhronizacijo</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
@@ -1822,7 +1822,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Želite ustaviti sinhronizacijo te mape?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
@@ -2047,7 +2047,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source>Could not decrypt!</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni bilo mogoče dešifrirati!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
@@ -2155,7 +2155,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Še nekaj sekund, %1 od %2, datoteka %3 od %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
@@ -2396,7 +2396,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži obvestila Klicov</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2448,7 +2448,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Vprašaj za potrditev pred sinhronizacijo novih map večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
