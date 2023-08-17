@@ -3151,7 +3151,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="303"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Avertissement : le dossier local n&apos;est pas vide. Sélectionnez une résolution.</translation>
+        <translation>Avertissement : Le dossier local n&apos;est pas vide. Choisissez une option.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>

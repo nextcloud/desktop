@@ -748,7 +748,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1554"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Jsou zde složky, jejichž velikost přesáhla %1MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -1803,7 +1803,8 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <location filename="../src/gui/folder.cpp" line="1301"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Složka překročila nastavený limit velikosti %1MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1312"/>
@@ -1818,12 +1819,12 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1331"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>Složka %1 překročila nastavený limit velikosti %2MB.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Chcete ji přestat synchronizovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
@@ -2449,7 +2450,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se před synchronizací nových složek větších než</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2460,12 +2461,12 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
     <message>
         <location filename="../src/gui/generalsettings.ui" line="281"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Upozornit pokud se synchronizované složky stanou většími než nastavený limit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Automaticky vypnout synchronizaci složek, které přesáhnou limit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
