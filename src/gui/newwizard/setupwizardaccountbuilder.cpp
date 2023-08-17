@@ -17,6 +17,9 @@
 #include "gui/accountmanager.h"
 #include "networkjobs/fetchuserinfojobfactory.h"
 
+#include <QDir>
+#include <QFileInfo>
+
 namespace OCC::Wizard {
 
 AbstractAuthenticationStrategy::~AbstractAuthenticationStrategy() { }
@@ -135,6 +138,9 @@ AccountPtr SetupWizardAccountBuilder::build()
 
     if (!_defaultSyncTargetDir.isEmpty()) {
         newAccountPtr->setDefaultSyncRoot(_defaultSyncTargetDir);
+        if (!QFileInfo::exists(_defaultSyncTargetDir)) {
+            OC_ASSERT(QDir().mkpath(_defaultSyncTargetDir));
+        }
     }
 
     return newAccountPtr;

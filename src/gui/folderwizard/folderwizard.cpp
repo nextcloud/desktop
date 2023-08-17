@@ -215,6 +215,9 @@ FolderWizard::Result FolderWizard::result()
     if (!d->_account->account()->hasDefaultSyncRoot()) {
         if (FileSystem::isChildPathOf(localPath, d->defaultSyncRoot())) {
             d->_account->account()->setDefaultSyncRoot(d->defaultSyncRoot());
+            if (!QFileInfo::exists(d->defaultSyncRoot())) {
+                OC_ASSERT(QDir().mkpath(d->defaultSyncRoot()));
+            }
         }
     }
 

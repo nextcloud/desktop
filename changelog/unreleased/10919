@@ -1,0 +1,9 @@
+Bugfix: Do not create default sync root when loading accounts
+
+Creating the default sync root is only needed at initial setup. If a
+user chooses to point all folders for Spaces outside that default sync
+root, and deletes the default sync root folder, it will now no longer be
+created.
+
+https://github.com/owncloud/client/issues/10919
+https://github.com/owncloud/client/pull/11128
