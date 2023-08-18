@@ -359,6 +359,8 @@ public slots:
      */
     void slotFilesLockImposed(const QSet<QString> &files);
 
+    void slotLockedFilesFound(const QSet<QString> &files);
+
     /**
      * Mark a virtual file as being requested for download, and start a sync.
      *
@@ -562,6 +564,8 @@ private:
 
     QMetaObject::Connection _officeFileLockReleaseUnlockSuccess;
     QMetaObject::Connection _officeFileLockReleaseUnlockFailure;
+    QMetaObject::Connection _fileLockSuccess;
+    QMetaObject::Connection _fileLockFailure;
 };
 }
 
