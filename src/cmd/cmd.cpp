@@ -186,7 +186,7 @@ void help()
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
-    std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  --non-interactive      Do not block execution with interaction and tries to read $NC_USER and $NC_PASSWORD if not set by other means" << std::endl;
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
@@ -360,6 +360,7 @@ int main(int argc, char **argv)
     // 2. From options
     // 3. From netrc (if enabled)
     // 4. From prompt (if interactive)
+    // 4. From environment (if non-interactive)
 
     QString user = hostUrl.userName();
     QString password = hostUrl.password();
