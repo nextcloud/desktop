@@ -197,7 +197,6 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     QSet<QString> changedPaths;
     QSet<QString> unlockedFiles;
     QSet<QString> lockedFiles;
-    QSet<QString> lockFiles;
 
     for (const auto &path : paths) {
         if (!_testNotificationPath.isEmpty()
@@ -206,12 +205,13 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         }
 
         const auto lockFileNamePattern = filePathLockFilePatternMatch(path);
-        const auto checkResult = checkIfFileIsLockOrUnlock(path,lockFileNamePattern);
+        const auto checkResult = lockFileTargetFilePath(path,lockFileNamePattern);
         if (_shouldWatchForFileUnlocking) {
-            if (checkResult.type == FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty()) {
+            // Lock file has been deleted, file now unlocked
+            if (checkResult.type == FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty() && !QFile::exists(path)) {
                 unlockedFiles.insert(checkResult.path);
-            } else if (!lockFileNamePattern.isEmpty()) {
-                lockFiles.insert(path);
+            } else if (!checkResult.path.isEmpty() && QFile::exists(path)) { // Lock file found
+                lockedFiles.insert(checkResult.path);
             }
         }
 
@@ -230,7 +230,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     }
 
     qCDebug(lcFolderWatcher) << "Unlocked files:" << unlockedFiles.values();
-    qCDebug(lcFolderWatcher) << "Lock files:" << lockFiles;
+    qCDebug(lcFolderWatcher) << "Locked files:" << lockedFiles;
 
     if (!unlockedFiles.isEmpty()) {
         emit filesLockReleased(unlockedFiles);
@@ -240,8 +240,8 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         emit filesLockImposed(lockedFiles);
     }
 
-    if (!lockFiles.isEmpty()) {
-        emit lockFilesFound(lockFiles);
+    if (!lockedFiles.isEmpty()) {
+        emit lockedFilesFound(lockedFiles);
     }
 
     if (changedPaths.isEmpty()) {
@@ -259,7 +259,7 @@ void FolderWatcher::folderAccountCapabilitiesChanged()
     _shouldWatchForFileUnlocking = _folder->accountState()->account()->capabilities().filesLockAvailable();
 }
 
-FolderWatcher::FileLockingInfo FolderWatcher::checkIfFileIsLockOrUnlock(const QString &path, const QString &lockFileNamePattern) const
+FolderWatcher::FileLockingInfo FolderWatcher::lockFileTargetFilePath(const QString &path, const QString &lockFileNamePattern) const
 {
     FileLockingInfo result;
 
