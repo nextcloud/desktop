@@ -197,6 +197,7 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     QSet<QString> changedPaths;
     QSet<QString> unlockedFiles;
     QSet<QString> lockedFiles;
+    QSet<QString> lockFiles;
 
     for (const auto &path : paths) {
         if (!_testNotificationPath.isEmpty()
@@ -207,14 +208,11 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         const auto lockFileNamePattern = filePathLockFilePatternMatch(path);
         const auto checkResult = checkIfFileIsLockOrUnlock(path,lockFileNamePattern);
         if (_shouldWatchForFileUnlocking) {
-            const auto lockFileNamePattern = filePathLockFilePatternMatch(path);
-            const auto unlockedFilePath = checkIfFileIsLockOrUnlock(path, lockFileNamePattern);
-
             if (checkResult.type == FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty()) {
                 unlockedFiles.insert(checkResult.path);
+            } else if (!lockFileNamePattern.isEmpty()) {
+                lockFiles.insert(path);
             }
-
-            qCDebug(lcFolderWatcher) << "Unlocked files:" << unlockedFiles.values();
         }
 
         if (checkResult.type == FileLockingInfo::Type::Locked && !checkResult.path.isEmpty()) {
@@ -231,12 +229,19 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         changedPaths.insert(path);
     }
 
+    qCDebug(lcFolderWatcher) << "Unlocked files:" << unlockedFiles.values();
+    qCDebug(lcFolderWatcher) << "Lock files:" << lockFiles;
+
     if (!unlockedFiles.isEmpty()) {
         emit filesLockReleased(unlockedFiles);
     }
 
     if (!lockedFiles.isEmpty()) {
         emit filesLockImposed(lockedFiles);
+    }
+
+    if (!lockFiles.isEmpty()) {
+        emit lockFilesFound(lockFiles);
     }
 
     if (changedPaths.isEmpty()) {

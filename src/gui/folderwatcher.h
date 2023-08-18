@@ -102,6 +102,8 @@ signals:
      */
     void filesLockImposed(const QSet<QString> &files);
 
+    void lockFilesFound(const QSet<QString> &files);
+
     /**
      * Emitted if some notifications were lost.
      *
