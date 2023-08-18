@@ -391,14 +391,17 @@ int main(int argc, char **argv)
         if (password.isEmpty()) {
             password = queryPassword(user);
         }
+    }else{
+       //else use ENV?
+      if(user.isEmpty()){
+	user = std::getenv("NC_USER");
+      }
+      if(password.isEmpty()){
+	password = std::getennv("NC_PASSWORD");
+      }
+
     }
-    //else use ENV?
-    if(user.isEmpty()){
-      user = std::getenv("NC_USER");
-    }
-    if(password.isEmpty()){
-      password = std::getennv("NC_PASSWORD");
-    }
+   
 
     // Find the folder and the original owncloud url
 
