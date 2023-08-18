@@ -42,6 +42,31 @@
 namespace
 {
 const char *lockFilePatterns[] = {".~lock.", "~$"};
+
+QString filePathLockFilePatternMatch(const QString &path)
+{
+    qCDebug(OCC::lcFolderWatcher) << "Checking if it is a lock file:" << path;
+
+    const auto pathSplit = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (pathSplit.isEmpty()) {
+        return {};
+    }
+    QString lockFilePatternFound;
+    for (const auto &lockFilePattern : lockFilePatterns) {
+        if (pathSplit.last().startsWith(lockFilePattern)) {
+            lockFilePatternFound = lockFilePattern;
+            break;
+        }
+    }
+
+    if (lockFilePatternFound.isEmpty()) {
+        return {};
+    }
+
+    qCDebug(OCC::lcFolderWatcher) << "Found a lock file with prefix:" << lockFilePatternFound << "in path:" << path;
+    return lockFilePatternFound;
+}
+
 }
 
 namespace OCC {
@@ -226,29 +251,15 @@ void FolderWatcher::folderAccountCapabilitiesChanged()
 
 FolderWatcher::FileLockingInfo FolderWatcher::checkIfFileIsLockOrUnlock(const QString &path) const
 {
-    qCDebug(lcFolderWatcher) << "Checking if it is a lock file:" << path;
-
     FileLockingInfo result;
-    const auto pathSplit = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-    if (pathSplit.isEmpty()) {
-        return result;
-    }
-    QString lockFilePatternFound;
-    for (const auto &lockFilePattern : lockFilePatterns) {
-        if (pathSplit.last().startsWith(lockFilePattern)) {
-            lockFilePatternFound = lockFilePattern;
-            break;
-        }
-    }
+    const auto lockFilePatternFound = filePathLockFilePatternMatch(path);
 
     if (lockFilePatternFound.isEmpty()) {
         return result;
     }
 
-    qCDebug(lcFolderWatcher) << "Found a lock file with prefix:" << lockFilePatternFound << "in path:" << path;
-
-    const auto lockFilePathWitoutPrefix = QString(path).replace(lockFilePatternFound, QStringLiteral(""));
-    auto lockFilePathWithoutPrefixSplit = lockFilePathWitoutPrefix.split(QLatin1Char('.'));
+    const auto lockFilePathWithoutPrefix = QString(path).replace(lockFilePatternFound, QStringLiteral(""));
+    auto lockFilePathWithoutPrefixSplit = lockFilePathWithoutPrefix.split(QLatin1Char('.'));
 
     if (lockFilePathWithoutPrefixSplit.size() < 2) {
         return result;
@@ -264,10 +275,10 @@ FolderWatcher::FileLockingInfo FolderWatcher::checkIfFileIsLockOrUnlock(const QS
     );
 
     lockFilePathWithoutPrefixSplit.push_back(QString::fromStdString(extensionSanitized));
-    const auto lockFilePathWithoutPrefix = lockFilePathWithoutPrefixSplit.join(QLatin1Char('.'));
+    const auto lockFilePathWithoutPrefixNew = lockFilePathWithoutPrefixSplit.join(QLatin1Char('.'));
 
-    qCDebug(lcFolderWatcher) << "Assumed locked/unlocked file path" << lockFilePathWithoutPrefix << "Going to try to find matching file";
-    auto splitFilePath = lockFilePathWithoutPrefix.split(QLatin1Char('/'));
+    qCDebug(lcFolderWatcher) << "Assumed locked/unlocked file path" << lockFilePathWithoutPrefixNew << "Going to try to find matching file";
+    auto splitFilePath = lockFilePathWithoutPrefixNew.split(QLatin1Char('/'));
     if (splitFilePath.size() > 1) {
         const auto lockFileNameWithoutPrefix = splitFilePath.takeLast();
         // some software will modify lock file name such that it does not correspond to original file (removing some symbols from the name, so we will search
@@ -287,7 +298,8 @@ QString FolderWatcher::findMatchingUnlockedFileInDir(const QString &dirPath, con
 {
     QString foundFilePath;
     const QDir dir(dirPath);
-    for (const auto &candidateUnlockedFileInfo : dir.entryInfoList(QDir::Files)) {
+    const auto entryList = dir.entryInfoList(QDir::Files);
+    for (const auto &candidateUnlockedFileInfo : entryList) {
         if (candidateUnlockedFileInfo.fileName().contains(lockFileName)) {
             foundFilePath = candidateUnlockedFileInfo.absoluteFilePath();
             break;
