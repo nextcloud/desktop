@@ -203,9 +203,13 @@ void FolderWatcher::changeDetected(const QStringList &paths)
             && Utility::fileNamesEqual(path, _testNotificationPath)) {
             _testNotificationPath.clear();
         }
-        
-        const auto checkResult = checkIfFileIsLockOrUnlock(path);
+
+        const auto lockFileNamePattern = filePathLockFilePatternMatch(path);
+        const auto checkResult = checkIfFileIsLockOrUnlock(path,lockFileNamePattern);
         if (_shouldWatchForFileUnlocking) {
+            const auto lockFileNamePattern = filePathLockFilePatternMatch(path);
+            const auto unlockedFilePath = checkIfFileIsLockOrUnlock(path, lockFileNamePattern);
+
             if (checkResult.type == FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty()) {
                 unlockedFiles.insert(checkResult.path);
             }
@@ -250,16 +254,15 @@ void FolderWatcher::folderAccountCapabilitiesChanged()
     _shouldWatchForFileUnlocking = _folder->accountState()->account()->capabilities().filesLockAvailable();
 }
 
-FolderWatcher::FileLockingInfo FolderWatcher::checkIfFileIsLockOrUnlock(const QString &path) const
+FolderWatcher::FileLockingInfo FolderWatcher::checkIfFileIsLockOrUnlock(const QString &path, const QString &lockFileNamePattern) const
 {
     FileLockingInfo result;
-    const auto lockFilePatternFound = filePathLockFilePatternMatch(path);
 
-    if (lockFilePatternFound.isEmpty()) {
+    if (lockFileNamePattern.isEmpty()) {
         return result;
     }
 
-    const auto lockFilePathWithoutPrefix = QString(path).replace(lockFilePatternFound, QStringLiteral(""));
+    const auto lockFilePathWithoutPrefix = QString(path).replace(lockFileNamePattern, QStringLiteral(""));
     auto lockFilePathWithoutPrefixSplit = lockFilePathWithoutPrefix.split(QLatin1Char('.'));
 
     if (lockFilePathWithoutPrefixSplit.size() < 2) {

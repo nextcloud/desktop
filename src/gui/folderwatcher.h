@@ -141,7 +141,7 @@ private:
 
     void appendSubPaths(QDir dir, QStringList& subPaths);
 
-    [[nodiscard]] FileLockingInfo checkIfFileIsLockOrUnlock(const QString &path) const;
+    [[nodiscard]] FileLockingInfo checkIfFileIsLockOrUnlock(const QString &path, const QString &lockFileNamePattern) const;
     [[nodiscard]] QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName) const;
 
     /* Check if the path should be igored by the FolderWatcher. */
