@@ -398,7 +398,7 @@ int main(int argc, char **argv)
 	user = std::getenv("NC_USER");
       }
       if(password.isEmpty()){
-	password = std::getennv("NC_PASSWORD");
+	password = std::getenv("NC_PASSWORD");
       }
 
     }
