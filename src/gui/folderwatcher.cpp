@@ -19,15 +19,6 @@
 #include "account.h"
 #include "capabilities.h"
 
-#include <cstdint>
-
-#include <QFileInfo>
-#include <QFlags>
-#include <QDir>
-#include <QMutexLocker>
-#include <QStringList>
-#include <QTimer>
-
 #if defined(Q_OS_WIN)
 #include "folderwatcher_win.h"
 #elif defined(Q_OS_MAC)
@@ -39,9 +30,19 @@
 #include "folder.h"
 #include "filesystem.h"
 
+#include <QFileInfo>
+#include <QFlags>
+#include <QDir>
+#include <QMutexLocker>
+#include <QStringList>
+#include <QTimer>
+
+#include <array>
+#include <cstdint>
+
 namespace
 {
-const char *lockFilePatterns[] = {".~lock.", "~$"};
+const std::array<const char *, 2> lockFilePatterns = {".~lock.", "~$"};
 
 QString filePathLockFilePatternMatch(const QString &path)
 {
