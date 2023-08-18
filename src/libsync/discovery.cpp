@@ -291,10 +291,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     auto localCodec = QTextCodec::codecForLocale();
-    if (localCodec->mibEnum() != 106) {
+    if (!OCC::Utility::isWindows() && localCodec->mibEnum() != 106) {
         // If the locale codec is not UTF-8, we must check that the filename from the server can
         // be encoded in the local file system.
-        //
+        // (Note: on windows, the FS is always UTF-16, so we don't need to check)        //
         // We cannot use QTextCodec::canEncode() since that can incorrectly return true, see
         // https://bugreports.qt.io/browse/QTBUG-6925.
         QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
