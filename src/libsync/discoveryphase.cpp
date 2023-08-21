@@ -324,6 +324,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
+        i.isMetadataMissing = dirent->is_metadata_missing;
         i.type = dirent->type;
         results.push_back(i);
     }
