@@ -360,7 +360,7 @@ int main(int argc, char **argv)
     // 2. From options
     // 3. From netrc (if enabled)
     // 4. From prompt (if interactive)
-    // 4. From environment (if non-interactive)
+    // 5. From environment (if non-interactive)
 
     QString user = hostUrl.userName();
     QString password = hostUrl.password();
