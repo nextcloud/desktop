@@ -389,6 +389,18 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 modificationHappened = true;
             }
 
+            if (item->_type == CSyncEnums::ItemTypeVirtualFile) {
+                if (item->_locked == SyncFileItem::LockStatus::LockedItem && (item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || item->_lockOwnerId != account()->davUser())) {
+                    qCDebug(lcEngine()) << filePath << "file is locked: making it read only";
+                    FileSystem::setFileReadOnly(filePath, true);
+                } else {
+                    qCDebug(lcEngine()) << filePath << "file is not locked: making it"
+                                        << ((!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) ? "read only"
+                                                                                                                                           : "read write");
+                    FileSystem::setFileReadOnlyWeak(filePath, (!item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite)));
+                }
+            }
+
             // Update on-disk virtual file metadata
             if (modificationHappened && item->_type == ItemTypeVirtualFile) {
                 auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
