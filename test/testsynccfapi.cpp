@@ -1315,6 +1315,45 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testLockFile_lockedFileReadOnly_afterSync()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1");
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_locked, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        OCC::SyncJournalFileRecord fileRecordBefore;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordBefore));
+        QVERIFY(fileRecordBefore.isValid());
+        QVERIFY(!fileRecordBefore._lockstate._locked);
+
+        const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
+        QVERIFY(localFileNotLocked.isWritable());
+
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_locked, OCC::SyncFileItem::LockStatus::LockedItem);
+        OCC::SyncJournalFileRecord fileRecordLocked;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordLocked));
+        QVERIFY(fileRecordLocked.isValid());
+        QVERIFY(fileRecordLocked._lockstate._locked);
+
+        const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
+        QVERIFY(!localFileLocked.isWritable());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
