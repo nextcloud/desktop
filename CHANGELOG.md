@@ -3,7 +3,7 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v4.1.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v4.2.0...master
 
 Summary
 -------
@@ -11,8 +11,6 @@ Summary
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
 * Bugfix - Authentication dialog no longer appears again and again: [#10351](https://github.com/owncloud/client/issues/10351)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
-* Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
-* Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 * Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
 * Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
@@ -56,20 +54,6 @@ Details
    deadlocked.
 
    https://github.com/owncloud/client/pull/10905
-
-* Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
-
-   We fixed a bug where the wrong dav user was used in the url, when the username from the credentials
-   differed from the username used on the server.
-
-   https://github.com/owncloud/client/issues/10946
-
-* Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
-
-   When uploading a file to ocis the server ignores the X-OC-Mtime header and expects the mtime to
-   be part of the Upload-Metadata header. We now provide both.
-
-   https://github.com/owncloud/client/issues/10950
 
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 
@@ -228,6 +212,36 @@ Details
    The `--cmd` argument is now supported on all platforms to support consistency.
 
    https://github.com/owncloud/client/issues/10976
+
+Changelog for ownCloud Desktop Client [4.2.0] (2023-08-07)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 4.2.0 relevant to
+ownCloud admins and users.
+
+[4.2.0]: https://github.com/owncloud/client/compare/v4.1.0...v4.2.0
+
+Summary
+-------
+
+* Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
+* Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
+
+Details
+-------
+
+* Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
+
+   We fixed a bug where the wrong dav user was used in the url, when the username from the credentials
+   differed from the username used on the server.
+
+   https://github.com/owncloud/client/issues/10946
+
+* Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
+
+   When uploading a file to ocis the server ignores the X-OC-Mtime header and expects the mtime to
+   be part of the Upload-Metadata header. We now provide both.
+
+   https://github.com/owncloud/client/issues/10950
 
 Changelog for ownCloud Desktop Client [4.1.0] (2023-06-15)
 =======================================
