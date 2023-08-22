@@ -2884,12 +2884,12 @@ for additional privileges during the process.</source>
         <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="115"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="123"/>
         <source>Checksum computation failed</source>
         <translation>체크섬 계산 실패</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="221"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="229"/>
         <source>The local file was removed during sync.</source>
         <translation>로컬 파일이 동기화 중 삭제되었습니다.</translation>
     </message>
