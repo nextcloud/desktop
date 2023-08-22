@@ -43,19 +43,15 @@ QString Progress::asResultString(const SyncFileItem &item)
         return QCoreApplication::translate("progress", "Server version downloaded, local copy was backed up as conflict file");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "Deleted");
-    case CSYNC_INSTRUCTION_EVAL_RENAME:
     case CSYNC_INSTRUCTION_RENAME:
         return QCoreApplication::translate("progress", "%1 moved to %2").arg(item._file, item._renameTarget);
     case CSYNC_INSTRUCTION_IGNORE:
         return QCoreApplication::translate("progress", "Ignored");
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-        return QCoreApplication::translate("progress", "Filesystem access error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate("progress", "Error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         return QCoreApplication::translate("progress", "Updated local metadata");
     case CSYNC_INSTRUCTION_NONE:
-    case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate("progress", "Unknown");
     }
     return QCoreApplication::translate("progress", "Unknown");
@@ -74,19 +70,15 @@ QString Progress::asActionString(const SyncFileItem &item)
             return QCoreApplication::translate("progress", "uploading");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "deleting");
-    case CSYNC_INSTRUCTION_EVAL_RENAME:
     case CSYNC_INSTRUCTION_RENAME:
         return QCoreApplication::translate("progress", "moving");
     case CSYNC_INSTRUCTION_IGNORE:
         return QCoreApplication::translate("progress", "ignoring");
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-        return QCoreApplication::translate("progress", "error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate("progress", "error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         return QCoreApplication::translate("progress", "updating local metadata");
     case CSYNC_INSTRUCTION_NONE:
-    case CSYNC_INSTRUCTION_EVAL:
         break;
     }
     return QString();

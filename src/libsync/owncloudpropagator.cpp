@@ -380,9 +380,6 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
     case CSYNC_INSTRUCTION_ERROR:
         return new PropagateIgnoreJob(this, item);
     case CSYNC_INSTRUCTION_NONE:
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-    case CSYNC_INSTRUCTION_EVAL_RENAME:
-    case CSYNC_INSTRUCTION_EVAL:
         return nullptr;
     }
     Q_UNREACHABLE();

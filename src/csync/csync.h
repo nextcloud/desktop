@@ -107,11 +107,6 @@ enum SyncInstruction : uint16_t {
                                                     or back. */
     CSYNC_INSTRUCTION_UPDATE_METADATA = 1 << 10, /* If the etag has been updated and need to be writen to the db,
                                                     but without any propagation (UPDATE|RECONCILE) */
-
-    // TODO:
-    CSYNC_INSTRUCTION_EVAL_RENAME     = 1 << 11, // DEPRECATED REMOVED
-    CSYNC_INSTRUCTION_STAT_ERROR      = 1 << 7, // DEPRECATED REMOVED
-    CSYNC_INSTRUCTION_EVAL            = 1 << 0, // DEPRECATED REMOVED
 };
 // clang-format on
 Q_FLAG_NS(SyncInstruction)
