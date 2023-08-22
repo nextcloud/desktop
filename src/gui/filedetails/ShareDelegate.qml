@@ -50,6 +50,7 @@ GridLayout {
     property FileDetails fileDetails: FileDetails {}
     property StackView rootStackView: StackView {}
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     property bool canCreateLinkShares: true
     property bool serverAllowsResharing: true
@@ -89,7 +90,7 @@ GridLayout {
             id: backgroundOrMask
             anchors.fill: parent
             radius: width / 2
-            color: Style.ncBlue
+            color: root.accentColor
             visible: !imageItem.isAvatar
         }
 
@@ -264,6 +265,7 @@ GridLayout {
                     width: parent.width
                     height: parent.height
                     backgroundsVisible: root.backgroundsVisible
+                    accentColor: root.accentColor
 
                     fileDetails: root.fileDetails
                     shareModelData: model

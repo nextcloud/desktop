@@ -31,6 +31,7 @@ ColumnLayout {
     property int horizontalPadding: 0
     property int iconSize: 32
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     readonly property bool sharingPossible: shareModel && shareModel.canShare && shareModel.sharingEnabled
     readonly property bool userGroupSharingPossible: sharingPossible && shareModel.userGroupSharingEnabled
@@ -216,6 +217,7 @@ ColumnLayout {
                     fileDetails: root.fileDetails
                     rootStackView: root.rootStackView
                     backgroundsVisible: root.backgroundsVisible
+                    accentColor: root.accentColor
                     canCreateLinkShares: root.publicLinkSharingPossible
                     serverAllowsResharing: root.serverAllowsResharing
 

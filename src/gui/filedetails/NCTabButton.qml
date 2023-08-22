@@ -25,6 +25,7 @@ TabButton {
     id: tabButton
 
     property string svgCustomColorSource: ""
+    property color accentColor: Style.ncBlue
 
     padding: Style.smallSpacing
     background: Rectangle {
@@ -82,7 +83,7 @@ TabButton {
             implicitWidth: textWidth + Style.standardSpacing * 2
             implicitHeight: 2
 
-            color: tabButton.checked ? Style.ncBlue : tabButton.hovered ? palette.highlight : "transparent"
+            color: tabButton.checked ? tabButton.accentColor : tabButton.hovered ? palette.highlight : "transparent"
         }
     }
 }
