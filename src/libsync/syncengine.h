@@ -43,11 +43,18 @@ class SyncJournalDb;
 class OwncloudPropagator;
 class ProcessDirectoryJob;
 
-enum AnotherSyncNeeded {
-    NoFollowUpSync,
-    ImmediateFollowUp, // schedule this again immediately (limited amount of times)
-    DelayedFollowUp // regularly schedule this folder again (around 1/minute, unlimited)
-};
+
+// work around for only having one namespace OCC, and this enum not beeing in a QObject
+namespace AnotherSyncNeededPrivate {
+    OWNCLOUDSYNC_EXPORT Q_NAMESPACE;
+    enum class AnotherSyncNeeded {
+        NoFollowUpSync,
+        ImmediateFollowUp, // schedule this again immediately (limited amount of times)
+        DelayedFollowUp // regularly schedule this folder again (around 1/minute, unlimited)
+    };
+    Q_ENUM_NS(AnotherSyncNeeded);
+}
+using AnotherSyncNeededPrivate::AnotherSyncNeeded;
 
 /**
  * @brief The SyncEngine class

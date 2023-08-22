@@ -1058,7 +1058,7 @@ void Folder::slotSyncFinished(bool success)
     _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.
-    if (anotherSyncNeeded == ImmediateFollowUp) {
+    if (anotherSyncNeeded == AnotherSyncNeeded::ImmediateFollowUp) {
         _consecutiveFollowUpSyncs++;
         qCInfo(lcFolder) << "another sync was requested by the finished sync, this has"
                          << "happened" << _consecutiveFollowUpSyncs << "times";
@@ -1067,7 +1067,7 @@ void Folder::slotSyncFinished(bool success)
     }
 
     // Maybe force a follow-up sync to take place, but only a couple of times.
-    if (anotherSyncNeeded == ImmediateFollowUp && _consecutiveFollowUpSyncs <= 3) {
+    if (anotherSyncNeeded == AnotherSyncNeeded::ImmediateFollowUp && _consecutiveFollowUpSyncs <= 3) {
         // Sometimes another sync is requested because a local file is still
         // changing, so wait at least a small amount of time before syncing
         // the folder again.
