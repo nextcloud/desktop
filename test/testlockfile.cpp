@@ -631,6 +631,45 @@ private slots:
         auto expectedState = fakeFolder.currentLocalState();
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
+
+    void testLockFile_lockedFileReadOnly_afterSync()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_locked, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        OCC::SyncJournalFileRecord fileRecordBefore;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordBefore));
+        QVERIFY(!fileRecordBefore._lockstate._locked);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
+        QVERIFY(localFileNotLocked.isWritable());
+
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_locked, OCC::SyncFileItem::LockStatus::LockedItem);
+        OCC::SyncJournalFileRecord fileRecordLocked;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordLocked));
+        QVERIFY(fileRecordLocked._lockstate._locked);
+
+        auto expectedState = fakeFolder.currentLocalState();
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
+        QVERIFY(!localFileLocked.isWritable());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLockFile)
