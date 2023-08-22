@@ -329,10 +329,18 @@ void AccountSettings::doExpand()
     }
 }
 
-bool AccountSettings::canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* info) {
-    if (info->_folder->syncResult().status() != SyncResult::Status::Success) {
+bool AccountSettings::canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo *info)
+{
+    if (const auto folderSyncStatus = info->_folder->syncResult().status(); folderSyncStatus != SyncResult::Status::Success) {
+        auto message = tr("Please wait for the folder to sync before trying to encrypt it.");
+        if (folderSyncStatus == SyncResult::Status::Problem) {
+            message = tr("The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully");
+        } else if (folderSyncStatus == SyncResult::Status::Error) {
+            message = tr("The folder has a sync error. Encryption of this folder will be possible once it has synced successfully");
+        }
+
         QMessageBox msgBox;
-        msgBox.setText("Please wait for the folder to sync before trying to encrypt it.");
+        msgBox.setText(message);
         msgBox.exec();
         return false;
     }
