@@ -1383,8 +1383,8 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="579"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="609"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="610"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Error del servidor: ¡la respuesta de PROPFIND no tiene formato XML!</translation>
     </message>
@@ -1412,7 +1412,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>La codificación del nombre del archivo no es válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="335"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="336"/>
         <source>Error while reading directory %1</source>
         <translation>Error al leer el directorio %1</translation>
     </message>
@@ -1778,26 +1778,26 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
         <translation>Actividad de la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="925"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>Could not read system exclude file</source>
         <translation>No se ha podido leer el archivo de exclusión del sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1208"/>
+        <location filename="../src/gui/folder.cpp" line="1210"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una carpeta mayor de %1 MB ha sido añadida: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1213"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una carpeta de almacenamiento externo ha sido añadida.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1212"/>
+        <location filename="../src/gui/folder.cpp" line="1214"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Por favor vaya a opciones a seleccionarlo si desea descargar esto.</translation>
     </message>
@@ -1829,17 +1829,17 @@ Esto podría ser un problema con tu librería OpenSSL</translation>
         <translation>¿Desea detener la sincronización de esta carpeta?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1277"/>
+        <location filename="../src/gui/folder.cpp" line="1279"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Se ha creado la carpeta %1 pero se excluyó de la sincronización con anterioridad. Los datos en su interior no se sincronizarán.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1280"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Se ha creado el archivo %1 pero se excluyó de la sincronización con anterioridad. No se sincronizará.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1291"/>
+        <location filename="../src/gui/folder.cpp" line="1293"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1852,7 +1852,7 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1393"/>
+        <location filename="../src/gui/folder.cpp" line="1395"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1863,7 +1863,7 @@ Si decides restaurar los archivos, volverán a sincronizarse con el servidor si 
 Si decides eliminar los archivos, ya no los tendrás disponibles, a no ser que seas el propietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1400"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1873,17 +1873,17 @@ Esta eliminación será sincronizada con tu servidor, haciendo que esos archivos
 Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincronizados desde el servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1402"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>Remove All Files?</source>
         <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1408"/>
         <source>Remove all files</source>
         <translation>Eliminar todos los archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep files</source>
         <translation>Mantener archivos</translation>
     </message>
@@ -3586,87 +3586,87 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El nombre del archivo está prohibido en el servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="515"/>
+        <location filename="../src/libsync/discovery.cpp" line="516"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>El archivo tiene una extensión reservada para archivos virtuales.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="601"/>
+        <location filename="../src/libsync/discovery.cpp" line="602"/>
         <source>size</source>
         <translation>tamaño</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="603"/>
+        <location filename="../src/libsync/discovery.cpp" line="604"/>
         <source>permission</source>
         <translation>permisos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="607"/>
+        <location filename="../src/libsync/discovery.cpp" line="608"/>
         <source>file id</source>
         <translation>identificador de archivo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="611"/>
+        <location filename="../src/libsync/discovery.cpp" line="612"/>
         <source>Server reported no %1</source>
         <translation>El servidor informó de no %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="981"/>
+        <location filename="../src/libsync/discovery.cpp" line="982"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>No se puede sincronizar debido a una hora de modificación no válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1009"/>
+        <location filename="../src/libsync/discovery.cpp" line="1010"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Error mientras se borraba el registro de archivo %1 de la base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1263"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Se ha producido un conflicto al subir una carpeta. ¡Se eliminará!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1266"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Se ha producido un conflicto al subir un archivo. ¡Se eliminará!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1637"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado porque se encuentra en la lista negra de «elija qué va a sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1669"/>
+        <location filename="../src/libsync/discovery.cpp" line="1671"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>No permitido porque no tienes permiso para añadir subcarpetas a esa carpeta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1674"/>
+        <location filename="../src/libsync/discovery.cpp" line="1676"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>No permitido porque no tienes permiso para añadir archivos a esa carpeta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1687"/>
+        <location filename="../src/libsync/discovery.cpp" line="1689"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No está permitido subir este archivo porque es de solo lectura en el servidor, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1709"/>
+        <location filename="../src/libsync/discovery.cpp" line="1711"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Movido a un lugar no válido, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1723"/>
+        <location filename="../src/libsync/discovery.cpp" line="1725"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No está permitido borrar, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1862"/>
+        <location filename="../src/libsync/discovery.cpp" line="1864"/>
         <source>Error while reading the database</source>
         <translation>Error mientras se leía la base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1928"/>
+        <location filename="../src/libsync/discovery.cpp" line="1930"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>El servidor contestó con un error al leer el directorio &quot;%1&quot; : %2</translation>
     </message>

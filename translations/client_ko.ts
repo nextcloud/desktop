@@ -1381,8 +1381,8 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="579"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="609"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="610"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>서버 오류: PROPFIND 응답이 XML 형식이 아닙니다!</translation>
     </message>
@@ -1410,7 +1410,7 @@ This action will abort any currently running synchronization.</source>
         <translation>파일 이름 인코딩이 올바르지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="335"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="336"/>
         <source>Error while reading directory %1</source>
         <translation>디렉토리 %1를 읽는 중 오류 발생</translation>
     </message>
@@ -1776,26 +1776,26 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <translation>동기화 활동</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="925"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>Could not read system exclude file</source>
         <translation>시스템 제외 파일을 읽을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1208"/>
+        <location filename="../src/gui/folder.cpp" line="1210"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB보다 큰 폴더가 추가되었습니다: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1213"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>외부 저장소의 폴더가 추가되었습니다.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1212"/>
+        <location filename="../src/gui/folder.cpp" line="1214"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>다운로드하려면 설정으로 이동하여 선택하십시오.</translation>
     </message>
@@ -1826,17 +1826,17 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1277"/>
+        <location filename="../src/gui/folder.cpp" line="1279"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 폴더가 생성되었으나 이전에 동기화에서 제외되었습니다. 그 안의 데이터는 동기화되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1280"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 파일이 생성되었으나 이전에 동기화에서 제외되었습니다. 동기화되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1291"/>
+        <location filename="../src/gui/folder.cpp" line="1293"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1849,7 +1849,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1393"/>
+        <location filename="../src/gui/folder.cpp" line="1395"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1860,7 +1860,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 파일을 삭제하기로 결정한 경우 소유자가 아닌 한 해당 파일을 사용할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1398"/>
+        <location filename="../src/gui/folder.cpp" line="1400"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1869,17 +1869,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 이 동작이 우연이고 파일을 유지하고자 할 경우, 서버로부터 재동기화 될 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1402"/>
+        <location filename="../src/gui/folder.cpp" line="1404"/>
         <source>Remove All Files?</source>
         <translation>모두 삭제합니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1406"/>
+        <location filename="../src/gui/folder.cpp" line="1408"/>
         <source>Remove all files</source>
         <translation>모두 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1407"/>
+        <location filename="../src/gui/folder.cpp" line="1409"/>
         <source>Keep files</source>
         <translation>파일 유지</translation>
     </message>
@@ -3585,87 +3585,87 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 이름이 서버 블랙리스트에 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="515"/>
+        <location filename="../src/libsync/discovery.cpp" line="516"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>파일이 가상 파일에 예약된 확장자를 가짐</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="601"/>
+        <location filename="../src/libsync/discovery.cpp" line="602"/>
         <source>size</source>
         <translation>크기</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="603"/>
+        <location filename="../src/libsync/discovery.cpp" line="604"/>
         <source>permission</source>
         <translation>권한</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="607"/>
+        <location filename="../src/libsync/discovery.cpp" line="608"/>
         <source>file id</source>
         <translation>파일 id</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="611"/>
+        <location filename="../src/libsync/discovery.cpp" line="612"/>
         <source>Server reported no %1</source>
         <translation>서버가 %1이(가) 없다고(아니라고) 보고함</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="981"/>
+        <location filename="../src/libsync/discovery.cpp" line="982"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1009"/>
+        <location filename="../src/libsync/discovery.cpp" line="1010"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>파일 레코드 %1(을)를 데이터베이스에서 제거하는 중 오류 발생</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1263"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>폴더를 업로드 하던 중 충돌이 발생했습니다. 해당 폴더는 비워질 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1266"/>
+        <location filename="../src/libsync/discovery.cpp" line="1268"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>파일을 업로드 하던 중 충돌이 발생했습니다. 해당 파일은 제거될 것입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1635"/>
+        <location filename="../src/libsync/discovery.cpp" line="1637"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;동기화 할 대상 선택&quot; 블랙리스트로 인해 무시되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1669"/>
+        <location filename="../src/libsync/discovery.cpp" line="1671"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>해당 폴더에 하위 폴더를 추가 할 수 있는 권한이 없기 때문에 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1674"/>
+        <location filename="../src/libsync/discovery.cpp" line="1676"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>해당 폴더에 파일을 추가 할 권한이 없으므로 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1687"/>
+        <location filename="../src/libsync/discovery.cpp" line="1689"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>이 파일은 서버에서 읽기 전용이므로 업로드 할 수 없습니다. 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1709"/>
+        <location filename="../src/libsync/discovery.cpp" line="1711"/>
         <source>Moved to invalid target, restoring</source>
         <translation>유효하지 않은 목적지로 옮겨짐, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1723"/>
+        <location filename="../src/libsync/discovery.cpp" line="1725"/>
         <source>Not allowed to remove, restoring</source>
         <translation>삭제가 허용되지 않음, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1862"/>
+        <location filename="../src/libsync/discovery.cpp" line="1864"/>
         <source>Error while reading the database</source>
         <translation>데이터베이스를 읽는 중 오류 발생</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1928"/>
+        <location filename="../src/libsync/discovery.cpp" line="1930"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>서버가 디렉토리 &apos;%1&apos;을(를) 읽는 중 오류로 응답함: %2</translation>
     </message>
