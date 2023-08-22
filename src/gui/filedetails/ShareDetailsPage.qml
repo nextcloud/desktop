@@ -78,6 +78,8 @@ Page {
     readonly property int  currentPermissionMode: shareModelData.currentPermissionMode
 
     readonly property bool isLinkShare: shareModelData.shareType === ShareModel.ShareTypeLink
+    readonly property bool isEmailShare: shareModelData.shareType === ShareModel.ShareTypeEmail
+    readonly property bool shareSupportsPassword: isLinkShare || isEmailShare
 
     readonly property bool isFolderItem: shareModelData.sharedItemType === ShareModel.SharedItemTypeFolder
     readonly property bool isEncryptedItem: shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedFile || shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedFolder || shareModelData.sharedItemType === ShareModel.SharedItemTypeEncryptedTopLevelFolder
@@ -512,7 +514,10 @@ Page {
                 checkable: true
                 checked: root.passwordProtectEnabled
                 text: qsTr("Password protect")
-                enabled: !root.waitingForPasswordProtectEnabledChange && !root.passwordEnforced
+                visible: root.shareSupportsPassword
+                enabled: visible && 
+                         !root.waitingForPasswordProtectEnabledChange && 
+                         !root.passwordEnforced
 
                 onClicked: {
                     root.togglePasswordProtect(checked);
@@ -533,7 +538,7 @@ Page {
                 height: visible ? implicitHeight : 0
                 spacing: scrollContentsColumn.indicatorSpacing
 
-                visible: root.passwordProtectEnabled
+                visible: root.shareSupportsPassword && root.passwordProtectEnabled
 
                 Image {
                     Layout.preferredWidth: scrollContentsColumn.indicatorItemWidth
@@ -555,7 +560,8 @@ Page {
                     height: visible ? implicitHeight : 0
 
                     text: root.password !== "" ? root.password : root.passwordPlaceholder
-                    enabled: root.passwordProtectEnabled &&
+                    enabled: visible &&
+                             root.passwordProtectEnabled &&
                              !root.waitingForPasswordChange &&
                              !root.waitingForPasswordProtectEnabledChange
 
