@@ -111,27 +111,6 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
     if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
-    _folderManager.reset(new FolderMan);
-
-    if (!AccountManager::instance()->restore()) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (!AccountManager::instance()->restore()) {
-            qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(nullptr, tr("Error accessing the configuration file"),
-                tr("There was an error while accessing the configuration "
-                   "file at %1.")
-                    .arg(ConfigFile::configFile()),
-                QMessageBox::Close);
-            QTimer::singleShot(0, qApp, &QApplication::quit);
-            return;
-        }
-    }
-
-    FolderMan::instance()->setSyncEnabled(true);
-
     qApp->setQuitOnLastWindowClosed(false);
 
     Theme::instance()->setSystrayUseMonoIcons(cfg.monoIcons());
@@ -175,9 +154,7 @@ Application::~Application()
 {
     // Make sure all folders are gone, otherwise removing the
     // accounts will remove the associated folders from the settings.
-    if (_folderManager) {
-        _folderManager->unloadAndDeleteAllFolders();
-    }
+    FolderMan::instance()->unloadAndDeleteAllFolders();
 }
 
 void Application::slotAccountStateRemoved() const
@@ -201,12 +178,9 @@ void Application::slotAccountStateAdded(AccountStatePtr accountState) const
         });
 
     // Hook up the folder manager slots to the account state's signals:
-    connect(accountState.data(), &AccountState::stateChanged,
-        _folderManager.data(), &FolderMan::slotAccountStateChanged);
-    connect(accountState->account().data(), &Account::serverVersionChanged,
-        _folderManager.data(), [account = accountState->account().data()] {
-            FolderMan::instance()->slotServerVersionChanged(account);
-        });
+    connect(accountState.data(), &AccountState::stateChanged, FolderMan::instance(), &FolderMan::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged, FolderMan::instance(),
+        [account = accountState->account().data()] { FolderMan::instance()->slotServerVersionChanged(account); });
     accountState->checkConnectivity();
 }
 

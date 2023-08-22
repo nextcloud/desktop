@@ -88,6 +88,7 @@ public:
 
     static QString checkPathValidityRecursive(const QString &path);
 
+    explicit FolderMan(QObject *parent = nullptr);
     ~FolderMan() override;
 
     /**
@@ -318,9 +319,7 @@ private:
     mutable QMap<QString, Result<void, QString>> _unsupportedConfigurationError;
 
     static FolderMan *_instance;
-    explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
-    friend OCC::FolderMan *OCC::TestUtils::folderMan();
     friend class ::TestFolderMigration;
 };
 

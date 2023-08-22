@@ -89,8 +89,6 @@ private:
     QString _userEnforcedLanguage;
     QString _displayLanguage;
 
-    QScopedPointer<FolderMan> _folderManager;
-
     static Application *_instance;
     friend Application *ocApp();
 };

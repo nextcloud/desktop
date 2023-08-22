@@ -118,6 +118,7 @@ FolderMan *FolderMan::instance()
 
 FolderMan::~FolderMan()
 {
+    unloadAndDeleteAllFolders();
     qDeleteAll(_folders);
     _instance = nullptr;
 }
