@@ -70,6 +70,7 @@ Q_LOGGING_CATEGORY(lcBulkPropagatorJob, "nextcloud.sync.propagator.bulkupload", 
 BulkPropagatorJob::BulkPropagatorJob(OwncloudPropagator *propagator, const std::deque<SyncFileItemPtr> &items)
     : PropagatorJob(propagator)
     , _items(items)
+    , _currentBatchSize(batchSize)
 {
     _filesToUpload.reserve(batchSize);
     _pendingChecksumFiles.reserve(batchSize);
@@ -83,7 +84,7 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
 
     _state = Running;
 
-    for(auto i = 0; i < batchSize && !_items.empty(); ++i) {
+    for(auto i = 0; i < _currentBatchSize && !_items.empty(); ++i) {
         const auto currentItem = _items.front();
         _items.pop_front();
         _pendingChecksumFiles.insert(currentItem->_file);
@@ -105,6 +106,29 @@ bool BulkPropagatorJob::scheduleSelfOrChild()
     }
 
     return _items.empty() && _filesToUpload.empty();
+}
+
+bool BulkPropagatorJob::handleBatchSize()
+{
+    // no error, no batch size to change
+    if (_finalStatus == SyncFileItem::Success || _finalStatus == SyncFileItem::NoStatus) {
+        qCDebug(lcBulkPropagatorJob) << "No error, no need to change the bulk upload batch size!";
+        return true;
+    }
+
+    // change batch size before trying it again
+    const auto halfBatchSize = batchSize / 2;
+
+    // we already tried to upload with half of the batch size
+    if(_currentBatchSize == halfBatchSize) {
+        qCDebug(lcBulkPropagatorJob) << "There was another error, stop syncing now!";
+        return false;
+    }
+
+    // try to upload with half of the batch size
+    _currentBatchSize = halfBatchSize;
+    qCDebug(lcBulkPropagatorJob) << "There was an error, sync again with bulk upload batch size cut to half!";
+    return true;
 }
 
 PropagatorJob::JobParallelism BulkPropagatorJob::parallelism() const
@@ -265,13 +289,16 @@ void BulkPropagatorJob::checkPropagationIsDone()
             // just wait for the other job to finish.
             return;
         }
-
-        qCInfo(lcBulkPropagatorJob) << "final status" << _finalStatus;
-        emit finished(_finalStatus);
-        propagator()->scheduleNextJob();
     } else {
-        scheduleSelfOrChild();
+        if (handleBatchSize()) {
+            scheduleSelfOrChild();
+            return;
+        }
     }
+
+    qCInfo(lcBulkPropagatorJob) << "final status" << _finalStatus;
+    emit finished(_finalStatus);
+    propagator()->scheduleNextJob();
 }
 
 void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
@@ -417,6 +444,9 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     }
 
     singleFile._item->_status = SyncFileItem::Success;
+
+    // upload succeeded, so remove from black list
+    propagator()->removeFromBulkUploadBlackList(singleFile._item->_file);
 
     // Check the file again post upload.
     // Two cases must be considered separately: If the upload is finished,
