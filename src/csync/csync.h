@@ -153,7 +153,6 @@ Q_ENUM_NS(ItemType)
 }
 
 using namespace CSyncEnums;
-using CSYNC_STATUS = CSyncEnums::csync_status_codes_e;
 
 struct OCSYNC_EXPORT csync_file_stat_t
 {
