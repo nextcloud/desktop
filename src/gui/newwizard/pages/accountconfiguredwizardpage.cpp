@@ -165,7 +165,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(
     _ui->resetLocalDirectoryButton->setEnabled(enableResetLocalDirectoryButton());
     connect(_ui->localDirectoryLineEdit, &QLineEdit::textChanged, this,
         [this, enableResetLocalDirectoryButton]() { _ui->resetLocalDirectoryButton->setEnabled(enableResetLocalDirectoryButton()); });
-    connect(_ui->resetLocalDirectoryButton, &QPushButton::clicked, this,
+    connect(_ui->resetLocalDirectoryButton, &QToolButton::clicked, this,
         [this, defaultSyncTargetDir]() { _ui->localDirectoryLineEdit->setText(QDir::toNativeSeparators(defaultSyncTargetDir)); });
 }
 
