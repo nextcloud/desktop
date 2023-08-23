@@ -5,7 +5,6 @@ Feature: Sharing
     I want to share files and folders with other users
     So that those users can access the files and folders
 
-
     Background:
         Given user "Alice" has been created on the server with default attributes and without skeleton files
         And the setting "shareapi_auto_accept_share" on the server of app "core" has been set to "yes"
@@ -111,6 +110,15 @@ Feature: Sharing
             | TestUser1 |
             | TestUser2 |
 
+    Scenario: autocomplete offers a list of users followed by a list of groups
+        And user "Alice" has uploaded file with content "ownCloud test text file" to "textfile.txt" in the server
+        And user "Alice" has set up a client with default settings
+        When the user opens the sharing dialog of "textfile.txt" using the client-UI
+        And the user searches for collaborator with autocomplete characters "Adm" using the client-UI
+        Then the following users should be listed as suggested collaborators:
+            | user          |
+            | admin         |
+            | admin (group) |
 
     Scenario: collaborators are listed in chronological order
         Given user "Brian" has been created on the server with default attributes and without skeleton files
