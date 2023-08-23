@@ -60,6 +60,10 @@
 #include <QJsonDocument>
 #include <QToolTip>
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/fileprovider.h"
+#endif
+
 #include "account.h"
 
 namespace {
@@ -194,7 +198,15 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     new ToolTipUpdater(_ui->_folderList);
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
-
+    if (Mac::FileProvider::fileProviderAvailable()) {
+        const auto fpSettingsWidget = _fpSettingsController.settingsViewWidget();
+        const auto fpSettingsLayout = new QVBoxLayout(_ui->fileProviderTab);
+        fpSettingsLayout->setMargin(0);
+        fpSettingsLayout->addWidget(fpSettingsWidget);
+        _ui->fileProviderTab->setLayout(fpSettingsLayout);
+    } else {
+        disguiseTabWidget();
+    }
 #else
     disguiseTabWidget();
 #endif

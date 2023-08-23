@@ -260,7 +260,7 @@
    <item row="3" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="standardSyncTab">
       <attribute name="title">
@@ -303,7 +303,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="fileProviderTab">
       <attribute name="title">
        <string>Virtual file sync</string>
       </attribute>

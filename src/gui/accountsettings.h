@@ -27,6 +27,10 @@
 #include "owncloudgui.h"
 #include "folderstatusmodel.h"
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+#include "macOS/ui/fileprovidersettingscontroller.h"
+#endif
+
 class QModelIndex;
 class QNetworkReply;
 class QListWidgetItem;
@@ -152,6 +156,10 @@ private:
     bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
+
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    Mac::FileProviderSettingsController _fpSettingsController;
+#endif
 };
 
 } // namespace OCC

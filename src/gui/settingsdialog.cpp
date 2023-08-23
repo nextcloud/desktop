@@ -25,10 +25,6 @@
 #include "owncloudgui.h"
 #include "accountmanager.h"
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/fileprovider.h"
-#endif
-
 #include <QLabel>
 #include <QStandardItemModel>
 #include <QStackedWidget>
@@ -136,24 +132,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     auto *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-
-    if (Mac::FileProvider::fileProviderAvailable()) {
-        const auto fpSettingsWidget = _fpSettingsController.settingsViewWidget();
-        const auto macVfsAction = createColorAwareAction(QStringLiteral(":/client/theme/files.svg"), tr("Virtual files"));
-
-        _actionGroup->addAction(macVfsAction);
-        _toolBar->addAction(macVfsAction);
-        _ui->stack->addWidget(fpSettingsWidget);
-
-        connect(_ui->stack, &QStackedWidget::currentChanged,
-                this, &SettingsDialog::currentPageChanged);
-
-        _actionGroupWidgets.insert(macVfsAction, fpSettingsWidget);
-    }
-
-#endif
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);

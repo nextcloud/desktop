@@ -21,10 +21,6 @@
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 
-#ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/ui/fileprovidersettingscontroller.h"
-#endif
-
 class QAction;
 class QActionGroup;
 class QToolBar;
@@ -97,11 +93,6 @@ private:
     QToolBar *_toolBar;
 
     ownCloudGui *_gui;
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    Mac::FileProviderSettingsController _fpSettingsController;
-#endif
-
 };
 }
 
