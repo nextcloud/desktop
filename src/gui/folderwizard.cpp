@@ -45,6 +45,15 @@ namespace
 {
 constexpr QColor darkWarnYellow(63, 63, 0);
 constexpr QColor lightWarnYellow(255, 255, 192);
+
+QPalette yellowWarnWidgetPalette(const QPalette &existingPalette)
+{
+    const auto warnYellow = OCC::Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
+    auto modifiedPalette = existingPalette;
+    modifiedPalette.setColor(QPalette::Window, warnYellow);
+    modifiedPalette.setColor(QPalette::Base, warnYellow);
+    return modifiedPalette;
+}
 }
 
 namespace OCC {
@@ -168,11 +177,8 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
-    const auto warnYellow = Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
-    auto modifiedPalette = _ui.warnLabel->palette();
-    modifiedPalette.setColor(QPalette::Window, warnYellow);
-    modifiedPalette.setColor(QPalette::Base, warnYellow);
-    _ui.warnLabel->setPalette(modifiedPalette);
+    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
+    _ui.warnLabel->setPalette(yellowWarnPalette);
 }
 
 // =================================================================================
@@ -550,11 +556,8 @@ void FolderWizardRemotePath::changeEvent(QEvent *e)
 
 void FolderWizardRemotePath::changeStyle()
 {
-    const auto warnYellow = Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
-    auto modifiedPalette = _ui.warnLabel->palette();
-    modifiedPalette.setColor(QPalette::Window, warnYellow);
-    modifiedPalette.setColor(QPalette::Base, warnYellow);
-    _ui.warnLabel->setPalette(modifiedPalette);
+    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
+    _ui.warnLabel->setPalette(yellowWarnPalette);
 }
 
 // ====================================================================================
