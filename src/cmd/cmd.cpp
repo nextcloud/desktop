@@ -392,6 +392,7 @@ int main(int argc, char **argv)
             password = std::getenv("NC_PASSWORD");
         }
     }
+   
 
     // Find the folder and the original owncloud url
 
