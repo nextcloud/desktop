@@ -193,6 +193,15 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 #endif
     new ToolTipUpdater(_ui->_folderList);
 
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+
+#else
+    // Ensure all elements of the tab widget are hidden.
+    // Document mode lets the child view take up the whole view.
+    _ui->tabWidget->setDocumentMode(true);
+    _ui->tabWidget->tabBar()->hide();
+#endif
+
     const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
