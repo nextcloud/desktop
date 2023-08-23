@@ -35,7 +35,7 @@
 #include "clientsideencryption.h"
 #include "common/utility.h"
 #include "syncfileitem.h"
-#include "theme.h"
+
 #include <memory>
 
 class QSettings;
@@ -409,7 +409,7 @@ private:
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
     QString _serverVersion;
-    QColor _serverColor = Theme::defaultColor();
+    QColor _serverColor;
     QColor _serverTextColor = QColorConstants::White;
     bool _skipE2eeMetadataChecksumValidation = false;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
