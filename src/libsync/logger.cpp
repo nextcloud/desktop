@@ -89,6 +89,9 @@ Logger::Logger(QObject *parent)
 
 Logger::~Logger()
 {
+    if (_logstream) {
+        _logstream->flush();
+    }
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler(nullptr);
 #endif
@@ -144,6 +147,9 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 
         if (linesCounter >= MaxLogLinesCount) {
             linesCounter = 0;
+            if (_logstream) {
+                _logstream->flush();
+            }
             closeNoLock();
             enterNextLogFileNoLock();
         }
@@ -153,7 +159,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         _crashLog[_crashLogIndex] = msg;
 
         if (_logstream) {
-            (*_logstream) << msg << Qt::endl;
+            (*_logstream) << msg << "\n";
             if (_doFileFlush)
                 _logstream->flush();
         }
