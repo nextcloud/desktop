@@ -410,7 +410,7 @@ private:
     Capabilities _capabilities;
     QString _serverVersion;
     QColor _serverColor = Theme::defaultColor();
-    QColor _serverTextColor = QColor(255, 255, 255);
+    QColor _serverTextColor = QColorConstants::White;
     bool _skipE2eeMetadataChecksumValidation = false;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QSharedPointer<QNetworkAccessManager> _am;
