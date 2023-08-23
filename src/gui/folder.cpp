@@ -582,6 +582,14 @@ void Folder::startVfs()
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-shm"), SyncFileStatus::StatusExcluded);
         _engine->setSyncOptions(loadSyncOptions());
         registerFolderWatcher();
+
+        connect(_vfs.get(), &Vfs::needSync, this, [this] {
+            if (canSync()) {
+                // the vfs plugin detected that its metadata is out of sync and requests a new sync
+                // the request has a hight priority as it is probably issued after a user request
+                FolderMan::instance()->scheduler()->enqueueFolder(this, SyncScheduler::Priority::High);
+            }
+        });
         _vfsIsReady = true;
         Q_EMIT FolderMan::instance()->folderListChanged();
         // we are setup, schedule ourselves if we can

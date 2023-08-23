@@ -582,12 +582,12 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("B/b1/zzz"));
 
         if (filesAreDehydrated) {
-            QSKIP("Known bug: https://github.com/owncloud/client/issues/10223");
-            // The QSKIP below is due to operations order (verified on a local machine),
-            // but the sync below already always fails in the CI. So we will be skipping
-            // this entire test until the issue is fixed.
+            // the dehydrating the placeholder failed as the metadata is out of sync
+            QSignalSpy spy(fakeFolder.vfs().get(), &Vfs::needSync);
+            QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+            QVERIFY(spy.count() == 1);
+            return;
         }
-
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         conflicts += findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("B")]);
@@ -613,9 +613,6 @@ private slots:
         QVERIFY(conflicts[1].contains(QStringLiteral("B/b1")));
         QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
 
-        if (filesAreDehydrated) {
-            QSKIP("Known bug: https://github.com/owncloud/client/issues/10223");
-        }
         // Also verifies that conflicts were uploaded
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }

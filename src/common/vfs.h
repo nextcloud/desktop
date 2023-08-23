@@ -241,6 +241,9 @@ signals:
     /// we encountered an error
     void error(const QString &error);
 
+    /// The vfs plugin detected that the meta data are out of sync and requests a sync with the server
+    void needSync();
+
 protected:
     /** Update placeholder metadata during discovery.
      *
