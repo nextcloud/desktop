@@ -22,6 +22,7 @@
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 #include "pushnotifications.h"
+#include "theme.h"
 #include "version.h"
 
 #include "deletejob.h"
@@ -70,6 +71,7 @@ const char app_password[] = "_app-password";
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
+    , _serverColor(Theme::defaultColor())
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
