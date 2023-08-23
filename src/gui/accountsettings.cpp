@@ -109,6 +109,27 @@ void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAcc
     messageBox->open();
 }
 
+void showEnableE2eeWarningDialog(std::function<void(void)> onAccept)
+{
+    const auto messageBox = new QMessageBox;
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    messageBox->setText(AccountSettings::tr("End-to-end Encryption"));
+    messageBox->setInformativeText(
+        AccountSettings::tr("This will encrypt your folder and all files within it. "
+                            "These files will no longer be accessible without your encryption mnemonic key. "
+                            "\n<b>This process is not reversible. Are you sure you want to proceed?</b>"));
+    messageBox->setIcon(QMessageBox::Warning);
+    const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
+    Q_ASSERT(dontEncryptButton);
+    dontEncryptButton->setText(AccountSettings::tr("Do not encrypt folder"));
+    const auto encryptButton = messageBox->addButton(QMessageBox::StandardButton::Ok);
+    Q_ASSERT(encryptButton);
+    encryptButton->setText(AccountSettings::tr("Encrypt folder"));
+    QObject::connect(messageBox, &QMessageBox::accepted, onAccept);
+
+    messageBox->open();
+}
+
 /**
  * Adjusts the mouse cursor based on the region it is on over the folder tree view.
  *
@@ -415,7 +436,8 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         showEnableE2eeWithVirtualFilesWarningDialog(encryptFolder);
         return;
     }
-    encryptFolder();
+
+    showEnableE2eeWarningDialog(encryptFolder);
 }
 
 void AccountSettings::slotEditCurrentIgnoredFiles()
