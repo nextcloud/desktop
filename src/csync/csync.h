@@ -99,7 +99,9 @@ enum SyncInstruction : uint16_t {
     CSYNC_INSTRUCTION_RENAME          = 1 << 3,  /* The file need to be renamed (RECONCILE) */
     CSYNC_INSTRUCTION_NEW             = 1 << 4,  /* The file is new compared to the db (UPDATE) */
     CSYNC_INSTRUCTION_CONFLICT        = 1 << 5,  /* The file need to be downloaded because it is a conflict (RECONCILE) */
-    CSYNC_INSTRUCTION_IGNORE          = 1 << 6,  /* The file is ignored (UPDATE|RECONCILE) */
+    CSYNC_INSTRUCTION_IGNORE          = 1 << 6,  /* The file is ignored (UPDATE|RECONCILE)
+                                                  * Identical to CSYNC_INSTRUCTION_NONE but logged to the user.
+                                                  */
     CSYNC_INSTRUCTION_SYNC            = 1 << 7,  /* The file need to be pushed to the other remote (RECONCILE) */
     CSYNC_INSTRUCTION_ERROR           = 1 << 8,
     CSYNC_INSTRUCTION_TYPE_CHANGE     = 1 << 9,  /* Like NEW, but deletes the old entity first (RECONCILE)

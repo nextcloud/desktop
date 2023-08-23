@@ -452,9 +452,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item->isDirectory()
-                && (item->_instruction == CSYNC_INSTRUCTION_NEW
-                       || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)) {
+            } else if (item->isDirectory() && (item->_instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE))) {
                 // Create a new directory within a deleted directory? That can happen if the directory
                 // etag was not fetched properly on the previous sync because the sync was aborted
                 // while uploading this directory (which is now removed).  We can ignore it.
@@ -463,13 +461,12 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+            } else if (item->_instruction & (CSYNC_INSTRUCTION_IGNORE | CSYNC_INSTRUCTION_NONE)) {
                 continue;
             } else if (item->_instruction != CSYNC_INSTRUCTION_RENAME) {
                 // all is good, the rename will be executed before the directory deletion
+                qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!" << item->_file << item->_instruction;
                 Q_ASSERT(false); // we shouldn't land here, but assert for debug purposes
-                qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
-                                        << item->_file << item->_instruction;
             }
         }
 
