@@ -319,7 +319,6 @@ int main(int argc, char **argv)
     const auto platform = Platform::create();
 
     // Create the (Q)Application instance:
-
     QApplication app(argc, argv);
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
@@ -330,94 +329,7 @@ int main(int argc, char **argv)
 
     KDSingleApplication singleApplication;
 
-    if (singleApplication.isPrimaryInstance()) {
-        // Check if the user upgraded or downgraded. We do this as early as possible, to detect
-        // a possible downgrade.
-        if (!checkClientVersion()) {
-            return -1;
-        }
-
-        const auto options = parseOptions(app.arguments());
-
-        setupLogging(options);
-
-        platform->setApplication(&app);
-
-        QScopedPointer<FolderMan> folderManager(new FolderMan);
-
-        if (!AccountManager::instance()->restore()) {
-            // If there is an error reading the account settings, try again
-            // after a couple of seconds, if that fails, give up.
-            // (non-existence is not an error)
-            Utility::sleep(5);
-            if (!AccountManager::instance()->restore()) {
-                qCCritical(lcApplication) << "Could not read the account settings, quitting";
-                QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
-                    QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.")
-                        .arg(ConfigFile::configFile()),
-                    QMessageBox::Close);
-                return -1;
-            }
-        }
-
-        // Setup the folders. This includes a downgrade-detection, in which case the return value
-        // is empty. Note that the value 0 (zero) is a valid return value (non-empty), in which case
-        // the dialog is not shown.
-        if (!FolderMan::instance()->setupFolders().has_value()) {
-            // Empty return value: there was a downgrade detected on one of the databases
-            showDowngradeDialog();
-            return -1;
-        }
-
-        FolderMan::instance()->setSyncEnabled(true);
-
-        auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
-
-        if (AccountManager::instance()->accounts().isEmpty()) {
-            // display the wizard if we don't have an account yet
-            QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
-        }
-
-        QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
-
-        QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {
-            const QString msg = QString::fromUtf8(message);
-            qCInfo(lcMain) << Q_FUNC_INFO << msg;
-            if (msg.startsWith(msgParseOptionsC())) {
-                const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
-                CommandLineOptions options = parseOptions(optionsStrings);
-                if (options.show) {
-                    ocApp->gui()->slotShowSettings();
-                }
-                if (options.quitInstance) {
-                    qApp->quit();
-                }
-                if (!options.fileToOpen.isEmpty()) {
-                    QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
-                }
-            }
-        });
-
-        if (options.show) {
-            ocApp->gui()->slotShowSettings();
-        }
-        if (!options.fileToOpen.isEmpty()) {
-            QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
-        }
-
-        platform->startServices();
-
-#ifdef WITH_AUTO_UPDATER
-        // if handleStartup returns true, main()
-        // needs to terminate here, e.g. because
-        // the updater is triggered
-        Updater *updater = Updater::instance();
-        if (updater && updater->handleStartup()) {
-            return 1;
-        }
-#endif
-
-    } else {
+    if (!singleApplication.isPrimaryInstance()) {
         // if the application is already running, notify it.
         qCInfo(lcMain) << "Already running, exiting...";
         if (app.isSessionRestored()) {
@@ -432,8 +344,95 @@ int main(int argc, char **argv)
             if (!singleApplication.sendMessage((msgParseOptionsC() + msg).toUtf8()))
                 return -1;
         }
+
         return 0;
     }
+
+    // Check if the user upgraded or downgraded. We do this as early as possible, to detect
+    // a possible downgrade.
+    if (!checkClientVersion()) {
+        return -1;
+    }
+
+    const auto options = parseOptions(app.arguments());
+
+    setupLogging(options);
+
+    platform->setApplication(&app);
+
+    QScopedPointer<FolderMan> folderManager(new FolderMan);
+
+    if (!AccountManager::instance()->restore()) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (!AccountManager::instance()->restore()) {
+            qCCritical(lcApplication) << "Could not read the account settings, quitting";
+            QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
+                QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.")
+                    .arg(ConfigFile::configFile()),
+                QMessageBox::Close);
+            return -1;
+        }
+    }
+
+    // Setup the folders. This includes a downgrade-detection, in which case the return value
+    // is empty. Note that the value 0 (zero) is a valid return value (non-empty), in which case
+    // the dialog is not shown.
+    if (!FolderMan::instance()->setupFolders().has_value()) {
+        // Empty return value: there was a downgrade detected on one of the databases
+        showDowngradeDialog();
+        return -1;
+    }
+
+    FolderMan::instance()->setSyncEnabled(true);
+
+    auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
+
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        // display the wizard if we don't have an account yet
+        QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
+    }
+
+    QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
+
+    QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {
+        const QString msg = QString::fromUtf8(message);
+        qCInfo(lcMain) << Q_FUNC_INFO << msg;
+        if (msg.startsWith(msgParseOptionsC())) {
+            const QStringList optionsStrings = msg.mid(msgParseOptionsC().size()).split(QLatin1Char('|'));
+            CommandLineOptions options = parseOptions(optionsStrings);
+            if (options.show) {
+                ocApp->gui()->slotShowSettings();
+            }
+            if (options.quitInstance) {
+                qApp->quit();
+            }
+            if (!options.fileToOpen.isEmpty()) {
+                QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+            }
+        }
+    });
+
+    if (options.show) {
+        ocApp->gui()->slotShowSettings();
+    }
+    if (!options.fileToOpen.isEmpty()) {
+        QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+    }
+
+    platform->startServices();
+
+#ifdef WITH_AUTO_UPDATER
+    // if handleStartup returns true, main()
+    // needs to terminate here, e.g. because
+    // the updater is triggered
+    Updater *updater = Updater::instance();
+    if (updater && updater->handleStartup()) {
+        return 1;
+    }
+#endif
 
     return app.exec();
 }
