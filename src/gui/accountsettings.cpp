@@ -196,10 +196,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 #if defined(BUILD_FILE_PROVIDER_MODULE)
 
 #else
-    // Ensure all elements of the tab widget are hidden.
-    // Document mode lets the child view take up the whole view.
-    _ui->tabWidget->setDocumentMode(true);
-    _ui->tabWidget->tabBar()->hide();
+    disguiseTabWidget();
 #endif
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
@@ -1695,6 +1692,14 @@ void AccountSettings::initializeE2eEncryptionSettingsMessage()
 
     auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
     connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+}
+
+void AccountSettings::disguiseTabWidget() const
+{
+    // Ensure all elements of the tab widget are hidden.
+    // Document mode lets the child view take up the whole view.
+    _ui->tabWidget->setDocumentMode(true);
+    _ui->tabWidget->tabBar()->hide();
 }
 
 } // namespace OCC
