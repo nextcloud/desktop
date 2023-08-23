@@ -41,6 +41,12 @@
 
 #include <cstdlib>
 
+namespace
+{
+constexpr QColor darkWarnYellow(63, 63, 0);
+constexpr QColor lightWarnYellow(255, 255, 192);
+}
+
 namespace OCC {
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
@@ -162,7 +168,7 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
-    const auto warnYellow = Theme::instance()->darkMode() ? QColor(63, 63, 0) : QColor(255, 255, 192);
+    const auto warnYellow = Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
     auto modifiedPalette = _ui.warnLabel->palette();
     modifiedPalette.setColor(QPalette::Window, warnYellow);
     modifiedPalette.setColor(QPalette::Base, warnYellow);
@@ -544,7 +550,7 @@ void FolderWizardRemotePath::changeEvent(QEvent *e)
 
 void FolderWizardRemotePath::changeStyle()
 {
-    const auto warnYellow = Theme::instance()->darkMode() ? QColor(63, 63, 0) : QColor(255, 255, 192);
+    const auto warnYellow = Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
     auto modifiedPalette = _ui.warnLabel->palette();
     modifiedPalette.setColor(QPalette::Window, warnYellow);
     modifiedPalette.setColor(QPalette::Base, warnYellow);
