@@ -702,9 +702,19 @@ private slots:
             local.rename(QStringLiteral("B/b1"), QStringLiteral("B/b1mq"));
             local.mkdir(QStringLiteral("B/b1"));
             ItemCompletedSpy completeSpy(fakeFolder);
-            QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-            // BUG: This doesn't behave right
-            //QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            if (filesAreDehydrated) {
+                // the dehydrating the placeholder failed as the metadata is out of sync
+                QSignalSpy spy(fakeFolder.vfs().get(), &Vfs::needSync);
+                QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+                QVERIFY(spy.count() == 1);
+                QVERIFY(fakeFolder.syncOnce());
+                QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+                QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            } else {
+                QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+                QCOMPARE(findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]).size(), 1);
+                QCOMPARE(findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("B")]).size(), 1);
+            }
         }
     }
 
