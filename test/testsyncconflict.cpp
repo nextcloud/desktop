@@ -90,9 +90,7 @@ private slots:
 
         if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
             QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
-
-            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
-            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+            QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
         } else if (Utility::isWindows()) {
             qWarning("Skipping Vfs::WindowsCfApi");
         }
@@ -586,7 +584,6 @@ private slots:
             QSignalSpy spy(fakeFolder.vfs().get(), &Vfs::needSync);
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
             QVERIFY(spy.count() == 1);
-            // TODO: this is currently broken as placeholders cant be replaced by a folder
             QVERIFY(fakeFolder.syncOnce());
             // reapply change and try again
             fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
@@ -664,10 +661,6 @@ private slots:
     {
         QFETCH_GLOBAL(Vfs::Mode, vfsMode);
         QFETCH_GLOBAL(bool, filesAreDehydrated);
-
-        if (filesAreDehydrated) {
-            QSKIP("Known bug: https://github.com/owncloud/client/issues/10223");
-        }
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         ItemCompletedSpy completeSpy(fakeFolder);

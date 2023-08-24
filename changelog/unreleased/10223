@@ -1,0 +1,5 @@
+Bugfix: VFS Placeholders can now be replaced with folders
+
+If a local VFS placeholder is replaced with a folder on the server, the client previously failed to populate the change.
+
+https://github.com/owncloud/client/issues/10223

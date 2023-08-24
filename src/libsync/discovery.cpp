@@ -641,26 +641,30 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     const SyncFileItemPtr &item, const PathTuple &path, const LocalInfo &localEntry,
     const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer)
 {
-    bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid())
-        || (_queryServer == ParentNotChanged && !dbEntry.isValid());
+    const bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid()) || (_queryServer == ParentNotChanged && !dbEntry.isValid());
 
-    if (noServerEntry)
+    if (noServerEntry) {
         recurseQueryServer = ParentDontExist;
-
-    bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
-        || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
-
-    // Decay server modifications to UPDATE_METADATA if the local virtual exists
-    bool hasLocalVirtual = localEntry.isVirtualFile || (_queryLocal == ParentNotChanged && dbEntry.isVirtualFile());
-    bool virtualFileDownload = item->_type == ItemTypeVirtualFileDownload;
-    if (serverModified && !virtualFileDownload && hasLocalVirtual) {
-        item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-        serverModified = false;
-        item->_type = ItemTypeVirtualFile;
     }
 
-    if (dbEntry.isVirtualFile() && !virtualFileDownload)
-        item->_type = ItemTypeVirtualFile;
+    const bool serverModified = [&] {
+        bool modifiedOnServer =
+            (item->_instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_SYNC | CSYNC_INSTRUCTION_RENAME | CSYNC_INSTRUCTION_TYPE_CHANGE));
+
+        // Decay server modifications to UPDATE_METADATA if the local virtual exists
+        const bool hasLocalVirtual = localEntry.isVirtualFile || (_queryLocal == ParentNotChanged && dbEntry.isVirtualFile());
+        const bool virtualFileDownload = item->_type == ItemTypeVirtualFileDownload || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+        if (modifiedOnServer && !virtualFileDownload && hasLocalVirtual) {
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+            modifiedOnServer = false;
+            item->_type = ItemTypeVirtualFile;
+        }
+
+        if (dbEntry.isVirtualFile() && !virtualFileDownload) {
+            item->_type = ItemTypeVirtualFile;
+        }
+        return modifiedOnServer;
+    }();
 
     _childModified |= serverModified;
 
