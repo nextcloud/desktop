@@ -12,6 +12,7 @@ Summary
 * Bugfix - VFS Placeholders can now be replaced with folders: [#10223](https://github.com/owncloud/client/issues/10223)
 * Bugfix - Authentication dialog no longer appears again and again: [#10351](https://github.com/owncloud/client/issues/10351)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
+* Bugfix - Do not create default sync root when loading accounts: [#10919](https://github.com/owncloud/client/issues/10919)
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 * Bugfix - Account activity and crash after an account was removed: [#10990](https://github.com/owncloud/client/issues/10990)
 * Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
@@ -62,6 +63,15 @@ Details
    deadlocked.
 
    https://github.com/owncloud/client/pull/10905
+
+* Bugfix - Do not create default sync root when loading accounts: [#10919](https://github.com/owncloud/client/issues/10919)
+
+   Creating the default sync root is only needed at initial setup. If a user chooses to point all
+   folders for Spaces outside that default sync root, and deletes the default sync root folder, it
+   will now no longer be created.
+
+   https://github.com/owncloud/client/issues/10919
+   https://github.com/owncloud/client/pull/11128
 
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
 
