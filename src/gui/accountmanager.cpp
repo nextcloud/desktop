@@ -42,6 +42,8 @@ constexpr auto caCertsKeyC = "CaCertificates";
 constexpr auto accountsC = "Accounts";
 constexpr auto versionC = "version";
 constexpr auto serverVersionC = "serverVersion";
+constexpr auto serverColorC = "serverColor";
+constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
 constexpr auto generalC = "General";
 
@@ -306,6 +308,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
     settings.setValue(QLatin1String(displayNameC), acc->_displayName);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
+    settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
+    settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
     if (!acc->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
     } else {
@@ -412,6 +416,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
+    acc->_serverColor = settings.value(QLatin1String(serverColorC)).value<QColor>();
+    acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
     acc->_davUser = settings.value(QLatin1String(davUserC), "").toString();
 

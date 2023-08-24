@@ -31,11 +31,12 @@
 #include <QPixmap>
 #endif
 
-#include "common/utility.h"
-#include <memory>
 #include "capabilities.h"
 #include "clientsideencryption.h"
+#include "common/utility.h"
 #include "syncfileitem.h"
+
+#include <memory>
 
 class QSettings;
 class QNetworkReply;
@@ -375,8 +376,10 @@ protected Q_SLOTS:
 private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
+    void updateServerColors();
 
-    static QString davPathBase();
+    [[nodiscard]] static QString davPathBase();
+    [[nodiscard]] QColor serverColor() const;
 
     bool _trustCertificates = false;
 
@@ -406,6 +409,8 @@ private:
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
     QString _serverVersion;
+    QColor _serverColor;
+    QColor _serverTextColor = QColorConstants::White;
     bool _skipE2eeMetadataChecksumValidation = false;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QSharedPointer<QNetworkAccessManager> _am;
