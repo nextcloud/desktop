@@ -133,7 +133,7 @@ Application::Application(Platform *platform, bool debugMode, QObject *parent)
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement, _gui.data(),
         [this](const QString &title, const QString &msg) { _gui->slotShowTrayMessage(title, msg); });
-    connect(updaterScheduler, &UpdaterScheduler::requestRestart, _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+    connect(updaterScheduler, &UpdaterScheduler::requestRestart, FolderMan::instance(), &FolderMan::slotScheduleAppRestart);
 #endif
 
     // Cleanup at Quit.
