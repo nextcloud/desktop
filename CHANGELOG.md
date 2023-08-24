@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
+* Bugfix - VFS Placeholders can now be replaced with folders: [#10223](https://github.com/owncloud/client/issues/10223)
 * Bugfix - Authentication dialog no longer appears again and again: [#10351](https://github.com/owncloud/client/issues/10351)
 * Bugfix - Possible deadlock during log setup: [#10905](https://github.com/owncloud/client/pull/10905)
 * Bugfix - Update capabilites and other info after connect: [#10978](https://github.com/owncloud/client/issues/10978)
@@ -43,6 +44,13 @@ Details
    were excluded by the users.
 
    https://github.com/owncloud/enterprise/issues/5682
+
+* Bugfix - VFS Placeholders can now be replaced with folders: [#10223](https://github.com/owncloud/client/issues/10223)
+
+   If a local VFS placeholder is replaced with a folder on the server, the client previously failed
+   to populate the change.
+
+   https://github.com/owncloud/client/issues/10223
 
 * Bugfix - Authentication dialog no longer appears again and again: [#10351](https://github.com/owncloud/client/issues/10351)
 
