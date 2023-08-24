@@ -586,6 +586,13 @@ private slots:
             QSignalSpy spy(fakeFolder.vfs().get(), &Vfs::needSync);
             QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
             QVERIFY(spy.count() == 1);
+            // TODO: this is currently broken as placeholders cant be replaced by a folder
+            QVERIFY(fakeFolder.syncOnce());
+            // reapply change and try again
+            fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
+            // writing to a file fails!
+            QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+            // TODO: check error type
             return;
         }
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
