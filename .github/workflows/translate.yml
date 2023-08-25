@@ -27,21 +27,27 @@ jobs:
           submodules: recursive
           ref: "4"
 
+      - name: install-deps
+        run: sudo apt install -y qt6-l10n-tools
+
       - name: l10n-remove-old
-        run: bash .github/workflows/run-in-docker.sh rabits/qt:5.12-desktop "cd translations && make l10n-remove-old"
+        run: |
+          rm translations/*.ts
+          git checkout translations/client_en.ts
 
       - name: l10n-read
-        run: bash .github/workflows/run-in-docker.sh rabits/qt:5.12-desktop "cd translations && make l10n-read"
+        run: /usr/lib/qt6/bin/lupdate src -no-obsolete -ts translations/client_en.ts
 
       - name: l10n-push
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && make l10n-push"
+        # we need to use a different docker image for those two, this appears to be a bit tricky with github actions out of the box
+        run:  bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && tx push -s --skip"
 
       - name: l10n-pull
-        run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && make l10n-pull"
+        run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && tx pull --force --skip --all"
 
       - name: l10n-clean
-        run: bash .github/workflows/run-in-docker.sh owncloudci/transifex:latest "cd translations && make l10n-clean"
+        run: git checkout translations/.tx/config
 
       - name: update-repo-before-commit
         run: |
