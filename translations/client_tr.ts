@@ -447,13 +447,14 @@ Hesabın içe aktarılması denensin mi?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Uçtan uca şifreleme</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Bu işlem, klasörünüzü ve içindeki tüm dosyaları şifreleyecek. Bu dosyalara artık şifreleme anımsatma anahtarınız olmadan erişilemeyecek.
+&lt;b&gt;Bu süreç geri döndürülemez. İlerlemek istediğinize emin misiniz?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -483,17 +484,17 @@ Hesabın içe aktarılması denensin mi?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen klasörü şifrelemeye çalışmadan önce eşitlenmesini bekleyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Klasörde küçük bir eşitleme sorunu var. Eşitleme tamamlandıktan sonra bu klasör şifrelenebilecek</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="360"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Klasörde bir eşitleme sorunu var. Eşitleme tamamlandıktan sonra bu klasör şifrelenebilecek</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>

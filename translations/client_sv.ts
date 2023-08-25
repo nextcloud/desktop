@@ -447,13 +447,14 @@ Ska ett försök av kontoimport göras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Totalsträckskryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Detta kommer att kryptera din mapp och alla filer i den. Dessa filer kommer inte längre att vara tillgängliga utan din krypteringsfras. 
+&lt;b&gt;Denna process går inte att ångra. Är du säker på att du vill fortsätta?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -483,17 +484,17 @@ Ska ett försök av kontoimport göras?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Vänta tills mappen är synkroniserad innan du försöker kryptera den.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Mappen har ett mindre synkroniseringsproblem. Kryptering av denna mapp kommer att vara möjlig när den väl har synkroniserats</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="360"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Mappen har ett synkroniseringsfel. Kryptering av denna mapp kommer att vara möjlig när den väl har synkroniserats</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
