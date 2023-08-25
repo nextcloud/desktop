@@ -4441,7 +4441,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1398"/>
         <source>Resolve conflict …</source>
-        <translation>Вирішити конфлікт...</translation>
+        <translation>Розв&apos;язати конфлікт ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1402"/>
@@ -4709,7 +4709,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="457"/>
         <source>Unresolved conflict.</source>
-        <translation>Конфлікт, який неможна вирішити</translation>
+        <translation>Конфлікт, який неможливо розв&apos;язати</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="549"/>
@@ -4933,7 +4933,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="697"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="838"/>
         <source>Resolve conflict</source>
-        <translation>Вирішити конфлікт</translation>
+        <translation>Розв&apos;язати конфлікт</translation>
     </message>
 </context>
 <context>
@@ -5492,7 +5492,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="37"/>
         <source>Solve sync conflicts</source>
-        <translation>Вирішити конфлікти синхронізації</translation>
+        <translation>Розв&apos;язати конфлікти синхронізації</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="74"/>
@@ -5518,7 +5518,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="170"/>
         <source>Resolve conflicts</source>
-        <translation>Вирішити конфлікти</translation>
+        <translation>Розв&apos;язати конфлікти</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="174"/>
@@ -5687,7 +5687,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="128"/>
         <source>Resolve conflicts</source>
-        <translation>Вирішити конфлікти</translation>
+        <translation>Розв&apos;язати конфлікти</translation>
     </message>
 </context>
 <context>
