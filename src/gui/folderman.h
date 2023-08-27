@@ -119,10 +119,10 @@ public:
     Folder *folder(const QString &);
 
     /**
-     * Migrate accounts from owncloud < 2.0
+     * Migrate accounts from owncloud
      * Creates a folder for a specific configuration, identified by alias.
      */
-    Folder *setupFolderFromOldConfigFile(const QString &, AccountState *account);
+    void setupFolderFromOldConfigFile(const QString &, AccountState *account);
 
     /**
      * Ensures that a given directory does not contain a sync journal file.
