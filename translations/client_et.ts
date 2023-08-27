@@ -4301,7 +4301,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="373"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Tekkis viga pääsuga seadete faili aadressil %1.</translation>
     </message>
 </context>
 <context>
@@ -4333,17 +4333,17 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/common/pinstate.cpp" line="27"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Alati saadaval kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="29"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Hetkel saadaval kohalikus seadmes</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Mõned on saadaval vaid võrguühendusega</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>

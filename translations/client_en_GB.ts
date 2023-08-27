@@ -4303,7 +4303,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="373"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>There was an error while accessing the configuration file at %1.</translation>
     </message>
 </context>
 <context>
@@ -4335,17 +4335,17 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/common/pinstate.cpp" line="27"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Always available locally</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="29"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Currently available locally</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Some available online only</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>

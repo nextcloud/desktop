@@ -4300,7 +4300,7 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="373"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ha ocurrido un error al acceder al archivo de configuración %1.</translation>
     </message>
 </context>
 <context>
@@ -4332,17 +4332,17 @@ Está seguro que quiere continuar?</translation>
     <message>
         <location filename="../src/common/pinstate.cpp" line="27"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Siempre disponible en local</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="29"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Actualmente disponible localmente</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Actualmente algunos solo están disponibles en línea</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>

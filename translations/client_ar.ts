@@ -4276,12 +4276,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/main.cpp" line="372"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>خطأ في الوصول إلى ملف التكوين</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="373"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>حدث خطأ في أثناء الوصول إلى ملف التكوين في %1.</translation>
     </message>
 </context>
 <context>
@@ -4313,17 +4313,17 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/common/pinstate.cpp" line="27"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>يتوفر دائمًا محليًا</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="29"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>يتوفر حاليًا محليًا</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>يتوفر أحيانًا عبر الإنترنت فقط</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>

@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Rikthe vlerën parazgjedhje</translation>
     </message>
 </context>
 <context>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="81"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Po përgatitet llogaria</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="173"/>
@@ -758,7 +758,7 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 s’jpe veprimtari.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -1318,7 +1318,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Vënë në radhë</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
@@ -1700,7 +1700,7 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, jepni fjalëkalimin tuaj që të bëni hyrjen në llogarinë %1.</translation>
     </message>
 </context>
 <context>
@@ -2346,7 +2346,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1173"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: U shpërfill, pasi shtegu i vet qe shpërzgjedhur</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
@@ -3319,7 +3319,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1008"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Shfaq në shfletues versione kartelash</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
@@ -3874,7 +3874,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="622"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Krijoni një llogari të re</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="736"/>
@@ -3895,7 +3895,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="394"/>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Riktheju njëkohësimit</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="669"/>
@@ -4206,7 +4206,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Emër i Rezervuar Kartele</translation>
     </message>
 </context>
 <context>
@@ -4393,7 +4393,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>U shkarkua version shërbyesi, kopja vendore u kopjeruajt, për shkak përplasje kartelash</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4485,7 +4485,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="209"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Disa rregullime qenë formësuar në versione më të rinj të këtij klienti dhe përdorin veçori që s’janë të pranishme në këtë version</translation>
     </message>
 </context>
 </TS>

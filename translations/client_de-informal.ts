@@ -111,7 +111,7 @@
         <location filename="../src/gui/main.cpp" line="105"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
-        <translation type="unfinished"/>
+        <translation>Siehe %1 für mehr Informationen</translation>
     </message>
 </context>
 <context>
@@ -4289,12 +4289,12 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="372"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Zugriff auf die Konfigurationsdatei</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="373"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Es ist ein Fehler beim Zugriff auf die Konfigurationsdatei unter %1 aufgetreten.</translation>
     </message>
 </context>
 <context>
@@ -4302,7 +4302,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="378"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Qt Bibliotheken %3, %4%7verwenden das Virtual Files plugin: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4326,17 +4326,17 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/common/pinstate.cpp" line="27"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Immer lokal verfügbar</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="29"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell lokal verfügbar</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Nur einige Online verfügbar</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>
