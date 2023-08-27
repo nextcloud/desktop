@@ -563,10 +563,21 @@ void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Accoun
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
             if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
-                const auto blackList = settings.value(QLatin1String("blackList")).toStringList();
-                if (!blackList.empty()) {
+                auto ok = true;
+                if (const auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+                                                                                      &ok);ok && !legacyBlacklist.isEmpty()) {
+                    qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
+                    for(const auto &legacyFolder : legacyBlacklist) {
+                      folder->migrateBlackListPath(legacyFolder);
+                    }
+                } else {
+                    qCInfo(lcFolderMan) << "There was a problem retriving the database selective sync for " << folder;
+                }
+
+                const auto settingLegacyBlacklist = settings.value(QLatin1String("blackList")).toStringList();
+                if (!settingLegacyBlacklist.empty()) {
                     //migrate settings
-                    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+                    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, settingLegacyBlacklist);
                     settings.remove(QLatin1String("blackList"));
                     // FIXME: If you remove this codepath, you need to provide another way to do
                     // this via theme.h or the normal FolderMan::setupFolders
@@ -574,7 +585,7 @@ void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Accoun
 
                 folder->saveToSettings();
 
-                qCInfo(lcFolderMan) << "Migrated!" << folder;
+                qCInfo(lcFolderMan) << "Migrated!" << folder->path();
                 settings.sync();
 
                 if (!folder) {

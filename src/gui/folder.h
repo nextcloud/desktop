@@ -303,6 +303,7 @@ public:
 
     void whitelistPath(const QString &path);
     void blacklistPath(const QString &path);
+    void migrateBlackListPath(const QString &legacyPath);
 
 signals:
     void syncStateChange();
