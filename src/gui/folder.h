@@ -353,6 +353,11 @@ public slots:
     */
     void slotFilesLockReleased(const QSet<QString> &files);
 
+    /*
+     * Triggered when lock files were added
+     */
+    void slotFilesLockImposed(const QSet<QString> &files);
+
     /**
      * Mark a virtual file as being requested for download, and start a sync.
      *
