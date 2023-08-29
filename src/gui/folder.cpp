@@ -194,6 +194,18 @@ Folder::~Folder()
     _engine.reset();
 }
 
+Result<void, QString> Folder::checkPathLength(const QString &path)
+{
+#ifdef Q_OS_WIN
+    if (path.size() > MAX_PATH) {
+        if (!FileSystem::longPathsEnabledOnWindows()) {
+            return tr("The path '%1' is too long. Please enable long paths in the Windows settings or choose a different folder.").arg(path);
+        }
+    }
+#endif
+    return {};
+}
+
 bool Folder::checkLocalPath()
 {
 #ifdef Q_OS_WIN
@@ -214,14 +226,10 @@ bool Folder::checkLocalPath()
 
     QString error;
     if (fi.isDir() && fi.isReadable() && fi.isWritable()) {
-#ifdef Q_OS_WIN
-        if (_canonicalLocalPath.size() > MAX_PATH) {
-            if (!FileSystem::longPathsEnabledOnWindows()) {
-                error =
-                    tr("The path '%1' is too long. Please enable long paths in the Windows settings or choose a different folder.").arg(_canonicalLocalPath);
-            }
+        auto pathLenghtCheck = checkPathLength(_canonicalLocalPath);
+        if (!pathLenghtCheck) {
+            error = pathLenghtCheck.error();
         }
-#endif
 
         if (error.isEmpty()) {
             qCDebug(lcFolder) << "Checked local path ok";

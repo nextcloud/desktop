@@ -732,13 +732,13 @@ QString FolderMan::checkPathValidityRecursive(const QString &path)
 
 #ifdef Q_OS_WIN
     Utility::NtfsPermissionLookupRAII ntfs_perm;
-
-    if (path.size() > MAX_PATH) {
-        if (!FileSystem::longPathsEnabledOnWindows()) {
-            return tr("The path '%1' is too long. Please enable long paths in the Windows settings or choose a different folder.").arg(path);
-        }
-    }
 #endif
+
+    auto pathLenghtCheck = Folder::checkPathLength(path);
+    if (!pathLenghtCheck) {
+        return pathLenghtCheck.error();
+    }
+
     const QFileInfo selFile(path);
     if (numberOfSyncJournals(selFile.filePath()) != 0) {
         return FolderMan::tr("The folder %1 is used in a folder sync connection!").arg(QDir::toNativeSeparators(selFile.filePath()));

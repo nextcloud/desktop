@@ -342,6 +342,8 @@ public:
         return _definition.setPriority(p);
     }
 
+    static Result<void, QString> checkPathLength(const QString &path);
+
 signals:
     void syncStateChange();
     void syncStarted();
