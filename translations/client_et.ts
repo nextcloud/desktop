@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Taasta vaikeväärtus</translation>
     </message>
 </context>
 <context>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="81"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Konto ettevalmistamine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="173"/>
@@ -758,7 +758,7 @@ Palun autentige end brauseri abil.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 ei paku tegevusi.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -1317,7 +1317,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Järjekorras</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
@@ -1699,7 +1699,7 @@ Pange tähele, et sellega valitakse ainult allikas, millest uuendused võetakse,
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Kontole %1 sisselogimiseks sisesta palun salasõna.</translation>
     </message>
 </context>
 <context>
@@ -2344,7 +2344,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1173"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: Ignoreeritud, sest selle rada ei ole valitud</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1247"/>
@@ -3317,7 +3317,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1008"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Näita faili versioone veebisirvijas</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
@@ -3409,7 +3409,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="66"/>
         <source>SpaceId</source>
-        <translation type="unfinished"/>
+        <translation>Ruumi id</translation>
     </message>
 </context>
 <context>
@@ -3872,7 +3872,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="622"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Loo uus konto</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="736"/>
@@ -3893,7 +3893,7 @@ Kas olete kindel, et soovite jätkata?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="394"/>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Jätka sünkroniseerimist</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="669"/>
@@ -4204,7 +4204,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Failinimi on reserveeritud</translation>
     </message>
 </context>
 <context>
@@ -4391,7 +4391,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Serveri versioon laeti alla, kohalik koopia varundati konfliktse failina</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4483,7 +4483,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="209"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Mõned sätted olid seadistatud selle kliendi uuemas versioonis ja kasutavad võimalusi, misa käesolevas versioonis ei ole saadaval</translation>
     </message>
 </context>
 </TS>

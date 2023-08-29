@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Terugzetten naar standaard waarde</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@ Hernieuw de authenticatie met de web browser.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 biedt geen activiteiten aan.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -3412,7 +3412,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="66"/>
         <source>SpaceId</source>
-        <translation type="unfinished"/>
+        <translation>Space Kenmerk</translation>
     </message>
 </context>
 <context>

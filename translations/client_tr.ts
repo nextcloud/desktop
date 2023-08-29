@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="81"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Hesap hazırlanıyor</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="173"/>
@@ -3873,7 +3873,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="622"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Yeni bir hesap oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="736"/>
