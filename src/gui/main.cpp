@@ -327,6 +327,10 @@ int main(int argc, char **argv)
     app.setWindowIcon(Theme::instance()->applicationIcon());
     app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
+    // parse the arguments before we handle singleApplication
+    // errors and help/version need to be handled in this instance
+    const auto options = parseOptions(app.arguments());
+
     KDSingleApplication singleApplication;
 
     if (!singleApplication.isPrimaryInstance()) {
@@ -353,8 +357,6 @@ int main(int argc, char **argv)
     if (!checkClientVersion()) {
         return -1;
     }
-
-    const auto options = parseOptions(app.arguments());
 
     setupLogging(options);
 
