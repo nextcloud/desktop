@@ -39,7 +39,6 @@ Q_LOGGING_CATEGORY(lcHttpCredentials, "nextcloud.sync.credentials.http", QtInfoM
 
 namespace {
     const char userC[] = "user";
-    const char isOAuthC[] = "oauth";
     const char clientCertBundleC[] = "clientCertPkcs12";
     const char clientCertPasswordC[] = "_clientCertPassword";
     const char clientCertificatePEMC[] = "_clientCertificatePEM";
@@ -63,14 +62,10 @@ protected:
         QNetworkRequest req(request);
         if (!req.attribute(HttpCredentials::DontAddCredentialsAttribute).toBool()) {
             if (_cred && !_cred->password().isEmpty()) {
-                if (_cred->isUsingOAuth()) {
-                    req.setRawHeader("Authorization", "Bearer " + _cred->password().toUtf8());
-                } else {
-                    QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
-                    req.setRawHeader("Authorization", "Basic " + credHash);
-                }
+                QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+                req.setRawHeader("Authorization", "Basic " + credHash);
             } else if (!request.url().password().isEmpty()) {
-                // Typically the requests to get or refresh the OAuth access token. The client
+                // Typically the requests to get or refresh the access token. The client
                 // credentials are put in the URL from the code making the request.
                 QByteArray credHash = request.url().userInfo().toUtf8().toBase64();
                 req.setRawHeader("Authorization", "Basic " + credHash);
@@ -85,15 +80,7 @@ protected:
             req.setSslConfiguration(sslConfiguration);
         }
 
-        auto *reply = AccessManager::createRequest(op, req, outgoingData);
-
-        if (_cred->_isRenewingOAuthToken) {
-            // We know this is going to fail, but we have no way to queue it there, so we will
-            // simply restart the job after the failure.
-            reply->setProperty(needRetryC, true);
-        }
-
-        return reply;
+        return AccessManager::createRequest(op, req, outgoingData);
     }
 
 private:
@@ -177,13 +164,6 @@ void HttpCredentials::fetchFromKeychain()
 
     // User must be fetched from config file
     fetchUser();
-
-    if (!_ready && !_refreshToken.isEmpty()) {
-        // This happens if the credentials are still loaded from the keychain, but we are called
-        // here because the auth is invalid, so this means we simply need to refresh the credentials
-        refreshAccessToken();
-        return;
-    }
 
     if (_ready) {
         Q_EMIT fetched();
@@ -370,20 +350,13 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
         return;
     }
 
-    bool isOauth = _account->credentialSetting(QLatin1String(isOAuthC)).toBool();
-    if (isOauth) {
-        _refreshToken = job->textData();
-    } else {
-        _password = job->textData();
-    }
+    _password = job->textData();
 
     if (_user.isEmpty()) {
         qCWarning(lcHttpCredentials) << "Strange: User is empty!";
     }
 
-    if (!_refreshToken.isEmpty() && error == QKeychain::NoError) {
-        refreshAccessToken();
-    } else if (!_password.isEmpty() && error == QKeychain::NoError) {
+    if (!_password.isEmpty() && error == QKeychain::NoError) {
         // All cool, the keychain did not come back with error.
         // Still, the password can be empty which indicates a problem and
         // the password dialog has to be opened.
@@ -408,58 +381,6 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
     }
 }
 
-bool HttpCredentials::refreshAccessToken()
-{
-    if (_refreshToken.isEmpty())
-        return false;
-
-    QUrl requestToken = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
-    QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-    QString basicAuth = QString("%1:%2").arg(
-        Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
-    req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
-    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-
-    auto requestBody = new QBuffer;
-    QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
-    requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
-
-    auto job = _account->sendRequest("POST", requestToken, req, requestBody);
-    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
-    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError{};
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-        QString accessToken = json["access_token"].toString();
-        if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
-            // Invalid or empty JSON: Network error maybe?
-            qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
-        } else if (accessToken.isEmpty()) {
-            // If the json was valid, but the reply did not contain an access token, the token
-            // is considered expired. (Usually the HTTP reply code is 400)
-            qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
-            _refreshToken.clear();
-        } else {
-            _ready = true;
-            _password = accessToken;
-            _refreshToken = json["refresh_token"].toString();
-            persist();
-        }
-        _isRenewingOAuthToken = false;
-        for (const auto &job : qAsConst(_retryQueue)) {
-            if (job)
-                job->retry();
-        }
-        _retryQueue.clear();
-        emit fetched();
-    });
-    _isRenewingOAuthToken = true;
-    return true;
-}
-
-
 void HttpCredentials::invalidateToken()
 {
     if (!_password.isEmpty()) {
@@ -480,12 +401,6 @@ void HttpCredentials::invalidateToken()
     // clear the session cookie.
     _account->clearCookieJar();
 
-    if (!_refreshToken.isEmpty()) {
-        // Only invalidate the access_token (_password) but keep the _refreshToken in the keychain
-        // (when coming from forgetSensitiveData, the _refreshToken is cleared)
-        return;
-    }
-
     auto *job = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(true);
@@ -502,9 +417,6 @@ void HttpCredentials::invalidateToken()
 
 void HttpCredentials::forgetSensitiveData()
 {
-    // need to be done before invalidateToken, so it actually deletes the refresh_token from the keychain
-    _refreshToken.clear();
-
     invalidateToken();
     _previousPassword.clear();
 }
@@ -517,7 +429,6 @@ void HttpCredentials::persist()
     }
 
     _account->setCredentialSetting(QLatin1String(userC), _user);
-    _account->setCredentialSetting(QLatin1String(isOAuthC), isUsingOAuth());
     if (!_clientCertBundle.isEmpty()) {
         // Note that the _clientCertBundle will often be cleared after usage,
         // it's just written if it gets passed into the constructor.
@@ -605,7 +516,7 @@ void HttpCredentials::slotWritePasswordToKeychain()
     job->setInsecureFallback(false);
     connect(job, &QKeychain::Job::finished, this, &HttpCredentials::slotWriteJobDone);
     job->setKey(keychainKey(_account->url().toString(), _user, _account->id()));
-    job->setTextData(isUsingOAuth() ? _refreshToken : _password);
+    job->setTextData(_password);
     job->start();
 }
 
@@ -621,19 +532,12 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
 {
     if (!_ready)
         return;
+
     Q_UNUSED(authenticator)
     // Because of issue #4326, we need to set the login and password manually at every requests
     // Thus, if we reach this signal, those credentials were invalid and we terminate.
     qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
-
-    if (_isRenewingOAuthToken) {
-        reply->setProperty(needRetryC, true);
-    } else if (isUsingOAuth() && !reply->property(needRetryC).toBool()) {
-        reply->setProperty(needRetryC, true);
-        qCInfo(lcHttpCredentials) << "Refreshing token";
-        refreshAccessToken();
-    }
 }
 
 bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
@@ -641,11 +545,8 @@ bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
     auto *reply = job->reply();
     if (!reply || !reply->property(needRetryC).toBool())
         return false;
-    if (_isRenewingOAuthToken) {
-        _retryQueue.append(job);
-    } else {
-        job->retry();
-    }
+
+    job->retry();
     return true;
 }
 

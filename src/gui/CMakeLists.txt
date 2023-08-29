@@ -48,7 +48,6 @@ set(client_UI_SRCS
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
-    wizard/owncloudoauthcredspage.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/webview.ui
     wizard/welcomepage.ui
@@ -224,8 +223,6 @@ set(client_SRCS
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.h
     creds/httpcredentialsgui.cpp
-    creds/oauth.h
-    creds/oauth.cpp
     creds/flow2auth.h
     creds/flow2auth.cpp
     creds/webflowcredentials.h
@@ -242,8 +239,6 @@ set(client_SRCS
     wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.h
     wizard/owncloudhttpcredspage.cpp
-    wizard/owncloudoauthcredspage.h
-    wizard/owncloudoauthcredspage.cpp
     wizard/flow2authcredspage.h
     wizard/flow2authcredspage.cpp
     wizard/flow2authwidget.h
