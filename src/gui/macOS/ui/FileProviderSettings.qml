@@ -18,8 +18,15 @@ import QtQuick.Layouts 1.15
 
 import Style 1.0
 import "../../filedetails"
+import "../../tray"
 
 Page {
+    id: root
+
+    property bool showBorder: true
+
+    title: qsTr("Virtual files settings")
+
     // TODO: Rather than setting all these palette colours manually,
     // create a custom style and do it for all components globally.
     palette {
@@ -42,21 +49,21 @@ Page {
 
     background: Rectangle {
         color: palette.window
+        border.width: root.showBorder ? Style.normalBorderWidth : 0
+        border.color: root.palette.dark
     }
 
-    header: TabBar {
-        id: accountsBar
+    padding: Style.standardSpacing
 
-        width: parent.width
-        padding: Style.standardSpacing
+    ColumnLayout {
+        EnforcedPlainTextLabel {
+            text: qsTr("General settings")
+            font.bold: true
+            font.pointSize: root.font.pointSize + 2
+        }
 
-        Repeater {
-            model: 10
-
-            delegate: NCTabButton {
-                svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
-                text: qsTr("Activity")
-            }
+        CheckBox {
+            text: qsTr("Enable virtual files")
         }
     }
 }
