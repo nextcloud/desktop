@@ -1271,19 +1271,7 @@ void AccountSettings::slotAccountStateChanged()
             showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
             break;
         case AccountState::AskingCredentials: {
-            QUrl url;
-            if (const auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
-                connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
-                    this, &AccountSettings::slotAccountStateChanged, Qt::UniqueConnection);
-                url = cred->authorisationLink();
-            }
-            if (url.isValid()) {
-                showConnectionLabel(tr("Obtaining authorization from the browser. "
-                                       "<a href='%1'>Click here</a> to re-open the browser.")
-                                        .arg(url.toString(QUrl::FullyEncoded)));
-            } else {
-                showConnectionLabel(tr("Connecting to %1 …").arg(serverWithUser));
-            }
+            showConnectionLabel(tr("Connecting to %1 …").arg(serverWithUser));
             break;
         }
         case AccountState::NetworkError:

@@ -523,7 +523,6 @@ public:
         WebViewFlow,
 #endif // WITH_WEBENGINE
         Basic, // also the catch-all fallback for backwards compatibility reasons
-        OAuth,
         LoginFlowV2
     };
     Q_ENUM(AuthType)

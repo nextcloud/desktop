@@ -209,8 +209,6 @@ int OwncloudSetupPage::nextId() const
     switch (_authType) {
     case DetermineAuthTypeJob::Basic:
         return WizardCommon::Page_HttpCreds;
-    case DetermineAuthTypeJob::OAuth:
-        return WizardCommon::Page_OAuthCreds;
     case DetermineAuthTypeJob::LoginFlowV2:
         return WizardCommon::Page_Flow2AuthCreds;
 #ifdef WITH_WEBENGINE

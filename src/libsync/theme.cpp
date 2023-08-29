@@ -783,16 +783,6 @@ QString Theme::quotaBaseFolder() const
     return QLatin1String("/");
 }
 
-QString Theme::oauthClientId() const
-{
-    return "xdXOt13JKxym1B1QcEncf2XDkLAexMBFwiT9j6EfhhHFJhs2KM9jbjTmf8JBXE69";
-}
-
-QString Theme::oauthClientSecret() const
-{
-    return "UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh";
-}
-
 QString Theme::versionSwitchOutput() const
 {
     QString helpText;
