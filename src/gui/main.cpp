@@ -360,7 +360,7 @@ int main(int argc, char **argv)
 
     platform->setApplication(&app);
 
-    QScopedPointer<FolderMan> folderManager(new FolderMan);
+    auto folderManager = FolderMan::createInstance();
 
     if (!AccountManager::instance()->restore()) {
         // If there is an error reading the account settings, try again
@@ -388,7 +388,7 @@ int main(int argc, char **argv)
 
     FolderMan::instance()->setSyncEnabled(true);
 
-    auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
+    auto ocApp = Application::createInstance(platform.get(), options.debugMode);
 
     if (AccountManager::instance()->accounts().isEmpty()) {
         // display the wizard if we don't have an account yet
@@ -397,7 +397,7 @@ int main(int argc, char **argv)
 
     QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
 
-    QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {
+    QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp.get(), [&](const QByteArray &message) {
         const QString msg = QString::fromUtf8(message);
         qCInfo(lcMain) << Q_FUNC_INFO << msg;
         if (msg.startsWith(msgParseOptionsC())) {
@@ -410,7 +410,7 @@ int main(int argc, char **argv)
                 qApp->quit();
             }
             if (!options.fileToOpen.isEmpty()) {
-                QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+                QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
             }
         }
     });
@@ -419,7 +419,7 @@ int main(int argc, char **argv)
         ocApp->gui()->slotShowSettings();
     }
     if (!options.fileToOpen.isEmpty()) {
-        QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+        QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
     }
 
     platform->startServices();

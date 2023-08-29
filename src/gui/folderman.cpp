@@ -89,15 +89,11 @@ const SyncResult &TrayOverallStatusResult::overallStatus() const
 
 FolderMan *FolderMan::_instance = nullptr;
 
-FolderMan::FolderMan(QObject *parent)
-    : QObject(parent)
-    , _lockWatcher(new LockWatcher)
+FolderMan::FolderMan()
+    : _lockWatcher(new LockWatcher)
     , _scheduler(new SyncScheduler(this))
     , _appRestartRequired(false)
 {
-    OC_ASSERT(!_instance);
-    _instance = this;
-
     _socketApi.reset(new SocketApi);
 
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
@@ -953,6 +949,13 @@ bool FolderMan::prepareFolder(const QString &folder)
         Folder::prepareFolder(folder);
     }
     return true;
+}
+
+std::unique_ptr<FolderMan> FolderMan::createInstance()
+{
+    OC_ASSERT(!_instance);
+    _instance = new FolderMan();
+    return std::unique_ptr<FolderMan>(_instance);
 }
 
 } // namespace OCC
