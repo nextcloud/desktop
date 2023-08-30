@@ -207,16 +207,6 @@ QString Utility::escape(const QString &in)
     return in.toHtmlEscaped();
 }
 
-void Utility::sleep(int sec)
-{
-    QThread::sleep(sec);
-}
-
-void Utility::usleep(int usec)
-{
-    QThread::usleep(usec);
-}
-
 // This can be overriden from the tests
 OCSYNC_EXPORT bool fsCasePreserving_override = []() -> bool {
     static bool ok = false;
