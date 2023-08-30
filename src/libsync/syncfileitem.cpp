@@ -78,7 +78,6 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
 template <>
 QString Utility::enumToDisplayName(SyncFileItem::Status s)
 {
-    // TODO: 2.11 enumDisplayName  https://github.com/owncloud/client/issues/9043
     switch (s) {
     case SyncFileItem::NoStatus:
         return QCoreApplication::translate("SyncFileItem::Status", "Undefined");
@@ -120,7 +119,11 @@ QDebug operator<<(QDebug debug, const OCC::SyncFileItem *item)
     } else {
         QDebugStateSaver saver(debug);
         debug.setAutoInsertSpaces(false);
-        debug << "OCC::SyncFileItem(destination=" << item->destination() << ", type=" << item->_type << ", status=" << item->_status << ")";
+        debug << "OCC::SyncFileItem(file=" << item->_file;
+        if (!item->_renameTarget.isEmpty()) {
+            debug << ", destination=" << item->destination();
+        }
+        debug << ", type=" << item->_type << ", instruction=" << item->_instruction << ", status=" << item->_status << ")";
     }
     return debug;
 }

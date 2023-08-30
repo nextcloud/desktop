@@ -415,7 +415,6 @@ void PropagateDownloadFile::start()
     if (propagator()->_abortRequested)
         return;
 
-    qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
     _stopwatch.start();
 
     auto &syncOptions = propagator()->syncOptions();
@@ -850,6 +849,7 @@ void PropagateDownloadFile::deleteExistingFolder()
     // Delete the directory if it is empty!
     QDir dir(existingDir);
     if (dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries).count() == 0) {
+        qCDebug(lcPropagateDownload) << "deleting existing dir" << existingDir << "to replace it with a file";
         if (dir.rmdir(existingDir)) {
             return;
         }

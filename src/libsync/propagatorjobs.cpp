@@ -155,6 +155,7 @@ void PropagateLocalMkdir::start()
     QFileInfo fi(newDirStr);
     if (fi.exists() && fi.isFile()) {
         if (_deleteExistingFile) {
+            qDebug(lcPropagateLocalMkdir) << "deleting existing file" << newDirStr << "to replace it with a dir";
             QString removeError;
             if (!FileSystem::remove(newDirStr, &removeError)) {
                 done(SyncFileItem::NormalError,

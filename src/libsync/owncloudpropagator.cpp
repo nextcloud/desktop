@@ -113,7 +113,7 @@ bool PropagateItemJob::scheduleSelfOrChild()
     if (_state != NotYetStarted) {
         return false;
     }
-    qCInfo(lcPropagator) << "Starting" << _item->_instruction << "propagation of" << _item->destination() << "by" << this;
+    qCInfo(lcPropagator) << "Starting propagation of" << _item << "by" << this;
 
     _state = Running;
     if (thread() != QApplication::instance()->thread()) {
@@ -321,7 +321,8 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
 
 PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
 {
-    bool deleteExisting = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+    qCDebug(lcPropagator) << "Propagating:" << item;
+    const bool deleteExisting = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
     switch (item->_instruction) {
     case CSYNC_INSTRUCTION_REMOVE:
         if (item->_direction == SyncFileItem::Down)
@@ -571,7 +572,6 @@ Result<QString, bool> OwncloudPropagator::localFileNameClash(const QString &relF
     OC_ASSERT(!relFile.isEmpty());
     if (!relFile.isEmpty() && Utility::fsCasePreserving()) {
         const QFileInfo fileInfo(_localDir + relFile);
-        qCDebug(lcPropagator) << "CaseClashCheck for " << fileInfo.filePath();
 #ifdef Q_OS_MAC
         if (!fileInfo.exists()) {
             return false;
