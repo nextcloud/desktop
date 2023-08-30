@@ -700,6 +700,30 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+
+    void testTypeChangeEmptyFolderToFile()
+    {
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder({}, vfsMode, filesAreDehydrated);
+
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("TestFolder"));
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.remoteModifier().remove(QStringLiteral("TestFolder"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("TestFolder"));
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+
+        // TestFolder should now be a file, if we are using placeholders, this file must not be hydrated
+        if (filesAreDehydrated) {
+            QVERIFY(fakeFolder.vfs()->isDehydratedPlaceholder(fakeFolder.localPath() + QStringLiteral("TestFolder")));
+        }
+        QVERIFY(itemSuccessful(completeSpy, QStringLiteral("TestFolder"), CSYNC_INSTRUCTION_TYPE_CHANGE));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     // Test what happens if we remove entries both on the server, and locally
     void testRemoveRemove()
     {
