@@ -96,10 +96,9 @@ void PUTFileJob::finished()
 {
     _device->close();
 
-    qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                     << replyStatusString()
+    qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS" << replyStatusString()
                      << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
-                     << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+                     << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
 }
 
 void PUTFileJob::newReplyHook(QNetworkReply *reply)
