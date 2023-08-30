@@ -42,7 +42,7 @@
 
 namespace
 {
-const std::array<const char *, 2> lockFilePatterns = {".~lock.", "~$"};
+const std::array<const char *, 2> lockFilePatterns = {{".~lock.", "~$"}};
 
 QString filePathLockFilePatternMatch(const QString &path)
 {
