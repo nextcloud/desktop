@@ -363,18 +363,11 @@ int main(int argc, char **argv)
     QScopedPointer<FolderMan> folderManager(new FolderMan);
 
     if (!AccountManager::instance()->restore()) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (!AccountManager::instance()->restore()) {
-            qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
-                QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.")
-                    .arg(ConfigFile::configFile()),
-                QMessageBox::Close);
-            return -1;
-        }
+        qCCritical(lcApplication) << "Could not read the account settings, quitting";
+        QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
+            QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.").arg(ConfigFile::configFile()),
+            QMessageBox::Close);
+        return -1;
     }
 
     // Setup the folders. This includes a downgrade-detection, in which case the return value
