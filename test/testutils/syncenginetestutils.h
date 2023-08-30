@@ -610,19 +610,9 @@ public:
 
     void execUntilItemCompleted(const QString &relativePath);
 
-    bool execUntilFinished()
-    {
-        QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::finished);
-        bool ok = spy.wait(3600000);
-        Q_ASSERT(ok && "Sync timed out");
-        return spy[0][0].toBool();
-    }
+    bool execUntilFinished();
 
-    bool syncOnce()
-    {
-        scheduleSync();
-        return execUntilFinished();
-    }
+    bool syncOnce();
 
     Q_REQUIRED_RESULT bool applyLocalModificationsAndSync()
     {
