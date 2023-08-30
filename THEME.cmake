@@ -17,18 +17,6 @@ if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
     set(APPLICATION_VIRTUALFILE_SUFFIX "${APPLICATION_SHORTNAME}_virtual" CACHE STRING "Virtual file suffix (not including the .)")
 endif()
 
-# Default dbus name and path
-if(NOT DEFINED APPLICATION_CLOUDPROVIDERS_DBUS_NAME)
-    set(APPLICATION_CLOUDPROVIDERS_DBUS_NAME ${APPLICATION_REV_DOMAIN})
-endif()
-if(NOT DEFINED APPLICATION_CLOUDPROVIDERS_DBUS_PATH)
-    set(APPLICATION_CLOUDPROVIDERS_DBUS_PATH "/${APPLICATION_CLOUDPROVIDERS_DBUS_NAME}")
-    string(REPLACE "." "/" APPLICATION_CLOUDPROVIDERS_DBUS_PATH ${APPLICATION_CLOUDPROVIDERS_DBUS_PATH})
-    # sanitize string to valid characters, see https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-object-path
-    # note: as we just inserted some /, we may not replace them
-    string(REGEX REPLACE "[^a-zA-Z0-9_/]" "_" APPLICATION_CLOUDPROVIDERS_DBUS_PATH ${APPLICATION_CLOUDPROVIDERS_DBUS_PATH})
-endif()
-
 # need this logic to not mess with re/uninstallations via macosx.pkgproj
 if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
     set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")

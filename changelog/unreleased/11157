@@ -1,0 +1,7 @@
+Change: Remove libcloudproviders integration
+
+Since its implementation in 2019 our support our for it was 'limited'.
+Additionally as far as we can tell it was not picked up by any major Linux distribution.
+
+https://github.com/owncloud/client/issues/11148
+https://github.com/owncloud/client/pull/11157

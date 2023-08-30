@@ -48,11 +48,6 @@
 #include <QMessageBox>
 #include <QScreen>
 
-#ifdef WITH_LIBCLOUDPROVIDERS
-#include "libcloudproviders/libcloudproviders.h"
-#endif
-
-
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #endif
@@ -134,12 +129,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     setupContextMenu();
 
     _tray->show();
-
-#ifdef WITH_LIBCLOUDPROVIDERS
-    auto exporter = new LibCloudProviders(this);
-    exporter->start();
-    connect(exporter, &LibCloudProviders::showSettings, this, &ownCloudGui::slotShowSettings);
-#endif
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
