@@ -110,10 +110,10 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
 
     AccountPtr account = _accountState->account();
 
-    if (const auto newUserId = objData.value("id").toString();!newUserId.isEmpty()) {
+    if (const auto newUserId = objData.value("id").toString(); !newUserId.isEmpty()) {
         if (QString::compare(account->davUser(), newUserId, Qt::CaseInsensitive) != 0) {
             // TODO: the error message should be in the UI
-            qInfo() << "Authed with the wrong user! Please login with the account:" << account->prettyName();
+            qInfo() << "Authenticated with the wrong user! Please login with the account:" << account->prettyName();
             if (const auto cred = account->credentials()) {
                 account->credentials()->askFromUser();
             }

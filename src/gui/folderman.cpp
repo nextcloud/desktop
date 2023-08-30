@@ -184,7 +184,7 @@ int FolderMan::setupFolders()
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
 
-    //    this is done in Application::configVersionMigration
+    // this is done in Application::configVersionMigration
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
     const auto accounts = AccountManager::instance()->accounts();
@@ -353,10 +353,10 @@ int FolderMan::setupFoldersMigration()
     qCInfo(lcFolderMan) << "Setup folders from " << configPath << "(migration)";
 
     QDir dir(configPath);
-    //We need to include hidden files just in case the alias starts with '.'    
+    // We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
-    //Exclude previous backed up configs e.g. oc.cfg.backup_20230831_133749_4.0.0
-    //only need the current config in use by the legacy application
+    // Exclude previous backed up configs e.g. oc.cfg.backup_20230831_133749_4.0.0
+    // only need the current config in use by the legacy application
     const auto dirFiles = dir.entryList({"*.cfg"});
 
     // Normally there should be only one account when migrating. TODO: Should assume only one legacy config file
@@ -565,10 +565,10 @@ void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Accoun
             if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
                 auto ok = true;
                 if (const auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                                                                                      &ok);ok && !legacyBlacklist.isEmpty()) {
+                                                                                      &ok); ok && !legacyBlacklist.isEmpty()) {
                     qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
-                    for(const auto &legacyFolder : legacyBlacklist) {
-                      folder->migrateBlackListPath(legacyFolder);
+                    for (const auto &legacyFolder : legacyBlacklist) {
+                        folder->migrateBlackListPath(legacyFolder);
                     }
                 } else {
                     qCInfo(lcFolderMan) << "There was a problem retriving the database selective sync for " << folder;
@@ -576,7 +576,7 @@ void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Accoun
 
                 const auto settingLegacyBlacklist = settings.value(QLatin1String("blackList")).toStringList();
                 if (!settingLegacyBlacklist.empty()) {
-                    //migrate settings
+                    // migrate settings
                     folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, settingLegacyBlacklist);
                     settings.remove(QLatin1String("blackList"));
                     // FIXME: If you remove this codepath, you need to provide another way to do
