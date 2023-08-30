@@ -76,13 +76,16 @@ ETagWatcher::ETagWatcher(FolderMan *folderMan, QObject *parent)
 
 void ETagWatcher::updateEtag(Folder *f, const QString &etag)
 {
-    Q_ASSERT(!etag.isEmpty());
-    auto &info = _lastEtagJob[f];
-    if (info.etag != etag) {
-        info.etag = etag;
-        _folderMan->scheduler()->enqueueFolder(f);
+    // the server must provide a valid etag but there might be bugs
+    // https://github.com/owncloud/ocis/issues/7160
+    if (OC_ENSURE(etag.isEmpty())) {
+        auto &info = _lastEtagJob[f];
+        if (info.etag != etag) {
+            info.etag = etag;
+            _folderMan->scheduler()->enqueueFolder(f);
+        }
+        info.lastUpdate.reset();
     }
-    info.lastUpdate.reset();
 }
 
 void ETagWatcher::startOC10EtagJob(Folder *f)
