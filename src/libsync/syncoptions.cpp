@@ -26,6 +26,26 @@ SyncOptions::SyncOptions()
 
 SyncOptions::~SyncOptions() = default;
 
+qint64 SyncOptions::minChunkSize() const
+{
+    return _minChunkSize;
+}
+
+void SyncOptions::setMinChunkSize(const qint64 minChunkSize)
+{
+    _minChunkSize = ::qBound(_minChunkSize, minChunkSize, _maxChunkSize);
+}
+
+qint64 SyncOptions::maxChunkSize() const
+{
+    return _maxChunkSize;
+}
+
+void SyncOptions::setMaxChunkSize(const qint64 maxChunkSize)
+{
+    _maxChunkSize = ::qBound(_minChunkSize, maxChunkSize, _maxChunkSize);
+}
+
 void SyncOptions::fillFromEnvironmentVariables()
 {
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");

@@ -1036,9 +1036,10 @@ SyncOptions Folder::initializeSyncOptions() const
     opt._vfs = _vfs;
     opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
 
-    opt._initialChunkSize = cfgFile.chunkSize();
-    opt._minChunkSize = cfgFile.minChunkSize();
-    opt._maxChunkSize = cfgFile.maxChunkSize();
+    // Chunk V2: Size of chunks must be between 5MB and 5GB, except for the last chunk which can be smaller
+    opt.setMinChunkSize(cfgFile.minChunkSize());
+    opt.setMaxChunkSize(cfgFile.maxChunkSize());
+    opt._initialChunkSize = ::qBound(opt.minChunkSize(), cfgFile.chunkSize(), opt.maxChunkSize());
     opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
 
     opt.fillFromEnvironmentVariables();
