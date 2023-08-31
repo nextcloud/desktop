@@ -332,15 +332,16 @@ void ProcessDirectoryJob::processFile(const PathTuple &path,
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
 
-    // The item shall only have this type if the db request for the virtual download
-    // was successful (like: no conflicting remote remove etc). This decision is done
-    // either in processFileAnalyzeRemoteInfo() or further down here.
-    if (item->_type == ItemTypeVirtualFileDownload)
+    if (item->_type == ItemTypeVirtualFileDownload) {
+        // The item shall only have this type if the db request for the virtual download
+        // was successful (like: no conflicting remote remove etc). This decision is done
+        // either in processFileAnalyzeRemoteInfo() or further down here.
         item->_type = ItemTypeVirtualFile;
-    // Similarly db entries with a dehydration request denote a regular file
-    // until the request is processed.
-    if (item->_type == ItemTypeVirtualFileDehydration)
+    } else if (item->_type == ItemTypeVirtualFileDehydration) {
+        // Similarly db entries with a dehydration request denote a regular file
+        // until the request is processed.
         item->_type = ItemTypeFile;
+    }
 
     if (serverEntry.isValid()) {
         processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
@@ -483,8 +484,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             && opts._vfs->mode() != Vfs::Off
             && _pinState != PinState::AlwaysLocal) {
             item->_type = ItemTypeVirtualFile;
-            if (isVfsWithSuffix())
+            if (isVfsWithSuffix()) {
                 addVirtualFileSuffix(path._original);
+            }
         }
         processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
     };
