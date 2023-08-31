@@ -15,9 +15,7 @@ if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
     # add -Wconversion ?
     # cannot be pedantic with sqlite3 directly linked
     # FIXME Can we somehow not use those flags for sqlite3.* but use them for the rest of csync?
-    if (NOT USE_OUR_OWN_SQLITE3)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -pedantic -pedantic-errors")
-    endif()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -pedantic -pedantic-errors")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wmissing-prototypes")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-format-attribute")
