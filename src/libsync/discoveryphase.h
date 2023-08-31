@@ -318,6 +318,9 @@ public:
 
     QStringList _listExclusiveFiles;
 
+    bool _hasUploadErrorItems = false;
+    bool _hasDownloadRemovedItems = false;
+
 signals:
     void fatalError(const QString &errorString, const OCC::ErrorCategory errorCategory);
     void itemDiscovered(const OCC::SyncFileItemPtr &item);
@@ -334,6 +337,9 @@ signals:
     void silentlyExcluded(const QString &folderPath);
 
     void addErrorToGui(const SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+
+private slots:
+    void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath
