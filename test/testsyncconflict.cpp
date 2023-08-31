@@ -532,7 +532,11 @@ private slots:
 
         // 3)
         QVERIFY(itemConflict(completeSpy, QStringLiteral("B")));
-        QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("B"))->contentSize, 31);
+        if (filesAreDehydrated) {
+            QVERIFY(fakeFolder.vfs()->isDehydratedPlaceholder(fakeFolder.localPath() + QStringLiteral("B")));
+        } else {
+            QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("B"))->contentSize, 31);
+        }
         QVERIFY(conflicts[1].contains(QStringLiteral("B")));
         QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[1]).isDir());

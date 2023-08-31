@@ -420,9 +420,10 @@ void PropagateDownloadFile::start()
     auto &syncOptions = propagator()->syncOptions();
     auto &vfs = syncOptions._vfs;
 
+
+    const QString fsPath = propagator()->fullLocalPath(_item->_file);
     // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
-        const QString fsPath = propagator()->fullLocalPath(_item->_file);
         if (FileSystem::fileChanged(QFileInfo{fsPath}, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
@@ -452,18 +453,26 @@ void PropagateDownloadFile::start()
     }
 
     if (_item->_type == ItemTypeVirtualFile) {
-        qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
+        qCDebug(lcPropagateDownload) << "creating virtual file" << _item;
         // do a klaas' case clash check.
         if (auto clash = propagator()->localFileNameClash(_item->_file)) {
             done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash with %2!").arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(clash.get())));
             return;
+        }
+        const bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT && QFileInfo(fsPath).isDir();
+        if (isConflict) {
+            QString error;
+            if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+                done(SyncFileItem::SoftError, error);
+                return;
+            }
         }
         auto r = vfs->createPlaceholder(*_item);
         if (!r) {
             done(SyncFileItem::NormalError, r.error());
             return;
         }
-        updateMetadata(false);
+        updateMetadata(isConflict);
         return;
     }
 
