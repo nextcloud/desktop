@@ -441,6 +441,16 @@ void PropagateDownloadFile::start()
         qCWarning(lcPropagateDownload) << "ignored virtual file type of" << _item->_file;
         _item->_type = ItemTypeFile;
     }
+
+    if (_deleteExisting) {
+        deleteExistingFolder();
+
+        // check for error with deletion
+        if (_state == Finished) {
+            return;
+        }
+    }
+
     if (_item->_type == ItemTypeVirtualFile) {
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
         // do a klaas' case clash check.
@@ -455,15 +465,6 @@ void PropagateDownloadFile::start()
         }
         updateMetadata(false);
         return;
-    }
-
-    if (_deleteExisting) {
-        deleteExistingFolder();
-
-        // check for error with deletion
-        if (_state == Finished) {
-            return;
-        }
     }
 
     // If we have a conflict where size of the file is unchanged,

@@ -423,6 +423,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
+            if (dbEntry.isDirectory()) {
+                // TODO: move the decision to the backend
+                if (_discoveryData->_syncOptions._vfs->mode() != Vfs::Off && _pinState != PinState::AlwaysLocal) {
+                    item->_type = ItemTypeVirtualFile;
+                }
+            }
         } else if ((dbEntry._type == ItemTypeVirtualFileDownload || localEntry.type == ItemTypeVirtualFileDownload)
             && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
             // The above check for the localEntry existing is important. Otherwise it breaks
@@ -478,7 +484,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
         // Turn new remote files into virtual files if the option is enabled.
-        auto &opts = _discoveryData->_syncOptions;
+        // TODO: move the decision to the backend
+        const auto &opts = _discoveryData->_syncOptions;
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off

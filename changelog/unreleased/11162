@@ -1,0 +1,6 @@
+Bugfix: Hydration state of file after a directory was replaced with a file
+
+If a synced directory was replaced with a file on the server, we downloaded it instead of
+replacing the folder with a VirtualFile placeholder.
+
+https://github.com/owncloud/client/pull/11162
