@@ -115,7 +115,7 @@ public:
     };
     struct UploadInfo
     {
-        int _chunk = 0; // Relevant to PropagateUploadV1 only
+        int _chunkUploadV1 = 0;
         uint _transferid = 0;
         qint64 _size = 0;
         qint64 _modtime = 0;

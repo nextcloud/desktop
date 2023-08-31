@@ -1648,7 +1648,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
 
         if (query->next().hasData) {
             bool ok = true;
-            res._chunk = query->intValue(0);
+            res._chunkUploadV1 = query->intValue(0);
             res._transferid = query->int64Value(1);
             res._errorCount = query->intValue(2);
             res._size = query->int64Value(3);
@@ -1678,7 +1678,7 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         }
 
         query->bindValue(1, file);
-        query->bindValue(2, i._chunk);
+        query->bindValue(2, i._chunkUploadV1);
         query->bindValue(3, i._transferid);
         query->bindValue(4, i._errorCount);
         query->bindValue(5, i._size);
@@ -2714,13 +2714,8 @@ bool operator==(const SyncJournalDb::DownloadInfo &lhs,
 bool operator==(const SyncJournalDb::UploadInfo &lhs,
     const SyncJournalDb::UploadInfo &rhs)
 {
-    return lhs._errorCount == rhs._errorCount
-        && lhs._chunk == rhs._chunk
-        && lhs._modtime == rhs._modtime
-        && lhs._valid == rhs._valid
-        && lhs._size == rhs._size
-        && lhs._transferid == rhs._transferid
-        && lhs._contentChecksum == rhs._contentChecksum;
+    return lhs._errorCount == rhs._errorCount && lhs._chunkUploadV1 == rhs._chunkUploadV1 && lhs._modtime == rhs._modtime && lhs._valid == rhs._valid
+        && lhs._size == rhs._size && lhs._transferid == rhs._transferid && lhs._contentChecksum == rhs._contentChecksum;
 }
 
 QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status)

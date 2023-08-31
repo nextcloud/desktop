@@ -53,7 +53,7 @@ void PropagateUploadFileV1::doStartUpload()
     }
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
-        _startChunk = progressInfo._chunk;
+        _startChunk = progressInfo._chunkUploadV1;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUploadV1) << _item->_file << ": Resuming from chunk " << _startChunk;
     } else if (_chunkCount <= 1 && !_item->_checksumHeader.isEmpty()) {
@@ -62,7 +62,7 @@ void PropagateUploadFileV1::doStartUpload()
         // in reconcile (issue #5106)
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
-        pi._chunk = 0;
+        pi._chunkUploadV1 = 0;
         pi._transferid = 0; // We set a null transfer id because it is not chunked.
         Q_ASSERT(_item->_modtime > 0);
         if (_item->_modtime <= 0) {
@@ -297,7 +297,7 @@ void PropagateUploadFileV1::slotPutFinished()
                 currentChunk = qMin(currentChunk, putJob->_chunk - 1);
             }
         }
-        pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
+        pi._chunkUploadV1 = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
         Q_ASSERT(_item->_modtime > 0);
         if (_item->_modtime <= 0) {
