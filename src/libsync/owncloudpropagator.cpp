@@ -510,10 +510,12 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                 } while (index > 0);
             }
         }
-        items.erase(std::remove_if(items.begin(), items.end(), [&names](auto i) {
-            return !names.contains(QStringRef { &i->_file });
-        }),
-            items.end());
+        items.erase(std::remove_if(items.begin(),
+                                   items.end(),
+                                   [&names](auto i) {
+                                       return !names.contains(QStringRef{&i->_file});
+                                   }),
+                    items.end());
     }
 
     QStringList files;
