@@ -1129,87 +1129,87 @@ Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="296"/>
+        <location filename="../src/gui/folderman.cpp" line="292"/>
         <source>Could not reset folder state</source>
         <translation>No se ha podido restablecer el estado de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="297"/>
+        <location filename="../src/gui/folderman.cpp" line="293"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Se ha encontrado un antiguo registro de sincronización &apos;%1&apos;; pero no se ha podido eliminar. Por favor, asegúrese de que ninguna aplicación la esté utilizando.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="637"/>
+        <location filename="../src/gui/folderman.cpp" line="633"/>
         <source> (backup)</source>
         <translation>(copia de seguridad)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="642"/>
+        <location filename="../src/gui/folderman.cpp" line="638"/>
         <source> (backup %1)</source>
         <translation>(copia de seguridad %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="696"/>
+        <location filename="../src/gui/folderman.cpp" line="692"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>La sincronización se ha realizado, pero hay conflictos sin resolver.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="705"/>
+        <location filename="../src/gui/folderman.cpp" line="701"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sincronización en pausa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="734"/>
+        <location filename="../src/gui/folderman.cpp" line="730"/>
         <source>No valid folder selected!</source>
         <translation>¡La carpeta seleccionada no es válida!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="742"/>
+        <location filename="../src/gui/folderman.cpp" line="738"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="748"/>
+        <location filename="../src/gui/folderman.cpp" line="744"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>La carpeta %1 está en uso en una conexión de sincronización de carpetas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="755"/>
+        <location filename="../src/gui/folderman.cpp" line="751"/>
         <source>The selected path does not exist!</source>
         <translation>¡La ruta seleccionada no existe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="759"/>
+        <location filename="../src/gui/folderman.cpp" line="755"/>
         <source>The selected path is not a folder!</source>
         <translation>¡La ruta seleccionada no es un directorio!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="763"/>
+        <location filename="../src/gui/folderman.cpp" line="759"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>¡Usted no tiene permiso para escribir en la carpeta seleccionada!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="778"/>
+        <location filename="../src/gui/folderman.cpp" line="774"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ya existe una tarea de sincronización entre el servidor y esta carpeta. Por favor elija otra carpeta local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="782"/>
+        <location filename="../src/gui/folderman.cpp" line="778"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>El directorio local %1 ya contiene un directorio usado en una conexión de sincronización de directorios. Por favor, elija otro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="788"/>
+        <location filename="../src/gui/folderman.cpp" line="784"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>El directorio local %1 está dentro de un directorio usado en una conexión de sincronización de directorios. Por favor, elija otro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="796"/>
+        <location filename="../src/gui/folderman.cpp" line="792"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 Por favor, escoja otro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="869"/>
+        <location filename="../src/gui/folderman.cpp" line="865"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1218,7 +1218,7 @@ Esta configuración conllevará a pérdida de datos y ya no está soportada
 Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="939"/>
+        <location filename="../src/gui/folderman.cpp" line="935"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -2402,43 +2402,43 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="433"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>Ha habido un fallo al liberar espacio, el archivo %1 está actualmente en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="534"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>El archivo %1 no ha podido ser descargado porque su nombre coincide con el archivo local %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="592"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="591"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>La descarga reducirá el espacio libre local por debajo del límite.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="596"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>Free space on disk is less than %1</source>
         <translation>El espacio libre en el disco es inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="722"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>File was deleted from server</source>
         <translation>Se ha eliminado el archivo del servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="781"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="780"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>El servidor web roto devolvió la longitud del contenido vacío para un archivo no vacío en el resumen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="788"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
         <source>The file could not be downloaded completely.</source>
         <translation>No se ha podido descargar el archivo completamente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="795"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>El archivo descargado está vacio aunque el servidor dice que deberia haber sido %1.</translation>
     </message>
@@ -2453,7 +2453,7 @@ for additional privileges during the process.</source>
         <translation>Error al actualizar los metadatos de: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="542"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="541"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
@@ -2461,7 +2461,7 @@ for additional privileges during the process.</source>
         <translation>El archivo %1 está actualmente en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="428"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>El archivo ha cambiado desde que fue descubierto</translation>
@@ -2478,27 +2478,27 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
         <source>could not delete file %1, error: %2</source>
         <translation>no se ha podido borrar el archivo %1, error: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="177"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation>No se ha podido crear la carpeta local %1 porque su nombre coincide con el archivo local %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
         <translation>Error al actualizar los metadatos de: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
         <translation>El archivo %1 está actualmente en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
         <translation>No se ha podido crear el directorio %1</translation>
     </message>
@@ -2525,32 +2525,32 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>El archivo %1 no se puede renombrar a %2 por causa de un conflicto con el nombre de un archivo local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="242"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation>No se ha podido renombrar %1 a %2, el archivo está actualmente en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error updating metadata: %1</source>
         <translation>Error al actualizar los metadatos de: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>The file %1 is currently in use</source>
         <translation>El archivo %1 está actualmente en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="278"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>Failed to rename file</source>
         <translation>Ha habido un fallo al renombrar el archivo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="284"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>Error setting pin state</source>
         <translation>Error al establecer el estado del pin</translation>
     </message>
@@ -2630,34 +2630,34 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="129"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>El archivo %1 no puede ser subido porque ya existe otro con el mismo nombre.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="182"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="213"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="181"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="212"/>
         <source>%1 the file is currently in use</source>
         <translation>El archivo %1 está actualmente en uso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="248"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="247"/>
         <source>File Removed</source>
         <translation>Archivo eliminado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="112"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation>El archivo local cambió durante la sincronización. Se reanudará.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
         <translation>Error al actualizar los metadatos de: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="140"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="487"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="139"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="486"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>La subida %1 excede la quota de la carpeta</translation>
     </message>
@@ -4145,63 +4145,63 @@ Está seguro que quiere continuar?</translation>
 <context>
     <name>SyncFileItem::Status</name>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
         <source>Undefined</source>
         <translation>No definido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
         <source>Fatal Error</source>
         <translation>Error fatal.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
-        <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="87"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="99"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="89"/>
         <source>Info</source>
         <translation>Información</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
         <source>Success</source>
         <translation>Éxito</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
         <source>Conflict</source>
         <translation>Conflicto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
         <translation>Archivo ignorado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
         <translation>Restaurado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
         <source>Blacklisted</source>
         <translation>En la lista negra</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
         <translation>Excluido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
         <source>Message</source>
         <translation>Mensaje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="107"/>
         <source>Filename Reserved</source>
         <translation type="unfinished"/>
     </message>

@@ -1129,87 +1129,87 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="296"/>
+        <location filename="../src/gui/folderman.cpp" line="292"/>
         <source>Could not reset folder state</source>
         <translation>Gjendja e dosjes s’u ricaktua dot</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="297"/>
+        <location filename="../src/gui/folderman.cpp" line="293"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>U gjet një regjistër i vjetër njëkohësimesh &apos;%1&apos;, por s’u hoq dot. Ju lutemi, sigurohuni që s’po e përdor ndonjë aplikacion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="637"/>
+        <location filename="../src/gui/folderman.cpp" line="633"/>
         <source> (backup)</source>
         <translation> (kopjeruajtje)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="642"/>
+        <location filename="../src/gui/folderman.cpp" line="638"/>
         <source> (backup %1)</source>
         <translation> (kopjeruajtja %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="696"/>
+        <location filename="../src/gui/folderman.cpp" line="692"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Njëkohësimi qe i suksesshëm, ka përplasje të pazgjidhura.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="705"/>
+        <location filename="../src/gui/folderman.cpp" line="701"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Njëkohësimi është ndalur)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="734"/>
+        <location filename="../src/gui/folderman.cpp" line="730"/>
         <source>No valid folder selected!</source>
         <translation>S’është përzgjedhur dosje e vlefshme!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="742"/>
+        <location filename="../src/gui/folderman.cpp" line="738"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation>Shtegu “%1” është shumë i gjatë. Ju lutemi, aktivizoni shtigje të gjatë te rregullimet e Windows-it, ose zgjidhni një dosje tjetër.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="748"/>
+        <location filename="../src/gui/folderman.cpp" line="744"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>Dosja %1 është e përdorur në një lidhje njëkohësimi dosjesh!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="755"/>
+        <location filename="../src/gui/folderman.cpp" line="751"/>
         <source>The selected path does not exist!</source>
         <translation>Shtegu i përzgjedhur s’ekziston!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="759"/>
+        <location filename="../src/gui/folderman.cpp" line="755"/>
         <source>The selected path is not a folder!</source>
         <translation>Shtegu i përzgjedhur s’ka dosje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="763"/>
+        <location filename="../src/gui/folderman.cpp" line="759"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>S’keni leje për shkrim te dosja e përzgjedhur!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="778"/>
+        <location filename="../src/gui/folderman.cpp" line="774"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ka tashmë një njëkohësim prej shërbyesi te kjo dosje vendore. Ju lutemi, përzgjidhni një tjetër dosje vendore!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="782"/>
+        <location filename="../src/gui/folderman.cpp" line="778"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Dosja vendore %1 përmban tashmë një dosje të përdorur në një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="788"/>
+        <location filename="../src/gui/folderman.cpp" line="784"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Dosja vendore %1 përmbahet tashmë në një dosje të përdorur një lidhje njëkohësimi dosjeje. Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="796"/>
+        <location filename="../src/gui/folderman.cpp" line="792"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 Ju lutemi, zgjidhni një tjetër!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="869"/>
+        <location filename="../src/gui/folderman.cpp" line="865"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1218,7 +1218,7 @@ Ky formësim dihet që shpie në humbje të dhënash dhe nuk mbulohet më.
 Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të shtimit të saj sërish.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="939"/>
+        <location filename="../src/gui/folderman.cpp" line="935"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -2405,43 +2405,43 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="433"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>S’u arrit të lirohet hapësirë, kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="534"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>Kartela %1 s’mund shkarkohet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="592"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="591"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Shkarkimi mund të ulë nën kufi sasinë e hapësirës së lirë në disk</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="596"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>Free space on disk is less than %1</source>
         <translation>Hapësira e lirë në disk është nën %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="722"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>File was deleted from server</source>
         <translation>Kartela është fshirë te shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="781"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="780"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>Shërbyes i dëmtuar u përgjigj me gjatësi lënde të zbrazët për kartelë jo të zbrazët, gjatë rimarrjeje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="788"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Kartela s’u shkarkua plotësisht.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="795"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Kartela e shkarkuar është e zbrazët, edhe pse shërbyesi njoftoi se duhej të ishte %1.</translation>
     </message>
@@ -2456,7 +2456,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="542"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="541"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
@@ -2464,7 +2464,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="428"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>Kartela ka ndryshuar, qëkurse u zbulua</translation>
@@ -2481,27 +2481,27 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
         <source>could not delete file %1, error: %2</source>
         <translation>s’u fshi dot kartela %1, gabim: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="177"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation>S’krijohet dot dosje vendore %1, për shkak të një përplasje emrash kartele vendore me %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
         <translation>s’u krijua dot dosja %1</translation>
     </message>
@@ -2528,32 +2528,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Kartela %1 s’mund të riemërtohet si %2, për shkak të një përplasje emrash kartele vendore</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="242"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation>S’u riemërtua dot %1 si %2, kartela është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="278"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>Failed to rename file</source>
         <translation>S’u arrit të riemërtohej kartela</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="284"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>Error setting pin state</source>
         <translation>Gabim në caktim gjendjeje pini</translation>
     </message>
@@ -2633,34 +2633,34 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="129"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Kartela %1 s’mund të ngarkohet, ngaqë ka një tjetër kartelë me të njëjtin emër, me ndryshim vetëm në shkronjë të madhe-shkronjë të vogël</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="182"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="213"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="181"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="212"/>
         <source>%1 the file is currently in use</source>
         <translation>%1 kartela është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="248"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="247"/>
         <source>File Removed</source>
         <translation>Kartela u Hoq</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="112"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation>Kartela vendore ndryshoi gjatë njëkohësimit. Do të rimerret.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="140"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="487"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="139"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="486"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Ngarkimi i %1 i tejkalon kuotat për dosjen</translation>
     </message>
@@ -4148,63 +4148,63 @@ Jeni i sigurt se doni të ecet më tej?</translation>
 <context>
     <name>SyncFileItem::Status</name>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
         <source>Undefined</source>
         <translation>I papërcaktuar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
         <source>Fatal Error</source>
         <translation>Gabim Fatal</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
-        <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="87"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="99"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="89"/>
         <source>Info</source>
         <translation>Hollësi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
         <source>Success</source>
         <translation>Sukses</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
         <source>Conflict</source>
         <translation>Përplasje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
         <translation>Kartela u Shpërfill</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
         <translation>E rikthyer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
         <source>Blacklisted</source>
         <translation>Në listë bllokimesh</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
         <translation>E përjashtuar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
         <source>Message</source>
         <translation>Mesazh</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="107"/>
         <source>Filename Reserved</source>
         <translation>Emër i Rezervuar Kartele</translation>
     </message>

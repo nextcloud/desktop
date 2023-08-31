@@ -1129,87 +1129,87 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="296"/>
+        <location filename="../src/gui/folderman.cpp" line="292"/>
         <source>Could not reset folder state</source>
         <translation>폴더 상태를 초기화할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="297"/>
+        <location filename="../src/gui/folderman.cpp" line="293"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>과거의 동기화 저널 &apos;%1&apos;을(를) 찾았으나 삭제할 수 없습니다. 사용 중인 프로그램이 없는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="637"/>
+        <location filename="../src/gui/folderman.cpp" line="633"/>
         <source> (backup)</source>
         <translation> (백업)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="642"/>
+        <location filename="../src/gui/folderman.cpp" line="638"/>
         <source> (backup %1)</source>
         <translation> (백업 %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="696"/>
+        <location filename="../src/gui/folderman.cpp" line="692"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>동기화가 완료되었으며, 충돌이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="705"/>
+        <location filename="../src/gui/folderman.cpp" line="701"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1(동기화 중지됨)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="734"/>
+        <location filename="../src/gui/folderman.cpp" line="730"/>
         <source>No valid folder selected!</source>
         <translation>올바른 폴더를 선택하지 않았습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="742"/>
+        <location filename="../src/gui/folderman.cpp" line="738"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="748"/>
+        <location filename="../src/gui/folderman.cpp" line="744"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>%1 폴더는 폴더 동기화 연결에 이용됩니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="755"/>
+        <location filename="../src/gui/folderman.cpp" line="751"/>
         <source>The selected path does not exist!</source>
         <translation>선택된 경로가 존재하지 않습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="759"/>
+        <location filename="../src/gui/folderman.cpp" line="755"/>
         <source>The selected path is not a folder!</source>
         <translation>선택한 경로가 폴더가 아닙니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="763"/>
+        <location filename="../src/gui/folderman.cpp" line="759"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>선택한 폴더에 쓸 수 있는 권한이 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="778"/>
+        <location filename="../src/gui/folderman.cpp" line="774"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>이미 서버와 이 로컬 폴더가 동기화되었습니다. 다른 로컬 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="782"/>
+        <location filename="../src/gui/folderman.cpp" line="778"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>로컬 폴더 %1이(가) 폴더 동기화 연결에 사용 중인 폴더를 포함하고 있습니다. 다른 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="788"/>
+        <location filename="../src/gui/folderman.cpp" line="784"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>로컬 폴더 %1이(가) 폴더 동기화 연결에 사용 중인 폴더에 포함되어 있습니다. 다른 폴더를 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="796"/>
+        <location filename="../src/gui/folderman.cpp" line="792"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 다른 것을 선택하십시오!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="869"/>
+        <location filename="../src/gui/folderman.cpp" line="865"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1218,7 +1218,7 @@ Please consider removing this folder from the account and adding it again.</sour
 계정에서 이 폴더를 제거한 후 다시 추가하는 것을 고려하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="939"/>
+        <location filename="../src/gui/folderman.cpp" line="935"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -2404,43 +2404,43 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="433"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>공간 해제 실패, 파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="534"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>%1 파일이 %2 로컬 파일 파일 이름과 충돌하여 다운로드할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="592"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="591"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>이 파일을 다운로드하면 로컬 디스크 공간이 제한 이하로 남게 됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="596"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>Free space on disk is less than %1</source>
         <translation>디스크에 남은 공간이 %1보다 적음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="722"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>File was deleted from server</source>
         <translation>서버에서 파일이 삭제됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="781"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="780"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>손상된 웹 서버가 재개 시 비어 있지 않은 파일에 대해 비어 있는 콘텐츠 길이를 반환함</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="788"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
         <source>The file could not be downloaded completely.</source>
         <translation>파일을 완전히 다운로드할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="795"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>서버에서 알려 온 파일 크기가 %1이지만 다운로드한 파일이 비어 있습니다.</translation>
     </message>
@@ -2455,7 +2455,7 @@ for additional privileges during the process.</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="542"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="541"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
@@ -2463,7 +2463,7 @@ for additional privileges during the process.</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="428"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>발견 이후 파일이 변경됨</translation>
@@ -2480,27 +2480,27 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
         <source>could not delete file %1, error: %2</source>
         <translation>%1 파일을 삭제할 수 없음, 오류: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="177"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation>로컬 파일 명이 %2 와 충돌하기 때문에 로컬 폴더 %1 을(를) 생성할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
         <translation>폴더 %1을(를) 만들 수 없음</translation>
     </message>
@@ -2527,32 +2527,32 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>로컬 파일 이름이 충돌하여 파일 %1의 이름을 %2(으)로 변경할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="242"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation>%1 을(를) %2 로 개명할 수 없습니다, 이 파일이 현재 사용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="278"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>Failed to rename file</source>
         <translation>파일 개명에 실패했습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="284"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>Error setting pin state</source>
         <translation>핀 상태 설정 에러</translation>
     </message>
@@ -2632,34 +2632,34 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="129"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>대소문자만 다른 파일 이름이 이미 존재하기 때문에 %1 파일을 업로드할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="182"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="213"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="181"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="212"/>
         <source>%1 the file is currently in use</source>
         <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="248"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="247"/>
         <source>File Removed</source>
         <translation>파일이 제거됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="112"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation>동기화 중 로컬 파일이 변경되었습니다. 곧 다시 시작됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="140"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="487"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="139"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="486"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>%1을(를) 업로드하면 폴더 할당량을 초과함</translation>
     </message>
@@ -4147,63 +4147,63 @@ Are you sure you want to proceed?</source>
 <context>
     <name>SyncFileItem::Status</name>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
         <source>Undefined</source>
         <translation>정의되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
         <source>Fatal Error</source>
         <translation>치명적 오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
-        <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="87"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="99"/>
         <source>Error</source>
         <translation>오류</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="89"/>
         <source>Info</source>
         <translation>정보</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
         <source>Success</source>
         <translation>성공</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
         <source>Conflict</source>
         <translation>충돌</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
         <translation>파일 무시됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
         <translation>복원됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
         <source>Blacklisted</source>
         <translation>차단 목록에 있음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
         <translation>제외됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
         <source>Message</source>
         <translation>메시지</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="107"/>
         <source>Filename Reserved</source>
         <translation type="unfinished"/>
     </message>

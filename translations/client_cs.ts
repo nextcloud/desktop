@@ -1116,94 +1116,94 @@ Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze 
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="296"/>
+        <location filename="../src/gui/folderman.cpp" line="292"/>
         <source>Could not reset folder state</source>
         <translation>Nelze obnovit stav adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="297"/>
+        <location filename="../src/gui/folderman.cpp" line="293"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Byl nalezen starý záznam synchronizace &apos;%1&apos;, ale nebylo možné jej odebrat. Ujistěte se, že není aktuálně používán jinou aplikací.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="637"/>
+        <location filename="../src/gui/folderman.cpp" line="633"/>
         <source> (backup)</source>
         <translation> (záloha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="642"/>
+        <location filename="../src/gui/folderman.cpp" line="638"/>
         <source> (backup %1)</source>
         <translation> (záloha %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="696"/>
+        <location filename="../src/gui/folderman.cpp" line="692"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Synchronizace byla úspěšně dokončena, nevyřešené konflikty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="705"/>
+        <location filename="../src/gui/folderman.cpp" line="701"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizace je pozastavena)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="734"/>
+        <location filename="../src/gui/folderman.cpp" line="730"/>
         <source>No valid folder selected!</source>
         <translation>Nebyl vybrán platný adresář!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="742"/>
+        <location filename="../src/gui/folderman.cpp" line="738"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="748"/>
+        <location filename="../src/gui/folderman.cpp" line="744"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>Složka %1 je použita v adresáři použitém pro synchronizaci! </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="755"/>
+        <location filename="../src/gui/folderman.cpp" line="751"/>
         <source>The selected path does not exist!</source>
         <translation>Vybraná cesta ke složce neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="759"/>
+        <location filename="../src/gui/folderman.cpp" line="755"/>
         <source>The selected path is not a folder!</source>
         <translation>Vybraná cesta nevede do adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="763"/>
+        <location filename="../src/gui/folderman.cpp" line="759"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnění pro zápis do zvoleného adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="778"/>
+        <location filename="../src/gui/folderman.cpp" line="774"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ze serveru se do tohoto umístění již synchronizuje. Prosím zvolte jinou místní složku!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="782"/>
+        <location filename="../src/gui/folderman.cpp" line="778"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 již obsahuje podadresář použitý pro synchronizaci odesílání. Zvolte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="788"/>
+        <location filename="../src/gui/folderman.cpp" line="784"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 je již obsažen ve adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="796"/>
+        <location filename="../src/gui/folderman.cpp" line="792"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 Prosím vyberte jinou možnost!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="869"/>
+        <location filename="../src/gui/folderman.cpp" line="865"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="939"/>
+        <location filename="../src/gui/folderman.cpp" line="935"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -2385,43 +2385,43 @@ můžete být požádáni o dodatečná oprávnění.</translation>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="433"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>Nezdařilo se uvolnit místo, soubor %1 je právě používán</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="534"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="592"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="591"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Stažení by snížilo velikost volného místa na disku pod limit</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="596"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>Free space on disk is less than %1</source>
         <translation>Volné místo na disku je méně než %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="722"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>File was deleted from server</source>
         <translation>Soubor byl smazán ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="781"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="780"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="788"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Soubor nemohl být kompletně stažen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="795"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Stažený soubor je prázdný, přestože server oznámil, že měl být %1.</translation>
     </message>
@@ -2436,7 +2436,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>Chyba v aktualizaci metdata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="542"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="541"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
@@ -2444,7 +2444,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>Soubor %1 je právě využíván</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="428"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>Soubor se mezitím změnil</translation>
@@ -2461,27 +2461,27 @@ můžete být požádáni o dodatečná oprávnění.</translation>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
         <source>could not delete file %1, error: %2</source>
         <translation>smazání souboru %1 se nezdařilo, chyba: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="177"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba v aktualizaci metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je právě využíván</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
         <translation>nepodařilo se vytvořit adresář %1</translation>
     </message>
@@ -2508,32 +2508,32 @@ můžete být požádáni o dodatečná oprávnění.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Soubor %1 nemohl být přejmenován na %2 z důvodu kolize názvu se souborem v místním systému</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="242"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba v aktualizaci metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je právě využíván</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="278"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>Failed to rename file</source>
         <translation>Selhalo přejmenování souboru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="284"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>Error setting pin state</source>
         <translation type="unfinished"/>
     </message>
@@ -2613,34 +2613,34 @@ můžete být požádáni o dodatečná oprávnění.</translation>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="129"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Soubor %1 nelze nahrát, protože existuje jiný soubor se stejným názvem, lišící se pouze velikostí písmen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="182"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="213"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="181"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="212"/>
         <source>%1 the file is currently in use</source>
         <translation>Soubor %1 je právě využíván</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="248"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="247"/>
         <source>File Removed</source>
         <translation>Soubor odebrán</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="112"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba v aktualizaci metdata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="140"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="487"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="139"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="486"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Nahrávání %1 překročilo velikostní limit složky</translation>
     </message>
@@ -4122,63 +4122,63 @@ Jste si jisti, že chcete pokračovat?</translation>
 <context>
     <name>SyncFileItem::Status</name>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
         <source>Undefined</source>
         <translation>Nedefinováno</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
         <source>Fatal Error</source>
         <translation>Kritická chyba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
-        <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="87"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="99"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="89"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
         <source>Success</source>
         <translation>Úspěch</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
         <source>Conflict</source>
         <translation>Konflikt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
         <translation>Soubor ignorován</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
         <translation>Obnoven</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
         <source>Blacklisted</source>
         <translation>Na černé listině</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
         <translation>Vynechán</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
         <source>Message</source>
         <translation>Zpráva</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="107"/>
         <source>Filename Reserved</source>
         <translation type="unfinished"/>
     </message>

@@ -1118,94 +1118,94 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="296"/>
+        <location filename="../src/gui/folderman.cpp" line="292"/>
         <source>Could not reset folder state</source>
         <translation>ไม่สามารถรีเซ็ตสถานะโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="297"/>
+        <location filename="../src/gui/folderman.cpp" line="293"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>บนบันทึกการประสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอปฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="637"/>
+        <location filename="../src/gui/folderman.cpp" line="633"/>
         <source> (backup)</source>
         <translation>(สำรองข้อมูล)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="642"/>
+        <location filename="../src/gui/folderman.cpp" line="638"/>
         <source> (backup %1)</source>
         <translation>(สำรองข้อมูล %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="696"/>
+        <location filename="../src/gui/folderman.cpp" line="692"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>ประสานข้อมูลสำเร็จแต่ยังมีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="705"/>
+        <location filename="../src/gui/folderman.cpp" line="701"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (การประสานข้อมูลถูกหยุดชั่วคราว)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="734"/>
+        <location filename="../src/gui/folderman.cpp" line="730"/>
         <source>No valid folder selected!</source>
         <translation>เลือกโฟลเดอร์ไม่ถูกต้อง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="742"/>
+        <location filename="../src/gui/folderman.cpp" line="738"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="748"/>
+        <location filename="../src/gui/folderman.cpp" line="744"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>โฟลเดอร์ %1 ถูกใช้ในการเชื่อมต่อการประสานข้อมูลโฟลเดอร์!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="755"/>
+        <location filename="../src/gui/folderman.cpp" line="751"/>
         <source>The selected path does not exist!</source>
         <translation>Path ที่เลือกไม่มีอยู่จริง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="759"/>
+        <location filename="../src/gui/folderman.cpp" line="755"/>
         <source>The selected path is not a folder!</source>
         <translation>Path ที่เลือกไม่ใช่โฟลเดอร์!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="763"/>
+        <location filename="../src/gui/folderman.cpp" line="759"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>คุณมีสิทธิ์เขียนโฟลเดอร์ที่เลือกนี้!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="778"/>
+        <location filename="../src/gui/folderman.cpp" line="774"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>โฟลเดอร์นี้ได้ถูกประสานข้อมูลกับเซิร์ฟเวอร์แล้ว โปรดเลือกโฟลเดอร์อื่น ๆ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="782"/>
+        <location filename="../src/gui/folderman.cpp" line="778"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาโฟลเดอร์ในเครื่อง %1 ได้ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="788"/>
+        <location filename="../src/gui/folderman.cpp" line="784"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาของโฟลเดอร์ในเครื่อง %1 ไดถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="796"/>
+        <location filename="../src/gui/folderman.cpp" line="792"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 โปรดเลือกอันอื่น!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="869"/>
+        <location filename="../src/gui/folderman.cpp" line="865"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="939"/>
+        <location filename="../src/gui/folderman.cpp" line="935"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"/>
     </message>
@@ -2387,43 +2387,43 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="433"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="449"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="534"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>ไม่สามารถดาวน์โหลดไฟล์ %1 ได้เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="592"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="591"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>การดาวน์โหลดจะช่วยลดพืนที่จัดเก็บภายในเครื่องที่ต่ำกว่าขีดจำกัด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="596"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>Free space on disk is less than %1</source>
         <translation>พื้นที่ว่างในดิสก์น้อยกว่า %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="722"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
         <source>File was deleted from server</source>
         <translation>ไฟล์ถูกลบออกจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="781"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="780"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>เว็บเซิร์ฟเวอร์ที่ใช้งานส่งคืนเนื้อหาที่ว่างเปล่าสำหรับไฟล์ที่ไม่ว่างเปล่าหลังจากการทำซ้ำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="788"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ดาวน์โหลดไฟล์ไม่สำเร็จ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="795"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>ไฟล์ที่ดาวน์โหลดว่างเปล่าแม้ว่าเซิร์ฟเวอร์ประกาศว่าควรจะเป็น %1</translation>
     </message>
@@ -2438,7 +2438,7 @@ for additional privileges during the process.</source>
         <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="542"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="541"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
@@ -2446,7 +2446,7 @@ for additional privileges during the process.</source>
         <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="428"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
@@ -2463,27 +2463,27 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="161"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="162"/>
         <source>could not delete file %1, error: %2</source>
         <translation>ไม่สามารถลบไฟล์ %1, ข้อผิดพลาด: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="177"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
         <translation>ไม่สามารถสร้างโฟลเดอร์ %1 ในเครื่อง เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
         <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
         <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
         <source>could not create folder %1</source>
         <translation>ไม่สามารถสร้างโฟลเดอร์ %1</translation>
     </message>
@@ -2510,32 +2510,32 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="235"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="236"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>ไม่สามารถเปลี่ยนชื่อไฟล์ %1 เป็น %2 เพราะไฟล์ชื่อนี้มีอยู่แล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="242"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
         <translation>ไม่สามารถเปลี่ยนชื่อ %1 เป็น %2 ได้เนื่องจากกำลังมีการใช้งานไฟล์นี้อยู่</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="269"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
         <source>Error updating metadata: %1</source>
         <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>The file %1 is currently in use</source>
         <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="278"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
         <source>Failed to rename file</source>
         <translation>ไม่สามารถเปลี่ยนชื่อไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="284"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>Error setting pin state</source>
         <translation>เกิดข้อผิดพลาดขณะตั้งค่าสถานะพิน</translation>
     </message>
@@ -2615,34 +2615,34 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="129"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="128"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>ไม่สามารถอัปโหลดไฟล์ %1 เนื่องจากมีไฟล์อื่นที่มีชื่อเดียวกันอยู่แล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="182"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="213"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="181"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="212"/>
         <source>%1 the file is currently in use</source>
         <translation>ไฟล์ %1 กำลังถูกใช้งานอยู่</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="248"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="247"/>
         <source>File Removed</source>
         <translation>ไฟล์ถูกลบไปแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="112"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation>หากไฟล์ในเครื่องถูกแก้ไขระหว่างทำการประสานข้อมูล ไฟล์ที่ถูกแก้ไขนั้นจะถูกทำการประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Error updating metadata: %1</source>
         <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="140"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="487"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="139"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="486"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>การอัปโหลด %1 เกินโควต้าของโฟลเดอร์</translation>
     </message>
@@ -4123,63 +4123,63 @@ Are you sure you want to proceed?</source>
 <context>
     <name>SyncFileItem::Status</name>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
         <source>Undefined</source>
         <translation>ไม่ได้กำหนด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
         <source>Fatal Error</source>
         <translation>ข้อผิดพลาดร้ายแรง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="88"/>
-        <location filename="../src/libsync/syncfileitem.cpp" line="100"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="87"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="99"/>
         <source>Error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="89"/>
         <source>Info</source>
         <translation>ข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="91"/>
         <source>Success</source>
         <translation>เสร็จสิ้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="94"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="93"/>
         <source>Conflict</source>
         <translation>ปัญหา</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
         <translation>ไฟล์ที่ถูกละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
         <translation>คืนค่าแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
         <source>Blacklisted</source>
         <translation>ขึ้นบัญชีดำแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
         <translation>ยกเว้นแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
         <source>Message</source>
         <translation>ข้อความ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncfileitem.cpp" line="108"/>
+        <location filename="../src/libsync/syncfileitem.cpp" line="107"/>
         <source>Filename Reserved</source>
         <translation type="unfinished"/>
     </message>
