@@ -78,7 +78,7 @@ void ETagWatcher::updateEtag(Folder *f, const QString &etag)
 {
     // the server must provide a valid etag but there might be bugs
     // https://github.com/owncloud/ocis/issues/7160
-    if (OC_ENSURE(etag.isEmpty())) {
+    if (OC_ENSURE_NOT(etag.isEmpty())) {
         auto &info = _lastEtagJob[f];
         if (info.etag != etag) {
             info.etag = etag;
