@@ -682,6 +682,40 @@ void Folder::slotFilesLockImposed(const QSet<QString> &files)
     }
 }
 
+void Folder::slotLockedFilesFound(const QSet<QString> &files)
+{
+    qCDebug(lcFolder) << "Found new lock files" << files;
+
+    for (const auto &file : files) {
+        const auto fileRecordPath = fileFromLocalPath(file);
+        SyncJournalFileRecord rec;
+
+        const auto canLockFile = journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid()
+            && (!rec._lockstate._locked
+                || (rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::UserLock)
+                    && rec._lockstate._lockOwnerId == _accountState->account()->davUser()));
+
+        if (!canLockFile) {
+            qCDebug(lcFolder) << "Skipping locking file" << file << "with rec.isValid():" << rec.isValid()
+                              << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId << "and davUser:" << _accountState->account()->davUser();
+            continue;
+        }
+
+        const QString remoteFilePath = remotePathTrailingSlash() + rec.path();
+        qCDebug(lcFolder) << "Automatically locking file on server" << remoteFilePath;
+        _fileLockSuccess = connect(_accountState->account().data(), &Account::lockFileSuccess, this, [this, remoteFilePath] {
+            disconnect(_fileLockSuccess);
+            qCDebug(lcFolder) << "Locking file succeeded" << remoteFilePath;
+            startSync();
+        });
+        _fileLockFailure = connect(_accountState->account().data(), &Account::lockFileError, this, [this, remoteFilePath](const QString &message) {
+            disconnect(_fileLockFailure);
+            qCWarning(lcFolder) << "Failed to lock a file:" << remoteFilePath << message;
+        });
+        _accountState->account()->setLockFileState(remoteFilePath, journalDb(), SyncFileItem::LockStatus::LockedItem);
+    }
+}
+
 void Folder::implicitlyHydrateFile(const QString &relativepath)
 {
     qCInfo(lcFolder) << "Implicitly hydrate virtual file:" << relativepath;
@@ -1475,6 +1509,7 @@ void Folder::slotCapabilitiesChanged()
 {
     if (_accountState->account()->capabilities().filesLockAvailable()) {
         connect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased, Qt::UniqueConnection);
+        connect(_folderWatcher.data(), &FolderWatcher::lockedFilesFound, this, &Folder::slotLockedFilesFound, Qt::UniqueConnection);
     }
 }
 
@@ -1520,6 +1555,7 @@ void Folder::registerFolderWatcher()
         this, &Folder::slotWatcherUnreliable);
     if (_accountState->account()->capabilities().filesLockAvailable()) {
         connect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased);
+        connect(_folderWatcher.data(), &FolderWatcher::lockedFilesFound, this, &Folder::slotLockedFilesFound);
     }
     connect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed, Qt::UniqueConnection);
     _folderWatcher->init(path());

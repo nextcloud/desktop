@@ -102,6 +102,10 @@ signals:
      */
     void filesLockImposed(const QSet<QString> &files);
 
+    void lockFilesFound(const QSet<QString> &files);
+
+    void lockedFilesFound(const QSet<QString> &files);
+
     /**
      * Emitted if some notifications were lost.
      *
@@ -141,8 +145,10 @@ private:
 
     void appendSubPaths(QDir dir, QStringList& subPaths);
 
-    [[nodiscard]] FileLockingInfo checkIfFileIsLockOrUnlock(const QString &path) const;
+    [[nodiscard]] FileLockingInfo lockFileTargetFilePath(const QString &path, const QString &lockFileNamePattern) const;
     [[nodiscard]] QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName) const;
+
+    QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName);
 
     /* Check if the path should be igored by the FolderWatcher. */
     [[nodiscard]] bool pathIsIgnored(const QString &path) const;
