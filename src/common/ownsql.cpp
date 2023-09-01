@@ -37,7 +37,6 @@
 using namespace std::chrono_literals;
 
 namespace {
-constexpr auto SQLITE_SLEEP_TIME = 500ms;
 constexpr int SQLITE_REPEAT_COUNT = 20;
 
 }
@@ -279,7 +278,6 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
             if (_errId != SQLITE_OK) {
                 qCWarning(lcSql) << "SQL prepare failed" << _sql << QString::fromUtf8(sqlite3_errmsg(_db));
                 if ((_errId == SQLITE_BUSY) || (_errId == SQLITE_LOCKED)) {
-                    std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
                     continue;
                 }
             }
@@ -352,7 +350,6 @@ bool SqlQuery::exec()
             if (_errId != SQLITE_DONE && _errId != SQLITE_ROW) {
                 qCWarning(lcSql) << "SQL exec failed" << _sql << QString::fromUtf8(sqlite3_errmsg(_db));
                 if (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY) {
-                    std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
                     continue;
                 }
             }
@@ -383,9 +380,10 @@ auto SqlQuery::next() -> NextResult
 
     for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
         _errId = sqlite3_step(_stmt);
-        if (firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY)) {
-            std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
-        } else {
+        if (!(firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY))) {
+            // For the first step: retry if the database is locked or busy.
+            // For any other iteration: the first one succeeded, so subsequent steps should also
+            // succeed. If not, bail out and report an error (done below).
             break;
         }
     }
