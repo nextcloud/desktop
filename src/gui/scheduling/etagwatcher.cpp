@@ -80,7 +80,7 @@ void ETagWatcher::updateEtag(Folder *f, const QString &etag)
     // https://github.com/owncloud/ocis/issues/7160
     if (OC_ENSURE_NOT(etag.isEmpty())) {
         auto &info = _lastEtagJob[f];
-        if (info.etag != etag) {
+        if (f->canSync() && info.etag != etag) {
             info.etag = etag;
             _folderMan->scheduler()->enqueueFolder(f);
         }

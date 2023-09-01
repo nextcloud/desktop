@@ -529,6 +529,8 @@ private:
      */
     QSharedPointer<Vfs> _vfs;
 
+    QPointer<QMessageBox> _removeAllFilesDialog;
+
     // allow that all files are removed in the next run
     bool _allowRemoveAllOnce = false;
 

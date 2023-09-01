@@ -145,7 +145,7 @@ void SyncScheduler::startNext()
             [this](const SyncResult &result) {
                 if (result.status() != SyncResult::Success) {
                     // Retry a couple of times after failure; or regularly if requested
-                    if ((_currentSync->consecutiveFailingSyncs() > 0 && _currentSync->consecutiveFailingSyncs() < 3)
+                    if (_currentSync->canSync() && (_currentSync->consecutiveFailingSyncs() > 0 && _currentSync->consecutiveFailingSyncs() < 3)
                         || _currentSync->syncEngine().isAnotherSyncNeeded() == AnotherSyncNeeded::DelayedFollowUp) {
                         QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [folder = _currentSync, this] { enqueueFolder(folder); });
                     }
