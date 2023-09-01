@@ -47,7 +47,7 @@ class Application : public QObject
 {
     Q_OBJECT
 public:
-    explicit Application(Platform *platform, bool debugMode, QObject *parent);
+    static std::unique_ptr<Application> createInstance(Platform *platform, bool debugMode);
     ~Application();
 
     bool debugMode();
@@ -83,6 +83,8 @@ protected slots:
     void slotAccountStateRemoved() const;
 
 private:
+    explicit Application(Platform *platform, bool debugMode);
+
     QPointer<ownCloudGui> _gui = {};
 
     const bool _debugMode = false;

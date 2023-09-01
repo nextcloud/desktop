@@ -532,7 +532,11 @@ private slots:
 
         // 3)
         QVERIFY(itemConflict(completeSpy, QStringLiteral("B")));
-        QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("B"))->contentSize, 31);
+        if (filesAreDehydrated) {
+            QVERIFY(fakeFolder.vfs()->isDehydratedPlaceholder(fakeFolder.localPath() + QStringLiteral("B")));
+        } else {
+            QCOMPARE(fakeFolder.currentLocalState().find(QStringLiteral("B"))->contentSize, 31);
+        }
         QVERIFY(conflicts[1].contains(QStringLiteral("B")));
         QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
         QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[1]).isDir());
@@ -697,6 +701,30 @@ private slots:
 
         QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), AnotherSyncNeeded::ImmediateFollowUp);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+
+    void testTypeChangeEmptyFolderToFile()
+    {
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder({}, vfsMode, filesAreDehydrated);
+
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("TestFolder"));
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.remoteModifier().remove(QStringLiteral("TestFolder"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("TestFolder"));
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+
+        // TestFolder should now be a file, if we are using placeholders, this file must not be hydrated
+        if (filesAreDehydrated) {
+            QVERIFY(fakeFolder.vfs()->isDehydratedPlaceholder(fakeFolder.localPath() + QStringLiteral("TestFolder")));
+        }
+        QVERIFY(itemSuccessful(completeSpy, QStringLiteral("TestFolder"), CSYNC_INSTRUCTION_TYPE_CHANGE));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 

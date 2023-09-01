@@ -88,7 +88,7 @@ public:
 
     static QString checkPathValidityRecursive(const QString &path);
 
-    explicit FolderMan(QObject *parent = nullptr);
+    static std::unique_ptr<FolderMan> createInstance();
     ~FolderMan() override;
 
     /**
@@ -277,6 +277,8 @@ private slots:
     void slotServerVersionChanged(Account *account);
 
 private:
+    explicit FolderMan();
+
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
       */

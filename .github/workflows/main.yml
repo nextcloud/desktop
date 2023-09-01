@@ -93,7 +93,6 @@ jobs:
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/nsis
         } elseif($IsLinux) {
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/linuxdeploy
-            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --set enableLibcloudproviders=true owncloud/owncloud-client
         }
 
     - name: Install dependencies

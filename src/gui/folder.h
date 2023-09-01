@@ -342,6 +342,8 @@ public:
         return _definition.setPriority(p);
     }
 
+    static Result<void, QString> checkPathLength(const QString &path);
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -526,6 +528,8 @@ private:
      * The vfs mode instance (created by plugin) to use. Never null.
      */
     QSharedPointer<Vfs> _vfs;
+
+    QPointer<QMessageBox> _removeAllFilesDialog;
 
     // allow that all files are removed in the next run
     bool _allowRemoveAllOnce = false;

@@ -232,7 +232,7 @@ def gui_test_pipeline(ctx):
     return pipelines
 
 def build_client(image = OC_CI_CLIENT, ctest = True):
-    cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s" -DWITH_LIBCLOUDPROVIDERS=ON'
+    cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s"'
     cmake_options = cmake_options % (build_config["generator"], build_config["c_compiler"], build_config["cxx_compiler"], build_config["build_type"])
 
     if ctest:

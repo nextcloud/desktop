@@ -175,7 +175,7 @@ bool Capabilities::chunkingNg() const
         return false;
     if (chunkng == "1")
         return true;
-    return _capabilities.value(QStringLiteral("dav")).toMap().value(QStringLiteral("chunking")).toByteArray() >= "1.0";
+    return _capabilities.value(QStringLiteral("dav")).toMap().value(QStringLiteral("chunking")).toFloat() >= 1.0;
 }
 
 bool Capabilities::bigfilechunkingEnabled() const

@@ -63,7 +63,7 @@ QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int r
             case Columns::Enabled:
                 return tr("Enabled");
             case Columns::SpaceId:
-                return tr("SpaceId");
+                return QStringLiteral("Space Id"); // Hidden column, no need for a translatable string.
             case Columns::ColumnCount:
                 Q_UNREACHABLE();
             }

@@ -55,7 +55,7 @@ namespace TestUtils {
     {
         static QPointer<FolderMan> man;
         if (!man) {
-            man = new FolderMan;
+            man = FolderMan::createInstance().release();
             QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, man, &FolderMan::deleteLater);
         };
         return man;

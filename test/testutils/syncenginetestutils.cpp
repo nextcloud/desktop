@@ -12,6 +12,7 @@
 #include "gui/accountmanager.h"
 #include "httplogger.h"
 #include "libsync/configfile.h"
+#include "libsync/syncresult.h"
 
 #include <thread>
 
@@ -132,6 +133,9 @@ bool DiskFileModifier::applyModifications()
         std::this_thread::sleep_for(50ms);
         QThread::currentThread()->eventDispatcher()->processEvents(QEventLoop::AllEvents);
     } while (!helper.finished);
+    if (!helper.succeeded) {
+        qWarning() << Q_FUNC_INFO << "failed";
+    }
     return helper.succeeded;
 }
 
@@ -1167,6 +1171,31 @@ FileInfo FakeFolder::dbState() const
         // item.contentChar can't be set from the db
     });
     return result;
+}
+
+bool FakeFolder::execUntilFinished()
+{
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::finished);
+    bool ok = spy.wait(3600000);
+    Q_ASSERT(ok && "Sync timed out");
+    return spy[0][0].toBool();
+}
+
+bool FakeFolder::syncOnce()
+{
+    QObject connectScope;
+    QList<QPair<QString, OCC::ErrorCategory>> errors;
+    connect(_syncEngine.get(), &OCC::SyncEngine::syncError, &connectScope,
+        [&errors](const QString &message, OCC::ErrorCategory category) { errors << qMakePair(message, category); });
+    OCC::SyncResult result;
+    connect(
+        _syncEngine.get(), &OCC::SyncEngine::itemCompleted, &connectScope, [&result](const OCC::SyncFileItemPtr &item) { result.processCompletedItem(item); });
+    scheduleSync();
+    const bool ok = execUntilFinished();
+    if (!ok) {
+        qWarning() << Q_FUNC_INFO << "failed. Errors:" << errors << "Another sync needed:" << _syncEngine->isAnotherSyncNeeded() << result.errorStrings();
+    }
+    return ok;
 }
 
 OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const

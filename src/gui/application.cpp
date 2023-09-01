@@ -70,13 +70,9 @@ ownCloudGui *Application::gui() const
 
 Application *Application::_instance = nullptr;
 
-Application::Application(Platform *platform, bool debugMode, QObject *parent)
-    : QObject(parent)
-    , _debugMode(debugMode)
+Application::Application(Platform *platform, bool debugMode)
+    : _debugMode(debugMode)
 {
-    Q_ASSERT(!_instance);
-    _instance = this;
-
     platform->migrate();
 
     setupTranslations();
@@ -401,4 +397,12 @@ bool Application::eventFilter(QObject *obj, QEvent *event)
 #endif
     return QObject::eventFilter(obj, event);
 }
+
+std::unique_ptr<Application> Application::createInstance(Platform *platform, bool debugMode)
+{
+    Q_ASSERT(!_instance);
+    _instance = new Application(platform, debugMode);
+    return std::unique_ptr<Application>(_instance);
+}
+
 } // namespace OCC

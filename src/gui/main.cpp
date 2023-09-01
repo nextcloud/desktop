@@ -327,6 +327,10 @@ int main(int argc, char **argv)
     app.setWindowIcon(Theme::instance()->applicationIcon());
     app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
+    // parse the arguments before we handle singleApplication
+    // errors and help/version need to be handled in this instance
+    const auto options = parseOptions(app.arguments());
+
     KDSingleApplication singleApplication;
 
     if (!singleApplication.isPrimaryInstance()) {
@@ -354,13 +358,11 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    const auto options = parseOptions(app.arguments());
-
     setupLogging(options);
 
     platform->setApplication(&app);
 
-    QScopedPointer<FolderMan> folderManager(new FolderMan);
+    auto folderManager = FolderMan::createInstance();
 
     if (!AccountManager::instance()->restore()) {
         qCCritical(lcApplication) << "Could not read the account settings, quitting";
@@ -381,7 +383,7 @@ int main(int argc, char **argv)
 
     FolderMan::instance()->setSyncEnabled(true);
 
-    auto ocApp = new OCC::Application(platform.get(), options.debugMode, &app);
+    auto ocApp = Application::createInstance(platform.get(), options.debugMode);
 
     if (AccountManager::instance()->accounts().isEmpty()) {
         // display the wizard if we don't have an account yet
@@ -390,7 +392,7 @@ int main(int argc, char **argv)
 
     QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
 
-    QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp, [&](const QByteArray &message) {
+    QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp.get(), [&](const QByteArray &message) {
         const QString msg = QString::fromUtf8(message);
         qCInfo(lcMain) << Q_FUNC_INFO << msg;
         if (msg.startsWith(msgParseOptionsC())) {
@@ -403,7 +405,7 @@ int main(int argc, char **argv)
                 qApp->quit();
             }
             if (!options.fileToOpen.isEmpty()) {
-                QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+                QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
             }
         }
     });
@@ -412,7 +414,7 @@ int main(int argc, char **argv)
         ocApp->gui()->slotShowSettings();
     }
     if (!options.fileToOpen.isEmpty()) {
-        QTimer::singleShot(0, ocApp, [ocApp, fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+        QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
     }
 
     platform->startServices();
