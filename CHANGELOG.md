@@ -18,10 +18,12 @@ Summary
 * Bugfix - Crash during application shutdown: [#11016](https://github.com/owncloud/client/issues/11016)
 * Bugfix - Hide hidden folders again in the selective sync view: [#11047](https://github.com/owncloud/client/issues/11047)
 * Bugfix - Fix check if a file is a placeholder: [#11107](https://github.com/owncloud/client/issues/11107)
+* Bugfix - Hydration state of file after a directory was replaced with a file: [#11162](https://github.com/owncloud/client/pull/11162)
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
 * Change - We removed the pre 2.9 credentials migration: [#11081](https://github.com/owncloud/client/pull/11081)
+* Change - Remove libcloudproviders integration: [#11148](https://github.com/owncloud/client/issues/11148)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
@@ -103,6 +105,13 @@ Details
 
    https://github.com/owncloud/client/issues/11107
 
+* Bugfix - Hydration state of file after a directory was replaced with a file: [#11162](https://github.com/owncloud/client/pull/11162)
+
+   If a synced directory was replaced with a file on the server, we downloaded it instead of
+   replacing the folder with a VirtualFile placeholder.
+
+   https://github.com/owncloud/client/pull/11162
+
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 
    For vfs setups, this is handled by Windows itself.
@@ -129,6 +138,14 @@ Details
    Migrating credentials from a 2.8 or older client is no longer possible.
 
    https://github.com/owncloud/client/pull/11081
+
+* Change - Remove libcloudproviders integration: [#11148](https://github.com/owncloud/client/issues/11148)
+
+   Since its implementation in 2019 our support our for it was 'limited'. Additionally as far as we
+   can tell it was not picked up by any major Linux distribution.
+
+   https://github.com/owncloud/client/issues/11148
+   https://github.com/owncloud/client/pull/11157
 
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 
