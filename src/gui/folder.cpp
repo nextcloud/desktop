@@ -893,6 +893,14 @@ void Folder::blacklistPath(const QString &path)
     appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
 }
 
+void Folder::migrateBlackListPath(const QString &legacyPath)
+{
+    if (legacyPath.startsWith(QLatin1Char('/'))) {
+        removePathFromSelectiveSyncList(legacyPath, SyncJournalDb::SelectiveSyncBlackList);
+        blacklistPath(legacyPath.mid(1));
+    }
+}
+
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
     return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);

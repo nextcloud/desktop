@@ -41,7 +41,7 @@ public:
     ConfigFile();
 
     enum Scope { UserScope,
-        SystemScope };
+        SystemScope, LegacyScope };
 
     [[nodiscard]] QString configPath() const;
     [[nodiscard]] QString configFile() const;

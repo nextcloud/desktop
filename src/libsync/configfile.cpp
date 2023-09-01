@@ -368,32 +368,27 @@ QString ConfigFile::configPath() const
     return Utility::trailingSlashPath(_confDir);
 }
 
-static const QLatin1String exclFile("sync-exclude.lst");
+static const QLatin1String syncExclFile("sync-exclude.lst");
+static const QLatin1String exclFile("exclude.lst");
 
 QString ConfigFile::excludeFile(Scope scope) const
 {
-    // prefer sync-exclude.lst, but if it does not exist, check for
-    // exclude.lst for compatibility reasons in the user writeable
-    // directories.
-    QFileInfo fi;
-
-    switch (scope) {
-    case UserScope:
-        fi.setFile(configPath(), exclFile);
-
-        if (!fi.isReadable()) {
-            fi.setFile(configPath(), QLatin1String("exclude.lst"));
-        }
-        if (!fi.isReadable()) {
-            fi.setFile(configPath(), exclFile);
-        }
-        return fi.absoluteFilePath();
-    case SystemScope:
+    if (scope == SystemScope) {
         return ConfigFile::excludeFileFromSystem();
     }
 
-    ASSERT(false);
-    return QString();
+    const auto excludeFilePath = scope == LegacyScope ? discoveredLegacyConfigPath() : configPath();
+
+    // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
+    QFileInfo exclFileInfo(excludeFilePath, syncExclFile);
+    if (!exclFileInfo.isReadable()) {
+        exclFileInfo.setFile(excludeFilePath, exclFile);
+    }
+    if (!exclFileInfo.isReadable()) {
+        exclFileInfo.setFile(excludeFilePath, syncExclFile);
+    }
+
+    return exclFileInfo.absoluteFilePath();
 }
 
 QString ConfigFile::excludeFileFromSystem()
@@ -1162,23 +1157,29 @@ std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, Q
 void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
 {
     ConfigFile cfg;
-    QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
-    QString userList = cfg.excludeFile(ConfigFile::UserScope);
+    const auto systemList = cfg.excludeFile(ConfigFile::SystemScope);
+    const auto userList = cfg.excludeFile(ConfigFile::UserScope);
+    const auto legacyList = cfg.excludeFile(ConfigFile::LegacyScope);
 
     if (!QFile::exists(userList)) {
         qCInfo(lcConfigFile) << "User defined ignore list does not exist:" << userList;
-        if (!QFile::copy(systemList, userList)) {
-            qCInfo(lcConfigFile) << "Could not copy over default list to:" << userList;
+
+        if (QFile::exists(legacyList) && QFile::copy(legacyList, userList)) {
+            qCInfo(lcConfigFile) << "Migrating legacy list" << legacyList << "to user list" << userList;
+
+        } else if (QFile::copy(systemList, userList)) {
+            qCInfo(lcConfigFile) << "Migrating system list" << legacyList << "to user list" << userList;
         }
     }
 
     if (!QFile::exists(userList)) {
         qCInfo(lcConfigFile) << "Adding system ignore list to csync:" << systemList;
         excludedFiles.addExcludeFilePath(systemList);
-    } else {
-        qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
-        excludedFiles.addExcludeFilePath(userList);
+        return;
     }
+
+    qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
+    excludedFiles.addExcludeFilePath(userList);
 }
 
 QString ConfigFile::discoveredLegacyConfigPath()
