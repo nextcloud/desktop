@@ -65,6 +65,12 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     // Set the language, so messages from the server are localised correctly.
     newRequest.setRawHeader("Accept-Language", QLocale().name().toUtf8());
 
+    // we don't follow redirects, if we receive one the ConnectionValidor is triggered
+    // -> default to manual redirection
+    if (newRequest.attribute(QNetworkRequest::RedirectPolicyAttribute).isNull()) {
+        newRequest.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
+    }
+
     QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
     // This needs extension
