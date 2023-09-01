@@ -137,6 +137,7 @@ void WinPlatform::startShutdownWatcher()
         MSG msg;
         while (watchWMCtx.windowMessageWatcherRun) {
             if (!PeekMessageW(&msg, watcherWindow, 0, 0, PM_REMOVE)) {
+                // We are in a separate thread, and polling for events. When no events are queued, wait a bit before peeking in the queue again.
                 std::this_thread::sleep_for(100ms);
             } else {
                 TranslateMessage(&msg);
