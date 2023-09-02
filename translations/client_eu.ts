@@ -1827,29 +1827,29 @@ Baliteke OpenSSL liburutegiekin arazoa egotea.</translation>
         <translation>Jo ezarpenetara aukeratzeko deskargatu nahi ote duzun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1302"/>
+        <location filename="../src/gui/folder.cpp" line="1359"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Karpeta batek ezarritako %1MB-ko karpeta-tamainaren muga gainditu du: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1313"/>
+        <location filename="../src/gui/folder.cpp" line="1370"/>
         <source>Keep syncing</source>
         <translation>Jarraitu sinkronizatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1321"/>
+        <location filename="../src/gui/folder.cpp" line="1378"/>
         <source>Stop syncing</source>
         <translation>Utzi sinkronizatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1332"/>
+        <location filename="../src/gui/folder.cpp" line="1389"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>% 1 karpetak ezarritako % 2MB karpeta-tamainaren muga gainditu du.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1333"/>
+        <location filename="../src/gui/folder.cpp" line="1390"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Karpeta hau sinkronizatzeari utzi nahi al diozu?</translation>
     </message>
