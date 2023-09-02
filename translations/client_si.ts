@@ -1034,41 +1034,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>සමමුහුර්ත ක්‍රියාකාරකම්</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="940"/>
+        <location filename="../src/gui/folder.cpp" line="945"/>
         <source>Could not read system exclude file</source>
         <translation>පද්ධතිය බැහැර ගොනුව කියවීමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1134"/>
+        <location filename="../src/gui/folder.cpp" line="1139"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB ට වඩා විශාල නව ෆෝල්ඩරයක් එකතු කර ඇත: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1137"/>
+        <location filename="../src/gui/folder.cpp" line="1142"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>බාහිර ගබඩාවකින් ෆෝල්ඩරයක් එක් කර ඇත.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1143"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>ඔබට එය බාගත කිරීමට අවශ්‍ය නම් එය තේරීමට කරුණාකර සැකසීම් වෙත යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1192"/>
+        <location filename="../src/gui/folder.cpp" line="1197"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>ෆෝල්ඩරය %1 නිර්මාණය කරන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කර ඇත. එය තුළ ඇති දත්ත සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1195"/>
+        <location filename="../src/gui/folder.cpp" line="1200"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 ගොනුව සාදන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කරන ලදී. එය සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1207"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1081,7 +1081,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1248"/>
+        <location filename="../src/gui/folder.cpp" line="1257"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1092,7 +1092,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ඔබ ගොනු මකා දැමීමට තීරණය කරන්නේ නම්, ඔබ හිමිකරු නම් මිස, ඒවා ඔබට ලබාගත නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1254"/>
+        <location filename="../src/gui/folder.cpp" line="1263"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1101,17 +1101,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 මෙය හදිසි අනතුරක් නම් සහ ඔබ ඔබේ ගොනු තබා ගැනීමට තීරණය කරන්නේ නම්, ඒවා සේවාදායකයෙන් නැවත සමමුහුර්ත කරනු ලැබේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1260"/>
+        <location filename="../src/gui/folder.cpp" line="1270"/>
         <source>Remove All Files?</source>
         <translation>සියලුම ගොනු ඉවත් කරන්නද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1264"/>
+        <location filename="../src/gui/folder.cpp" line="1273"/>
         <source>Remove all files</source>
         <translation>සියලුම ගොනු ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1265"/>
+        <location filename="../src/gui/folder.cpp" line="1274"/>
         <source>Keep files</source>
         <translation>ගොනු තබා ගන්න</translation>
     </message>
@@ -2293,72 +2293,72 @@ for additional privileges during the process.</source>
         <translation>ගොනු නාමය සේවාදායකයේ අසාදු ලේඛනගත කර ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="400"/>
+        <location filename="../src/libsync/discovery.cpp" line="401"/>
         <source>size</source>
         <translation>ප්රමාණය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="402"/>
+        <location filename="../src/libsync/discovery.cpp" line="403"/>
         <source>permissions</source>
         <translation>අවසර</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="404"/>
+        <location filename="../src/libsync/discovery.cpp" line="405"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="407"/>
         <source>file id</source>
         <translation>ගොනු හැඳුනුම්පත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="410"/>
+        <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>server reported no %1</source>
         <translation>සේවාදායකය අංක %1වාර්තා කර ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1247"/>
+        <location filename="../src/libsync/discovery.cpp" line="1256"/>
         <source>Moved to invalid target, restoring</source>
         <translation>අවලංගු ඉලක්කය වෙත ගෙන යන ලදී, ප්‍රතිසාධනය කරමින්</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1260"/>
+        <location filename="../src/libsync/discovery.cpp" line="1269"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ඉවත් කිරීමට අවසර නැත, ප්රතිෂ්ඨාපනය කිරීම</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1206"/>
+        <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ඔබට එම&apos;උප ෆෝල්ඩර එක් කිරීමට අවසර නොමැති නිසා අවසර නැත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1211"/>
+        <location filename="../src/libsync/discovery.cpp" line="1220"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ඔබට එම&apos;තුළ ගොනු එක් කිරීමට අවසර නොමැති නිසා අවසර නැත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1233"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>මෙම ගොනුව ප්‍රතිසාධනය කරමින්, සේවාදායකයේ කියවීමට පමණක් ඇති බැවින් උඩුගත කිරීමට අවසර නැත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1370"/>
+        <location filename="../src/libsync/discovery.cpp" line="1379"/>
         <source>Error while reading the database</source>
         <translation>දත්ත සමුදාය කියවීමේදී දෝෂයකි</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1418"/>
+        <location filename="../src/libsync/discovery.cpp" line="1427"/>
         <source>This Space is currently unavailable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1438"/>
+        <location filename="../src/libsync/discovery.cpp" line="1447"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>&apos;%1&apos; : %2නාමාවලිය කියවන අතරතුර සේවාදායකය දෝෂයකින් පිළිතුරු දුන්නේය</translation>
     </message>
@@ -2379,67 +2379,67 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="433"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>ඉඩ නිදහස් කිරීමට අපොහොසත් විය, ගොනු %1 දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="533"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="543"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>%2සමඟ දේශීය ගොනු නාමය ගැටුමක් නිසා ගොනුව %1 බාගත නොහැක!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="591"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="601"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>බාගත කිරීම සීමාවට වඩා අඩු දේශීය තැටි ඉඩ අඩු කරයි</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="605"/>
         <source>Free space on disk is less than %1</source>
         <translation>තැටියේ නිදහස් ඉඩ %1ට වඩා අඩුය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="731"/>
         <source>File was deleted from server</source>
         <translation>ගොනුව සේවාදායකයෙන් මකා ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="780"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="790"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>බිඳුණු වෙබ් සේවාදායකය නැවත ආරම්භයේ හිස් නොවන ගොනුවක් සඳහා හිස් අන්තර්ගත දිග ලබා දුන්නේය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="787"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="797"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ගොනුව සම්පූර්ණයෙන්ම බාගත කළ නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="794"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="804"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>බාගත කළ ගොනුව %1විය යුතු බව සේවාදායකය නිවේදනය කළද එය හිස්ය.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="911"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>%2සමඟ දේශීය ගොනු නාමය ගැටුමක් නිසා %1 ගොනුව සුරැකිය නොහැක!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1020"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1030"/>
         <source>Error updating metadata: %1</source>
         <translation>පාරදත්ත යාවත්කාලීන කිරීමේ දෝෂයකි: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="541"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="958"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="551"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="935"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="968"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1033"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 ගොනුව දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="428"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="950"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="429"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="960"/>
         <source>File has changed since discovery</source>
         <translation>සොයාගැනීමේ සිට ගොනුව වෙනස් වී ඇත</translation>
     </message>
@@ -3382,11 +3382,6 @@ for additional privileges during the process.</source>
         <source>Enabled</source>
         <translation type="unfinished"/>
     </message>
-    <message>
-        <location filename="../src/gui/spaces/spacesmodel.cpp" line="66"/>
-        <source>SpaceId</source>
-        <translation type="unfinished"/>
-    </message>
 </context>
 <context>
     <name>OCC::SyncEngine</name>
@@ -4263,12 +4258,12 @@ Are you sure you want to proceed?</source>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="372"/>
+        <location filename="../src/gui/main.cpp" line="374"/>
         <source>Error accessing the configuration file</source>
         <translation>වින්‍යාස ගොනුවට ප්‍රවේශ වීමේ දෝෂයකි</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="373"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>%1හි වින්‍යාස ගොනුවට ප්‍රවේශ වීමේදී දෝෂයක් ඇති විය.</translation>
     </message>
