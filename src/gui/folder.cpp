@@ -666,7 +666,11 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
             disconnect(_officeFileLockReleaseUnlockFailure);
             qCWarning(lcFolder) << "Failed to unlock a file:" << remoteFilePath << message;
         });
-        _accountState->account()->setLockFileState(remoteFilePath, remotePathTrailingSlash(), journalDb(), SyncFileItem::LockStatus::UnlockedItem);
+        _accountState->account()->setLockFileState(remoteFilePath,
+                                                   remotePathTrailingSlash(),
+                                                   path(),
+                                                   journalDb(),
+                                                   SyncFileItem::LockStatus::UnlockedItem);
     }
 }
 
@@ -709,7 +713,11 @@ void Folder::slotLockedFilesFound(const QSet<QString> &files)
             disconnect(_fileLockFailure);
             qCWarning(lcFolder) << "Failed to lock a file:" << remoteFilePath << message;
         });
-        _accountState->account()->setLockFileState(remoteFilePath, remotePathTrailingSlash(), journalDb(), SyncFileItem::LockStatus::LockedItem);
+        _accountState->account()->setLockFileState(remoteFilePath,
+                                                   remotePathTrailingSlash(),
+                                                   path(),
+                                                   journalDb(),
+                                                   SyncFileItem::LockStatus::LockedItem);
     }
 }
 

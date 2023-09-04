@@ -925,6 +925,7 @@ std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
 
 void Account::setLockFileState(const QString &serverRelativePath,
                                const QString &remoteSyncPathWithTrailingSlash,
+                               const QString &localSyncPath,
                                SyncJournalDb * const journal,
                                const SyncFileItem::LockStatus lockStatus)
 {
@@ -934,7 +935,7 @@ void Account::setLockFileState(const QString &serverRelativePath,
         return;
     }
     lockStatusJobInProgress.push_back(lockStatus);
-    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, remoteSyncPathWithTrailingSlash, lockStatus);
+    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, remoteSyncPathWithTrailingSlash, localSyncPath, lockStatus);
     connect(job.get(), &LockFileJob::finishedWithoutError, this, [this, serverRelativePath, lockStatus]() {
         const auto foundLockStatusJobInProgress = _lockStatusChangeInprogress.find(serverRelativePath);
         if (foundLockStatusJobInProgress != _lockStatusChangeInprogress.end()) {

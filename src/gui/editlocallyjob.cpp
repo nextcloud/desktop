@@ -648,6 +648,7 @@ void EditLocallyJob::lockFile()
 
     _folderForFile->accountState()->account()->setLockFileState(_relPath,
                                                                 _folderForFile->remotePathTrailingSlash(),
+                                                                _folderForFile->path(),
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem);
 }
