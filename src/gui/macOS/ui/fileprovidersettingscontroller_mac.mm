@@ -20,6 +20,9 @@
 
 namespace {
 constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
+
+// FileProviderSettingsPage properties -- make sure they match up in QML file!
+constexpr auto fpSettingsControllerProp = "FileProviderSettingsController";
 } // namespace
 
 namespace OCC {
@@ -35,6 +38,7 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     _settingsViewWidget = std::make_unique<QQuickWidget>(Systray::instance()->trayEngine(), nullptr);
     _settingsViewWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     _settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
+    _settingsViewWidget->rootContext()->setContextProperty(fpSettingsControllerProp, this);
 }
 
 QQuickWidget *FileProviderSettingsController::settingsViewWidget()
