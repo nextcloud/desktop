@@ -199,11 +199,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     if (Mac::FileProvider::fileProviderAvailable()) {
-        const auto fpSettingsWidget = Mac::FileProviderSettingsController::instance()->settingsViewWidget();
-        const auto fpSettingsLayout = new QVBoxLayout(_ui->fileProviderTab);
+        const auto fileProviderTab = _ui->fileProviderTab;
+        const auto fpSettingsLayout = new QVBoxLayout(fileProviderTab);
+        const auto fpSettingsWidget = Mac::FileProviderSettingsController::instance()->settingsViewWidget(fileProviderTab);
         fpSettingsLayout->setMargin(0);
         fpSettingsLayout->addWidget(fpSettingsWidget);
-        _ui->fileProviderTab->setLayout(fpSettingsLayout);
+        fileProviderTab->setLayout(fpSettingsLayout);
     } else {
         disguiseTabWidget();
     }

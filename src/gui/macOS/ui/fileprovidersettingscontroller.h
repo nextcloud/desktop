@@ -28,18 +28,15 @@ class FileProviderSettingsController : public QObject
 public:
     static FileProviderSettingsController *instance();
 
-    [[nodiscard]] QQuickWidget *settingsViewWidget();
+    [[nodiscard]] QQuickWidget *settingsViewWidget(QWidget *const parent = nullptr,
+                                                   const QQuickWidget::ResizeMode resizeMode = QQuickWidget::SizeRootObjectToView);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
     ~FileProviderSettingsController() override;
 
-    void instantiateSettingsWidget();
-
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;
-
-    std::unique_ptr<QQuickWidget> _settingsViewWidget;
 };
 
 } // Mac
