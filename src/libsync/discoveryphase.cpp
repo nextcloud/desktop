@@ -227,6 +227,7 @@ void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirect
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     ENFORCE(!_currentRootJob);
+    connect(this, &DiscoveryPhase::itemDiscovered, this, &DiscoveryPhase::slotItemDiscovered, Qt::UniqueConnection);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
         ENFORCE(_currentRootJob == sender());
         _currentRootJob = nullptr;
@@ -264,6 +265,16 @@ void DiscoveryPhase::scheduleMoreJobs()
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
     if (_currentRootJob && _currentlyActiveJobs < limit) {
         _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);
+    }
+}
+
+void DiscoveryPhase::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
+{
+    if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
+        _hasUploadErrorItems = true;
+    }
+    if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && item->_direction == SyncFileItem::Down) {
+        _hasDownloadRemovedItems = true;
     }
 }
 
