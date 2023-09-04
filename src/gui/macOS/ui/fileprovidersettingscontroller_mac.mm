@@ -27,6 +27,9 @@ constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettin
 
 // FileProviderSettingsPage properties -- make sure they match up in QML file!
 constexpr auto fpSettingsControllerProp = "FileProviderSettingsController";
+
+// NSUserDefaults entries
+constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
 } // namespace
 
 namespace OCC {
@@ -49,7 +52,29 @@ public:
         [_userDefaults release];
     };
 
+    QStringList enabledAccounts() const
+    {
+        QStringList qEnabledAccounts;
+        NSArray<NSString *> *const enabledAccounts = nsEnabledAccounts();
+        for (NSString *const userIdAtHostString in enabledAccounts) {
+            qEnabledAccounts.append(QString::fromNSString(userIdAtHostString));
+        }
+        return qEnabledAccounts;
+    }
+
+    bool vfsEnabledForAccount(const QString &userIdAtHost) const
+    {
+        NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+        return [vfsEnabledAccounts containsObject:userIdAtHost.toNSString()];
+    }
+
 private:
+    NSArray<NSString *> *nsEnabledAccounts() const
+    {
+        NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
+        return (NSArray<NSString *> *)[_userDefaults objectForKey:accsKey];
+    }
+
     FileProviderSettingsController *q = nullptr;
     NSUserDefaults *_userDefaults = nil;
 };
@@ -75,6 +100,11 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(QWidget *const 
     settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
     settingsViewWidget->rootContext()->setContextProperty(fpSettingsControllerProp, this);
     return settingsViewWidget;
+}
+
+bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdAtHost)
+{
+    return d->vfsEnabledForAccount(userIdAtHost);
 }
 
 } // namespace Mac
