@@ -60,7 +60,10 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
 {
     d = std::make_unique<FileProviderSettingsController::MacImplementation>(this);
+}
 
+void FileProviderSettingsController::instantiateSettingsWidget()
+{
     _settingsViewWidget = std::make_unique<QQuickWidget>(Systray::instance()->trayEngine(), nullptr);
     _settingsViewWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     _settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
@@ -69,6 +72,10 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
 
 QQuickWidget *FileProviderSettingsController::settingsViewWidget()
 {
+    if (!_settingsViewWidget) {
+        instantiateSettingsWidget();
+    }
+
     return _settingsViewWidget.get();
 }
 
