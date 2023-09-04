@@ -392,11 +392,6 @@ int main(int argc, char **argv)
 
     auto ocApp = Application::createInstance(platform.get(), options.debugMode);
 
-    if (AccountManager::instance()->accounts().isEmpty()) {
-        // display the wizard if we don't have an account yet
-        QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
-    }
-
     QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
 
     QObject::connect(&singleApplication, &KDSingleApplication::messageReceived, ocApp.get(), [&](const QByteArray &message) {
@@ -417,24 +412,34 @@ int main(int argc, char **argv)
         }
     });
 
-    if (options.show) {
-        ocApp->gui()->slotShowSettings();
-    }
-    if (!options.fileToOpen.isEmpty()) {
-        QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
-    }
-
     platform->startServices();
 
+    // Handle user requests from the command-line first, before checking for updates. Because, if
+    // the user explicitly requested an action, then quiting because of an update will not be
+    // appreciated.
+    if (options.show) {
+        ocApp->gui()->slotShowSettings();
+        // The user explicitly requested the settings dialog, so don't start the new-account wizard.
+    } else if (!options.fileToOpen.isEmpty() && !AccountManager::instance()->accounts().isEmpty()) {
+        // Only try to open a file when accounts have been configured.
+        QTimer::singleShot(0, ocApp.get(), [ocApp = ocApp.get(), fileToOpen = options.fileToOpen] { ocApp->openVirtualFile(fileToOpen); });
+    } else {
+        // No user-requested action, check for updates.
 #ifdef WITH_AUTO_UPDATER
-    // if handleStartup returns true, main()
-    // needs to terminate here, e.g. because
-    // the updater is triggered
-    Updater *updater = Updater::instance();
-    if (updater && updater->handleStartup()) {
-        return 1;
-    }
+        // if handleStartup returns true, main()
+        // needs to terminate here, e.g. because
+        // the updater is triggered
+        Updater *updater = Updater::instance();
+        if (updater && updater->handleStartup()) {
+            return 1;
+        }
 #endif
+    }
+
+    // Display the wizard if we don't have an account yet, and no other UI is showing.
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
+    }
 
     return app.exec();
 }
