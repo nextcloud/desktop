@@ -27,8 +27,7 @@
 #include <QScopedPointer>
 #include <QSet>
 #include <QDir>
-
-class QTimer;
+#include <QTimer>
 
 namespace OCC {
 
@@ -130,6 +129,7 @@ protected slots:
 
 private slots:
     void startNotificationTestWhenReady();
+    void lockChageDebouncingTimerTimedOut();
 
 protected:
     QHash<QString, int> _pendingPathes;
@@ -155,6 +155,11 @@ private:
 
     /** Path of the expected test notification */
     QString _testNotificationPath;
+
+    QSet<QString> _unlockedFiles;
+    QSet<QString> _lockedFiles;
+
+    QTimer _lockChageDebouncingTimer;
 
     friend class FolderWatcherPrivate;
 };

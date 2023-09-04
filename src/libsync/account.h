@@ -308,6 +308,7 @@ public:
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
     void setLockFileState(const QString &serverRelativePath,
+                          const QString &remoteSyncPathWithTrailingSlash,
                           SyncJournalDb * const journal,
                           const SyncFileItem::LockStatus lockStatus);
 
@@ -435,6 +436,8 @@ private:
     PushNotifications *_pushNotifications = nullptr;
 
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
+
+    QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!

@@ -35,7 +35,6 @@
 #include <QDir>
 #include <QMutexLocker>
 #include <QStringList>
-#include <QTimer>
 
 #include <array>
 #include <cstdint>
@@ -157,6 +156,20 @@ void FolderWatcher::startNotificationTestWhenReady()
     });
 }
 
+void FolderWatcher::lockChageDebouncingTimerTimedOut()
+{
+    if (!_unlockedFiles.isEmpty()) {
+        const auto unlockedFilesCopy = _unlockedFiles;
+        emit filesLockReleased(unlockedFilesCopy);
+        _unlockedFiles.clear();
+    }
+    if (!_lockedFiles.isEmpty()) {
+        const auto lockedFilesCopy = _lockedFiles;
+        emit filesLockImposed(lockedFilesCopy);
+        emit lockedFilesFound(lockedFilesCopy);
+        _lockedFiles.clear();
+    }
+}
 
 int FolderWatcher::testLinuxWatchCount() const
 {
@@ -195,8 +208,6 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     _timer.restart();
 
     QSet<QString> changedPaths;
-    QSet<QString> unlockedFiles;
-    QSet<QString> lockedFiles;
 
     for (const auto &path : paths) {
         if (!_testNotificationPath.isEmpty()
@@ -209,17 +220,20 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         if (_shouldWatchForFileUnlocking) {
             // Lock file has been deleted, file now unlocked
             if (checkResult.type == FileLockingInfo::Type::Unlocked && !checkResult.path.isEmpty() && !QFile::exists(path)) {
-                unlockedFiles.insert(checkResult.path);
+                _lockedFiles.remove(checkResult.path);
+                _unlockedFiles.insert(checkResult.path);
             } else if (!checkResult.path.isEmpty() && QFile::exists(path)) { // Lock file found
-                lockedFiles.insert(checkResult.path);
+                _unlockedFiles.remove(checkResult.path);
+                _lockedFiles.insert(checkResult.path);
             }
         }
 
         if (checkResult.type == FileLockingInfo::Type::Locked && !checkResult.path.isEmpty()) {
-            lockedFiles.insert(checkResult.path);
+            _unlockedFiles.remove(checkResult.path);
+            _lockedFiles.insert(checkResult.path);
         }
 
-        qCDebug(lcFolderWatcher) << "Locked files:" << lockedFiles.values();
+        qCDebug(lcFolderWatcher) << "Locked files:" << _lockedFiles.values();
 
         // ------- handle ignores:
         if (pathIsIgnored(path)) {
@@ -229,19 +243,17 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         changedPaths.insert(path);
     }
 
-    qCDebug(lcFolderWatcher) << "Unlocked files:" << unlockedFiles.values();
-    qCDebug(lcFolderWatcher) << "Locked files:" << lockedFiles;
+    qCDebug(lcFolderWatcher) << "Unlocked files:" << _unlockedFiles.values();
+    qCDebug(lcFolderWatcher) << "Locked files:" << _lockedFiles;
 
-    if (!unlockedFiles.isEmpty()) {
-        emit filesLockReleased(unlockedFiles);
-    }
-
-    if (!lockedFiles.isEmpty()) {
-        emit filesLockImposed(lockedFiles);
-    }
-
-    if (!lockedFiles.isEmpty()) {
-        emit lockedFilesFound(lockedFiles);
+    if (!_lockedFiles.isEmpty() || !_unlockedFiles.isEmpty()) {
+        if (_lockChageDebouncingTimer.isActive()) {
+            _lockChageDebouncingTimer.stop();
+        }
+        _lockChageDebouncingTimer.setInterval(500);
+        _lockChageDebouncingTimer.setSingleShot(true);
+        _lockChageDebouncingTimer.start();
+        _lockChageDebouncingTimer.connect(&_lockChageDebouncingTimer, &QTimer::timeout, this, &FolderWatcher::lockChageDebouncingTimerTimedOut, Qt::UniqueConnection);
     }
 
     if (changedPaths.isEmpty()) {

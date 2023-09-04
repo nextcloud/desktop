@@ -1091,7 +1091,7 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
         return;
     }
 
-    shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath, shareFolder->journalDb(), lockState);
+    shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath, shareFolder->remotePathTrailingSlash(), shareFolder->journalDb(), lockState);
 
     shareFolder->journalDb()->schedulePathForRemoteDiscovery(fileData.serverRelativePath);
     shareFolder->scheduleThisFolderSoon();

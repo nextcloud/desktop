@@ -924,11 +924,25 @@ std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
 }
 
 void Account::setLockFileState(const QString &serverRelativePath,
+                               const QString &remoteSyncPathWithTrailingSlash,
                                SyncJournalDb * const journal,
                                const SyncFileItem::LockStatus lockStatus)
 {
-    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, lockStatus);
-    connect(job.get(), &LockFileJob::finishedWithoutError, this, [this]() {
+    auto& lockStatusJobInProgress = _lockStatusChangeInprogress[serverRelativePath];
+    if (lockStatusJobInProgress.contains(lockStatus)) {
+        qCWarning(lcAccount) << "Already running a job with lockStatus:" << lockStatus << " for: " << serverRelativePath;
+        return;
+    }
+    lockStatusJobInProgress.push_back(lockStatus);
+    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, remoteSyncPathWithTrailingSlash, lockStatus);
+    connect(job.get(), &LockFileJob::finishedWithoutError, this, [this, serverRelativePath, lockStatus]() {
+        const auto foundLockStatusJobInProgress = _lockStatusChangeInprogress.find(serverRelativePath);
+        if (foundLockStatusJobInProgress != _lockStatusChangeInprogress.end()) {
+            foundLockStatusJobInProgress.value().removeAll(lockStatus);
+            if (foundLockStatusJobInProgress.value().isEmpty()) {
+                _lockStatusChangeInprogress.erase(foundLockStatusJobInProgress);
+            }
+        }
         Q_EMIT lockFileSuccess();
     });
     connect(job.get(), &LockFileJob::finishedWithError, this, [lockStatus, serverRelativePath, this](const int httpErrorCode, const QString &errorString, const QString &lockOwnerName) {

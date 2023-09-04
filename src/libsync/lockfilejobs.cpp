@@ -28,11 +28,13 @@ Q_LOGGING_CATEGORY(lcLockFileJob, "nextcloud.sync.networkjob.lockfile", QtInfoMs
 LockFileJob::LockFileJob(const AccountPtr account,
                          SyncJournalDb* const journal,
                          const QString &path,
+                         const QString &remoteSyncPathWithTrailingSlash,
                          const SyncFileItem::LockStatus requestedLockState,
                          QObject *parent)
     : AbstractNetworkJob(account, path, parent)
     , _journal(journal)
     , _requestedLockState(requestedLockState)
+    , _remoteSyncPathWithTrailingSlash(remoteSyncPathWithTrailingSlash)
 {
 }
 
@@ -164,12 +166,12 @@ SyncJournalFileRecord LockFileJob::handleReply()
         }
     }
 
-    const auto relativePath = path().mid(1);
-    if (_journal->getFileRecord(relativePath, &record) && record.isValid()) {
+    const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size());
+    if (_journal->getFileRecord(relativePathInDb, &record) && record.isValid()) {
         setFileRecordLocked(record);
         if (_lockOwnerType != SyncFileItem::LockOwnerType::UserLock ||
                 _userId != account()->davUser()) {
-            FileSystem::setFileReadOnly(relativePath, true);
+            FileSystem::setFileReadOnly(relativePathInDb, true);
         }
         const auto result = _journal->setFileRecord(record);
         if (!result) {

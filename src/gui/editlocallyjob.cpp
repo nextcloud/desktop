@@ -647,6 +647,7 @@ void EditLocallyJob::lockFile()
                                       this, &EditLocallyJob::fileLockError));
 
     _folderForFile->accountState()->account()->setLockFileState(_relPath,
+                                                                _folderForFile->remotePathTrailingSlash(),
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem);
 }

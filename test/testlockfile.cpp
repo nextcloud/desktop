@@ -36,7 +36,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
+                                               QStringLiteral("/"),
+                                               &fakeFolder.syncJournal(),
+                                               OCC::SyncFileItem::LockStatus::LockedItem);
 
         QVERIFY(lockFileSuccessSpy.wait());
         QCOMPARE(lockFileErrorSpy.count(), 0);
@@ -77,7 +80,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
+                                               QStringLiteral("/"),
+                                               &fakeFolder.syncJournal(),
+                                               OCC::SyncFileItem::LockStatus::LockedItem);
 
         QVERIFY(lockFileErrorSpy.wait());
         QCOMPARE(lockFileSuccessSpy.count(), 0);
@@ -97,7 +103,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
+                                               QStringLiteral("/"),
+                                               &fakeFolder.syncJournal(),
+                                               OCC::SyncFileItem::LockStatus::LockedItem);
 
         QVERIFY(lockFileSuccessSpy.wait());
         QCOMPARE(lockFileErrorSpy.count(), 0);
@@ -120,7 +129,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName,
+                                               QStringLiteral("/"),
+                                               &fakeFolder.syncJournal(),
+                                               OCC::SyncFileItem::LockStatus::LockedItem);
 
         QVERIFY(lockFileSuccessSpy.wait());
         QCOMPARE(lockFileErrorSpy.count(), 0);
@@ -139,7 +151,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::LockedItem);
+        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, QStringLiteral("/"), OCC::SyncFileItem::LockStatus::LockedItem);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -172,7 +184,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto lockFileJob = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::LockedItem);
+        auto lockFileJob = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, QStringLiteral("/"), OCC::SyncFileItem::LockStatus::LockedItem);
 
         QSignalSpy lockFileJobSuccess(lockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy lockFileJobFailure(lockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -184,7 +196,7 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto unlockFileJob = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        auto unlockFileJob = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, QStringLiteral("/"), OCC::SyncFileItem::LockStatus::UnlockedItem);
 
         QSignalSpy unlockFileJobSuccess(unlockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy unlockFileJobFailure(unlockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -238,7 +250,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::LockedItem);
+        auto job = new OCC::LockFileJob(fakeFolder.account(),
+                                        &fakeFolder.syncJournal(),
+                                        QStringLiteral("/") + testFileName,
+                                        QStringLiteral("/"),
+                                        OCC::SyncFileItem::LockStatus::LockedItem);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -286,7 +302,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::LockedItem);
+        auto job = new OCC::LockFileJob(fakeFolder.account(),
+                                        &fakeFolder.syncJournal(),
+                                        QStringLiteral("/") + testFileName,
+                                        QStringLiteral("/"),
+                                        OCC::SyncFileItem::LockStatus::LockedItem);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -334,7 +354,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        auto job = new OCC::LockFileJob(fakeFolder.account(),
+                                        &fakeFolder.syncJournal(),
+                                        QStringLiteral("/") + testFileName,
+                                        QStringLiteral("/"),
+                                        OCC::SyncFileItem::LockStatus::UnlockedItem);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -380,7 +404,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        auto job = new OCC::LockFileJob(fakeFolder.account(),
+                                        &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName,
+                                        QStringLiteral("/"),
+                                        OCC::SyncFileItem::LockStatus::UnlockedItem);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -413,7 +440,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto lockFileJob = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::LockedItem);
+        auto lockFileJob = new OCC::LockFileJob(fakeFolder.account(),
+                                                &fakeFolder.syncJournal(),
+                                                QStringLiteral("/") + testFileName,
+                                                QStringLiteral("/"),
+                                                OCC::SyncFileItem::LockStatus::LockedItem);
 
         QSignalSpy lockFileJobSuccess(lockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy lockFileJobFailure(lockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -425,7 +456,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto unlockFileJob = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        auto unlockFileJob = new OCC::LockFileJob(fakeFolder.account(),
+                                                  &fakeFolder.syncJournal(),
+                                                  QStringLiteral("/") + testFileName,
+                                                  QStringLiteral("/"),
+                                                  OCC::SyncFileItem::LockStatus::UnlockedItem);
 
         QSignalSpy unlockFileJobSuccess(unlockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy unlockFileJobFailure(unlockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -473,7 +508,11 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        auto job = new OCC::LockFileJob(fakeFolder.account(), &fakeFolder.syncJournal(), QStringLiteral("/") + testFileName, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        auto job = new OCC::LockFileJob(fakeFolder.account(),
+                                        &fakeFolder.syncJournal(),
+                                        QStringLiteral("/") + testFileName,
+                                        QStringLiteral("/"),
+                                        OCC::SyncFileItem::LockStatus::UnlockedItem);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);

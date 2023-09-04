@@ -108,6 +108,7 @@ public:
     Q_ENUM(Status)
 
     enum class LockStatus {
+        Unset = -1,
         UnlockedItem = 0,
         LockedItem = 1,
     };
