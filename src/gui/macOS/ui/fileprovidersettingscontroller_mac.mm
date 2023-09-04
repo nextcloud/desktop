@@ -19,16 +19,15 @@
 #include "gui/systray.h"
 
 namespace {
-
 constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
-
-}
+} // namespace
 
 namespace OCC {
 
 namespace Mac {
 
-Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprovider.settingscontroller")
+Q_LOGGING_CATEGORY(lcFileProviderSettingsController,
+                   "nextcloud.gui.mac.fileprovider.settingscontroller")
 
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
@@ -43,6 +42,6 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget()
     return _settingsViewWidget.get();
 }
 
-} // Mac
+} // namespace Mac
 
-} // OCC
+} // namespace OCC

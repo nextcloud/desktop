@@ -25,8 +25,6 @@ class FileProviderSettingsController : public QObject
 {
     Q_OBJECT
 
-    //Q_PROPERTY(QQuickWidget* settingsViewWidget READ settingsViewWidget CONSTANT)
-
 public:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
 
