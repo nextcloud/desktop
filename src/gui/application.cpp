@@ -605,7 +605,7 @@ void Application::setupLogging()
     if (_logFile.isEmpty()) {
         logger->setLogDir(_logDir.isEmpty() ? ConfigFile().logDir() : _logDir);
     }
-    logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
+    logger->setLogExpireHours(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
     logger->setLogFlush(_logFlush || ConfigFile().logFlush());
     logger->setLogDebug(_logDebug || ConfigFile().logDebug());
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
