@@ -18,6 +18,31 @@
 
 #include "gui/systray.h"
 
+// Objective-C settings implementation
+
+#import <Foundation/Foundation.h>
+
+@interface FileProviderSettings : NSObject
+
+@property (readonly) NSUserDefaults *userDefaults;
+
+@end
+
+@implementation FileProviderSettings
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _userDefaults = NSUserDefaults.standardUserDefaults;
+    }
+    return self;
+}
+
+@end
+
+// End of Objective-C settings implementation
+
 namespace {
 constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
 
