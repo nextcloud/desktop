@@ -26,12 +26,14 @@ class FileProviderSettingsController : public QObject
     Q_OBJECT
 
 public:
-    explicit FileProviderSettingsController(QObject *parent = nullptr);
-    ~FileProviderSettingsController() override;
+    static FileProviderSettingsController *instance();
 
     [[nodiscard]] QQuickWidget *settingsViewWidget();
 
 private:
+    explicit FileProviderSettingsController(QObject *parent = nullptr);
+    ~FileProviderSettingsController() override;
+
     void instantiateSettingsWidget();
 
     class MacImplementation;

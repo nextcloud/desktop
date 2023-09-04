@@ -156,10 +156,6 @@ private:
     bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
-
-#ifdef BUILD_FILE_PROVIDER_MODULE
-    Mac::FileProviderSettingsController _fpSettingsController;
-#endif
 };
 
 } // namespace OCC

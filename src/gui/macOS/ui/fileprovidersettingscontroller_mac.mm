@@ -54,6 +54,12 @@ private:
     NSUserDefaults *_userDefaults = nil;
 };
 
+FileProviderSettingsController *FileProviderSettingsController::instance()
+{
+    static FileProviderSettingsController controller;
+    return &controller;
+}
+
 FileProviderSettingsController::~FileProviderSettingsController() = default;
 
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
