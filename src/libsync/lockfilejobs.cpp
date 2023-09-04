@@ -28,12 +28,19 @@ Q_LOGGING_CATEGORY(lcLockFileJob, "nextcloud.sync.networkjob.lockfile", QtInfoMs
 LockFileJob::LockFileJob(const AccountPtr account,
                          SyncJournalDb* const journal,
                          const QString &path,
+                         const QString &remoteSyncPathWithTrailingSlash,
+                         const QString &localSyncPath,
                          const SyncFileItem::LockStatus requestedLockState,
                          QObject *parent)
     : AbstractNetworkJob(account, path, parent)
     , _journal(journal)
     , _requestedLockState(requestedLockState)
+    , _remoteSyncPathWithTrailingSlash(remoteSyncPathWithTrailingSlash)
+    , _localSyncPath(localSyncPath)
 {
+    if (!_localSyncPath.endsWith(QLatin1Char('/'))) {
+        _localSyncPath.append(QLatin1Char('/'));
+    }
 }
 
 void LockFileJob::start()
@@ -164,12 +171,12 @@ SyncJournalFileRecord LockFileJob::handleReply()
         }
     }
 
-    const auto relativePath = path().mid(1);
-    if (_journal->getFileRecord(relativePath, &record) && record.isValid()) {
+    const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size());
+    if (_journal->getFileRecord(relativePathInDb, &record) && record.isValid()) {
         setFileRecordLocked(record);
-        if (_lockOwnerType != SyncFileItem::LockOwnerType::UserLock ||
-                _userId != account()->davUser()) {
-            FileSystem::setFileReadOnly(relativePath, true);
+        if ((_lockStatus == SyncFileItem::LockStatus::LockedItem)
+            && (_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _userId != account()->davUser())) {
+            FileSystem::setFileReadOnly(_localSyncPath + relativePathInDb, true);
         }
         const auto result = _journal->setFileRecord(record);
         if (!result) {
