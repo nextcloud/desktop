@@ -303,6 +303,7 @@ public:
 
     void whitelistPath(const QString &path);
     void blacklistPath(const QString &path);
+    void migrateBlackListPath(const QString &legacyPath);
 
 signals:
     void syncStateChange();
@@ -352,6 +353,13 @@ public slots:
     * Triggered when lock files were removed
     */
     void slotFilesLockReleased(const QSet<QString> &files);
+
+    /*
+     * Triggered when lock files were added
+     */
+    void slotFilesLockImposed(const QSet<QString> &files);
+
+    void slotLockedFilesFound(const QSet<QString> &files);
 
     /**
      * Mark a virtual file as being requested for download, and start a sync.
@@ -556,6 +564,8 @@ private:
 
     QMetaObject::Connection _officeFileLockReleaseUnlockSuccess;
     QMetaObject::Connection _officeFileLockReleaseUnlockFailure;
+    QMetaObject::Connection _fileLockSuccess;
+    QMetaObject::Connection _fileLockFailure;
 };
 }
 

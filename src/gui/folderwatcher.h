@@ -50,6 +50,13 @@ class Folder;
 class FolderWatcher : public QObject
 {
     Q_OBJECT
+
+    struct FileLockingInfo {
+        enum class Type { Unset = -1, Locked, Unlocked };
+        QString path;
+        Type type = Type::Unset;
+    };
+
 public:
     // Construct, connect signals, call init()
     explicit FolderWatcher(Folder *folder = nullptr);
@@ -90,6 +97,15 @@ signals:
     */
     void filesLockReleased(const QSet<QString> &files);
 
+    /*
+     * Emitted when lock files were added
+     */
+    void filesLockImposed(const QSet<QString> &files);
+
+    void lockFilesFound(const QSet<QString> &files);
+
+    void lockedFilesFound(const QSet<QString> &files);
+
     /**
      * Emitted if some notifications were lost.
      *
@@ -129,7 +145,9 @@ private:
 
     void appendSubPaths(QDir dir, QStringList& subPaths);
 
-    QString possiblyAddUnlockedFilePath(const QString &path);
+    [[nodiscard]] FileLockingInfo lockFileTargetFilePath(const QString &path, const QString &lockFileNamePattern) const;
+    [[nodiscard]] QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName) const;
+
     QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName);
 
     /* Check if the path should be igored by the FolderWatcher. */

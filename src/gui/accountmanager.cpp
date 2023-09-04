@@ -107,8 +107,9 @@ AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRes
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
                     auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
                     ASSERT(jar);
-                    if (jar)
+                    if (jar) {
                         jar->restore(acc->cookieJarPath());
+                    }
                     addAccountState(accState);
                 }
             }
@@ -303,6 +304,7 @@ void AccountManager::saveAccountState(AccountState *a)
 
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
+    qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
@@ -332,8 +334,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
 
         // HACK: Save http_user also as user
-        if (acc->_settingsMap.contains(httpUserC))
+        if (acc->_settingsMap.contains(httpUserC)) {
             settings.setValue(userC, acc->_settingsMap.value(httpUserC));
+        }
     }
 
     // Save accepted certificates.
@@ -376,8 +379,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     auto authType = settings.value(QLatin1String(authTypeC)).toString();
 
     // There was an account-type saving bug when 'skip folder config' was used
-    // See #5408. This attempts to fix up the "dummy" authType
-    if (authType == QLatin1String(dummyAuthTypeC)) {
+    // See owncloud#5408. This attempts to fix up the "dummy" or empty authType
+    if (authType == QLatin1String(dummyAuthTypeC) || authType.isEmpty()) {
         if (settings.contains(QLatin1String(httpUserC))) {
             authType = httpAuthTypeC;
         } else if (settings.contains(QLatin1String(shibbolethUserC))) {
@@ -401,15 +404,16 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     // Migrate to webflow
     if (authType == QLatin1String(httpAuthTypeC)) {
         authType = webflowAuthTypeC;
-        settings.setValue(QLatin1String(authTypeC), authType);
+        acc->_settingsMap.insert(QLatin1String(authTypeC), authType);
 
         const auto settingsChildKeys = settings.childKeys();
         for (const auto &key : settingsChildKeys) {
-            if (!key.startsWith(httpAuthPrefix))
+            if (!key.startsWith(httpAuthPrefix)) {
                 continue;
+            }
+
             const auto newkey = QString::fromLatin1(webflowAuthPrefix).append(key.mid(5));
-            settings.setValue(newkey, settings.value((key)));
-            settings.remove(key);
+            acc->_settingsMap.insert(newkey, settings.value(key));
         }
     }
 
@@ -419,16 +423,16 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_serverColor = settings.value(QLatin1String(serverColorC)).value<QColor>();
     acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
     acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
-    acc->_davUser = settings.value(QLatin1String(davUserC), "").toString();
+    acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
-    // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     acc->_displayName = settings.value(QLatin1String(displayNameC), "").toString();
-    QString authTypePrefix = authType + "_";
+    const QString authTypePrefix = authType + "_";
     const auto settingsChildKeys = settings.childKeys();
     for (const auto &key : settingsChildKeys) {
-        if (!key.startsWith(authTypePrefix))
+        if (!key.startsWith(authTypePrefix)) {
             continue;
+        }
         acc->_settingsMap.insert(key, settings.value(key));
     }
 

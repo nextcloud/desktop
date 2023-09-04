@@ -641,8 +641,11 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
     for (const auto &file : files) {
         const auto fileRecordPath = fileFromLocalPath(file);
         SyncJournalFileRecord rec;
-        const auto canUnlockFile = journalDb()->getFileRecord(fileRecordPath, &rec)
-            && rec.isValid()
+        const auto isFileRecordValid = journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid();
+        if (isFileRecordValid) {
+            [[maybe_unused]] const auto result = _vfs->updateMetadata(path() + rec.path(), rec._modtime, rec._fileSize, rec._fileId);
+        }
+        const auto canUnlockFile = isFileRecordValid
             && rec._lockstate._locked
             && rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::UserLock)
             && rec._lockstate._lockOwnerId == _accountState->account()->davUser();
@@ -664,6 +667,52 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
             qCWarning(lcFolder) << "Failed to unlock a file:" << remoteFilePath << message;
         });
         _accountState->account()->setLockFileState(remoteFilePath, journalDb(), SyncFileItem::LockStatus::UnlockedItem);
+    }
+}
+
+void Folder::slotFilesLockImposed(const QSet<QString> &files)
+{
+    qCDebug(lcFolder) << "Lock files detected for office files" << files;
+    for (const auto &file : files) {
+        const auto fileRecordPath = fileFromLocalPath(file);
+        SyncJournalFileRecord rec;
+        if (journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid()) {
+            [[maybe_unused]] const auto result = _vfs->updateMetadata(path() + rec.path(), rec._modtime, rec._fileSize, rec._fileId);
+        }
+    }
+}
+
+void Folder::slotLockedFilesFound(const QSet<QString> &files)
+{
+    qCDebug(lcFolder) << "Found new lock files" << files;
+
+    for (const auto &file : files) {
+        const auto fileRecordPath = fileFromLocalPath(file);
+        SyncJournalFileRecord rec;
+
+        const auto canLockFile = journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid()
+            && (!rec._lockstate._locked
+                || (rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::UserLock)
+                    && rec._lockstate._lockOwnerId == _accountState->account()->davUser()));
+
+        if (!canLockFile) {
+            qCDebug(lcFolder) << "Skipping locking file" << file << "with rec.isValid():" << rec.isValid()
+                              << "and rec._lockstate._lockOwnerId:" << rec._lockstate._lockOwnerId << "and davUser:" << _accountState->account()->davUser();
+            continue;
+        }
+
+        const QString remoteFilePath = remotePathTrailingSlash() + rec.path();
+        qCDebug(lcFolder) << "Automatically locking file on server" << remoteFilePath;
+        _fileLockSuccess = connect(_accountState->account().data(), &Account::lockFileSuccess, this, [this, remoteFilePath] {
+            disconnect(_fileLockSuccess);
+            qCDebug(lcFolder) << "Locking file succeeded" << remoteFilePath;
+            startSync();
+        });
+        _fileLockFailure = connect(_accountState->account().data(), &Account::lockFileError, this, [this, remoteFilePath](const QString &message) {
+            disconnect(_fileLockFailure);
+            qCWarning(lcFolder) << "Failed to lock a file:" << remoteFilePath << message;
+        });
+        _accountState->account()->setLockFileState(remoteFilePath, journalDb(), SyncFileItem::LockStatus::LockedItem);
     }
 }
 
@@ -876,6 +925,14 @@ void Folder::blacklistPath(const QString &path)
     removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncUndecidedList);
     removePathFromSelectiveSyncList(path, SyncJournalDb::SelectiveSyncWhiteList);
     appendPathToSelectiveSyncList(path, SyncJournalDb::SelectiveSyncBlackList);
+}
+
+void Folder::migrateBlackListPath(const QString &legacyPath)
+{
+    if (legacyPath.startsWith(QLatin1Char('/'))) {
+        removePathFromSelectiveSyncList(legacyPath, SyncJournalDb::SelectiveSyncBlackList);
+        blacklistPath(legacyPath.mid(1));
+    }
 }
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
@@ -1452,6 +1509,7 @@ void Folder::slotCapabilitiesChanged()
 {
     if (_accountState->account()->capabilities().filesLockAvailable()) {
         connect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased, Qt::UniqueConnection);
+        connect(_folderWatcher.data(), &FolderWatcher::lockedFilesFound, this, &Folder::slotLockedFilesFound, Qt::UniqueConnection);
     }
 }
 
@@ -1497,7 +1555,9 @@ void Folder::registerFolderWatcher()
         this, &Folder::slotWatcherUnreliable);
     if (_accountState->account()->capabilities().filesLockAvailable()) {
         connect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased);
+        connect(_folderWatcher.data(), &FolderWatcher::lockedFilesFound, this, &Folder::slotLockedFilesFound);
     }
+    connect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed, Qt::UniqueConnection);
     _folderWatcher->init(path());
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
 }

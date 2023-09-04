@@ -172,9 +172,6 @@ int FolderMan::setupFolders()
 
     unloadAndDeleteAllFolders();
 
-    QStringList skipSettingsKeys;
-    backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
-
     auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
@@ -187,6 +184,9 @@ int FolderMan::setupFolders()
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
 
+    // this is done in Application::configVersionMigration
+    QStringList skipSettingsKeys;
+    backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
     const auto accounts = AccountManager::instance()->accounts();
     for (const auto &account : accounts) {
         const auto id = account->account()->id();
@@ -353,19 +353,17 @@ int FolderMan::setupFoldersMigration()
     qCInfo(lcFolderMan) << "Setup folders from " << configPath << "(migration)";
 
     QDir dir(configPath);
-    //We need to include hidden files just in case the alias starts with '.'
+    // We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
-    const auto dirFiles = dir.entryList();
+    // Exclude previous backed up configs e.g. oc.cfg.backup_20230831_133749_4.0.0
+    // only need the current config in use by the legacy application
+    const auto dirFiles = dir.entryList({"*.cfg"});
 
-    // Normally there should be only one account when migrating. TODO: Change
+    // Normally there should be only one account when migrating. TODO: Should assume only one legacy config file
     const auto accountState = AccountManager::instance()->accounts().value(0).data();
     for (const auto &fileName : dirFiles) {
         const auto fullFilePath = dir.filePath(fileName);
-        const auto folder = setupFolderFromOldConfigFile(fullFilePath, accountState);
-        if (folder) {
-            scheduleFolder(folder);
-            emit folderSyncStateChange(folder);
-        }
+        setupFolderFromOldConfigFile(fullFilePath, accountState);
     }
 
     emit folderListChanged(_folderMap);
@@ -481,8 +479,7 @@ QString FolderMan::unescapeAlias(const QString &alias)
     return a;
 }
 
-// WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
-Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, AccountState *accountState)
+void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, AccountState *accountState)
 {
     qCInfo(lcFolderMan) << "  ` -> setting up:" << fileNamePath;
     QString escapedFileNamePath(fileNamePath);
@@ -498,7 +495,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Acc
     }
     if (!cfgFile.isReadable()) {
         qCWarning(lcFolderMan) << "Cannot read folder definition for alias " << cfgFile.filePath();
-        return nullptr;
+        return;
     }
 
     QSettings settings(escapedFileNamePath, QSettings::IniFormat);
@@ -509,12 +506,12 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Acc
     const auto groups = settings.childGroups();
     if (groups.isEmpty()) {
         qCWarning(lcFolderMan) << "empty file:" << cfgFile.filePath();
-        return nullptr;
+        return;
     }
 
     if (!accountState) {
         qCCritical(lcFolderMan) << "can't create folder without an account";
-        return nullptr;
+        return;
     }
 
     settings.beginGroup(settingsAccountsC);
@@ -566,10 +563,21 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Acc
             folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles;
 
             if (const auto folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>())) {
-                const auto blackList = settings.value(QLatin1String("blackList")).toStringList();
-                if (!blackList.empty()) {
-                    //migrate settings
-                    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+                auto ok = true;
+                if (const auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+                                                                                      &ok); ok && !legacyBlacklist.isEmpty()) {
+                    qCInfo(lcFolderMan) << "Legacy selective sync list found:" << legacyBlacklist;
+                    for (const auto &legacyFolder : legacyBlacklist) {
+                        folder->migrateBlackListPath(legacyFolder);
+                    }
+                } else {
+                    qCInfo(lcFolderMan) << "There was a problem retriving the database selective sync for " << folder;
+                }
+
+                const auto settingLegacyBlacklist = settings.value(QLatin1String("blackList")).toStringList();
+                if (!settingLegacyBlacklist.empty()) {
+                    // migrate settings
+                    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, settingLegacyBlacklist);
                     settings.remove(QLatin1String("blackList"));
                     // FIXME: If you remove this codepath, you need to provide another way to do
                     // this via theme.h or the normal FolderMan::setupFolders
@@ -577,10 +585,15 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Acc
 
                 folder->saveToSettings();
 
-                qCInfo(lcFolderMan) << "Migrated!" << folder;
+                qCInfo(lcFolderMan) << "Migrated!" << folder->path();
                 settings.sync();
 
-                return folder;
+                if (!folder) {
+                    continue;
+                }
+
+                scheduleFolder(folder);
+                emit folderSyncStateChange(folder);
             }
 
             settings.endGroup();
@@ -590,7 +603,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Acc
         settings.endGroup();
     }
 
-    return nullptr;
+    return;
 }
 
 void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
