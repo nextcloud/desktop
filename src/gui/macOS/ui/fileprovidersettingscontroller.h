@@ -27,6 +27,7 @@ class FileProviderSettingsController : public QObject
 
 public:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
+    ~FileProviderSettingsController() override;
 
     [[nodiscard]] QQuickWidget *settingsViewWidget();
 

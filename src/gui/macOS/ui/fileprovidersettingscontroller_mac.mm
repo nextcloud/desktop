@@ -38,8 +38,9 @@ Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprov
 class FileProviderSettingsController::MacImplementation
 {
 public:
-    MacImplementation()
+    MacImplementation(FileProviderSettingsController *const parent)
     {
+        q = parent;
         _userDefaults = NSUserDefaults.standardUserDefaults;
     };
 
@@ -49,13 +50,17 @@ public:
     };
 
 private:
-    NSUserDefaults *_userDefaults;
+    FileProviderSettingsController *q = nullptr;
+    NSUserDefaults *_userDefaults = nil;
 };
 
+FileProviderSettingsController::~FileProviderSettingsController() = default;
 
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
 {
+    d = std::make_unique<FileProviderSettingsController::MacImplementation>(this);
+
     _settingsViewWidget = std::make_unique<QQuickWidget>(Systray::instance()->trayEngine(), nullptr);
     _settingsViewWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     _settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
