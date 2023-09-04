@@ -18,30 +18,9 @@
 
 #include "gui/systray.h"
 
-// Objective-C settings implementation
-
+// Objective-C imports
 #import <Foundation/Foundation.h>
-
-@interface FileProviderSettings : NSObject
-
-@property (readonly) NSUserDefaults *userDefaults;
-
-@end
-
-@implementation FileProviderSettings
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _userDefaults = NSUserDefaults.standardUserDefaults;
-    }
-    return self;
-}
-
-@end
-
-// End of Objective-C settings implementation
+// End of Objective-C imports
 
 namespace {
 constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
@@ -54,8 +33,25 @@ namespace OCC {
 
 namespace Mac {
 
-Q_LOGGING_CATEGORY(lcFileProviderSettingsController,
-                   "nextcloud.gui.mac.fileprovider.settingscontroller")
+Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprovider.settingscontroller")
+
+class FileProviderSettingsController::MacImplementation
+{
+public:
+    MacImplementation()
+    {
+        _userDefaults = NSUserDefaults.standardUserDefaults;
+    };
+
+    ~MacImplementation()
+    {
+        [_userDefaults release];
+    };
+
+private:
+    NSUserDefaults *_userDefaults;
+};
+
 
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}

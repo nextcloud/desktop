@@ -31,6 +31,9 @@ public:
     [[nodiscard]] QQuickWidget *settingsViewWidget();
 
 private:
+    class MacImplementation;
+    std::unique_ptr<MacImplementation> d;
+
     std::unique_ptr<QQuickWidget> _settingsViewWidget;
 };
 
