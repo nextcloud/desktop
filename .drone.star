@@ -48,7 +48,7 @@ dir = {
     "base": "/drone/src",
     "server": "/drone/src/server",
     "guiTest": "/drone/src/test/gui",
-    "guiTestReport": "/drone/src/test/guiReportUpload",
+    "guiTestReport": "/drone/src/test/gui/guiReportUpload",
     "build": "/drone/src/build",
 }
 
@@ -606,7 +606,7 @@ def setGuiTestReportDir():
         "image": OC_UBUNTU,
         "commands": [
             "mkdir %s/screenshots -p" % dir["guiTestReport"],
-            "chmod 777 %s -R" % dir["guiTestReport"],
+            "chmod 777 %s -R" % dir["guiTest"],
         ],
     }]
 
