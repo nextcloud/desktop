@@ -48,7 +48,7 @@ public:
     struct ContextMenuInfo {
         std::vector<std::wstring> watchedDirectories;
         std::wstring contextMenuTitle;
-        std::shared_ptr<HBITMAP> icon;
+        std::shared_ptr<HBITMAP> icon = {};
         struct MenuItem
         {
             std::wstring command, flags, title;

@@ -121,7 +121,12 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
         return {};
     }
 
+
     ContextMenuInfo info;
+    bool endReceived = false;
+    bool iconReceived = false;
+    auto ready = [&] { return endReceived && iconReceived; };
+
     std::wstring response;
     int sleptCount = 0;
     while (sleptCount < 5) {
@@ -130,6 +135,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
                 const auto msg = parseV2(response);
                 const auto &arguments = msg.second["arguments"];
                 if (msg.first == L"V2/GET_CLIENT_ICON_RESULT") {
+                    iconReceived = true;
                     if (arguments.contains("error")) {
                         OCShell::log(L"V2/GET_CLIENT_ICON failed", arguments["error"].get<string>());
                     } else {
@@ -155,13 +161,25 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
                 }
                 info.menuItems.push_back({ commandName, flags, title });
             } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
-                return info; // Stop once we completely received the last sent request
+                endReceived = true;
+            }
+            if (ready()) {
+                return info;
             }
         }
         else {
             Sleep(50);
             ++sleptCount;
         }
+    }
+    if (endReceived && !iconReceived) {
+        OCShell::log(L"OCClientInterface::FetchInfo: received a menu but no icon");
+        return info;
+    }
+
+    if (!endReceived && iconReceived) {
+        OCShell::log(L"OCClientInterface::FetchInfo: received a icon but no menu");
+        return {};
     }
     OCShell::log(L"OCClientInterface::FetchInfo: timeout");
     return {};
