@@ -810,6 +810,15 @@ void SyncEngine::slotDiscoveryFinished()
             slotUnscheduleFilesDelayedSync();
         }
 
+        if (_discoveryPhase->_hasDownloadRemovedItems && _discoveryPhase->_hasUploadErrorItems) {
+            for (const auto &item : _syncItems) {
+                if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
+                    item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                }
+            }
+            _anotherSyncNeeded = ImmediateFollowUp;
+        }
+
         Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
 
         qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
