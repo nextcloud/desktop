@@ -9,22 +9,15 @@ from helpers.FilesHelper import sanitizePath
 from helpers.ConfigHelper import get_config
 
 # NOTE: 'syncstate.py' was removed from client
-# and is now available at 'owncloud/client-desktop-shell-integration-nautilus'
+# and is now available at https://github.com/owncloud/client-desktop-shell-integration-nautilus
 # check if 'syncstate.py' is available, if not, download it
 custom_lib = get_config('custom_lib')
 syncstate_lib_file = os.path.join(custom_lib, 'syncstate.py')
-if not os.path.exists(custom_lib):
-    os.makedirs(custom_lib, exist_ok=True)
+os.makedirs(custom_lib, exist_ok=True)
+
 if not os.path.exists(syncstate_lib_file):
-    URL = "https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py"
-    try:
-        urllib.request.urlretrieve(URL, os.path.join(custom_lib, 'syncstate.py'))
-    except urllib.error.HTTPError as e:
-        raise Exception(
-            "Cannot download syncstate lib from"
-            + "'owncloud/client-desktop-shell-integration-nautilus':\n"
-            + e.read().decode()
-        )
+    url = "https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py"
+    urllib.request.urlretrieve(url, os.path.join(custom_lib, 'syncstate.py'))
 
 # the script needs to use the system wide python
 # to switch from the built-in interpreter
