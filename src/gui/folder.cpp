@@ -666,7 +666,11 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
             disconnect(_officeFileLockReleaseUnlockFailure);
             qCWarning(lcFolder) << "Failed to unlock a file:" << remoteFilePath << message;
         });
-        _accountState->account()->setLockFileState(remoteFilePath, journalDb(), SyncFileItem::LockStatus::UnlockedItem);
+        _accountState->account()->setLockFileState(remoteFilePath,
+                                                   remotePathTrailingSlash(),
+                                                   path(),
+                                                   journalDb(),
+                                                   SyncFileItem::LockStatus::UnlockedItem);
     }
 }
 
@@ -690,10 +694,7 @@ void Folder::slotLockedFilesFound(const QSet<QString> &files)
         const auto fileRecordPath = fileFromLocalPath(file);
         SyncJournalFileRecord rec;
 
-        const auto canLockFile = journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid()
-            && (!rec._lockstate._locked
-                || (rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::UserLock)
-                    && rec._lockstate._lockOwnerId == _accountState->account()->davUser()));
+        const auto canLockFile = journalDb()->getFileRecord(fileRecordPath, &rec) && rec.isValid() && !rec._lockstate._locked;
 
         if (!canLockFile) {
             qCDebug(lcFolder) << "Skipping locking file" << file << "with rec.isValid():" << rec.isValid()
@@ -712,7 +713,11 @@ void Folder::slotLockedFilesFound(const QSet<QString> &files)
             disconnect(_fileLockFailure);
             qCWarning(lcFolder) << "Failed to lock a file:" << remoteFilePath << message;
         });
-        _accountState->account()->setLockFileState(remoteFilePath, journalDb(), SyncFileItem::LockStatus::LockedItem);
+        _accountState->account()->setLockFileState(remoteFilePath,
+                                                   remotePathTrailingSlash(),
+                                                   path(),
+                                                   journalDb(),
+                                                   SyncFileItem::LockStatus::LockedItem);
     }
 }
 
