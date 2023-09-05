@@ -41,6 +41,11 @@ Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprov
 class FileProviderSettingsController::MacImplementation
 {
 public:
+    enum class VfsAccountsAction {
+        VfsAccountsNoAction,
+        VfsAccountsEnabledChanged,
+    };
+
     MacImplementation(FileProviderSettingsController *const parent)
     {
         q = parent;
@@ -65,14 +70,14 @@ public:
         return [vfsEnabledAccounts containsObject:userIdAtHost.toNSString()];
     }
 
-    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
+    VfsAccountsAction setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
     {
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
         NSString *const nsUserIdAtHost = userIdAtHost.toNSString();
         const BOOL accountEnabled = [vfsEnabledAccounts containsObject:nsUserIdAtHost];
 
         if (accountEnabled == setEnabled) {
-            return;
+            return VfsAccountsAction::VfsAccountsNoAction;
         }
 
         NSMutableArray<NSString *> *const mutableVfsAccounts = vfsEnabledAccounts.mutableCopy;
@@ -86,6 +91,8 @@ public:
         NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
         NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
         [_userDefaults setObject:modifiedVfsAccounts forKey:accsKey];
+
+        return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
 
 private:
@@ -129,7 +136,10 @@ bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdA
 
 void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
 {
-    d->setVfsEnabledForAccount(userIdAtHost, setEnabled);
+    const auto enabledAccountsAction = d->setVfsEnabledForAccount(userIdAtHost, setEnabled);
+    if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
+        emit vfsEnabledAccountsChanged();
+    }
 }
 
 } // namespace Mac

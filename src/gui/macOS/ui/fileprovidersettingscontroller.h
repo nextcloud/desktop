@@ -36,6 +36,9 @@ public:
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
+signals:
+    void vfsEnabledAccountsChanged();
+
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
     ~FileProviderSettingsController() override;
