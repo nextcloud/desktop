@@ -127,7 +127,7 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &
     const auto settingsViewWidget = new QQuickWidget(Systray::instance()->trayEngine(), parent);
     settingsViewWidget->setResizeMode(resizeMode);
     settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
-    settingsViewWidget->rootContext()->setContextProperty(fpSettingsAccountUserIdAtHostProp, accountUserIdAtHost);
+    settingsViewWidget->rootObject()->setProperty(fpSettingsAccountUserIdAtHostProp, accountUserIdAtHost);
     return settingsViewWidget;
 }
 
