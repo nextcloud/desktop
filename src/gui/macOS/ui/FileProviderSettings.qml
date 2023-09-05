@@ -25,6 +25,7 @@ Page {
 
     property bool showBorder: true
     property var controller: FileProviderSettingsController
+    property var accountUserIdAtHost: AccountUserIdAtHost
 
     title: qsTr("Virtual files settings")
 

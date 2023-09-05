@@ -28,7 +28,8 @@ class FileProviderSettingsController : public QObject
 public:
     static FileProviderSettingsController *instance();
 
-    [[nodiscard]] QQuickWidget *settingsViewWidget(QWidget *const parent = nullptr,
+    [[nodiscard]] QQuickWidget *settingsViewWidget(const QString &accountUserIdAtHost,
+                                                   QWidget *const parent = nullptr,
                                                    const QQuickWidget::ResizeMode resizeMode = QQuickWidget::SizeRootObjectToView);
 
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;

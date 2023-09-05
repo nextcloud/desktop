@@ -27,6 +27,7 @@ constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettin
 
 // FileProviderSettingsPage properties -- make sure they match up in QML file!
 constexpr auto fpSettingsControllerProp = "FileProviderSettingsController";
+constexpr auto fpSettingsAccountUserIdAtHostProp = "AccountUserIdAtHost";
 
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
@@ -120,12 +121,15 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     d = std::make_unique<FileProviderSettingsController::MacImplementation>(this);
 }
 
-QQuickWidget *FileProviderSettingsController::settingsViewWidget(QWidget *const parent, const QQuickWidget::ResizeMode resizeMode)
+QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &accountUserIdAtHost,
+                                                                 QWidget *const parent,
+                                                                 const QQuickWidget::ResizeMode resizeMode)
 {
     const auto settingsViewWidget = new QQuickWidget(Systray::instance()->trayEngine(), parent);
     settingsViewWidget->setResizeMode(resizeMode);
     settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
     settingsViewWidget->rootContext()->setContextProperty(fpSettingsControllerProp, this);
+    settingsViewWidget->rootContext()->setContextProperty(fpSettingsAccountUserIdAtHostProp, accountUserIdAtHost);
     return settingsViewWidget;
 }
 
