@@ -1099,8 +1099,7 @@ void Folder::slotSyncFinished(bool success)
 // a item is completed: count the errors and forward to the ProgressDispatcher
 void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 {
-    if (item->_status == SyncFileItem::Success
-        && (item->_instruction & (CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA))) {
+    if (item->_status == SyncFileItem::Success && (item->instruction() & (CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA))) {
         // We only care about the updates that deserve to be shown in the UI
         return;
     }

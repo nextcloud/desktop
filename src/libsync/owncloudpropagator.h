@@ -365,11 +365,11 @@ public:
     {
         SyncFileItem::Status status = _item->_status;
         if (status == SyncFileItem::NoStatus) {
-            if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
+            if (_item->instruction() == CSYNC_INSTRUCTION_ERROR) {
                 status = SyncFileItem::NormalError;
             } else {
                 status = SyncFileItem::FileIgnored;
-                OC_ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
+                OC_ASSERT(_item->instruction() == CSYNC_INSTRUCTION_IGNORE);
             }
         }
         done(status, _item->_errorString);

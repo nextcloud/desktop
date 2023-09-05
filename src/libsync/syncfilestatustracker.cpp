@@ -71,20 +71,14 @@ SyncFileStatus::SyncFileStatusTag SyncFileStatusTracker::lookupProblem(const QSt
 static inline bool hasErrorStatus(const SyncFileItem &item)
 {
     const auto status = item._status;
-    return item._instruction == CSYNC_INSTRUCTION_ERROR
-        || status == SyncFileItem::NormalError
-        || status == SyncFileItem::FatalError
-        || status == SyncFileItem::DetailError
-        || status == SyncFileItem::BlacklistedError
-        || item._hasBlacklistEntry;
+    return item.instruction() == CSYNC_INSTRUCTION_ERROR || status == SyncFileItem::NormalError || status == SyncFileItem::FatalError
+        || status == SyncFileItem::DetailError || status == SyncFileItem::BlacklistedError || item._hasBlacklistEntry;
 }
 
 static inline bool hasExcludedStatus(const SyncFileItem &item)
 {
     const auto status = item._status;
-    return item._instruction == CSYNC_INSTRUCTION_IGNORE
-        || status == SyncFileItem::FileIgnored
-        || status == SyncFileItem::Conflict
+    return item.instruction() == CSYNC_INSTRUCTION_IGNORE || status == SyncFileItem::FileIgnored || status == SyncFileItem::Conflict
         || status == SyncFileItem::Restoration;
 }
 
@@ -209,7 +203,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(const SyncFileItemSet &items)
     std::swap(_syncProblems, oldProblems);
 
     for (const auto &item : qAsConst(items)) {
-        qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction;
+        qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->instruction();
         _dirtyPaths.remove(item->destination());
         _dirtyPaths.remove(item->_originalFile);
 
@@ -221,10 +215,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(const SyncFileItemSet &items)
         }
 
         SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
-        if (item->_instruction != CSYNC_INSTRUCTION_NONE
-            && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
-            && item->_instruction != CSYNC_INSTRUCTION_IGNORE
-            && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
+        if (item->instruction() & ~(CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA | CSYNC_INSTRUCTION_IGNORE | CSYNC_INSTRUCTION_ERROR)) {
             // Mark this path as syncing for instructions that will result in propagation.
             incSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
         } else {
@@ -255,7 +246,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(const SyncFileItemSet &items)
 
 void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
 {
-    qCDebug(lcStatusTracker) << "Item completed" << item->destination() << item->_status << item->_instruction;
+    qCDebug(lcStatusTracker) << "Item completed" << item->destination() << item->_status << item->instruction();
 
     if (hasErrorStatus(*item)) {
         _syncProblems[item->destination()] = SyncFileStatus::StatusError;
@@ -267,10 +258,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
     }
 
     SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
-    if (item->_instruction != CSYNC_INSTRUCTION_NONE
-        && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
-        && item->_instruction != CSYNC_INSTRUCTION_IGNORE
-        && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
+    if (item->instruction() & ~(CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA | CSYNC_INSTRUCTION_IGNORE | CSYNC_INSTRUCTION_ERROR)) {
         // decSyncCount calls *must* be symetric with incSyncCount calls in slotAboutToPropagate
         decSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
     } else {

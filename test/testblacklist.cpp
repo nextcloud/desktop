@@ -96,7 +96,7 @@ private slots:
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::NormalError); // initial error visible
-            QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW);
+            QCOMPARE(it->instruction(), CSYNC_INSTRUCTION_NEW);
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
@@ -118,7 +118,7 @@ private slots:
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError);
-            QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_IGNORE); // no retry happened!
+            QCOMPARE(it->instruction(), CSYNC_INSTRUCTION_IGNORE); // no retry happened!
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
@@ -145,7 +145,7 @@ private slots:
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError); // blacklisted as it's just a retry
-            QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW); // retry!
+            QCOMPARE(it->instruction(), CSYNC_INSTRUCTION_NEW); // retry!
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
@@ -171,7 +171,7 @@ private slots:
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError);
-            QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW); // retry!
+            QCOMPARE(it->instruction(), CSYNC_INSTRUCTION_NEW); // retry!
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(entry.isValid());
@@ -199,7 +199,7 @@ private slots:
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::Success);
-            QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW);
+            QCOMPARE(it->instruction(), CSYNC_INSTRUCTION_NEW);
 
             auto entry = fakeFolder.syncJournal().errorBlacklistEntry(testFileName);
             QVERIFY(!entry.isValid());

@@ -55,13 +55,13 @@ bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const Syn
 {
     auto item = spy.findItem(path);
     Q_ASSERT(!item.isNull());
-    return item->_instruction == instr;
+    return item->instruction() == instr;
 }
 
 bool discoveryInstruction(const SyncFileItemSet &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = findDiscoveryItem(spy, path);
-    return item->_instruction == instr;
+    return item->instruction() == instr;
 }
 
 class TestPermissions : public QObject

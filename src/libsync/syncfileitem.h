@@ -151,7 +151,6 @@ public:
         , _isSelectiveSync(false)
         , _httpErrorCode(0)
         , _affectedItems(1)
-        , _instruction(CSYNC_INSTRUCTION_NONE)
         , _modtime(0)
         , _size(0)
         , _inode(0)
@@ -290,7 +289,6 @@ public:
     // usually this value is 1, but for removes on dirs, it might be much higher.
 
     // Variables used by the propagator
-    SyncInstructions _instruction;
     time_t _modtime;
     QString _etag;
     qint64 _size;
@@ -324,6 +322,12 @@ public:
         out._size = _size;
         return out;
     }
+
+    SyncInstruction instruction() const;
+    void setInstruction(SyncInstruction instruction);
+
+private:
+    SyncInstruction _instruction = CSYNC_INSTRUCTION_NONE;
 };
 
 

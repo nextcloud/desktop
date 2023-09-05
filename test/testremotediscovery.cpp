@@ -140,13 +140,13 @@ private slots:
             QCOMPARE(errorSpy.size(), 1);
             QCOMPARE(errorSpy[0][0].toString(), QString(fatalErrorPrefix + expectedErrorString));
         } else {
-            QCOMPARE(completeSpy.findItem(QStringLiteral("B"))->_instruction, CSYNC_INSTRUCTION_IGNORE);
+            QCOMPARE(completeSpy.findItem(QStringLiteral("B"))->instruction(), CSYNC_INSTRUCTION_IGNORE);
             QVERIFY(completeSpy.findItem(QStringLiteral("B"))->_errorString.contains(expectedErrorString));
 
             // The other folder should have been sync'ed as the sync just ignored the faulty dir
             QCOMPARE(fakeFolder.currentRemoteState().children[QStringLiteral("A")], fakeFolder.currentLocalState().children[QStringLiteral("A")]);
             QCOMPARE(fakeFolder.currentRemoteState().children[QStringLiteral("C")], fakeFolder.currentLocalState().children[QStringLiteral("C")]);
-            QCOMPARE(completeSpy.findItem(QStringLiteral("A/z1"))->_instruction, CSYNC_INSTRUCTION_NEW);
+            QCOMPARE(completeSpy.findItem(QStringLiteral("A/z1"))->instruction(), CSYNC_INSTRUCTION_NEW);
         }
 
         //
@@ -183,11 +183,11 @@ private slots:
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
-        QCOMPARE(completeSpy.findItem(QStringLiteral("good"))->_instruction, CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("noetag"))->_instruction, CSYNC_INSTRUCTION_ERROR);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("nofileid"))->_instruction, CSYNC_INSTRUCTION_ERROR);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("nopermissions"))->_instruction, CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(completeSpy.findItem(QStringLiteral("nopermissions/A"))->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("good"))->instruction(), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("noetag"))->instruction(), CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("nofileid"))->instruction(), CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("nopermissions"))->instruction(), CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(completeSpy.findItem(QStringLiteral("nopermissions/A"))->instruction(), CSYNC_INSTRUCTION_ERROR);
         QVERIFY(completeSpy.findItem(QStringLiteral("noetag"))->_errorString.contains(QStringLiteral("etag")));
         QVERIFY(completeSpy.findItem(QStringLiteral("nofileid"))->_errorString.contains(QStringLiteral("file id")));
         QVERIFY(completeSpy.findItem(QStringLiteral("nopermissions/A"))->_errorString.contains(QStringLiteral("permissions")));

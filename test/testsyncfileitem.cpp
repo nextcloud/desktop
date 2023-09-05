@@ -39,7 +39,7 @@ private slots:
         SyncFileItem movedItem1;
         movedItem1._file = QStringLiteral("folder/source/file.f");
         movedItem1._renameTarget = QStringLiteral("folder/destination/file.f");
-        movedItem1._instruction = CSYNC_INSTRUCTION_RENAME;
+        movedItem1.setInstruction(CSYNC_INSTRUCTION_RENAME);
 
         QTest::newRow("move1") << createItem(QStringLiteral("folder/destination")) << movedItem1 << createItem(QStringLiteral("folder/destination-2"));
         QTest::newRow("move2") << createItem(QStringLiteral("folder/destination/1")) << movedItem1 << createItem(QStringLiteral("folder/source"));

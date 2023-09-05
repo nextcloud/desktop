@@ -539,8 +539,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     }
 
     if (!_item->_etag.isEmpty() && _item->_etag != QLatin1String("empty_etag")
-        && _item->_instruction != CSYNC_INSTRUCTION_NEW // On new files never send a If-Match
-        && _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
+        && (_item->instruction() & ~(CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE)) // On new files never send a If-Match
         && !_deleteExisting) {
         // We add quotes because the owncloud server always adds quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strips the quotes.
@@ -597,8 +596,7 @@ void PropagateUploadFileCommon::finalize()
 
     // Files that were new on the remote shouldn't have online-only pin state
     // even if their parent folder is online-only.
-    if (_item->_instruction == CSYNC_INSTRUCTION_NEW
-        || _item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+    if (_item->instruction() & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE)) {
         auto &vfs = propagator()->syncOptions()._vfs;
         const auto pin = vfs->pinState(_item->_file);
         if (pin && *pin == PinState::OnlineOnly) {

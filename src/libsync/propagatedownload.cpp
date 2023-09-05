@@ -459,7 +459,7 @@ void PropagateDownloadFile::start()
             done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash with %2!").arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(clash.get())));
             return;
         }
-        const bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT && QFileInfo(fsPath).isDir();
+        const bool isConflict = _item->instruction() == CSYNC_INSTRUCTION_CONFLICT && QFileInfo(fsPath).isDir();
         if (isConflict) {
             QString error;
             if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
@@ -493,11 +493,8 @@ void PropagateDownloadFile::start()
         return true;
     };
 
-    if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && _item->_size == _item->_previousSize
-        && !_item->_checksumHeader.isEmpty()
-        && (csync_is_collision_safe_hash(_item->_checksumHeader)
-            || _item->_modtime == _item->_previousModtime)) {
+    if (_item->instruction() == CSYNC_INSTRUCTION_CONFLICT && _item->_size == _item->_previousSize && !_item->_checksumHeader.isEmpty()
+        && (csync_is_collision_safe_hash(_item->_checksumHeader) || _item->_modtime == _item->_previousModtime)) {
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
         const auto checksumHeader = ChecksumHeader::parseChecksumHeader(_item->_checksumHeader);
@@ -937,8 +934,7 @@ void PropagateDownloadFile::downloadFinished()
         }
     }
 
-    bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && (QFileInfo(fn).isDir() || !FileSystem::fileEquals(fn, _tmpFile.fileName()));
+    bool isConflict = _item->instruction() == CSYNC_INSTRUCTION_CONFLICT && (QFileInfo(fn).isDir() || !FileSystem::fileEquals(fn, _tmpFile.fileName()));
     if (isConflict) {
         QString error;
         if (!propagator()->createConflict(_item, _associatedComposite, &error)) {

@@ -21,6 +21,8 @@
 
 #include <QCoreApplication>
 
+#include <bitset>
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileItem, "sync.fileitem", QtInfoMsg)
@@ -75,6 +77,19 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     return item;
 }
 
+SyncInstruction SyncFileItem::instruction() const
+{
+    return _instruction;
+}
+
+void SyncFileItem::setInstruction(SyncInstruction instruction)
+{
+    // only one instruction is allowed
+    // with c++23 this can be made a static_assert
+    Q_ASSERT(std::bitset<sizeof(SyncFileItem)>(instruction).count() == 1);
+    _instruction = instruction;
+}
+
 template <>
 QString Utility::enumToDisplayName(SyncFileItem::Status s)
 {
@@ -123,7 +138,7 @@ QDebug operator<<(QDebug debug, const OCC::SyncFileItem *item)
         if (!item->_renameTarget.isEmpty()) {
             debug << ", destination=" << item->destination();
         }
-        debug << ", type=" << item->_type << ", instruction=" << item->_instruction << ", status=" << item->_status << ")";
+        debug << ", type=" << item->_type << ", instruction=" << item->instruction() << ", status=" << item->_status << ")";
     }
     return debug;
 }

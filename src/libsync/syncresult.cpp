@@ -104,10 +104,8 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         _foundFilesNotSynced = true;
     }
 
-    if (item->isDirectory() && (item->_instruction == CSYNC_INSTRUCTION_NEW
-                                  || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                                  || item->_instruction == CSYNC_INSTRUCTION_REMOVE
-                                  || item->_instruction == CSYNC_INSTRUCTION_RENAME)) {
+    if (item->isDirectory()
+        && (item->instruction() & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE | CSYNC_INSTRUCTION_REMOVE | CSYNC_INSTRUCTION_RENAME))) {
         _folderStructureWasChanged = true;
     }
 
@@ -120,7 +118,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
             _firstItemError = item;
         }
     } else if (item->_status == SyncFileItem::Conflict) {
-        if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
+        if (item->instruction() == CSYNC_INSTRUCTION_CONFLICT) {
             _numNewConflictItems++;
             if (!_firstNewConflictItem) {
                 _firstNewConflictItem = item;
@@ -130,7 +128,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         }
     } else {
         if (!item->hasErrorStatus() && item->_status != SyncFileItem::FileIgnored && item->_direction == SyncFileItem::Down) {
-            switch (item->_instruction) {
+            switch (item->instruction()) {
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_TYPE_CHANGE:
                 _numNewItems++;
@@ -157,7 +155,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
                 // nothing.
                 break;
             }
-        } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE && item->_hasBlacklistEntry) {
+        } else if (item->instruction() == CSYNC_INSTRUCTION_IGNORE && item->_hasBlacklistEntry) {
             if (item->_hasBlacklistEntry) {
                 _numBlacklistErrors++;
             }
