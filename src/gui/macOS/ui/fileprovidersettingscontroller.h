@@ -31,7 +31,10 @@ public:
     [[nodiscard]] QQuickWidget *settingsViewWidget(QWidget *const parent = nullptr,
                                                    const QQuickWidget::ResizeMode resizeMode = QQuickWidget::SizeRootObjectToView);
 
-    [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost);
+    [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
+
+public slots:
+    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

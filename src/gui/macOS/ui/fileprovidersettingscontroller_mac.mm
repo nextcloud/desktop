@@ -68,6 +68,29 @@ public:
         return [vfsEnabledAccounts containsObject:userIdAtHost.toNSString()];
     }
 
+    void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
+    {
+        NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+        NSString *const nsUserIdAtHost = userIdAtHost.toNSString();
+        const BOOL accountEnabled = [vfsEnabledAccounts containsObject:nsUserIdAtHost];
+
+        if (accountEnabled == setEnabled) {
+            return;
+        }
+
+        NSMutableArray<NSString *> *const mutableVfsAccounts = vfsEnabledAccounts.mutableCopy;
+
+        if (setEnabled) {
+            [mutableVfsAccounts addObject:nsUserIdAtHost];
+        } else {
+            [mutableVfsAccounts removeObject:nsUserIdAtHost];
+        }
+
+        NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
+        NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
+        [_userDefaults setObject:modifiedVfsAccounts forKey:accsKey];
+    }
+
 private:
     NSArray<NSString *> *nsEnabledAccounts() const
     {
@@ -102,9 +125,14 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(QWidget *const 
     return settingsViewWidget;
 }
 
-bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdAtHost)
+bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdAtHost) const
 {
     return d->vfsEnabledForAccount(userIdAtHost);
+}
+
+void FileProviderSettingsController::setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled)
+{
+    d->setVfsEnabledForAccount(userIdAtHost, setEnabled);
 }
 
 } // namespace Mac
