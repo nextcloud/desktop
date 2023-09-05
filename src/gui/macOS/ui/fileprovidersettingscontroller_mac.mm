@@ -47,10 +47,7 @@ public:
         _userDefaults = NSUserDefaults.standardUserDefaults;
     };
 
-    ~MacImplementation()
-    {
-        [_userDefaults release];
-    };
+    ~MacImplementation() = default;
 
     QStringList enabledAccounts() const
     {
