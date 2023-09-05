@@ -20,6 +20,8 @@ import Style 1.0
 import "../../filedetails"
 import "../../tray"
 
+import com.nextcloud.desktopclient 1.0
+
 Page {
     id: root
 
