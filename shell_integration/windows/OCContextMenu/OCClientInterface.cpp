@@ -142,14 +142,17 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
                 info.watchedDirectories.push_back(responsePath);
             } else if (StringUtil::begins_with(response, wstring(L"STRING:"))) {
                 wstring stringName, stringValue;
-                if (!StringUtil::extractChunks(response, stringName, stringValue))
+                if (!StringUtil::extractChunks(response, stringName, stringValue)) {
                     continue;
-                if (stringName == L"CONTEXT_MENU_TITLE")
+                }
+                if (stringName == L"CONTEXT_MENU_TITLE") {
                     info.contextMenuTitle = std::move(stringValue);
+                }
             } else if (StringUtil::begins_with(response, wstring(L"MENU_ITEM:"))) {
                 wstring commandName, flags, title;
-                if (!StringUtil::extractChunks(response, commandName, flags, title))
+                if (!StringUtil::extractChunks(response, commandName, flags, title)) {
                     continue;
+                }
                 info.menuItems.push_back({ commandName, flags, title });
             } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
                 return info; // Stop once we completely received the last sent request
