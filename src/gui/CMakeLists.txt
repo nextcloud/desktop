@@ -302,8 +302,8 @@ IF( APPLE )
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
             macOS/fileproviderxpc_mac_utils.mm
-            macOS/ui/fileprovidersettingscontroller.h
-            macOS/ui/fileprovidersettingscontroller_mac.mm)
+            macOS/fileprovidersettingscontroller.h
+            macOS/fileprovidersettingscontroller_mac.mm)
     endif()
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)

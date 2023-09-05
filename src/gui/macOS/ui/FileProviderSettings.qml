@@ -68,6 +68,8 @@ Page {
 
         CheckBox {
             text: qsTr("Enable virtual files")
+            checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
+            onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
         }
     }
 }

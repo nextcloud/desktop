@@ -28,7 +28,7 @@
 #include "folderstatusmodel.h"
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
-#include "macOS/ui/fileprovidersettingscontroller.h"
+#include "macOS/fileprovidersettingscontroller.h"
 #endif
 
 class QModelIndex;
