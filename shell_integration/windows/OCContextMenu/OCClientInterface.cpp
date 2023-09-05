@@ -104,9 +104,11 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
 
     CommunicationSocket socket;
     if (!WaitNamedPipe(pipename.data(), PIPE_TIMEOUT)) {
+        OCShell::logWinError(L"OCClientInterface::FetchInfo: Failed to connect to " + pipename);
         return {};
     }
     if (!socket.Connect(pipename)) {
+        OCShell::log(L"OCClientInterface::FetchInfo: Failed to connect to " + pipename);
         return {};
     }
     bool ok = sendV2(socket, L"V2/GET_CLIENT_ICON", { { "size", 16 } })
@@ -115,6 +117,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
 
     if (!ok) {
         socket.Close();
+        OCShell::log(L"OCClientInterface::FetchInfo: Failed to request the context menu");
         return {};
     }
 
@@ -149,7 +152,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
                     continue;
                 info.menuItems.push_back({ commandName, flags, title });
             } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
-                break; // Stop once we completely received the last sent request
+                return info; // Stop once we completely received the last sent request
             }
         }
         else {
@@ -157,7 +160,8 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
             ++sleptCount;
         }
     }
-    return info;
+    OCShell::log(L"OCClientInterface::FetchInfo: timeout");
+    return {};
 }
 
 bool OCClientInterface::SendRequest(const wstring &verb, const std::wstring &path)
