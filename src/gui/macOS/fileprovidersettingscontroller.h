@@ -32,6 +32,7 @@ public:
                                                    QWidget *const parent = nullptr,
                                                    const QQuickWidget::ResizeMode resizeMode = QQuickWidget::SizeRootObjectToView);
 
+    [[nodiscard]] QStringList vfsEnabledAccounts() const;
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
 
 public slots:

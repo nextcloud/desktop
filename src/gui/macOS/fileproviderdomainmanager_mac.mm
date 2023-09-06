@@ -19,6 +19,7 @@
 
 #include "config.h"
 #include "fileproviderdomainmanager.h"
+#include "fileprovidersettingscontroller.h"
 #include "pushnotifications.h"
 
 #include "gui/accountmanager.h"
@@ -447,8 +448,19 @@ void FileProviderDomainManager::setupFileProviderDomains()
 
     d->findExistingFileProviderDomains();
 
-    for(auto &accountState : AccountManager::instance()->accounts()) {
+    const auto vfsEnabledAccounts = FileProviderSettingsController::instance()->vfsEnabledAccounts();
+    auto domainsToRemove = d->configuredDomainIds();
+
+    for (const auto &accountUserIdAtHost : vfsEnabledAccounts) {
+        domainsToRemove.removeAll(accountUserIdAtHost);
+
+        const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
         addFileProviderDomainForAccount(accountState.data());
+    }
+
+    for (const auto &remainingDomainUserId : domainsToRemove) {
+        const auto accountState = AccountManager::instance()->accountFromUserId(remainingDomainUserId);
+        removeFileProviderDomainForAccount(accountState.data());
     }
 
     emit domainSetupComplete();

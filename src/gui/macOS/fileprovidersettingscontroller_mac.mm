@@ -183,6 +183,11 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &
     return settingsViewWidget;
 }
 
+QStringList FileProviderSettingsController::vfsEnabledAccounts() const
+{
+    return d->enabledAccounts();
+}
+
 bool FileProviderSettingsController::vfsEnabledForAccount(const QString &userIdAtHost) const
 {
     return d->vfsEnabledForAccount(userIdAtHost);
