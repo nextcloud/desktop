@@ -118,12 +118,8 @@ public:
     static inline bool isSizeDependent(const SyncFileItem &item)
     {
         return !item.isDirectory()
-            && (item._instruction == CSYNC_INSTRUCTION_CONFLICT
-                || item._instruction == CSYNC_INSTRUCTION_SYNC
-                || item._instruction == CSYNC_INSTRUCTION_NEW
-                || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)
-            && !(item._type == ItemTypeVirtualFile
-                 || item._type == ItemTypeVirtualFileDehydration);
+            && (item.instruction() & (CSYNC_INSTRUCTION_CONFLICT | CSYNC_INSTRUCTION_SYNC | CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE))
+            && !(item._type == ItemTypeVirtualFile || item._type == ItemTypeVirtualFileDehydration);
     }
 
     /**

@@ -745,7 +745,7 @@ void ownCloudGui::slotRebuildRecentMenus()
 /// 'Recent Activity' menu
 static bool shouldShowInRecentsMenu(const SyncFileItem &item)
 {
-    return !Progress::isIgnoredKind(item._status) && item._instruction != CSYNC_INSTRUCTION_NONE;
+    return !Progress::isIgnoredKind(item._status) && item.instruction() != CSYNC_INSTRUCTION_NONE;
 }
 
 void ownCloudGui::slotUpdateProgress(Folder *folder, const ProgressInfo &progress)

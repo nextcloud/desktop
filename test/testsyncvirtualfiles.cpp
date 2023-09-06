@@ -17,7 +17,7 @@ auto itemInstruction(const ItemCompletedSpy &spy, const QString &path)
 {
     auto item = spy.findItem(path);
     Q_ASSERT(!item.isNull());
-    return item->_instruction;
+    return item->instruction();
 }
 
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)

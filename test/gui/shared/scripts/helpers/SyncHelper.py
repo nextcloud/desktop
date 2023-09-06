@@ -1,17 +1,32 @@
 import re
 import sys
 import test
-from os.path import realpath
+import os
+import urllib
 from squish import waitFor, snooze
-
-# the script needs to use the system wide python
-# to switch from the built-in interpreter see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
-# if the IDE fails to reference the script, add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
-sys.path.append(realpath('../../../shell_integration/nautilus/'))
-from syncstate import SocketConnect
 
 from helpers.FilesHelper import sanitizePath
 from helpers.ConfigHelper import get_config
+
+# NOTE: 'syncstate.py' was removed from client
+# and is now available at https://github.com/owncloud/client-desktop-shell-integration-nautilus
+# check if 'syncstate.py' is available, if not, download it
+custom_lib = get_config('custom_lib')
+syncstate_lib_file = os.path.join(custom_lib, 'syncstate.py')
+os.makedirs(custom_lib, exist_ok=True)
+
+if not os.path.exists(syncstate_lib_file):
+    url = "https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py"
+    urllib.request.urlretrieve(url, os.path.join(custom_lib, 'syncstate.py'))
+
+# the script needs to use the system wide python
+# to switch from the built-in interpreter
+#   see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
+# if the IDE fails to reference the script,
+#   add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
+sys.path.append(custom_lib)
+from syncstate import SocketConnect
+
 
 # socket messages
 socket_messages = []

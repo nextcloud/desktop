@@ -268,10 +268,10 @@ private slots:
             QCOMPARE(items.size(), 2);
             auto it = items.cbegin();
             QCOMPARE(it->get()->_file, QLatin1String("A"));
-            QCOMPARE(it->get()->_instruction, CSYNC_INSTRUCTION_UPDATE_METADATA);
+            QCOMPARE(it->get()->instruction(), CSYNC_INSTRUCTION_UPDATE_METADATA);
             it++;
             QCOMPARE(it->get()->_file, QLatin1String("A/a0"));
-            QCOMPARE(it->get()->_instruction, CSYNC_INSTRUCTION_UPDATE_METADATA);
+            QCOMPARE(it->get()->instruction(), CSYNC_INSTRUCTION_UPDATE_METADATA);
             QCOMPARE(it->get()->_etag, QString::fromUtf8(fakeFolder.remoteModifier().find(QStringLiteral("A/a0"))->etag));
         };
         auto checkEtagUpdated = [&](const SyncFileItemPtr &item) {

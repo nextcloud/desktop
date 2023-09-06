@@ -163,7 +163,7 @@ void PropagateLocalMkdir::start()
                         .arg(newDirStr, removeError));
                 return;
             }
-        } else if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
+        } else if (_item->instruction() == CSYNC_INSTRUCTION_CONFLICT) {
             QString error;
             if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
                 done(SyncFileItem::SoftError, error);
@@ -200,9 +200,7 @@ void PropagateLocalMkdir::start()
     }
     propagator()->_journal->commit(QStringLiteral("localMkdir"));
 
-    auto resultStatus = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        ? SyncFileItem::Conflict
-        : SyncFileItem::Success;
+    auto resultStatus = _item->instruction() == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::Conflict : SyncFileItem::Success;
     done(resultStatus);
 }
 

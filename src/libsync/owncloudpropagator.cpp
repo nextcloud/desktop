@@ -322,13 +322,14 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
 PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
 {
     qCDebug(lcPropagator) << "Propagating:" << item;
-    const bool deleteExisting = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
-    switch (item->_instruction) {
+    const bool deleteExisting = item->instruction() == CSYNC_INSTRUCTION_TYPE_CHANGE;
+    switch (item->instruction()) {
     case CSYNC_INSTRUCTION_REMOVE:
-        if (item->_direction == SyncFileItem::Down)
+        if (item->_direction == SyncFileItem::Down) {
             return new PropagateLocalRemove(this, item);
-        else
+        } else {
             return new PropagateRemoteDelete(this, item);
+        }
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
     case CSYNC_INSTRUCTION_CONFLICT:
@@ -445,7 +446,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
         // First check if this is an item in a directory which is going to be removed.
         if (currentRemoveDirectoryJob && FileSystem::isChildPathOf(item->_file, currentRemoveDirectoryJob->path())) {
             // Check the sync instruction for the item:
-            if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            if (item->instruction() == CSYNC_INSTRUCTION_REMOVE) {
                 // already taken care of. (by the removal of the parent directory)
 
                 if (auto delDirJob = qobject_cast<PropagateDirectory *>(currentRemoveDirectoryJob)) {
@@ -453,7 +454,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item->isDirectory() && (item->_instruction & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE))) {
+            } else if (item->isDirectory() && (item->instruction() & (CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_TYPE_CHANGE))) {
                 // Create a new directory within a deleted directory? That can happen if the directory
                 // etag was not fetched properly on the previous sync because the sync was aborted
                 // while uploading this directory (which is now removed).  We can ignore it.
@@ -462,11 +463,11 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item->_instruction & (CSYNC_INSTRUCTION_IGNORE | CSYNC_INSTRUCTION_NONE)) {
+            } else if (item->instruction() & (CSYNC_INSTRUCTION_IGNORE | CSYNC_INSTRUCTION_NONE)) {
                 continue;
-            } else if (item->_instruction != CSYNC_INSTRUCTION_RENAME) {
+            } else if (item->instruction() != CSYNC_INSTRUCTION_RENAME) {
                 // all is good, the rename will be executed before the directory deletion
-                qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!" << item->_file << item->_instruction;
+                qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!" << item->_file << item->instruction();
                 Q_ASSERT(false); // we shouldn't land here, but assert for debug purposes
             }
         }
@@ -477,9 +478,8 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
         if (!maybeConflictDirectory.isEmpty()) {
             if (FileSystem::isChildPathOf(item->destination(), maybeConflictDirectory)) {
                 // We're processing an item in a CONFLICT directory.
-                qCInfo(lcPropagator) << "Skipping job inside CONFLICT directory"
-                                     << item->_file << item->_instruction;
-                item->_instruction = CSYNC_INSTRUCTION_NONE;
+                qCInfo(lcPropagator) << "Skipping job inside CONFLICT directory" << item->_file << item->instruction();
+                item->setInstruction(CSYNC_INSTRUCTION_NONE);
                 continue;
             } else {
                 // This is not an item inside the conflict directory, which means we're done
@@ -502,8 +502,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
         if (item->isDirectory()) {
             PropagateDirectory *dir = new PropagateDirectory(this, item);
 
-            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                && item->_direction == SyncFileItem::Up) {
+            if (item->instruction() == CSYNC_INSTRUCTION_TYPE_CHANGE && item->_direction == SyncFileItem::Up) {
                 // Skip all potential uploads to the new folder.
                 // Processing them now leads to problems with permissions:
                 // checkForPermissions() has already run and used the permissions
@@ -511,13 +510,13 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 // to the new dir is ok...
                 for (const auto &item2 : qAsConst(items)) {
                     if (item2 != item && FileSystem::isChildPathOf(item2->destination(), item->destination())) {
-                        item2->_instruction = CSYNC_INSTRUCTION_NONE;
+                        item2->setInstruction(CSYNC_INSTRUCTION_NONE);
                         _anotherSyncNeeded = true;
                     }
                 }
             }
 
-            if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            if (item->instruction() == CSYNC_INSTRUCTION_REMOVE) {
                 // We do the removal of directories at the end, because there might be moves from
                 // these directories that will happen later.
                 currentRemoveDirectoryJob = dir;
@@ -527,9 +526,9 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 // since it would be done before the actual remove (issue #1845)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
-                for (auto &directory : directories) {
-                    if (directory.second->item()->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
-                        directory.second->item()->_instruction = CSYNC_INSTRUCTION_NONE;
+                for (auto &dir : directories) {
+                    if (dir.second->item()->instruction() == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+                        dir.second->item()->setInstruction(CSYNC_INSTRUCTION_NONE);
                         _anotherSyncNeeded = true;
                     }
                 }
@@ -540,7 +539,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
             directories.push(qMakePair(item->destination(), dir));
         } else {
             // The item is not a directory, but a file.
-            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+            if (item->instruction() == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // will delete directories, so defer execution
                 currentRemoveDirectoryJob = createJob(item);
                 _rootJob->addDeleteJob(currentRemoveDirectoryJob);
@@ -548,7 +547,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
                 directories.top().second->appendTask(item);
             }
 
-            if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
+            if (item->instruction() == CSYNC_INSTRUCTION_CONFLICT) {
                 // This might be a file or a directory on the local side. If it's a
                 // directory we want to skip processing items inside it.
                 maybeConflictDirectory = item->_file;
@@ -799,7 +798,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
             conflictItem->_file = conflictFileName;
             conflictItem->_type = ItemTypeFile;
             conflictItem->_direction = SyncFileItem::Up;
-            conflictItem->_instruction = CSYNC_INSTRUCTION_NEW;
+            conflictItem->setInstruction(CSYNC_INSTRUCTION_NEW);
             conflictItem->_modtime = conflictModTime;
             conflictItem->_size = item->_previousSize;
             emit newItem(conflictItem);
@@ -932,7 +931,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
         _tasksToDo.erase(_tasksToDo.begin());
         PropagatorJob *job = propagator()->createJob(nextTask);
         if (!job) {
-            qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
+            qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->instruction();
             continue;
         }
         appendJob(job);
@@ -1103,13 +1102,12 @@ void PropagateDirectory::slotSubJobsFinished(const SyncFileItem::Status status)
         if (status == SyncFileItem::Success) {
             // If a directory is renamed, recursively delete any stale items
             // that may still exist below the old path.
-            if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
-                && _item->_originalFile != _item->_renameTarget) {
+            if (_item->instruction() == CSYNC_INSTRUCTION_RENAME && _item->_originalFile != _item->_renameTarget) {
                 // TODO: check result but it breaks TestDatabaseError
                 propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
             }
 
-            if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
+            if (_item->instruction() == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
                 // special case for local MKDIR, set local directory mtime
                 // (it's not synced later at all, but can be nice to have it set initially)
                 OC_ASSERT(FileSystem::setModTime(propagator()->fullLocalPath(_item->destination()), _item->_modtime));
@@ -1118,7 +1116,7 @@ void PropagateDirectory::slotSubJobsFinished(const SyncFileItem::Status status)
             // the directory has been propagated. Otherwise the directory
             // could appear locally without being added to the database.
             // Additionally we need to convert those folders to placeholders with cfapi vfs.
-            if (_item->_instruction & (CSYNC_INSTRUCTION_RENAME | CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_UPDATE_METADATA)) {
+            if (_item->instruction() & (CSYNC_INSTRUCTION_RENAME | CSYNC_INSTRUCTION_NEW | CSYNC_INSTRUCTION_UPDATE_METADATA)) {
                 // metatdata changes are relevant
                 _item->_relevantDirectoyInstruction = true;
                 _item->_status = SyncFileItem::Success;

@@ -33,6 +33,7 @@ CONFIG = {
     'clientConfigDir': '/tmp/owncloud-client/',
     'guiTestReportDir': os.path.abspath('../reports/'),
     'ocis': False,
+    'custom_lib': os.path.abspath('../shared/scripts/custom_lib'),
 }
 
 READONLY_CONFIG = list(CONFIG_ENV_MAP.keys())

@@ -19,7 +19,7 @@ using namespace OCC;
 bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
 {
     if (auto item = spy.findItem(path)) {
-        return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
+        return item->instruction() & ~(CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA);
     }
     return false;
 }
@@ -27,7 +27,7 @@ bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
 bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);
-    return item->_instruction == instr;
+    return item->instruction() == instr;
 }
 
 bool itemDidCompleteSuccessfully(const ItemCompletedSpy &spy, const QString &path)
@@ -503,7 +503,7 @@ private slots:
 
             // a1: should have local size and modtime
             QVERIFY(a1);
-            QCOMPARE(a1->_instruction, CSYNC_INSTRUCTION_SYNC);
+            QCOMPARE(a1->instruction(), CSYNC_INSTRUCTION_SYNC);
             QCOMPARE(a1->_direction, SyncFileItem::Up);
             QCOMPARE(a1->_size, qint64(5));
 
@@ -513,7 +513,7 @@ private slots:
 
             // b2: should have remote size and modtime
             QVERIFY(b1);
-            QCOMPARE(b1->_instruction, CSYNC_INSTRUCTION_SYNC);
+            QCOMPARE(b1->instruction(), CSYNC_INSTRUCTION_SYNC);
             QCOMPARE(b1->_direction, SyncFileItem::Down);
             QCOMPARE(b1->_size, qint64(17));
             QCOMPARE(Utility::qDateTimeFromTime_t(b1->_modtime), changedMtime);
@@ -522,7 +522,7 @@ private slots:
 
             // c1: conflicts are downloads, so remote size and modtime
             QVERIFY(c1);
-            QCOMPARE(c1->_instruction, CSYNC_INSTRUCTION_CONFLICT);
+            QCOMPARE(c1->instruction(), CSYNC_INSTRUCTION_CONFLICT);
             QCOMPARE(c1->_direction, SyncFileItem::None);
             QCOMPARE(c1->_size, qint64(25));
             QCOMPARE(Utility::qDateTimeFromTime_t(c1->_modtime), changedMtime2);

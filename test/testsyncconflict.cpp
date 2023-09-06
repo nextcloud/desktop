@@ -26,14 +26,14 @@ bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const Sync
 {
     auto item = spy.findItem(path);
     Q_ASSERT(item);
-    return item->_status == SyncFileItem::Success && item->_instruction == instr;
+    return item->_status == SyncFileItem::Success && item->instruction() == instr;
 }
 
 bool itemConflict(const ItemCompletedSpy &spy, const QString &path)
 {
     auto item = spy.findItem(path);
     Q_ASSERT(item);
-    return item->_status == SyncFileItem::Conflict && item->_instruction == CSYNC_INSTRUCTION_CONFLICT;
+    return item->_status == SyncFileItem::Conflict && item->instruction() == CSYNC_INSTRUCTION_CONFLICT;
 }
 
 QStringList findConflicts(const FileInfo &dir)

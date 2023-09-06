@@ -17,13 +17,13 @@ using namespace OCC;
 bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);
-    return item->_status == SyncFileItem::Success && item->_instruction == instr;
+    return item->_status == SyncFileItem::Success && item->instruction() == instr;
 }
 
 bool itemConflict(const ItemCompletedSpy &spy, const QString &path)
 {
     auto item = spy.findItem(path);
-    return item->_status == SyncFileItem::Conflict && item->_instruction == CSYNC_INSTRUCTION_CONFLICT;
+    return item->_status == SyncFileItem::Conflict && item->instruction() == CSYNC_INSTRUCTION_CONFLICT;
 }
 
 bool itemSuccessfulMove(const ItemCompletedSpy &spy, const QString &path)

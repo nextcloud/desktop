@@ -148,7 +148,7 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     // for reporting and for making sure we don't update the blacklist
     // entry yet.
     // Classification is this _instruction and _status
-    item._instruction = CSYNC_INSTRUCTION_IGNORE;
+    item.setInstruction(CSYNC_INSTRUCTION_IGNORE);
     if (entry._errorCategory == SyncJournalErrorBlacklistRecord::Category::LocalSoftError) {
         item._status = SyncFileItem::SoftError;
         item._errorString = entry._errorString;
@@ -178,9 +178,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemSet &syncItems)
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
     for (const auto &it : syncItems) {
-        if (it->_direction == SyncFileItem::Down
-            && it->_type == ItemTypeFile
-            && isFileTransferInstruction(it->_instruction)) {
+        if (it->_direction == SyncFileItem::Down && it->_type == ItemTypeFile && isFileTransferInstruction(it->instruction())) {
             download_file_paths.insert(it->_file);
         }
     }
@@ -200,9 +198,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemSet &syncItems)
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
     for (const auto &it : syncItems) {
-        if (it->_direction == SyncFileItem::Up
-            && it->_type == ItemTypeFile
-            && isFileTransferInstruction(it->_instruction)) {
+        if (it->_direction == SyncFileItem::Up && it->_type == ItemTypeFile && isFileTransferInstruction(it->instruction())) {
             upload_file_paths.insert(it->_file);
         }
     }
@@ -277,25 +273,24 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
     if (Utility::isConflictFile(item->_file))
         _seenConflictFiles.insert(item->_file);
-    if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
+    if (item->instruction() == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
         _hasNoneFiles = true;
-    } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
+    } else if (item->instruction() == CSYNC_INSTRUCTION_NONE) {
         _hasNoneFiles = true;
         if (_account->capabilities().uploadConflictFiles() && Utility::isConflictFile(item->_file)) {
             // For uploaded conflict files, files with no action performed on them should
             // be displayed: but we mustn't overwrite the instruction if something happens
             // to the file!
             item->_errorString = tr("Unresolved conflict.");
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->setInstruction(CSYNC_INSTRUCTION_IGNORE);
             item->_status = SyncFileItem::Conflict;
         }
         return;
-    } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && !item->_isSelectiveSync) {
+    } else if (item->instruction() == CSYNC_INSTRUCTION_REMOVE && !item->_isSelectiveSync) {
         _hasRemoveFile = true;
-    } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+    } else if (item->instruction() == CSYNC_INSTRUCTION_RENAME) {
         _hasNoneFiles = true; // If a file (or every file) has been renamed, it means not al files where deleted
-    } else if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-        || item->_instruction == CSYNC_INSTRUCTION_SYNC) {
+    } else if (item->instruction() & (CSYNC_INSTRUCTION_TYPE_CHANGE & CSYNC_INSTRUCTION_SYNC)) {
         if (item->_direction == SyncFileItem::Up) {
             // An upload of an existing file means that the file was left unchanged on the server
             // This counts as a NONE for detecting if all the files on the server were changed
@@ -312,7 +307,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
         const auto it = _syncItems.find(item);
         if (it != _syncItems.cend()) {
             const auto &item2 = it->get();
-            qCWarning(lcEngine) << "We already have an item for " << item2->_file << ":" << item2->_instruction << item2->_direction << "|" << item->_instruction << item->_direction;
+            qCWarning(lcEngine) << "We already have an item for " << item2->_file << ":" << item2->instruction() << item2->_direction << "|"
+                                << item->instruction() << item->_direction;
             return false;
         }
         return true;
@@ -645,7 +641,7 @@ void SyncEngine::slotDiscoveryFinished()
         if (_promptRemoveAllFiles) {
             int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
             for (const auto &it : qAsConst(_syncItems)) {
-                if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                if (it->instruction() == CSYNC_INSTRUCTION_REMOVE) {
                     side += it->_direction == SyncFileItem::Down ? 1 : -1;
                 }
             }
@@ -765,14 +761,14 @@ void SyncEngine::restoreOldFiles(SyncFileItemSet &syncItems)
         if ((*it)->_direction != SyncFileItem::Down)
             continue;
 
-        switch ((*it)->_instruction) {
+        switch ((*it)->instruction()) {
         case CSYNC_INSTRUCTION_SYNC:
             qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << (*it)->_file;
-            (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+            (*it)->setInstruction(CSYNC_INSTRUCTION_CONFLICT);
             break;
         case CSYNC_INSTRUCTION_REMOVE:
             qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << (*it)->_file;
-            (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
+            (*it)->setInstruction(CSYNC_INSTRUCTION_NEW);
             (*it)->_direction = SyncFileItem::Up;
             break;
         case CSYNC_INSTRUCTION_RENAME:

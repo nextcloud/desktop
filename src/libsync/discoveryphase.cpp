@@ -157,7 +157,7 @@ QPair<bool, QString> DiscoveryPhase::findAndCancelDeletedJob(const QString &orig
     auto it = _deletedItem.constFind(originalPath);
     if (it != _deletedItem.cend()) {
         const auto &item = *it;
-        const SyncInstructions instruction = item->_instruction;
+        const SyncInstructions instruction = item->instruction();
         if (instruction == CSYNC_INSTRUCTION_IGNORE && item->_type == ItemTypeVirtualFile) {
             // re-creation of virtual files count as a delete
             // restoration after a prohibited move
@@ -187,7 +187,7 @@ QPair<bool, QString> DiscoveryPhase::findAndCancelDeletedJob(const QString &orig
                 qCWarning(lcDiscovery) << "item->_remotePerm" << item->_remotePerm;
                 OC_ENFORCE(false);
             }
-            item->_instruction = CSYNC_INSTRUCTION_NONE;
+            item->setInstruction(CSYNC_INSTRUCTION_NONE);
             result = true;
             oldEtag = item->_etag;
         }

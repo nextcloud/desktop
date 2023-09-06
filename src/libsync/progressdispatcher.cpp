@@ -24,7 +24,7 @@ ProgressDispatcher *ProgressDispatcher::_instance = nullptr;
 
 QString Progress::asResultString(const SyncFileItem &item)
 {
-    switch (item._instruction) {
+    switch (item.instruction()) {
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
@@ -59,7 +59,7 @@ QString Progress::asResultString(const SyncFileItem &item)
 
 QString Progress::asActionString(const SyncFileItem &item)
 {
-    switch (item._instruction) {
+    switch (item.instruction()) {
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
@@ -157,13 +157,10 @@ bool ProgressInfo::isUpdatingEstimates() const
 
 static bool shouldCountProgress(const SyncFileItem &item)
 {
-    const auto instruction = item._instruction;
+    const auto instruction = item.instruction();
 
     // Skip any ignored, error or non-propagated files and directories.
-    if (instruction == CSYNC_INSTRUCTION_NONE
-        || instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
-        || instruction == CSYNC_INSTRUCTION_IGNORE
-        || instruction == CSYNC_INSTRUCTION_ERROR) {
+    if (instruction & (CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA | CSYNC_INSTRUCTION_IGNORE | CSYNC_INSTRUCTION_ERROR)) {
         return false;
     }
 

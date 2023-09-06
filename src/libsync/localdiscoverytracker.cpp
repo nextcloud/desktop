@@ -68,7 +68,7 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
     switch (item->_status) {
     case SyncFileItem::NoStatus:
         // we can't use the flags operator with CSYNC_INSTRUCTION_NONE
-        if (item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA) {
+        if (item->instruction() & ~(CSYNC_INSTRUCTION_NONE | CSYNC_INSTRUCTION_UPDATE_METADATA)) {
             break;
         }
         Q_FALLTHROUGH();

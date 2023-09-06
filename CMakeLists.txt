@@ -88,9 +88,6 @@ option(BUILD_SHELL_INTEGRATION "BUILD_SHELL_INTEGRATION" ON)
 # this option builds/installs the generic shell integration icons
 option(BUILD_SHELL_INTEGRATION_ICONS "BUILD_SHELL_INTEGRATION_ICONS" ON)
 
-# this options builds the nautilus (like) integration plugins
-option(BUILD_SHELL_INTEGRATION_NAUTILUS "BUILD_SHELL_INTEGRATION_NAUTILUS" ON)
-
 # build the GUI component, when disabled only owncloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
 
