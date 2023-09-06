@@ -49,8 +49,6 @@ public:
     MacImplementation(FileProviderSettingsController *const parent)
     {
         q = parent;
-        _userDefaults = NSUserDefaults.standardUserDefaults;
-
         initialCheck();
     };
 
@@ -105,8 +103,7 @@ public:
         }
 
         NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
-        NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
-        [_userDefaults setObject:modifiedVfsAccounts forKey:accsKey];
+        [_userDefaults setObject:modifiedVfsAccounts forKey:_accountsKey];
 
         Q_ASSERT(vfsEnabledForAccount(userIdAtHost) == userIdAtHost);
 
@@ -140,8 +137,7 @@ public:
 private:
     [[nodiscard]] NSArray<NSString *> *nsEnabledAccounts() const
     {
-        NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
-        return (NSArray<NSString *> *)[_userDefaults objectForKey:accsKey];
+        return (NSArray<NSString *> *)[_userDefaults objectForKey:_accountsKey];
     }
 
     void initialCheck()
@@ -158,7 +154,8 @@ private:
     }
 
     FileProviderSettingsController *q = nullptr;
-    NSUserDefaults *_userDefaults = nil;
+    NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
+    NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
 };
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
