@@ -50,6 +50,8 @@ public:
     {
         q = parent;
         _userDefaults = NSUserDefaults.standardUserDefaults;
+
+        initialCheck();
     };
 
     ~MacImplementation() = default;
@@ -127,6 +129,18 @@ private:
     {
         NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
         return (NSArray<NSString *> *)[_userDefaults objectForKey:accsKey];
+    }
+
+    void initialCheck()
+    {
+        NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+        if (vfsEnabledAccounts != nil) {
+            return;
+        }
+
+        qCDebug(lcFileProviderSettingsController) << "Initial check for file provider settings found nil enabled vfs accounts array."
+                                                  << "Enabling all accounts on initial setup.";
+        [[maybe_unused]] const auto result = enableVfsForAllAccounts();
     }
 
     FileProviderSettingsController *q = nullptr;
