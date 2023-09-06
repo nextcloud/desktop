@@ -91,8 +91,35 @@ public:
         NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
         NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
         [_userDefaults setObject:modifiedVfsAccounts forKey:accsKey];
+        [_userDefaults synchronize];
+
+        qDebug() << userIdAtHost << setEnabled << enabledAccounts();
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
+    }
+
+    [[nodiscard]] VfsAccountsAction enableVfsForAllAccounts() const
+    {
+        const auto accManager = AccountManager::instance();
+        const auto accountsList = accManager->accounts();
+
+        if (accountsList.count() == 0) {
+            return VfsAccountsAction::VfsAccountsNoAction;
+        }
+
+        auto overallActResult = VfsAccountsAction::VfsAccountsNoAction;
+
+        for (const auto &account : accountsList) {
+            const auto qAccountUserIdAtHost = account->account()->userIdAtHostWithPort();
+            const auto accountActResult = setVfsEnabledForAccount(qAccountUserIdAtHost, true);
+
+            if (accountActResult == VfsAccountsAction::VfsAccountsEnabledChanged) {
+                overallActResult = accountActResult;
+            }
+        }
+
+        return overallActResult;
+
     }
 
 private:
