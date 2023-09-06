@@ -224,6 +224,8 @@ public:
 
                 NSFileProviderDomain * const domain = _registeredDomains.take(domainId);
                 [domain release];
+
+                _registeredDomains.remove(domainId);
             }];
         }
     }
