@@ -132,12 +132,12 @@ AccountState::AccountState(AccountPtr account)
             }
         });
     }
+#endif
     // as a fallback and to recover after server issues we also poll
     auto timer = new QTimer(this);
     timer->setInterval(ConnectionValidator::DefaultCallingInterval);
     connect(timer, &QTimer::timeout, this, [this] { checkConnectivity(false); });
     timer->start();
-#endif
 
     connect(account->credentials(), &AbstractCredentials::requestLogout, this, [this] {
         setState(State::SignedOut);
