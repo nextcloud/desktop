@@ -165,10 +165,6 @@ SyncJournalFileRecord LockFileJob::handleReply()
         if (_lockTime <= 0) {
             return record;
         }
-
-        if (_lockTimeout <= 0) {
-            return record;
-        }
     }
 
     const auto relativePathInDb = path().mid(_remoteSyncPathWithTrailingSlash.size());
