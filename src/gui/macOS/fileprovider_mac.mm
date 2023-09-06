@@ -37,10 +37,6 @@ FileProvider::FileProvider(QObject * const parent)
         qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
         deleteLater();
         return;
-    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
-        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
-        deleteLater();
-        return;
     }
 
     qCInfo(lcMacFileProvider) << "Initialising file provider domain manager.";
@@ -64,9 +60,6 @@ FileProvider *FileProvider::instance()
 {
     if (!fileProviderAvailable()) {
         qCInfo(lcMacFileProvider) << "File provider system is not available on this version of macOS.";
-        return nullptr;
-    } else if (!ConfigFile().macFileProviderModuleEnabled()) {
-        qCInfo(lcMacFileProvider) << "File provider module is not enabled in application config.";
         return nullptr;
     }
 
