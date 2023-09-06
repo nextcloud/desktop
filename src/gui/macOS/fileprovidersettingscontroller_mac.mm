@@ -74,11 +74,25 @@ public:
 
     [[nodiscard]] VfsAccountsAction setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
     {
-        NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
+        NSArray<NSString *> *vfsEnabledAccounts = nsEnabledAccounts();
+
+        qCInfo(lcFileProviderSettingsController) << "Setting file provider-based vfs of account"
+                                                 << userIdAtHost
+                                                 << "to"
+                                                 << setEnabled;
+
+        if (vfsEnabledAccounts == nil) {
+            qCDebug(lcFileProviderSettingsController) << "Received nil array for accounts, creating new array";
+            vfsEnabledAccounts = NSArray.array;
+        }
+
         NSString *const nsUserIdAtHost = userIdAtHost.toNSString();
         const BOOL accountEnabled = [vfsEnabledAccounts containsObject:nsUserIdAtHost];
 
         if (accountEnabled == setEnabled) {
+            qCDebug(lcFileProviderSettingsController) << "VFS enablement status for"
+                                                      << userIdAtHost
+                                                      << "matches config.";
             return VfsAccountsAction::VfsAccountsNoAction;
         }
 
@@ -93,9 +107,8 @@ public:
         NSArray<NSString *> *const modifiedVfsAccounts = mutableVfsAccounts.copy;
         NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
         [_userDefaults setObject:modifiedVfsAccounts forKey:accsKey];
-        [_userDefaults synchronize];
 
-        qDebug() << userIdAtHost << setEnabled << enabledAccounts();
+        Q_ASSERT(vfsEnabledForAccount(userIdAtHost) == userIdAtHost);
 
         return VfsAccountsAction::VfsAccountsEnabledChanged;
     }
@@ -140,6 +153,7 @@ private:
 
         qCDebug(lcFileProviderSettingsController) << "Initial check for file provider settings found nil enabled vfs accounts array."
                                                   << "Enabling all accounts on initial setup.";
+
         [[maybe_unused]] const auto result = enableVfsForAllAccounts();
     }
 
