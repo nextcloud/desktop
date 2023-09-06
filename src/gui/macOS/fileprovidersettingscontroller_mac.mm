@@ -54,7 +54,7 @@ public:
 
     ~MacImplementation() = default;
 
-    QStringList enabledAccounts() const
+    [[nodiscard]] QStringList enabledAccounts() const
     {
         QStringList qEnabledAccounts;
         NSArray<NSString *> *const enabledAccounts = nsEnabledAccounts();
@@ -64,13 +64,13 @@ public:
         return qEnabledAccounts;
     }
 
-    bool vfsEnabledForAccount(const QString &userIdAtHost) const
+    [[nodiscard]] bool vfsEnabledForAccount(const QString &userIdAtHost) const
     {
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
         return [vfsEnabledAccounts containsObject:userIdAtHost.toNSString()];
     }
 
-    VfsAccountsAction setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
+    [[nodiscard]] VfsAccountsAction setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled) const
     {
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
         NSString *const nsUserIdAtHost = userIdAtHost.toNSString();
@@ -96,7 +96,7 @@ public:
     }
 
 private:
-    NSArray<NSString *> *nsEnabledAccounts() const
+    [[nodiscard]] NSArray<NSString *> *nsEnabledAccounts() const
     {
         NSString *const accsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
         return (NSArray<NSString *> *)[_userDefaults objectForKey:accsKey];
