@@ -460,16 +460,19 @@ void FileProviderDomainManager::updateFileProviderDomains()
     }
 
     const auto vfsEnabledAccounts = FileProviderSettingsController::instance()->vfsEnabledAccounts();
-    auto domainsToRemove = d->configuredDomainIds();
+    auto configuredDomains = d->configuredDomainIds();
 
     for (const auto &accountUserIdAtHost : vfsEnabledAccounts) {
-        domainsToRemove.removeAll(accountUserIdAtHost);
+        if (configuredDomains.contains(accountUserIdAtHost)) {
+            configuredDomains.removeAll(accountUserIdAtHost);
+            continue;
+        }
 
         const auto accountState = AccountManager::instance()->accountFromUserId(accountUserIdAtHost);
         addFileProviderDomainForAccount(accountState.data());
     }
 
-    for (const auto &remainingDomainUserId : domainsToRemove) {
+    for (const auto &remainingDomainUserId : configuredDomains) {
         const auto accountState = AccountManager::instance()->accountFromUserId(remainingDomainUserId);
         removeFileProviderDomainForAccount(accountState.data());
     }
