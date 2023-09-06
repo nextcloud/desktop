@@ -36,6 +36,7 @@ class AccountState;
 class Account;
 class QuotaInfo;
 class TlsErrorDialog;
+class FetchServerSettingsJob;
 
 /**
  * @brief Extra info about an ownCloud server account.
@@ -108,6 +109,8 @@ public:
     State state() const;
 
     bool isSignedOut() const;
+
+    [[nodiscard]] bool readyForSync() const;
 
     /** A user-triggered sign out which disconnects, stops syncs
      * for the account and forgets the password. */
@@ -203,6 +206,8 @@ private:
     std::chrono::milliseconds _maintenanceToConnectedDelay;
 
     QuotaInfo *_quotaInfo = nullptr;
+
+    QPointer<FetchServerSettingsJob> _fetchCapabilitiesJob;
 
     friend class SpaceMigration;
 };
