@@ -23,6 +23,7 @@ using namespace std::chrono_literals;
 
 using namespace OCC;
 
+Q_LOGGING_CATEGORY(lcSyncScheduler, "scheduler.syncscheduler", QtInfoMsg)
 
 class FolderPriorityQueue
 {
@@ -131,9 +132,16 @@ void SyncScheduler::enqueueFolder(Folder *folder, Priority priority)
 
 void SyncScheduler::startNext()
 {
-    if (!_running || !_currentSync.isNull()) {
+    if (!_running) {
+        qCInfo(lcSyncScheduler) << "Scheduler is paused, next sync is not started";
         return;
     }
+
+    if (!_currentSync.isNull()) {
+        qCInfo(lcSyncScheduler) << "Another sync is already running, waiting for that to finish before starting a new sync";
+        return;
+    }
+
     auto nextSync = _queue->pop();
     while (nextSync && !nextSync->canSync()) {
         nextSync = _queue->pop();
@@ -143,11 +151,29 @@ void SyncScheduler::startNext()
         connect(
             _currentSync, &Folder::syncFinished, this,
             [this](const SyncResult &result) {
+                qCInfo(lcSyncScheduler) << "Sync finished for" << _currentSync->displayName() << "with status" << result.status();
                 if (result.status() != SyncResult::Success) {
+                    auto reschedule = [this]() {
+                        QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [folder = _currentSync, this] {
+                            if (_currentSync->canSync()) {
+                                enqueueFolder(folder);
+                            } else {
+                                qCInfo(lcSyncScheduler) << "Cannot schedule sync for" << _currentSync->displayName();
+                            }
+                        });
+                    };
+
                     // Retry a couple of times after failure; or regularly if requested
-                    if (_currentSync->canSync() && (_currentSync->consecutiveFailingSyncs() > 0 && _currentSync->consecutiveFailingSyncs() < 3)
-                        || _currentSync->syncEngine().isAnotherSyncNeeded() == AnotherSyncNeeded::DelayedFollowUp) {
-                        QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [folder = _currentSync, this] { enqueueFolder(folder); });
+                    if (_currentSync->consecutiveFailingSyncs() > 0) {
+                        if (_currentSync->consecutiveFailingSyncs() < 3) {
+                            qCInfo(lcSyncScheduler) << "Sync failed, rescheduling sync for" << _currentSync->displayName();
+                            reschedule();
+                        } else {
+                            qCInfo(lcSyncScheduler) << "Sync for" << _currentSync->displayName() << "failed 3 times, not rescheduling";
+                        }
+                    } else if (_currentSync->syncEngine().isAnotherSyncNeeded() == AnotherSyncNeeded::DelayedFollowUp) {
+                        qCInfo(lcSyncScheduler) << "Delayed follow-up needed, rescheduling sync for" << _currentSync->displayName();
+                        reschedule();
                     }
                 }
                 _currentSync = nullptr;
@@ -155,6 +181,7 @@ void SyncScheduler::startNext()
             },
             Qt::SingleShotConnection);
         connect(_currentSync, &Folder::destroyed, this, &SyncScheduler::startNext, Qt::SingleShotConnection);
+        qCInfo(lcSyncScheduler) << "Starting sync for" << _currentSync->displayName();
         _currentSync->startSync();
     }
 }
