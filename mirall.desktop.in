@@ -197,7 +197,7 @@ Comment[lb]=@APPLICATION_NAME@ Desktop Synchronisatioun Client
 GenericName[lb]=Dossier Dync
 Name[lb]=@APPLICATION_NAME@ Desktop Sync Client
 Icon[lb]=@APPLICATION_ICON_NAME@
-
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
 
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit
