@@ -88,7 +88,8 @@ private:
     ActivitySettings *_activitySettings;
 
     QAction *_activityAction;
-    QAction *_addAccountAction = nullptr;
+    QAction *_addAccountAction;
+    QList<QAction *> _accountActions;
     ownCloudGui *_gui;
 
 };

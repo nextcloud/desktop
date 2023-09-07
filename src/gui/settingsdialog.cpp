@@ -343,9 +343,12 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showFirstPage()
 {
-    const QList<QAction *> &actions = _ui->toolBar->actions();
-    if (!actions.empty()) {
-        actions.at(_addAccountAction ? 1 : 0)->trigger();
+    if (!_accountActions.isEmpty()) {
+        _accountActions.first()->trigger();
+    } else {
+        Q_ASSERT(!_ui->toolBar->actions().isEmpty());
+        // the first page is always the add button, so select the second
+        _ui->toolBar->actions().at(1)->trigger();
     }
 }
 
@@ -381,6 +384,7 @@ void SettingsDialog::accountAdded(AccountStatePtr accountStatePtr)
         const QIcon icon(AvatarJob::makeCircularAvatar(avatar));
         accountAction = new ToolButtonAction(icon, actionText, this);
     }
+    _accountActions.append(accountAction);
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(accountStatePtr->account()->displayName());
