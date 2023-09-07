@@ -1,0 +1,5 @@
+Bugfix: Branding of folder status overlay
+
+We fixed a bug where branded overlay icons for the display of the sync status where not used.
+
+https://github.com/owncloud/client/pull/11192
