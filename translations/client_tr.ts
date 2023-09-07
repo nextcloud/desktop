@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Varsayılan değeri eski haline getir</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@ Lütfen tarayıcınızı kullanarak kimliğinizi doğrulayın.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 etkinlikleri desteklenmemektedir.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -1313,7 +1313,7 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Sıraya alındı</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
@@ -3305,7 +3305,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1008"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Dosya versiyonlarını web tarayıcıda göster</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
@@ -3876,7 +3876,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Senkronizasyonu sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="658"/>
@@ -4187,7 +4187,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Dosya Adı Alındı</translation>
     </message>
 </context>
 <context>
