@@ -19,6 +19,9 @@ Summary
 * Bugfix - Hide hidden folders again in the selective sync view: [#11047](https://github.com/owncloud/client/issues/11047)
 * Bugfix - Fix check if a file is a placeholder: [#11107](https://github.com/owncloud/client/issues/11107)
 * Bugfix - Hydration state of file after a directory was replaced with a file: [#11162](https://github.com/owncloud/client/pull/11162)
+* Bugfix - Only syncronize after the server settings where refreshed: [#11168](https://github.com/owncloud/client/issues/11168)
+* Bugfix - Consitently use the same icon for folders: [#11190](https://github.com/owncloud/client/pull/11190)
+* Bugfix - Branding of folder status overlay: [#11192](https://github.com/owncloud/client/pull/11192)
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
@@ -111,6 +114,25 @@ Details
    replacing the folder with a VirtualFile placeholder.
 
    https://github.com/owncloud/client/pull/11162
+
+* Bugfix - Only syncronize after the server settings where refreshed: [#11168](https://github.com/owncloud/client/issues/11168)
+
+   We fixed an issue where the sync was started on outdated server settings.
+
+   https://github.com/owncloud/client/issues/11168
+
+* Bugfix - Consitently use the same icon for folders: [#11190](https://github.com/owncloud/client/pull/11190)
+
+   In 4.0 we introduced a new icon for sync connections. In some places however we continued to use
+   the system provided icon for folders, this resulted in an inconsitent applicaiton look.
+
+   https://github.com/owncloud/client/pull/11190
+
+* Bugfix - Branding of folder status overlay: [#11192](https://github.com/owncloud/client/pull/11192)
+
+   We fixed a bug where branded overlay icons for the display of the sync status where not used.
+
+   https://github.com/owncloud/client/pull/11192
 
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 
