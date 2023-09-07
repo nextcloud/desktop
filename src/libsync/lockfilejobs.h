@@ -54,6 +54,7 @@ private:
     QString _userDisplayName;
     QString _editorName;
     QString _userId;
+    QByteArray _etag;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
     QString _remoteSyncPathWithTrailingSlash;
