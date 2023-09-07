@@ -1801,26 +1801,26 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
         <translation>Atividade de sincronizatzione</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="942"/>
         <source>Could not read system exclude file</source>
         <translation>No at fatu a lèghere s&apos;archìviu de esclusione de su sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una cartella noa prus manna de %1 MB est istada agiunta: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1213"/>
+        <location filename="../src/gui/folder.cpp" line="1228"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una cartella noa est istada agiunta dae una memòria de dae un&apos;archiviatzione de foras.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Pro praghere, bae a is impostatziones pro dda seletzionare si dda boles iscarrigare.</translation>
     </message>
@@ -1851,17 +1851,17 @@ Custu podet èssere un&apos;errore de is librerias tuas OpenSSL.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1294"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Sa cartella %1 est istada creada, ma in antis est istada lassada in foras de sa sincronizatzione, Is datos in intro no ant a èssere sincronizados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>S&apos;archìviu %1 est istadu creadu, ma in antis est istadu lassadu in foras de sa sincronizatzione. No at a èssere sincronizadu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1874,7 +1874,7 @@ Custu bolet nàrrere chi sa sincronizatzione de su cliente diat pòdere non carr
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1885,7 +1885,7 @@ Si detzides de ripristinare is archìvios, custos ant a èssere sincronizados to
 Si detzides de cantzellare is archìvios, non ant a èssere prus a disponimentu, francu chi sias tue su mere.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1895,17 +1895,17 @@ Ses seguru chi boles sincronizare custas atziones cun su serbidore?
 Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custos ddos at a torrare a sincronizare su serbidore.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Boles bogare totu is archìvios?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
         <translation>Boga totu is archìvios?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Mantene is archìvios</translation>
     </message>
