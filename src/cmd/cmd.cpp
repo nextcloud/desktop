@@ -442,12 +442,40 @@ int main(int argc, char **argv)
     account->setTrustCertificates(options.trustSSL);
 
     QEventLoop loop;
+    auto *csjob = new CheckServerJob(account);
+    csjob->setIgnoreCredentialFailure(true);
+    QObject::connect(csjob, &CheckServerJob::instanceFound, [&](const QUrl &, const QJsonObject &info) {
+        // see ConnectionValidator::slotCapabilitiesRecieved: only set server version if not empty
+        QString serverVersion = CheckServerJob::version(info);
+        if (!serverVersion.isEmpty()) {
+            account->setServerVersion(serverVersion);
+        }
+        loop.quit();
+    });
+    QObject::connect(csjob, &CheckServerJob::instanceNotFound, [&]() {
+        loop.quit();
+    });
+    QObject::connect(csjob, &CheckServerJob::timeout, [&](const QUrl &) {
+        loop.quit();
+    });
+    csjob->start();
+    loop.exec();
+
+    if (csjob->reply()->error() != QNetworkReply::NoError){
+        std::cout<<"Error connecting to server for status\n";
+        return EXIT_FAILURE;
+    }
+
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
     QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
         auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
         qDebug() << "Server capabilities" << caps;
         account->setCapabilities(caps.toVariantMap());
-        account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
+        // see ConnectionValidator::slotCapabilitiesRecieved: only set server version if not empty
+        QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+        if (!serverVersion.isEmpty()) {
+            account->setServerVersion(serverVersion);
+        }
         loop.quit();
     });
     job->start();
