@@ -1,0 +1,7 @@
+Bugfix: Consitently use the same icon for folders
+
+In 4.0 we introduced a new icon for sync connections.
+In some places however we continued to use the system provided icon for folders,
+this resulted in an inconsitent applicaiton look.
+
+https://github.com/owncloud/client/pull/11190

@@ -26,8 +26,9 @@
 
 #include "libsync/theme.h"
 
+#include "resources/resources.h"
+
 #include <QDir>
-#include <QFileIconProvider>
 #include <QInputDialog>
 
 using namespace OCC;
@@ -161,9 +162,7 @@ void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringLis
     QTreeWidgetItem *item = findFirstChild(parent, folderName);
     if (!item) {
         item = new QTreeWidgetItem(parent);
-        QFileIconProvider prov;
-        QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
-        item->setIcon(0, folderIcon);
+        item->setIcon(0, Resources::getCoreIcon(QStringLiteral("folder-sync")));
         item->setText(0, folderName);
         item->setData(0, Qt::UserRole, folderPath);
         item->setToolTip(0, folderPath);

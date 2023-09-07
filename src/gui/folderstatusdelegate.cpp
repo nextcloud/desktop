@@ -25,7 +25,6 @@
 
 #include "resources/resources.h"
 
-#include <QFileIconProvider>
 #include <QPainter>
 #include <QApplication>
 

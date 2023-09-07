@@ -28,11 +28,11 @@
 #include "configfile.h"
 #include "theme.h"
 
-#include <QFileInfo>
 #include <QFileIconProvider>
+#include <QFileInfo>
+#include <QFrame>
 #include <QPointer>
 #include <QPushButton>
-#include <QFrame>
 #include <QRegularExpression>
 
 using namespace std::chrono_literals;
@@ -76,9 +76,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     closeButton->setAutoDefault(false);
 
     // Set icon
-    QFileInfo f_info(_localPath);
-    QFileIconProvider icon_provider;
-    const QIcon icon = icon_provider.icon(f_info);
+    const QIcon icon = QFileIconProvider().icon(QFileInfo(_localPath));
     if (!icon.isNull()) {
         auto pixmap = icon.pixmap(thumbnailSize, thumbnailSize);
         _ui->label_icon->setPixmap(pixmap);
