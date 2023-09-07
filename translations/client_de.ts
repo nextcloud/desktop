@@ -1803,26 +1803,26 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
         <translation>Synchronisierungsaktivität</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="942"/>
         <source>Could not read system exclude file</source>
         <translation>Systemeigene Ausschlussdatei kann nicht gelesen werden</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Ein neuer Ordner größer als %1 MB wurde hinzugefügt: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1213"/>
+        <location filename="../src/gui/folder.cpp" line="1228"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Ein Ordner von einem externen Speicher wurde hinzugefügt.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Bitte wechseln Sie zu den Einstellungen, falls Sie den Ordner herunterladen möchten.</translation>
     </message>
@@ -1854,17 +1854,17 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
         <translation>Möchten Sie die Synchronisierung dieses Ordners stoppen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1294"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Der Ordner %1 wurde erstellt, wurde jedoch zuvor von der Synchronisierung ausgeschlossen. Die darin enthaltenen Daten werden nicht synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Die Datei % 1 wurde erstellt, jedoch bereits zuvor von der Synchronisierung ausgeschlossen. Sie wird nicht synchronisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1877,7 +1877,7 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1888,7 +1888,7 @@ Wenn Sie sich entscheiden, die Dateien wiederherzustellen, werden sie erneut mit
 Wenn Sie sich entscheiden, die Dateien zu löschen, sind sie für Sie nicht mehr verfügbar, es sei denn, Sie sind der Eigentümer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1897,17 +1897,17 @@ Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren mö
 Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheiden, werden diese wieder vom Server synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
         <translation>Alle Dateien entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>

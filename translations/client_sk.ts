@@ -1801,26 +1801,26 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
         <translation>Aktivita synchronizácie</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="942"/>
         <source>Could not read system exclude file</source>
         <translation>Nemožno čítať systémový exclude file</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Bol pridaný nový priečinok väčší ako %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1213"/>
+        <location filename="../src/gui/folder.cpp" line="1228"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Bol pridaný priečinok z externého úložiska.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Ak si to prajete prevziať, tak prejdite do nastavení a vyberte to.</translation>
     </message>
@@ -1851,17 +1851,17 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1294"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Priečinok %1 bol vytvorený, ale bol už skôr vylúčený zo synchronizácie. Nebude preto synchronizovaný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Súbor %1 bol vytvorený, ale bol už skôr vylúčený zo synchronizácie. Nebude preto synchronizovaný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1874,7 +1874,7 @@ To znamená, že klient synchronizácie nemusí okamžite odovzdať lokálne zme
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1885,7 +1885,7 @@ Ak sa rozhodnete lokálne súbory ponechať, budú znovu synchronizované so ser
 Ak sa rozhodnete súbory vymazať tak následne už nebudú dostupné, ak nie ste vlastník.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1894,17 +1894,17 @@ Ste si istí, že chcete tieto akcie synchronizovať so serverom?
 Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizované zo servera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Odstrániť všetky súbory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
         <translation>Odstrániť všetky súbory</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Ponechať súbory</translation>
     </message>

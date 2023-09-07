@@ -447,13 +447,14 @@ Má se být pokoušeno o jejich naimportování?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Šifrování mezi koncovými body</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Toto zašifruje vaši složku a veškeré soubory v ní. Soubory už nebudou přístupné bez vašeho mnemotechnického klíče.
+&lt;b&gt;Tento proces není vratný. Opravdu chcete pokračovat?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -483,17 +484,17 @@ Má se být pokoušeno o jejich naimportování?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Vyčkejte na dokončení synchronizace složky a až pak se ji pokoušejte šifrovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Složka má drobný problém se synchronizací. Její šifrování bude možné až po úspěšné synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="360"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Vyskytla se chyba při synchronizaci složky. Její šifrování bude možné až po úspěšné synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
@@ -1803,25 +1804,25 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <translation>Průběh synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="942"/>
         <source>Could not read system exclude file</source>
         <translation>Nezdařilo se přečtení systémového souboru s položkami pro vynechání</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Byla přidána nová složka větší než %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1213"/>
+        <location filename="../src/gui/folder.cpp" line="1228"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Byla přidána složka z externího úložiště.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Pokud to chcete stáhnout, jděte do nastavení a vyberte to.</translation>
     </message>
@@ -1853,17 +1854,17 @@ Toto může být způsobeno problémem s OpenSSL knihovnami.</translation>
         <translation>Chcete ji přestat synchronizovat?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1294"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Složka %1 byla vytvořena ale byla už dříve vynechána ze synchronizace. Data, která se v ní nacházejí, nebudou synchronizována.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Soubor %1 byl vytvořen ale byl už dříve vynechán ze synchronizace. Nebude synchronizován.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1876,7 +1877,7 @@ To znamená, že se může stávat, že synchronizační klient nebude místní 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1887,7 +1888,7 @@ Pokud se rozhodnete soubory ponechat, budou opět synchronizovány se serverem, 
 Pokud se rozhodnete soubory smazat, budou vám nedostupné, pokud nejste jejich vlastníkem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1896,17 +1897,17 @@ Opravdu chcete tyto změny provést i na serveru?
 Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru znovu synchronizovány.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Odebrat veškeré soubory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
         <translation>Odebrat veškeré soubory</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>

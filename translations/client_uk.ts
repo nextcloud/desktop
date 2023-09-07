@@ -1804,26 +1804,26 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Журнал синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="942"/>
         <source>Could not read system exclude file</source>
         <translation>Неможливо прочитати виключений системний файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Додано новий каталог, обсяг якого більше %1 МБ: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1213"/>
+        <location filename="../src/gui/folder.cpp" line="1228"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Додано каталог із зовнішнього сховища
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Будь ласка, перейдіть у налаштуваннях, щоб вибрати її для подальшого звантаження.</translation>
     </message>
@@ -1855,17 +1855,17 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Призупинити синхронізацію цього каталогу?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1294"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Каталог %1 створено, але його раніше було виключено з синхронізації. Дані всередині цього каталогу не буде синхронізовано.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Файл %1 було створено, але раніше виключено з синхронізації. Цей файл не буде синхронізовано.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1878,7 +1878,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1889,7 +1889,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Якщо ви вирішите вилучити ці файли, вони будуть недоступні вам, якщо ви не є їхнім власником.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1898,17 +1898,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Якщо ви це зробили помилково та бажаєте зберегти ваші файли, їх буде повторно синхронізовано з хмари.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Вилучити усі файли?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
         <translation>Вилучити усі файли</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Зберегти файли</translation>
     </message>

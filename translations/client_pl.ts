@@ -447,13 +447,14 @@ Czy podjąć próbę zaimportowania konta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Szyfrowanie End-to-End</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Spowoduje to zaszyfrowanie Twojego katalogu i wszystkich znajdujących się w nim plików. Te pliki nie będą już dostępne bez klucza mnemonicznego szyfrowania.
+&lt;b&gt;Proces ten nie jest odwracalny. Na pewno chcesz kontynuować?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -483,17 +484,17 @@ Czy podjąć próbę zaimportowania konta?</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Poczekaj na synchronizację katalogu, zanim spróbujesz go zaszyfrować.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Katalog ma niewielki problem z synchronizacją. Szyfrowanie tego katalogu będzie możliwe po pomyślnej synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="360"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>Katalog zawiera błąd synchronizacji. Szyfrowanie tego katalogu będzie możliwe po pomyślnej synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
@@ -774,7 +775,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1584"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>Istnieją katalogi, których rozmiar przekracza %1MB: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -1803,26 +1804,26 @@ Może to być problem z bibliotekami OpenSSL.</translation>
         <translation>Synchronizuj aktywność</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="942"/>
         <source>Could not read system exclude file</source>
         <translation>Nie można odczytać systemowego pliku wykluczeń</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Dodano nowy katalog większy niż %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1213"/>
+        <location filename="../src/gui/folder.cpp" line="1228"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dodano katalog z magazynu zewnętrznego.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Przejdź do ustawień, aby go wybrać do pobrania.</translation>
     </message>
@@ -1830,40 +1831,41 @@ Może to być problem z bibliotekami OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1364"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Katalog przekroczył ustawiony limit rozmiaru katalogu wynoszący %1MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1375"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Kontynuuj synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1383"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Zatrzymaj synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1394"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>Katalog %1 przekroczył ustawiony limit rozmiaru katalogu wynoszący %2MB.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1395"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Czy chcesz zatrzymać synchronizację tego katalogu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1294"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Katalog %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Dane w nim zawarte nie zostaną zsynchronizowane.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1282"/>
+        <location filename="../src/gui/folder.cpp" line="1297"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Plik %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Nie zostanie on zsynchronizowany.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1876,7 +1878,7 @@ Oznacza to, że klient synchronizacji może nie przesyłać natychmiast zmian lo
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1411"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1887,7 +1889,7 @@ Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, 
 Jeśli zdecydujesz się je usunąć, nie będą już dostępne.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1400"/>
+        <location filename="../src/gui/folder.cpp" line="1416"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1896,17 +1898,17 @@ Czy na pewno chcesz zsynchronizować te działania z serwerem?
 Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one przywrócone z serwera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1404"/>
+        <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
         <translation>Usunąć wszystkie pliki?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1408"/>
+        <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
         <translation>Usuń wszystkie pliki</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1409"/>
+        <location filename="../src/gui/folder.cpp" line="1425"/>
         <source>Keep files</source>
         <translation>Zachowaj pliki</translation>
     </message>
@@ -2476,7 +2478,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Zapytaj o potwierdzenie przed synchronizacją nowych katalogów większych niż</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2487,12 +2489,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="281"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>Powiadamiaj, gdy zsynchronizowane katalogi osiągną rozmiar większy niż określony limit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="308"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>Automatycznie wyłączaj synchronizację katalogów, które przekraczają limit</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2502,7 +2504,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Przenieś usunięte pliki do kosza</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -5589,7 +5591,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Zezwalaj na udostępnianie</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
