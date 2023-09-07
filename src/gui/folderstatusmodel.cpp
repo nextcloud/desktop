@@ -209,7 +209,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:
-            return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
+            if (x._isExternal) {
+                return QFileIconProvider().icon(QFileIconProvider::Network);
+            }
+            return Resources::getCoreIcon(QStringLiteral("folder-sync"));
         case Qt::ForegroundRole:
             if (x._isUndecided) {
                 return QColor(Qt::red);

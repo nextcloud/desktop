@@ -132,12 +132,12 @@ AccountState::AccountState(AccountPtr account)
             }
         });
     }
+#endif
     // as a fallback and to recover after server issues we also poll
     auto timer = new QTimer(this);
     timer->setInterval(ConnectionValidator::DefaultCallingInterval);
     connect(timer, &QTimer::timeout, this, [this] { checkConnectivity(false); });
     timer->start();
-#endif
 
     connect(account->credentials(), &AbstractCredentials::requestLogout, this, [this] {
         setState(State::SignedOut);
@@ -227,19 +227,22 @@ void AccountState::setState(State state)
             _connectionValidator.clear();
             checkConnectivity();
         }
-        if (oldState == Connected || _state == Connected) {
-            emit isConnectedChanged();
-        }
     }
 
     // might not have changed but the underlying _connectionErrors might have
     if (_state == Connected) {
-        QTimer::singleShot(0, this, [this] {
+        QTimer::singleShot(0, this, [this, oldState] {
             // ensure the connection validator is done
             _queueGuard.unblock();
             // update capabilites and fetch relevant settings
-            auto updateJob = new FetchServerSettingsJob(account(), this);
-            updateJob->start();
+            _fetchCapabilitiesJob = new FetchServerSettingsJob(account(), this);
+            connect(_fetchCapabilitiesJob.get(), &FetchServerSettingsJob::finishedSignal, this, [oldState, this] {
+                if (oldState == Connected || _state == Connected) {
+                    _fetchCapabilitiesJob.clear();
+                    emit isConnectedChanged();
+                }
+            });
+            _fetchCapabilitiesJob->start();
         });
     }
     // don't anounce a state change from connected to connected
@@ -576,6 +579,10 @@ void AccountState::setSettingUp(bool settingUp)
         _settingUp = settingUp;
         Q_EMIT isSettingUpChanged();
     }
+}
+bool AccountState::readyForSync() const
+{
+    return !_fetchCapabilitiesJob && isConnected();
 }
 
 } // namespace OCC

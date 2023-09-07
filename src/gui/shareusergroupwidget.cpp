@@ -13,40 +13,34 @@
  */
 
 #include "shareusergroupwidget.h"
-#include "ui_shareusergroupwidget.h"
-#include "ui_shareuserline.h"
 #include "account.h"
-#include "folderman.h"
-#include "folder.h"
 #include "accountmanager.h"
-#include "theme.h"
-#include "configfile.h"
 #include "capabilities.h"
+#include "configfile.h"
 #include "guiutility.h"
-#include "thumbnailjob.h"
 #include "sharee.h"
 #include "sharemanager.h"
-#include "guiutility.h"
+#include "thumbnailjob.h"
+#include "ui_shareusergroupwidget.h"
+#include "ui_shareuserline.h"
 
 #include "resources/resources.h"
 
 #include "QProgressIndicator.h"
-#include <QBuffer>
-#include <QFileIconProvider>
-#include <QClipboard>
-#include <QFileInfo>
+
 #include <QAbstractProxyModel>
-#include <QCompleter>
-#include <qscrollarea.h>
-#include <qlayout.h>
-#include <QPropertyAnimation>
-#include <QMenu>
 #include <QAction>
-#include <QDesktopServices>
-#include <QMessageBox>
-#include <QCryptographicHash>
+#include <QBuffer>
+#include <QClipboard>
 #include <QColor>
+#include <QCompleter>
+#include <QCryptographicHash>
+#include <QDesktopServices>
+#include <QFileInfo>
+#include <QMenu>
+#include <QMessageBox>
 #include <QPainter>
+#include <QPropertyAnimation>
 
 namespace OCC {
 

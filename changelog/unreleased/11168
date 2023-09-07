@@ -1,0 +1,5 @@
+Bugfix: Only syncronize after the server settings where refreshed
+
+We fixed an issue where the sync was started on outdated server settings.
+
+https://github.com/owncloud/client/issues/11168

@@ -295,7 +295,7 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
 AbstractNetworkJob::~AbstractNetworkJob()
 {
     if (!_finished && !_aborted && !_timedout) {
-        qCCritical(lcNetworkJob) << "Deleting running job" << this << parent();
+        qCCritical(lcNetworkJob) << "Deleting running job" << this;
     }
     delete _reply;
     _reply = nullptr;

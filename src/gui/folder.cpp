@@ -32,7 +32,6 @@
 #include "folderwatcher.h"
 #include "libsync/graphapi/spacesmanager.h"
 #include "localdiscoverytracker.h"
-#include "networkjobs.h"
 #include "scheduling/syncscheduler.h"
 #include "settingsdialog.h"
 #include "socketapi/socketapi.h"
@@ -411,7 +410,7 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected() && isReady() && _accountState->account()->hasCapabilities() && _folderWatcher;
+    return !syncPaused() && accountState()->readyForSync() && isReady() && _accountState->account()->hasCapabilities() && _folderWatcher;
 }
 
 bool Folder::isReady() const

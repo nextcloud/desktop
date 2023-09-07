@@ -18,8 +18,9 @@
 #include "libsync/networkjobs.h"
 #include "libsync/theme.h"
 
+#include "resources/resources.h"
+
 #include <QDialogButtonBox>
-#include <QFileIconProvider>
 #include <QHeaderView>
 #include <QLabel>
 #include <QScopedValueRollback>
@@ -132,8 +133,6 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
 
 void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size)
 {
-    QFileIconProvider prov;
-    QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
     if (pathTrail.size() == 0) {
         if (path.endsWith(QLatin1Char('/'))) {
             path.chop(1);
@@ -157,7 +156,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
             } else if (parent->checkState(0) == Qt::Unchecked) {
                 item->setCheckState(0, Qt::Unchecked);
             }
-            item->setIcon(0, folderIcon);
+            item->setIcon(0, Resources::getCoreIcon(QStringLiteral("folder-sync")));
             item->setText(0, pathTrail.first());
             if (size >= 0) {
                 item->setText(1, Utility::octetsToString(size));
