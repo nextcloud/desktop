@@ -151,6 +151,8 @@ signals:
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
+    void interactiveActivityReceived();
+
 protected:
     [[nodiscard]] bool currentlyFetching() const;
 

@@ -156,7 +156,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         if (!fileName.isEmpty()) {
             const auto folder = FolderMan::instance()->folder(a._folder);
 
-            const QString relPath = folder ? folder->remotePath() + fileName : fileName;
+            const QString relPath = folder ? folder->remotePathTrailingSlash() + fileName : fileName;
 
             const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
 
@@ -184,7 +184,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         if (!a._file.isEmpty()) {
             const auto folder = FolderMan::instance()->folder(a._folder);
 
-            QString relPath = folder ? folder->remotePath() + a._file : a._file;
+            QString relPath = folder ? folder->remotePathTrailingSlash() + a._file : a._file;
 
             const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
 
@@ -636,6 +636,13 @@ void ActivityListModel::addNotificationToActivityList(const Activity &activity)
     qCDebug(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
     addEntriesToActivityList({activity});
     _notificationLists.prepend(activity);
+    for (const auto &link : activity._links) {
+        if (link._verb == QByteArrayLiteral("POST")
+            || link._verb == QByteArrayLiteral("REPLY")
+            || link._verb == QByteArrayLiteral("WEB")) {
+            emit interactiveActivityReceived();
+        }
+    }
 }
 
 void ActivityListModel::addSyncFileItemToActivityList(const Activity &activity)

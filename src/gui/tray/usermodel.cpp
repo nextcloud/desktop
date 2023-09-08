@@ -756,6 +756,11 @@ bool User::isUnsolvableConflict(const SyncFileItemPtr &item) const
 
 void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item)
 {
+    if (item->_direction == SyncFileItem::Down && item->_instruction == CSYNC_INSTRUCTION_SYNC) {
+        qCDebug(lcActivity) << "Skipping activities about changes coming from server.";
+        return;
+    }
+
     const auto fileActionFromInstruction = [](const int instruction) {
         if (instruction == CSYNC_INSTRUCTION_REMOVE) {
             return QStringLiteral("file_deleted");
@@ -806,7 +811,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
         }
 
         if(activity._fileAction != "file_deleted" && !item->isEmpty()) {
-            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(item->_file, account());
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(folder->remotePathTrailingSlash() + item->_file, account());
             if (!localFiles.isEmpty()) {
                 const auto firstFilePath = localFiles.constFirst();
                 const auto itemJournalRecord = item->toSyncJournalFileRecordWithInode(firstFilePath);

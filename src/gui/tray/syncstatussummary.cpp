@@ -121,6 +121,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
 {
     if (_accountState && !_accountState->isConnected()) {
         setSyncing(false);
+        setTotalFiles(0);
         setSyncStatusString(tr("Offline"));
         setSyncStatusDetailString("");
         setSyncIcon(Theme::instance()->folderOffline());
@@ -135,6 +136,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         // Success should only be shown if all folders were fine
         if (!folderErrors() || folderError(folder)) {
             setSyncing(false);
+            setTotalFiles(0);
             setSyncStatusString(tr("All synced!"));
             setSyncStatusDetailString("");
             setSyncIcon(Theme::instance()->syncStatusOk());
@@ -144,6 +146,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
     case SyncResult::Error:
     case SyncResult::SetupError:
         setSyncing(false);
+        setTotalFiles(0);
         setSyncStatusString(tr("Some files couldn't be synced!"));
         setSyncStatusDetailString(tr("See below for errors"));
         setSyncIcon(Theme::instance()->syncStatusError());
@@ -152,13 +155,18 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
         setSyncing(true);
-        setSyncStatusString(tr("Syncing"));
+        if (totalFiles() <= 0) {
+            setSyncStatusString(tr("Preparing sync"));
+        } else {
+            setSyncStatusString(tr("Syncing"));
+        }
         setSyncStatusDetailString("");
         setSyncIcon(Theme::instance()->syncStatusRunning());
         break;
     case SyncResult::Paused:
     case SyncResult::SyncAbortRequested:
         setSyncing(false);
+        setTotalFiles(0);
         setSyncStatusString(tr("Sync paused"));
         setSyncStatusDetailString("");
         setSyncIcon(Theme::instance()->syncStatusPause());
@@ -166,6 +174,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
     case SyncResult::Problem:
     case SyncResult::Undefined:
         setSyncing(false);
+        setTotalFiles(0);
         setSyncStatusString(tr("Some files could not be synced!"));
         setSyncStatusDetailString(tr("See below for warnings"));
         setSyncIcon(Theme::instance()->syncStatusWarning());
@@ -205,9 +214,15 @@ void SyncStatusSummary::onFolderProgressInfo(const ProgressInfo &progress)
     const qint64 currentFile = progress.currentFile();
     const qint64 completedFile = progress.completedFiles();
     const qint64 totalSize = qMax(completedSize, progress.totalSize());
-    const qint64 totalFileCount = qMax(currentFile, progress.totalFiles());
+    const qint64 numFilesInProgress = qMax(currentFile, progress.totalFiles());
 
-    setSyncProgress(calculateOverallPercent(totalFileCount, completedFile, totalSize, completedSize));
+    if (_totalFiles <= 0 && numFilesInProgress > 0) {
+        setSyncStatusString(tr("Syncing"));
+    }
+
+    setTotalFiles(numFilesInProgress);
+
+    setSyncProgress(calculateOverallPercent(numFilesInProgress, completedFile, totalSize, completedSize));
 
     if (totalSize > 0) {
         const auto completedSizeString = Utility::octetsToString(completedSize);
@@ -223,8 +238,8 @@ void SyncStatusSummary::onFolderProgressInfo(const ProgressInfo &progress)
         }
     }
 
-    if (totalFileCount > 0) {
-        setSyncStatusString(tr("Syncing file %1 of %2").arg(currentFile).arg(totalFileCount));
+    if (numFilesInProgress > 0) {
+        setSyncStatusString(tr("Syncing file %1 of %2").arg(currentFile).arg(numFilesInProgress));
     }
 }
 
@@ -236,6 +251,14 @@ void SyncStatusSummary::setSyncing(bool value)
 
     _isSyncing = value;
     emit syncingChanged();
+}
+
+void SyncStatusSummary::setTotalFiles(const qint64 value)
+{
+    if (value != _totalFiles) {
+        _totalFiles = value;
+        emit totalFilesChanged();
+    }
 }
 
 void SyncStatusSummary::setSyncProgress(double value)
@@ -266,6 +289,11 @@ QString SyncStatusSummary::syncStatusString() const
 QString SyncStatusSummary::syncStatusDetailString() const
 {
     return _syncStatusDetailString;
+}
+
+qint64 SyncStatusSummary::totalFiles() const
+{
+    return _totalFiles;
 }
 
 void SyncStatusSummary::setSyncIcon(const QUrl &value)
@@ -308,6 +336,7 @@ void SyncStatusSummary::onIsConnectedChanged()
 void SyncStatusSummary::setSyncStateToConnectedState()
 {
     setSyncing(false);
+    setTotalFiles(0);
     setSyncStatusDetailString("");
     if (_accountState && !_accountState->isConnected()) {
         setSyncStatusString(tr("Offline"));
