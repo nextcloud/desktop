@@ -158,6 +158,33 @@ QtObject {
     readonly property int shortAnimationDuration: 200
     readonly property int veryLongAnimationDuration: 3000
 
+    // sync status
+    property int progressBarPreferredHeight: 9
+
+    property int progressBarWidth: 100
+    property int progressBarBackgroundHeight: 8
+    property int progressBarContentHeight: 8
+    property int progressBarRadius: 4
+    property int progressBarContentBorderWidth: 1
+    property int progressBarBackgroundBorderWidth: 1
+    property color progressBarContentColor: ncBlue
+    property color progressBarContentBorderColor: menuBorder
+    property color progressBarBackgroundColor: backgroundColor
+    property color progressBarBackgroundBorderColor: menuBorder
+
+    property int newActivitiesButtonWidth: 150
+    property int newActivitiesButtonHeight: 40
+
+    property real newActivitiesBgNormalOpacity: 0.8
+    property real newActivitiesBgHoverOpacity: 1.0
+
+    property int newActivityButtonDisappearTimeout: 5000
+    property int newActivityButtonDisappearFadeTimeout: 250
+
+    property int activityListScrollToTopTimerInterval: 50
+
+    property int activityListScrollToTopVelocity: 10000
+
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));
     }

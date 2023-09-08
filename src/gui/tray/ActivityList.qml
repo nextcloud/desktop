@@ -7,9 +7,18 @@ import com.nextcloud.desktopclient 1.0 as NC
 ScrollView {
     id: controlRoot
     property alias model: sortedActivityList.sourceModel
+    property alias count: activityList.count
+    property alias atYBeginning : activityList.atYBeginning
     property bool isFileActivityList: false
     property int iconSize: Style.trayListItemIconSize
     property int delegateHorizontalPadding: 0
+
+    property bool scrollingToTop: false
+
+    function scrollToTop() {
+        // Triggers activation of repeating upward flick timer
+        scrollingToTop = true
+    }
 
     signal openFile(string filePath)
     signal activityItemClicked(int index)
@@ -22,6 +31,9 @@ ScrollView {
 
     data: NC.WheelHandler {
         target: controlRoot.contentItem
+        onWheel: {
+            scrollingToTop = false
+        }
     }
 
     ListView {
@@ -35,6 +47,20 @@ ScrollView {
         spacing: 0
         currentIndex: -1
         interactive: true
+
+        Timer {
+            id: repeatUpFlickTimer
+            interval: Style.activityListScrollToTopTimerInterval
+            running: controlRoot.scrollingToTop
+            repeat: true
+            onTriggered: {
+                if (!activityList.atYBeginning) {
+                    activityList.flick(0, Style.activityListScrollToTopVelocity)
+                } else {
+                    controlRoot.scrollingToTop = false
+                }
+            }
+        }
 
         highlight: Rectangle {
             id: activityHover

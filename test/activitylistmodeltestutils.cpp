@@ -387,6 +387,22 @@ void FakeRemoteActivityStorage::initActivityData()
         _startingId++;
     }
 
+    // Insert notification data
+    for (quint32 i = 0; i < _numItemsToInsert; i++) {
+        QJsonObject activity;
+        activity.insert(QStringLiteral("activity_id"), _startingId);
+        activity.insert(QStringLiteral("object_type"), QStringLiteral(""));
+        activity.insert(QStringLiteral("type"), QStringLiteral("security"));
+        activity.insert(QStringLiteral("subject"), QStringLiteral("You successfully logged in using two-factor authentication (Nextcloud Notification)"));
+        activity.insert(QStringLiteral("message"), QStringLiteral(""));
+        activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+        activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
+        activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/password.svg"));
+
+        _activityData.push_back(activity);
+
+        _startingId++;
+    }
     _startingId--;
 }
 

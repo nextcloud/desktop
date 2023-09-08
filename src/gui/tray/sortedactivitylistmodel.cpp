@@ -13,8 +13,36 @@
  */
 
 #include "activitylistmodel.h"
+#include <QVector>
 
 #include "sortedactivitylistmodel.h"
+
+namespace
+{
+    struct ActivityLinksSearchResult {
+        bool hasPOST = false;
+        bool hasREPLY = false;
+        bool hasWEB = false;
+        bool hasDELETE = false;
+    };
+
+    ActivityLinksSearchResult searchForVerbsInLinks(const QVector<OCC::ActivityLink> &links)
+    {
+        ActivityLinksSearchResult result;
+        for (const auto &link : links) {
+            if (link._verb == QByteArrayLiteral("POST")) {
+                result.hasPOST = true;
+            } else if (link._verb == QByteArrayLiteral("REPLY")) {
+                result.hasREPLY = true;
+            } else if (link._verb == QByteArrayLiteral("WEB")) {
+                result.hasWEB = true;
+            } else if (link._verb == QByteArrayLiteral("DELETE")) {
+                result.hasDELETE = true;
+            }
+        }
+        return result;
+    }
+}
 
 namespace OCC {
 
@@ -42,6 +70,31 @@ bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QMod
     } else if (leftType == Activity::DummyMoreActivitiesAvailableType) {
         // Likewise the dummy "more activities available" activity always goes at the bottom
         return false;
+    }
+
+    const auto leftActivityVerbsSearchResult = searchForVerbsInLinks(leftActivity._links);
+    const auto rightActivityVerbsSearchResult = searchForVerbsInLinks(rightActivity._links);
+
+    if (leftActivityVerbsSearchResult.hasPOST != rightActivityVerbsSearchResult.hasPOST) {
+        return leftActivityVerbsSearchResult.hasPOST;
+    }
+
+    if (leftActivityVerbsSearchResult.hasREPLY != rightActivityVerbsSearchResult.hasREPLY) {
+        return leftActivityVerbsSearchResult.hasREPLY;
+    }
+
+    if (leftActivityVerbsSearchResult.hasWEB != rightActivityVerbsSearchResult.hasWEB) {
+        return leftActivityVerbsSearchResult.hasWEB;
+    }
+
+    if (leftActivityVerbsSearchResult.hasDELETE != rightActivityVerbsSearchResult.hasDELETE) {
+        return leftActivityVerbsSearchResult.hasDELETE;
+    }
+
+    const auto leftActivityIsSecurityAction = leftActivity._fileAction == QStringLiteral("security");
+    const auto rightActivityIsSecurityAction = rightActivity._fileAction == QStringLiteral("security");
+    if (leftActivityIsSecurityAction != rightActivityIsSecurityAction) {
+        return leftActivityIsSecurityAction;
     }
 
     // Let's now check for errors as we want those near the top too
