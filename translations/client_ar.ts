@@ -925,150 +925,150 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="243"/>
+        <location filename="../src/gui/folder.cpp" line="242"/>
         <source>Local folder %1 does not exist.</source>
         <translation>المجلد المحلي %1 غير موجود.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="245"/>
+        <location filename="../src/gui/folder.cpp" line="244"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 يجب أن يكون مجلدًا لكنه ليس كذلك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="247"/>
+        <location filename="../src/gui/folder.cpp" line="246"/>
         <source>%1 is not readable.</source>
         <translation>%1 غير قابل للقراءة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="507"/>
+        <location filename="../src/gui/folder.cpp" line="506"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إزالته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="521"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تم تحديثه.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="528"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 تمت إعادة تسميته باسم %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="535"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 تم نقله إلى %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="505"/>
+        <location filename="../src/gui/folder.cpp" line="504"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملف آخر.</numerusform><numerusform>تمت إزالة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إزالة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="202"/>
+        <location filename="../src/gui/folder.cpp" line="201"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="237"/>
+        <location filename="../src/gui/folder.cpp" line="236"/>
         <source>%1 failed to open the database.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="249"/>
+        <location filename="../src/gui/folder.cpp" line="248"/>
         <source>%1 is not writable.</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="512"/>
+        <location filename="../src/gui/folder.cpp" line="511"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملف آخر.</numerusform><numerusform>تمت إضافة %1 و%n ملفين آخرين.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform><numerusform>تمت إضافة %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="514"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 تمت إضافته.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="519"/>
+        <location filename="../src/gui/folder.cpp" line="518"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملف آخر.</numerusform><numerusform>تم تحديث %1 و%n ملفين آخرين.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform><numerusform>تم تحديث %1 و%n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="526"/>
+        <location filename="../src/gui/folder.cpp" line="525"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملف آخر.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفين آخرين.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform><numerusform>تمت إعادة تسمية %1 باسم %2 وتمت إعادة تسمية %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="533"/>
+        <location filename="../src/gui/folder.cpp" line="532"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملف آخر.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفين آخرين.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform><numerusform>تم نقل %1 إلى %2 وتم نقل %n ملفات أخرى.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="540"/>
+        <location filename="../src/gui/folder.cpp" line="539"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملف آخر.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفين آخرين.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform><numerusform>حدث تعارض في مزامنة %1 ومزامنة %n ملفات أخرى.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="542"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 حدث تعارض في مزامنته. يُرجى فحص ملف التعارض!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="547"/>
+        <location filename="../src/gui/folder.cpp" line="546"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملف آخر بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفين آخرين بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform><numerusform>تعذّرت مزامنة %1 و%n ملفات أخرى بسبب الأخطاء. اطلع على السجل للحصول على التفاصيل.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="549"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 تعذّرت المزامنة بسبب حدوث خطأ. اطلع على السجل للحصول على التفاصيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="555"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>Sync Activity</source>
         <translation>نشاط المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="945"/>
+        <location filename="../src/gui/folder.cpp" line="944"/>
         <source>Could not read system exclude file</source>
         <translation>تعذّرت قراءة ملف استبعاد النظام</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1137"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>تمت إضافة مجلد جديد أكبر من %1 ميجا بايت: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1140"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>تمت إضافة مجلد من وحدات التخزين الخارجية.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>يُرجى الانتقال إلى الإعدادات لتحديده إذا كنت ترغب في تنزيله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1196"/>
+        <location filename="../src/gui/folder.cpp" line="1195"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>تم إنشاء المجلد %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنة البيانات الموجودة بداخله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1199"/>
+        <location filename="../src/gui/folder.cpp" line="1198"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>تم إنشاء ملف %1 لكن تم استبعاده من المزامنة مسبقًا. لن تتم مزامنته.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1210"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1081,7 +1081,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1256"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1092,7 +1092,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 إذا قررت حذف الملفات، ستكون غير متوفرة لك، ما لم تكن أنت المالك.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1262"/>
+        <location filename="../src/gui/folder.cpp" line="1261"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1101,17 +1101,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 إذا حدث ذلك صدفة، وقررت الاحتفاظ بملفاتك، ستتم إعادة مزامنتها من الخادم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1269"/>
+        <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove All Files?</source>
         <translation>هل تريد إزالة كل الملفات؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Remove all files</source>
         <translation>إزالة كل الملفات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1273"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>Keep files</source>
         <translation>حفظ الملفات</translation>
     </message>
@@ -1209,7 +1209,7 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="205"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="204"/>
         <source>%1 of %2 in use</source>
         <translation>%1 من %2 قيد الاستخدام</translation>
     </message>
@@ -1217,92 +1217,92 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="226"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>حدث خطأ في أثناء تحميل قائمة المجلدات من الخادم.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="276"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Virtual file support is enabled.</source>
         <translation>تم تمكين دعم الملف الظاهري.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="232"/>
         <source>Fetching folder list from server...</source>
         <translation>جارٍ إحضار قائمة المجلد من الخادم...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="267"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>لم يتم حل التعارضات. انقر للحصول على التفاصيل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="348"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="351"/>
         <source>%1
 %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="350"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="353"/>
         <source>Signed out
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="980"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>البحث عن تغييرات في &apos;%1&apos; البعيد</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>البحث عن تغييرات في &apos;%1&apos; المحلي</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>Reconciling changes</source>
         <translation>توافق التغييرات</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>&apos;%1&apos;</source>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1045"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>مزامنة %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1044"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1055"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>, </source>
         <translation>، </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1051"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>تنزيل %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1050"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1053"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1060"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/ثانية</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1147"/>
         <source>Queued</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1061"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>تحميل %1/ثانية</translation>
@@ -1315,36 +1315,36 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="318"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="321"/>
         <source>Local folder: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1069"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 من %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1087"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 متبقٍّ %1 من %2، ملف %3 من %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1095"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1098"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 من %2، ملف %3 من %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
         <source>file %1 of %2</source>
         <translation>ملف %1 من %2</translation>
     </message>
@@ -1404,57 +1404,57 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="73"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
         <source>Create Remote Folder</source>
         <translation>أنشئ المجلد البعيد</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="75"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>أدخل اسم المجلد الجديد المراد إنشاؤه أدناه &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="103"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="104"/>
         <source>Folder was successfully created on %1.</source>
         <translation>تم إنشاء المجلد بنجاح في %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="113"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="114"/>
         <source>Authentication failed accessing %1</source>
         <translation>المصادقة فشلت في الوصول إلى %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="115"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>تعذّر إنشاء المجلد في %1. يُرجى التحقق يدويًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="134"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>فشل إدراج مجلد. خطأ: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="219"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="218"/>
         <source>Choose this to sync the entire account</source>
         <translation>اختر هذا لمزامنة الحساب بالكامل</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="333"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="332"/>
         <source>This folder is already being synced.</source>
         <translation>تتم مزامنة هذا المجلد بالفعل.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>تقوم الآن بمزامنة &lt;i&gt;%1&lt;/i&gt; بالفعل، وهو المجلد الأصلي لـ &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>تقوم الآن بمزامنة &lt;i&gt;%1&lt;/i&gt; بالفعل، وهو المجلد الفرعي لـ &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -2786,33 +2786,33 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::SelectiveSyncWidget</name>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="70"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="71"/>
         <source>Loading ...</source>
         <translation>جارٍ التحميل...</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="76"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="77"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
         <translation>ألغِ تحديد المجلدات البعيدة التي لا ترغب في مزامنتها.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="90"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="91"/>
         <source>Name</source>
         <translation>الاسم</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="91"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="92"/>
         <source>Size</source>
         <translation>الحجم</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="205"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="253"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="204"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="252"/>
         <source>No subfolders currently on the server.</source>
         <translation>لم يتم العثور أي مجلدات فرعية على الخادم حاليًا.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="255"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="254"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>حدث خطأ أثناء تحميل قائمة المجلدات الفرعية.</translation>
     </message>
@@ -2887,42 +2887,42 @@ for additional privileges during the process.</source>
         <translation>مسار ownCloud:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="110"/>
+        <location filename="../src/gui/sharedialog.cpp" line="108"/>
         <source>%1 Sharing</source>
         <translation>%1 مشاركة</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="91"/>
+        <location filename="../src/gui/sharedialog.cpp" line="89"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="107"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Folder: %2</source>
         <translation>مجلد: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="113"/>
+        <location filename="../src/gui/sharedialog.cpp" line="111"/>
         <source>The server does not allow sharing</source>
         <translation>لا يسمح الخادم بالمشاركة</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="129"/>
+        <location filename="../src/gui/sharedialog.cpp" line="127"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>جارٍ استرداد أقصى عدد ممكن من أذونات المشاركة من الخادم...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="190"/>
+        <location filename="../src/gui/sharedialog.cpp" line="188"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>لا يمكن مشاركة الملف بسبب مشاركته بدون إذن مشاركة.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="199"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>Users and Groups</source>
         <translation>المستخدمون والمجموعات</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="204"/>
         <source>Public Links</source>
         <translation>روابط عامة</translation>
     </message>
@@ -3107,37 +3107,37 @@ for additional privileges during the process.</source>
         <translation>جارٍ المشاركة مع المستخدمين أو المجموعات ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="96"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="90"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="212"/>
         <source>The item is not shared with any users or groups</source>
         <translation>لم تتم مشاركة العنصر مع أي مستخدمين أو مجموعات</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="243"/>
         <source>Open link in browser</source>
         <translation>افتح الرابط في متصفح</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="245"/>
         <source>Copy link to clipboard</source>
         <translation>انسخ الرابط إلى الحافظة</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="253"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
         <source>Send link by email</source>
         <translation>أرسل الرابط بالبريد الإلكتروني</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="263"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="257"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>لم يتم العثور على نتائج لـ &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
         <source>I shared something with you</source>
         <translation>شاركت شيئًا ما معك</translation>
     </message>
@@ -3165,17 +3165,17 @@ for additional privileges during the process.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="353"/>
         <source>create</source>
         <translation>إنشاء</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="362"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
         <source>change</source>
         <translation>تغيير</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
         <source>delete</source>
         <translation>حذف</translation>
     </message>

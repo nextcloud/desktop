@@ -925,150 +925,150 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="243"/>
+        <location filename="../src/gui/folder.cpp" line="242"/>
         <source>Local folder %1 does not exist.</source>
         <translation>本地文件夹 %1 不存在。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="245"/>
+        <location filename="../src/gui/folder.cpp" line="244"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 应该是一个文件夹，但是它现在不是文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="247"/>
+        <location filename="../src/gui/folder.cpp" line="246"/>
         <source>%1 is not readable.</source>
         <translation>%1 不可读。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="507"/>
+        <location filename="../src/gui/folder.cpp" line="506"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已移除。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="521"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="528"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 已更名为 %2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="535"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 已移动至 %2。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="505"/>
+        <location filename="../src/gui/folder.cpp" line="504"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 和 %n 其它文件已被移除。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="202"/>
+        <location filename="../src/gui/folder.cpp" line="201"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="237"/>
+        <location filename="../src/gui/folder.cpp" line="236"/>
         <source>%1 failed to open the database.</source>
         <translation>%1 未能打开数据库。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="249"/>
+        <location filename="../src/gui/folder.cpp" line="248"/>
         <source>%1 is not writable.</source>
         <translation>%1 不可写。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="512"/>
+        <location filename="../src/gui/folder.cpp" line="511"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 文件等 %n个文件已经成功添加</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="514"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 成功添加</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="519"/>
+        <location filename="../src/gui/folder.cpp" line="518"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 和 %n 其它文件已更新。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="526"/>
+        <location filename="../src/gui/folder.cpp" line="525"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 已经更名为 %2，其它 %3 文件也已更名。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="533"/>
+        <location filename="../src/gui/folder.cpp" line="532"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 已移动到 %2，其它 %3 文件也已移动。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="540"/>
+        <location filename="../src/gui/folder.cpp" line="539"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 和 %n 其他文件有同步冲突。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="542"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 有同步冲突。请检查冲突文件！</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="547"/>
+        <location filename="../src/gui/folder.cpp" line="546"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 和 %n 其他文件由于错误不能同步。详细信息请查看日志。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="549"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 同步出错。详情请查看日志。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="555"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>Sync Activity</source>
         <translation>同步活动</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="945"/>
+        <location filename="../src/gui/folder.cpp" line="944"/>
         <source>Could not read system exclude file</source>
         <translation>无法读取系统排除的文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1137"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>一个大于 %1 MB 的新文件夹 %2 已被添加。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1140"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>一个来自外部存储的文件夹已被添加。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>如果您想下载，请到设置页面选择它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1196"/>
+        <location filename="../src/gui/folder.cpp" line="1195"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>文件夹 %1 已创建，但之前已从同步中排除。 里面的数据不会同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1199"/>
+        <location filename="../src/gui/folder.cpp" line="1198"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 文件被创建但在之前的同步中被拒绝了.它将不会被同步.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1210"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1081,7 +1081,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1256"/>
+        <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1092,7 +1092,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 如果您决定删除这些文件，它们将不再可用，除非您是其所有者。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1262"/>
+        <location filename="../src/gui/folder.cpp" line="1261"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1101,17 +1101,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果这是一个意外而您想要保留这些文件，他们会被重新从服务器同步过来。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1269"/>
+        <location filename="../src/gui/folder.cpp" line="1268"/>
         <source>Remove All Files?</source>
         <translation>删除所有文件？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Remove all files</source>
         <translation>删除所有文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1273"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>Keep files</source>
         <translation>保持所有文件</translation>
     </message>
@@ -1211,7 +1211,7 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="205"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="204"/>
         <source>%1 of %2 in use</source>
         <translation>使用量 %1 / %2</translation>
     </message>
@@ -1219,92 +1219,92 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="226"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>载入文件夹列表时发生错误。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="276"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Virtual file support is enabled.</source>
         <translation>虚拟文件功能已开启</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="232"/>
         <source>Fetching folder list from server...</source>
         <translation>获取文件夹列表...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="267"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>有未解决的冲突。点击显示详细信息。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="348"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="351"/>
         <source>%1
 %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="350"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="353"/>
         <source>Signed out
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="980"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>检查远端文件  &apos;%1&apos; 的变动</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>检查本地文件  &apos;%1&apos; 的变动</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>Reconciling changes</source>
         <translation>调整变更</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>&apos;%1&apos;</source>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1045"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>正在同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1044"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1055"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>, </source>
         <translation>，</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1051"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>下载 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1050"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1053"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/秒</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1060"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/秒</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1144"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1147"/>
         <source>Queued</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1061"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>上传 %1/s</translation>
@@ -1317,36 +1317,36 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="318"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="321"/>
         <source>Local folder: %1</source>
         <translation>本地文件夹: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1069"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 / %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1087"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>剩余: %5，%1 / %2, 文件数量 %3 / %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1095"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1098"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 of %2, file %3 of %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
         <source>file %1 of %2</source>
         <translation>第 %1 个文件，共 %2 个</translation>
     </message>
@@ -1406,57 +1406,57 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="73"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
         <source>Create Remote Folder</source>
         <translation>创建远程文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="75"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>输入 %1 中的新文件夹的名称：</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="103"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="104"/>
         <source>Folder was successfully created on %1.</source>
         <translation>文件夹在 %1 上创建成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="113"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="114"/>
         <source>Authentication failed accessing %1</source>
         <translation>访问 %1 时认证失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="115"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>无法在 %1 处创建文件夹。请自行检查。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="134"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>列表失败。错误: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="219"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="218"/>
         <source>Choose this to sync the entire account</source>
         <translation>选择此项以同步整个账户</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="333"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="332"/>
         <source>This folder is already being synced.</source>
         <translation>文件夹已在同步中。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation>无法同步此文件夹。 请选择另一个。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>你已经在同步 &lt;i&gt;%1&lt;/i&gt;，&lt;i&gt;%2&lt;/i&gt; 是它的一个子文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>您已经在同步 &lt;i&gt;%1&lt;/i&gt;，它是 &lt;i&gt;%2&lt;/i&gt; 的子文件夹。</translation>
     </message>
@@ -2788,33 +2788,33 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::SelectiveSyncWidget</name>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="70"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="71"/>
         <source>Loading ...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="76"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="77"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
         <translation>反选您不想同步的那些远端文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="90"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="91"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="91"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="92"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="205"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="253"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="204"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="252"/>
         <source>No subfolders currently on the server.</source>
         <translation>这个服务器上暂不存在子文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="255"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="254"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>载入子文件夹列表时发生错误。</translation>
     </message>
@@ -2889,42 +2889,42 @@ for additional privileges during the process.</source>
         <translation>ownCloud 路径：</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="110"/>
+        <location filename="../src/gui/sharedialog.cpp" line="108"/>
         <source>%1 Sharing</source>
         <translation>%1 分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="91"/>
+        <location filename="../src/gui/sharedialog.cpp" line="89"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="107"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Folder: %2</source>
         <translation>文件夹：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="113"/>
+        <location filename="../src/gui/sharedialog.cpp" line="111"/>
         <source>The server does not allow sharing</source>
         <translation>服务器不支持共享</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="129"/>
+        <location filename="../src/gui/sharedialog.cpp" line="127"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>从服务器获取最大可能的共享权限...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="190"/>
+        <location filename="../src/gui/sharedialog.cpp" line="188"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>未分配共享权限，无法共享文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="199"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>Users and Groups</source>
         <translation>用户和组</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="204"/>
         <source>Public Links</source>
         <translation>公共链接</translation>
     </message>
@@ -3109,37 +3109,37 @@ for additional privileges during the process.</source>
         <translation>分享给其他用户或组 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="96"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="90"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="212"/>
         <source>The item is not shared with any users or groups</source>
         <translation>此项目没有与任何用户或组共享</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="243"/>
         <source>Open link in browser</source>
         <translation>在浏览器中打来链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="245"/>
         <source>Copy link to clipboard</source>
         <translation>复制链接到剪贴板</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="253"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
         <source>Send link by email</source>
         <translation>通过邮件发送链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="263"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="257"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>没有 &apos;%1&apos; 相关结果</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="339"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
         <source>I shared something with you</source>
         <translation>我给你分享了一些东西</translation>
     </message>
@@ -3167,17 +3167,17 @@ for additional privileges during the process.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="353"/>
         <source>create</source>
         <translation>创建</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="362"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
         <source>change</source>
         <translation>更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
         <source>delete</source>
         <translation>删除</translation>
     </message>
