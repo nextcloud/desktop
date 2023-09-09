@@ -2869,7 +2869,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>Weet je zeker dat je %1 wilt afsluiten?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>

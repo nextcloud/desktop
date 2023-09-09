@@ -2855,7 +2855,7 @@ for additional privileges during the process.</source>
         <translation>Sei sicuro di voler terminare %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>

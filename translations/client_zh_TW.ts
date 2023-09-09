@@ -2854,7 +2854,7 @@ for additional privileges during the process.</source>
         <translation>您確定您要退出嗎 %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>帳號</translation>
     </message>

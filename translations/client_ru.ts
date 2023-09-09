@@ -2856,7 +2856,7 @@ for additional privileges during the process.</source>
         <translation>Вы уверены, что хотите выйти из?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Уч.запись</translation>
     </message>

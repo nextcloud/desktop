@@ -1695,7 +1695,7 @@ Bunun yalnızca hangi güncelleme kanalından alınacağını seçtiğini ve her
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 hesabına giriş yapmak için lütfen şifrenizi giriniz.</translation>
     </message>
 </context>
 <context>
@@ -2332,7 +2332,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: Yolunun seçimi kaldırıldığı için yok sayıldı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -2868,7 +2868,7 @@ for additional privileges during the process.</source>
         <translation>%1 çıkmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Hesap</translation>
     </message>
@@ -4374,7 +4374,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu sürümü indirildi, yerel kopya çakışma dosyası olarak yedeklendi</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4466,7 +4466,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="209"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Bazı ayarlar bu istemcinin daha yeni sürümlerinde yapılandırılmış ve bu sürümde bulunmayan özellikler kullanılıyor</translation>
     </message>
 </context>
 </TS>

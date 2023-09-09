@@ -2856,7 +2856,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
         <translation>Confirma que quere saír de %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>Conta</translation>
     </message>

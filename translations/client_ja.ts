@@ -2851,7 +2851,7 @@ for additional privileges during the process.</source>
         <translation>%1 を終了してもよろしいですか?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="377"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="380"/>
         <source>Account</source>
         <translation>アカウント</translation>
     </message>
