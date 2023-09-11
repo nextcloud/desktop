@@ -327,9 +327,9 @@ ConflictSolver::Solution SyncConflictsModel::ConflictInfo::solution() const
     if (mConflictSelected == ConflictSolution::SolutionSelected && mExistingSelected == ConflictSolution::SolutionSelected) {
         result = ConflictSolver::KeepBothVersions;
     } else if (mConflictSelected == ConflictSolution::SolutionDeselected && mExistingSelected == ConflictSolution::SolutionSelected) {
-        result = ConflictSolver::KeepLocalVersion;
-    } else if (mConflictSelected == ConflictSolution::SolutionSelected && mExistingSelected == ConflictSolution::SolutionDeselected) {
         result = ConflictSolver::KeepRemoteVersion;
+    } else if (mConflictSelected == ConflictSolution::SolutionSelected && mExistingSelected == ConflictSolution::SolutionDeselected) {
+        result = ConflictSolver::KeepLocalVersion;
     }
 
     return result;
