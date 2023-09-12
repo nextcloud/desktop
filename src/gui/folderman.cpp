@@ -354,12 +354,6 @@ void FolderMan::scheduleAllFolders()
     }
 }
 
-void FolderMan::slotScheduleAppRestart()
-{
-    _appRestartRequired = true;
-    qCInfo(lcFolderMan) << "Application restart requested!";
-}
-
 void FolderMan::slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMode mode)
 {
     _lockWatcher->addFile(path, mode);
@@ -838,21 +832,6 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
     for (auto *folder : qAsConst(_folders)) {
         folder->setIgnoreHiddenFiles(ignore);
         folder->saveToSettings();
-    }
-}
-
-void FolderMan::restartApplication()
-{
-    if (Utility::isLinux()) {
-        // restart:
-        qCInfo(lcFolderMan) << "Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
-        qApp->quit();
-        QStringList args = qApp->arguments();
-        QString prg = args.takeFirst();
-
-        QProcess::startDetached(prg, args);
-    } else {
-        qCDebug(lcFolderMan) << "On this platform we do not restart.";
     }
 }
 

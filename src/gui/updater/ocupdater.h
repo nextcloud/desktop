@@ -17,11 +17,14 @@
 
 #include <QDateTime>
 #include <QObject>
+#include <QPointer>
 #include <QTemporaryFile>
 #include <QTimer>
 #include <QUrl>
 #include <QVersionNumber>
 
+#include "settingsdialog.h"
+#include "updater/updatefinisheddialog.h"
 #include "updater/updateinfo.h"
 #include "updater/updater.h"
 
@@ -70,7 +73,7 @@ class UpdaterScheduler : public QObject
 {
     Q_OBJECT
 public:
-    UpdaterScheduler(QObject *parent);
+    explicit UpdaterScheduler(SettingsDialog *settingsDialog, QObject *parent = nullptr);
 
 signals:
     /**
@@ -80,16 +83,16 @@ signals:
      */
     void updaterAnnouncement(const QString &title, const QString &msg);
 
-    /**
-     * Request restart of the entire application. Used when updating in the background to make the user use the new version after the update has finished.
-     */
-    void requestRestart();
-
 private slots:
     void slotTimerFired();
 
 private:
     QTimer _updateCheckTimer; /** Timer for the regular update check. */
+
+    // make sure we are going to show only one of them at once
+    QPointer<UpdateFinishedDialog> _updateFinishedDialog = nullptr;
+
+    SettingsDialog *_settingsDialog;
 };
 
 /**

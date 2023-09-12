@@ -34,8 +34,9 @@ using namespace std::chrono_literals;
 
 namespace OCC {
 
-UpdaterScheduler::UpdaterScheduler(QObject *parent)
+UpdaterScheduler::UpdaterScheduler(SettingsDialog *settingsDialog, QObject *parent)
     : QObject(parent)
+    , _settingsDialog(settingsDialog)
 {
     connect(&_updateCheckTimer, &QTimer::timeout,
         this, &UpdaterScheduler::slotTimerFired);
@@ -45,7 +46,27 @@ UpdaterScheduler::UpdaterScheduler(QObject *parent)
         connect(updater, &OCUpdater::newUpdateAvailable,
             this, &UpdaterScheduler::updaterAnnouncement);
 
-        connect(updater, &OCUpdater::requestRestart, this, &UpdaterScheduler::requestRestart);
+        connect(updater, &OCUpdater::requestRestart, this, [this]() {
+            // prevent dialog from being displayed twice (rather unlikely, but it won't hurt)
+            if (_updateFinishedDialog == nullptr) {
+                _updateFinishedDialog = new UpdateFinishedDialog(_settingsDialog);
+                _updateFinishedDialog->setAttribute(Qt::WA_DeleteOnClose);
+                _updateFinishedDialog->show();
+                ownCloudGui::raiseDialog(_updateFinishedDialog);
+
+                connect(_updateFinishedDialog, &UpdateFinishedDialog::accepted, this, []() {
+                    if (OC_ENSURE(Utility::isLinux())) {
+                        // restart:
+                        qCInfo(lcUpdater) << "Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
+                        QTimer::singleShot(0, qApp->quit);
+                        QStringList args = qApp->arguments();
+                        QString prg = args.takeFirst();
+
+                        QProcess::startDetached(prg, args);
+                    }
+                });
+            }
+        });
 
         connect(updater, &OCUpdater::retryUpdateCheckLater, this, [this]() {
             qCInfo(lcUpdater) << "Retrying update check in 10 minutes";

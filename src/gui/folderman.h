@@ -254,11 +254,6 @@ public slots:
     void slotIsConnectedChanged();
 
     /**
-     * restart the client as soon as it is possible, ie. no folders syncing.
-     */
-    void slotScheduleAppRestart();
-
-    /**
      * Triggers a sync run once the lock on the given file is removed.
      *
      * Automatically detemines the folder that's responsible for the file.
@@ -294,9 +289,6 @@ private:
 
     // makes the folder known to the socket api
     void registerFolderWithSocketApi(Folder *folder);
-
-    // restarts the application (Linux only)
-    void restartApplication();
 
     /// \returns false when a downgrade of the database is detected, true otherwise.
     bool setupFoldersHelper(QSettings &settings, AccountStatePtr account);

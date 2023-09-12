@@ -123,10 +123,9 @@ Application::Application(Platform *platform, const QString &displayLanguage, boo
 
 #ifdef WITH_AUTO_UPDATER
     // Update checks
-    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
+    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(_gui->settingsDialog(), this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement, _gui.data(),
         [this](const QString &title, const QString &msg) { _gui->slotShowTrayMessage(title, msg); });
-    connect(updaterScheduler, &UpdaterScheduler::requestRestart, FolderMan::instance(), &FolderMan::slotScheduleAppRestart);
 #endif
 
     // Cleanup at Quit.
