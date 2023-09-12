@@ -39,6 +39,47 @@ private slots:
         QCOMPARE(backend.dateMsecs(), currentDateMSecs);
         QCOMPARE(backend.dateString(), currentDateString);
     }
+
+    void testDateBoundaries()
+    {
+        Quick::DateFieldBackend backend;
+        const auto minDate = QDate::currentDate().addDays(-5);
+        const auto maxDate = QDate::currentDate().addDays(5);
+        const auto minDateMs = minDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto maxDateMs = maxDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto invalidMinDate = minDate.addDays(-1);
+        const auto invalidMaxDate = maxDate.addDays(1);
+
+        // Set by QDate
+        backend.setMinimumDate(minDate);
+        backend.setMaximumDate(maxDate);
+
+        QCOMPARE(backend.minimumDate(), minDate);
+        QCOMPARE(backend.maximumDate(), maxDate);
+        QCOMPARE(backend.minimumDateMsecs(), minDateMs);
+        QCOMPARE(backend.maximumDateMsecs(), maxDateMs);
+
+        // Reset and try when setting by MSecs
+        backend.setMinimumDate({});
+        backend.setMaximumDate({});
+        backend.setMinimumDateMsecs(minDateMs);
+        backend.setMaximumDateMsecs(maxDateMs);
+
+        QCOMPARE(backend.minimumDate(), minDate);
+        QCOMPARE(backend.maximumDate(), maxDate);
+        QCOMPARE(backend.minimumDateMsecs(), minDateMs);
+        QCOMPARE(backend.maximumDateMsecs(), maxDateMs);
+
+        // Since we default to the current date, the date should be valid
+        QVERIFY(backend.validDate());
+
+        // Now try with invalid dates
+        backend.setDate(invalidMinDate);
+        QVERIFY(!backend.validDate());
+
+        backend.setDate(invalidMaxDate);
+        QVERIFY(!backend.validDate());
+    }
 };
 
 QTEST_MAIN(TestDateFieldBackend)
