@@ -43,6 +43,13 @@ private slots:
     void testDateBoundaries()
     {
         Quick::DateFieldBackend backend;
+
+        QSignalSpy minimumDateChangedSpy(&backend, &Quick::DateFieldBackend::minimumDateChanged);
+        QSignalSpy maximumDateChangedSpy(&backend, &Quick::DateFieldBackend::maximumDateChanged);
+        QSignalSpy minimumDateMsecsChangedSpy(&backend, &Quick::DateFieldBackend::minimumDateMsecsChanged);
+        QSignalSpy maximumDateMsecsChangedSpy(&backend, &Quick::DateFieldBackend::maximumDateMsecsChanged);
+        QSignalSpy validDateChangedSpy(&backend, &Quick::DateFieldBackend::validDateChanged);
+
         const auto minDate = QDate::currentDate().addDays(-5);
         const auto maxDate = QDate::currentDate().addDays(5);
         const auto minDateMs = minDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
@@ -59,6 +66,12 @@ private slots:
         QCOMPARE(backend.minimumDateMsecs(), minDateMs);
         QCOMPARE(backend.maximumDateMsecs(), maxDateMs);
 
+        QCOMPARE(minimumDateChangedSpy.count(), 1);
+        QCOMPARE(maximumDateChangedSpy.count(), 1);
+        QCOMPARE(minimumDateMsecsChangedSpy.count(), 1);
+        QCOMPARE(maximumDateMsecsChangedSpy.count(), 1);
+        QCOMPARE(validDateChangedSpy.count(), 2); // Changes per each min/max date set
+
         // Reset and try when setting by MSecs
         backend.setMinimumDate({});
         backend.setMaximumDate({});
@@ -70,15 +83,23 @@ private slots:
         QCOMPARE(backend.minimumDateMsecs(), minDateMs);
         QCOMPARE(backend.maximumDateMsecs(), maxDateMs);
 
+        QCOMPARE(minimumDateChangedSpy.count(), 3);
+        QCOMPARE(maximumDateChangedSpy.count(), 3);
+        QCOMPARE(minimumDateMsecsChangedSpy.count(), 3);
+        QCOMPARE(maximumDateMsecsChangedSpy.count(), 3);
+        QCOMPARE(validDateChangedSpy.count(), 6);
+
         // Since we default to the current date, the date should be valid
         QVERIFY(backend.validDate());
 
         // Now try with invalid dates
         backend.setDate(invalidMinDate);
         QVERIFY(!backend.validDate());
+        QCOMPARE(validDateChangedSpy.count(), 7);
 
         backend.setDate(invalidMaxDate);
         QVERIFY(!backend.validDate());
+        QCOMPARE(validDateChangedSpy.count(), 8);
     }
 };
 
