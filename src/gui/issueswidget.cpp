@@ -175,7 +175,7 @@ private:
     }
 
 private:
-    StatusSet _filter;
+    StatusSet _filter = {};
 };
 
 /**
