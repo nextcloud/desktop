@@ -2487,12 +2487,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>當同步資料夾的大小超過指定限制時發出通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>自動停用超出限制的資料夾同步</translation>
     </message>
@@ -2502,7 +2502,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>在與外部儲存空間同步時先詢問</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>將移除的檔案移動到垃圾桶</translation>
     </message>

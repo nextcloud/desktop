@@ -2486,12 +2486,12 @@ Hvis dette var et uhell og du bestemmer deg for å beholde filene dine, vil de s
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Varsle når synkroniserte mapper vokser seg større enn spesifisert grense</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Deaktiver automatisk synkronisering av mapper som overvinner grensen</translation>
     </message>
@@ -2501,7 +2501,7 @@ Hvis dette var et uhell og du bestemmer deg for å beholde filene dine, vil de s
         <translation>Be om bekreftelse før synkronisering av eksterne lagre</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>Flytt fjernede filer til papirkurven</translation>
     </message>

@@ -2487,12 +2487,12 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Meddela när synkroniserade mappar växer sig större än den angivna gränsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Inaktivera automatiskt synkronisering av mappar som överskrider gränsen</translation>
     </message>
@@ -2502,7 +2502,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
         <translation>Fråga innan synkronisering av externa lagringsytor</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>Flytta borttagna filer till papperskorgen</translation>
     </message>

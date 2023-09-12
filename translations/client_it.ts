@@ -2484,12 +2484,12 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation type="unfinished"/>
     </message>
@@ -2499,7 +2499,7 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Chiedi conferma prima di sincronizzare storage esterni</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation type="unfinished"/>
     </message>

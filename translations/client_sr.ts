@@ -2487,12 +2487,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Обавести када величина синхронизованих фолдера пређе задату границу</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Аутоматски искључи синхронизацију фолдера чија величина пређе границу</translation>
     </message>
@@ -2502,7 +2502,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Питај за потврду пре синхронизације спољашњих складишта</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>Премести уклоњене фајлове у отпад</translation>
     </message>
