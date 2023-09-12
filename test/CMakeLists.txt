@@ -74,6 +74,7 @@ nextcloud_add_test(SortedShareModel)
 nextcloud_add_test(SecureFileDrop)
 nextcloud_add_test(FileTagModel)
 nextcloud_add_test(SyncConflictsModel)
+nextcloud_add_test(DateFieldBackend)
 
 target_link_libraries(SecureFileDropTest PRIVATE Nextcloud::sync)
 configure_file(fake2eelocksucceeded.json "${PROJECT_BINARY_DIR}/bin/fake2eelocksucceeded.json" COPYONLY)
