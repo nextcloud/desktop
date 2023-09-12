@@ -101,9 +101,9 @@ ApplicationWindow {
 
                 font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
 
-                checked: realModel.allExistingsSelected
+                checked: realModel.allConflictingSelected
                 onToggled: function() {
-                    realModel.selectAllExisting(checked)
+                    realModel.selectAllConflicting(checked)
                 }
             }
 
@@ -119,9 +119,9 @@ ApplicationWindow {
 
                 font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
 
-                checked: realModel.allConflictingSelected
+                checked: realModel.allExistingsSelected
                 onToggled: function() {
-                    realModel.selectAllConflicting(checked)
+                    realModel.selectAllExisting(checked)
                 }
             }
         }
