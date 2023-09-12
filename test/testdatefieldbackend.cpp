@@ -23,11 +23,12 @@ class TestDateFieldBackend : public QObject
 {
     Q_OBJECT
 
+private:
+    static constexpr auto dateStringFormat = "dd/MM/yyyy";
+
 private slots:
     void testDefaultBehaviour()
     {
-        constexpr auto dateStringFormat = "dd/MM/yyyy";
-
         Quick::DateFieldBackend backend;
         backend._dateFormat = dateStringFormat;
 
@@ -100,6 +101,50 @@ private slots:
         backend.setDate(invalidMaxDate);
         QVERIFY(!backend.validDate());
         QCOMPARE(validDateChangedSpy.count(), 8);
+    }
+
+    void testDateSettingMethods()
+    {
+        Quick::DateFieldBackend backend;
+        backend._dateFormat = dateStringFormat;
+
+        QSignalSpy dateChangedSpy(&backend, &Quick::DateFieldBackend::dateChanged);
+        QSignalSpy dateMsecsChangedSpy(&backend, &Quick::DateFieldBackend::dateMsecsChanged);
+        QSignalSpy dateStringChangedSpy(&backend, &Quick::DateFieldBackend::dateStringChanged);
+
+        const auto testDate = QDate::currentDate().addDays(800);
+        const auto testDateMsecs = testDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto testDateString = testDate.toString(dateStringFormat);
+
+        backend.setDate(testDate);
+        QCOMPARE(backend.date(), testDate);
+        QCOMPARE(dateChangedSpy.count(), 1);
+        QCOMPARE(dateMsecsChangedSpy.count(), 1);
+        QCOMPARE(dateStringChangedSpy.count(), 1);
+
+        backend.setDate({});
+        QVERIFY(backend.date() != testDate);
+        QCOMPARE(dateChangedSpy.count(), 2);
+        QCOMPARE(dateMsecsChangedSpy.count(), 2);
+        QCOMPARE(dateStringChangedSpy.count(), 2);
+
+        backend.setDateMsecs(testDateMsecs);
+        QCOMPARE(backend.date(), testDate);
+        QCOMPARE(dateChangedSpy.count(), 3);
+        QCOMPARE(dateMsecsChangedSpy.count(), 3);
+        QCOMPARE(dateStringChangedSpy.count(), 3);
+
+        backend.setDate({});
+        QVERIFY(backend.date() != testDate);
+        QCOMPARE(dateChangedSpy.count(), 4);
+        QCOMPARE(dateMsecsChangedSpy.count(), 4);
+        QCOMPARE(dateStringChangedSpy.count(), 4);
+
+        backend.setDateString(testDateString);
+        QCOMPARE(backend.date(), testDate);
+        QCOMPARE(dateChangedSpy.count(), 5);
+        QCOMPARE(dateMsecsChangedSpy.count(), 5);
+        QCOMPARE(dateStringChangedSpy.count(), 5);
     }
 };
 
