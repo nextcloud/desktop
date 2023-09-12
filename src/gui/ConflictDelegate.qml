@@ -57,14 +57,14 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            itemSelected: root.existingSelected
-            itemPreviewUrl: root.existingPreviewUrl
+            itemSelected: root.conflictSelected
+            itemPreviewUrl: root.conflictPreviewUrl
             itemVersionLabel: qsTr('Local version')
-            itemDateLabel: root.existingDate
-            itemFileSizeLabel: root.existingSize
+            itemDateLabel: root.conflictDate
+            itemFileSizeLabel: root.conflictSize
 
             onSelectedChanged: function() {
-                model.existingSelected = itemSelected
+                model.conflictSelected = itemSelected
             }
         }
 
@@ -72,14 +72,14 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            itemSelected: root.conflictSelected
-            itemPreviewUrl: root.conflictPreviewUrl
+            itemSelected: root.existingSelected
+            itemPreviewUrl: root.existingPreviewUrl
             itemVersionLabel: qsTr('Server version')
-            itemDateLabel: root.conflictDate
-            itemFileSizeLabel: root.conflictSize
+            itemDateLabel: root.existingDate
+            itemFileSizeLabel: root.existingSize
 
             onSelectedChanged: function() {
-                model.conflictSelected = itemSelected
+                model.existingSelected = itemSelected
             }
         }
     }
