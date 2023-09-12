@@ -170,11 +170,11 @@ bool DateFieldBackend::validDate() const
 {
     auto valid = _date.isValid();
 
-    if (_minimumDate.isValid()) {
+    if (_minimumDate.isValid() && minimumDateMsecs() > 0) {
         valid &= _date >= _minimumDate;
     }
 
-    if (_maximumDate.isValid()) {
+    if (_maximumDate.isValid() && maximumDateMsecs() > 0) {
         valid &= _date <= _maximumDate;
     }
 
