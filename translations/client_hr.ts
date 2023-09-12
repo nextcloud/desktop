@@ -2483,12 +2483,12 @@ Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovn
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation type="unfinished"/>
     </message>
@@ -2498,7 +2498,7 @@ Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovn
         <translation>Zatraži potvrdu prije sinkronizacije vanjskih prostora za pohranu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation type="unfinished"/>
     </message>

@@ -2486,12 +2486,12 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Benachrichtigen, wenn synchronisierte Ordner größer werden als die angegebene Grenze</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Automatisch die Synchronisierung von Ordnern beenden, die das Limit überschreiten</translation>
     </message>
@@ -2501,7 +2501,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <translation>Bestätigung erfragen, bevor externe Speicher synchronisiert werden</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>Gelöschte Dateien in den Papierkorb verschieben</translation>
     </message>

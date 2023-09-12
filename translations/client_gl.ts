@@ -2487,12 +2487,12 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Notificar cando os cartafoles sincronizados superen o límite especificado</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Desactivar automaticamente a sincronización de cartafoles que superan o límite</translation>
     </message>
@@ -2502,7 +2502,7 @@ Se isto foi un accidente e decide manter os seus ficheiros, volveranse sincroniz
         <translation>Preguntar se se queren sincronizar os cartafoles de almacenamento externo</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>Mover os ficheiros retirados ao lixo</translation>
     </message>

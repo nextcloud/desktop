@@ -2486,12 +2486,12 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation>Jakinarazi sinkronizatutako karpetak zehaztutako muga baino handiagoak direnean</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation>Desgaitu automatikoki muga gainditzen duten karpeten sinkronizazioa</translation>
     </message>
@@ -2501,7 +2501,7 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Eskatu baimena kanpoko biltegiak sinkronizatu baino lehen</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation>Eraman kendutako fitxategiak zaborrontzira</translation>
     </message>

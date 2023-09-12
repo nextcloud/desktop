@@ -12,7 +12,7 @@ MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_
 Actions=Quit;
 
 # Translations
-
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
 
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit

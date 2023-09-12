@@ -2485,12 +2485,12 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="281"/>
+        <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="308"/>
+        <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
         <translation type="unfinished"/>
     </message>
@@ -2500,7 +2500,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <translation>Megerősítés kérése a külső tárolók szinkronizálása előtt</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="332"/>
+        <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
         <translation type="unfinished"/>
     </message>
