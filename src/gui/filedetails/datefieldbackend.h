@@ -17,6 +17,8 @@
 #include <QDate>
 #include <QObject>
 
+class TestDateFieldBackend;
+
 namespace OCC
 {
 namespace Quick
@@ -78,6 +80,8 @@ signals:
     void validDateChanged();
 
 private:
+    friend class ::TestDateFieldBackend;
+
     QDate _date = QDate::currentDate();
     QDate _minimumDate;
     QDate _maximumDate;

@@ -22,4 +22,24 @@ using namespace OCC;
 class TestDateFieldBackend : public QObject
 {
     Q_OBJECT
-}
+
+private slots:
+    void testDefaultBehaviour()
+    {
+        constexpr auto dateStringFormat = "dd/MM/yyyy";
+
+        Quick::DateFieldBackend backend;
+        backend._dateFormat = dateStringFormat;
+
+        const auto currentDate = QDate::currentDate();
+        const auto currentDateMSecs = currentDate.startOfDay(Qt::UTC).toMSecsSinceEpoch();
+        const auto currentDateString = currentDate.toString(dateStringFormat);
+
+        QCOMPARE(backend.date(), currentDate);
+        QCOMPARE(backend.dateMsecs(), currentDateMSecs);
+        QCOMPARE(backend.dateString(), currentDateString);
+    }
+};
+
+QTEST_MAIN(TestDateFieldBackend)
+#include "testdatefieldbackend.moc"
