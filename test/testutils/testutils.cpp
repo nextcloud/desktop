@@ -27,6 +27,8 @@ namespace OCC {
 namespace TestUtils {
     TestUtilsPrivate::AccountStateRaii createDummyAccount()
     {
+        // ensure we have an instance of folder man
+        std::ignore = folderMan();
         // don't use the account manager to create the account, it would try to use widgets
         auto acc = Account::create(QUuid::createUuid());
         HttpCredentialsTest *cred = new HttpCredentialsTest(QStringLiteral("testuser"), QStringLiteral("secret"));

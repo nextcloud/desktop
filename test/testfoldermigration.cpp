@@ -89,6 +89,8 @@ private slots:
             syncDb.close();
         }
 
+        // init folder man
+        std::ignore = TestUtils::folderMan();
         AccountManager::instance()->restore();
 
         settings->beginGroup(QStringLiteral("0/Folders"));

@@ -314,7 +314,7 @@ private:
     /// Scheduled folders that should be synced as soon as possible
     SyncScheduler *_scheduler;
 
-    QScopedPointer<SocketApi> _socketApi;
+    std::unique_ptr<SocketApi> _socketApi;
 
     bool _appRestartRequired;
 
