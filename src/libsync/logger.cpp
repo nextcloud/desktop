@@ -288,8 +288,9 @@ void Logger::enterNextLogFileNoLock()
         }
 
         // Tentative new log name, will be adjusted if one like this already exists
-        QDateTime now = QDateTime::currentDateTime();
-        QString newLogName = now.toString("yyyyMMdd_HHmm") + "_nextcloud.log";
+        const auto now = QDateTime::currentDateTime();
+        const auto cLocale = QLocale::c(); // Some system locales generate strings that are incompatible with filesystem
+        QString newLogName = cLocale.toString(now, QStringLiteral("yyyyMMdd_HHmm")) + QStringLiteral("_nextcloud.log");
 
         // Expire old log files and deal with conflicts
         QStringList files = dir.entryList(QStringList("*owncloud.log.*"), QDir::Files, QDir::Name) +
