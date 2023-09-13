@@ -253,10 +253,11 @@ bool AccountManager::restoreFromLegacySettings()
                 addAccount(acc);
                 QMessageBox::information(nullptr,
                                          tr("Legacy import"),
-                                         tr("Successfully imported account from legacy client: %1").arg(acc->prettyName()));
-                return true;
+                                         tr("Successfully imported account from legacy client: %1").arg(acc->prettyName()));                
             }
+            settings->endGroup();
         }
+        return true;
     }
 
     QMessageBox::information(nullptr,
