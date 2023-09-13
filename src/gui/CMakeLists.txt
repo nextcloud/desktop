@@ -39,7 +39,6 @@ set(client_UI_SRCS
     ignorelisttablewidget.ui
     networksettings.ui
     settingsdialog.ui
-    shareuserline.ui
     sslerrordialog.ui
     addcertificatedialog.ui
     passwordinputdialog.ui
