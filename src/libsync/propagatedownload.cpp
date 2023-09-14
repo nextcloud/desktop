@@ -1226,6 +1226,7 @@ void PropagateDownloadFile::downloadFinished()
             QString error;
             if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
                 done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
+                return;
             } else {
                 previousFileExists = false;
             }
