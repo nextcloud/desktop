@@ -293,17 +293,19 @@ IF( APPLE )
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
             macOS/fileproviderdomainmanager_mac.mm
+            macOS/fileprovidersettingscontroller.h
+            macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileprovidersocketcontroller.h
             macOS/fileprovidersocketcontroller.cpp
             macOS/fileprovidersocketserver.h
             macOS/fileprovidersocketserver.cpp
             macOS/fileprovidersocketserver_mac.mm
+            macOS/fileproviderstorageuseenumerationobserver.h
+            macOS/fileproviderstorageuseenumerationobserver.m
             macOS/fileproviderxpc.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
-            macOS/fileproviderxpc_mac_utils.mm
-            macOS/fileprovidersettingscontroller.h
-            macOS/fileprovidersettingscontroller_mac.mm)
+            macOS/fileproviderxpc_mac_utils.mm)
     endif()
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
