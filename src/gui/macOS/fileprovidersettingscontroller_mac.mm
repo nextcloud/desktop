@@ -133,7 +133,17 @@ public:
         }
 
         return overallActResult;
+    }
 
+    [[nodiscard]] unsigned long long localStorageUsageForAccount(const QString &userIdAtHost) const
+    {
+        // Return cached value as we fetch asynchronously on initialisation of this class.
+        // We will then emit a signal when the new value is found.
+        NSNumber *const storageUsage = [_storageUsage objectForKey:userIdAtHost.toNSString()];
+        if (storageUsage == nil) {
+            return 0;
+        }
+        return storageUsage.unsignedLongLongValue;
     }
 
 private:
@@ -169,7 +179,7 @@ private:
                     _storageUsage = mutableStorageDictCopy.copy;
 
                     const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
-                    emit q->vfsStorageUseForAccountChanged(qDomainIdentifier);
+                    emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
                 };
 
                 [enumerator enumerateItemsForObserver:storageUseObserver startingAtPage:NSFileProviderInitialPageSortedByName];
@@ -238,6 +248,17 @@ void FileProviderSettingsController::setVfsEnabledForAccount(const QString &user
     if (enabledAccountsAction == MacImplementation::VfsAccountsAction::VfsAccountsEnabledChanged) {
         emit vfsEnabledAccountsChanged();
     }
+}
+
+unsigned long long FileProviderSettingsController::localStorageUsageForAccount(const QString &userIdAtHost) const
+{
+    return d->localStorageUsageForAccount(userIdAtHost);
+}
+
+float FileProviderSettingsController::localStorageUsageGbForAccount(const QString &userIdAtHost) const
+{
+    static constexpr auto bytesIn100Mb = 1ULL * 1000ULL * 1000ULL * 100ULL;
+    return (float)(localStorageUsageForAccount(userIdAtHost) / bytesIn100Mb) / 10.0;
 }
 
 } // namespace Mac
