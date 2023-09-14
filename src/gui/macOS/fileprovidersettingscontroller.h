@@ -40,6 +40,7 @@ public slots:
 
 signals:
     void vfsEnabledAccountsChanged();
+    void vfsStorageUseForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

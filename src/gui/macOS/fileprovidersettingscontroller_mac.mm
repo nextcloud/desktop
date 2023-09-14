@@ -20,6 +20,8 @@
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
+
+#import "fileproviderstorageuseenumerationobserver.h"
 // End of Objective-C imports
 
 namespace {
@@ -140,6 +142,41 @@ private:
         return (NSArray<NSString *> *)[_userDefaults objectForKey:_accountsKey];
     }
 
+    void fetchMaterialisedFilesStorageUsage()
+    {
+        [NSFileProviderManager getDomainsWithCompletionHandler: ^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
+            if (error != nil) {
+                qCWarning(lcFileProviderSettingsController) << "Could not get file provider domains:" << error.localizedDescription;
+                return;
+            }
+
+            for (NSFileProviderDomain *const domain in domains) {
+                NSFileProviderManager *const managerForDomain = [NSFileProviderManager managerForDomain:domain];
+                id<NSFileProviderEnumerator> enumerator = [managerForDomain enumeratorForMaterializedItems];
+                FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
+
+                storageUseObserver.enumerationFinishedHandler = ^(NSNumber *const usage, NSError *const error) {
+                    if (error != nil) {
+                        qCWarning(lcFileProviderSettingsController) << "Error while enumerating storage use" << error.localizedDescription;
+                        return;
+                    }
+
+                    Q_ASSERT(usage != nil);
+
+                    // Remember that OCC::Account::userIdAtHost == domain.identifier for us
+                    NSMutableDictionary<NSString *, NSNumber *> *const mutableStorageDictCopy = _storageUsage.mutableCopy;
+                    [mutableStorageDictCopy setObject:usage forKey:domain.identifier];
+                    _storageUsage = mutableStorageDictCopy.copy;
+
+                    const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
+                    emit q->vfsStorageUseForAccountChanged(qDomainIdentifier);
+                };
+
+                [enumerator enumerateItemsForObserver:storageUseObserver startingAtPage:NSFileProviderInitialPageSortedByName];
+            }
+        }];
+    }
+
     void initialCheck()
     {
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
@@ -151,11 +188,13 @@ private:
                                                   << "Enabling all accounts on initial setup.";
 
         [[maybe_unused]] const auto result = enableVfsForAllAccounts();
+        fetchMaterialisedFilesStorageUsage();
     }
 
     FileProviderSettingsController *q = nullptr;
     NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
     NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
+    NSDictionary <NSString *, NSNumber *> *_storageUsage = @{};
 };
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
