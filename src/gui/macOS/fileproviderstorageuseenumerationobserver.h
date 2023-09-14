@@ -15,6 +15,10 @@
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
 
+typedef void(^UsageEnumerationFinishedHandler)(NSNumber *const usage, NSError *const error);
+
 @interface FileProviderStorageUseEnumerationObserver : NSObject<NSFileProviderEnumerationObserver>
+
+@property (readwrite) UsageEnumerationFinishedHandler enumerationFinishedHandler; // In bytes
 
 @end
