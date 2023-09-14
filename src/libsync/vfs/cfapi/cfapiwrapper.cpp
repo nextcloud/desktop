@@ -862,14 +862,3 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
         return stateResult;
     }
 }
-
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::revertPlaceholder(const QString &path)
-{
-    const auto result = CfRevertPlaceholder(handleForPath(path).get(), CF_REVERT_FLAG_NONE, nullptr);
-    if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't revert placeholder for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
-        return {"Couldn't revert placeholder"};
-    }
-
-    return OCC::Vfs::ConvertToPlaceholderResult::Ok;
-}
