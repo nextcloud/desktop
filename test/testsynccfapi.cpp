@@ -1354,6 +1354,36 @@ private slots:
         const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
         QVERIFY(!localFileLocked.isWritable());
     }
+
+    void testLinkFileDoesNotConvertToPlaceholder()
+    {
+        // inspired by GH issue #6041
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        // Create a Windows shotcut (.lnk) file
+        fakeFolder.remoteModifier().insert("linkfile.lnk");
+
+        QVERIFY(fakeFolder.syncOnce());
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!vfs->pinState("linkfile.lnk").isValid() || vfs->pinState("linkfile.lnk").get() == PinState::Excluded);
+        QVERIFY(itemInstruction(completeSpy, "linkfile.lnk", CSYNC_INSTRUCTION_NONE));
+    }
+
+    void testFolderDoesNotUpdatePlaceholderMetadata()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A", CSYNC_INSTRUCTION_NONE));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
