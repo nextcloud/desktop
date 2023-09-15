@@ -457,6 +457,7 @@ void SettingsDialog::accountRemoved(AccountStatePtr s)
         }
         if (as->accountsState() == s) {
             _ui->toolBar->removeAction(it.key());
+            _accountActions.removeAll(it.key());
 
             if (_ui->stack->currentWidget() == it.value()) {
                 showFirstPage();
