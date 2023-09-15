@@ -3733,13 +3733,13 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1251"/>
         <source>File has changed since discovery</source>
         <translation>W trakcie wyszukiwania plik uległ zmianie</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1295"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nie można usunąć rekordu pliku %1 z lokalnej bazy danych</translation>
     </message>
@@ -3785,12 +3785,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Plik %1 został pobrany, ale spowodowało to lokalną kolizję nazwy pliku!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1327"/>
         <source>Error updating metadata: %1</source>
         <translation>Błąd podczas aktualizowania metadanych: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1330"/>
         <source>The file %1 is currently in use</source>
         <translation>Plik %1 jest aktualnie używany</translation>
     </message>

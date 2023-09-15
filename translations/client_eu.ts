@@ -3732,13 +3732,13 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1251"/>
         <source>File has changed since discovery</source>
         <translation>Fitxategia aldatu egin da aurkitu zenetik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1295"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategiaren erregistroa datu-base lokaletik ezabatu</translation>
     </message>
@@ -3784,12 +3784,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>%1 fitxategia deskargatu da, baina fitxategi lokal batekin gatazka du!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1327"/>
         <source>Error updating metadata: %1</source>
         <translation>Erorrea metadatuak eguneratzen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1330"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia erabiltzen ari da</translation>
     </message>

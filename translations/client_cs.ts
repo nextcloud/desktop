@@ -3732,13 +3732,13 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1251"/>
         <source>File has changed since discovery</source>
         <translation>Soubor se mezitím změnil</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1295"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nepodařilo se smazat záznam o souboru %1 z lokální databáze</translation>
     </message>
@@ -3784,12 +3784,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Soubor %1 stažen, ale mělo za následek kolizi stejných názvů lišících se jen velikostí písmen se souborem na stroji!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1327"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba při aktualizování metadat: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1330"/>
         <source>The file %1 is currently in use</source>
         <translation>Soubor %1 je v tuto chvíli používán jinou aplikací</translation>
     </message>

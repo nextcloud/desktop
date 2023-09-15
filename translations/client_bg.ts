@@ -3730,13 +3730,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1251"/>
         <source>File has changed since discovery</source>
         <translation>Файлът се е променил след откриването</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1295"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
@@ -3782,12 +3782,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Файл %1 е изтеглен, но това е довело до сблъсък с имена на локалните файлове!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1327"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка при актуализиране на метаданни: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1330"/>
         <source>The file %1 is currently in use</source>
         <translation>Файлът %1 в момента се използва</translation>
     </message>

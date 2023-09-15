@@ -3732,13 +3732,13 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1250"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1251"/>
         <source>File has changed since discovery</source>
         <translation>Datei ist seit der Entdeckung geändert worden</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1295"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Der Dateidatensatz %1 konnte nicht aus der lokalen Datenbank gelöscht werden</translation>
     </message>
@@ -3784,12 +3784,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Datei %1 heruntergeladen, aber dies führte zu einem lokalen Dateinamenskonflikt!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1326"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1327"/>
         <source>Error updating metadata: %1</source>
         <translation>Fehler beim Aktualisieren der Metadaten: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1329"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1330"/>
         <source>The file %1 is currently in use</source>
         <translation>Die Datei %1 ist aktuell in Benutzung</translation>
     </message>
