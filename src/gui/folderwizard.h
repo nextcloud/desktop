@@ -94,7 +94,6 @@ public:
     void cleanupPage() override;
 
 protected slots:
-
     void showWarn(const QString & = QString()) const;
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(const QString &);
@@ -109,6 +108,12 @@ protected slots:
     void slotFolderEntryEdited(const QString &text);
     void slotLsColFolderEntry();
     void slotTypedPathFound(const QStringList &subpaths);
+
+protected:
+    void changeEvent(QEvent *) override;
+
+private slots:
+    void changeStyle();
 
 private:
     LsColJob *runLsColJob(const QString &path);

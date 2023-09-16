@@ -41,6 +41,21 @@
 
 #include <cstdlib>
 
+namespace
+{
+constexpr QColor darkWarnYellow(63, 63, 0);
+constexpr QColor lightWarnYellow(255, 255, 192);
+
+QPalette yellowWarnWidgetPalette(const QPalette &existingPalette)
+{
+    const auto warnYellow = OCC::Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
+    auto modifiedPalette = existingPalette;
+    modifiedPalette.setColor(QPalette::Window, warnYellow);
+    modifiedPalette.setColor(QPalette::Base, warnYellow);
+    return modifiedPalette;
+}
+}
+
 namespace OCC {
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
@@ -162,10 +177,8 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
-    const auto warnYellow = Theme::isDarkColor(QGuiApplication::palette().base().color()) ? QColor(63, 63, 0) : QColor(255, 255, 192);
-    auto modifiedPalette = _ui.warnLabel->palette();
-    modifiedPalette.setColor(QPalette::Window, warnYellow);
-    _ui.warnLabel->setPalette(modifiedPalette);
+    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
+    _ui.warnLabel->setPalette(yellowWarnPalette);
 }
 
 // =================================================================================
@@ -192,6 +205,8 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
+
+    changeStyle();
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
@@ -521,6 +536,28 @@ void FolderWizardRemotePath::showWarn(const QString &msg) const
         _ui.warnFrame->show();
         _ui.warnLabel->setText(msg);
     }
+}
+
+void FolderWizardRemotePath::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        changeStyle();
+        break;
+    default:
+        break;
+    }
+
+    FormatWarningsWizardPage::changeEvent(e);
+}
+
+void FolderWizardRemotePath::changeStyle()
+{
+    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
+    _ui.warnLabel->setPalette(yellowWarnPalette);
 }
 
 // ====================================================================================
