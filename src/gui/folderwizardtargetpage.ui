@@ -6,18 +6,123 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
-    <height>350</height>
+    <width>502</width>
+    <height>513</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_6">
-   <item row="1" column="0">
-    <widget class="QLineEdit" name="folderEntry"/>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="subHeader">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
-   <item row="2" column="0">
+   <item>
+    <widget class="QLabel" name="content">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="subContent">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QTreeWidget" name="folderTreeWidget">
+       <property name="styleSheet">
+        <string notr="true">font: 14px &quot;Segoe UI&quot;;
+color: #191919</string>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>Folders</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="refreshButton">
+       <property name="styleSheet">
+        <string notr="true">font: 14px &quot;Segoe UI&quot;;
+color: #191919</string>
+       </property>
+       <property name="text">
+        <string>Refresh</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addFolderButton">
+       <property name="styleSheet">
+        <string notr="true">font: 14px &quot;Segoe UI&quot;;
+color: #191919</string>
+       </property>
+       <property name="text">
+        <string>Create folder</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="folderEntry">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QFrame" name="warnFrame">
      <property name="palette">
       <palette>
@@ -121,63 +226,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Select a remote destination folder</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
-       <widget class="QPushButton" name="addFolderButton">
-        <property name="text">
-         <string>Create folder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="refreshButton">
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="4">
-       <widget class="QTreeWidget" name="folderTreeWidget">
-        <property name="sortingEnabled">
-         <bool>true</bool>
-        </property>
-        <property name="headerHidden">
-         <bool>true</bool>
-        </property>
-        <column>
-         <property name="text">
-          <string>Folders</string>
-         </property>
-        </column>
-       </widget>
       </item>
      </layout>
     </widget>
