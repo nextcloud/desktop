@@ -425,7 +425,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
             result += createBlackList(root->child(i));
         }
     } else {
-        // We did not load from the server so we re-use the one from the old black list
+        // We did not load from the server so we reuse the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
         foreach (const QString &it, _oldBlackList) {
             if (it.startsWith(path))

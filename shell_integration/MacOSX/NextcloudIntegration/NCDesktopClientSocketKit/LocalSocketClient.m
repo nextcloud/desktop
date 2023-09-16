@@ -343,7 +343,7 @@
 
         // Add NULL terminator, so we can use C string methods
         if (firstSeparatorIndex.location == NSNotFound) {
-            NSLog(@"No separator found. Creating new buffer qith space for null terminator.");
+            NSLog(@"No separator found. Creating new buffer with space for null terminator.");
 
             [_inBuffer appendBytes:terminator length:1];
             nullTerminatorIndex = inBufferLength;

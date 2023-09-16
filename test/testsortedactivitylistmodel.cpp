@@ -156,7 +156,7 @@ private slots:
         QCOMPARE(sourceModel->rowCount(), sourceModel->maxPossibleActivities());
 
         auto errorSyncFileItemActivity = exampleSyncFileItemActivity(accountState->account()->displayName(), {});
-        errorSyncFileItemActivity._message = QStringLiteral("Something went wrong and eveything exploded!");
+        errorSyncFileItemActivity._message = QStringLiteral("Something went wrong and everything exploded!");
         errorSyncFileItemActivity._syncFileItemStatus = OCC::SyncFileItem::FatalError;
 
         addActivity(model, &TestingALM::addSyncFileItemToActivityList, errorSyncFileItemActivity);

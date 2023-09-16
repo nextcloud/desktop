@@ -126,7 +126,7 @@ Network
 
 .. index:: proxy settings, SOCKS, bandwidth, throttling, limiting
 
-This tab consolidates ``Proxy Settings`` and ``Bandwith Limiting``:
+This tab consolidates ``Proxy Settings`` and ``Bandwidth Limiting``:
 
 .. image:: images/settings_network.png
    :scale: 50 %

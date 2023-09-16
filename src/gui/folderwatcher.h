@@ -150,7 +150,7 @@ private:
 
     QString findMatchingUnlockedFileInDir(const QString &dirPath, const QString &lockFileName);
 
-    /* Check if the path should be igored by the FolderWatcher. */
+    /* Check if the path should be ignored by the FolderWatcher. */
     [[nodiscard]] bool pathIsIgnored(const QString &path) const;
 
     /** Path of the expected test notification */
