@@ -99,6 +99,8 @@ set(libsync_SRCS
     syncoptions.cpp
     theme.h
     theme.cpp
+    updatefiledropmetadata.h
+    updatefiledropmetadata.cpp
     clientsideencryption.h
     clientsideencryption.cpp
     clientsideencryptionjobs.h
@@ -121,6 +123,8 @@ set(libsync_SRCS
     creds/credentialscommon.cpp
     creds/keychainchunk.h
     creds/keychainchunk.cpp
+    caseclashconflictsolver.h
+    caseclashconflictsolver.cpp
 )
 
 if (WIN32)
@@ -167,7 +171,7 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
-find_package(Qt5 REQUIRED COMPONENTS WebSockets)
+find_package(Qt5 REQUIRED COMPONENTS WebSockets Xml)
 
 add_library(nextcloudsync SHARED ${libsync_SRCS})
 add_library(Nextcloud::sync ALIAS nextcloudsync)
@@ -181,6 +185,7 @@ target_link_libraries(nextcloudsync
   Qt5::Core
   Qt5::Network
   Qt5::WebSockets
+  Qt5::Xml
 )
 
 if (NOT TOKEN_AUTH_ONLY)
@@ -214,6 +219,8 @@ set_target_properties(
       LIBRARY_OUTPUT_NAME
         ${APPLICATION_EXECUTABLE}sync
       RUNTIME_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}sync
+      ARCHIVE_OUTPUT_NAME
         ${APPLICATION_EXECUTABLE}sync
 )
 

@@ -17,6 +17,7 @@
 #include "clientsideencryptionjobs.h"
 #include "theme.h"
 #include "creds/abstractcredentials.h"
+#include "common/syncjournaldb.h"
 
 Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "nextcloud.sync.networkjob.sendcsr", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "nextcloud.sync.networkjob.storeprivatekey", QtInfoMsg)
@@ -53,8 +54,10 @@ bool GetMetadataApiJob::finished()
         emit error(_fileId, retCode);
         return true;
     }
-    QJsonParseError error;
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    QJsonParseError error{};
+    const auto replyData = reply()->readAll();
+    auto json = QJsonDocument::fromJson(replyData, &error);
+    qCInfo(lcCseJob) << "metadata received for file id" << _fileId << json.toJson(QJsonDocument::Compact);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
@@ -94,7 +97,7 @@ bool StoreMetaDataApiJob::finished()
 			emit error(_fileId, retCode);
 		}
 
-		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
 }
@@ -145,7 +148,7 @@ bool UpdateMetadataApiJob::finished()
 			emit error(_fileId, retCode);
 		}
 
-		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
 }
@@ -153,8 +156,12 @@ bool UpdateMetadataApiJob::finished()
 UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& token,
+                                                 SyncJournalDb *journalDb,
                                                  QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
+    : AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent)
+    , _fileId(fileId)
+    , _token(token)
+    , _journalDb(journalDb)
 {
 }
 
@@ -169,11 +176,22 @@ void UnlockEncryptFolderApiJob::start()
 
     AbstractNetworkJob::start();
     qCInfo(lcCseJob()) << "Starting the request to unlock.";
+
+    qCInfo(lcCseJob()) << "unlock folder started for:" << path() << " for fileId: " << _fileId;
 }
 
 bool UnlockEncryptFolderApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    qCInfo(lcCseJob()) << "unlock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId;
+
+    if (retCode != 0) {
+        _journalDb->deleteE2EeLockedFolder(_fileId);
+    }
+
+    emit done();
+
     if (retCode != 200) {
         qCInfo(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode;
         qCInfo(lcCseJob()) << "Full Error Log" << reply()->readAll();
@@ -217,13 +235,33 @@ bool DeleteMetadataApiJob::finished()
     return true;
 }
 
-LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
-: AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
+LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr &account,
+                                                 const QByteArray &fileId,
+                                                 SyncJournalDb *journalDb,
+                                                 const QSslKey publicKey,
+                                                 QObject *parent)
+    : AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent)
+    , _fileId(fileId)
+    , _journalDb(journalDb)
+    , _publicKey(publicKey)
 {
 }
 
 void LockEncryptFolderApiJob::start()
 {
+    const auto folderTokenEncrypted = _journalDb->e2EeLockedFolder(_fileId);
+
+    if (!folderTokenEncrypted.isEmpty()) {
+        qCInfo(lcCseJob()) << "lock folder started for:" << path() << " for fileId: " << _fileId << " but we need to first lift the previous lock";
+        const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, folderTokenEncrypted);
+        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, folderToken, _journalDb, this);
+        connect(unlockJob, &UnlockEncryptFolderApiJob::done, this, [this]() {
+            this->start();
+        });
+        unlockJob->start();
+        return;
+    }
+
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrlQuery query;
@@ -234,22 +272,33 @@ void LockEncryptFolderApiJob::start()
     qCInfo(lcCseJob()) << "locking the folder with id" << _fileId << "as encrypted";
     sendRequest("POST", url, req);
     AbstractNetworkJob::start();
+
+    qCInfo(lcCseJob()) << "lock folder started for:" << path() << " for fileId: " << _fileId;
 }
 
 bool LockEncryptFolderApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
     if (retCode != 200) {
         qCInfo(lcCseJob()) << "error locking file" << path() << errorString() << retCode;
         emit error(_fileId, retCode, errorString());
+        qCInfo(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId;
         return true;
     }
 
-    QJsonParseError error;
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    auto obj = json.object().toVariantMap();
-    auto token = obj["ocs"].toMap()["data"].toMap()["e2e-token"].toByteArray();
+    QJsonParseError error{};
+    const auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    const auto obj = json.object().toVariantMap();
+    const auto token = obj["ocs"].toMap()["data"].toMap()["e2e-token"].toByteArray();
     qCInfo(lcCseJob()) << "got json:" << token;
+
+    qCInfo(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;
+
+    if (!_publicKey.isNull()) {
+        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
+        _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    }
 
     //TODO: Parse the token and submit.
     emit success(_fileId, token);
@@ -319,7 +368,7 @@ bool StorePrivateKeyApiJob::finished()
     if (retCode != 200)
         qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << retCode;
 
-    QJsonParseError error;
+    QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
@@ -356,7 +405,7 @@ bool SignPublicKeyApiJob::finished()
 {
     qCInfo(lcStorePrivateKeyApiJob()) << "Sending CSR ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
-    QJsonParseError error;
+    QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;

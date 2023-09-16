@@ -37,7 +37,7 @@ NCContextMenuFactory::~NCContextMenuFactory()
 
 IFACEMETHODIMP NCContextMenuFactory::QueryInterface(REFIID riid, void **ppv)
 {
-    static const QITAB qit[] =  { QITABENT(NCContextMenuFactory, IClassFactory), { 0 }, };
+    static const QITAB qit[] =  { QITABENT(NCContextMenuFactory, IClassFactory), { nullptr }, };
     return QISearch(this, qit, riid, ppv);
 }
 
@@ -67,7 +67,7 @@ IFACEMETHODIMP NCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID 
         hr = E_OUTOFMEMORY;
 
         // Create the COM component.
-        NCContextMenu *pExt = new (std::nothrow) NCContextMenu();
+        auto pExt = new (std::nothrow) NCContextMenu();
         if (pExt) {
             // Query the specified interface.
             hr = pExt->QueryInterface(riid, ppv);

@@ -32,7 +32,7 @@ Page {
     padding: Style.standardSpacing * 2
 
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         radius: Style.trayWindowRadius
     }
     

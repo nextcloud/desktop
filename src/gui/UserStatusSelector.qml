@@ -38,7 +38,6 @@ ColumnLayout {
             horizontalAlignment: Text.AlignHCenter
             font.bold: true
             text: qsTr("Online status")
-            color: Style.ncTextColor
         }
 
         GridLayout {
@@ -123,7 +122,6 @@ ColumnLayout {
             horizontalAlignment: Text.AlignHCenter
             font.bold: true
             text: qsTr("Status message")
-            color: Style.ncTextColor
         }
 
         RowLayout {
@@ -146,13 +144,13 @@ ColumnLayout {
                 padding: 0
                 z: hovered ? 2 : 0 // Make sure highlight is seen on top of text field
 
-                property color borderColor: showBorder ? Style.ncBlue : Style.menuBorder
+                property color borderColor: showBorder ? Style.ncBlue : palette.dark
 
                 // We create the square with only the top-left and bottom-left rounded corners
                 // by overlaying different rectangles on top of each other
                 background: Rectangle {
                     radius: Style.slightlyRoundedButtonRadius
-                    color: Style.buttonBackgroundColor
+                    color: palette.button
                     border.color: fieldButton.borderColor
                     border.width: Style.normalBorderWidth
 
@@ -161,7 +159,7 @@ ColumnLayout {
                         anchors.leftMargin: parent.width / 2
                         anchors.rightMargin: -1
                         z: 1
-                        color: Style.buttonBackgroundColor
+                        color: palette.button
                         border.color: fieldButton.borderColor
                         border.width: Style.normalBorderWidth
                     }
@@ -173,7 +171,7 @@ ColumnLayout {
                         anchors.topMargin: Style.normalBorderWidth
                         anchors.bottomMargin: Style.normalBorderWidth
                         z: 2
-                        color: Style.buttonBackgroundColor
+                        color: palette.button
                     }
                 }
             }
@@ -187,9 +185,9 @@ ColumnLayout {
                 anchors.centerIn: Overlay.overlay
 
                 background: Rectangle {
-                    color: Style.backgroundColor
+                    color: palette.toolTipBase
                     border.width: Style.normalBorderWidth
-                    border.color: Style.menuBorder
+                    border.color: palette.dark
                     radius: Style.slightlyRoundedButtonRadius
                 }
 
@@ -206,22 +204,21 @@ ColumnLayout {
             TextField {
                 id: userStatusMessageTextField
 
-                property color borderColor: activeFocus ? Style.ncBlue : Style.menuBorder
+                property color borderColor: activeFocus ? Style.ncBlue : palette.dark
 
                 Layout.fillWidth: true
                 Layout.preferredHeight: contentHeight + (Style.smallSpacing * 2)
 
                 placeholderText: qsTr("What is your status?")
-                placeholderTextColor: Style.ncSecondaryTextColor
+                placeholderTextColor: palette.midlight
                 text: userStatusSelectorModel.userStatusMessage
-                color: Style.ncTextColor
                 verticalAlignment: TextInput.AlignVCenter
                 selectByMouse: true
                 onEditingFinished: userStatusSelectorModel.userStatusMessage = text
 
                 background: Rectangle {
                     radius: Style.slightlyRoundedButtonRadius
-                    color: Style.backgroundColor
+                    color: palette.base
                     border.color: userStatusMessageTextField.borderColor
                     border.width: Style.normalBorderWidth
 
@@ -229,7 +226,7 @@ ColumnLayout {
                         anchors.fill: parent
                         anchors.rightMargin: parent.width / 2
                         z: 1
-                        color: Style.backgroundColor
+                        color: palette.base
                         border.color: userStatusMessageTextField.borderColor
                         border.width: Style.normalBorderWidth
                     }
@@ -241,7 +238,7 @@ ColumnLayout {
                         anchors.topMargin: Style.normalBorderWidth
                         anchors.bottomMargin: Style.normalBorderWidth
                         z: 2
-                        color: Style.backgroundColor
+                        color: palette.base
                     }
                 }
             }
@@ -285,7 +282,6 @@ ColumnLayout {
                 verticalAlignment: Text.AlignVCenter
 
                 text: qsTr("Clear status message after")
-                color: Style.ncTextColor
                 wrapMode: Text.Wrap
             }
 

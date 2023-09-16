@@ -194,7 +194,6 @@ Q_LOGGING_CATEGORY(lcUnifiedSearch, "nextcloud.gui.unifiedsearch", QtInfoMsg)
 
 UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent)
     : QAbstractListModel(parent)
-    , _waitingForSearchTermEditEnd(false)
     , _accountState(accountState)
 {
 }

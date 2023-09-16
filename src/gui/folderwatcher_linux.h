@@ -54,13 +54,13 @@ protected:
     void removeFoldersBelow(const QString &path);
 
 private:
-    FolderWatcher *_parent;
+    FolderWatcher *_parent = nullptr;
 
     QString _folder;
     QHash<int, QString> _watchToPath;
     QMap<QString, int> _pathToWatch;
     QScopedPointer<QSocketNotifier> _socket;
-    int _fd;
+    int _fd = 0;
 };
 }
 

@@ -23,24 +23,12 @@ class ActivityListModel;
 class SortedActivityListModel : public QSortFilterProxyModel
 {
     Q_OBJECT
-    Q_PROPERTY(ActivityListModel* activityListModel READ activityListModel WRITE setActivityListModel NOTIFY activityListModelChanged)
 
 public:
     explicit SortedActivityListModel(QObject *parent = nullptr);
 
-    [[nodiscard]] ActivityListModel *activityListModel() const;
-
-signals:
-    void activityListModelChanged();
-
-public slots:
-    void setActivityListModel(OCC::ActivityListModel *activityListModel);
-
 protected:
     [[nodiscard]] bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
-
-private slots:
-    void sortModel();
 };
 
 }

@@ -408,12 +408,12 @@ QString Theme::helpUrl() const
 
 QString Theme::conflictHelpUrl() const
 {
-    auto baseUrl = helpUrl();
-    if (baseUrl.isEmpty())
+    const auto baseUrl = helpUrl();
+    if (baseUrl.isEmpty()) {
         return QString();
-    if (!baseUrl.endsWith('/'))
-        baseUrl.append('/');
-    return baseUrl + QStringLiteral("conflicts.html");
+    }
+
+    return Utility::trailingSlashPath(baseUrl) + QStringLiteral("conflicts.html");
 }
 
 QString Theme::overrideServerUrl() const
@@ -424,6 +424,11 @@ QString Theme::overrideServerUrl() const
 bool Theme::forceOverrideServerUrl() const
 {
     return _forceOverrideServerUrl;
+}
+
+bool Theme::isVfsEnabled() const
+{
+    return _isVfsEnabled;
 }
 
 bool Theme::startLoginFlowAutomatically() const
@@ -568,7 +573,7 @@ QString Theme::aboutDetails() const
               .arg(MIRALL_VERSION_STRING)
               .arg(helpUrl());
 
-    devString += tr("<p>This release was supplied by %1</p>")
+    devString += tr("<p>This release was supplied by %1.</p>")
               .arg(APPLICATION_VENDOR);
 
     devString += gitSHA1();
@@ -968,6 +973,14 @@ void Theme::setForceOverrideServerUrl(bool forceOverride)
     if (_forceOverrideServerUrl != forceOverride) {
         _forceOverrideServerUrl = forceOverride;
         emit forceOverrideServerUrlChanged();
+    }
+}
+
+void Theme::setVfsEnabled(bool enabled)
+{
+    if (_isVfsEnabled != enabled) {
+        _isVfsEnabled = enabled;
+        emit vfsEnabledChanged();
     }
 }
 

@@ -29,7 +29,7 @@ project=gets.chomp
 
 printf("\n")
 
-print("Other projects to include (e.g. \"owutil tinyxml\", leave emtpy to skip): ")
+print("Other projects to include (e.g. \"owutil tinyxml\", leave empty to skip): ")
 otherprojects=gets.chomp
 
 printf("\n")

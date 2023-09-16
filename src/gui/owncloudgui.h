@@ -76,7 +76,6 @@ public slots:
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl);
-    void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
     void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
@@ -120,9 +119,9 @@ private:
     QDBusConnection _bus;
 #endif
 
-    QAction *_actionNewAccountWizard;
-    QAction *_actionSettings;
-    QAction *_actionEstimate;
+    QAction *_actionNewAccountWizard = nullptr;
+    QAction *_actionSettings = nullptr;
+    QAction *_actionEstimate = nullptr;
 
 
     QList<QAction *> _recentItemsActions;

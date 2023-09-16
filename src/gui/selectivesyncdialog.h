@@ -72,7 +72,7 @@ private:
     QString _rootName;
     QStringList _oldBlackList;
 
-    bool _inserting; // set to true when we are inserting new items on the list
+    bool _inserting = false; // set to true when we are inserting new items on the list
     QLabel *_loading;
 
     QTreeWidget *_folderTree;
@@ -111,9 +111,9 @@ public:
 private:
     void init(const AccountPtr &account);
 
-    SelectiveSyncWidget *_selectiveSync;
+    SelectiveSyncWidget *_selectiveSync = nullptr;
 
     Folder *_folder;
-    QPushButton *_okButton;
+    QPushButton *_okButton = nullptr;
 };
 }

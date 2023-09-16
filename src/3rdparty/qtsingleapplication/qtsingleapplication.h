@@ -65,9 +65,9 @@ Q_SIGNALS:
 private:
     QString instancesFileName(const QString &appId);
 
-    qint64 firstPeer;
+    qint64 firstPeer = -1;
     QSharedMemory *instances;
-    QtLocalPeer *pidPeer;
+    QtLocalPeer *pidPeer = nullptr;
     QWidget *actWin;
     QString appId;
     bool block;

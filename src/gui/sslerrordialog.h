@@ -56,7 +56,7 @@ public:
 
 private:
     [[nodiscard]] QString styleSheet() const;
-    bool _allTrusted;
+    bool _allTrusted = false;
 
     [[nodiscard]] QString certDiv(QSslCertificate) const;
 

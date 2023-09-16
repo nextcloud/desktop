@@ -67,12 +67,16 @@ void FolderCreationDialog::accept()
 {
     Q_ASSERT(!_destination.endsWith('/'));
 
-    if (QDir(_destination + "/" + ui->newFolderNameEdit->text()).exists()) {
+    const auto fullPath = QString(_destination + "/" + ui->newFolderNameEdit->text());
+
+    if (QDir(fullPath).exists()) {
         ui->labelErrorMessage->setVisible(true);
         return;
     }
 
-    if (!QDir(_destination).mkdir(ui->newFolderNameEdit->text())) {
+    if (QDir(_destination).mkdir(ui->newFolderNameEdit->text())) {
+        Q_EMIT folderCreated(fullPath);
+    } else {
         QMessageBox::critical(this, tr("Error"), tr("Could not create a folder! Check your write permissions."));
     }
 

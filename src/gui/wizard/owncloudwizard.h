@@ -76,7 +76,7 @@ public:
 
     /**
      * Shows a dialog explaining the virtual files mode and warning about it
-     * being experimental. Calles the callback with true if enabling was
+     * being experimental. Calls the callback with true if enabling was
      * chosen.
      */
     static void askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback);
@@ -125,7 +125,7 @@ private:
     OwncloudOAuthCredsPage *_browserCredsPage;
     Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
-    OwncloudWizardResultPage *_resultPage;
+    OwncloudWizardResultPage *_resultPage = nullptr;
     AbstractCredentialsWizardPage *_credentialsPage = nullptr;
     WebViewPage *_webViewPage = nullptr;
 

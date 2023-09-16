@@ -14,6 +14,7 @@
 
 #include <QDateTime>
 
+#include "accountstate.h"
 #include "filedetails.h"
 #include "folderman.h"
 
@@ -61,6 +62,11 @@ void FileDetails::setLocalPath(const QString &localPath)
     connect(&_fileWatcher, &QFileSystemWatcher::fileChanged, this, &FileDetails::refreshFileDetails);
 
     const auto folder = FolderMan::instance()->folderForPath(_localPath);
+    if (!folder) {
+        qCWarning(lcFileDetails) << "No folder found for path:" << _localPath << "will not load file details.";
+        return;
+    }
+
     const auto file = _localPath.mid(folder->cleanPath().length() + 1);
 
     if (!folder->journalDb()->getFileRecord(file, &_fileRecord)) {
@@ -71,6 +77,9 @@ void FileDetails::setLocalPath(const QString &localPath)
 
     _filelockState = _fileRecord._lockstate;
     updateLockExpireString();
+    updateFileTagModel(folder);
+
+    _sharingAvailable = folder->accountState()->account()->capabilities().shareAPI();
 
     Q_EMIT fileChanged();
 }
@@ -151,6 +160,28 @@ void FileDetails::updateLockExpireString()
 bool FileDetails::isFolder() const
 {
     return _fileInfo.isDir();
+}
+
+FileTagModel *FileDetails::fileTagModel() const
+{
+    return _fileTagModel.get();
+}
+
+void FileDetails::updateFileTagModel(const Folder * const folder)
+{
+    Q_ASSERT(folder);
+    const auto account = folder->accountState()->account();
+    Q_ASSERT(account);
+
+    const auto serverRelPath = QString(folder->remotePathTrailingSlash() + name());
+
+    _fileTagModel = std::make_unique<FileTagModel>(serverRelPath, account);
+    Q_EMIT fileTagModelChanged();
+}
+
+bool FileDetails::sharingAvailable() const
+{
+    return _sharingAvailable;
 }
 
 } // namespace OCC

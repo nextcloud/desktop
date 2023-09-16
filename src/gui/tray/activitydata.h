@@ -15,13 +15,14 @@
 #ifndef ACTIVITYDATA_H
 #define ACTIVITYDATA_H
 
+#include "syncfileitem.h"
+#include "syncresult.h"
+#include "account.h"
+
 #include <QtCore>
 #include <QIcon>
 #include <QJsonObject>
-
-#include "syncfileitem.h"
-#include "folder.h"
-#include "account.h"
+#include <QVariantMap>
 
 namespace OCC {
 /**
@@ -44,13 +45,16 @@ class ActivityLink
 public:
     static ActivityLink createFomJsonObject(const QJsonObject &obj);
 
+    static constexpr auto WhitelistFolderVerb = "WHITELIST_FOLDER";
+    static constexpr auto BlacklistFolderVerb = "BLACKLIST_FOLDER";
+
 public:
     QString _imageSource;
     QString _imageSourceHovered;
     QString _label;
     QString _link;
     QByteArray _verb;
-    bool _primary;
+    bool _primary = false;
 };
 
 /**
@@ -73,10 +77,56 @@ public:
     QString _source;
     QString _link;
     QString _mimeType;
-    int _fileId;
+    int _fileId = 0;
     QString _view;
-    bool _isMimeTypeIcon;
+    bool _isMimeTypeIcon = false;
     QString _filename;
+};
+
+struct RichSubjectParameter {
+    Q_GADGET
+    Q_PROPERTY(QString type MEMBER type)
+    Q_PROPERTY(QString id MEMBER id)
+    Q_PROPERTY(QString name MEMBER name)
+    Q_PROPERTY(QString path MEMBER path)
+    Q_PROPERTY(QUrl link MEMBER link)
+
+public:
+    QString type;    // Required
+    QString id;      // Required
+    QString name;    // Required
+    QString path;    // Required (for files only)
+    QUrl link;    // Optional (files only)
+};
+
+struct TalkNotificationData {
+    Q_GADGET
+    Q_PROPERTY(QString conversationToken MEMBER conversationToken)
+    Q_PROPERTY(QString messageId MEMBER messageId)
+    Q_PROPERTY(QString messageSent MEMBER messageSent)
+    Q_PROPERTY(QString userAvatar MEMBER userAvatar)
+
+public:
+    QString conversationToken;
+    QString messageId;
+    QString messageSent;
+    QString userAvatar;
+
+    [[nodiscard]] bool operator==(const TalkNotificationData &other) const
+    {
+        return conversationToken == other.conversationToken &&
+            messageId == other.messageId &&
+            messageSent == other.messageSent &&
+            userAvatar == other.userAvatar;
+    }
+
+    [[nodiscard]] bool operator!=(const TalkNotificationData &other) const
+    {
+        return conversationToken != other.conversationToken ||
+            messageId != other.messageId ||
+            messageSent != other.messageSent ||
+            userAvatar != other.userAvatar;
+    }
 };
 
 /* ==================================================================== */
@@ -86,9 +136,13 @@ public:
  *
  * contains all the information describing a single activity.
  */
-
 class Activity
 {
+    Q_GADGET
+    Q_PROPERTY(OCC::Activity::Type type MEMBER _type)
+    Q_PROPERTY(OCC::TalkNotificationData talkNotificationData MEMBER _talkNotificationData)
+    Q_PROPERTY(QVariantMap subjectRichParameters MEMBER _subjectRichParameters)
+
 public:
     using Identifier = QPair<qlonglong, QString>;
 
@@ -102,42 +156,32 @@ public:
         DummyMoreActivitiesAvailableType,
     };
 
+    Q_ENUM(Type)
+
     static Activity fromActivityJson(const QJsonObject &json, const AccountPtr account);
 
     static QString relativeServerFileTypeIconPath(const QMimeType &mimeType);
     static QString localFilePathForActivity(const Activity &activity, const AccountPtr account);
 
-    struct RichSubjectParameter {
-        QString type;    // Required
-        QString id;      // Required
-        QString name;    // Required
-        QString path;    // Required (for files only)
-        QUrl link;    // Optional (files only)
-    };
-
-    struct TalkNotificationData {
-        QString conversationToken;
-        QString messageId;
-        QString messageSent;
-        QString userAvatar;
-    };
+    using RichSubjectParameter = OCC::RichSubjectParameter;
+    using TalkNotificationData = OCC::TalkNotificationData;
 
     Type _type;
-    qlonglong _id;
+    qlonglong _id = 0LL;
     QString _fileAction;
-    int _objectId;
+    int _objectId = 0;
     TalkNotificationData _talkNotificationData;
     QString _objectType;
     QString _objectName;
     QString _subject;
     QString _subjectRich;
-    QHash<QString, RichSubjectParameter> _subjectRichParameters;
+    QVariantMap _subjectRichParameters;
     QString _subjectDisplay;
     QString _message;
     QString _folder;
     QString _file;
     QString _renamedFile;
-    bool _isMultiObjectActivity;
+    bool _isMultiObjectActivity = false;
     QUrl _link;
     QDateTime _dateTime;
     qint64 _expireAtMsecs = -1;
@@ -147,8 +191,8 @@ public:
     QVector<PreviewData> _previews;
 
     // Stores information about the error
-    SyncFileItem::Status _syncFileItemStatus;
-    SyncResult::Status _syncResultStatus;
+    SyncFileItem::Status _syncFileItemStatus = SyncFileItem::Status::NoStatus;
+    SyncResult::Status _syncResultStatus = SyncResult::Status::Undefined;
 
     QVector<ActivityLink> _links;
     /**
@@ -157,6 +201,7 @@ public:
      * @return
      */
 
+    bool _shouldNotify = true;
 
     [[nodiscard]] Identifier ident() const;
 };
@@ -177,7 +222,9 @@ using ActivityList = QList<Activity>;
 }
 
 Q_DECLARE_METATYPE(OCC::Activity)
+Q_DECLARE_METATYPE(OCC::ActivityList)
 Q_DECLARE_METATYPE(OCC::Activity::Type)
+Q_DECLARE_METATYPE(OCC::Activity::RichSubjectParameter)
 Q_DECLARE_METATYPE(OCC::ActivityLink)
 Q_DECLARE_METATYPE(OCC::PreviewData)
 

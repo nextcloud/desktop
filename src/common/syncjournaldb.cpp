@@ -66,7 +66,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
-    rec._isE2eEncrypted = query.intValue(11) > 0;
+    rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
     rec._lockstate._locked = query.intValue(12) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(13);
     rec._lockstate._lockOwnerId = query.stringValue(14);
@@ -104,8 +104,6 @@ static QByteArray defaultJournalMode(const QString &dbPath)
 SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     : QObject(parent)
     , _dbFile(dbFilePath)
-    , _transaction(0)
-    , _metadataTableIsEmpty(false)
 {
     // Allow forcing the journal mode for debugging
     static QByteArray envJournalMode = qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE");
@@ -205,6 +203,33 @@ bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &abso
 
     qCInfo(lcDb) << "Journal successfully migrated from" << oldDbName << "to" << newDbName;
     return true;
+}
+
+bool SyncJournalDb::findPathInSelectiveSyncList(const QStringList &list, const QString &path)
+{
+    Q_ASSERT(std::is_sorted(list.cbegin(), list.cend()));
+
+    if (list.size() == 1 && list.first() == QStringLiteral("/")) {
+        // Special case for the case "/" is there, it matches everything
+        return true;
+    }
+
+    const QString pathSlash = path + QLatin1Char('/');
+
+    // Since the list is sorted, we can do a binary search.
+    // If the path is a prefix of another item or right after in the lexical order.
+    auto it = std::lower_bound(list.cbegin(), list.cend(), pathSlash);
+
+    if (it != list.cend() && *it == pathSlash) {
+        return true;
+    }
+
+    if (it == list.cbegin()) {
+        return false;
+    }
+    --it;
+    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
+    return pathSlash.startsWith(*it);
 }
 
 bool SyncJournalDb::exists()
@@ -519,6 +544,18 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("Create table conflicts"), createQuery);
     }
 
+    // create the caseconflicts table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS caseconflicts("
+        "path TEXT PRIMARY KEY,"
+        "baseFileId TEXT,"
+        "baseEtag TEXT,"
+        "baseModtime INTEGER,"
+        "basePath TEXT UNIQUE"
+        ");");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Create table caseconflicts"), createQuery);
+    }
+
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
                         "major INTEGER(8),"
                         "minor INTEGER(8),"
@@ -527,6 +564,16 @@ bool SyncJournalDb::checkConnect()
                         ");");
     if (!createQuery.exec()) {
         return sqlFail(QStringLiteral("Create table version"), createQuery);
+    }
+
+     // create the e2EeLockedFolders table.
+    createQuery.prepare(
+        "CREATE TABLE IF NOT EXISTS e2EeLockedFolders("
+        "folderId VARCHAR(128) PRIMARY KEY,"
+        "token VARCHAR(4096)"
+        ");");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Create table e2EeLockedFolders"), createQuery);
     }
 
     bool forceRemoteDiscovery = false;
@@ -862,10 +909,15 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
-    qint64 h = 0;
-    int len = file.length();
+    QByteArray bytes = file;
+#ifdef Q_OS_MAC
+    bytes = QString::fromUtf8(file).normalized(QString::NormalizationForm_C).toUtf8();
+#endif
 
-    h = c_jhash64((uint8_t *)file.data(), len, 0);
+    qint64 h = 0;
+    int len = bytes.length();
+
+    h = c_jhash64((uint8_t *)bytes.data(), len, 0);
     return h;
 }
 
@@ -890,7 +942,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "modtime:" << record._modtime << "type:" << record._type << "etag:" << record._etag
                  << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm.toString()
                  << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader
-                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted
+                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record.isE2eEncrypted()
                  << "lock:" << (record._lockstate._locked ? "true" : "false")
                  << "lock owner type:" << record._lockstate._lockOwnerType
                  << "lock owner:" << record._lockstate._lockOwnerDisplayName
@@ -948,7 +1000,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(15, checksum);
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
-    query->bindValue(18, record._isE2eEncrypted);
+    query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
     query->bindValue(19, record._lockstate._locked ? 1 : 0);
     query->bindValue(20, record._lockstate._lockOwnerType);
     query->bindValue(21, record._lockstate._lockOwnerDisplayName);
@@ -1596,7 +1648,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
 
         if (query->next().hasData) {
             bool ok = true;
-            res._chunk = query->intValue(0);
+            res._chunkUploadV1 = query->intValue(0);
             res._transferid = query->int64Value(1);
             res._errorCount = query->intValue(2);
             res._size = query->int64Value(3);
@@ -1626,7 +1678,7 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         }
 
         query->bindValue(1, file);
-        query->bindValue(2, i._chunk);
+        query->bindValue(2, i._chunkUploadV1);
         query->bindValue(3, i._transferid);
         query->bindValue(4, i._errorCount);
         query->bindValue(5, i._size);
@@ -1933,10 +1985,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         if (!next.hasData)
             break;
 
-        auto entry = query->stringValue(0);
-        if (!entry.endsWith(QLatin1Char('/'))) {
-            entry.append(QLatin1Char('/'));
-        }
+        const auto entry = Utility::trailingSlashPath(query->stringValue(0));
         result.append(entry);
     }
     *ok = true;
@@ -1961,7 +2010,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     }
 
     SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)", _db);
-    foreach (const auto &path, list) {
+    for (const auto &path : list) {
         insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
         insQuery.bindValue(2, int(type));
@@ -2201,6 +2250,101 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     return entry;
 }
 
+void SyncJournalDb::setCaseConflictRecord(const ConflictRecord &record)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return;
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::SetCaseClashConflictRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO caseconflicts "
+                                                                                                            "(path, baseFileId, baseModtime, baseEtag, basePath) "
+                                                                                                            "VALUES (?1, ?2, ?3, ?4, ?5);"),
+                                         _db);
+    ASSERT(query)
+    query->bindValue(1, record.path);
+    query->bindValue(2, record.baseFileId);
+    query->bindValue(3, record.baseModtime);
+    query->bindValue(4, record.baseEtag);
+    query->bindValue(5, record.initialBasePath);
+    ASSERT(query->exec())
+}
+
+ConflictRecord SyncJournalDb::caseConflictRecordByBasePath(const QString &baseNamePath)
+{
+    ConflictRecord entry;
+
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return entry;
+    }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetCaseClashConflictRecordQuery, QByteArrayLiteral("SELECT path, baseFileId, baseModtime, baseEtag, basePath FROM caseconflicts WHERE basePath=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, baseNamePath);
+    ASSERT(query->exec())
+    if (!query->next().hasData)
+        return entry;
+
+    entry.path = query->baValue(0);
+    entry.baseFileId = query->baValue(1);
+    entry.baseModtime = query->int64Value(2);
+    entry.baseEtag = query->baValue(3);
+    entry.initialBasePath = query->baValue(4);
+    return entry;
+}
+
+ConflictRecord SyncJournalDb::caseConflictRecordByPath(const QString &path)
+{
+    ConflictRecord entry;
+
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return entry;
+    }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetCaseClashConflictRecordByPathQuery, QByteArrayLiteral("SELECT path, baseFileId, baseModtime, baseEtag, basePath FROM caseconflicts WHERE path=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, path);
+    ASSERT(query->exec())
+    if (!query->next().hasData)
+        return entry;
+
+    entry.path = query->baValue(0);
+    entry.baseFileId = query->baValue(1);
+    entry.baseModtime = query->int64Value(2);
+    entry.baseEtag = query->baValue(3);
+    entry.initialBasePath = query->baValue(4);
+    return entry;
+}
+
+void SyncJournalDb::deleteCaseClashConflictByPathRecord(const QString &path)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return;
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::DeleteCaseClashConflictRecordQuery, QByteArrayLiteral("DELETE FROM caseconflicts WHERE path=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, path);
+    ASSERT(query->exec())
+}
+
+QByteArrayList SyncJournalDb::caseClashConflictRecordPaths()
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return {};
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetAllCaseClashConflictPathQuery, QByteArrayLiteral("SELECT path FROM caseconflicts;"), _db);
+    ASSERT(query)
+    ASSERT(query->exec())
+
+    QByteArrayList paths;
+    while (query->next().hasData)
+        paths.append(query->baValue(0));
+
+    return paths;
+}
+
 void SyncJournalDb::deleteConflictRecord(const QByteArray &path)
 {
     QMutexLocker locker(&_mutex);
@@ -2286,6 +2430,79 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     if (!query.exec()) {
         sqlFail(QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET md5='_invalid_' path: %1").arg(QString::fromUtf8(path)), query);
     }
+}
+
+void SyncJournalDb::setE2EeLockedFolder(const QByteArray &folderId, const QByteArray &folderToken)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return;
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::SetE2EeLockedFolderQuery,
+                                         QByteArrayLiteral("INSERT OR REPLACE INTO e2EeLockedFolders "
+                                                           "(folderId, token) "
+                                                           "VALUES (?1, ?2);"),
+                                         _db);
+    ASSERT(query)
+    query->bindValue(1, folderId);
+    query->bindValue(2, folderToken);
+    ASSERT(query->exec())
+}
+
+QByteArray SyncJournalDb::e2EeLockedFolder(const QByteArray &folderId)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return {};
+    }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetE2EeLockedFolderQuery,
+                                         QByteArrayLiteral("SELECT token FROM e2EeLockedFolders WHERE folderId=?1;"),
+                                         _db);
+    ASSERT(query)
+    query->bindValue(1, folderId);
+    ASSERT(query->exec())
+    if (!query->next().hasData) {
+        return {};
+    }
+
+    return query->baValue(0);
+}
+
+QList<QPair<QByteArray, QByteArray>> SyncJournalDb::e2EeLockedFolders()
+{
+    QMutexLocker locker(&_mutex);
+
+    QList<QPair<QByteArray, QByteArray>> res;
+
+    if (!checkConnect()) {
+        return res;
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetE2EeLockedFoldersQuery, QByteArrayLiteral("SELECT * FROM e2EeLockedFolders"), _db);
+    ASSERT(query)
+
+    if (!query->exec()) {
+        return res;
+    }
+
+    while (query->next().hasData) {
+        res.append({query->baValue(0), query->baValue(1)});
+    }
+    return res;
+}
+
+void SyncJournalDb::deleteE2EeLockedFolder(const QByteArray &folderId)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return;
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::DeleteE2EeLockedFolderQuery, QByteArrayLiteral("DELETE FROM e2EeLockedFolders WHERE folderId=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, folderId);
+    ASSERT(query->exec())
 }
 
 Optional<PinState> SyncJournalDb::PinStateInterface::rawForPath(const QByteArray &path)
@@ -2497,13 +2714,14 @@ bool operator==(const SyncJournalDb::DownloadInfo &lhs,
 bool operator==(const SyncJournalDb::UploadInfo &lhs,
     const SyncJournalDb::UploadInfo &rhs)
 {
-    return lhs._errorCount == rhs._errorCount
-        && lhs._chunk == rhs._chunk
-        && lhs._modtime == rhs._modtime
-        && lhs._valid == rhs._valid
-        && lhs._size == rhs._size
-        && lhs._transferid == rhs._transferid
-        && lhs._contentChecksum == rhs._contentChecksum;
+    return lhs._errorCount == rhs._errorCount && lhs._chunkUploadV1 == rhs._chunkUploadV1 && lhs._modtime == rhs._modtime && lhs._valid == rhs._valid
+        && lhs._size == rhs._size && lhs._transferid == rhs._transferid && lhs._contentChecksum == rhs._contentChecksum;
+}
+
+QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status)
+{
+    stream << static_cast<int>(status);
+    return stream;
 }
 
 } // namespace OCC

@@ -196,9 +196,6 @@ class PropagateDownloadFile : public PropagateItemJob
 public:
     PropagateDownloadFile(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
-        , _resumeStart(0)
-        , _downloadProgress(0)
-        , _deleteExisting(false)
     {
     }
     void start() override;
@@ -248,12 +245,13 @@ private slots:
 private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
+    [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
 
-    qint64 _resumeStart;
-    qint64 _downloadProgress;
+    qint64 _resumeStart = 0;
+    qint64 _downloadProgress = 0;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
-    bool _deleteExisting;
+    bool _deleteExisting = false;
     bool _isEncrypted = false;
     EncryptedFile _encryptedInfo;
     ConflictRecord _conflictRecord;

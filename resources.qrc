@@ -11,6 +11,7 @@
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
         <file>src/gui/filedetails/FileDetailsView.qml</file>
         <file>src/gui/filedetails/FileDetailsWindow.qml</file>
+        <file>src/gui/filedetails/FileTag.qml</file>
         <file>src/gui/filedetails/NCInputTextEdit.qml</file>
         <file>src/gui/filedetails/NCInputTextField.qml</file>
         <file>src/gui/filedetails/NCTabButton.qml</file>
@@ -51,5 +52,13 @@
         <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
+        <file>src/gui/filedetails/NCRadioButton.qml</file>
+        <file>src/gui/tray/ListItemLineAndSubline.qml</file>
+        <file>src/gui/tray/TrayFoldersMenuButton.qml</file>
+        <file>src/gui/tray/TrayFolderListItem.qml</file>
+        <file>src/gui/ResolveConflictsDialog.qml</file>
+        <file>src/gui/ConflictDelegate.qml</file>
+        <file>src/gui/ConflictItemFileInfo.qml</file>
+        <file>src/gui/filedetails/NCInputDateField.qml</file>
     </qresource>
 </RCC>

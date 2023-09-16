@@ -40,7 +40,7 @@ class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    explicit AbstractNetworkJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
     ~AbstractNetworkJob() override;
 
     virtual void start();
@@ -85,11 +85,23 @@ public:
      * This function reads the body of the reply and parses out the
      * error information, if possible.
      *
-     * \a body is optinally filled with the reply body.
+     * \a body is optionally filled with the reply body.
      *
      * Warning: Needs to call reply()->readAll().
      */
     QString errorStringParsingBody(QByteArray *body = nullptr);
+
+    /** Like errorString, but also checking the reply body for information.
+     *
+     * Specifically, sometimes xml bodies have extra error information.
+     * This function reads the body of the reply and parses out the
+     * error information, if possible.
+     *
+     * \a body is optinally filled with the reply body.
+     *
+     * Warning: Needs to call reply()->readAll().
+     */
+    [[nodiscard]] QString errorStringParsingBodyException(const QByteArray &body) const;
 
     /** Make a new request */
     void retry();
@@ -179,11 +191,11 @@ protected:
     virtual void onTimedOut();
 
     QByteArray _responseTimestamp;
-    bool _timedout; // set to true when the timeout slot is received
+    bool _timedout = false; // set to true when the timeout slot is received
 
     // Automatically follows redirects. Note that this only works for
     // GET requests that don't set up any HTTP body or other flags.
-    bool _followRedirects;
+    bool _followRedirects = true;
 
     QString replyStatusString();
 
@@ -196,7 +208,7 @@ protected:
 
 private:
     QNetworkReply *addTimer(QNetworkReply *reply);
-    bool _ignoreCredentialFailure;
+    bool _ignoreCredentialFailure = false;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
     QString _path;
     QTimer _timer;
@@ -232,6 +244,16 @@ private:
  * Returns a null string if no message was found.
  */
 QString OWNCLOUDSYNC_EXPORT extractErrorMessage(const QByteArray &errorResponse);
+
+
+/** Gets the SabreDAV-style exception from an error response.
+ *
+ * This assumes the response is XML with a 'exception' tag that has a
+ * 'exception' tag that contains the data to extract.
+ *
+ * Returns a null string if no message was found.
+ */
+[[nodiscard]] QString OWNCLOUDSYNC_EXPORT extractException(const QByteArray &errorResponse);
 
 /** Builds a error message based on the error and the reply body. */
 QString OWNCLOUDSYNC_EXPORT errorMessage(const QString &baseError, const QByteArray &body);

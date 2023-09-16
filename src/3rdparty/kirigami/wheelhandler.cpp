@@ -351,8 +351,8 @@ bool WheelHandler::scrollFlickable(QPointF pixelDelta, QPointF angleDelta, Qt::K
 
     const qreal xTicks = angleDelta.x() / 120;
     const qreal yTicks = angleDelta.y() / 120;
-    qreal xChange;
-    qreal yChange;
+    qreal xChange = NAN;
+    qreal yChange = NAN;
     bool scrolled = false;
 
     // Scroll X
@@ -489,7 +489,7 @@ bool WheelHandler::eventFilter(QObject *watched, QEvent *event)
                 m_horizontalScrollBar->setProperty("interactive", true);
             }
         }
-        QWheelEvent *wheelEvent = static_cast<QWheelEvent *>(event);
+        auto *wheelEvent = dynamic_cast<QWheelEvent *>(event);
 
         // NOTE: On X11 with libinput, pixelDelta is identical to angleDelta when using a mouse that shouldn't use pixelDelta.
         // If faulty pixelDelta, reset pixelDelta to (0,0).
@@ -555,7 +555,7 @@ bool WheelHandler::eventFilter(QObject *watched, QEvent *event)
 
     case QEvent::MouseButtonPress: {
         // NOTE: Flickable does not handle touch events, only synthesized mouse events
-        m_wasTouched = static_cast<QMouseEvent *>(event)->source() != Qt::MouseEventNotSynthesized;
+        m_wasTouched = dynamic_cast<QMouseEvent *>(event)->source() != Qt::MouseEventNotSynthesized;
         if (!m_filterMouseEvents) {
             break;
         }
@@ -577,7 +577,7 @@ bool WheelHandler::eventFilter(QObject *watched, QEvent *event)
         if (!m_filterMouseEvents) {
             break;
         }
-        if (static_cast<QMouseEvent *>(event)->source() == Qt::MouseEventNotSynthesized && item == m_flickable) {
+        if (dynamic_cast<QMouseEvent *>(event)->source() == Qt::MouseEventNotSynthesized && item == m_flickable) {
             return true;
         }
         break;
@@ -603,7 +603,7 @@ bool WheelHandler::eventFilter(QObject *watched, QEvent *event)
         if (!m_keyNavigationEnabled) {
             break;
         }
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        auto *keyEvent = dynamic_cast<QKeyEvent *>(event);
         bool horizontalScroll = keyEvent->modifiers() & m_defaultHorizontalScrollModifiers;
         switch (keyEvent->key()) {
         case Qt::Key_Up: return scrollUp();

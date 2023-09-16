@@ -56,7 +56,7 @@ public:
     QString _token;
     QString _refreshToken;
     QScopedPointer<OAuth> _asyncAuth;
-    Ui_OwncloudOAuthCredsPage _ui;
+    Ui_OwncloudOAuthCredsPage _ui{};
 
 protected slots:
     void slotOpenBrowser();

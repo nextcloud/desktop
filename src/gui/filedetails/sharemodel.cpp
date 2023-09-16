@@ -17,30 +17,24 @@
 #include <QFileInfo>
 #include <QTimeZone>
 
+#include <array>
+#include <random>
+#include <openssl/rand.h>
+
 #include "account.h"
 #include "folderman.h"
+#include "sharepermissions.h"
 #include "theme.h"
-#include "wordlist.h"
 
 namespace {
 
 static const auto placeholderLinkShareId = QStringLiteral("__placeholderLinkShareId__");
 static const auto internalLinkShareId = QStringLiteral("__internalLinkShareId__");
+static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secureFileDropPlaceholderLinkShareId__");
+}
 
-QString createRandomPassword()
+namespace OCC
 {
-    const auto words = OCC::WordList::getRandomWords(10);
-
-    const auto addFirstLetter = [](const QString &current, const QString &next) -> QString {
-        return current + next.at(0);
-    };
-
-    return std::accumulate(std::cbegin(words), std::cend(words), QString(), addFirstLetter);
-}
-}
-
-namespace OCC {
-
 Q_LOGGING_CATEGORY(lcShareModel, "com.nextcloud.sharemodel")
 
 ShareModel::ShareModel(QObject *parent)
@@ -52,7 +46,7 @@ ShareModel::ShareModel(QObject *parent)
 
 int ShareModel::rowCount(const QModelIndex &parent) const
 {
-    if(parent.isValid() || !_accountState || _localPath.isEmpty()) {
+    if (parent.isValid() || !_accountState || _localPath.isEmpty()) {
         return 0;
     }
 
@@ -80,6 +74,12 @@ QHash<int, QByteArray> ShareModel::roleNames() const
     roles[PasswordRole] = "password";
     roles[PasswordEnforcedRole] = "passwordEnforced";
     roles[EditingAllowedRole] = "editingAllowed";
+    roles[CurrentPermissionModeRole] = "currentPermissionMode";
+    roles[SharedItemTypeRole] = "sharedItemType";
+    roles[IsSharePermissionsChangeInProgress] = "isSharePermissionChangeInProgress";
+    roles[HideDownloadEnabledRole] = "hideDownload";
+    roles[IsHideDownloadEnabledChangeInProgress] = "isHideDownloadInProgress";
+    roles[ResharingAllowedRole] = "resharingAllowed";
 
     return roles;
 }
@@ -95,8 +95,8 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
     }
 
     // Some roles only provide values for the link and user/group share types
-    if(const auto linkShare = share.objectCast<LinkShare>()) {
-        switch(role) {
+    if (const auto linkShare = share.objectCast<LinkShare>()) {
+        switch (role) {
         case LinkRole:
             return linkShare->getLink();
         case LinkShareNameRole:
@@ -105,27 +105,27 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
             return linkShare->getLabel();
         case NoteEnabledRole:
             return !linkShare->getNote().isEmpty();
+        case HideDownloadEnabledRole:
+            return linkShare->getHideDownload();
         case NoteRole:
             return linkShare->getNote();
         case ExpireDateEnabledRole:
             return linkShare->getExpireDate().isValid();
-        case ExpireDateRole:
-        {
+        case ExpireDateRole: {
             const auto startOfExpireDayUTC = linkShare->getExpireDate().startOfDay(QTimeZone::utc());
             return startOfExpireDayUTC.toMSecsSinceEpoch();
         }
         }
 
     } else if (const auto userGroupShare = share.objectCast<UserGroupShare>()) {
-        switch(role) {
+        switch (role) {
         case NoteEnabledRole:
             return !userGroupShare->getNote().isEmpty();
         case NoteRole:
             return userGroupShare->getNote();
         case ExpireDateEnabledRole:
             return userGroupShare->getExpireDate().isValid();
-        case ExpireDateRole:
-        {
+        case ExpireDateRole: {
             const auto startOfExpireDayUTC = userGroupShare->getExpireDate().startOfDay(QTimeZone::utc());
             return startOfExpireDayUTC.toMSecsSinceEpoch();
         }
@@ -134,7 +134,7 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         return _privateLinkUrl;
     }
 
-    switch(role) {
+    switch (role) {
     case Qt::DisplayRole:
         return displayStringForShare(share);
     case ShareRole:
@@ -151,6 +151,22 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         return expireDateEnforcedForShare(share);
     case EnforcedMaximumExpireDateRole:
         return enforcedMaxExpireDateForShare(share);
+    case CurrentPermissionModeRole: {
+        if (share->getPermissions() == OCC::SharePermission::SharePermissionCreate) {
+            return QVariant::fromValue(SharePermissionsMode::ModeFileDropOnly);
+        } else if ((share->getPermissions() & SharePermissionRead) && (share->getPermissions() & SharePermissionCreate)
+                   && (share->getPermissions() & SharePermissionUpdate) && (share->getPermissions() & SharePermissionDelete)) {
+            return QVariant::fromValue(SharePermissionsMode::ModeUploadAndEditing);
+        } else {
+            return QVariant::fromValue(SharePermissionsMode::ModeViewOnly);
+        }
+    }
+    case SharedItemTypeRole:
+        return static_cast<int>(_sharedItemType);
+    case IsSharePermissionsChangeInProgress:
+        return _sharePermissionsChangeInProgress;
+    case IsHideDownloadEnabledChangeInProgress:
+        return _hideDownloadEnabledChangeInProgress;
     case PasswordProtectEnabledRole:
         return share->isPasswordSet();
     case PasswordRole:
@@ -159,11 +175,13 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         }
         return _shareIdRecentlySetPasswords.value(share->getId());
     case PasswordEnforcedRole:
-        return _accountState && _accountState->account() && _accountState->account()->capabilities().isValid() &&
-               ((share->getShareType() == Share::TypeEmail && _accountState->account()->capabilities().shareEmailPasswordEnforced()) ||
-               (share->getShareType() == Share::TypeLink && _accountState->account()->capabilities().sharePublicLinkEnforcePassword()));
+        return _accountState && _accountState->account() && _accountState->account()->capabilities().isValid()
+            && ((share->getShareType() == Share::TypeEmail && _accountState->account()->capabilities().shareEmailPasswordEnforced())
+                || (share->getShareType() == Share::TypeLink && _accountState->account()->capabilities().sharePublicLinkEnforcePassword()));
     case EditingAllowedRole:
         return share->getPermissions().testFlag(SharePermissionUpdate);
+    case ResharingAllowedRole:
+        return share->getPermissions().testFlag(SharePermissionShare);
 
     // Deal with roles that only return certain values for link or user/group share types
     case NoteEnabledRole:
@@ -177,9 +195,6 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
         return {};
     }
 
-    qCWarning(lcShareModel) << "Got unknown role" << role
-                            << "for share of type" << share->getShareType()
-                            << "so returning null value.";
     return {};
 }
 
@@ -214,8 +229,7 @@ void ShareModel::updateData()
     resetData();
 
     if (_localPath.isEmpty() || !_accountState || _accountState->account().isNull()) {
-        qCWarning(lcShareModel) << "Not updating share model data. Local path is:"  << _localPath
-                                << "Is account state null:" << !_accountState;
+        qCWarning(lcShareModel) << "Not updating share model data. Local path is:" << _localPath << "Is account state null:" << !_accountState;
         return;
     }
 
@@ -240,18 +254,26 @@ void ShareModel::updateData()
     SyncJournalFileRecord fileRecord;
     auto resharingAllowed = true; // lets assume the good
 
-    if(_folder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid()) {
-        if (!fileRecord._remotePerm.isNull() &&
-            !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
-
-            resharingAllowed = false;
-        }
+    if (_folder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid() && !fileRecord._remotePerm.isNull()
+        && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
+        qCInfo(lcShareModel) << "File record says resharing not allowed";
+        resharingAllowed = false;
     }
 
     _maxSharingPermissions = resharingAllowed ? SharePermissions(_accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
     Q_EMIT sharePermissionsChanged();
 
     _numericFileId = fileRecord.numericFileId();
+
+    if (fileRecord.isDirectory()) {
+        if (fileRecord.isE2eEncrypted()) {
+            _sharedItemType = fileRecord.e2eMangledName().isEmpty() ? SharedItemType::SharedItemTypeEncryptedTopLevelFolder : SharedItemType::SharedItemTypeEncryptedFolder;
+        } else {
+            _sharedItemType = SharedItemType::SharedItemTypeFolder;
+        }
+    } else {
+        _sharedItemType = fileRecord.isE2eEncrypted() ? SharedItemType::SharedItemTypeEncryptedFile : SharedItemType::SharedItemTypeFile;
+    }
 
     // Will get added when shares are fetched if no link shares are fetched
     _placeholderLinkShare.reset(new Share(_accountState->account(),
@@ -268,12 +290,17 @@ void ShareModel::updateData()
                                        _sharePath,
                                        Share::TypeInternalLink));
 
+    _secureFileDropPlaceholderLinkShare.reset(new Share(_accountState->account(),
+                                                        secureFileDropPlaceholderLinkShareId,
+                                                        _accountState->account()->id(),
+                                                        _accountState->account()->davDisplayName(),
+                                                        _sharePath,
+                                                        Share::TypeSecureFileDropPlaceholderLink));
+
     auto job = new PropfindJob(_accountState->account(), _sharePath);
-    job->setProperties(
-        QList<QByteArray>()
-        << "http://open-collaboration-services.org/ns:share-permissions"
-        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
-        << "http://owncloud.org/ns:privatelink");
+    job->setProperties(QList<QByteArray>() << "http://open-collaboration-services.org/ns:share-permissions"
+                                           << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
+                                           << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
     connect(job, &PropfindJob::result, this, &ShareModel::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, [&](const QNetworkReply *reply) {
@@ -297,10 +324,7 @@ void ShareModel::initShareManager()
     }
 
     bool sharingPossible = true;
-    if (!publicLinkSharesEnabled()) {
-        qCWarning(lcSharing) << "Link shares have been disabled";
-        sharingPossible = false;
-    } else if (!canShare()) {
+    if (!canShare()) {
         qCWarning(lcSharing) << "The file cannot be shared because it does not have sharing permission.";
         sharingPossible = false;
     }
@@ -308,10 +332,12 @@ void ShareModel::initShareManager()
     if (_manager.isNull() && sharingPossible) {
         _manager.reset(new ShareManager(_accountState->account(), this));
         connect(_manager.data(), &ShareManager::sharesFetched, this, &ShareModel::slotSharesFetched);
-        connect(_manager.data(), &ShareManager::shareCreated, this, [&]{ _manager->fetchShares(_sharePath); });
+        connect(_manager.data(), &ShareManager::shareCreated, this, [&] {
+            _manager->fetchShares(_sharePath);
+        });
         connect(_manager.data(), &ShareManager::linkShareCreated, this, &ShareModel::slotAddShare);
         connect(_manager.data(), &ShareManager::linkShareRequiresPassword, this, &ShareModel::requestPasswordForLinkShare);
-        connect(_manager.data(), &ShareManager::serverError, this, [this](const int code, const QString &message){
+        connect(_manager.data(), &ShareManager::serverError, this, [this](const int code, const QString &message) {
             _hasInitialShareFetchCompleted = true;
             Q_EMIT hasInitialShareFetchCompletedChanged();
             emit serverError(code, message);
@@ -337,15 +363,54 @@ void ShareModel::handlePlaceholderLinkShare()
             placeholderLinkSharePresent = true;
         }
 
-        if(linkSharePresent && placeholderLinkSharePresent) {
+        if (linkSharePresent && placeholderLinkSharePresent) {
             break;
         }
     }
 
     if (linkSharePresent && placeholderLinkSharePresent) {
         slotRemoveShareWithId(placeholderLinkShareId);
-    } else if (!linkSharePresent && !placeholderLinkSharePresent) {
+    } else if (!linkSharePresent && !placeholderLinkSharePresent && publicLinkSharesEnabled()) {
         slotAddShare(_placeholderLinkShare);
+    }
+
+    Q_EMIT sharesChanged();
+}
+
+void ShareModel::handleSecureFileDropLinkShare()
+{
+    // We want to add the placeholder if there are no link shares and
+    // if we are not already showing the placeholder link share
+    auto linkSharePresent = false;
+    auto secureFileDropLinkSharePresent = false;
+
+    for (const auto &share : qAsConst(_shares)) {
+        const auto shareType = share->getShareType();
+
+        if (!linkSharePresent && shareType == Share::TypeLink) {
+            linkSharePresent = true;
+        } else if (!secureFileDropLinkSharePresent && shareType == Share::TypeSecureFileDropPlaceholderLink) {
+            secureFileDropLinkSharePresent = true;
+        }
+
+        if (linkSharePresent && secureFileDropLinkSharePresent) {
+            break;
+        }
+    }
+
+    if (linkSharePresent && secureFileDropLinkSharePresent) {
+        slotRemoveShareWithId(secureFileDropPlaceholderLinkShareId);
+    } else if (!linkSharePresent && !secureFileDropLinkSharePresent) {
+        slotAddShare(_secureFileDropPlaceholderLinkShare);
+    }
+}
+
+void ShareModel::handleLinkShare()
+{
+    if (!isEncryptedItem()) {
+        handlePlaceholderLinkShare();
+    } else if (isSecureFileDropSupportedFolder()) {
+        handleSecureFileDropLinkShare();
     }
 }
 
@@ -356,9 +421,17 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
 
     const QVariant receivedPermissions = result["share-permissions"];
     if (!receivedPermissions.toString().isEmpty()) {
+        const auto oldCanShare = canShare();
+
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
         Q_EMIT sharePermissionsChanged();
         qCInfo(lcShareModel) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
+
+        if (!oldCanShare && canShare()) {
+            qCInfo(lcShareModel) << "Received updated sharing data that says we have permission to share now."
+                                 << "Trying to init share manager again.";
+            initShareManager();
+        }
     }
 
     const auto privateLinkUrl = result["privatelink"].toString();
@@ -395,7 +468,7 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
         slotAddShare(share);
     }
 
-    handlePlaceholderLinkShare();
+    handleLinkShare();
 }
 
 void ShareModel::setupInternalLinkShare()
@@ -403,7 +476,8 @@ void ShareModel::setupInternalLinkShare()
     if (!_accountState ||
         _accountState->account().isNull() ||
         _localPath.isEmpty() ||
-        _privateLinkUrl.isEmpty()) {
+        _privateLinkUrl.isEmpty() ||
+        isEncryptedItem()) {
         return;
     }
 
@@ -411,6 +485,30 @@ void ShareModel::setupInternalLinkShare()
     _shares.append(_internalLinkShare);
     endInsertRows();
     Q_EMIT internalLinkReady();
+}
+
+void ShareModel::setSharePermissionChangeInProgress(const QString &shareId, const bool isInProgress)
+{
+    if (isInProgress == _sharePermissionsChangeInProgress) {
+        return;
+    }
+
+    _sharePermissionsChangeInProgress = isInProgress;
+    
+    const auto shareIndex = _shareIdIndexHash.value(shareId);
+    Q_EMIT dataChanged(shareIndex, shareIndex, {IsSharePermissionsChangeInProgress});
+}
+
+void ShareModel::setHideDownloadEnabledChangeInProgress(const QString &shareId, const bool isInProgress)
+{
+    if (isInProgress == _hideDownloadEnabledChangeInProgress) {
+        return;
+    }
+
+    _hideDownloadEnabledChangeInProgress = isInProgress;
+
+    const auto shareIndex = _shareIdIndexHash.value(shareId);
+    Q_EMIT dataChanged(shareIndex, shareIndex, {IsHideDownloadEnabledChangeInProgress});
 }
 
 void ShareModel::slotAddShare(const SharePtr &share)
@@ -462,6 +560,7 @@ void ShareModel::slotAddShare(const SharePtr &share)
         connect(linkShare.data(), &LinkShare::nameSet, this, [this, shareId]{ slotShareNameSet(shareId); });
         connect(linkShare.data(), &LinkShare::labelSet, this, [this, shareId]{ slotShareLabelSet(shareId); });
         connect(linkShare.data(), &LinkShare::expireDateSet, this, [this, shareId]{ slotShareExpireDateSet(shareId); });
+        connect(linkShare.data(), &LinkShare::hideDownloadSet, this, [this, shareId] { slotHideDownloadSet(shareId); });
     } else if (const auto userGroupShare = share.objectCast<UserGroupShare>()) {
         connect(userGroupShare.data(), &UserGroupShare::noteSet, this, [this, shareId]{ slotShareNoteSet(shareId); });
         connect(userGroupShare.data(), &UserGroupShare::expireDateSet, this, [this, shareId]{ slotShareExpireDateSet(shareId); });
@@ -471,7 +570,7 @@ void ShareModel::slotAddShare(const SharePtr &share)
         connect(_manager.data(), &ShareManager::serverError, this, &ShareModel::slotServerError);
     }
 
-    handlePlaceholderLinkShare();
+    handleLinkShare();
     Q_EMIT sharesChanged();
 }
 
@@ -498,7 +597,7 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     _shares.removeAt(shareIndex.row());
     endRemoveRows();
 
-    handlePlaceholderLinkShare();
+    handleLinkShare();
 
     Q_EMIT sharesChanged();
 }
@@ -528,7 +627,10 @@ void ShareModel::slotRemoveSharee(const ShareePtr &sharee)
 QString ShareModel::displayStringForShare(const SharePtr &share) const
 {
     if (const auto linkShare = share.objectCast<LinkShare>()) {
-        const auto displayString = tr("Share link");
+
+        const auto isSecureFileDropShare = isSecureFileDropSupportedFolder() && linkShare->getPermissions().testFlag(OCC::SharePermission::SharePermissionCreate);
+
+        const auto displayString = isSecureFileDropShare ? tr("Secure file drop link") : tr("Share link");
 
         if (!linkShare->getLabel().isEmpty()) {
             return QStringLiteral("%1 (%2)").arg(displayString, linkShare->getLabel());
@@ -539,6 +641,8 @@ QString ShareModel::displayStringForShare(const SharePtr &share) const
         return tr("Link share");
     } else if (share->getShareType() == Share::TypeInternalLink) {
         return tr("Internal link");
+    } else if (share->getShareType() == Share::TypeSecureFileDropPlaceholderLink) {
+        return tr("Secure file drop");
     } else if (share->getShareWith()) {
         return share->getShareWith()->format();
     }
@@ -555,6 +659,7 @@ QString ShareModel::iconUrlForShare(const SharePtr &share) const
     case Share::TypeInternalLink:
         return QString(iconsPath + QStringLiteral("external.svg"));
     case Share::TypePlaceholderLink:
+    case Share::TypeSecureFileDropPlaceholderLink:
     case Share::TypeLink:
         return QString(iconsPath + QStringLiteral("public.svg"));
     case Share::TypeEmail:
@@ -649,7 +754,8 @@ void ShareModel::slotSharePermissionsSet(const QString &shareId)
 
     const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
     const auto shareModelIndex = index(sharePersistentModelIndex.row());
-    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { EditingAllowedRole });
+    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { EditingAllowedRole, CurrentPermissionModeRole });
+    setSharePermissionChangeInProgress(shareId, false);
 }
 
 void ShareModel::slotSharePasswordSet(const QString &shareId)
@@ -661,6 +767,18 @@ void ShareModel::slotSharePasswordSet(const QString &shareId)
     const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
     const auto shareModelIndex = index(sharePersistentModelIndex.row());
     Q_EMIT dataChanged(shareModelIndex, shareModelIndex, { PasswordProtectEnabledRole, PasswordRole });
+}
+
+void ShareModel::slotHideDownloadSet(const QString &shareId)
+{
+    if (shareId.isEmpty() || !_shareIdIndexHash.contains(shareId)) {
+        return;
+    }
+
+    const auto sharePersistentModelIndex = _shareIdIndexHash.value(shareId);
+    const auto shareModelIndex = index(sharePersistentModelIndex.row());
+    Q_EMIT dataChanged(shareModelIndex, shareModelIndex, {HideDownloadEnabledRole});
+    setHideDownloadEnabledChangeInProgress(shareId, false);
 }
 
 void ShareModel::slotShareNoteSet(const QString &shareId)
@@ -709,37 +827,56 @@ void ShareModel::slotShareExpireDateSet(const QString &shareId)
 
 // ----------------------- Shares modification slots ----------------------- //
 
-void ShareModel::toggleShareAllowEditing(const SharePtr &share, const bool enable) const
+void ShareModel::toggleShareAllowEditing(const SharePtr &share, const bool enable)
 {
-    if (share.isNull()) {
+    if (share.isNull() || _sharePermissionsChangeInProgress) {
         return;
     }
 
     auto permissions = share->getPermissions();
     enable ? permissions |= SharePermissionUpdate : permissions &= ~SharePermissionUpdate;
 
+    setSharePermissionChangeInProgress(share->getId(), true);
     share->setPermissions(permissions);
 }
 
-void ShareModel::toggleShareAllowEditingFromQml(const QVariant &share, const bool enable) const
+void ShareModel::toggleShareAllowEditingFromQml(const QVariant &share, const bool enable)
 {
     const auto ptr = share.value<SharePtr>();
     toggleShareAllowEditing(ptr, enable);
 }
 
-void ShareModel::toggleShareAllowResharing(const SharePtr &share, const bool enable) const
+void ShareModel::toggleShareAllowResharing(const SharePtr &share, const bool enable)
 {
-    if (share.isNull()) {
+    if (share.isNull() || _sharePermissionsChangeInProgress) {
         return;
     }
 
     auto permissions = share->getPermissions();
     enable ? permissions |= SharePermissionShare : permissions &= ~SharePermissionShare;
 
+    setSharePermissionChangeInProgress(share->getId(), true);
     share->setPermissions(permissions);
 }
 
-void ShareModel::toggleShareAllowResharingFromQml(const QVariant &share, const bool enable) const
+void ShareModel::toggleHideDownloadFromQml(const QVariant &share, const bool enable)
+{
+    const auto sharePtr = share.value<SharePtr>();
+    if (sharePtr.isNull() || _hideDownloadEnabledChangeInProgress) {
+        return;
+    }
+
+    const auto linkShare = sharePtr.objectCast<LinkShare>();
+
+    if (linkShare.isNull()) {
+        return;
+    }
+
+    setHideDownloadEnabledChangeInProgress(linkShare->getId(), true);
+    linkShare->setHideDownload(enable);
+}
+
+void ShareModel::toggleShareAllowResharingFromQml(const QVariant &share, const bool enable)
 {
     const auto ptr = share.value<SharePtr>();
     toggleShareAllowResharing(ptr, enable);
@@ -756,7 +893,7 @@ void ShareModel::toggleSharePasswordProtect(const SharePtr &share, const bool en
         return;
     }
 
-    const auto randomPassword = createRandomPassword();
+    const auto randomPassword = generatePassword();
     _shareIdRecentlySetPasswords.insert(share->getId(), randomPassword);
     share->setPassword(randomPassword);
 }
@@ -806,6 +943,42 @@ void ShareModel::toggleShareNoteToRecipientFromQml(const QVariant &share, const 
 {
     const auto ptr = share.value<SharePtr>();
     toggleShareNoteToRecipient(ptr, enable);
+}
+
+void ShareModel::changePermissionModeFromQml(const QVariant &share, const SharePermissionsMode permissionMode)
+{
+    const auto sharePtr = share.value<SharePtr>();
+    if (sharePtr.isNull() || _sharePermissionsChangeInProgress) {
+        return;
+    }
+
+    const auto shareIndex = _shareIdIndexHash.value(sharePtr->getId());
+
+    if (!checkIndex(shareIndex, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
+        qCWarning(lcShareModel) << "Can't change permission mode for:" << sharePtr->getId() << ", invalid share index: " << shareIndex;
+        return;
+    }
+
+    const auto currentPermissionMode = shareIndex.data(ShareModel::CurrentPermissionModeRole).value<SharePermissionsMode>();
+
+    if (currentPermissionMode == permissionMode) {
+        return;
+    }
+
+    SharePermissions perm = SharePermissionRead;
+    switch (permissionMode) {
+    case SharePermissionsMode::ModeViewOnly:
+        break;
+    case SharePermissionsMode::ModeUploadAndEditing:
+        perm |= SharePermissionCreate | SharePermissionUpdate | SharePermissionDelete;
+        break;
+    case SharePermissionsMode::ModeFileDropOnly:
+        perm = SharePermissionCreate;
+        break;
+    }
+
+    setSharePermissionChangeInProgress(sharePtr->getId(), true);
+    sharePtr->setPermissions(perm);
 }
 
 void ShareModel::setLinkShareLabel(const QSharedPointer<LinkShare> &linkShare, const QString &label) const
@@ -885,10 +1058,19 @@ void ShareModel::setShareNoteFromQml(const QVariant &share, const QString &note)
 
 void ShareModel::createNewLinkShare() const
 {
+    if (isEncryptedItem() && !isSecureFileDropSupportedFolder()) {
+        qCWarning(lcShareModel) << "Attempt to create a link share for non-root encrypted folder or a file.";
+        return;
+    }
+
     if (_manager) {
         const auto askOptionalPassword = _accountState->account()->capabilities().sharePublicLinkAskOptionalPassword();
-        const auto password = askOptionalPassword ? createRandomPassword() : QString();
-        _manager->createLinkShare(_sharePath, QString(), password);
+        const auto password = askOptionalPassword ? generatePassword() : QString();
+        if (isSecureFileDropSupportedFolder()) {
+            _manager->createSecureFileDropShare(_sharePath, {}, password);
+            return;
+        }
+        _manager->createLinkShare(_sharePath, {}, password);
     }
 }
 
@@ -1006,6 +1188,7 @@ void ShareModel::setAccountState(AccountState *accountState)
     Q_EMIT sharingEnabledChanged();
     Q_EMIT publicLinkSharesEnabledChanged();
     Q_EMIT userGroupSharingEnabledChanged();
+    Q_EMIT serverAllowsResharingChanged();
     updateData();
 }
 
@@ -1014,20 +1197,34 @@ bool ShareModel::accountConnected() const
     return _accountState && _accountState->isConnected();
 }
 
-bool ShareModel::sharingEnabled() const
+bool ShareModel::validCapabilities() const
 {
     return _accountState &&
             _accountState->account() &&
-            _accountState->account()->capabilities().isValid() &&
+            _accountState->account()->capabilities().isValid();
+}
+
+bool ShareModel::isSecureFileDropSupportedFolder() const
+{
+    return _sharedItemType == SharedItemType::SharedItemTypeEncryptedTopLevelFolder && _accountState->account()->secureFileDropSupported();
+}
+
+bool ShareModel::isEncryptedItem() const
+{
+    return _sharedItemType == SharedItemType::SharedItemTypeEncryptedFile || _sharedItemType == SharedItemType::SharedItemTypeEncryptedFolder
+        || _sharedItemType == SharedItemType::SharedItemTypeEncryptedTopLevelFolder;
+}
+
+bool ShareModel::sharingEnabled() const
+{
+    return validCapabilities() &&
             _accountState->account()->capabilities().shareAPI();
 }
 
 bool ShareModel::publicLinkSharesEnabled() const
 {
     return Theme::instance()->linkSharing() &&
-            _accountState &&
-            _accountState->account() &&
-            _accountState->account()->capabilities().isValid() &&
+            validCapabilities() &&
             _accountState->account()->capabilities().sharePublicLink();
 }
 
@@ -1051,6 +1248,12 @@ bool ShareModel::canShare() const
     return _maxSharingPermissions & SharePermissionShare;
 }
 
+bool ShareModel::serverAllowsResharing() const
+{
+    return _accountState && _accountState->account() && _accountState->account()->capabilities().isValid()
+        && _accountState->account()->capabilities().shareResharing();
+}
+
 QVariantList ShareModel::sharees() const
 {
     QVariantList returnSharees;
@@ -1058,6 +1261,67 @@ QVariantList ShareModel::sharees() const
         returnSharees.append(QVariant::fromValue(sharee));
     }
     return returnSharees;
+}
+
+QString ShareModel::generatePassword()
+{
+    constexpr auto asciiMin = 33;
+    constexpr auto asciiMax = 126;
+    constexpr auto asciiRange = asciiMax - asciiMin;
+    static constexpr auto numChars = 24;
+
+    static constexpr std::string_view lowercaseAlphabet = "abcdefghijklmnopqrstuvwxyz";
+    static constexpr std::string_view uppercaseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    static constexpr std::string_view numbers = "0123456789";
+    static constexpr std::string_view specialChars = R"(ªº\\/|"'*+-_´¨{}·#$%&()=\[\]<>;:@~)";
+
+    static const QRegularExpression lowercaseMatch("[a-z]");
+    static const QRegularExpression uppercaseMatch("[A-Z]");
+    static const QRegularExpression numberMatch("[0-9]");
+    static const QRegularExpression specialCharMatch(QString("[%1]").arg(specialChars.data()));
+
+    static const std::map<std::string_view, QRegularExpression> matchMap{
+        {lowercaseAlphabet, lowercaseMatch},
+        {uppercaseAlphabet, uppercaseMatch},
+        {numbers, numberMatch},
+        {specialChars, specialCharMatch},
+    };
+
+    std::random_device rand_dev;
+    std::mt19937 rng(rand_dev());
+
+    QString passwd;
+    std::array<unsigned char, numChars> unsignedCharArray;
+
+    RAND_bytes(unsignedCharArray.data(), numChars);
+
+    for (const auto newChar : unsignedCharArray) {
+        // Ensure byte is within asciiRange
+        const auto byte = (newChar % (asciiRange + 1)) + asciiMin;
+        passwd.append(byte);
+    }
+
+    for (const auto &charsWithMatcher : matchMap) {
+        const auto selectionChars = charsWithMatcher.first;
+        const auto matcher = charsWithMatcher.second;
+        Q_ASSERT(matcher.isValid());
+
+        if (matcher.match(passwd).hasMatch()) {
+            continue;
+        }
+
+        // add random required character at random position
+        std::uniform_int_distribution<std::mt19937::result_type> passwdDist(0, passwd.length() - 1);
+        std::uniform_int_distribution<std::mt19937::result_type> charsDist(0, selectionChars.length() - 1);
+
+        const auto passwdInsertIndex = passwdDist(rng);
+        const auto charToInsertIndex = charsDist(rng);
+        const auto charToInsert = selectionChars.at(charToInsertIndex);
+
+        passwd.insert(passwdInsertIndex, charToInsert);
+    }
+
+    return passwd;
 }
 
 } // namespace OCC

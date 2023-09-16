@@ -41,8 +41,8 @@ struct OWNCLOUDSYNC_EXPORT ClearAt
 {
     ClearAtType _type = ClearAtType::Period;
 
-    quint64 _timestamp;
-    int _period;
+    quint64 _timestamp = 0ULL;
+    int _period = 0;
     QString _endof;
 };
 
@@ -94,7 +94,7 @@ private:
     QString _message;
     QString _icon;
     OnlineStatus _state = OnlineStatus::Online;
-    bool _messagePredefined;
+    bool _messagePredefined = false;
     Optional<ClearAt> _clearAt;
 };
 

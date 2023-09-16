@@ -56,13 +56,13 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
         qCWarning(lcEncryptFolderJob) << "No valid record found in local DB for fileId" << fileId;
     }
 
-    rec._isE2eEncrypted = true;
+    rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2;
     const auto result = _journal->setFileRecord(rec);
     if (!result) {
         qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
     }
 
-    auto lockJob = new LockEncryptFolderApiJob(_account, fileId, this);
+    const auto lockJob = new LockEncryptFolderApiJob(_account, fileId, _journal, _account->e2e()->_publicKey, this);
     connect(lockJob, &LockEncryptFolderApiJob::success,
             this, &EncryptFolderJob::slotLockForEncryptionSuccess);
     connect(lockJob, &LockEncryptFolderApiJob::error,
@@ -83,8 +83,8 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
 {
     _folderToken = token;
 
-    FolderMetadata emptyMetadata(_account);
-    auto encryptedMetadata = emptyMetadata.encryptedMetadata();
+    const FolderMetadata emptyMetadata(_account);
+    const auto encryptedMetadata = emptyMetadata.encryptedMetadata();
     if (encryptedMetadata.isEmpty()) {
         //TODO: Mark the folder as unencrypted as the metadata generation failed.
         _errorString = tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
@@ -103,7 +103,7 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
 
 void EncryptFolderJob::slotUploadMetadataSuccess(const QByteArray &folderId)
 {
-    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, this);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, _journal, this);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
                     this, &EncryptFolderJob::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,
@@ -115,7 +115,7 @@ void EncryptFolderJob::slotUpdateMetadataError(const QByteArray &folderId, const
 {
     Q_UNUSED(httpReturnCode);
 
-    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, this);
+    const auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, _journal, this);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
                     this, &EncryptFolderJob::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,

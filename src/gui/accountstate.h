@@ -27,6 +27,7 @@
 #include <memory>
 
 class QSettings;
+class FakeAccountState;
 
 namespace OCC {
 
@@ -46,6 +47,7 @@ class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
     Q_PROPERTY(AccountPtr account MEMBER _account)
+    Q_PROPERTY(State state READ state NOTIFY stateChanged)
 
 public:
     enum State {
@@ -62,6 +64,10 @@ public:
         /// There's a temporary problem with talking to the server,
         /// don't bother the user too much and try again.
         ServiceUnavailable,
+
+        /// Connection is being redirected (likely a captive portal is in effect)
+        /// Do not proceed with connecting and check back later
+        RedirectDetected,
 
         /// Similar to ServiceUnavailable, but we know the server is down
         /// for maintenance
@@ -91,12 +97,6 @@ public:
      * Use from AccountManager with a prepared QSettings object only.
      */
     static AccountState *loadFromSettings(AccountPtr account, QSettings &settings);
-
-    /** Writes account state information to settings.
-     *
-     * It does not write the Account data.
-     */
-    void writeToSettings(QSettings &settings);
 
     AccountPtr account() const;
 
@@ -164,12 +164,12 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    /** Returns the notifications status retrieved by the notificatons endpoint
+    /** Returns the notifications status retrieved by the notifications endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
     */
     bool isDesktopNotificationsAllowed() const;
 
-    /** Set desktop notifications status retrieved by the notificatons endpoint
+    /** Set desktop notifications status retrieved by the notifications endpoint
     */
     void setDesktopNotificationsAllowed(bool isAllowed);
 
@@ -182,10 +182,10 @@ public:
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
-    void checkConnectivity();
+    virtual void checkConnectivity();
 
 private:
-    void setState(State state);
+    virtual void setState(State state);
     void fetchNavigationApps();
 
     int retryCount() const;
@@ -216,6 +216,7 @@ protected Q_SLOTS:
 private Q_SLOTS:
 
     void slotCheckConnection();
+    void slotCheckServerAvailibility();
     void slotPushNotificationsReady();
     void slotServerUserStatusChanged();
 
@@ -225,7 +226,7 @@ private:
     ConnectionStatus _connectionStatus;
     ConnectionStatus _lastConnectionValidatorStatus = ConnectionStatus::Undefined;
     QStringList _connectionErrors;
-    bool _waitingForNewCredentials;
+    bool _waitingForNewCredentials = false;
     QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;
@@ -241,26 +242,31 @@ private:
     /**
      * Milliseconds for which to delay reconnection after 503/maintenance.
      */
-    int _maintenanceToConnectedDelay;
+    int _maintenanceToConnectedDelay = 0;
 
     /**
      * Connects remote wipe check with the account
      * the log out triggers the check (loads app password -> create request)
      */
-    RemoteWipe *_remoteWipe;
+    RemoteWipe *_remoteWipe = nullptr;
 
     /**
      * Holds the App names and URLs available on the server
      */
     AccountAppList _apps;
 
-    bool _isDesktopNotificationsAllowed;
+    bool _isDesktopNotificationsAllowed = false;
 
     int _retryCount = 0;
 
     QTimer _checkConnectionTimer;
     QElapsedTimer _lastCheckConnectionTimer;
 
+    QTimer _checkServerAvailibilityTimer;
+
+    explicit AccountState() = default;
+
+    friend class ::FakeAccountState;
 };
 
 class AccountApp : public QObject

@@ -27,10 +27,11 @@ StackView {
     property alias accountState: fileDetailsPage.accountState
     property alias localPath: fileDetailsPage.localPath
     property alias showCloseButton: fileDetailsPage.showCloseButton
+    property alias accentColor: fileDetailsPage.accentColor
     property bool backgroundsVisible: true
 
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         visible: root.backgroundsVisible
     }
 

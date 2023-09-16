@@ -16,7 +16,7 @@ class StatusPushSpy : public QSignalSpy
     SyncEngine &_syncEngine;
 public:
     StatusPushSpy(SyncEngine &syncEngine)
-        : QSignalSpy(&syncEngine.syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString&, SyncFileStatus)))
+        : QSignalSpy(&syncEngine.syncFileStatusTracker(), &OCC::SyncFileStatusTracker::fileStatusChanged)
         , _syncEngine(syncEngine)
     { }
 

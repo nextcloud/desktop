@@ -46,7 +46,7 @@ class TestCfApiShellExtensionsIPC : public QObject
 
     QScopedPointer<FakeQNAM> fakeQnam;
     OCC::AccountPtr account;
-    OCC::AccountState* accountState;
+    OCC::AccountState* accountState = nullptr;
 
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
 

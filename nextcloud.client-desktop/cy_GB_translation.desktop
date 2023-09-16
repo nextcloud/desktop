@@ -1,0 +1,27 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Exec=@APPLICATION_EXECUTABLE@ %u
+Name=@APPLICATION_NAME@ Desktop
+Comment=@APPLICATION_NAME@ desktop synchronization client
+GenericName=Folder Sync
+Icon=@APPLICATION_ICON_NAME@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3
+MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_URI_HANDLER_SCHEME@;
+Actions=Quit;
+
+# Translations
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
+
+[Desktop Action Quit]
+Exec=@APPLICATION_EXECUTABLE@ --quit
+Name=Quit @APPLICATION_NAME@
+Icon=@APPLICATION_EXECUTABLE@
+
+
+# Translations
+Icon[cy_GB]=@APPLICATION_ICON_NAME@
+Name[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
+Comment[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
+GenericName[cy_GB]=Cydweddu Ffolder

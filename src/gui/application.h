@@ -49,6 +49,12 @@ class Folder;
 class ShellExtensionsServer;
 class SslErrorDialog;
 
+#ifdef Q_OS_MACOS
+namespace Mac {
+class FileProvider;
+}
+#endif
+
 /**
  * @brief The Application class
  * @ingroup gui
@@ -122,22 +128,22 @@ private:
 
     Theme *_theme;
 
-    bool _helpOnly;
-    bool _versionOnly;
+    bool _helpOnly = false;
+    bool _versionOnly = false;
 
     QElapsedTimer _startedAt;
 
     // options from command line:
-    bool _showLogWindow;
+    bool _showLogWindow = false;
     bool _quitInstance = false;
     QString _logFile;
     QString _logDir;
-    int _logExpire;
-    bool _logFlush;
-    bool _logDebug;
-    bool _userTriggeredConnect;
-    bool _debugMode;
-    bool _backgroundMode;
+    int _logExpire = 0;
+    bool _logFlush = false;
+    bool _logDebug = false;
+    bool _userTriggeredConnect = false;
+    bool _debugMode = false;
+    bool _backgroundMode = false;
     QUrl _editFileLocallyUrl;
 
     ClientProxy _proxy;
@@ -145,12 +151,17 @@ private:
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
 
+    QString _overrideServerUrl;
+    QString _overrideLocalDir;
+
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;
 #endif
     QScopedPointer<FolderMan> _folderManager;
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
+#elif defined(Q_OS_MACOS)
+    QScopedPointer<Mac::FileProvider> _fileProvider;
 #endif
 };
 

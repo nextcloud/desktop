@@ -69,6 +69,7 @@ class Systray
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
     Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
     Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
+    Q_PROPERTY(bool enableAddAccount READ enableAddAccount CONSTANT)
 
 public:
     static Systray *instance();
@@ -92,6 +93,8 @@ public:
     Q_REQUIRED_RESULT bool syncIsPaused() const;
     Q_REQUIRED_RESULT bool isOpen() const;
 
+    [[nodiscard]] bool enableAddAccount() const;
+
     bool raiseDialogs();
 
 signals:
@@ -102,7 +105,7 @@ signals:
     void shutdown();
 
     void showFileDetailsPage(const QString &fileLocalPath, const OCC::Systray::FileDetailsPage page);
-    void showFileDetails(AccountState *accountState, const QString &localPath, const OCC::Systray::FileDetailsPage fileDetailsPage);
+    void showFileDetails(OCC::AccountState *accountState, const QString &localPath, const OCC::Systray::FileDetailsPage fileDetailsPage);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
     void showErrorMessageDialog(const QString &error);
 
@@ -115,12 +118,13 @@ public slots:
 
     void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
-    void showTalkMessage(const QString &title, const QString &message, const QString &replyTo, const QString &token, const AccountStatePtr &accountState);
+    void showTalkMessage(const QString &title, const QString &message, const QString &replyTo, const QString &token, const OCC::AccountStatePtr &accountState);
     void setToolTip(const QString &tip);
 
     void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
+    void createResolveConflictsDialog(const OCC::ActivityList &allConflicts);
 
     void slotCurrentUserChanged();
 

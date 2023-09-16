@@ -74,7 +74,7 @@ void SlideShow::setCurrentSlide(int index)
         _animation->setDuration(SlideDuration);
         _animation->setEasingCurve(QEasingCurve::OutCubic);
         _animation->setStartValue(static_cast<qreal>(_currentIndex));
-        connect(_animation.data(), SIGNAL(valueChanged(QVariant)), this, SLOT(update()));
+        connect(_animation.data(), &QVariantAnimation::valueChanged, this, qOverload<>(&SlideShow::update));
     }
     _animation->setEndValue(static_cast<qreal>(index));
     _animation->start(QAbstractAnimation::DeleteWhenStopped);

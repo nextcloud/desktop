@@ -17,10 +17,6 @@ namespace OCC {
 WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlow2, QWidget *parent)
     : QDialog(parent)
     , _useFlow2(useFlow2)
-    , _flow2AuthWidget(nullptr)
-#ifdef WITH_WEBENGINE
-    , _webView(nullptr)
-#endif // WITH_WEBENGINE
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 

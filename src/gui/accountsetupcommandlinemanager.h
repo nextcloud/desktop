@@ -32,6 +32,8 @@ public:
 
     [[nodiscard]] bool isCommandLineParsed() const;
 
+    [[nodiscard]] bool isVfsEnabled() const;
+
 public slots:
     void setupAccountFromCommandLine();
 
@@ -45,7 +47,7 @@ private:
     QUrl _serverUrl;
     QString _remoteDirPath;
     QString _localDirPath;
-    bool _isVfsEnabled;
+    bool _isVfsEnabled = false;
 };
 
 }

@@ -50,9 +50,9 @@ private:
 
     bool _useFlow2;
 
-    Flow2AuthWidget *_flow2AuthWidget;
+    Flow2AuthWidget *_flow2AuthWidget = nullptr;
 #ifdef WITH_WEBENGINE
-    WebView *_webView;
+    WebView *_webView = nullptr;
 #endif // WITH_WEBENGINE
 
     QLabel *_errorLabel;

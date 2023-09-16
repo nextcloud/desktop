@@ -6,9 +6,10 @@
  */
 
 #include "syncenginetestutils.h"
-#include "httplogger.h"
 #include "accessmanager.h"
+#include "common/utility.h"
 #include "gui/sharepermissions.h"
+#include "httplogger.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -106,6 +107,16 @@ void DiskFileModifier::setModTime(const QString &relativePath, const QDateTime &
 
 void DiskFileModifier::modifyLockState([[maybe_unused]] const QString &relativePath, [[maybe_unused]] LockState lockState, [[maybe_unused]] int lockType, [[maybe_unused]] const QString &lockOwner, [[maybe_unused]] const QString &lockOwnerId, [[maybe_unused]] const QString &lockEditorId, [[maybe_unused]] quint64 lockTime, [[maybe_unused]] quint64 lockTimeout)
 {
+}
+
+void DiskFileModifier::setE2EE([[maybe_unused]] const QString &relativePath, [[maybe_unused]] const bool enable)
+{
+}
+
+QFile DiskFileModifier::find(const QString &relativePath) const
+{
+    const auto path = _rootDir.filePath(relativePath);
+    return QFile(path);
 }
 
 FileInfo FileInfo::A12_B12_C12_S12()
@@ -213,6 +224,13 @@ void FileInfo::modifyLockState(const QString &relativePath, LockState lockState,
     file->lockTimeout = lockTimeout;
 }
 
+void FileInfo::setE2EE(const QString &relativePath, const bool enable)
+{
+    FileInfo *file = findInvalidatingEtags(relativePath);
+    Q_ASSERT(file);
+    file->isEncrypted = enable;
+}
+
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
 {
     if (pathComponents.isEmpty()) {
@@ -274,11 +292,7 @@ QString FileInfo::path() const
 
 QString FileInfo::absolutePath() const
 {
-    if (parentPath.endsWith(QLatin1Char('/'))) {
-        return parentPath + name;
-    } else {
-        return parentPath + QLatin1Char('/') + name;
-    }
+    return OCC::Utility::trailingSlashPath(parentPath) + name;
 }
 
 void FileInfo::fixupParentPathRecursively()
@@ -328,10 +342,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
         xml.writeStartElement(davUri, QStringLiteral("response"));
 
-        auto url = QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/"));
-        if (!url.endsWith(QChar('/'))) {
-            url.append(QChar('/'));
-        }
+        const auto url = OCC::Utility::trailingSlashPath(QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/")));
         const auto href = OCC::Utility::concatUrlPath(prefix, url).path();
         xml.writeTextElement(davUri, QStringLiteral("href"), href);
         xml.writeStartElement(davUri, QStringLiteral("propstat"));
@@ -341,6 +352,12 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeStartElement(davUri, QStringLiteral("resourcetype"));
             xml.writeEmptyElement(davUri, QStringLiteral("collection"));
             xml.writeEndElement(); // resourcetype
+
+            auto totalSize = 0;
+            for (const auto &child : fileInfo.children.values()) {
+                totalSize += child.size;
+            }
+            xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
         } else
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
@@ -366,6 +383,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
         xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
+        xml.writeTextElement(ncUri, QStringLiteral("is-encrypted"), fileInfo.isEncrypted ? QString::number(1) : QString::number(0));
         buffer.write(fileInfo.extraDavProperties);
         xml.writeEndElement(); // prop
         xml.writeTextElement(davUri, QStringLiteral("status"), QStringLiteral("HTTP/1.1 200 OK"));
@@ -378,6 +396,18 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         writeFileResponse(childFileInfo);
     xml.writeEndElement(); // multistatus
     xml.writeEndDocument();
+
+    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+}
+
+FakePropfindReply::FakePropfindReply(const QByteArray &replyContents, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+    : FakeReply { parent }
+{
+    setRequest(request);
+    setUrl(request.url());
+    setOperation(op);
+
+    payload = replyContents;
 
     QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
 }
@@ -643,7 +673,8 @@ FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::
     Q_ASSERT(!fileName.isEmpty());
     fileInfo = remoteRootFileInfo.find(fileName);
     if (!fileInfo) {
-        qDebug() << "meh;";
+        qDebug() << "url: " << request.url() << " fileName: " << fileName
+                 << " meh;";
     }
     Q_ASSERT_X(fileInfo, Q_FUNC_INFO, "Could not find file on the remote");
     QMetaObject::invokeMethod(this, &FakeGetReply::respond, Qt::QueuedConnection);
@@ -653,6 +684,12 @@ void FakeGetReply::respond()
 {
     if (aborted) {
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
+        emit metaDataChanged();
+        emit finished();
+        return;
+    }
+    if (!fileInfo) {
+        setError(ContentNotFoundError, QStringLiteral("File Not Found"));
         emit metaDataChanged();
         emit finished();
         return;
@@ -995,16 +1032,23 @@ QJsonObject FakeQNAM::forEachReplyPart(QIODevice *outgoingData,
 
 QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
+    if (op == QNetworkAccessManager::CustomOperation) {
+        qInfo() << "Operation" << request.attribute(QNetworkRequest::CustomVerbAttribute).toString() << request.url();
+    } else {
+        qInfo() << "Operation" << op << request.url();
+    }
     QNetworkReply *reply = nullptr;
     auto newRequest = request;
     newRequest.setRawHeader("X-Request-ID", OCC::AccessManager::generateRequestId());
     auto contentType = request.header(QNetworkRequest::ContentTypeHeader).toString();
     if (_override) {
+        qDebug() << "Using override!";
         if (auto _reply = _override(op, newRequest, outgoingData)) {
             reply = _reply;
         }
     }
     if (!reply) {
+        qDebug() << newRequest.url();
         reply = overrideReplyWithError(getFilePathFromUrl(newRequest.url()), op, newRequest);
     }
     if (!reply) {
@@ -1013,7 +1057,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
 
         auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == QLatin1String("PROPFIND")) {
-            // Ignore outgoingData always returning somethign good enough, works for now.
+            // Ignore outgoingData always returning something good enough, works for now.
             reply = new FakePropfindReply { info, op, newRequest, this };
         } else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation) {
             reply = new FakeGetReply { info, op, newRequest, this };
@@ -1140,9 +1184,7 @@ FileInfo FakeFolder::currentLocalState()
 QString FakeFolder::localPath() const
 {
     // SyncEngine wants a trailing slash
-    if (_tempDir.path().endsWith(QLatin1Char('/')))
-        return _tempDir.path();
-    return _tempDir.path() + QLatin1Char('/');
+    return OCC::Utility::trailingSlashPath(_tempDir.path());
 }
 
 void FakeFolder::scheduleSync()
@@ -1176,7 +1218,7 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 
 void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 {
-    foreach (const FileInfo &child, templateFi.children) {
+    for(const auto &child : templateFi.children) {
         if (child.isDir) {
             QDir subDir(dir);
             dir.mkdir(child.name);
@@ -1194,7 +1236,7 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 
 void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
 {
-    foreach (const QFileInfo &diskChild, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+    for(const auto &diskChild : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
         if (diskChild.isDir()) {
             QDir subDir = dir;
             subDir.cd(diskChild.fileName());

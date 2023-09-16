@@ -34,16 +34,16 @@ struct FakeFileReplyDefinition
     QString fileOwnerUid;
     QString fileOwnerDisplayName;
     QString fileTarget;
-    bool fileHasPreview;
+    bool fileHasPreview = false;
     QString fileFileParent;
     QString fileSource;
     QString fileItemSource;
     QString fileItemType;
-    int fileMailSend;
+    int fileMailSend = 0;
     QString fileMimeType;
     QString fileParent;
     QString filePath;
-    int fileStorage;
+    int fileStorage = 0;
     QString fileStorageId;
 };
 
@@ -60,17 +60,17 @@ struct FakeShareDefinition
 
     FakeFileReplyDefinition fileDefinition;
     QString shareId;
-    bool shareCanDelete;
-    bool shareCanEdit;
+    bool shareCanDelete = false;
+    bool shareCanEdit = false;
     QString shareUidOwner;
     QString shareDisplayNameOwner;
     QString sharePassword;
-    int sharePermissions;
+    int sharePermissions = 0;
     QString shareNote;
-    int shareHideDownload;
+    int shareHideDownload = 0;
     QString shareExpiration;
-    bool shareSendPasswordByTalk;
-    int shareType;
+    bool shareSendPasswordByTalk = false;
+    int shareType = 0;
     QString shareShareWith;
     QString shareShareWithDisplayName;
     QString shareToken;

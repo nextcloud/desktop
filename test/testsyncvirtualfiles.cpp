@@ -13,6 +13,34 @@
 
 using namespace OCC;
 
+namespace {
+
+QStringList findCaseClashConflicts(const FileInfo &dir)
+{
+    QStringList conflicts;
+    for (const auto &item : dir.children) {
+        if (item.name.contains("(case clash from")) {
+            conflicts.append(item.path());
+        }
+    }
+    return conflicts;
+}
+
+bool expectConflict(FileInfo state, const QString path)
+{
+    PathComponents pathComponents(path);
+    auto base = state.find(pathComponents.parentDirComponents());
+    if (!base)
+        return false;
+    for (const auto &item : qAsConst(base->children)) {
+        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
+            return true;
+        }
+    }
+    return false;
+}
+}
+
 #define DVSUFFIX APPLICATION_DOTVIRTUALFILE_SUFFIX
 
 bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
@@ -1691,6 +1719,231 @@ private slots:
         fakeFolder.execUntilBeforePropagation();
 
         QCOMPARE(checkStatus(), SyncFileStatus::StatusError);
+
+        fakeFolder.execUntilFinished();
+    }
+
+    void testServer_caseClash_createConflict()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_subFolderCaseClash_createConflict()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_caseClash_createConflictOnMove()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST2";
+        constexpr auto testUpperCaseFileAfterMove = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, false);
+
+        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
+        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_subFolderCaseClash_createConflictOnMove()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST2";
+        constexpr auto testUpperCaseFileAfterMove = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, false);
+
+        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
+        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testDataFingerPrint()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().mkdir("a/b/d");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+
+        //Server support finger print, but none is set.
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().remove("a/b/d");
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testLockFile_lockedFileReadOnly_afterSync()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1");
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_locked, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        OCC::SyncJournalFileRecord fileRecordBefore;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1") + DVSUFFIX, &fileRecordBefore));
+        QVERIFY(fileRecordBefore.isValid());
+        QVERIFY(!fileRecordBefore._lockstate._locked);
+
+        const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1" + DVSUFFIX};
+        QVERIFY(localFileNotLocked.isWritable());
+
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1") + DVSUFFIX)->_locked, OCC::SyncFileItem::LockStatus::LockedItem);
+        OCC::SyncJournalFileRecord fileRecordLocked;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1") + DVSUFFIX, &fileRecordLocked));
+        QVERIFY(fileRecordLocked.isValid());
+        QVERIFY(fileRecordLocked._lockstate._locked);
+
+        const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1" + DVSUFFIX};
+        QVERIFY(!localFileLocked.isWritable());
     }
 };
 

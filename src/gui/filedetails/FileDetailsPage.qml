@@ -38,6 +38,7 @@ Page {
     property StackView rootStackView: StackView {}
     property bool showCloseButton: false
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     property FileDetails fileDetails: FileDetails {
         id: fileDetails
@@ -47,13 +48,17 @@ Page {
     Connections {
         target: Systray
         function onShowFileDetailsPage(fileLocalPath, page) {
-            if(fileLocalPath === root.localPath) {
+            if (!root.fileDetails.sharingAvailable && page == Systray.FileDetailsPage.Sharing) {
+                return;
+            }
+
+            if (fileLocalPath === root.localPath) {
                 switch(page) {
                 case Systray.FileDetailsPage.Activity:
                     swipeView.currentIndex = fileActivityView.swipeIndex;
                     break;
                 case Systray.FileDetailsPage.Sharing:
-                    swipeView.currentIndex = shareView.swipeIndex;
+                    swipeView.currentIndex = shareViewLoader.swipeIndex;
                     break;
                 }
             }
@@ -64,7 +69,7 @@ Page {
     bottomPadding: intendedPadding
 
     background: Rectangle {
-        color: Style.backgroundColor
+        color: palette.window
         visible: root.backgroundsVisible
     }
 
@@ -81,7 +86,19 @@ Page {
             Layout.topMargin: root.topPadding
 
             columns: root.showCloseButton ? 3 : 2
-            rows: showFileLockedString ? 3 : 2
+            rows: {
+                let rows = 2;
+
+                if (showFileLockedString) {
+                    rows++;
+                }
+
+                if (root.fileDetails.fileTagModel.totalTags > 0) {
+                    rows++;
+                }
+
+                return rows;
+            }
 
             rowSpacing: Style.standardSpacing / 2
             columnSpacing: Style.standardSpacing
@@ -109,7 +126,6 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.name
-                color: Style.ncTextColor
                 font.bold: true
                 wrapMode: Text.Wrap
             }
@@ -122,8 +138,8 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
-                imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
-                bgColor: Style.lightHover
+                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
+                bgColor: palette.highlight
                 bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
 
@@ -139,7 +155,7 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: `${root.fileDetails.sizeString} · ${root.fileDetails.lastChangedString}`
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
             }
 
@@ -150,9 +166,53 @@ Page {
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.lockExpireString
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 visible: headerGridLayout.showFileLockedString
+            }
+
+            Row {
+                id: tagRow
+
+                Layout.fillWidth: true
+                Layout.rightMargin: headerGridLayout.textRightMargin
+
+                Repeater {
+                    id: tagRepeater
+
+                    readonly property var fileTagModel: root.fileDetails.fileTagModel
+                    readonly property int maxTags: 3
+
+                    model: fileTagModel
+                    delegate: FileTag {
+                        readonly property int availableLayoutSpace: tagRow.width - tagRow.spacing - overflowTag.width
+                        readonly property int maxWidth: (availableLayoutSpace / tagRepeater.maxTags) - tagRow.spacing
+
+                        width: Math.min(maxWidth, implicitWidth)
+                        text: model.display
+                    }
+
+                    Component.onCompleted: fileTagModel.maxTags = 3
+                }
+
+                FileTag {
+                    id: overflowTag
+
+                    readonly property int totalFileTags: tagRepeater.fileTagModel.totalTags
+                    readonly property int maxFileTags: tagRepeater.fileTagModel.maxTags
+
+                    visible: totalFileTags > maxFileTags
+                    text: "+" + String(totalFileTags - maxFileTags)
+
+                    HoverHandler {
+                        id: hoverHandler
+                    }
+
+                    NCToolTip {
+                        visible: hoverHandler.hovered
+                        text: tagRepeater.fileTagModel.overflowTagsString
+                    }
+                }
             }
         }
 
@@ -163,22 +223,25 @@ Page {
             Layout.rightMargin: root.intendedPadding
 
             padding: 0
-            background: Rectangle {
-                color: Style.backgroundColor
-            }
+            background: null
 
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
                 text: qsTr("Activity")
+                accentColor: root.accentColor
                 checked: swipeView.currentIndex === fileActivityView.swipeIndex
                 onClicked: swipeView.currentIndex = fileActivityView.swipeIndex
             }
 
             NCTabButton {
+                width: visible ? implicitWidth : 0
+                height: visible ? implicitHeight : 0
                 svgCustomColorSource: "image://svgimage-custom-color/share.svg"
                 text: qsTr("Sharing")
-                checked: swipeView.currentIndex === shareView.swipeIndex
-                onClicked: swipeView.currentIndex = shareView.swipeIndex
+                accentColor: root.accentColor
+                checked: swipeView.currentIndex === shareViewLoader.swipeIndex
+                onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex
+                visible: root.fileDetails.sharingAvailable
             }
         }
     }
@@ -192,7 +255,7 @@ Page {
         FileActivityView {
             id: fileActivityView
 
-            property int swipeIndex: SwipeView.index
+            readonly property int swipeIndex: SwipeView.index
 
             delegateHorizontalPadding: root.intendedPadding
 
@@ -201,18 +264,29 @@ Page {
             iconSize: root.iconSize
         }
 
-        ShareView {
-            id: shareView
+        Loader {
+            id: shareViewLoader
 
-            property int swipeIndex: SwipeView.index
+            readonly property int swipeIndex: SwipeView.index
 
-            accountState: root.accountState
-            localPath: root.localPath
-            fileDetails: root.fileDetails
-            horizontalPadding: root.intendedPadding
-            iconSize: root.iconSize
-            rootStackView: root.rootStackView
-            backgroundsVisible: root.backgroundsVisible
+            width: swipeView.width
+            height: swipeView.height
+            active: root.fileDetails.sharingAvailable
+
+            sourceComponent: ShareView {
+                id: shareView
+
+                anchors.fill: parent
+
+                accountState: root.accountState
+                localPath: root.localPath
+                fileDetails: root.fileDetails
+                horizontalPadding: root.intendedPadding
+                iconSize: root.iconSize
+                rootStackView: root.rootStackView
+                backgroundsVisible: root.backgroundsVisible
+                accentColor: root.accentColor
+            }
         }
     }
 }

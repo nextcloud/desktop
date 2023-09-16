@@ -233,6 +233,9 @@ public:
     /// Removes the folder from the account's settings.
     void removeFromSettings() const;
 
+    /* Check if the path is ignored. */
+    [[nodiscard]] bool pathIsIgnored(const QString &path) const;
+
     /**
       * Returns whether a file inside this folder should be excluded.
       */
@@ -255,6 +258,8 @@ public:
     void scheduleThisFolderSoon();
 
     void acceptInvalidFileName(const QString &filePath);
+
+    void acceptCaseClashConflictFileName(const QString &filePath);
 
     /**
       * Migration: When this flag is true, this folder will save to
@@ -295,6 +300,10 @@ public:
     bool supportsSelectiveSync() const;
 
     QString fileFromLocalPath(const QString &localPath) const;
+
+    void whitelistPath(const QString &path);
+    void blacklistPath(const QString &path);
+    void migrateBlackListPath(const QString &legacyPath);
 
 signals:
     void syncStateChange();
@@ -340,6 +349,18 @@ public slots:
        */
     void slotWatchedPathChanged(const QString &path, OCC::Folder::ChangeReason reason);
 
+    /*
+    * Triggered when lock files were removed
+    */
+    void slotFilesLockReleased(const QSet<QString> &files);
+
+    /*
+     * Triggered when lock files were added
+     */
+    void slotFilesLockImposed(const QSet<QString> &files);
+
+    void slotLockedFilesFound(const QSet<QString> &files);
+
     /**
      * Mark a virtual file as being requested for download, and start a sync.
      *
@@ -370,18 +391,23 @@ public slots:
 
     void setSilenceErrorsUntilNextSync(bool silenceErrors);
 
+    /** Deletes local copies of E2EE files.
+     * Intended for clean-up after disabling E2EE for an account.
+     */
+    void removeLocalE2eFiles();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
 
     /** Adds a error message that's not tied to a specific item.
      */
-    void slotSyncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
+    void slotSyncError(const QString &message, OCC::ErrorCategory category);
 
-    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, OCC::ErrorCategory category);
 
     void slotTransmissionProgress(const OCC::ProgressInfo &pi);
-    void slotItemCompleted(const OCC::SyncFileItemPtr &);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &, OCC::ErrorCategory errorCategory);
 
     void slotRunEtagJob();
     void etagRetrieved(const QByteArray &, const QDateTime &tp);
@@ -390,6 +416,7 @@ private slots:
     void slotEmitFinishedDelayed();
 
     void slotNewBigFolderDiscovered(const QString &, bool isExternal);
+    void slotExistingFolderNowBig(const QString &folderPath);
 
     void slotLogPropagationStart();
 
@@ -421,6 +448,8 @@ private slots:
     /** Unblocks normal sync operation */
     void slotHydrationDone();
 
+    void slotCapabilitiesChanged();
+
 private:
     void connectSyncRoot();
 
@@ -450,6 +479,12 @@ private:
 
     void correctPlaceholderFiles();
 
+    void appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+    void removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+
+    static void postExistingFolderNowBigNotification(const QString &folderPath);
+    void postExistingFolderNowBigActivity(const QString &folderPath) const;
+
     AccountStatePtr _accountState;
     FolderDefinition _definition;
     QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"
@@ -465,11 +500,11 @@ private:
 
     /// The number of syncs that failed in a row.
     /// Reset when a sync is successful.
-    int _consecutiveFailingSyncs;
+    int _consecutiveFailingSyncs = 0;
 
     /// The number of requested follow-up syncs.
     /// Reset when no follow-up is requested.
-    int _consecutiveFollowUpSyncs;
+    int _consecutiveFollowUpSyncs = 0;
 
     mutable SyncJournalDb _journal;
 
@@ -526,6 +561,11 @@ private:
      * The vfs mode instance (created by plugin) to use. Never null.
      */
     QSharedPointer<Vfs> _vfs;
+
+    QMetaObject::Connection _officeFileLockReleaseUnlockSuccess;
+    QMetaObject::Connection _officeFileLockReleaseUnlockFailure;
+    QMetaObject::Connection _fileLockSuccess;
+    QMetaObject::Connection _fileLockFailure;
 };
 }
 

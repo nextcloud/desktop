@@ -57,7 +57,6 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
 
 SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     : QDialog(parent)
-    , _allTrusted(false)
     , _ui(new Ui::SslErrorDialog)
     , _account(account)
 {

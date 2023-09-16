@@ -64,12 +64,13 @@ QString illegalCharacterListToString(const QVector<QChar> &illegalCharacters)
 
 namespace OCC {
 
-InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account, Folder *folder, QString filePath, QWidget *parent)
+InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account, Folder *folder, QString filePath, FileLocation fileLocation, QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::InvalidFilenameDialog)
     , _account(account)
     , _folder(folder)
     , _filePath(std::move(filePath))
+    , _fileLocation(fileLocation)
 {
     Q_ASSERT(_account);
     Q_ASSERT(_folder);
@@ -103,7 +104,12 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account, Folder *folder,
     connect(_ui->filenameLineEdit, &QLineEdit::textChanged, this,
         &InvalidFilenameDialog::onFilenameLineEditTextChanged);
 
-    checkIfAllowedToRename();
+    if (_fileLocation == FileLocation::NewLocalFile) {
+        allowRenaming();
+        _ui->errorLabel->setText({});
+    } else {
+        checkIfAllowedToRename();
+    }
 }
 
 InvalidFilenameDialog::~InvalidFilenameDialog() = default;
@@ -136,13 +142,7 @@ void InvalidFilenameDialog::onCheckIfAllowedToRenameComplete(const QVariantMap &
         }
     }
 
-    _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-    _ui->filenameLineEdit->setEnabled(true);
-    _ui->filenameLineEdit->selectAll();
-
-    const auto filePathFileInfo = QFileInfo(_filePath);
-    const auto fileName = filePathFileInfo.fileName();
-    processLeadingOrTrailingSpacesError(fileName);
+    allowRenaming();
 }
 
 bool InvalidFilenameDialog::processLeadingOrTrailingSpacesError(const QString &fileName)
@@ -182,6 +182,17 @@ void InvalidFilenameDialog::onPropfindPermissionSuccess(const QVariantMap &value
 void InvalidFilenameDialog::onPropfindPermissionError(QNetworkReply *reply)
 {
     onCheckIfAllowedToRenameComplete({}, reply);
+}
+
+void InvalidFilenameDialog::allowRenaming()
+{
+    _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    _ui->filenameLineEdit->setEnabled(true);
+    _ui->filenameLineEdit->selectAll();
+
+    const auto filePathFileInfo = QFileInfo(_filePath);
+    const auto fileName = filePathFileInfo.fileName();
+    processLeadingOrTrailingSpacesError(fileName);
 }
 
 void InvalidFilenameDialog::useInvalidName()

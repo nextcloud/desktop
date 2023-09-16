@@ -51,6 +51,8 @@ class Account;
 class SyncJournalDb;
 class ProcessDirectoryJob;
 
+enum class ErrorCategory;
+
 /**
  * Represent all the meta-data about a file in the server
  */
@@ -66,11 +68,13 @@ struct RemoteInfo
     int64_t size = 0;
     int64_t sizeOfFolder = 0;
     bool isDirectory = false;
-    bool isE2eEncrypted = false;
+    bool _isE2eEncrypted = false;
+    bool isFileDropDetected = false;
     QString e2eMangledName;
     bool sharedByMe = false;
 
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted; }
 
     QString directDownloadUrl;
     QString directDownloadCookies;
@@ -88,6 +92,7 @@ struct LocalInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
+    QString caseClashConflictingName;
     time_t modtime = 0;
     int64_t size = 0;
     uint64_t inode = 0;
@@ -96,6 +101,7 @@ struct LocalInfo
     bool isHidden = false;
     bool isVirtualFile = false;
     bool isSymLink = false;
+    bool isMetadataMissing = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 
@@ -141,6 +147,8 @@ public:
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
+    [[nodiscard]] bool isFileDropDetected() const;
+    [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
     // This is not actually a network job, it is just a job
 signals:
@@ -157,6 +165,9 @@ private slots:
     void metadataError(const QByteArray& fileId, int httpReturnCode);
 
 private:
+
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted != SyncFileItem::EncryptionStatus::NotEncrypted; }
+
     QVector<RemoteInfo> _results;
     QString _subPath;
     QByteArray _firstEtag;
@@ -165,13 +176,15 @@ private:
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
-    bool _ignoredFirst;
+    bool _ignoredFirst = false;
     // Set to true if this is the root path and we need to check the data-fingerprint
-    bool _isRootPath;
+    bool _isRootPath = false;
     // If this directory is an external storage (The first item has 'M' in its permission)
-    bool _isExternalStorage;
+    bool _isExternalStorage = false;
     // If this directory is e2ee
-    bool _isE2eEncrypted;
+    SyncFileItem::EncryptionStatus _isE2eEncrypted = SyncFileItem::EncryptionStatus::NotEncrypted;
+    bool _isFileDropDetected = false;
+    bool _encryptedMetadataNeedUpdate = false;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;
@@ -242,10 +255,19 @@ class DiscoveryPhase : public QObject
 
     [[nodiscard]] bool isInSelectiveSyncBlackList(const QString &path) const;
 
+    [[nodiscard]] bool activeFolderSizeLimit() const;
+    [[nodiscard]] bool notifyExistingFolderOverLimit() const;
+
+    void checkFolderSizeLimit(const QString &path,
+			      const std::function<void(bool)> callback);
+
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
-    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
-        std::function<void(bool)> callback);
+    void checkSelectiveSyncNewFolder(const QString &path,
+                                     const RemotePermissions rp,
+                                     const std::function<void(bool)> callback);
+
+    void checkSelectiveSyncExistingFolder(const QString &path);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *
@@ -273,10 +295,10 @@ public:
     // input
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
-    SyncJournalDb *_statedb;
+    SyncJournalDb *_statedb = nullptr;
     AccountPtr _account;
     SyncOptions _syncOptions;
-    ExcludedFiles *_excludes;
+    ExcludedFiles *_excludes = nullptr;
     QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
     QStringList _leadingAndTrailingSpacesFilesAllowed;
@@ -296,13 +318,17 @@ public:
 
     QStringList _listExclusiveFiles;
 
+    bool _hasUploadErrorItems = false;
+    bool _hasDownloadRemovedItems = false;
+
 signals:
-    void fatalError(const QString &errorString);
+    void fatalError(const QString &errorString, const OCC::ErrorCategory errorCategory);
     void itemDiscovered(const OCC::SyncFileItemPtr &item);
     void finished();
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
+    void existingFolderNowBig(const QString &folder);
 
     /** For excluded items that don't show up in itemDiscovered()
       *
@@ -310,7 +336,10 @@ signals:
       */
     void silentlyExcluded(const QString &folderPath);
 
-    void addErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(const SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+
+private slots:
+    void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath

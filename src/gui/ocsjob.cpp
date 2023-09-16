@@ -110,7 +110,7 @@ bool OcsJob::finished()
 {
     const QByteArray replyData = reply()->readAll();
 
-    QJsonParseError error;
+    QJsonParseError error{};
     QString message;
     int statusCode = 0;
     auto json = QJsonDocument::fromJson(replyData, &error);

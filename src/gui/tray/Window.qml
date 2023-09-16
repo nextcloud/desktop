@@ -1,8 +1,22 @@
+/*
+ * Copyright (C) 2020 by Dominique Fuchs <32204802+DominiqueFuchs@users.noreply.github.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 import QtQuick 2.15
-import QtQuick.Window 2.3
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
-import QtGraphicalEffects 1.0
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
 import Qt.labs.platform 1.1 as NativeDialogs
 
 import "../"
@@ -22,6 +36,26 @@ ApplicationWindow {
     height:     Style.trayWindowHeight
     color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
+
+    // TODO: Rather than setting all these palette colours manually,
+    // create a custom style and do it for all components globally
+    palette {
+        text: Style.ncTextColor
+        windowText: Style.ncTextColor
+        buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
+        light: Style.lightHover
+        midlight: Style.ncSecondaryTextColor
+        mid: Style.darkerHover
+        dark: Style.menuBorder
+        button: Style.buttonBackgroundColor
+        window: Style.backgroundColor
+        base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
+    }
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
@@ -48,8 +82,8 @@ ApplicationWindow {
     background: Rectangle {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         border.width: Style.trayWindowBorderWidth
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
+        border.color: palette.dark
+        color: palette.window
     }
 
     Connections {
@@ -83,6 +117,7 @@ ApplicationWindow {
             if(Systray.isOpen) {
                 accountMenu.close();
                 appsMenu.close();
+                openLocalFolderButton.closeMenu()
             }
         }
 
@@ -123,8 +158,8 @@ ApplicationWindow {
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
+            border.color: palette.dark
+            color: palette.window
         }
 
         property int userIndex: 0
@@ -160,8 +195,8 @@ ApplicationWindow {
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
             border.width: Style.trayWindowBorderWidth
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
+            border.color: palette.dark
+            color: palette.window
         }
 
         property var folderAccountState: ({})
@@ -196,6 +231,7 @@ ApplicationWindow {
                 height: parent.height
 
                 backgroundsVisible: false
+                accentColor: Style.currentUserHeaderColor
                 accountState: fileDetailsDrawer.folderAccountState
                 localPath: fileDetailsDrawer.fileLocalPath
                 showCloseButton: true
@@ -242,7 +278,6 @@ ApplicationWindow {
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     display:                AbstractButton.IconOnly
                     flat:                   true
-                    palette: Style.systemPalette
 
                     Accessible.role: Accessible.ButtonMenu
                     Accessible.name: qsTr("Current account")
@@ -270,11 +305,10 @@ ApplicationWindow {
                         width: (Style.currentAccountButtonWidth - 2)
                         height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-                        palette: Style.palette
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
-                            color: Style.backgroundColor
+                            border.color: palette.dark
+                            color: palette.base
                             radius: Style.currentAccountButtonRadius
                         }
 
@@ -317,9 +351,9 @@ ApplicationWindow {
 
                         MenuItem {
                             id: addAccountButton
-                            height: Style.addAccountButtonHeight
+                            height: Systray.enableAddAccount ? Style.addAccountButtonHeight : 0
                             hoverEnabled: true
-                            palette: Theme.systemPalette
+                            visible: Systray.enableAddAccount
 
                             background: Item {
                                 height: parent.height
@@ -327,7 +361,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -345,7 +379,6 @@ ApplicationWindow {
                                 EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14
                                     text: qsTr("Add account")
-                                    color: Style.ncTextColor
                                     font.pixelSize: Style.topLinePixelSize
                                 }
                                 // Filler on the right
@@ -365,13 +398,12 @@ ApplicationWindow {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             implicitHeight: 1
-                            color: Style.menuBorder
+                            color: palette.dark
                         }
 
                         MenuItem {
                             id: syncPauseButton
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
 
@@ -381,7 +413,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -394,7 +426,6 @@ ApplicationWindow {
                             id: settingsButton
                             text: qsTr("Settings")
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.openSettings()
 
@@ -404,7 +435,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -417,7 +448,6 @@ ApplicationWindow {
                             id: exitButton
                             text: qsTr("Exit");
                             font.pixelSize: Style.topLinePixelSize
-                            palette.windowText: Style.ncTextColor
                             hoverEnabled: true
                             onClicked: Systray.shutdown()
 
@@ -427,7 +457,7 @@ ApplicationWindow {
                                 Rectangle {
                                     anchors.fill: parent
                                     anchors.margins: 1
-                                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                    color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                 }
                             }
 
@@ -466,25 +496,25 @@ ApplicationWindow {
                                 id: currentAccountStatusIndicatorBackground
                                 visible: UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
-                                width: Style.accountAvatarStateIndicatorSize + 2
+                                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
                                 color: Style.currentUserHeaderColor
-                                radius: width*0.5
+                                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorMouseHover
                                 visible: UserModel.currentUser.isConnected
                                          && UserModel.currentUser.serverHasUserStatus
-                                width: Style.accountAvatarStateIndicatorSize + 2
+                                width: Style.accountAvatarStateIndicatorSize +  + Style.trayFolderStatusIndicatorSizeOffset
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
                                 color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
-                                opacity: 0.2
-                                radius: width*0.5
+                                opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
+                                radius: width * Style.trayFolderStatusIndicatorRadiusFactor
                             }
 
                             Image {
@@ -521,6 +551,16 @@ ApplicationWindow {
 
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
+                            }
+
+                            EnforcedPlainTextLabel {
+                                id: currentAccountServer
+                                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                                width: Style.currentAccountLabelWidth
+                                text: UserModel.currentUser.server
+                                elide: Text.ElideRight
+                                color: Style.currentUserHeaderTextColor
+                                visible: UserModel.numUsers() > 1
                             }
 
                             RowLayout {
@@ -576,62 +616,18 @@ ApplicationWindow {
                     Layout.fillWidth: true
                 }
 
-                RowLayout {
-                    id: openLocalFolderRowLayout
-                    spacing: 0
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                TrayFoldersMenuButton {
+                    id: openLocalFolderButton
 
-                    Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open local folder of current account")
+                    visible: currentUser.hasLocalFolder
+                    currentUser: UserModel.currentUser
 
-                    HeaderButton {
-                        id: openLocalFolderButton
-                        visible: UserModel.currentUser.hasLocalFolder
-                        icon.source: "qrc:///client/theme/white/folder.svg"
-                        icon.color: Style.currentUserHeaderTextColor
-                        onClicked: UserModel.openCurrentAccountLocalFolder()
+                    Layout.preferredWidth:  Style.iconButtonWidth * Style.trayFolderListButtonWidthScaleFactor
+                    Layout.alignment: Qt.AlignHCenter
 
-                        Image {
-                            id: folderStateIndicator
-                            visible: UserModel.currentUser.hasLocalFolder
-                            source: UserModel.currentUser.isConnected
-                                    ? Style.stateOnlineImageSource
-                                    : Style.stateOfflineImageSource
-                            cache: false
+                    onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
 
-                            anchors.top: openLocalFolderButton.verticalCenter
-                            anchors.left: openLocalFolderButton.horizontalCenter
-                            sourceSize.width: Style.folderStateIndicatorSize
-                            sourceSize.height: Style.folderStateIndicatorSize
-
-                            Accessible.role: Accessible.Indicator
-                            Accessible.name: UserModel.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
-                            z: 1
-
-                            Rectangle {
-                                id: folderStateIndicatorBackground
-                                width: Style.folderStateIndicatorSize + 2
-                                height: width
-                                anchors.centerIn: parent
-                                color: Style.currentUserHeaderColor
-                                radius: width*0.5
-                                z: -2
-                            }
-
-                            Rectangle {
-                                id: folderStateIndicatorBackgroundMouseHover
-                                width: Style.folderStateIndicatorSize + 2
-                                height: width
-                                anchors.centerIn: parent
-                                color: openLocalFolderButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
-                                opacity: 0.2
-                                radius: width*0.5
-                                z: -1
-                            }
-                        }
-                    }
+                    onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
                 }
 
                 HeaderButton {
@@ -668,15 +664,15 @@ ApplicationWindow {
 
                     Menu {
                         id: appsMenu
-                        x: -2
-                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                        width: Style.trayWindowWidth * 0.35
+                        x: Style.trayWindowMenuOffsetX
+                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + Style.trayWindowMenuOffsetY)
+                        width: Style.trayWindowWidth * Style.trayWindowMenuWidthFactor
                         height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
-                            border.color: Style.menuBorder
-                            color: Style.backgroundColor
+                            border.color: palette.dark
+                            color: palette.base
                             radius: 2
                         }
 
@@ -701,9 +697,8 @@ ApplicationWindow {
 
                                     text: model.appName
                                     font.pixelSize: Style.topLinePixelSize
-                                    palette.windowText: Style.ncTextColor
                                     icon.source: model.appIconUrl
-                                    icon.color: Style.ncTextColor
+                                    icon.color: palette.buttonText
                                     onTriggered: UserAppsModel.openAppUrl(appUrl)
                                     hoverEnabled: true
 
@@ -713,7 +708,7 @@ ApplicationWindow {
                                         Rectangle {
                                             anchors.fill: parent
                                             anchors.margins: 1
-                                            color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                            color: parent.parent.hovered || parent.parent.visualFocus ? palette.highlight : "transparent"
                                         }
                                     }
 

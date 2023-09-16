@@ -26,14 +26,20 @@ namespace OCC {
 class AccountManager : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(bool forceLegacyImport READ forceLegacyImport WRITE setForceLegacyImport NOTIFY forceLegacyImportChanged)
+
 public:
+    enum AccountsRestoreResult {
+        AccountsRestoreFailure = 0,
+        AccountsRestoreSuccess,
+        AccountsRestoreSuccessFromLegacyVersion,
+        AccountsRestoreSuccessWithSkipped
+    };
+    Q_ENUM (AccountsRestoreResult);
+
     static AccountManager *instance();
     ~AccountManager() override = default;
-
-    /**
-     * Saves the accounts to a given settings file
-     */
-    void save(bool saveCredentials = true);
 
     /**
      * Creates account objects from a given settings file.
@@ -41,18 +47,13 @@ public:
      * Returns false if there was an error reading the settings,
      * but note that settings not existing is not an error.
      */
-    bool restore(bool alsoRestoreLegacySettings = true);
+    AccountsRestoreResult restore(const bool alsoRestoreLegacySettings = true);
 
     /**
      * Add this account in the list of saved accounts.
      * Typically called from the wizard
      */
     AccountState *addAccount(const AccountPtr &newAccount);
-
-    /**
-     * remove all accounts
-     */
-    void shutdown();
 
     /**
      * Return a list of all accounts.
@@ -72,9 +73,10 @@ public:
     [[nodiscard]] AccountStatePtr accountFromUserId(const QString &id) const;
 
     /**
-     * Delete the AccountState
+     * Returns whether the account setup will force an import of
+     * legacy clients' accounts (true), or ask first (false)
      */
-    void deleteAccount(AccountState *account);
+    [[nodiscard]] bool forceLegacyImport() const;
 
     /**
      * Creates an account and sets up some basic handlers.
@@ -87,6 +89,31 @@ public:
      * they are from the future.
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
+
+public slots:
+    /// Saves account data, not including the credentials
+    void saveAccount(OCC::Account *a);
+
+    /// Saves account state data, not including the account
+    void saveAccountState(OCC::AccountState *a);
+
+    /// Saves the accounts to a given settings file
+    void save(bool saveCredentials = true);
+
+    /// Delete the AccountState
+    void deleteAccount(AccountState *account);
+
+    /// Remove all accounts
+    void shutdown();
+
+    void setForceLegacyImport(const bool forceLegacyImport);
+
+signals:
+    void accountAdded(OCC::AccountState *account);
+    void accountRemoved(OCC::AccountState *account);
+    void accountSyncConnectionRemoved(OCC::AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
+    void forceLegacyImportChanged();
 
 private:
     // saving and loading Account to settings
@@ -105,19 +132,6 @@ private:
     QList<AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
-
-public slots:
-    /// Saves account data, not including the credentials
-    void saveAccount(OCC::Account *a);
-
-    /// Saves account state data, not including the account
-    void saveAccountState(OCC::AccountState *a);
-
-
-Q_SIGNALS:
-    void accountAdded(OCC::AccountState *account);
-    void accountRemoved(OCC::AccountState *account);
-    void accountSyncConnectionRemoved(OCC::AccountState *account);
-    void removeAccountFolders(OCC::AccountState *account);
+    bool _forceLegacyImport = false;
 };
 }

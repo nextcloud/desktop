@@ -40,7 +40,7 @@ class KMessageWidgetPrivate
 public:
     void init(KMessageWidget *);
 
-    KMessageWidget *q;
+    KMessageWidget *q = nullptr;
     QFrame *content = nullptr;
     QLabel *iconLabel = nullptr;
     QLabel *textLabel = nullptr;
@@ -49,8 +49,8 @@ public:
     QIcon icon;
     bool ignoreShowEventDoingAnimatedShow = false;
 
-    KMessageWidget::MessageType messageType;
-    bool wordWrap;
+    KMessageWidget::MessageType messageType = KMessageWidget::Positive;
+    bool wordWrap = false;
     QList<QToolButton *> buttons;
     QPixmap contentSnapShot;
 
@@ -72,8 +72,8 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
 
     // Note: when changing the value 500, also update KMessageWidgetTest
     timeLine = new QTimeLine(500, q);
-    QObject::connect(timeLine, SIGNAL(valueChanged(qreal)), q, SLOT(slotTimeLineChanged(qreal)));
-    QObject::connect(timeLine, SIGNAL(finished()), q, SLOT(slotTimeLineFinished()));
+    QObject::connect(timeLine, &QTimeLine::valueChanged, q, [this] (qreal value) { slotTimeLineChanged(value); });
+    QObject::connect(timeLine, &QTimeLine::finished, q, [this] () { slotTimeLineFinished(); });
 
     content = new QFrame(q);
     content->setObjectName(QStringLiteral("contentWidget"));

@@ -146,7 +146,9 @@ private:
 
     // return true if the file is excluded.
     // path is the full relative path of the file. localName is the base name of the local entry.
-    bool handleExcluded(const QString &path, const Entries &entries, bool isHidden);
+    bool handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden);
+
+    bool canRemoveCaseClashConflictedCopy(const QString &path, const std::map<QString, Entries> &allEntries);
 
     // check if the path is an e2e encrypted and the e2ee is not set up, and insert it into a corresponding list in the sync journal
     void checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path);
@@ -159,6 +161,12 @@ private:
      * This main function delegates some work to the processFile* functions.
      */
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+
+    void postProcessServerNew(const SyncFileItemPtr &item,
+                              PathTuple &path,
+                              const LocalInfo &localEntry,
+                              const RemoteInfo &serverEntry,
+                              const SyncJournalFileRecord &dbEntry);
 
     /// processFile helper for when remote information is available, typically flows into AnalyzeLocalInfo when done
     void processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);

@@ -22,6 +22,8 @@ public:
     explicit LockFileJob(const AccountPtr account,
                          SyncJournalDb* const journal,
                          const QString &path,
+                         const QString &remoteSyncPathWithTrailingSlash,
+                         const QString &localSyncPath,
                          const SyncFileItem::LockStatus requestedLockState,
                          QObject *parent = nullptr);
     void start() override;
@@ -52,8 +54,11 @@ private:
     QString _userDisplayName;
     QString _editorName;
     QString _userId;
+    QByteArray _etag;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
+    QString _remoteSyncPathWithTrailingSlash;
+    QString _localSyncPath;
 };
 
 }

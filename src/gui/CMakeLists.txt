@@ -29,6 +29,7 @@ set(client_UI_SRCS
     accountsettings.ui
     conflictdialog.ui
     invalidfilenamedialog.ui
+    caseclashfilenamedialog.ui
     foldercreationdialog.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -38,7 +39,6 @@ set(client_UI_SRCS
     ignorelisttablewidget.ui
     networksettings.ui
     settingsdialog.ui
-    shareuserline.ui
     sslerrordialog.ui
     addcertificatedialog.ui
     passwordinputdialog.ui
@@ -73,6 +73,8 @@ set(client_SRCS
     application.cpp
     invalidfilenamedialog.h
     invalidfilenamedialog.cpp
+    caseclashfilenamedialog.h
+    caseclashfilenamedialog.cpp
     callstatechecker.h
     callstatechecker.cpp
     conflictdialog.h
@@ -85,6 +87,8 @@ set(client_SRCS
     editlocallyjob.cpp
     editlocallymanager.h
     editlocallymanager.cpp
+    filetagmodel.h
+    filetagmodel.cpp
     folder.h
     folder.cpp
     foldercreationdialog.h
@@ -181,8 +185,12 @@ set(client_SRCS
     userstatusselectormodel.cpp
     emojimodel.h
     emojimodel.cpp
+    syncconflictsmodel.h
+    syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
+    filedetails/datefieldbackend.h
+    filedetails/datefieldbackend.cpp
     filedetails/filedetails.h
     filedetails/filedetails.cpp
     filedetails/sharemodel.h
@@ -277,6 +285,19 @@ endif()
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray.mm)
+
+    if (BUILD_FILE_PROVIDER_MODULE)
+        list(APPEND client_SRCS
+            macOS/fileprovider.h
+            macOS/fileprovider_mac.mm
+            macOS/fileproviderdomainmanager.h
+            macOS/fileproviderdomainmanager_mac.mm
+            macOS/fileprovidersocketcontroller.h
+            macOS/fileprovidersocketcontroller.cpp
+            macOS/fileprovidersocketserver.h
+            macOS/fileprovidersocketserver.cpp
+            macOS/fileprovidersocketserver_mac.mm)
+    endif()
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
@@ -639,6 +660,12 @@ if(TARGET PkgConfig::CLOUDPROVIDERS)
       PkgConfig::GLIB2
       PkgConfig::GIO
     )
+
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "Implements=org.freedesktop.CloudProviders\n")
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "[org.freedesktop.CloudProviders]")
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "BusName=${LIBCLOUDPROVIDERS_DBUS_BUS_NAME}")
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "ObjectPath=${LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH}")
+    list(JOIN LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "\n" LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS)
 endif()
 
 ## handle DBUS for Fdo notifications
@@ -650,7 +677,12 @@ endif()
 
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
-    target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+
+    if (BUILD_FILE_PROVIDER_MODULE)
+        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
+    else()
+        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+    endif()
 endif()
 
 if(WITH_CRASHREPORTER)

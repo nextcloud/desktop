@@ -224,12 +224,17 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
 {
+    const auto localPath = QDir::toNativeSeparators(filename);
+
     if (item._type != ItemTypeDirectory && OCC::FileSystem::isLnkFile(filename)) {
         qCInfo(lcCfApi) << "File \"" << filename << "\" is a Windows shortcut. Not converting it to a placeholder.";
+        const auto pinState = pinStateLocal(localPath);
+        if (!pinState || *pinState != PinState::Excluded) {
+            setPinStateLocal(localPath, PinState::Excluded);
+        }
         return Vfs::ConvertToPlaceholderResult::Ok;
     }
 
-    const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
     if (cfapi::findPlaceholderInfo(localPath)) {
@@ -259,17 +264,19 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     const auto isPinned = (ffd->dwFileAttributes & FILE_ATTRIBUTE_PINNED) != 0;
     const auto isUnpinned = (ffd->dwFileAttributes & FILE_ATTRIBUTE_UNPINNED) != 0;
     const auto hasReparsePoint = (ffd->dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) != 0;
-    const auto hasCloudTag = (ffd->dwReserved0 & IO_REPARSE_TAG_CLOUD) != 0;
+    const auto hasCloudTag = hasReparsePoint && (ffd->dwReserved0 & ~IO_REPARSE_TAG_CLOUD_MASK) == (IO_REPARSE_TAG_CLOUD & ~IO_REPARSE_TAG_CLOUD_MASK);
 
     const auto isWindowsShortcut = !isDirectory && FileSystem::isLnkFile(stat->path);
 
     const auto isExcludeFile = !isDirectory && FileSystem::isExcludeFile(stat->path);
 
+    stat->is_metadata_missing = !hasCloudTag;
+
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking
     // it is a file... let's prevent it
     if (isDirectory) {
-        if (hasReparsePoint && hasCloudTag) {
+        if (hasCloudTag) {
             ffd->dwFileAttributes &= ~FILE_ATTRIBUTE_REPARSE_POINT;
         }
         return false;
@@ -293,6 +300,11 @@ bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
 
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
 
+    return setPinStateLocal(localPath, state);
+}
+
+bool VfsCfApi::setPinStateLocal(const QString &localPath, PinState state)
+{
     if (cfapi::setPinState(localPath, state, cfapi::Recurse)) {
         return true;
     } else {
@@ -304,9 +316,14 @@ Optional<PinState> VfsCfApi::pinState(const QString &folderPath)
 {
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
 
+    return pinStateLocal(localPath);
+}
+
+Optional<PinState> VfsCfApi::pinStateLocal(const QString &localPath) const
+{
     const auto info = cfapi::findPlaceholderInfo(localPath);
     if (!info) {
-        qCWarning(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
+        qCDebug(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
         return {};
     }
 
@@ -418,7 +435,7 @@ void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &fol
     job->setJournal(params().journal);
     job->setRequestId(requestId);
     job->setFolderPath(folderPath);
-    job->setIsEncryptedFile(record._isE2eEncrypted);
+    job->setIsEncryptedFile(record.isE2eEncrypted());
     job->setE2eMangledName(record._e2eMangledName);
     connect(job, &HydrationJob::finished, this, &VfsCfApi::onHydrationJobFinished);
     d->hydrationJobs << job;

@@ -30,6 +30,7 @@ class TestCfApiShellExtensionsIPC;
 class TestShareModel;
 class ShareTestHelper;
 class EndToEndTestHelper;
+class TestSyncConflictsModel;
 
 namespace OCC {
 
@@ -74,6 +75,11 @@ public:
         ErrorNonEmptyFolder
     };
 
+    enum class GoodPathStrategy {
+        AllowOnlyNewPath,
+        AllowOverrideExistingPath,
+    };
+
     ~FolderMan() override;
     static FolderMan *instance();
 
@@ -98,6 +104,10 @@ public:
     /** Returns the folder which the file or directory stored in path is in */
     Folder *folderForPath(const QString &path);
 
+    // Takes local file paths and finds the corresponding folder, adding to correct selective sync list
+    void whitelistFolderPath(const QString &path);
+    void blacklistFolderPath(const QString &path);
+
     /**
       * returns a list of local files that exist on the local harddisk for an
       * incoming relative server path. The method checks with all existing sync
@@ -109,10 +119,10 @@ public:
     Folder *folder(const QString &);
 
     /**
-     * Migrate accounts from owncloud < 2.0
+     * Migrate accounts from owncloud
      * Creates a folder for a specific configuration, identified by alias.
      */
-    Folder *setupFolderFromOldConfigFile(const QString &, AccountState *account);
+    void setupFolderFromOldConfigFile(const QString &, AccountState *account);
 
     /**
      * Ensures that a given directory does not contain a sync journal file.
@@ -158,7 +168,7 @@ public:
      * subfolder of ~ would be a good candidate. When that happens \a basePath
      * is returned.
      */
-    [[nodiscard]] QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const;
+    [[nodiscard]] QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl, GoodPathStrategy allowExisting) const;
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,
@@ -258,7 +268,7 @@ public slots:
     /**
      * Triggers a sync run once the lock on the given file is removed.
      *
-     * Automatically detemines the folder that's responsible for the file.
+     * Automatically determines the folder that's responsible for the file.
      * See slotWatchedFileUnlocked().
      */
     void slotSyncOnceFileUnlocks(const QString &path);
@@ -270,6 +280,8 @@ public slots:
     void slotWipeFolderForAccount(OCC::AccountState *accountState);
 
     void forceSyncForFolder(OCC::Folder *folder);
+
+    void removeE2eFiles(const OCC::AccountPtr &account) const;
 
 private slots:
     void slotFolderSyncPaused(OCC::Folder *, bool paused);
@@ -346,6 +358,8 @@ private:
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
 
+    void addFolderToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType list);
+
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
     QString _folderConfigPath;
@@ -384,6 +398,7 @@ private:
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
     friend class ::TestFolderMan;
+    friend class ::TestSyncConflictsModel;
     friend class ::TestCfApiShellExtensionsIPC;
     friend class ::ShareTestHelper;
     friend class ::EndToEndTestHelper;

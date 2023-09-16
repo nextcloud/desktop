@@ -1,9 +1,9 @@
 import QtQml 2.15
 import QtQuick 2.15
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
-import Style 1.0
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.15
+import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
 RowLayout {
@@ -11,7 +11,7 @@ RowLayout {
 
     property variant activityData: {{}}
 
-    property color activityTextTitleColor: Style.ncTextColor
+    property variant activity: {{}}
 
     property bool showDismissButton: false
 
@@ -21,16 +21,17 @@ RowLayout {
 
     signal dismissButtonClicked()
 
-    spacing: Style.trayHorizontalMargin
+    spacing: Style.standardSpacing
 
     Item {
         id: thumbnailItem
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-        Layout.preferredWidth: root.iconSize
-        Layout.preferredHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? root.iconSize * 0.9 : root.iconSize
+
         readonly property int imageWidth: width * (1 - Style.thumbnailImageSizeReduction)
         readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
         readonly property int thumbnailRadius: model.thumbnail && model.thumbnail.isUserAvatar ? width / 2 : 3
+
+        implicitWidth: root.iconSize
+        implicitHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? root.iconSize * 0.9 : root.iconSize
 
         Loader {
             id: thumbnailImageLoader
@@ -110,102 +111,170 @@ RowLayout {
         }
     }
 
-    Column {
-        id: activityTextColumn
+    ColumnLayout {
+        id: activityContentLayout
 
-        Layout.topMargin: Style.activityContentSpace
+        Layout.fillHeight: true
         Layout.fillWidth: true
-        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+        Layout.maximumWidth: root.width - Style.standardSpacing - root.iconSize
+        implicitWidth: root.width - Style.standardSpacing - root.iconSize
 
-        spacing: Style.activityContentSpace
+        spacing: Style.smallSpacing
 
-        EnforcedPlainTextLabel {
-            id: activityTextTitle
-            text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
-            height: (text === "") ? 0 : implicitHeight
-            width: parent.width
-            elide: Text.ElideRight
-            wrapMode: Text.Wrap
-            maximumLineCount: 2
-            font.pixelSize: Style.topLinePixelSize
-            color: Style.ncTextColor
-            visible: text !== ""
+        RowLayout {
+            Layout.fillWidth: true
+
+            spacing: Style.trayHorizontalMargin
+
+            EnforcedPlainTextLabel {
+                id: activityTextTitle
+                text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
+
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+                elide: Text.ElideRight
+                wrapMode: Text.Wrap
+                maximumLineCount: 2
+                font.pixelSize: Style.topLinePixelSize
+                visible: text !== ""
+            }
+
+            Item {
+                Layout.fillWidth: true
+                Layout.leftMargin: -Style.trayHorizontalMargin
+            }
+
+            EnforcedPlainTextLabel {
+                id: activityTextDateTime
+
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+                height: (text === "") ? 0 : implicitHeight
+
+                text: root.activityData.dateTime
+                font.pixelSize: Style.subLinePixelSize
+                color: palette.midlight
+                visible: text !== ""
+            }
+
+            CustomButton {
+                id: fileDetailsButton
+
+                Layout.preferredWidth: Style.dismissButtonSize
+                Layout.preferredHeight: Style.dismissButtonSize
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+
+                icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+
+                NCToolTip {
+                    text: qsTr("Open file details")
+                    visible: parent.hovered
+                }
+
+                display: Button.IconOnly
+                leftPadding: 0
+                rightPadding: 0
+                bgColor: palette.mid
+                bgNormalOpacity:  0
+
+                visible: model.showFileDetails
+
+                onClicked: Systray.presentShareViewInTray(model.openablePath)
+            }
+
+            CustomButton {
+                id: dismissActionButton
+
+                Layout.preferredWidth: Style.dismissButtonSize
+                Layout.preferredHeight: Style.dismissButtonSize
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+
+                visible: root.showDismissButton && !fileDetailsButton.visible
+
+                icon.source: "image://svgimage-custom-color/clear.svg/" + palette.buttonText
+
+                display: Button.IconOnly
+                leftPadding: 0
+                rightPadding: 0
+                bgColor: palette.mid
+                bgNormalOpacity: 0
+
+                NCToolTip {
+                    text: qsTr("Dismiss")
+                    visible: parent.hovered
+                }
+
+                onClicked: root.dismissButtonClicked()
+            }
         }
 
-        EnforcedPlainTextLabel {
-            id: activityTextInfo
-            text: (root.activityData.type === "Sync") ? root.activityData.displayPath
-                                    : (root.activityData.type === "File") ? root.activityData.subject
-                                                        : (root.activityData.type === "Notification") ? root.activityData.message
-                                                                                    : ""
-            height: (text === "") ? 0 : implicitHeight
-            width: parent.width
-            elide: Text.ElideRight
-            wrapMode: Text.Wrap
-            maximumLineCount: 2
-            font.pixelSize: Style.subLinePixelSize
-            color: Style.ncTextColor
-            visible: text !== ""
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            spacing: Style.trayHorizontalMargin
+            visible: activityTextInfo.visible || talkReplyMessageSent.visible || activityActions.visible
+
+            EnforcedPlainTextLabel {
+                id: activityTextInfo
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+
+                text: (root.activityData.type === "Sync") ? root.activityData.subject
+                                                          : (root.activityData.type === "File") ? root.activityData.subject
+                                                                                                : (root.activityData.type === "Notification") ? root.activityData.message
+                                                                                                                                              : ""
+                height: (text === "") ? 0 : implicitHeight
+                elide: Text.ElideRight
+                wrapMode: Text.Wrap
+                maximumLineCount: 2
+                font.pixelSize: Style.subLinePixelSize
+                visible: text !== ""
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            EnforcedPlainTextLabel {
+                id: talkReplyMessageSent
+
+                height: (text === "") ? 0 : implicitHeight
+                width: parent.width
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+
+                text: root.activityData.messageSent
+                elide: Text.ElideRight
+                wrapMode: Text.Wrap
+                maximumLineCount: 2
+                font.pixelSize: Style.topLinePixelSize
+                color: palette.midlight
+                visible: text !== ""
+            }
+
+            ActivityItemActions {
+                id: activityActions
+
+                visible: !isFileActivityList && activityData.linksForActionButtons.length > 0
+
+                Layout.fillWidth: true
+                Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
+                Layout.preferredHeight: Style.standardPrimaryButtonHeight
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+
+                displayActions: activityData.displayActions
+                objectType: activityData.objectType
+                linksForActionButtons: activityData.linksForActionButtons
+                linksContextMenu: activityData.linksContextMenu
+
+                maxActionButtons: activityModel.maxActionButtons
+
+                onTriggerAction: activityModel.slotTriggerAction(activityData.activityIndex, actionIndex)
+
+                onShowReplyField: isTalkReplyOptionVisible = true
+                talkReplyButtonVisible: root.activityData.messageSent === "" && !isTalkReplyOptionVisible
+            }
         }
-
-        EnforcedPlainTextLabel {
-            id: activityTextDateTime
-            text: root.activityData.dateTime
-            height: (text === "") ? 0 : implicitHeight
-            width: parent.width
-            elide: Text.ElideRight
-            wrapMode: Text.Wrap
-            maximumLineCount: 2
-            font.pixelSize: Style.subLinePixelSize
-            color: Style.ncSecondaryTextColor
-            visible: text !== ""
-        }
-
-        EnforcedPlainTextLabel {
-            id: talkReplyMessageSent
-            text: root.activityData.messageSent
-            height: (text === "") ? 0 : implicitHeight
-            width: parent.width
-            elide: Text.ElideRight
-            wrapMode: Text.Wrap
-            maximumLineCount: 2
-            font.pixelSize: Style.topLinePixelSize
-            color: Style.ncSecondaryTextColor
-            visible: text !== ""
-        }
-    }
-
-    CustomButton {
-        id: dismissActionButton
-
-        Layout.preferredWidth: Style.trayListItemIconSize
-        Layout.preferredHeight: Style.trayListItemIconSize
-
-        visible: root.showDismissButton && !fileDetailsButton.visible
-
-        imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
-        imageSourceHover: "image://svgimage-custom-color/clear.svg" + "/" + UserModel.currentUser.headerTextColor
-
-        toolTipText: qsTr("Dismiss")
-
-        bgColor: Style.menuBorder
-
-        onClicked: root.dismissButtonClicked()
-    }
-
-    CustomButton {
-        id: fileDetailsButton
-
-        Layout.preferredWidth: Style.trayListItemIconSize
-        Layout.preferredHeight: Style.trayListItemIconSize
-
-        imageSource: "image://svgimage-custom-color/more.svg" + "/" + Style.adjustedCurrentUserHeaderColor
-        imageSourceHover: "image://svgimage-custom-color/more.svg" + "/" + Style.currentUserHeaderTextColor
-        toolTipText: qsTr("Open file details")
-        bgColor: Style.currentUserHeaderColor
-
-        visible: model.showFileDetails
-
-        onClicked: Systray.presentShareViewInTray(model.openablePath)
     }
 }

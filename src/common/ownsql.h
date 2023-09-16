@@ -135,20 +135,17 @@ public:
     template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, static_cast<int>(value));
     }
 
     template<class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, value);
     }
 
     void bindValue(int pos, const QByteArray &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << QString::fromUtf8(value);
         bindValueInternal(pos, value);
     }
 
@@ -164,7 +161,7 @@ private:
     sqlite3 *_db = nullptr;
     sqlite3_stmt *_stmt = nullptr;
     QString _error;
-    int _errId;
+    int _errId = 0;
     QByteArray _sql;
 
     friend class SqlDatabase;

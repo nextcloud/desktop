@@ -86,7 +86,6 @@ void UpdaterScheduler::slotTimerFired()
 OCUpdater::OCUpdater(const QUrl &url)
     : Updater()
     , _updateUrl(url)
-    , _state(Unknown)
     , _accessManager(new AccessManager(this))
     , _timeoutWatchdog(new QTimer(this))
 {

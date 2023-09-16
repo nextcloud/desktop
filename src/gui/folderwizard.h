@@ -70,7 +70,7 @@ protected slots:
 private:
     void changeStyle();
 
-    Ui_FolderWizardSourcePage _ui;
+    Ui_FolderWizardSourcePage _ui{};
     Folder::Map _folderMap;
     AccountPtr _account;
 };
@@ -114,8 +114,8 @@ private:
     LsColJob *runLsColJob(const QString &path);
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
-    Ui_FolderWizardTargetPage _ui;
-    bool _warnWasVisible;
+    Ui_FolderWizardTargetPage _ui{};
+    bool _warnWasVisible = false;
     AccountPtr _account;
     QTimer _lscolTimer;
     QStringList _encryptedPaths;
@@ -167,7 +167,7 @@ public:
 
 private:
     FolderWizardLocalPath *_folderWizardSourcePage;
-    FolderWizardRemotePath *_folderWizardTargetPage;
+    FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
     FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
 };
 

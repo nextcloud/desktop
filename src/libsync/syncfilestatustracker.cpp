@@ -136,7 +136,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // that the status of CSYNC_FILE_EXCLUDE_LIST excludes will change if the user
     // update the exclude list at runtime and doing it statically here removes
     // our ability to notify changes through the fileStatusChanged signal,
-    // it's an acceptable compromize to treat all exclude types the same.
+    // it's an acceptable compromise to treat all exclude types the same.
     // Update: This extra check shouldn't hurt even though silently excluded files
     // are now available via slotAddSilentlyExcluded().
     if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
@@ -226,7 +226,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
     std::swap(_syncProblems, oldProblems);
 
     foreach (const SyncFileItemPtr &item, items) {
-        qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction;
+        qCInfo(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction << item->_direction;
         _dirtyPaths.remove(item->destination());
 
         if (hasErrorStatus(*item)) {
@@ -287,7 +287,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
         && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
         && item->_instruction != CSYNC_INSTRUCTION_IGNORE
         && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
-        // decSyncCount calls *must* be symetric with incSyncCount calls in slotAboutToPropagate
+        // decSyncCount calls *must* be symmetric with incSyncCount calls in slotAboutToPropagate
         decSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
     } else {
         emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));

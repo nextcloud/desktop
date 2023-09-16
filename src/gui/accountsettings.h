@@ -93,7 +93,6 @@ protected slots:
     void slotSetSubFolderAvailability(OCC::Folder *folder, const QString &path, OCC::PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
-    void slotDeleteAccount();
     void slotToggleSignInState();
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrypted(OCC::FolderStatusModel::SubFolderInfo *folderInfo);
@@ -117,18 +116,23 @@ private slots:
     void updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const;
     void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
 
-private:
+private slots:
     void displayMnemonic(const QString &mnemonic);
-    void showConnectionLabel(const QString &message,
-        QStringList errors = QStringList());
-    bool event(QEvent *) override;
-    void createAccountToolbox();
+    void disableEncryptionForAccount(const OCC::AccountPtr &account) const;
+    void showConnectionLabel(const QString &message, QStringList errors = QStringList());
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
 
     void initializeE2eEncryption();
+    void resetE2eEncryption();
+    void checkClientSideEncryptionState();
     void removeActionFromEncryptionMessage(const QString &actionId);
+
+private:
+    bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
+
+    void initializeE2eEncryptionSettingsMessage();
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
@@ -137,13 +141,13 @@ private:
 
     FolderStatusModel *_model;
     QUrl _OCUrl;
-    bool _wasDisabledBefore;
+    bool _wasDisabledBefore = false;
     AccountState *_accountState;
     UserInfo _userInfo;
-    QAction *_toggleSignInOutAction;
-    QAction *_addAccountAction;
+    QAction *_toggleSignInOutAction = nullptr;
+    QAction *_addAccountAction = nullptr;
 
-    bool _menuShown;
+    bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
 };

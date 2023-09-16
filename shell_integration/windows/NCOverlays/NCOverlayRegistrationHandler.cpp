@@ -31,7 +31,7 @@ using namespace std;
 
 HRESULT NCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PCWSTR friendlyName)
 {
-    HRESULT hResult;
+    HRESULT hResult = 0;
     HKEY shellOverlayKey = nullptr;
     // the key may not exist yet
     hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &shellOverlayKey, nullptr));
@@ -62,7 +62,7 @@ HRESULT NCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PC
 
 HRESULT NCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 {
-    HRESULT hResult;
+    HRESULT hResult = 0;
     HKEY shellOverlayKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_LOCAL_MACHINE, REGISTRY_OVERLAY_KEY, 0, KEY_WRITE, &shellOverlayKey));
 
@@ -87,7 +87,7 @@ HRESULT NCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWST
 
     wchar_t stringCLSID[MAX_PATH];
     StringFromGUID2(clsid, stringCLSID, ARRAYSIZE(stringCLSID));
-    HRESULT hResult;
+    HRESULT hResult = 0;
     HKEY hKey = nullptr;
 
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CLASSES_ROOT, REGISTRY_CLSID, 0, KEY_WRITE, &hKey));
@@ -139,7 +139,7 @@ HRESULT NCOverlayRegistrationHandler::UnregisterCOMObject(const CLSID& clsid)
     wchar_t stringCLSID[MAX_PATH];
 
     StringFromGUID2(clsid, stringCLSID, ARRAYSIZE(stringCLSID));
-    HRESULT hResult;
+    HRESULT hResult = 0;
     HKEY hKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CLASSES_ROOT, REGISTRY_CLSID, 0, DELETE, &hKey));
     if (!SUCCEEDED(hResult)) {

@@ -36,6 +36,19 @@ constexpr qint64 activityDefaultExpirationTimeMsecs = 1000 * 60 * 10;
 }
 
 namespace OCC {
+    
+TrayFolderInfo::TrayFolderInfo(const QString &name, const QString &parentPath, const QString &fullPath, FolderType folderType)
+    : _name(name)
+    , _parentPath(parentPath)
+    , _fullPath(fullPath)
+    , _folderType(folderType)
+{
+}
+
+bool TrayFolderInfo::isGroupFolder() const
+{
+    return _folderType == GroupFolder;
+}
 
 User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     : QObject(parent)
@@ -43,7 +56,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
     , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
-    , _notificationRequestsRunning(0)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -77,6 +89,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::headerTextColorChanged);
     connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::accentColorChanged);
 
+    connect(_account->account().data(), &Account::capabilitiesChanged, this, &User::slotAccountCapabilitiesChangedRefreshGroupFolders);
+
     connect(_activityModel, &ActivityListModel::sendNotificationRequest, this, &User::slotSendNotificationRequest);
     
     connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
@@ -105,6 +119,14 @@ bool User::canShowNotification(const long notificationId)
             !notificationAlreadyShown(notificationId);
 }
 
+void User::checkAndRemoveSeenActivities(const ActivityList &list, const int numChatNotificationsReceived)
+{
+    if (numChatNotificationsReceived < _lastChatNotificationsReceivedCount) {
+        _activityModel->checkAndRemoveSeenActivities(list);
+    }
+    _lastChatNotificationsReceivedCount = numChatNotificationsReceived;
+}
+
 void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
 {
     if(!canShowNotification(notificationId)) {
@@ -121,6 +143,12 @@ void User::showDesktopNotification(const Activity &activity)
 {
     const auto notificationId = activity._id;
     const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
+
+    // the user needs to interact with this notification
+    if (activity._links.size() > 0) {
+        _activityModel->addNotificationToActivityList(activity);
+    }
+
     showDesktopNotification(activity._subject, message, notificationId);
 }
 
@@ -177,6 +205,11 @@ void User::showDesktopTalkNotification(const Activity &activity)
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
+    const auto chatNotificationsReceivedCount = std::count_if(std::cbegin(list), std::cend(list), [](const auto &activity) {
+        return activity._objectType == QStringLiteral("chat");
+    });
+    checkAndRemoveSeenActivities(list, chatNotificationsReceivedCount);
+
     ActivityList toNotifyList;
 
     std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) {
@@ -188,6 +221,10 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity already notified, skip";
             return false;
         }
+        if (!activity._shouldNotify) {
+            qCDebug(lcActivity) << "Activity should not be notified";
+            return false;
+        }
 
         return true;
     });
@@ -197,13 +234,18 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         return;
     }
 
-    for(const auto &activity : qAsConst(toNotifyList)) {
+    for (const auto &activity : qAsConst(toNotifyList)) {
         if (activity._objectType == QStringLiteral("chat")) {
             showDesktopTalkNotification(activity);
         } else {
             showDesktopNotification(activity);
         }
     }
+}
+
+void User::slotNotificationFetchFinished()
+{
+    _isNotificationFetchRunning = false;
 }
 
 void User::slotBuildIncomingCallDialogs(const ActivityList &list)
@@ -221,6 +263,11 @@ void User::slotBuildIncomingCallDialogs(const ActivityList &list)
 
     if(systray) {
         for(const auto &activity : list) {
+            if (!activity._shouldNotify) {
+                qCDebug(lcActivity) << "Activity should not be notified";
+                continue;
+            }
+
             systray->createCallDialog(activity, _account);
         }
     }
@@ -253,7 +300,7 @@ void User::slotDisconnectPushNotifications()
 
     disconnect(_account->account().data(), &Account::pushNotificationsDisabled, this, &User::slotDisconnectPushNotifications);
 
-    // connection to WebSocket may have dropped or an error occured, so we need to bring back the polling until we have re-established the connection
+    // connection to WebSocket may have dropped or an error occurred, so we need to bring back the polling until we have re-established the connection
     setNotificationRefreshInterval(ConfigFile().notificationRefreshInterval());
 }
 
@@ -283,6 +330,36 @@ void User::slotCheckExpiredActivities()
     if (_activityModel->errorsList().size() == 0) {
         _expiredActivitiesCheckTimer.stop();
     }
+}
+
+void User::parseNewGroupFolderPath(const QString &mountPoint)
+{
+    if (mountPoint.isEmpty()) {
+        return;
+    }
+    auto mountPointSplit = mountPoint.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+
+    if (mountPointSplit.isEmpty()) {
+        return;
+    }
+
+    const auto groupFolderName = mountPointSplit.takeLast();
+    const auto parentPath = mountPointSplit.join(QLatin1Char('/'));
+    _trayFolderInfos.push_back(QVariant::fromValue(TrayFolderInfo{groupFolderName, parentPath, mountPoint, TrayFolderInfo::GroupFolder}));
+}
+
+void User::prePendGroupFoldersWithLocalFolder()
+{
+    if (!_trayFolderInfos.isEmpty() && !_trayFolderInfos.first().value<TrayFolderInfo>().isGroupFolder()) {
+        return;
+    }
+    const auto localFolderName = getFolder()->shortGuiLocalPath();
+    auto localFolderPathSplit = getFolder()->path().split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (!localFolderPathSplit.isEmpty()) {
+        localFolderPathSplit.removeLast();
+    }
+    const auto localFolderParentPath = !localFolderPathSplit.isEmpty() ? localFolderPathSplit.join(QLatin1Char('/')) : "/";
+    _trayFolderInfos.push_front(QVariant::fromValue(TrayFolderInfo{localFolderName, localFolderParentPath, getFolder()->path(), TrayFolderInfo::Folder}));
 }
 
 void User::connectPushNotifications() const
@@ -373,13 +450,18 @@ void User::slotRefreshNotifications()
     // start a server notification handler if no notification requests
     // are running
     if (_notificationRequestsRunning == 0) {
+        if (_isNotificationFetchRunning) {
+            qCDebug(lcActivity) << "Notification fetch is already running.";
+            return;
+        }
         auto *snh = new ServerNotificationHandler(_account.data());
         connect(snh, &ServerNotificationHandler::newNotificationList,
             this, &User::slotBuildNotificationDisplay);
         connect(snh, &ServerNotificationHandler::newIncomingCallsList,
             this, &User::slotBuildIncomingCallDialogs);
-
-        snh->slotFetchNotifications();
+        connect(snh, &ServerNotificationHandler::jobFinished,
+            this, &User::slotNotificationFetchFinished);
+        _isNotificationFetchRunning = snh->startFetchNotifications();
     } else {
         qCWarning(lcActivity) << "Notification request counter not zero.";
     }
@@ -403,7 +485,7 @@ void User::slotNotificationRequestFinished(int statusCode)
         qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
     } else {
         // to do use the model to rebuild the list or remove the item
-        qCWarning(lcActivity) << "Notification Request to Server successed, rebuilding list.";
+        qCWarning(lcActivity) << "Notification Request to Server succeeded, rebuilding list.";
         _activityModel->removeActivityFromActivityList(row);
     }
 }
@@ -568,12 +650,27 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
             activity._links.append(link);
         }
 
+        auto errorType = ActivityListModel::ErrorType::SyncError;
         // add 'other errors' to activity list
-        _activityModel->addErrorToActivityList(activity);
+        switch (category) {
+        case ErrorCategory::GenericError:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::InsufficientRemoteStorage:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::NetworkError:
+            errorType = ActivityListModel::ErrorType::NetworkError;
+            break;
+        case ErrorCategory::NoError:
+            break;
+        }
+
+        _activityModel->addErrorToActivityList(activity, errorType);
     }
 }
 
-void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
+void User::slotAddErrorToGui(const QString &folderAlias, const SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const ErrorCategory category)
 {
     const auto folderInstance = FolderMan::instance()->folder(folderAlias);
     if (!folderInstance) {
@@ -595,11 +692,38 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
         activity._accName = folderInstance->accountState()->account()->displayName();
         activity._folder = folderAlias;
 
+        if (status == SyncFileItem::Conflict || status == SyncFileItem::FileNameClash) {
+            ActivityLink buttonActivityLink;
+            buttonActivityLink._label = tr("Resolve conflict");
+            buttonActivityLink._link = activity._link.toString();
+            buttonActivityLink._verb = "FIX_CONFLICT_LOCALLY";
+            buttonActivityLink._primary = true;
+
+            activity._links = {buttonActivityLink};
+        }
+
         // Error notifications don't have ids by themselves so we will create one for it
         activity._id = -static_cast<int>(qHash(activity._subject + activity._message));
 
         // add 'other errors' to activity list
-        _activityModel->addErrorToActivityList(activity);
+        auto errorType = ActivityListModel::ErrorType::SyncError;
+        switch (category)
+        {
+        case ErrorCategory::GenericError:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::InsufficientRemoteStorage:
+            errorType = ActivityListModel::ErrorType::SyncError;
+            break;
+        case ErrorCategory::NetworkError:
+            errorType = ActivityListModel::ErrorType::NetworkError;
+            break;
+        case ErrorCategory::NoError:
+            errorType = {};
+            break;
+        }
+
+        _activityModel->addErrorToActivityList(activity, errorType);
 
         showDesktopNotification(activity);
 
@@ -607,6 +731,16 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
             _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
         }
     }
+}
+
+void User::slotAddNotification(const Folder *folder, const Activity &activity)
+{
+    if (!isActivityOfCurrentAccount(folder) || _notifiedNotifications.contains(activity._id)) {
+        return;
+    }
+
+    _notifiedNotifications.insert(activity._id);
+    _activityModel->addNotificationToActivityList(activity);
 }
 
 bool User::isActivityOfCurrentAccount(const Folder *folder) const
@@ -648,6 +782,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
 
     Activity activity;
     activity._type = Activity::SyncFileItemType; //client activity
+    activity._objectType = QStringLiteral("files");
     activity._syncFileItemStatus = item->_status;
     activity._dateTime = QDateTime::currentDateTime();
     activity._message = item->_originalFile;
@@ -708,10 +843,23 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
             // add 'protocol error' to activity list
             if (item->_status == SyncFileItem::Status::FileNameInvalid) {
                 showDesktopNotification(item->_file, activity._subject, activity._id);
+            } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameClash) {
+                ActivityLink buttonActivityLink;
+                buttonActivityLink._label = tr("Resolve conflict");
+                buttonActivityLink._link = activity._link.toString();
+                buttonActivityLink._verb = "FIX_CONFLICT_LOCALLY";
+                buttonActivityLink._primary = true;
+
+                activity._links = {buttonActivityLink};
             }
-            _activityModel->addErrorToActivityList(activity);
+            _activityModel->addErrorToActivityList(activity, ActivityListModel::ErrorType::SyncError);
         }
     }
+}
+
+const QVariantList &User::groupFolders() const
+{
+    return _trayFolderInfos;
 }
 
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
@@ -769,6 +917,42 @@ void User::openLocalFolder()
     if (folder) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
     }
+}
+
+void User::openFolderLocallyOrInBrowser(const QString &fullRemotePath)
+{
+    const auto folder = getFolder();
+
+    if (!folder) {
+        return;
+    }
+
+    // remove remote path prefix and leading slash
+    auto fullRemotePathToPathInDb = folder->remotePath() != QStringLiteral("/") ? fullRemotePath.mid(folder->remotePathTrailingSlash().size()) : fullRemotePath;
+    if (fullRemotePathToPathInDb.startsWith("/")) {
+        fullRemotePathToPathInDb = fullRemotePathToPathInDb.mid(1);
+    }
+
+    SyncJournalFileRecord rec;
+    if (folder->journalDb()->getFileRecord(fullRemotePathToPathInDb, &rec) && rec.isValid()) {
+        // found folder locally, going to open
+        qCInfo(lcActivity) << "Opening locally a folder" << fullRemotePath;
+        QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path() + rec.path()));
+        return;
+    }
+
+    // try to open it in browser
+    auto folderUrlForBrowser = Utility::concatUrlPath(_account->account()->url(), QStringLiteral("/index.php/apps/files/"));
+    QUrlQuery urlQuery;
+    urlQuery.addQueryItem(QStringLiteral("dir"), fullRemotePath);
+    folderUrlForBrowser.setQuery(urlQuery);
+    if (!folderUrlForBrowser.scheme().startsWith(QStringLiteral("http"))) {
+        folderUrlForBrowser.setScheme(QStringLiteral("https"));
+    }
+    // open https://server.com/index.php/apps/files/?dir=/group_folder/path
+    qCInfo(lcActivity) << "Opening in browser a folder" << fullRemotePath;
+    Utility::openBrowser(folderUrlForBrowser);
+    return;
 }
 
 void User::login() const
@@ -910,6 +1094,99 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
 void User::forceSyncNow() const
 {
     FolderMan::instance()->forceSyncForFolder(getFolder());
+}
+
+void User::slotAccountCapabilitiesChangedRefreshGroupFolders()
+{
+    if (!_account->account()->capabilities().groupFoldersAvailable()) {
+        if (!_trayFolderInfos.isEmpty()) {
+            _trayFolderInfos.clear();
+            emit groupFoldersChanged();
+        }
+        return;
+    }
+
+    slotFetchGroupFolders();
+}
+
+void User::slotFetchGroupFolders()
+{
+    QNetworkRequest req;
+    req.setRawHeader(QByteArrayLiteral("OCS-APIREQUEST"), QByteArrayLiteral("true"));
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    query.addQueryItem(QLatin1String("applicable"), QLatin1String("1"));
+    QUrl groupFolderListUrl = Utility::concatUrlPath(_account->account()->url(), QStringLiteral("/index.php/apps/groupfolders/folders"));
+    groupFolderListUrl.setQuery(query);
+
+    const auto groupFolderListJob = _account->account()->sendRequest(QByteArrayLiteral("GET"), groupFolderListUrl, req);
+    connect(groupFolderListJob, &SimpleNetworkJob::finishedSignal, this, &User::slotGroupFoldersFetched);
+}
+
+void User::slotGroupFoldersFetched(QNetworkReply *reply)
+{
+    Q_ASSERT(reply);
+    if (!reply) {
+        qCWarning(lcActivity) << "Group folders fetch error";
+        return;
+    }
+
+    const auto oldSize = _trayFolderInfos.size();
+    const auto oldTrayFolderInfos = _trayFolderInfos;
+    _trayFolderInfos.clear();
+
+    const auto replyData = reply->readAll();
+    if (reply->error() != QNetworkReply::NoError) {
+        if (oldSize != _trayFolderInfos.size()) {
+            emit groupFoldersChanged();
+        }
+        qCWarning(lcActivity) << "Group folders fetch error" << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << replyData;
+        return;
+    }
+
+    QJsonParseError jsonParseError{};
+    const auto json = QJsonDocument::fromJson(replyData, &jsonParseError);
+
+    if (jsonParseError.error != QJsonParseError::NoError) {
+        qCWarning(lcActivity) << "Group folders JSON parse error" << jsonParseError.error << jsonParseError.errorString();
+        if (oldSize != _trayFolderInfos.size()) {
+            emit groupFoldersChanged();
+        }
+        return;
+    }
+
+    const auto obj = json.object().toVariantMap();
+    const auto groupFolders = obj["ocs"].toMap()["data"].toMap();
+
+    for (const auto &groupFolder : groupFolders.values()) {
+        const auto groupFolderInfo = groupFolder.toMap();
+        const auto mountPoint = groupFolderInfo.value(QStringLiteral("mount_point"), {}).toString();
+        parseNewGroupFolderPath(mountPoint);
+    }
+    std::sort(std::begin(_trayFolderInfos), std::end(_trayFolderInfos), [](const auto &leftVariant, const auto &rightVariant) {
+        const auto folderInfoA = leftVariant.template value<TrayFolderInfo>();
+        const auto folderInfoB = rightVariant.template value<TrayFolderInfo>();
+        return folderInfoA._fullPath < folderInfoB._fullPath;
+    });
+
+    if (!_trayFolderInfos.isEmpty()) {
+        if (hasLocalFolder()) {
+            prePendGroupFoldersWithLocalFolder();
+        }
+    }
+
+    if (oldSize != _trayFolderInfos.size()) {
+        emit groupFoldersChanged();
+    } else {
+        for (int i = 0; i < oldTrayFolderInfos.size(); ++i) {
+            const auto oldFolderInfo = oldTrayFolderInfos.at(i).template value<TrayFolderInfo>();
+            const auto newFolderInfo = _trayFolderInfos.at(i).template value<TrayFolderInfo>();
+            if (oldFolderInfo._folderType != newFolderInfo._folderType || oldFolderInfo._fullPath != newFolderInfo._fullPath) {
+                break;
+                emit groupFoldersChanged();
+            }
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -1070,6 +1347,15 @@ void UserModel::openCurrentAccountServer()
     }
 
     QDesktopServices::openUrl(url);
+}
+
+void UserModel::openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath)
+{
+    if (_currentUserId < 0 || _currentUserId >= _users.size()) {
+        return;
+    }
+
+    _users[_currentUserId]->openFolderLocallyOrInBrowser(fullRemotePath);
 }
 
 void UserModel::setCurrentUserId(const int id)
@@ -1250,6 +1536,21 @@ User *UserModel::currentUser() const
     return _users[currentUserId()];
 }
 
+User *UserModel::findUserForAccount(AccountState *account) const
+{
+    Q_ASSERT(account);
+
+    const auto it = std::find_if(_users.cbegin(), _users.cend(), [account](const User *user) {
+        return user->account()->id() == account->account()->id();
+    });
+
+    if (it == _users.cend()) {
+        return nullptr;
+    }
+
+    return *it;
+}
+
 int UserModel::findUserIdForAccount(AccountState *account) const
 {
     const auto it = std::find_if(std::cbegin(_users), std::cend(_users), [=](const User *user) {
@@ -1263,7 +1564,6 @@ int UserModel::findUserIdForAccount(AccountState *account) const
     const auto id = std::distance(std::cbegin(_users), it);
     return id;
 }
-
 /*-------------------------------------------------------------------------------------*/
 
 ImageProvider::ImageProvider()

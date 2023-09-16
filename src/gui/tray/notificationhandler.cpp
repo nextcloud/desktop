@@ -24,12 +24,12 @@ ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState,
 {
 }
 
-void ServerNotificationHandler::slotFetchNotifications()
+bool ServerNotificationHandler::startFetchNotifications()
 {
     // check connectivity and credentials
     if (!(_accountState && _accountState->isConnected() && _accountState->account() && _accountState->account()->credentials() && _accountState->account()->credentials()->ready())) {
         deleteLater();
-        return;
+        return false;
     }
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
@@ -37,7 +37,7 @@ void ServerNotificationHandler::slotFetchNotifications()
         if (!_accountState->account()->capabilities().notificationsAvailable()) {
             qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
-            return;
+            return false;
         }
     }
 
@@ -50,6 +50,7 @@ void ServerNotificationHandler::slotFetchNotifications()
     _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
     _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
+    return true;
 }
 
 void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode)
@@ -66,12 +67,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();
+        emit jobFinished();
         return;
     }
 
     if (statusCode == notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
         deleteLater();
+        emit jobFinished();
         return;
     }
 
@@ -81,7 +84,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
     ActivityList list;
     ActivityList callList;
-
 
     foreach (auto element, notifies) {
         auto json = element.toObject();
@@ -95,14 +97,18 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             const auto richParamsKeys = richParams.keys();
             for(const auto &key : richParamsKeys) {
                 const auto parameterJsonObject = richParams.value(key).toObject();
-                a._subjectRichParameters.insert(key, Activity::RichSubjectParameter{
+                a._subjectRichParameters.insert(key, QVariant::fromValue(Activity::RichSubjectParameter{
                                                     parameterJsonObject.value(QStringLiteral("type")).toString(),
                                                     parameterJsonObject.value(QStringLiteral("id")).toString(),
                                                     parameterJsonObject.value(QStringLiteral("name")).toString(),
                                                     QString(),
                                                     QUrl()
-                                                });
+                                                     }));
             }
+        }
+
+        if (json.contains("shouldNotify")) {
+            a._shouldNotify = json.value("shouldNotify").toBool(true);
         }
 
         // 2 cases to consider:
@@ -132,7 +138,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
                     al._primary = false;
                 }
 
-                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].id + QStringLiteral("/128");
+                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].value<Activity::RichSubjectParameter>().id + QStringLiteral("/128");
             }
 
             // We want to serve incoming call dialogs to the user for calls that
@@ -141,7 +147,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             }
 
             a._links.insert(al._primary? 0 : a._links.size(), al);
-        } 
+        }
 
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
@@ -159,6 +165,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     }
     emit newNotificationList(list);
     emit newIncomingCallsList(callList);
+    emit jobFinished();
 
     deleteLater();
 }

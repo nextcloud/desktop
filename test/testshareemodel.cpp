@@ -33,6 +33,8 @@ class TestShareeModel : public QObject
 {
     Q_OBJECT
 
+    int _numLookupSearchParamSet = 0;
+
 public:
     ~TestShareeModel() override
     {
@@ -62,6 +64,9 @@ public:
 
         QString category;
         switch(definition.type) {
+        case Sharee::Invalid:
+            category = QStringLiteral("invalid");
+            break;
         case Sharee::Circle:
             category = QStringLiteral("circles");
             break;
@@ -79,6 +84,12 @@ public:
             break;
         case Sharee::User:
             category = QStringLiteral("users");
+            break;
+        case Sharee::LookupServerSearch:
+            category = QStringLiteral("placeholder_lookupserversearch");
+            break;
+        case Sharee::LookupServerSearchResults:
+            category = QStringLiteral("placeholder_lookupserversearchresults");
             break;
         }
 
@@ -244,6 +255,10 @@ private slots:
                 const auto lookupParam = urlQuery.queryItemValue(QStringLiteral("lookup"));
                 const auto formatParam = urlQuery.queryItemValue(QStringLiteral("format"));
 
+                if (!lookupParam.isEmpty() && lookupParam == QStringLiteral("true")) {
+                    ++_numLookupSearchParamSet;
+                }
+
                 if (formatParam != QStringLiteral("json")) {
                     reply = new FakeErrorReply(op, req, this, 400, fake400Response);
                 } else {
@@ -324,12 +339,51 @@ private slots:
         const auto searchString = QStringLiteral("i");
         model.setSearchString(searchString);
         QVERIFY(shareesReady.wait(3000));
-        QCOMPARE(model.rowCount(), shareesCount(searchString));
+        QCOMPARE(model.rowCount(), shareesCount(searchString) + 1);
+        QVERIFY(model.rowCount() > 0);
+        auto lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearch);
 
         const auto emailSearchString = QStringLiteral("email");
         model.setSearchString(emailSearchString);
         QVERIFY(shareesReady.wait(3000));
-        QCOMPARE(model.rowCount(), shareesCount(emailSearchString));
+        QCOMPARE(model.rowCount(), shareesCount(emailSearchString) + 1);
+        QVERIFY(model.rowCount() > 0);
+        lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearch);
+    }
+
+    void testShareesFetchGlobally()
+    {
+        resetTestData();
+        standardReplyPopulate();
+
+        ShareeModel model;
+        QAbstractItemModelTester modelTester(&model);
+        QCOMPARE(model.rowCount(), 0);
+
+        model.setAccountState(_accountState.data());
+
+        QSignalSpy shareesReady(&model, &ShareeModel::shareesReady);
+        const auto emailSearchString = QStringLiteral("email");
+        model.setSearchString(emailSearchString);
+        QVERIFY(shareesReady.wait(3000));
+        QCOMPARE(model.rowCount(), shareesCount(emailSearchString) + 1);
+        QVERIFY(model.rowCount() > 0);
+        auto lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearch);
+        QCOMPARE(_numLookupSearchParamSet, 0);
+
+        QSignalSpy lookupModeChanged(&model, &ShareeModel::lookupModeChanged);
+        model.searchGlobally();
+        QVERIFY(shareesReady.wait(3000));
+        QCOMPARE(lookupModeChanged.count(), 2);
+        QVERIFY(model.lookupMode() == ShareeModel::LookupMode::LocalSearch);
+        QCOMPARE(model.rowCount(), shareesCount(emailSearchString) + 1);
+        QVERIFY(model.rowCount() > 0);
+        lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearchResults);
+        QCOMPARE(_numLookupSearchParamSet, 1);
     }
 
     void testFetchSignalling()
@@ -367,7 +421,9 @@ private slots:
 
         QSignalSpy shareesReady(&model, &ShareeModel::shareesReady);
         QVERIFY(shareesReady.wait(3000));
-        QCOMPARE(model.rowCount(), shareesCount(searchString));
+        QCOMPARE(model.rowCount(), shareesCount(searchString) + 1);
+        auto lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearch);
 
         const auto shareeIndex = model.index(0, 0, {});
 
@@ -409,12 +465,16 @@ private slots:
         const auto searchString = QStringLiteral("i");
         model.setSearchString(searchString);
         QVERIFY(shareesReady.wait(3000));
-        QCOMPARE(model.rowCount(), shareesCount(searchString) - 1);
+        QCOMPARE(model.rowCount(), shareesCount(searchString) - 1 + 1);
+        auto lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearch);
 
         const ShareePtr shareeTwo(new Sharee(_michaelUserDefinition.shareWith, _michaelUserDefinition.label, _michaelUserDefinition.type));
         const QVariantList largerShareeBlocklist {QVariant::fromValue(sharee), QVariant::fromValue(shareeTwo)};
         model.setShareeBlocklist(largerShareeBlocklist);
-        QCOMPARE(model.rowCount(), shareesCount(searchString) - 2);
+        QCOMPARE(model.rowCount(), shareesCount(searchString) - 2 + 1);
+        lastElementType = model.data(model.index(model.rowCount() - 1), ShareeModel::Roles::TypeRole).toInt();
+        QVERIFY(lastElementType == Sharee::Type::LookupServerSearch);
     }
 
     void testServerError()

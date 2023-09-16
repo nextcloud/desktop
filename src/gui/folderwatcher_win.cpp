@@ -47,7 +47,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     if (_directory == INVALID_HANDLE_VALUE) {
         const auto error = GetLastError();
         qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << Utility::formatWinError(error);
-        _directory = 0;
+        _directory = nullptr;
         return;
     }
 
@@ -65,7 +65,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     while (!_done) {
         ResetEvent(_resultEvent);
 
-        FILE_NOTIFY_INFORMATION *pFileNotifyBuffer =
+        auto pFileNotifyBuffer =
                 reinterpret_cast<FILE_NOTIFY_INFORMATION *>(fileNotifyBuffer.data());
         DWORD dwBytesReturned = 0;
         if (!ReadDirectoryChangesW(_directory, pFileNotifyBuffer,
@@ -163,7 +163,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             if (curEntry->NextEntryOffset == 0) {
                 break;
             }
-            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefor we first need to cast to char
+            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefore we first need to cast to char
             curEntry = reinterpret_cast<FILE_NOTIFY_INFORMATION *>(reinterpret_cast<char*>(curEntry) + curEntry->NextEntryOffset);
         }
     }

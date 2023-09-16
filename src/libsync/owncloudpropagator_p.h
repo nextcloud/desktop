@@ -82,7 +82,7 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     }
 
     if (httpCode == 503) {
-        // When the server is in maintenance mode, we want to exit the sync immediatly
+        // When the server is in maintenance mode, we want to exit the sync immediately
         // so that we do not flood the server with many requests
         // BUG: This relies on a translated string and is thus unreliable.
         //      In the future it should return a NormalError and trigger a status.php

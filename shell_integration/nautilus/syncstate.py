@@ -105,7 +105,7 @@ class SocketConnect(GObject.GObject):
                 return False  # Don't run again
             except Exception as e:
                 print("Could not connect to unix socket " + sock_file + ". " + str(e))
-        except Exception as e:  # Bad habbit
+        except Exception as e:  # Bad habit
             print("Connect could not be established, try again later.")
             self._sock.close()
 

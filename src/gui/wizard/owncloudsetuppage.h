@@ -78,7 +78,7 @@ private:
     void customizeStyle();
     void setupServerAddressDescriptionLabel();
 
-    Ui_OwncloudSetupPage _ui;
+    Ui_OwncloudSetupPage _ui{};
 
     QString _oCUrl;
     QString _ocUser;

@@ -41,7 +41,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
 {
-    HRESULT hr;
+    HRESULT hr = 0;
     GUID guid;
 
     hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);
@@ -54,7 +54,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
     if (IsEqualCLSID(guid, rclsid))	{
         hr = E_OUTOFMEMORY;
 
-        NCContextMenuFactory *pClassFactory = new NCContextMenuFactory();
+        auto pClassFactory = new NCContextMenuFactory();
         if (pClassFactory) {
             hr = pClassFactory->QueryInterface(riid, ppv);
             pClassFactory->Release();
@@ -71,7 +71,7 @@ STDAPI DllCanUnloadNow(void)
 
 STDAPI DllRegisterServer(void)
 {
-    HRESULT hr;
+    HRESULT hr = 0;
     GUID guid;
 
     hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);
