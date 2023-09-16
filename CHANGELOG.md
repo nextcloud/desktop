@@ -145,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Don't set up tray context menu on macOS, even if not building app bundle by @claucambra in https://github.com/nextcloud/desktop/pull/4988
 * CI: check clang tidy in ci by @mgallien in https://github.com/nextcloud/desktop/pull/4995
 * Check our code with clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/4999
-* Alway use constexpr for all text constants by @mgallien in https://github.com/nextcloud/desktop/pull/4996
+* Always use constexpr for all text constants by @mgallien in https://github.com/nextcloud/desktop/pull/4996
 * Switch AppImage CI to latest tag: client-appimage-6 by @mgallien in https://github.com/nextcloud/desktop/pull/5003
 * Apply modernize-use-using via clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/4993
 * Use [[nodiscard]] by @mgallien in https://github.com/nextcloud/desktop/pull/4992

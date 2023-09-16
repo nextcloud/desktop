@@ -97,7 +97,7 @@ public:
      * This function reads the body of the reply and parses out the
      * error information, if possible.
      *
-     * \a body is optinally filled with the reply body.
+     * \a body is optionally filled with the reply body.
      *
      * Warning: Needs to call reply()->readAll().
      */
