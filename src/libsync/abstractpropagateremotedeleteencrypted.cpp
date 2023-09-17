@@ -75,7 +75,7 @@ void AbstractPropagateRemoteDeleteEncrypted::slotFolderEncryptedIdReceived(const
 
 void AbstractPropagateRemoteDeleteEncrypted::slotTryLock(const QByteArray &folderId)
 {
-    auto lockJob = new LockEncryptFolderApiJob(_propagator->account(), folderId, this);
+    auto lockJob = new LockEncryptFolderApiJob(_propagator->account(), folderId, _propagator->_journal, _propagator->account()->e2e()->_publicKey, this);
     connect(lockJob, &LockEncryptFolderApiJob::success, this, &AbstractPropagateRemoteDeleteEncrypted::slotFolderLockedSuccessfully);
     connect(lockJob, &LockEncryptFolderApiJob::error, this, &AbstractPropagateRemoteDeleteEncrypted::taskFailed);
     lockJob->start();
@@ -144,7 +144,9 @@ void AbstractPropagateRemoteDeleteEncrypted::slotDeleteRemoteItemFinished()
         return;
     }
 
-    _propagator->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
+    if (!_propagator->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
+        qCWarning(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Failed to delete file record from local DB" << _item->_originalFile;
+    }
     _propagator->_journal->commit("Remote Remove");
 
     unlockFolder();
@@ -170,7 +172,7 @@ void AbstractPropagateRemoteDeleteEncrypted::unlockFolder()
     }
 
     qCDebug(ABSTRACT_PROPAGATE_REMOVE_ENCRYPTED) << "Unlocking folder" << _folderId;
-    auto unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, this);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, _propagator->_journal, this);
 
     connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, &AbstractPropagateRemoteDeleteEncrypted::slotFolderUnLockedSuccessfully);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, [this] (const QByteArray& fileId, int httpReturnCode) {

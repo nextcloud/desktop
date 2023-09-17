@@ -15,7 +15,7 @@
 /*
  * Removing the root encrypted folder is consisted of multiple steps:
  * - 1st step is to obtain the folderID via LsColJob so it then can be used for the next step
- * - 2nd step is to lock the root folder useing the folderID from the previous step. !!! NOTE: If there are no nested items in the folder, this, and subsequent steps are skipped until step 7.
+ * - 2nd step is to lock the root folder using the folderID from the previous step. !!! NOTE: If there are no nested items in the folder, this, and subsequent steps are skipped until step 7.
  * - 3rd step is to obtain the root folder's metadata (it contains list of nested files and folders)
  * - 4th step is to remove the nested files and folders from the metadata and send it to the server via UpdateMetadataApiJob
  * - 5th step is to trigger DeleteJob for every nested file and folder of the root folder
@@ -49,7 +49,7 @@ PropagateRemoteDeleteEncryptedRootFolder::PropagateRemoteDeleteEncryptedRootFold
 
 void PropagateRemoteDeleteEncryptedRootFolder::start()
 {
-    Q_ASSERT(_item->_isEncrypted);
+    Q_ASSERT(_item->isEncrypted());
 
     const bool listFilesResult = _propagator->_journal->listFilesInPath(_item->_file.toUtf8(), [this](const OCC::SyncJournalFileRecord &record) {
         _nestedItems[record._e2eMangledName] = record;
@@ -81,7 +81,14 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
         return;
     }
 
-    FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+    FolderMetadata metadata(_propagator->account(),
+                            _item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                            json.toJson(QJsonDocument::Compact), statusCode);
+
+    if (!metadata.isMetadataSetup()) {
+        taskFailed();
+        return;
+    }
 
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "It's a root encrypted folder. Let's remove nested items first.";
 
@@ -116,7 +123,9 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinishe
         const auto nestedItem = _nestedItems.take(encryptedFileName);
 
         if (nestedItem.isValid()) {
-            _propagator->_journal->deleteFileRecord(nestedItem._path, nestedItem._type == ItemTypeDirectory);
+            if (!_propagator->_journal->deleteFileRecord(nestedItem._path, nestedItem._type == ItemTypeDirectory)) {
+                qCWarning(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Failed to delete file record from local DB" << nestedItem._path;
+            }
             _propagator->_journal->commit("Remote Remove");
         }
     }
@@ -153,7 +162,7 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinishe
     if (_nestedItems.size() == 0) {
         // we wait for all _nestedItems' DeleteJobs to finish, and then - fail if any of those jobs has failed
         if (networkError() != QNetworkReply::NetworkError::NoError || _item->_httpErrorCode != 0) {
-            const int errorCode = networkError() != QNetworkReply::NetworkError::NoError ? networkError() : _item->_httpErrorCode;
+            const auto errorCode = (networkError() != QNetworkReply::NetworkError::NoError ? static_cast<int>(networkError()) : _item->_httpErrorCode);
             qCCritical(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Delete of nested items finished with error" << errorCode << ". Failing the entire sequence.";
             taskFailed();
             return;

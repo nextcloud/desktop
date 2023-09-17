@@ -47,13 +47,13 @@ public:
 
     ~Job() override;
 
-    QKeychain::Error error() const;
-    QString errorString() const;
+    [[nodiscard]] QKeychain::Error error() const;
+    [[nodiscard]] QString errorString() const;
 
-    QByteArray binaryData() const;
-    QString textData() const;
+    [[nodiscard]] QByteArray binaryData() const;
+    [[nodiscard]] QString textData() const;
 
-    bool insecureFallback() const;
+    [[nodiscard]] bool insecureFallback() const;
 
 // If we use it but don't support insecure fallback, give us nice compilation errors ;p
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
@@ -64,7 +64,7 @@ public:
      * @return Whether this job autodeletes itself once finished() has been emitted. Default is true.
      * @see setAutoDelete()
      */
-    bool autoDelete() const;
+    [[nodiscard]] bool autoDelete() const;
 
     /**
      * Set whether this job should autodelete itself once finished() has been emitted.
@@ -74,7 +74,7 @@ public:
 
 protected:
     QString _serviceName;
-    Account *_account;
+    Account *_account = nullptr;
     QString _key;
     bool _insecureFallback = false;
     bool _autoDelete = true;
@@ -109,7 +109,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on succeess (QKeychain::NoError).
+     * @return Returns true on success (QKeychain::NoError).
     */
     bool exec();
 
@@ -142,7 +142,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on succeess (QKeychain::NoError).
+     * @return Returns true on success (QKeychain::NoError).
     */
     bool exec();
 
@@ -180,7 +180,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on succeess (QKeychain::NoError).
+     * @return Returns true on success (QKeychain::NoError).
     */
     bool exec();
 

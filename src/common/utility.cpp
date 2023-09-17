@@ -228,7 +228,7 @@ qint64 Utility::freeDiskSpace(const QString &path)
         return (qint64)stat.f_bavail * stat.f_frsize;
     }
 #elif defined(Q_OS_UNIX)
-    struct statvfs64 stat;
+    struct statvfs64 stat{};
     if (statvfs64(path.toLocal8Bit().data(), &stat) == 0) {
         return (qint64)stat.f_bavail * stat.f_frsize;
     }
@@ -279,7 +279,7 @@ void Utility::usleep(int usec)
     QThread::usleep(usec);
 }
 
-// This can be overriden from the tests
+// This can be overridden from the tests
 OCSYNC_EXPORT bool fsCasePreserving_override = []() -> bool {
     QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     if (!env.isEmpty())
@@ -298,7 +298,7 @@ bool Utility::fileNamesEqual(const QString &fn1, const QString &fn2)
     const QDir fd2(fn2);
 
     // Attention: If the path does not exist, canonicalPath returns ""
-    // ONLY use this function with existing pathes.
+    // ONLY use this function with existing paths.
     const QString a = fd1.canonicalPath();
     const QString b = fd2.canonicalPath();
     bool re = !a.isEmpty() && QString::compare(a, b, fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive) == 0;
@@ -321,7 +321,7 @@ namespace {
         const char *name;
         quint64 msec;
 
-        QString description(quint64 value) const
+        [[nodiscard]] QString description(quint64 value) const
         {
             return QCoreApplication::translate("Utility", name, nullptr, value);
         }
@@ -478,10 +478,8 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
         now = from;
     }
 
-    if (dt.daysTo(now) == 1) {
-        return QObject::tr("%n day ago", "", dt.daysTo(now));
-    } else if (dt.daysTo(now) > 1) {
-        return QObject::tr("%n days ago", "", dt.daysTo(now));
+    if (dt.daysTo(now) >= 1) {
+        return QObject::tr("%nd", "delay in days after an activity", dt.daysTo(now));
     } else {
         qint64 secs = dt.secsTo(now);
         if (secs < 0) {
@@ -490,11 +488,7 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
 
         if (floor(secs / 3600.0) > 0) {
             int hours = floor(secs / 3600.0);
-            if (hours == 1) {
-                return (QObject::tr("%n hour ago", "", hours));
-            } else {
-                return (QObject::tr("%n hours ago", "", hours));
-            }
+            return (QObject::tr("%nh", "delay in hours after an activity", hours));
         } else {
             int minutes = qRound(secs / 60.0);
 
@@ -502,13 +496,10 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
                 if (secs < 5) {
                     return QObject::tr("now");
                 } else {
-                    return QObject::tr("Less than a minute ago");
+                    return QObject::tr("1m", "one minute after activity date and time");
                 }
-
-            } else if (minutes == 1) {
-                return (QObject::tr("%n minute ago", "", minutes));
             } else {
-                return (QObject::tr("%n minutes ago", "", minutes));
+                return (QObject::tr("%nm", "delay in minutes after an activity", minutes));
             }
         }
     }
@@ -624,35 +615,21 @@ QString Utility::makeConflictFileName(
     return conflictFileName;
 }
 
-bool Utility::isConflictFile(const char *name)
-{
-    const char *bname = std::strrchr(name, '/');
-    if (bname) {
-        bname += 1;
-    } else {
-        bname = name;
-    }
-
-    // Old pattern
-    if (std::strstr(bname, "_conflict-"))
-        return true;
-
-    // New pattern
-    if (std::strstr(bname, "(conflicted copy"))
-        return true;
-
-    return false;
-}
-
 bool Utility::isConflictFile(const QString &name)
 {
     auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
 
-    if (bname.contains(QStringLiteral("_conflict-")))
+    if (bname.contains(QStringLiteral("_conflict-"))) {
         return true;
+    }
 
-    if (bname.contains(QStringLiteral("(conflicted copy")))
+    if (bname.contains(QStringLiteral("(conflicted copy"))) {
         return true;
+    }
+
+    if (isCaseClashConflictFile(name)) {
+        return true;
+    }
 
     return false;
 }
@@ -696,7 +673,7 @@ bool Utility::isPathWindowsDrivePartitionRoot(const QString &path)
         return false;
     }
 
-    // must mutch a pattern "[A-Za-z]:"
+    // must match a pattern "[A-Za-z]:"
     if (!(path.at(1) == QLatin1Char(':') && path.at(0).isLetter())) {
         return false;
     }
@@ -720,6 +697,36 @@ QString Utility::sanitizeForFileName(const QString &name)
         }
     }
     return result;
+}
+
+QString Utility::makeCaseClashConflictFileName(const QString &filename, const QDateTime &datetime)
+{
+    auto conflictFileName(filename);
+    // Add conflict tag before the extension.
+    auto dotLocation = conflictFileName.lastIndexOf(QLatin1Char('.'));
+    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= conflictFileName.lastIndexOf(QLatin1Char('/')) + 1) {
+        dotLocation = conflictFileName.size();
+    }
+
+    auto conflictMarker = QStringLiteral(" (case clash from ");
+    conflictMarker += datetime.toString(QStringLiteral("yyyy-MM-dd hhmmss")) + QLatin1Char(')');
+
+    conflictFileName.insert(dotLocation, conflictMarker);
+    return conflictFileName;
+}
+
+bool Utility::isCaseClashConflictFile(const QString &name)
+{
+    const auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+
+    return bname.contains(QStringLiteral("(case clash from"));
+}
+
+QString Utility::trailingSlashPath(const QString &path)
+{
+    static const auto slash = QLatin1Char('/');
+    return path.endsWith(slash) ? path : QString(path + slash);
 }
 
 } // namespace OCC

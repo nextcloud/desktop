@@ -44,7 +44,7 @@ class BulkPropagatorJob : public PropagatorJob
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
-      qint64 _size;
+      qint64 _size = 0LL;
     };
 
     struct BulkUploadItem
@@ -64,29 +64,30 @@ public:
 
     bool scheduleSelfOrChild() override;
 
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
 
 private slots:
-    void startUploadFile(SyncFileItemPtr item, UploadFileInfo fileToUpload);
+    void startUploadFile(OCC::SyncFileItemPtr item, OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);
 
     // Content checksum computed, compute the transmission checksum
-    void slotComputeTransmissionChecksum(SyncFileItemPtr item,
-                                         UploadFileInfo fileToUpload);
+    void slotComputeTransmissionChecksum(OCC::SyncFileItemPtr item,
+                                         OCC::BulkPropagatorJob::UploadFileInfo fileToUpload);
 
     // transmission checksum computed, prepare the upload
-    void slotStartUpload(SyncFileItemPtr item,
-                         UploadFileInfo fileToUpload,
+    void slotStartUpload(OCC::SyncFileItemPtr item,
+                         OCC::BulkPropagatorJob::UploadFileInfo fileToUpload,
                          const QByteArray &transmissionChecksumType,
                          const QByteArray &transmissionChecksum);
 
-    // invoked on internal error to unlock a folder and faile
-    void slotOnErrorStartFolderUnlock(SyncFileItemPtr item,
-                                      SyncFileItem::Status status,
-                                      const QString &errorString);
+    // invoked on internal error to unlock a folder and failed
+    void slotOnErrorStartFolderUnlock(OCC::SyncFileItemPtr item,
+                                      const OCC::SyncFileItem::Status status,
+                                      const QString &errorString,
+                                      const OCC::ErrorCategory errorCategory);
 
     void slotPutFinished();
 
-    void slotUploadProgress(SyncFileItemPtr item, qint64 sent, qint64 total);
+    void slotUploadProgress(OCC::SyncFileItemPtr item, qint64 sent, qint64 total);
 
     void slotJobDestroyed(QObject *job);
 
@@ -107,11 +108,12 @@ private:
                                 const QJsonObject &fullReplyObject);
 
     void done(SyncFileItemPtr item,
-              SyncFileItem::Status status,
-              const QString &errorString);
+              const SyncFileItem::Status status,
+              const QString &errorString,
+              const ErrorCategory category);
 
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
-    QMap<QByteArray, QByteArray> headers(SyncFileItemPtr item) const;
+    [[nodiscard]] QMap<QByteArray, QByteArray> headers(SyncFileItemPtr item) const;
 
     void abortWithError(SyncFileItemPtr item,
                         SyncFileItem::Status status,

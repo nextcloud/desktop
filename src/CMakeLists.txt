@@ -4,8 +4,57 @@ endif()
 
 include(ECMEnableSanitizers)
 
-find_package(Qt5 5.15 COMPONENTS Core Network Xml Concurrent REQUIRED)
-find_package(Qt5 5.15 COMPONENTS WebEngineWidgets WebEngine)
+set(REQUIRED_QT_VERSION "5.15.0")
+
+find_package(Qt5Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt5Core PROPERTIES
+    DESCRIPTION "Qt5 Core component."
+    TYPE REQUIRED
+)
+
+find_package(Qt5Network ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt5Network PROPERTIES
+    DESCRIPTION "Qt5 Network component."
+    TYPE REQUIRED
+)
+
+find_package(Qt5Xml ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt5Xml PROPERTIES
+    DESCRIPTION "Qt5 Xml component."
+    TYPE REQUIRED
+)
+
+find_package(Qt5Concurrent ${REQUIRED_QT_VERSION} CONFIG QUIET)
+set_package_properties(Qt5Concurrent PROPERTIES
+    DESCRIPTION "Qt5 Concurrent component."
+    TYPE REQUIRED
+)
+
+find_package(Qt5WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
+if(APPLE)
+    set_package_properties(Qt5WebEngineWidgets PROPERTIES
+        DESCRIPTION "Qt5 WebEngineWidgets component."
+        TYPE RECOMMENDED
+    )
+else()
+    set_package_properties(Qt5WebEngineWidgets PROPERTIES
+        DESCRIPTION "Qt5 WebEngineWidgets component."
+        TYPE REQUIRED
+    )
+endif()
+
+find_package(Qt5WebEngine ${REQUIRED_QT_VERSION} CONFIG QUIET)
+if(APPLE)
+    set_package_properties(Qt5WebEngine PROPERTIES
+        DESCRIPTION "Qt5 WebEngine component."
+        TYPE RECOMMENDED
+    )
+else()
+    set_package_properties(Qt5WebEngine PROPERTIES
+        DESCRIPTION "Qt5 WebEngine component."
+        TYPE REQUIRED
+    )
+endif()
 
 if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   add_compile_definitions(WITH_WEBENGINE=1)

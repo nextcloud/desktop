@@ -27,6 +27,8 @@
 
 namespace OCC {
 
+OCSYNC_EXPORT Q_NAMESPACE
+
 /**
  * @brief The ProgressInfo class
  * @ingroup libsync
@@ -68,7 +70,7 @@ public:
         Done
     };
 
-    Status status() const;
+    [[nodiscard]] Status status() const;
 
     /**
      * Called when propagation starts.
@@ -84,21 +86,21 @@ public:
      * is about to start via the transmissionProgress() signal. The
      * first ProgressInfo will have isUpdatingEstimates() == false.
      */
-    bool isUpdatingEstimates() const;
+    [[nodiscard]] bool isUpdatingEstimates() const;
 
     /**
      * Increase the file and size totals by the amount indicated in item.
      */
     void adjustTotalsForFile(const SyncFileItem &item);
 
-    qint64 totalFiles() const;
-    qint64 completedFiles() const;
+    [[nodiscard]] qint64 totalFiles() const;
+    [[nodiscard]] qint64 completedFiles() const;
 
-    qint64 totalSize() const;
-    qint64 completedSize() const;
+    [[nodiscard]] qint64 totalSize() const;
+    [[nodiscard]] qint64 completedSize() const;
 
     /** Number of a file that is currently in progress. */
-    qint64 currentFile() const;
+    [[nodiscard]] qint64 currentFile() const;
 
     /** Return true if the size needs to be taken in account in the total amount of time */
     static inline bool isSizeDependent(const SyncFileItem &item)
@@ -131,10 +133,10 @@ public:
     struct OWNCLOUDSYNC_EXPORT Progress
     {
         /** Returns the estimates about progress per second and eta. */
-        Estimates estimates() const;
+        [[nodiscard]] Estimates estimates() const;
 
-        qint64 completed() const;
-        qint64 remaining() const;
+        [[nodiscard]] qint64 completed() const;
+        [[nodiscard]] qint64 remaining() const;
 
     private:
         /**
@@ -163,7 +165,7 @@ public:
         friend class ProgressInfo;
     };
 
-    Status _status;
+    Status _status = Starting;
 
     struct OWNCLOUDSYNC_EXPORT ProgressItem
     {
@@ -185,7 +187,7 @@ public:
     /**
      * Get the total completion estimate
      */
-    Estimates totalProgress() const;
+    [[nodiscard]] Estimates totalProgress() const;
 
     /**
      * Get the optimistic eta.
@@ -193,7 +195,7 @@ public:
      * This value is based on the highest observed transfer bandwidth
      * and files-per-second speed.
      */
-    quint64 optimisticEta() const;
+    [[nodiscard]] quint64 optimisticEta() const;
 
     /**
      * Whether the remaining-time estimate is trusted.
@@ -201,12 +203,12 @@ public:
      * We don't trust it if it is hugely above the optimistic estimate.
      * See #5046.
      */
-    bool trustEta() const;
+    [[nodiscard]] bool trustEta() const;
 
     /**
      * Get the current file completion estimate structure
      */
-    Estimates fileProgress(const SyncFileItem &item) const;
+    [[nodiscard]] Estimates fileProgress(const SyncFileItem &item) const;
 
 private slots:
     /**
@@ -227,11 +229,11 @@ private:
     Progress _fileProgress;
 
     // All size from completed jobs only.
-    qint64 _totalSizeOfCompletedJobs;
+    qint64 _totalSizeOfCompletedJobs = 0LL;
 
     // The fastest observed rate of files per second in this sync.
-    double _maxFilesPerSecond;
-    double _maxBytesPerSecond;
+    double _maxFilesPerSecond = 0.0;
+    double _maxBytesPerSecond = 0.0;
 };
 
 namespace Progress {
@@ -249,9 +251,12 @@ namespace Progress {
  * in IssuesWidget.
  */
 enum class ErrorCategory {
-    Normal,
+    NoError,
+    GenericError,
+    NetworkError,
     InsufficientRemoteStorage,
 };
+Q_ENUM_NS(OCC::ErrorCategory)
 
 /**
  * @file progressdispatcher.h
@@ -279,16 +284,16 @@ signals:
       @param[out]  progress   A struct with all progress info.
 
      */
-    void progressInfo(const QString &folder, const ProgressInfo &progress);
+    void progressInfo(const QString &folder, const OCC::ProgressInfo &progress);
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void itemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
 
     /**
      * @brief A new folder-wide sync error was seen.
      */
-    void syncError(const QString &folder, const QString &message, ErrorCategory category);
+    void syncError(const QString &folder, const QString &message, OCC::ErrorCategory category);
 
     /**
      * @brief Emitted when an error needs to be added into GUI
@@ -297,7 +302,7 @@ signals:
      * @param[out] full error message
      * @param[out] subject (optional)
      */
-    void addErrorToGui(const QString &folder, SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(const QString &folder, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
 
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts

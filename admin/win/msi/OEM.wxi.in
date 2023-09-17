@@ -28,6 +28,8 @@
 
     <?define AppHelpLink = "https://@APPLICATION_DOMAIN@/" ?>
     <?define AppInfoLink = "$(var.AppHelpLink)" ?>
+	
+	<?define AppCommandOpenUrlScheme = "@APPLICATION_URI_HANDLER_SCHEME@" ?>
 
     <!-- Custom license: To use it, also remove the "Skip the license page" stuff in the <UI> section
                          and uncomment <WixVariable Id="WixUILicenseRtf"...

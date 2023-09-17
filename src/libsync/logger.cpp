@@ -34,8 +34,38 @@
 #endif
 
 namespace {
+
 constexpr int CrashLogSize = 20;
+constexpr auto MaxLogLinesCount = 50000;
+
+static bool compressLog(const QString &originalName, const QString &targetName)
+{
+#ifdef ZLIB_FOUND
+    QFile original(originalName);
+    if (!original.open(QIODevice::ReadOnly))
+        return false;
+    auto compressed = gzopen(targetName.toUtf8(), "wb");
+    if (!compressed) {
+        return false;
+    }
+
+    while (!original.atEnd()) {
+        auto data = original.read(1024 * 1024);
+        auto written = gzwrite(compressed, data.data(), data.size());
+        if (written != data.size()) {
+            gzclose(compressed);
+            return false;
+        }
+    }
+    gzclose(compressed);
+    return true;
+#else
+    return false;
+#endif
 }
+
+}
+
 namespace OCC {
 
 Logger *Logger::instance()
@@ -52,13 +82,16 @@ Logger::Logger(QObject *parent)
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
-            Logger::instance()->doLog(type, ctx, message);
-        });
+        Logger::instance()->doLog(type, ctx, message);
+    });
 #endif
 }
 
 Logger::~Logger()
 {
+    if (_logstream) {
+        _logstream->flush();
+    }
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler(nullptr);
 #endif
@@ -68,11 +101,6 @@ Logger::~Logger()
 void Logger::postGuiLog(const QString &title, const QString &message)
 {
     emit guiLog(title, message);
-}
-
-void Logger::postOptionalGuiLog(const QString &title, const QString &message)
-{
-    emit optionalGuiLog(title, message);
 }
 
 void Logger::postGuiMessage(const QString &title, const QString &message)
@@ -88,7 +116,8 @@ bool Logger::isLoggingToFile() const
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
-    const QString msg = qFormatLogMessage(type, ctx, message);
+    static long long int linesCounter = 0;
+    const auto &msg = qFormatLogMessage(type, ctx, message);
 #if defined(Q_OS_WIN) && defined(QT_DEBUG)
     // write logs to Output window of Visual Studio
     {
@@ -115,15 +144,27 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
 #endif
     {
         QMutexLocker lock(&_mutex);
+
+        if (linesCounter >= MaxLogLinesCount) {
+            linesCounter = 0;
+            if (_logstream) {
+                _logstream->flush();
+            }
+            closeNoLock();
+            enterNextLogFileNoLock();
+        }
+        ++linesCounter;
+
         _crashLogIndex = (_crashLogIndex + 1) % CrashLogSize;
         _crashLog[_crashLogIndex] = msg;
+
         if (_logstream) {
-            (*_logstream) << msg << Qt::endl;
+            (*_logstream) << msg << "\n";
             if (_doFileFlush)
                 _logstream->flush();
         }
         if (type == QtFatalMsg) {
-            close();
+            closeNoLock();
 #if defined(Q_OS_WIN)
             // Make application terminate in a way that can be caught by the crash reporter
             Utility::crash();
@@ -133,7 +174,7 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
     emit logWindowLog(msg);
 }
 
-void Logger::close()
+void Logger::closeNoLock()
 {
     dumpCrashLog();
     if (_logstream)
@@ -146,40 +187,14 @@ void Logger::close()
 
 QString Logger::logFile() const
 {
+    QMutexLocker locker(&_mutex);
     return _logFile.fileName();
 }
 
 void Logger::setLogFile(const QString &name)
 {
     QMutexLocker locker(&_mutex);
-    if (_logstream) {
-        _logstream.reset(nullptr);
-        _logFile.close();
-    }
-
-    if (name.isEmpty()) {
-        return;
-    }
-
-    bool openSucceeded = false;
-    if (name == QLatin1String("-")) {
-        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
-    } else {
-        _logFile.setFileName(name);
-        openSucceeded = _logFile.open(QIODevice::WriteOnly);
-    }
-
-    if (!openSucceeded) {
-        locker.unlock(); // Just in case postGuiMessage has a qDebug()
-        postGuiMessage(tr("Error"),
-            QString(tr("<nobr>File \"%1\"<br/>cannot be opened for writing.<br/><br/>"
-                       "The log output <b>cannot</b> be saved!</nobr>"))
-                .arg(name));
-        return;
-    }
-
-    _logstream.reset(new QTextStream(&_logFile));
-    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
+    setLogFileNoLock(name);
 }
 
 void Logger::setLogExpire(int expire)
@@ -264,33 +279,7 @@ void Logger::dumpCrashLog()
     }
 }
 
-static bool compressLog(const QString &originalName, const QString &targetName)
-{
-#ifdef ZLIB_FOUND
-    QFile original(originalName);
-    if (!original.open(QIODevice::ReadOnly))
-        return false;
-    auto compressed = gzopen(targetName.toUtf8(), "wb");
-    if (!compressed) {
-        return false;
-    }
-
-    while (!original.atEnd()) {
-        auto data = original.read(1024 * 1024);
-        auto written = gzwrite(compressed, data.data(), data.size());
-        if (written != data.size()) {
-            gzclose(compressed);
-            return false;
-        }
-    }
-    gzclose(compressed);
-    return true;
-#else
-    return false;
-#endif
-}
-
-void Logger::enterNextLogFile()
+void Logger::enterNextLogFileNoLock()
 {
     if (!_logDirectory.isEmpty()) {
 
@@ -300,13 +289,14 @@ void Logger::enterNextLogFile()
         }
 
         // Tentative new log name, will be adjusted if one like this already exists
-        QDateTime now = QDateTime::currentDateTime();
-        QString newLogName = now.toString("yyyyMMdd_HHmm") + "_owncloud.log";
+        const auto now = QDateTime::currentDateTime();
+        const auto cLocale = QLocale::c(); // Some system locales generate strings that are incompatible with filesystem
+        QString newLogName = cLocale.toString(now, QStringLiteral("yyyyMMdd_HHmm")) + QStringLiteral("_nextcloud.log");
 
         // Expire old log files and deal with conflicts
-        QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
-            QDir::Files, QDir::Name);
-        const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*owncloud\.log\.(\d+).*)"));
+        QStringList files = dir.entryList(QStringList("*owncloud.log.*"), QDir::Files, QDir::Name) +
+            dir.entryList(QStringList("*nextcloud.log.*"), QDir::Files, QDir::Name);
+        static const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*(next|own)cloud\.log\.(\d+).*)"));
         int maxNumber = -1;
         foreach (const QString &s, files) {
             if (_logExpire > 0) {
@@ -317,13 +307,13 @@ void Logger::enterNextLogFile()
             }
             const auto rxMatch = rx.match(s);
             if (s.startsWith(newLogName) && rxMatch.hasMatch()) {
-                maxNumber = qMax(maxNumber, rxMatch.captured(1).toInt());
+                maxNumber = qMax(maxNumber, rxMatch.captured(2).toInt());
             }
         }
         newLogName.append("." + QString::number(maxNumber + 1));
 
         auto previousLog = _logFile.fileName();
-        setLogFile(dir.filePath(newLogName));
+        setLogFileNoLock(dir.filePath(newLogName));
 
         // Compress the previous log file. On a restart this can be the most recent
         // log file.
@@ -339,6 +329,43 @@ void Logger::enterNextLogFile()
             }
         }
     }
+}
+
+void Logger::setLogFileNoLock(const QString &name)
+{
+    if (_logstream) {
+        _logstream.reset(nullptr);
+        _logFile.close();
+    }
+
+    if (name.isEmpty()) {
+        return;
+    }
+
+    bool openSucceeded = false;
+    if (name == QLatin1String("-")) {
+        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
+    } else {
+        _logFile.setFileName(name);
+        openSucceeded = _logFile.open(QIODevice::WriteOnly);
+    }
+
+    if (!openSucceeded) {
+        postGuiMessage(tr("Error"),
+                       QString(tr("<nobr>File \"%1\"<br/>cannot be opened for writing.<br/><br/>"
+                                  "The log output <b>cannot</b> be saved!</nobr>"))
+                           .arg(name));
+        return;
+    }
+
+    _logstream.reset(new QTextStream(&_logFile));
+    _logstream->setCodec(QTextCodec::codecForName("UTF-8"));
+}
+
+void Logger::enterNextLogFile()
+{
+    QMutexLocker locker(&_mutex);
+    enterNextLogFileNoLock();
 }
 
 } // namespace OCC

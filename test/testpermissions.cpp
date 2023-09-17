@@ -27,7 +27,7 @@ static void applyPermissionsFromName(FileInfo &info) {
 // https://github.com/owncloud/client/issues/2038
 static void assertCsyncJournalOk(SyncJournalDb &journal)
 {
-    // The DB is openend in locked mode: close to allow us to access.
+    // The DB is opened in locked mode: close to allow us to access.
     journal.close();
 
     SqlDatabase db;
@@ -67,6 +67,10 @@ class TestPermissions : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogDebug(true);
+    }
 
     void t7pl()
     {
@@ -283,7 +287,7 @@ private slots:
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         // new still exist
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/newname_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
-        // but is not on server: so remove it localy for the future comarison
+        // but is not on server: so remove it locally for the future comparison
         fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_/newname_PERM_CK_");
 
         //2.
@@ -336,7 +340,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    static void setAllPerm(FileInfo *fi, RemotePermissions perm)
+    static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
     {
         fi->permissions = perm;
         for (auto &subFi : fi->children)

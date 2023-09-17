@@ -5,12 +5,44 @@
  *
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
-#include <syncengine.h>
-#include <propagatorjobs.h>
+
+#include "caseclashconflictsolver.h"
+#include "configfile.h"
+#include "propagatorjobs.h"
+#include "syncengine.h"
+
+#include <QFile>
+#include <QtTest>
 
 using namespace OCC;
+
+namespace {
+
+QStringList findCaseClashConflicts(const FileInfo &dir)
+{
+    QStringList conflicts;
+    for (const auto &item : dir.children) {
+        if (item.name.contains("(case clash from")) {
+            conflicts.append(item.path());
+        }
+    }
+    return conflicts;
+}
+
+bool expectConflict(FileInfo state, const QString path)
+{
+    PathComponents pathComponents(path);
+    auto base = state.find(pathComponents.parentDirComponents());
+    if (!base)
+        return false;
+    for (const auto &item : qAsConst(base->children)) {
+        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
 {
@@ -18,12 +50,6 @@ bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
         return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
     }
     return false;
-}
-
-bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
-{
-    auto item = spy.findItem(path);
-    return item->_instruction == instr;
 }
 
 bool itemDidCompleteSuccessfully(const ItemCompletedSpy &spy, const QString &path)
@@ -54,11 +80,18 @@ int itemSuccessfullyCompletedGetRank(const ItemCompletedSpy &spy, const QString 
     return -1;
 }
 
+}
+
 class TestSyncEngine : public QObject
 {
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        OCC::Logger::instance()->setLogDebug(true);
+    }
+
     void testFileDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -211,7 +244,7 @@ private slots:
 
         auto getDbChecksum = [&](QString path) {
             SyncJournalFileRecord record;
-            fakeFolder.syncJournal().getFileRecord(path, &record);
+            [[maybe_unused]] const auto result = fakeFolder.syncJournal().getFileRecord(path, &record);
             return record._checksumHeader;
         };
 
@@ -275,7 +308,7 @@ private slots:
         fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QByteArrayLiteral("parentFolder/subFolderA/"));
         auto getEtag = [&](const QByteArray &file) {
             SyncJournalFileRecord rec;
-            fakeFolder.syncJournal().getFileRecord(file, &rec);
+            [[maybe_unused]] const auto result = fakeFolder.syncJournal().getFileRecord(file, &rec);
             return rec._etag;
         };
         QVERIFY(getEtag("parentFolder") == "_invalid_");
@@ -315,7 +348,7 @@ private slots:
 
     void abortAfterFailedMkdir() {
         FakeFolder fakeFolder{FileInfo{}};
-        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), &SyncEngine::finished);
         fakeFolder.serverErrorPaths().append("NewFolder");
         fakeFolder.localModifier().mkdir("NewFolder");
         // This should be aborted and would otherwise fail in FileInfo::create.
@@ -329,15 +362,14 @@ private slots:
      * etag stored in the database yet. */
     void testDirEtagAfterIncompleteSync() {
         FakeFolder fakeFolder{FileInfo{}};
-        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), &SyncEngine::finished);
         fakeFolder.serverErrorPaths().append("NewFolder/foo");
         fakeFolder.remoteModifier().mkdir("NewFolder");
         fakeFolder.remoteModifier().insert("NewFolder/foo");
         QVERIFY(!fakeFolder.syncOnce());
 
         SyncJournalFileRecord rec;
-        fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec);
-        QVERIFY(rec.isValid());
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec) && rec.isValid());
         QCOMPARE(rec._etag, QByteArrayLiteral("_invalid_"));
         QVERIFY(!rec._fileId.isEmpty());
     }
@@ -454,7 +486,7 @@ private slots:
         // check that mtime in journal and filesystem agree
         QString a1path = fakeFolder.localPath() + "A/a1";
         SyncJournalFileRecord a1record;
-        fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record);
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record));
         QCOMPARE(a1record._modtime, (qint64)FileSystem::getModTime(a1path));
 
         // Extra sync reads from db, no difference
@@ -819,8 +851,8 @@ private slots:
         FakeFolder fakeFolder{ FileInfo{} };
         SyncOptions options;
         options._initialChunkSize = 10;
-        options._maxChunkSize = 10;
-        options._minChunkSize = 10;
+        options.setMaxChunkSize(10);
+        options.setMinChunkSize(10);
         fakeFolder.syncEngine().setSyncOptions(options);
 
         QObject parent;
@@ -888,6 +920,29 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
+    }
+
+    // A local file should not be modified after upload to server if nothing has changed.
+    void testLocalFileInitialMtime()
+    {
+        constexpr auto fooFolder = "foo/";
+        constexpr auto barFile = "foo/bar";
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().mkdir(fooFolder);
+        fakeFolder.localModifier().insert(barFile);
+
+        const auto localDiskFileModifier = dynamic_cast<DiskFileModifier &>(fakeFolder.localModifier());
+
+        const auto localFile = localDiskFileModifier.find(barFile);
+        const auto localFileInfo = QFileInfo(localFile);
+        const auto expectedMtime = localFileInfo.metadataChangeTime();
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto currentMtime = localFileInfo.metadataChangeTime();
+        QCOMPARE(currentMtime, expectedMtime);
     }
 
     /**
@@ -1066,7 +1121,7 @@ private slots:
             return nullptr;
         });
 
-        // make sure the first sync failes and files get restored to original folder
+        // make sure the first sync fails and files get restored to original folder
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.syncOnce());
@@ -1117,7 +1172,7 @@ private slots:
             return nullptr;
         });
 
-        // make sure the first sync failes and files get restored to original folder
+        // make sure the first sync fails and files get restored to original folder
         QVERIFY(!fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.syncOnce());
@@ -1243,6 +1298,433 @@ private slots:
 
         auto expectedState = fakeFolder.currentLocalState();
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+    }
+
+    void testServerUpdatingMTimeShouldNotCreateConflicts()
+    {
+        constexpr auto testFile = "test.txt";
+        constexpr auto CURRENT_MTIME = 1646057277;
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert(testFile);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME - 2));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+        auto localState = fakeFolder.currentLocalState();
+        QCOMPARE(localState, fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileFirstSync = localState.find(testFile);
+
+        QVERIFY(fileFirstSync);
+        QCOMPARE(fileFirstSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 2);
+
+        fakeFolder.remoteModifier().setModTimeKeepEtag(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME - 1));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        localState = fakeFolder.currentLocalState();
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileSecondSync = localState.find(testFile);
+        QVERIFY(fileSecondSync);
+        QCOMPARE(fileSecondSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 1);
+
+        fakeFolder.remoteModifier().setModTime(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        localState = fakeFolder.currentLocalState();
+        QCOMPARE(localState, fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileThirdSync = localState.find(testFile);
+        QVERIFY(fileThirdSync);
+        QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
+    }
+
+    void testFolderRemovalWithCaseClash()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().mkdir("toDelete");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().insert("A/FILE");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().remove("toDelete");
+
+        QVERIFY(fakeFolder.syncOnce());
+        auto folderA = fakeFolder.currentLocalState().find("toDelete");
+        QCOMPARE(folderA, nullptr);
+    }
+
+    void testServer_caseClash_createConflict()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_subFolderCaseClash_createConflict()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_caseClash_createConflictOnMove()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST2";
+        constexpr auto testUpperCaseFileAfterMove = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, false);
+
+        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
+        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_subFolderCaseClash_createConflictOnMove()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST2";
+        constexpr auto testUpperCaseFileAfterMove = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, false);
+
+        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
+        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_caseClash_createConflictAndSolveIt()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        if (shouldHaveCaseClashConflict) {
+            const auto conflictFileName = QString{conflicts.constFirst()};
+            qDebug() << conflictFileName;
+            CaseClashConflictSolver conflictSolver(fakeFolder.localPath() + testLowerCaseFile,
+                                                   fakeFolder.localPath() + conflictFileName,
+                                                   QStringLiteral("/"),
+                                                   fakeFolder.localPath(),
+                                                   fakeFolder.account(),
+                                                   &fakeFolder.syncJournal());
+
+            QSignalSpy conflictSolverDone(&conflictSolver, &CaseClashConflictSolver::done);
+            QSignalSpy conflictSolverFailed(&conflictSolver, &CaseClashConflictSolver::failed);
+
+            conflictSolver.solveConflict("test2");
+
+            QVERIFY(conflictSolverDone.wait());
+
+            QVERIFY(fakeFolder.syncOnce());
+
+            conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+            QCOMPARE(conflicts.size(), 0);
+        }
+    }
+
+    void testServer_subFolderCaseClash_createConflictAndSolveIt()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        if (shouldHaveCaseClashConflict) {
+            CaseClashConflictSolver conflictSolver(fakeFolder.localPath() + testLowerCaseFile,
+                                                   fakeFolder.localPath() + conflicts.constFirst(),
+                                                   QStringLiteral("/"),
+                                                   fakeFolder.localPath(),
+                                                   fakeFolder.account(),
+                                                   &fakeFolder.syncJournal());
+
+            QSignalSpy conflictSolverDone(&conflictSolver, &CaseClashConflictSolver::done);
+            QSignalSpy conflictSolverFailed(&conflictSolver, &CaseClashConflictSolver::failed);
+
+            conflictSolver.solveConflict("a/b/test2");
+
+            QVERIFY(conflictSolverDone.wait());
+
+            QVERIFY(fakeFolder.syncOnce());
+
+            conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+            QCOMPARE(conflicts.size(), 0);
+        }
+    }
+
+    void testServer_caseClash_createConflict_thenRemoveOneRemoteFile()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        // remove (UPPERCASE) file
+        fakeFolder.remoteModifier().remove(testUpperCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // make sure we got no conflicts now (conflicted copy gets removed)
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+
+        // insert (UPPERCASE) file back
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // we must get conflicts
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        // now remove (lowercase) file
+        fakeFolder.remoteModifier().remove(testLowerCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+
+        // make sure we got no conflicts now (conflicted copy gets removed)
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+
+        // remove both files from the server(lower and UPPER case)
+        fakeFolder.remoteModifier().remove(testLowerCaseFile);
+        fakeFolder.remoteModifier().remove(testUpperCaseFile);
+        QVERIFY(fakeFolder.syncOnce());
+    }
+
+    void testExistingFolderBecameBig()
+    {
+        constexpr auto testFolder = "folder";
+        constexpr auto testSmallFile = "folder/small_file.txt";
+        constexpr auto testLargeFile = "folder/large_file.txt";
+
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
+        auto config = ConfigFile();
+        config.setNotifyExistingFoldersOverLimit(true);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QSignalSpy spy(&fakeFolder.syncEngine(), &SyncEngine::existingFolderNowBig);
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._newBigFolderSizeLimit = 128; // 128 bytes
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        fakeFolder.remoteModifier().mkdir(testFolder);
+        fakeFolder.remoteModifier().insert(testSmallFile, 64);
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(spy.count(), 0);
+
+        fakeFolder.remoteModifier().insert(testLargeFile, 256);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(spy.count(), 1);
+    }
+
+    void testFileDownloadWithUnicodeCharacterInName() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.remoteModifier().insert("A/abcdęfg.txt");
+        fakeFolder.syncOnce();
+        QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/abcdęfg.txt"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };
 

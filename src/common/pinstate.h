@@ -21,7 +21,6 @@
 
 namespace OCC {
 
-namespace PinStateEnums {
 OCSYNC_EXPORT Q_NAMESPACE
 
 /** Determines whether items should be available locally permanently or not
@@ -76,6 +75,13 @@ enum class PinState {
      * dehydrated (which is an arbitrary decision).
      */
     Unspecified = 3,
+
+    /** The file will never be synced to the cloud.
+     * 
+     * Useful for ignored files to indicate to the OS the file will never be
+     * synced
+     */
+    Excluded = 4,
 };
 Q_ENUM_NS(PinState)
 
@@ -126,8 +132,6 @@ enum class VfsItemAvailability {
     OnlineOnly = 4,
 };
 Q_ENUM_NS(VfsItemAvailability)
-}
-using namespace PinStateEnums;
 
 }
 

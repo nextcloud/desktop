@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=Utility;X-SuSE-SyncUtility;
 Type=Application
-Exec=@APPLICATION_EXECUTABLE@
+Exec=@APPLICATION_EXECUTABLE@ %u
 Name=@APPLICATION_NAME@ Desktop
 Comment=@APPLICATION_NAME@ desktop synchronization client
 GenericName=Folder Sync
@@ -9,7 +9,7 @@ Icon=@APPLICATION_ICON_NAME@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
 SingleMainWindow=True
-MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
+MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_URI_HANDLER_SCHEME@;
 Actions=Quit;
 
 # Translations
@@ -41,9 +41,9 @@ Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
 GenericName[ja_JP]=フォルダー同期
 Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
 Icon[ja_JP]=@APPLICATION_ICON_NAME@
-Comment[el]=@ΟΝΟΜΑ_ΕΦΑΡΜΟΓΗΣ@ συγχρονισμός επιφάνειας εργασίας πελάτη
+Comment[el]=@APPLICATION_NAME@ συγχρονισμός επιφάνειας εργασίας πελάτη
 GenericName[el]=Συγχρονισμός φακέλου
-Name[el]=@ΟΝΟΜΑ_ΕΦΑΡΜΟΓΗΣ@  συγχρονισμός επιφάνειας εργασίας πελάτη
+Name[el]=@APPLICATION_NAME@  συγχρονισμός επιφάνειας εργασίας πελάτη
 Icon[el]=@APPLICATION_ICON_NAME@
 Comment[en_GB]=@APPLICATION_NAME@ desktop synchronisation client
 GenericName[en_GB]=Folder Sync
@@ -198,7 +198,7 @@ Comment[lb]=@APPLICATION_NAME@ Desktop Synchronisatioun Client
 GenericName[lb]=Dossier Dync
 Name[lb]=@APPLICATION_NAME@ Desktop Sync Client
 Icon[lb]=@APPLICATION_ICON_NAME@
-
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
 
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit

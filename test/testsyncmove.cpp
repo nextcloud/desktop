@@ -70,7 +70,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     auto base = state.find(pathComponents.parentDirComponents());
     if (!base)
         return false;
-    for (const auto &item : base->children) {
+    for (const auto &item : qAsConst(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
@@ -351,7 +351,7 @@ private slots:
         QCOMPARE(counter.nGET, 1);
         counter.reset();
 
-        // remove localy, and remote move at the same time
+        // remove locally, and remote move at the same time
         fakeFolder.localModifier().remove("A/Q/W/a1m");
         remote.rename("A/Q/W/a1m", "A/Q/W/a1p");
         remote.rename(prefix + "/A/Q/W/a1m", prefix + "/A/Q/W/a1p");
@@ -593,7 +593,7 @@ private slots:
         }
         conflicts = findConflicts(currentLocal.children["B4"]);
         QCOMPARE(conflicts.size(), 1);
-        for (const auto& c : conflicts) {
+        for (const auto& c : qAsConst(conflicts)) {
             QCOMPARE(currentLocal.find(c)->contentChar, 'L');
             local.remove(c);
         }
@@ -814,7 +814,7 @@ private slots:
 
         // Test that renaming a file within a directory that was renamed on the other side actually do a rename.
 
-        // 1) move the folder alphabeticaly before
+        // 1) move the folder alphabetically before
         fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
         fakeFolder.localModifier().rename("A", "_A");
         fakeFolder.localModifier().rename("B/b1", "B/b1m");
@@ -888,6 +888,29 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testRenameParallelismWithBlacklist()
+    {
+        constexpr auto testFileName = "blackListFile";
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().insert(testFileName);
+        fakeFolder.serverErrorPaths().append(testFileName, 500); // will be blacklisted
+        QVERIFY(!fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().mkdir("B");
+        fakeFolder.remoteModifier().rename("A/file", "B/file");
+        fakeFolder.remoteModifier().remove("A");
+
+        QVERIFY(!fakeFolder.syncOnce());
+        auto folderA = fakeFolder.currentLocalState().find("A");
+        QCOMPARE(folderA, nullptr);
     }
 
     void testMovedWithError_data()
@@ -969,6 +992,56 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find(dest));
     }
 
+    void testRenameDeepHierarchy()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.remoteModifier().mkdir("FolA");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB2");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
+        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
+        auto fileA = fakeFolder.remoteModifier().find("FolA/FileA.txt");
+        QVERIFY(fileA);
+        fileA->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
+        auto fileB = fakeFolder.remoteModifier().find("FolA/FolB/FileB.txt");
+        QVERIFY(fileB);
+        fileB->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
+        auto fileC = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FileC.txt");
+        QVERIFY(fileC);
+        fileC->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
+        auto fileD = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FolD/FileD.txt");
+        QVERIFY(fileD);
+        fileD->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        auto fileE = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        QVERIFY(fileE);
+        fileE->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().rename("FolA/FolB", "FolA/FolB2/FolB");
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().insert("FolA/FolB2/FolB/FolC/FolD/FileD2.txt");
+        auto fileD2 = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD2.txt");
+        QVERIFY(fileD2);
+        fileD2->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().appendByte("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
+        auto fileDMoved = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
+        QVERIFY(fileDMoved);
+        fileDMoved->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed522</checksum></oc:checksums>";
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

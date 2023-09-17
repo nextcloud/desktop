@@ -110,8 +110,8 @@ public:
 
     void checkForUpdate() override;
 
-    QString statusString(UpdateStatusStringFormat format = PlainText) const;
-    int downloadState() const;
+    [[nodiscard]] QString statusString(UpdateStatusStringFormat format = PlainText) const;
+    [[nodiscard]] int downloadState() const;
     void setDownloadState(DownloadState state);
 
 signals:
@@ -133,13 +133,13 @@ private slots:
 
 protected:
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
-    bool updateSucceeded() const;
-    QNetworkAccessManager *qnam() const { return _accessManager; }
-    UpdateInfo updateInfo() const { return _updateInfo; }
+    [[nodiscard]] bool updateSucceeded() const;
+    [[nodiscard]] QNetworkAccessManager *qnam() const { return _accessManager; }
+    [[nodiscard]] UpdateInfo updateInfo() const { return _updateInfo; }
 
 private:
     QUrl _updateUrl;
-    int _state;
+    int _state = Unknown;
     QNetworkAccessManager *_accessManager;
     QTimer *_timeoutWatchdog; /** Timer to guard the timeout of an individual network request */
     UpdateInfo _updateInfo;
@@ -156,7 +156,6 @@ public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
 private slots:
-    void slotSetSeenVersion();
     void slotDownloadFinished();
     void slotWriteFile();
 

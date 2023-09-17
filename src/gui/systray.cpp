@@ -74,38 +74,11 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 Systray::Systray()
     : QSystemTrayIcon(nullptr)
 {
-    qmlRegisterSingletonType<UserModel>("com.nextcloud.desktopclient", 1, 0, "UserModel",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return UserModel::instance();
-        }
-    );
-
-    qmlRegisterSingletonType<UserAppsModel>("com.nextcloud.desktopclient", 1, 0, "UserAppsModel",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return UserAppsModel::instance();
-        }
-    );
-
-    qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Theme",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return Theme::instance();
-        }
-    );
-
-    qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Systray",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return Systray::instance();
-        }
-    );
-
-    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
-    qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
-
 #if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     setUserNotificationCenterDelegate();
     checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
     registerNotificationCategories(QString(tr("Download")));
-#else
+#elif !defined(Q_OS_MACOS)
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::setupContextMenu);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
@@ -140,7 +113,12 @@ void Systray::create()
         }
 
         QQmlComponent trayWindowComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
-        _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
+
+        if(trayWindowComponent.isError()) {
+            qCWarning(lcSystray) << trayWindowComponent.errorString();
+        } else {
+            _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
+        }
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -227,6 +205,12 @@ void Systray::setupContextMenu()
     });
 }
 
+void Systray::destroyDialog(QQuickWindow *dialog) const
+{
+    dialog->destroy();
+    dialog->deleteLater();
+}
+
 void Systray::createCallDialog(const Activity &callNotification, const AccountStatePtr accountState)
 {
     qCDebug(lcSystray) << "Starting a new call dialog for notification with id: " << callNotification._id << "with text: " << callNotification._subject;
@@ -260,10 +244,184 @@ void Systray::createCallDialog(const Activity &callNotification, const AccountSt
         };
 
         const auto callDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/CallNotificationDialog.qml"));
-        callDialog->createWithInitialProperties(initialProperties);
 
+        if(callDialog->isError()) {
+            qCWarning(lcSystray) << callDialog->errorString();
+            return;
+        }
+
+        // This call dialog gets deallocated on close conditions
+        // by a call from the QML side to the destroyDialog slot
+        callDialog->createWithInitialProperties(initialProperties);
         _callsAlreadyNotified.insert(callNotification._id);
     }
+}
+
+void Systray::createEditFileLocallyLoadingDialog(const QString &fileName)
+{
+    if (_editFileLocallyLoadingDialog) {
+        return;
+    }
+
+    qCDebug(lcSystray) << "Opening a file local editing dialog...";
+
+    const auto editFileLocallyLoadingDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/EditFileLocallyLoadingDialog.qml"));
+
+    if (editFileLocallyLoadingDialog->isError()) {
+        qCWarning(lcSystray) << editFileLocallyLoadingDialog->errorString();
+        return;
+    }
+
+    _editFileLocallyLoadingDialog = editFileLocallyLoadingDialog->createWithInitialProperties(QVariantMap{{QStringLiteral("fileName"), fileName}});
+}
+
+void Systray::destroyEditFileLocallyLoadingDialog()
+{
+    if (!_editFileLocallyLoadingDialog) {
+        return;
+    }
+    qCDebug(lcSystray) << "Closing a file local editing dialog...";
+    _editFileLocallyLoadingDialog->deleteLater();
+    _editFileLocallyLoadingDialog = nullptr;
+}
+
+void Systray::createResolveConflictsDialog(const OCC::ActivityList &allConflicts)
+{
+    const auto conflictsDialog = std::make_unique<QQmlComponent>(_trayEngine, QStringLiteral("qrc:/qml/src/gui/ResolveConflictsDialog.qml"));
+    const QVariantMap initialProperties{
+                                        {"allConflicts", QVariant::fromValue(allConflicts)},
+    };
+
+    if(conflictsDialog->isError()) {
+        qCWarning(lcSystray) << conflictsDialog->errorString();
+        return;
+    }
+
+    // This call dialog gets deallocated on close conditions
+    // by a call from the QML side to the destroyDialog slot
+    auto dialog = QScopedPointer(conflictsDialog->createWithInitialProperties(initialProperties));
+    if (!dialog) {
+        return;
+    }
+    dialog->setParent(QGuiApplication::instance());
+
+    auto dialogWindow = qobject_cast<QQuickWindow*>(dialog.data());
+    if (!dialogWindow) {
+        return;
+    }
+    dialogWindow->show();
+    dialogWindow->raise();
+    dialogWindow->requestActivate();
+    dialog.take();
+}
+
+bool Systray::raiseDialogs()
+{
+    return raiseFileDetailDialogs();
+}
+
+bool Systray::raiseFileDetailDialogs(const QString &localPath)
+{
+    if(_fileDetailDialogs.empty()) {
+        return false;
+    }
+
+    auto it = _fileDetailDialogs.begin();
+    while (it != _fileDetailDialogs.end()) {
+        const auto dialog = *it;
+        auto nullDialog = dialog == nullptr;
+
+        if (!nullDialog && !dialog->isVisible()) {
+            destroyDialog(dialog);
+            nullDialog = true;
+        }
+
+        if (!nullDialog && (localPath.isEmpty() || dialog->property("localPath").toString() == localPath)) {
+            dialog->show();
+            dialog->raise();
+            dialog->requestActivate();
+
+            ++it;
+            continue;
+        }
+
+        it = _fileDetailDialogs.erase(it);
+        continue;
+    }
+
+    // If it is empty then we have raised no dialogs, so return false (and vice-versa)
+    return !_fileDetailDialogs.empty();
+}
+
+void Systray::createFileDetailsDialog(const QString &localPath)
+{
+    if (raiseFileDetailDialogs(localPath)) {
+        qCDebug(lcSystray) << "Reopening an existing file details dialog for " << localPath;
+        return;
+    }
+
+    qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(folder->accountState())},
+        {"localPath", localPath},
+    };
+
+    QQmlComponent fileDetailsDialog(_trayEngine, QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
+
+    if (!fileDetailsDialog.isError()) {
+        const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+        const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+        if(!dialog) {
+            qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
+            return;
+        }
+
+        _fileDetailDialogs.append(dialog);
+
+        dialog->show();
+        dialog->raise();
+        dialog->requestActivate();
+
+    } else {
+        qCWarning(lcSystray) << fileDetailsDialog.errorString();
+    }
+}
+
+void Systray::createShareDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Sharing);
+}
+
+void Systray::createFileActivityDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
+}
+
+void Systray::presentShareViewInTray(const QString &localPath)
+{
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file details view in tray for" << localPath << "no responsible folder found";
+        return;
+    }
+    qCDebug(lcSystray) << "Opening file details view in tray for " << localPath;
+
+    Q_EMIT showFileDetails(folder->accountState(), localPath, FileDetailsPage::Sharing);
 }
 
 void Systray::slotCurrentUserChanged()
@@ -332,6 +490,15 @@ bool Systray::isOpen() const
     return _isOpen;
 }
 
+bool Systray::enableAddAccount() const
+{
+#if defined ENFORCE_SINGLE_ACCOUNT
+    return AccountManager::instance()->accounts().isEmpty();
+#else
+    return true;
+#endif
+}
+
 void Systray::setIsOpen(const bool isOpen)
 {
     _isOpen = isOpen;
@@ -366,6 +533,18 @@ void Systray::showUpdateMessage(const QString &title, const QString &message, co
     sendOsXUpdateNotification(title, message, webUrl);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
     Q_UNUSED(webUrl);
+    showMessage(title, message);
+#endif
+}
+
+void Systray::showTalkMessage(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState)
+{
+#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
+    sendOsXTalkNotification(title, message, token, replyTo, accountState);
+#else // TODO: Implement custom notifications (i.e. actionable) for other OSes
+    Q_UNUSED(replyTo)
+    Q_UNUSED(token)
+    Q_UNUSED(accountState)
     showMessage(title, message);
 #endif
 }
@@ -530,9 +709,8 @@ QRect Systray::taskbarGeometry() const
     }
     return tbRect;
 #elif defined(Q_OS_MACOS)
-    // Finder bar is always 22px height on macOS (when treating as effective pixels)
     const auto screenWidth = currentScreenRect().width();
-    const auto statusBarHeight = static_cast<int>(OCC::statusBarThickness());
+    const auto statusBarHeight = static_cast<int>(OCC::menuBarThickness());
     return {0, 0, screenWidth, statusBarHeight};
 #else
     if (taskbarOrientation() == TaskBarPosition::Bottom || taskbarOrientation() == TaskBarPosition::Top) {

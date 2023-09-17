@@ -1,76 +1,67 @@
+/*
+ * Copyright (C) 2022 by Oleksandr Zolotov <alex@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 import QtQuick 2.15
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import Style 1.0
 
 Button {
     id: root
 
-    property string imageSource: ""
-    property string imageSourceHover: ""
-    property Image iconItem: icon
+    property string imageSourceHover: root.icon.source
+    property var iconItem: icon
 
     property string toolTipText: ""
 
-    property color textColor: Style.ncTextColor
+    property color textColor: palette.buttonText
     property color textColorHovered: textColor
 
+    property alias contentsFont: contents.font
+
     property alias bgColor: bgRectangle.color
+    property alias bgNormalColor: bgRectangle.normalColor
+    property alias bgHoverColor: bgRectangle.hoverColor
+    property alias bgNormalOpacity: bgRectangle.normalOpacity
+    property alias bgHoverOpacity: bgRectangle.hoverOpacity
 
-    property bool bold: false
-
-    property real bgOpacity: 0.3
-
-    background: Rectangle {
+    background: NCButtonBackground {
         id: bgRectangle
-        color: "transparent"
-        opacity: parent.hovered ? 1.0 : bgOpacity
-        radius: width / 2
+        hovered: root.hovered
     }
 
-    leftPadding: root.text === "" ? 5 : 10
-    rightPadding: root.text === "" ? 5 : 10
+    leftPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
+    rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
+    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
-    ToolTip {
-        id: customButtonTooltip
+    hoverEnabled: true
+
+    NCToolTip {
         text: root.toolTipText
-        delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
-        contentItem: Label {
-            text: customButtonTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
     }
 
-    contentItem: RowLayout {
-        Image {
-            id: icon
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            source: root.hovered ? root.imageSourceHover : root.imageSource
-            fillMode: Image.PreserveAspectFit
-        }
-
-        Label {
-            Layout.maximumWidth: icon.width > 0 ? parent.width - icon.width - parent.spacing : parent.width
-            Layout.fillWidth: icon.status !== Image.Ready
-
-            text: root.text
-            font.bold: root.bold
-
-            visible: root.text !== ""
-
-            color: root.hovered ? root.textColorHovered : root.textColor
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
-            elide: Text.ElideRight
-        }
+    contentItem: NCButtonContents {
+        id: contents
+        display: root.display
+        hovered: root.hovered
+        imageSourceHover: root.imageSourceHover
+        imageSource: root.icon.source
+        imageSourceWidth: root.icon.width
+        imageSourceHeight: root.icon.height
+        text: root.text
+        textColor: root.textColor
+        textColorHovered: root.textColorHovered
     }
 }

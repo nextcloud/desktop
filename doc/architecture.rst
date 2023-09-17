@@ -440,3 +440,23 @@ Files that must be removed from the local storage only, need to be dehydrated vi
 
 .. note::
     * End-to-end Encryption works with Virtual Files (VFS) but only on a per-folder level. Folders with E2EE can be made available offline in their entirety, but the individual files in them can not be retrieved on demand. This is mainly due to two technical reasons. First, the Windows VFS API is not designed for handling encrypted files. Second, while the VFS is designed to deal mostly with large files, E2EE is mostly recommended for use with small files as encrypting and decrypting large files puts large demands on the computer infrastructure.
+
+Local file editing
+------------------
+
+The Nextcloud desktop GUI client supports local editing when opening a URL that starts with
+a scheme ``nc://`` followed by an ``open`` command, followed by a user email (with port when needed),
+followed by file path relative to remote root.
+
+Examples of URLs that Nextcloud can handle if the user email and a path to a file is correct:
+- ``nc://open/admin@example.cloud:8080/Photos/lovely.jpg``
+- ``nc://open/user@example.cloud/Photos/lovely.jpg``
+- ``nc://open/user@example.cloud/Documents/sheets/report.xlsx``
+- ``nc://open/user@example.cloud/Documents/docs/document.docx``
+
+.. note::
+    * All the file paths that begin after user email are relative to remote root (``/``).
+    * The server is responsible for generating a correct URL that a user then clicks to edit file locally.
+	* The Nextcloud desktop client is registered in macOS, Linux, and Windows as a custom URI handler for the ``nc://`` scheme.
+	* The URL is parsed and validated by Nextcloud desktop client, so, opening an incorrectly formatted URL will not have any effect.
+	* The port after user email is necessary if the default :80 or :443 is not used. The rule of thumb is to always have a port added if you need it when accessing your server via Web UI

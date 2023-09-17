@@ -35,73 +35,47 @@ Q_DECLARE_LOGGING_CATEGORY(lcSharing)
 
 class Sharee
 {
+    Q_GADGET
+    Q_PROPERTY(QString format READ format)
+    Q_PROPERTY(QString shareWith MEMBER _shareWith)
+    Q_PROPERTY(QString displayName MEMBER _displayName)
+    Q_PROPERTY(QString iconUrlColoured MEMBER _iconUrlColoured)
+    Q_PROPERTY(Type type MEMBER _type)
+
 public:
     // Keep in sync with Share::ShareType
-    enum Type {
-        User = 0,
-        Group = 1,
-        Email = 4,
-        Federated = 6,
-        Circle = 7,
-        Room = 10
-    };
+    enum Type { Invalid = -1, User = 0, Group = 1, Email = 4, Federated = 6, Circle = 7, Room = 10, LookupServerSearch = 999, LookupServerSearchResults = 1000 };
+    Q_ENUM(Type);
+    explicit Sharee() = default;
+    explicit Sharee(const QString &shareWith, const QString &displayName, const Type type, const QString &iconUrl = {});
 
-    explicit Sharee(const QString shareWith,
-        const QString displayName,
-        const Type type);
+    [[nodiscard]] QString format() const;
+    [[nodiscard]] QString shareWith() const;
+    [[nodiscard]] QString displayName() const;
+    [[nodiscard]] QString iconUrl() const;
+    [[nodiscard]] QString iconUrlColoured() const;
+    [[nodiscard]] Type type() const;
+    bool updateIconUrl();
 
-    QString format() const;
-    QString shareWith() const;
-    QString displayName() const;
-    Type type() const;
+    void setDisplayName(const QString &displayName);
+    void setType(const Type &type);
+    void setIsIconColourful(const bool isColourful);
+    void setIconUrl(const QString &iconUrl);
 
 private:
     QString _shareWith;
     QString _displayName;
-    Type _type;
+    QString _iconUrlColoured;
+    QString _iconColor;
+    Type _type = Type::Invalid;
+    QString _iconUrl;
+    bool _isIconColourful = false;
 };
 
-
-class ShareeModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum LookupMode {
-        LocalSearch = 0,
-        GlobalSearch = 1
-    };
-
-    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = nullptr);
-
-    using ShareeSet = QVector<QSharedPointer<Sharee>>; // FIXME: make it a QSet<Sharee> when Sharee can be compared
-    void fetch(const QString &search, const ShareeSet &blacklist, LookupMode lookupMode);
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-
-    QSharedPointer<Sharee> getSharee(int at);
-
-    QString currentSearch() const { return _search; }
-
-signals:
-    void shareesReady();
-    void displayErrorMessage(int code, const QString &);
-
-private slots:
-    void shareesFetched(const QJsonDocument &reply);
-
-private:
-    QSharedPointer<Sharee> parseSharee(const QJsonObject &data);
-    void setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharees);
-
-    AccountPtr _account;
-    QString _search;
-    QString _type;
-
-    QVector<QSharedPointer<Sharee>> _sharees;
-    QVector<QSharedPointer<Sharee>> _shareeBlacklist;
-};
+using ShareePtr = QSharedPointer<OCC::Sharee>;
 }
 
-Q_DECLARE_METATYPE(QSharedPointer<OCC::Sharee>)
+Q_DECLARE_METATYPE(OCC::ShareePtr)
+Q_DECLARE_METATYPE(OCC::Sharee)
 
 #endif //SHAREE_H

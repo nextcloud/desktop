@@ -19,8 +19,6 @@
 #include <QStyle>
 #include <QStyleHints>
 
-#define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5,11,0))
-
 namespace OCC {
 
 static const int Spacing = 6;
@@ -30,6 +28,7 @@ static const int SlideDistance = 400;
 SlideShow::SlideShow(QWidget *parent) : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setStyleSheet(QStringLiteral("font: bold 18pt"));
 }
 
 void SlideShow::addSlide(const QPixmap &pixmap, const QString &label)
@@ -56,6 +55,8 @@ void SlideShow::setInterval(int interval)
 
     _interval = interval;
     maybeRestartTimer();
+
+    emit intervalChanged();
 }
 
 int SlideShow::currentSlide() const
@@ -73,7 +74,7 @@ void SlideShow::setCurrentSlide(int index)
         _animation->setDuration(SlideDuration);
         _animation->setEasingCurve(QEasingCurve::OutCubic);
         _animation->setStartValue(static_cast<qreal>(_currentIndex));
-        connect(_animation.data(), SIGNAL(valueChanged(QVariant)), this, SLOT(update()));
+        connect(_animation.data(), &QVariantAnimation::valueChanged, this, qOverload<>(&SlideShow::update));
     }
     _animation->setEndValue(static_cast<qreal>(index));
     _animation->start(QAbstractAnimation::DeleteWhenStopped);
@@ -87,20 +88,20 @@ void SlideShow::setCurrentSlide(int index)
 
 QSize SlideShow::sizeHint() const
 {
-    QFontMetrics fm = fontMetrics();
-    QSize labelSize(0, fm.height());
-    for (const QString &label : _labels) {
-#if (HASQT5_11)
-        labelSize.setWidth(std::max(fm.horizontalAdvance(label), labelSize.width()));
-#else
-        labelSize.setWidth(std::max(fm.width(label), labelSize.width()));
-#endif
+    const auto fm = fontMetrics();
+    QSize labelSize;
+    for (const auto &label : _labels) {
+        const auto labelBoundingRect = fm.boundingRect(rect(), Qt::TextWordWrap, label);
+        labelSize.setWidth(std::max(labelBoundingRect.width(), labelSize.width()));
+        labelSize.setHeight(std::max(labelBoundingRect.height(), labelSize.height()));
     }
+
     QSize pixmapSize;
-    for (const QPixmap &pixmap : _pixmaps) {
+    for (const auto &pixmap : _pixmaps) {
         pixmapSize.setWidth(std::max(pixmap.width(), pixmapSize.width()));
         pixmapSize.setHeight(std::max(pixmap.height(), pixmapSize.height()));
     }
+
     return {
         std::max(labelSize.width(), pixmapSize.width()),
         labelSize.height() + Spacing + pixmapSize.height()
@@ -189,14 +190,29 @@ void SlideShow::maybeRestartTimer()
 }
 
 void SlideShow::drawSlide(QPainter *painter, int index)
-{
-    QString label = _labels.value(index);
-    QRect labelRect = style()->itemTextRect(fontMetrics(), rect(), Qt::AlignBottom | Qt::AlignHCenter, isEnabled(), label);
-    style()->drawItemText(painter, labelRect, Qt::AlignCenter, palette(), isEnabled(), label, QPalette::WindowText);
+{    
+    const auto label = _labels.value(index);
+    const auto labelRect = style()->itemTextRect(fontMetrics(),
+                                                 rect(),
+                                                 Qt::AlignBottom | Qt::AlignHCenter | Qt::TextWordWrap,
+                                                 isEnabled(),
+                                                 label);
+    style()->drawItemText(painter,
+                          labelRect,
+                          Qt::AlignCenter | Qt::TextWordWrap,
+                          palette(),
+                          isEnabled(),
+                          label,
+                          QPalette::WindowText);
 
-    QPixmap pixmap = _pixmaps.value(index);
-    QRect pixmapRect = style()->itemPixmapRect(QRect(0, 0, width(), labelRect.top() - Spacing), Qt::AlignCenter, pixmap);
-    style()->drawItemPixmap(painter, pixmapRect, Qt::AlignCenter, pixmap);
+    const auto pixmap = _pixmaps.value(index);
+    const auto pixmapRect = style()->itemPixmapRect(QRect(0, 0, width(), labelRect.top() - Spacing),
+                                                    Qt::AlignCenter,
+                                                    pixmap);
+    style()->drawItemPixmap(painter,
+                            pixmapRect,
+                            Qt::AlignCenter,
+                            pixmap);
 }
 
 } // namespace OCC

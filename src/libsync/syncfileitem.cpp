@@ -13,8 +13,10 @@
  */
 
 #include "syncfileitem.h"
+#include "common/checksums.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
+#include "helpers.h"
 #include "filesystem.h"
 
 #include <QLoggingCategory>
@@ -23,6 +25,53 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileItem, "nextcloud.sync.fileitem", QtInfoMsg)
+
+namespace EncryptionStatusEnums {
+
+ItemEncryptionStatus fromDbEncryptionStatus(JournalDbEncryptionStatus encryptionStatus)
+{
+    auto result = ItemEncryptionStatus::NotEncrypted;
+
+    switch (encryptionStatus)
+    {
+    case JournalDbEncryptionStatus::Encrypted:
+        result = ItemEncryptionStatus::Encrypted;
+        break;
+    case JournalDbEncryptionStatus::EncryptedMigratedV1_2:
+        result = ItemEncryptionStatus::EncryptedMigratedV1_2;
+        break;
+    case JournalDbEncryptionStatus::EncryptedMigratedV1_2Invalid:
+        result = ItemEncryptionStatus::Encrypted;
+        break;
+    case JournalDbEncryptionStatus::NotEncrypted:
+        result = ItemEncryptionStatus::NotEncrypted;
+        break;
+    }
+
+    return result;
+}
+
+JournalDbEncryptionStatus toDbEncryptionStatus(ItemEncryptionStatus encryptionStatus)
+{
+    auto result = JournalDbEncryptionStatus::NotEncrypted;
+
+    switch (encryptionStatus)
+    {
+    case ItemEncryptionStatus::Encrypted:
+        result = JournalDbEncryptionStatus::Encrypted;
+        break;
+    case ItemEncryptionStatus::EncryptedMigratedV1_2:
+        result = JournalDbEncryptionStatus::EncryptedMigratedV1_2;
+        break;
+    case ItemEncryptionStatus::NotEncrypted:
+        result = JournalDbEncryptionStatus::NotEncrypted;
+        break;
+    }
+
+    return result;
+}
+
+}
 
 SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QString &localFileName) const
 {
@@ -41,10 +90,13 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._fileId = _fileId;
     rec._fileSize = _size;
     rec._remotePerm = _remotePerm;
+    rec._isShared = _isShared;
+    rec._sharedByMe = _sharedByMe;
+    rec._lastShareStateFetchedTimestamp = _lastShareStateFetchedTimestamp;
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
-    rec._isE2eEncrypted = _isEncrypted;
+    rec._e2eEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(_e2eEncryptionStatus);
     rec._lockstate._locked = _locked == LockStatus::LockedItem;
     rec._lockstate._lockOwnerDisplayName = _lockOwnerDisplayName;
     rec._lockstate._lockOwnerId = _lockOwnerId;
@@ -81,7 +133,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_serverHasIgnoredFiles = rec._serverHasIgnoredFiles;
     item->_checksumHeader = rec._checksumHeader;
     item->_encryptedFileName = rec.e2eMangledName();
-    item->_isEncrypted = rec._isE2eEncrypted;
+    item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(rec._e2eEncryptionStatus);
     item->_locked = rec._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
     item->_lockOwnerDisplayName = rec._lockstate._lockOwnerDisplayName;
     item->_lockOwnerId = rec._lockstate._lockOwnerId;
@@ -89,6 +141,78 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_lockEditorApp = rec._lockstate._lockEditorApp;
     item->_lockTime = rec._lockstate._lockTime;
     item->_lockTimeout = rec._lockstate._lockTimeout;
+    item->_sharedByMe = rec._sharedByMe;
+    item->_isShared = rec._isShared;
+    item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
+    return item;
+}
+
+SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap<QString, QString> &properties)
+{
+    SyncFileItemPtr item(new SyncFileItem);
+    item->_file = filePath;
+    item->_originalFile = filePath;
+
+    const auto isDirectory = properties.value(QStringLiteral("resourcetype")).contains(QStringLiteral("collection"));
+    item->_type = isDirectory ? ItemTypeDirectory : ItemTypeFile;
+
+    item->_size = isDirectory ? 0 : properties.value(QStringLiteral("size")).toInt();
+    item->_fileId = properties.value(QStringLiteral("id")).toUtf8();
+
+    if (properties.contains(QStringLiteral("permissions"))) {
+        item->_remotePerm = RemotePermissions::fromServerString(properties.value("permissions"));
+    }
+
+    if (!properties.value(QStringLiteral("share-types")).isEmpty()) {
+        item->_remotePerm.setPermission(RemotePermissions::IsShared);
+    }
+
+    item->_isShared = item->_remotePerm.hasPermission(RemotePermissions::IsShared);
+    item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
+
+    item->_e2eEncryptionStatus = (properties.value(QStringLiteral("is-encrypted")) == QStringLiteral("1") ? SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 : SyncFileItem::EncryptionStatus::NotEncrypted);
+    item->_locked =
+        properties.value(QStringLiteral("lock")) == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem;
+    item->_lockOwnerDisplayName = properties.value(QStringLiteral("lock-owner-displayname"));
+    item->_lockOwnerId = properties.value(QStringLiteral("lock-owner"));
+    item->_lockEditorApp = properties.value(QStringLiteral("lock-owner-editor"));
+
+    {
+        auto ok = false;
+        const auto intConvertedValue = properties.value(QStringLiteral("lock-owner-type")).toULongLong(&ok);
+        item->_lockOwnerType = ok ? static_cast<SyncFileItem::LockOwnerType>(intConvertedValue) : SyncFileItem::LockOwnerType::UserLock;
+    }
+
+    {
+        auto ok = false;
+        const auto intConvertedValue = properties.value(QStringLiteral("lock-time")).toULongLong(&ok);
+        item->_lockTime = ok ? intConvertedValue : 0;
+    }
+
+    {
+        auto ok = false;
+        const auto intConvertedValue = properties.value(QStringLiteral("lock-timeout")).toULongLong(&ok);
+        item->_lockTimeout = ok ? intConvertedValue : 0;
+    }
+
+    const auto date = QDateTime::fromString(properties.value(QStringLiteral("getlastmodified")), Qt::RFC2822Date);
+    Q_ASSERT(date.isValid());
+    if (date.toSecsSinceEpoch() > 0) {
+        item->_modtime = date.toSecsSinceEpoch();
+    }
+
+    if (properties.contains(QStringLiteral("getetag"))) {
+        item->_etag = parseEtag(properties.value(QStringLiteral("getetag")).toUtf8());
+    }
+
+    if (properties.contains(QStringLiteral("checksums"))) {
+        item->_checksumHeader = findBestChecksum(properties.value("checksums").toUtf8());
+    }
+
+    // direction and instruction are decided later
+    item->_direction = SyncFileItem::None;
+    item->_instruction = CSYNC_INSTRUCTION_NONE;
+
     return item;
 }
 

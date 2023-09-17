@@ -30,6 +30,8 @@ A right click on the icon provides the following menu:
 .. NOTE::
     This menu is not available on macOS.
 
+A double-click on the icon will open the currently-selected user's locally synced folder.
+
 
 Settings
 ~~~~~~~~
@@ -122,9 +124,9 @@ The tab provides several useful options:
 Network
 ~~~~~~~
 
-.. index:: proxy settings, SOCKS, bandwith, throttling, limiting
+.. index:: proxy settings, SOCKS, bandwidth, throttling, limiting
 
-This tab consolidates ``Proxy Settings`` and ``Bandwith Limiting``:
+This tab consolidates ``Proxy Settings`` and ``Bandwidth Limiting``:
 
 .. image:: images/settings_network.png
    :scale: 50 %

@@ -19,7 +19,7 @@ signals:
     /**
      * Notify if wipe was requested
      */
-    void authorized(AccountState*);
+    void authorized(OCC::AccountState*);
 
     /**
      * Notify if user only needs to login again
@@ -44,16 +44,16 @@ private slots:
      * Once the client has wiped all the required data a POST to
      * <server>/index.php/core/wipe/success
      */
-    void notifyServerSuccessJob(AccountState *accountState, bool);
+    void notifyServerSuccessJob(OCC::AccountState *accountState, bool);
     void notifyServerSuccessJobSlot();
 
 private:
     AccountPtr _account;
     QString _appPassword;
-    bool _accountRemoved;
+    bool _accountRemoved = false;
     QNetworkAccessManager _networkManager;
-    QNetworkReply *_networkReplyCheck;
-    QNetworkReply *_networkReplySuccess;
+    QNetworkReply *_networkReplyCheck = nullptr;
+    QNetworkReply *_networkReplySuccess = nullptr;
 
     friend class ::TestRemoteWipe;
 };

@@ -1,26 +1,85 @@
+/*
+ * Copyright (C) 2021 by Oleksandr Zolotov <alex@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 import QtQml 2.15
 import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
+
 import Style 1.0
 
-Column {
+ColumnLayout {
     id: unifiedSearchResultsListViewSkeletonColumn
 
-    Repeater {
-        model: 10
-        UnifiedSearchResultItemSkeleton {
-            width: unifiedSearchResultsListViewSkeletonColumn.width
+    property int animationRectangleWidth: Style.trayWindowWidth
+
+    Item {
+        id: placeholderSectionHeader
+
+        property rect textRect: fontMetrics.boundingRect("Dummy text")
+
+        Layout.topMargin: Style.unifiedSearchResultSectionItemVerticalPadding / 2
+        Layout.bottomMargin: Style.unifiedSearchResultSectionItemVerticalPadding / 2
+        Layout.leftMargin: Style.unifiedSearchResultSectionItemLeftPadding
+
+        width: textRect.width
+        height: textRect.height
+
+        FontMetrics {
+            id: fontMetrics
+            font.pixelSize: Style.unifiedSearchResultTitleFontSize
+        }
+
+        Rectangle {
+            id: placeholderSectionHeaderRectangle
+            anchors.fill: parent
+            radius: Style.veryRoundedButtonRadius
+            color: palette.light
+            clip: true
+            visible: false
+
+            Loader {
+                x: mapFromItem(placeholderSectionHeader, 0, 0).x
+                height: parent.height
+                sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
+                    width: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
+                    height: parent.height
+                }
+            }
+        }
+
+        Rectangle {
+            id: placeholderSectionHeaderMask
+            anchors.fill: placeholderSectionHeaderRectangle
+            color: "white"
+            radius: Style.veryRoundedButtonRadius
+            visible: false
+        }
+
+        OpacityMask {
+            anchors.fill: placeholderSectionHeaderRectangle
+            source: placeholderSectionHeaderRectangle
+            maskSource: placeholderSectionHeaderMask
         }
     }
 
-    OpacityAnimator {
-        target: unifiedSearchResultsListViewSkeletonColumn
-        from: 0.5
-        to: 1
-        duration: 800
-        running: unifiedSearchResultsListViewSkeletonColumn.visible
-        loops: Animation.Infinite
-        easing {
-            type: Easing.InOutBounce
+    Repeater {
+        model: Math.ceil(unifiedSearchResultsListViewSkeletonColumn.height / Style.trayWindowHeaderHeight)
+        UnifiedSearchResultItemSkeleton {
+            width: unifiedSearchResultsListViewSkeletonColumn.width
+            height: Style.trayWindowHeaderHeight
+            animationRectangleWidth: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
         }
     }
 }

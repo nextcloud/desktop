@@ -69,7 +69,7 @@ public:
         }
     }
 
-    OCC::UserStatus userStatus() const override
+    [[nodiscard]] OCC::UserStatus userStatus() const override
     {
         return {}; // Not implemented
     }
@@ -85,9 +85,9 @@ public:
         _predefinedStatuses = statuses;
     }
 
-    OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
+    [[nodiscard]] OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
 
-    bool messageCleared() const { return _isMessageCleared; }
+    [[nodiscard]] bool messageCleared() const { return _isMessageCleared; }
 
     void setErrorCouldNotFetchPredefinedUserStatuses(bool value)
     {
@@ -137,9 +137,9 @@ class FakeDateTimeProvider : public OCC::DateTimeProvider
 public:
     void setCurrentDateTime(const QDateTime &dateTime) { _dateTime = dateTime; }
 
-    QDateTime currentDateTime() const override { return _dateTime; }
+    [[nodiscard]] QDateTime currentDateTime() const override { return _dateTime; }
 
-    QDate currentDate() const override { return _dateTime.date(); }
+    [[nodiscard]] QDate currentDate() const override { return _dateTime.date(); }
 
 private:
     QDateTime _dateTime;
@@ -252,23 +252,23 @@ private slots:
             OCC::UserStatus::OnlineStatus::Offline, false, {} });
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
-        QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Online);
+        QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Offline);
         QCOMPARE(model.userStatusMessage(), "");
         QCOMPARE(model.userStatusEmoji(), "😀");
         QCOMPARE(model.clearAtDisplayString(), tr("Don't clear"));
     }
 
-    void testSetOnlineStatus_emitOnlineStatusChanged()
+    void testSetOnlineStatus_emiUserStatusChanged()
     {
         const OCC::UserStatus::OnlineStatus onlineStatus(OCC::UserStatus::OnlineStatus::Invisible);
         auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
-        QSignalSpy onlineStatusChangedSpy(&model,
-            &OCC::UserStatusSelectorModel::onlineStatusChanged);
+        QSignalSpy userStatusChangedSpy(&model,
+            &OCC::UserStatusSelectorModel::userStatusChanged);
 
         model.setOnlineStatus(onlineStatus);
 
-        QCOMPARE(onlineStatusChangedSpy.count(), 1);
+        QCOMPARE(userStatusChangedSpy.count(), 1);
     }
 
     void testSetUserStatus_setCustomMessage_userStatusSetCorrect()

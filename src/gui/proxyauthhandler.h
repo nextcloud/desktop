@@ -77,8 +77,8 @@ private:
                    int &counter,
                    const QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
 
-    QString keychainUsernameKey() const;
-    QString keychainPasswordKey() const;
+    [[nodiscard]] QString keychainUsernameKey() const;
+    [[nodiscard]] QString keychainPasswordKey() const;
 
     /// The hostname:port of the current proxy, used for detecting switches
     /// to a different proxy.

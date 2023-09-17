@@ -50,7 +50,7 @@ public:
     bool transaction();
     bool commit();
     void close();
-    QString error() const;
+    [[nodiscard]] QString error() const;
     sqlite3 *sqliteDb();
 
 private:
@@ -111,8 +111,8 @@ public:
     int prepare(const QByteArray &sql, bool allow_failure = false);
 
     ~SqlQuery();
-    QString error() const;
-    int errorId() const;
+    [[nodiscard]] QString error() const;
+    [[nodiscard]] int errorId() const;
 
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
@@ -135,24 +135,21 @@ public:
     template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, static_cast<int>(value));
     }
 
     template<class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
     void bindValue(int pos, const T &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << value;
         bindValueInternal(pos, value);
     }
 
     void bindValue(int pos, const QByteArray &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << QString::fromUtf8(value);
         bindValueInternal(pos, value);
     }
 
-    const QByteArray &lastQuery() const;
+    [[nodiscard]] const QByteArray &lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();
 
@@ -164,7 +161,7 @@ private:
     sqlite3 *_db = nullptr;
     sqlite3_stmt *_stmt = nullptr;
     QString _error;
-    int _errId;
+    int _errId = 0;
     QByteArray _sql;
 
     friend class SqlDatabase;

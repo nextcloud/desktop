@@ -32,7 +32,7 @@ public:
 
     void start() override;
 
-    QByteArray folderToken() const;
+    [[nodiscard]] QByteArray folderToken() const;
     void setFolderToken(const QByteArray &folderToken);
 
 private:

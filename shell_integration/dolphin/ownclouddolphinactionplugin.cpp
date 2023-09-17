@@ -82,7 +82,7 @@ public:
                 });
             }
         });
-        QTimer::singleShot(100, &loop, SLOT(quit())); // add a timeout to be sure we don't freeze dolphin
+        QTimer::singleShot(100, &loop, &QEventLoop::quit); // add a timeout to be sure we don't freeze dolphin
         helper->sendCommand(QByteArray("GET_MENU_ITEMS:" + files + "\n"));
         loop.exec(QEventLoop::ExcludeUserInputEvents);
         disconnect(con);
@@ -133,6 +133,6 @@ public:
 
 };
 
-K_PLUGIN_FACTORY(OwncloudDolphinPluginActionFactory, registerPlugin<OwncloudDolphinPluginAction>();)
+K_PLUGIN_CLASS_WITH_JSON(OwncloudDolphinPluginAction, APPLICATION_EXECUTABLE "dolphinactionplugin.json")
 
 #include "ownclouddolphinactionplugin.moc"

@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
+
+find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+if (CLANG_TIDY_EXE)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -checks=-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast,modernize-use-default-member-init,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-init-variables)
+endif()
 
 project(client)
 
@@ -9,6 +14,23 @@ include(FeatureSummary)
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include(${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake)
+
+# CfAPI Shell Extensions
+set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
+    
+set( CFAPI_SHELLEXT_APPID_REG "{E314A650-DCA4-416E-974E-18EA37C213EA}")
+set( CFAPI_SHELLEXT_APPID_DISPLAY_NAME "${APPLICATION_NAME} CfApi Shell Extensions" )
+
+set( CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID "1E62D59A-6EA4-476C-B707-4A32E88ED822" )
+set( CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID_REG "{${CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID}}" )
+set( CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_DISPLAY_NAME "${APPLICATION_NAME} Custom State Handler" )
+
+set( CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID "6FF9B5B6-389F-444A-9FDD-A286C36EA079" )
+set( CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG "{${CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID}}" )
+set( CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME "${APPLICATION_NAME} Thumbnail Handler" )
+
+# URI Handler Scheme for Local File Editing
+set( APPLICATION_URI_HANDLER_SCHEME "nc")
 
 # Default suffix if the theme doesn't define one
 if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
@@ -150,6 +172,20 @@ option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
 # build the GUI component, when disabled only nextcloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
+
+# build the tests
+option(BUILD_TESTING "BUILD_TESTING" ON)
+
+option(ENABLE_CLANG_TIDY "ENABLE_CLANG_TIDY" OFF)
+if(ENABLE_CLANG_TIDY)
+    find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+    if (CLANG_TIDY_EXE)
+        set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXE} -checks=-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast,modernize-use-default-member-init,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-init-variables)
+    endif()
+else()
+    unset(CLANG_TIDY_EXE)
+    unset(CMAKE_CXX_CLANG_TIDY)
+endif()
 
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file

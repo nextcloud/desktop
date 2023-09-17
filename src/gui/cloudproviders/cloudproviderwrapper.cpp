@@ -34,8 +34,8 @@ GSimpleActionGroup *actionGroup = nullptr;
 CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int folderId, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
   , _folder(folder)
 {
-    GMenuModel *model;
-    GActionGroup *action_group;
+    GMenuModel *model = nullptr;
+    GActionGroup *action_group = nullptr;
     QString accountName = QString("Folder/%1").arg(folderId);
 
     _cloudProvider = CLOUD_PROVIDERS_PROVIDER_EXPORTER(cloudprovider);
@@ -50,10 +50,10 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
     action_group = getActionGroup();
     cloud_providers_account_exporter_set_action_group (_cloudProviderAccount, action_group);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)), this, SLOT(slotUpdateProgress(QString, ProgressInfo)));
-    connect(_folder, SIGNAL(syncStarted()), this, SLOT(slotSyncStarted()));
-    connect(_folder, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotSyncFinished(const SyncResult)));
-    connect(_folder, SIGNAL(syncPausedChanged(Folder*,bool)), this, SLOT(slotSyncPausedChanged(Folder*, bool)));
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo, this, &CloudProviderWrapper::slotUpdateProgress);
+    connect(_folder, &Folder::syncStarted, this, &CloudProviderWrapper::slotSyncStarted);
+    connect(_folder, &Folder::syncFinished, this, &CloudProviderWrapper::slotSyncFinished);
+    connect(_folder, &Folder::syncPausedChanged, this, &CloudProviderWrapper::slotSyncPausedChanged);
 
     _paused = _folder->syncPaused();
     updatePauseStatus();
@@ -66,6 +66,7 @@ CloudProviderWrapper::~CloudProviderWrapper()
     g_object_unref(_cloudProviderAccount);
     g_object_unref(_mainMenu);
     g_object_unref(actionGroup);
+    actionGroup = nullptr;
     g_object_unref(_recentMenu);
 }
 
@@ -147,7 +148,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
     if (!progress._lastCompletedItem.isEmpty()
             && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
-        GMenuItem* item;
+        GMenuItem* item = nullptr;
         g_menu_remove_all (G_MENU(_recentMenu));
         if(!_recentlyChanged.isEmpty()) {
             QList<QPair<QString, QString>>::iterator i;
@@ -208,8 +209,8 @@ void CloudProviderWrapper::slotSyncFinished(const SyncResult &result)
 
 GMenuModel* CloudProviderWrapper::getMenuModel() {
 
-    GMenu* section;
-    GMenuItem* item;
+    GMenu* section = nullptr;
+    GMenuItem* item = nullptr;
     QString item_label;
 
     _mainMenu = g_menu_new();
@@ -314,7 +315,7 @@ activate_action_pause (GSimpleAction *action,
 {
     Q_UNUSED(parameter);
     auto *self = static_cast<CloudProviderWrapper*>(user_data);
-    GVariant *old_state, *new_state;
+    GVariant *old_state = nullptr, *new_state = nullptr;
 
     old_state = g_action_get_state (G_ACTION (action));
     new_state = g_variant_new_boolean (!(bool)g_variant_get_boolean (old_state));

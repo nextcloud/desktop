@@ -31,7 +31,7 @@ def extractDeps(macho):
         if m:
             path = resolvePath(m.group(0))
             if not os.path.exists(path):
-                logging.warning("Non-existant file found in dependencies, ignoring: [%s]", path)
+                logging.warning("Non-existent file found in dependencies, ignoring: [%s]", path)
                 continue
             deps.append(path)
     return deps

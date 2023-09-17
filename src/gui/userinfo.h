@@ -70,8 +70,8 @@ class UserInfo : public QObject
 public:
     explicit UserInfo(OCC::AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent = nullptr);
 
-    qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
-    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
+    [[nodiscard]] qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
+    [[nodiscard]] qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
 
     /**
      * When the quotainfo is active, it requests the quota at regular interval.
@@ -91,20 +91,20 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
-    void fetchedLastInfo(UserInfo *userInfo);
+    void fetchedLastInfo(OCC::UserInfo *userInfo);
 
 private:
-    bool canGetInfo() const;
+    [[nodiscard]] bool canGetInfo() const;
 
     QPointer<AccountState> _accountState;
     bool _allowDisconnectedAccountState;
     bool _fetchAvatarImage;
 
-    qint64 _lastQuotaTotalBytes;
-    qint64 _lastQuotaUsedBytes;
+    qint64 _lastQuotaTotalBytes = 0;
+    qint64 _lastQuotaUsedBytes = 0;
     QTimer _jobRestartTimer;
     QDateTime _lastInfoReceived; // the time at which the user info and quota was received last
-    bool _active; // if we should check at regular interval (when the UI is visible)
+    bool _active = false; // if we should check at regular interval (when the UI is visible)
     QPointer<JsonApiJob> _job; // the currently running job
 };
 

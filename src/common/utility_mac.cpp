@@ -141,4 +141,6 @@ QString Utility::getCurrentUserName()
     return {};
 }
 
+void Utility::registerUriHandlerForLocalEditing() { /* URI handler is registered via MacOSXBundleInfo.plist.in */ }
+
 } // namespace OCC

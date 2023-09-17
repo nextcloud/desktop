@@ -36,13 +36,13 @@ class OwncloudOAuthCredsPage : public AbstractCredentialsWizardPage
 public:
     OwncloudOAuthCredsPage();
 
-    AbstractCredentials *getCredentials() const override;
+    [[nodiscard]] AbstractCredentials *getCredentials() const override;
 
     void initializePage() override;
     void cleanupPage() override;
-    int nextId() const override;
+    [[nodiscard]] int nextId() const override;
     void setConnected();
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
 
 public Q_SLOTS:
     void asyncAuthResult(OAuth::Result, const QString &user, const QString &token,
@@ -56,7 +56,7 @@ public:
     QString _token;
     QString _refreshToken;
     QScopedPointer<OAuth> _asyncAuth;
-    Ui_OwncloudOAuthCredsPage _ui;
+    Ui_OwncloudOAuthCredsPage _ui{};
 
 protected slots:
     void slotOpenBrowser();

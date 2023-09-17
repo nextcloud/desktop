@@ -62,9 +62,9 @@ struct Emoji
 class EmojiCategoriesModel : public QAbstractListModel
 {
 public:
-    QVariant data(const QModelIndex &index, int role) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
 private:
     enum Roles {
@@ -105,11 +105,11 @@ public:
     {
     }
 
-    Q_INVOKABLE QVariantList history() const;
+    Q_INVOKABLE [[nodiscard]] QVariantList history() const;
     Q_INVOKABLE void setCategory(const QString &category);
     Q_INVOKABLE void emojiUsed(const QVariant &modelData);
 
-    QVariantList model() const;
+    [[nodiscard]] QVariantList model() const;
     QAbstractListModel *emojiCategoriesModel();
 
 signals:

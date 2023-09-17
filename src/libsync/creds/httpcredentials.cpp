@@ -357,7 +357,7 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
 {
-    auto *job = static_cast<QKeychain::ReadPasswordJob *>(incoming);
+    auto *job = dynamic_cast<QKeychain::ReadPasswordJob *>(incoming);
     QKeychain::Error error = job->error();
 
     // If we can't find the credentials at the keys that include the account id,
@@ -391,7 +391,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
         emit fetched();
     } else {
         // we come here if the password is empty or any other keychain
-        // error happend.
+        // error happened.
 
         _fetchErrorString = job->error() != QKeychain::EntryNotFound ? job->errorString() : QString();
 
@@ -430,7 +430,7 @@ bool HttpCredentials::refreshAccessToken()
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
+        QJsonParseError jsonParseError{};
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString accessToken = json["access_token"].toString();
         if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
@@ -448,7 +448,7 @@ bool HttpCredentials::refreshAccessToken()
             persist();
         }
         _isRenewingOAuthToken = false;
-        for (const auto &job : _retryQueue) {
+        for (const auto &job : qAsConst(_retryQueue)) {
             if (job)
                 job->retry();
         }
@@ -523,12 +523,12 @@ void HttpCredentials::persist()
         // it's just written if it gets passed into the constructor.
         _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
     }
-    _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account);
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {
         // Option 1: If we have a pkcs12 bundle, that'll be written to the config file
-        // and we'll just store the bundle password in the keychain. That's prefered
+        // and we'll just store the bundle password in the keychain. That's preferred
         // since the keychain on older Windows platforms can only store a limited number
         // of bytes per entry and key/cert may exceed that.
         auto *job = new QKeychain::WritePasswordJob(Theme::instance()->appName());

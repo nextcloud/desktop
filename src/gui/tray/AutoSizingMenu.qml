@@ -3,11 +3,6 @@ import QtQuick.Controls 2.3
 import Style 1.0
 
 Menu {
-    background: Rectangle {
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
-    }
-
     width: {
         var result = 0;
         var padding = 0;

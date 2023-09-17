@@ -97,7 +97,7 @@ public:
     void giveBandwidthQuota(qint64 q);
     qint64 currentDownloadPosition();
 
-    QString errorString() const override;
+    [[nodiscard]] QString errorString() const override;
     void setErrorString(const QString &s) { _errorString = s; }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
@@ -109,8 +109,8 @@ public:
     qint64 resumeStart() { return _resumeStart; }
     time_t lastModified() { return _lastModified; }
 
-    qint64 contentLength() const { return _contentLength; }
-    qint64 expectedContentLength() const { return _expectedContentLength; }
+    [[nodiscard]] qint64 contentLength() const { return _contentLength; }
+    [[nodiscard]] qint64 expectedContentLength() const { return _expectedContentLength; }
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 protected:
@@ -196,13 +196,10 @@ class PropagateDownloadFile : public PropagateItemJob
 public:
     PropagateDownloadFile(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
-        , _resumeStart(0)
-        , _downloadProgress(0)
-        , _deleteExisting(false)
     {
     }
     void start() override;
-    qint64 committedDiskSpace() const override;
+    [[nodiscard]] qint64 committedDiskSpace() const override;
 
     // We think it might finish quickly because it is a small file.
     bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
@@ -230,6 +227,10 @@ private slots:
     void transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum);
     /// Called when the download's checksum computation is done
     void contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+    /// Called when the local file's checksum computation is done
+    void localFileContentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+
+    void finalizeDownload();
     void downloadFinished();
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
@@ -244,12 +245,13 @@ private slots:
 private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
+    [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
 
-    qint64 _resumeStart;
-    qint64 _downloadProgress;
+    qint64 _resumeStart = 0;
+    qint64 _downloadProgress = 0;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
-    bool _deleteExisting;
+    bool _deleteExisting = false;
     bool _isEncrypted = false;
     EncryptedFile _encryptedInfo;
     ConflictRecord _conflictRecord;

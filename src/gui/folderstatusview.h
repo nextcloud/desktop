@@ -30,8 +30,8 @@ class FolderStatusView : public QTreeView
 public:
     explicit FolderStatusView(QWidget *parent = nullptr);
 
-    QModelIndex indexAt(const QPoint &point) const override;
-    QRect visualRect(const QModelIndex &index) const override;
+    [[nodiscard]] QModelIndex indexAt(const QPoint &point) const override;
+    [[nodiscard]] QRect visualRect(const QModelIndex &index) const override;
 };
 
 } // namespace OCC

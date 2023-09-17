@@ -71,16 +71,16 @@ struct CmdOptions
     QString user;
     QString password;
     QString proxy;
-    bool silent;
-    bool trustSSL;
-    bool useNetrc;
-    bool interactive;
-    bool ignoreHiddenFiles;
+    bool silent = false;
+    bool trustSSL = false;
+    bool useNetrc = false;
+    bool interactive = false;
+    bool ignoreHiddenFiles = false;
     QString exclude;
     QString unsyncedfolders;
-    int restartTimes;
-    int downlimit;
-    int uplimit;
+    int restartTimes = 0;
+    int downlimit = 0;
+    int uplimit = 0;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -118,7 +118,7 @@ private:
     DWORD mode = 0;
     HANDLE hStdin;
 #else
-    termios tios;
+    termios tios{};
 #endif
 };
 
@@ -137,8 +137,6 @@ class HttpCredentialsText : public HttpCredentials
 public:
     HttpCredentialsText(const QString &user, const QString &password)
         : HttpCredentials(user, password)
-        , // FIXME: not working with client certs yet (qknight)
-        _sslTrusted(false)
     {
     }
 
@@ -161,7 +159,8 @@ public:
     }
 
 private:
-    bool _sslTrusted;
+    // FIXME: not working with client certs yet (qknight)
+    bool _sslTrusted{false};
 };
 #endif /* TOKEN_AUTH_ONLY */
 
@@ -440,14 +439,43 @@ int main(int argc, char **argv)
 
     account->setUrl(hostUrl);
     account->setSslErrorHandler(sslErrorHandler);
+    account->setTrustCertificates(options.trustSSL);
 
     QEventLoop loop;
+    auto *csjob = new CheckServerJob(account);
+    csjob->setIgnoreCredentialFailure(true);
+    QObject::connect(csjob, &CheckServerJob::instanceFound, [&](const QUrl &, const QJsonObject &info) {
+        // see ConnectionValidator::slotCapabilitiesRecieved: only set server version if not empty
+        QString serverVersion = CheckServerJob::version(info);
+        if (!serverVersion.isEmpty()) {
+            account->setServerVersion(serverVersion);
+        }
+        loop.quit();
+    });
+    QObject::connect(csjob, &CheckServerJob::instanceNotFound, [&]() {
+        loop.quit();
+    });
+    QObject::connect(csjob, &CheckServerJob::timeout, [&](const QUrl &) {
+        loop.quit();
+    });
+    csjob->start();
+    loop.exec();
+
+    if (csjob->reply()->error() != QNetworkReply::NoError){
+        std::cout<<"Error connecting to server for status\n";
+        return EXIT_FAILURE;
+    }
+
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
     QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
         auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
         qDebug() << "Server capabilities" << caps;
         account->setCapabilities(caps.toVariantMap());
-        account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
+        // see ConnectionValidator::slotCapabilitiesRecieved: only set server version if not empty
+        QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+        if (!serverVersion.isEmpty()) {
+            account->setServerVersion(serverVersion);
+        }
         loop.quit();
     });
     job->start();
@@ -504,7 +532,7 @@ restart_sync:
     SyncOptions opt;
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
-    SyncEngine engine(account, options.source_dir, folder, &db);
+    SyncEngine engine(account, options.source_dir, opt, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
     QObject::connect(&engine, &SyncEngine::finished,

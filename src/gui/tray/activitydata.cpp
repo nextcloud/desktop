@@ -17,6 +17,26 @@
 #include "activitydata.h"
 #include "folderman.h"
 
+namespace {
+QUrl stringToUrl(const QUrl &accountUrl, const QString &link) {
+    auto url = QUrl::fromUserInput(link);
+
+    if (!url.isValid()) {
+        return {};
+    }
+
+    if (url.host().isEmpty()) {
+        url.setScheme(accountUrl.scheme());
+        url.setHost(accountUrl.host());
+    }
+
+    if (url.port() == -1) {
+        url.setPort(accountUrl.port());
+    }
+
+    return url;
+};
+}
 
 namespace OCC {
 
@@ -25,9 +45,19 @@ bool operator<(const Activity &rhs, const Activity &lhs)
     return rhs._dateTime > lhs._dateTime;
 }
 
+bool operator>(const Activity &rhs, const Activity &lhs)
+{
+    return rhs._dateTime < lhs._dateTime;
+}
+
 bool operator==(const Activity &rhs, const Activity &lhs)
 {
     return (rhs._type == lhs._type && rhs._id == lhs._id && rhs._accName == lhs._accName);
+}
+
+bool operator!=(const Activity &rhs, const Activity &lhs)
+{
+    return !(rhs == lhs);
 }
 
 Activity::Identifier Activity::ident() const
@@ -61,7 +91,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     activity._subject = json.value(QStringLiteral("subject")).toString();
     activity._message = json.value(QStringLiteral("message")).toString();
     activity._file = json.value(QStringLiteral("object_name")).toString();
-    activity._link = QUrl(json.value(QStringLiteral("link")).toString());
+    activity._link = stringToUrl(account->url(), json.value(QStringLiteral("link")).toString());
     activity._dateTime = QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate);
     activity._icon = json.value(QStringLiteral("icon")).toString();
     activity._isCurrentUserFileActivity = activity._objectType == QStringLiteral("files") && activityUser == account->davUser();
@@ -78,13 +108,18 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
         for (auto i = parameters.begin(); i != parameters.end(); ++i) {
             const auto parameterJsonObject = i.value().toObject();
 
-            activity._subjectRichParameters[i.key()] = Activity::RichSubjectParameter  {
+            const auto richParamLink = stringToUrl(account->url(), parameterJsonObject.value(QStringLiteral("link")).toString());
+            activity._subjectRichParameters[i.key()] = QVariant::fromValue(Activity::RichSubjectParameter{
                 parameterJsonObject.value(QStringLiteral("type")).toString(),
                 parameterJsonObject.value(QStringLiteral("id")).toString(),
                 parameterJsonObject.value(QStringLiteral("name")).toString(),
                 parameterJsonObject.contains(QStringLiteral("path")) ? parameterJsonObject.value(QStringLiteral("path")).toString() : QString(),
-                parameterJsonObject.contains(QStringLiteral("link")) ? QUrl(parameterJsonObject.value(QStringLiteral("link")).toString()) : QUrl(),
-            };
+                richParamLink,
+            });
+
+            if (activity._objectType == QStringLiteral("calendar") && activity._link.isEmpty()) {
+                activity._link = richParamLink;
+            }
         }
 
         auto displayString = activity._subjectRich;
@@ -96,7 +131,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
             word.remove(subjectRichParameterBracesRe);
 
             Q_ASSERT(activity._subjectRichParameters.contains(word));
-            displayString = displayString.replace(match.captured(1), activity._subjectRichParameters[word].name);
+            displayString = displayString.replace(match.captured(1), activity._subjectRichParameters[word].value<Activity::RichSubjectParameter>().name);
         }
 
         activity._subjectDisplay = displayString;

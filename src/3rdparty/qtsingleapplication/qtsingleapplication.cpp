@@ -33,7 +33,6 @@
 #include <qtlockedfile.h>
 
 #include <QDir>
-#include <QFileOpenEvent>
 #include <QSharedMemory>
 #include <QWidget>
 
@@ -51,9 +50,7 @@ static QString instancesLockFilename(const QString &appSessionId)
 }
 
 QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char **argv)
-    : QApplication(argc, argv),
-      firstPeer(-1),
-      pidPeer(nullptr)
+    : QApplication(argc, argv)
 {
     this->appId = appId;
 
@@ -117,16 +114,6 @@ QtSingleApplication::~QtSingleApplication()
     }
     *newpids = 0;
     lockfile.unlock();
-}
-
-bool QtSingleApplication::event(QEvent *event)
-{
-    if (event->type() == QEvent::FileOpen) {
-        auto *foe = static_cast<QFileOpenEvent*>(event);
-        emit fileOpenRequest(foe->file());
-        return true;
-    }
-    return QApplication::event(event);
 }
 
 bool QtSingleApplication::isRunning(qint64 pid)

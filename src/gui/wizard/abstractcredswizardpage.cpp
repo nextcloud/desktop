@@ -26,7 +26,7 @@ void AbstractCredentialsWizardPage::cleanupPage()
 {
     // Reset the credentials when the 'Back' button is used.
 
-    AccountPtr account = static_cast<OwncloudWizard *>(wizard())->account();
+    AccountPtr account = dynamic_cast<OwncloudWizard *>(wizard())->account();
     AbstractCredentials *creds = account->credentials();
     if (creds) {
         if (!creds->inherits("DummyCredentials")) {

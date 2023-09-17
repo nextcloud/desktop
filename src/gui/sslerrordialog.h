@@ -52,13 +52,13 @@ public:
     ~SslErrorDialog() override;
     bool checkFailingCertsKnown(const QList<QSslError> &errors);
     bool trustConnection();
-    QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
+    [[nodiscard]] QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
 
 private:
-    QString styleSheet() const;
-    bool _allTrusted;
+    [[nodiscard]] QString styleSheet() const;
+    bool _allTrusted = false;
 
-    QString certDiv(QSslCertificate) const;
+    [[nodiscard]] QString certDiv(QSslCertificate) const;
 
     QList<QSslCertificate> _unknownCerts;
     QString _customConfigHandle;

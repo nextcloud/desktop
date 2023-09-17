@@ -66,16 +66,21 @@ public:
     PathComponents(const QString &path);
     PathComponents(const QStringList &pathComponents);
 
-    PathComponents parentDirComponents() const;
-    PathComponents subComponents() const &;
+    [[nodiscard]] PathComponents parentDirComponents() const;
+    [[nodiscard]] PathComponents subComponents() const &;
     PathComponents subComponents() && { removeFirst(); return std::move(*this); }
-    QString pathRoot() const { return first(); }
-    QString fileName() const { return last(); }
+    [[nodiscard]] QString pathRoot() const { return first(); }
+    [[nodiscard]] QString fileName() const { return last(); }
 };
 
 class FileModifier
 {
 public:
+    enum class LockState {
+        FileLocked,
+        FileUnlocked,
+    };
+
     virtual ~FileModifier() = default;
     virtual void remove(const QString &relativePath) = 0;
     virtual void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') = 0;
@@ -84,6 +89,8 @@ public:
     virtual void mkdir(const QString &relativePath) = 0;
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
     virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
+    virtual void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) = 0;
+    virtual void setE2EE(const QString &relativepath, const bool enabled) = 0;
 };
 
 class DiskFileModifier : public FileModifier
@@ -99,6 +106,10 @@ public:
     void mkdir(const QString &relativePath) override;
     void rename(const QString &from, const QString &to) override;
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
+    void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
+    void setE2EE(const QString &relativepath, const bool enabled) override;
+
+    [[nodiscard]] QFile find(const QString &relativePath) const;
 };
 
 class FileInfo : public FileModifier
@@ -110,6 +121,7 @@ public:
     FileInfo(const QString &name) : name{name} { }
     FileInfo(const QString &name, qint64 size) : name{name}, isDir{false}, size{size} { }
     FileInfo(const QString &name, qint64 size, char contentChar) : name{name}, isDir{false}, size{size}, contentChar{contentChar} { }
+    FileInfo(const QString &name, qint64 size, char contentChar, QDateTime mtime) : name{name}, isDir{false}, lastModified(mtime), size{size}, contentChar{contentChar} { }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
     void addChild(const FileInfo &info);
@@ -130,6 +142,10 @@ public:
 
     void setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime);
 
+    void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
+
+    void setE2EE(const QString &relativepath, const bool enabled) override;
+
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
 
     FileInfo *createDir(const QString &relativePath);
@@ -146,8 +162,8 @@ public:
         return !operator==(other);
     }
 
-    QString path() const;
-    QString absolutePath() const;
+    [[nodiscard]] QString path() const;
+    [[nodiscard]] QString absolutePath() const;
 
     void fixupParentPathRecursively();
 
@@ -163,6 +179,14 @@ public:
     QByteArray extraDavProperties;
     qint64 size = 0;
     char contentChar = 'W';
+    LockState lockState = LockState::FileUnlocked;
+    int lockType = 0;
+    QString lockOwner;
+    QString lockOwnerId;
+    QString lockEditorId;
+    quint64 lockTime = 0;
+    quint64 lockTimeout = 0;
+    bool isEncrypted = false;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
@@ -192,7 +216,8 @@ class FakePropfindReply : public FakeReply
 public:
     QByteArray payload;
 
-    FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
+    explicit FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
+    explicit FakePropfindReply(const QByteArray &replyContents, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
     Q_INVOKABLE void respond();
 
@@ -200,7 +225,7 @@ public:
 
     void abort() override { }
 
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
     qint64 readData(char *data, qint64 maxlen) override;
 };
 
@@ -231,7 +256,7 @@ public:
 
     void abort() override;
 
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
     qint64 readData(char *data, qint64 maxlen) override;
 
 private:
@@ -282,8 +307,8 @@ class FakeGetReply : public FakeReply
     Q_OBJECT
 public:
     const FileInfo *fileInfo;
-    char payload;
-    int size;
+    char payload = 0;
+    int size = 0;
     bool aborted = false;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
@@ -291,7 +316,7 @@ public:
     Q_INVOKABLE void respond();
 
     void abort() override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     qint64 readData(char *data, qint64 maxlen) override;
 };
@@ -310,7 +335,7 @@ public:
     Q_INVOKABLE void respond();
 
     void abort() override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     qint64 readData(char *data, qint64 maxlen) override;
 };
@@ -349,7 +374,7 @@ public:
 
     void abort() override {}
     qint64 readData(char *buf, qint64 max) override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
     QByteArray _body;
 
     QMap<QNetworkRequest::KnownHeaders, QByteArray> _additionalHeaders;
@@ -377,7 +402,7 @@ public slots:
 public:
     void abort() override { }
     qint64 readData(char *buf, qint64 max) override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     QByteArray _body;
 };
@@ -474,11 +499,11 @@ class FakeCredentials : public OCC::AbstractCredentials
     QNetworkAccessManager *_qnam;
 public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
-    QString authType() const override { return "test"; }
-    QString user() const override { return "admin"; }
-    QString password() const override { return "password"; }
-    QNetworkAccessManager *createQNAM() const override { return _qnam; }
-    bool ready() const override { return true; }
+    [[nodiscard]] QString authType() const override { return "test"; }
+    [[nodiscard]] QString user() const override { return "admin"; }
+    [[nodiscard]] QString password() const override { return "password"; }
+    [[nodiscard]] QNetworkAccessManager *createQNAM() const override { return _qnam; }
+    [[nodiscard]] bool ready() const override { return true; }
     void fetchFromKeychain() override { }
     void askFromUser() override { }
     bool stillValid(QNetworkReply *) override { return true; }
@@ -502,9 +527,9 @@ public:
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
-    OCC::AccountPtr account() const { return _account; }
-    OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
-    OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
+    [[nodiscard]] OCC::AccountPtr account() const { return _account; }
+    [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
+    [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
 
     FileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }
@@ -512,7 +537,7 @@ public:
 
     FileInfo currentRemoteState() { return _fakeQnam->currentRemoteState(); }
     FileInfo &uploadState() { return _fakeQnam->uploadState(); }
-    FileInfo dbState() const;
+    [[nodiscard]] FileInfo dbState() const;
 
     struct ErrorList {
         FakeQNAM *_qnam;
@@ -528,7 +553,7 @@ public:
         return _fakeQnam->forEachReplyPart(outgoingData, contentType, replyFunction);
     }
 
-    QString localPath() const;
+    [[nodiscard]] QString localPath() const;
 
     void scheduleSync();
 
@@ -537,7 +562,7 @@ public:
     void execUntilItemCompleted(const QString &relativePath);
 
     bool execUntilFinished() {
-        QSignalSpy spy(_syncEngine.get(), SIGNAL(finished(bool)));
+        QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::finished);
         bool ok = spy.wait(3600000);
         Q_ASSERT(ok && "Sync timed out");
         return spy[0][0].toBool();
@@ -575,9 +600,9 @@ struct ItemCompletedSpy : QSignalSpy {
         : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
     {}
 
-    OCC::SyncFileItemPtr findItem(const QString &path) const;
+    [[nodiscard]] OCC::SyncFileItemPtr findItem(const QString &path) const;
 
-    OCC::SyncFileItemPtr findItemWithExpectedRank(const QString &path, int rank) const;
+    [[nodiscard]] OCC::SyncFileItemPtr findItemWithExpectedRank(const QString &path, int rank) const;
 };
 
 // QTest::toString overloads

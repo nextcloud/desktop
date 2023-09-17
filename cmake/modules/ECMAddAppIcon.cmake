@@ -102,11 +102,13 @@ include(CMakeParseArguments)
 
 function(ecm_add_app_icon appsources)
     set(options)
-    set(oneValueArgs OUTFILE_BASENAME ICON_INDEX)
+    set(oneValueArgs OUTFILE_BASENAME ICON_INDEX DO_NOT_GENERATE_RC_FILE)
     set(multiValueArgs ICONS SIDEBAR_ICONS RC_DEPENDENCIES)
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-    if (NOT ARG_ICON_INDEX)
-        set(ARG_ICON_INDEX 1)
+    if (ARG_DO_NOT_GENERATE_RC_FILE)
+        set (_do_not_generate_rc_file TRUE)
+    else()
+        set (_do_not_generate_rc_file FALSE)
     endif()
 
     if(NOT ARG_ICONS)
@@ -211,15 +213,17 @@ function(ecm_add_app_icon appsources)
                     DEPENDS ${deps}
                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
                 )
-                # this bit's a little hacky to make the dependency stuff work
-                file(WRITE "${_outfilename}.rc.in" "IDI_ICON${ARG_ICON_INDEX}        ICON        DISCARDABLE    \"${_outfilename}.ico\"\n")
-                add_custom_command(
-                    OUTPUT "${_outfilename}.rc"
-                    COMMAND ${CMAKE_COMMAND}
-                    ARGS -E copy "${_outfilename}.rc.in" "${_outfilename}.rc"
-                    DEPENDS ${ARG_RC_DEPENDENCIES} "${_outfilename}.ico"
-                    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-                )
+                if (NOT _do_not_generate_rc_file)
+                    # this bit's a little hacky to make the dependency stuff work
+                    file(WRITE "${_outfilename}.rc.in" "IDI_ICON${ARG_ICON_INDEX}        ICON        DISCARDABLE    \"${_outfilename}.ico\"\n")
+                    add_custom_command(
+                        OUTPUT "${_outfilename}.rc"
+                        COMMAND ${CMAKE_COMMAND}
+                        ARGS -E copy "${_outfilename}.rc.in" "${_outfilename}.rc"
+                        DEPENDS ${ARG_RC_DEPENDENCIES} "${_outfilename}.ico"
+                        WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+                    )
+                endif()
         endfunction()
 
         if (IcoTool_FOUND)

@@ -24,16 +24,21 @@ namespace OCC {
 OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath("ocs/v2.php/apps/files_sharing/api/v1/shares");
+    setPath(_pathForSharesRequest);
     connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }
 
-void OcsShareJob::getShares(const QString &path)
+void OcsShareJob::getShares(const QString &path, const QMap<QString, QString> &params)
 {
     setVerb("GET");
 
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("reshares"), QString("true"));
+
+    for (auto it = std::cbegin(params); it != std::cend(params); ++it) {
+        addParam(it.key(), it.value());
+    }
+
     addPassStatusCode(404);
 
     start();
@@ -129,6 +134,18 @@ void OcsShareJob::setLabel(const QString &shareId, const QString &label)
     start();
 }
 
+void OcsShareJob::setHideDownload(const QString &shareId, const bool hideDownload)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+
+    const auto value = QString::fromLatin1(hideDownload ? QByteArrayLiteral("true") : QByteArrayLiteral("false"));
+    addParam(QStringLiteral("hideDownload"), value);
+    _value = hideDownload;
+
+    start();
+}
+
 void OcsShareJob::createLinkShare(const QString &path,
     const QString &name,
     const QString &password)
@@ -137,6 +154,26 @@ void OcsShareJob::createLinkShare(const QString &path,
 
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
+
+    if (!name.isEmpty()) {
+        addParam(QString::fromLatin1("name"), name);
+    }
+    if (!password.isEmpty()) {
+        addParam(QString::fromLatin1("password"), password);
+    }
+
+    addPassStatusCode(403);
+
+    start();
+}
+
+void OcsShareJob::createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password)
+{
+    setVerb("POST");
+
+    addParam(QString::fromLatin1("path"), path);
+    addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
+    addParam(QString::fromLatin1("permissions"), QString::number(4));
 
     if (!name.isEmpty()) {
         addParam(QString::fromLatin1("name"), name);
@@ -181,4 +218,6 @@ void OcsShareJob::jobDone(QJsonDocument reply)
 {
     emit shareJobFinished(reply, _value);
 }
+
+QString const OcsShareJob::_pathForSharesRequest = QStringLiteral("ocs/v2.php/apps/files_sharing/api/v1/shares");
 }

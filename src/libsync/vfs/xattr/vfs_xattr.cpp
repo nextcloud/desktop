@@ -14,13 +14,15 @@
 
 #include "vfs_xattr.h"
 
-#include <QFile>
-
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
-
 #include "xattrwrapper.h"
+
+#include <QFile>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(lcVfsXAttr, "nextcloud.sync.vfs.xattr", QtInfoMsg)
 
 namespace xattr {
 using namespace OCC::XAttrWrapper;
@@ -172,6 +174,7 @@ bool VfsXAttr::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
 
 bool VfsXAttr::setPinState(const QString &folderPath, PinState state)
 {
+    qCDebug(lcVfsXAttr) << "setPinState" << folderPath << state;
     return setPinStateInDb(folderPath, state);
 }
 

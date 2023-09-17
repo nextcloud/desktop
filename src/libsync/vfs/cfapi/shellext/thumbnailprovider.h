@@ -30,7 +30,7 @@ class __declspec(uuid(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID)) ThumbnailProvi
 public:
     ThumbnailProvider();
 
-    virtual ~ThumbnailProvider() = default;
+    virtual ~ThumbnailProvider();
 
     IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
 

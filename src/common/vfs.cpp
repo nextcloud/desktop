@@ -238,7 +238,7 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
     const auto pluginPath = pluginFileName(QStringLiteral("vfs"), name);
 
     if (!isVfsPluginAvailable(mode)) {
-        qCCritical(lcPlugin) << "Could not load plugin: not existant or bad metadata" << pluginPath;
+        qCCritical(lcPlugin) << "Could not load plugin: not existent or bad metadata" << pluginPath;
         return nullptr;
     }
 

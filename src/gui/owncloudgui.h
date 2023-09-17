@@ -76,15 +76,14 @@ public slots:
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl);
-    void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
-    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
+    void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
-    void slotSyncStateChange(Folder *);
+    void slotSyncStateChange(OCC::Folder *);
     void slotTrayClicked(QSystemTrayIcon::ActivationReason reason);
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
@@ -94,20 +93,17 @@ public slots:
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
-    void slotTrayMessageIfServerUnsupported(Account *account);
+    void slotTrayMessageIfServerUnsupported(OCC::Account *account);
 
 
     /**
      * Open a share dialog for a file or folder.
      *
-     * sharePath is the full remote path to the item,
      * localPath is the absolute local path to it (so not relative
      * to the folder).
      */
-    void slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
-
-    void slotRemoveDestroyedShareDialogs();
-
+    void slotShowShareDialog(const QString &localPath) const;
+    void slotShowFileActivityDialog(const QString &localPath) const;
     void slotNewAccountWizard();
 
 private slots:
@@ -123,11 +119,9 @@ private:
     QDBusConnection _bus;
 #endif
 
-    QMap<QString, QPointer<ShareDialog>> _shareDialogs;
-
-    QAction *_actionNewAccountWizard;
-    QAction *_actionSettings;
-    QAction *_actionEstimate;
+    QAction *_actionNewAccountWizard = nullptr;
+    QAction *_actionSettings = nullptr;
+    QAction *_actionEstimate = nullptr;
 
 
     QList<QAction *> _recentItemsActions;

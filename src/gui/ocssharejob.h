@@ -46,7 +46,7 @@ public:
      *
      * @param path Path to request shares for (default all shares)
      */
-    void getShares(const QString &path = "");
+    void getShares(const QString &path = "", const QMap<QString, QString> &params = {});
 
     /**
      * Delete the current Share
@@ -103,6 +103,11 @@ public:
     void setLabel(const QString &shareId, const QString &label);
 
     /**
+     * Set share hideDownload flag
+     */
+    void setHideDownload(const QString &shareId, const bool hideDownload);
+
+    /**
      * Create a new link share
      *
      * @param path The path of the file/folder to share
@@ -110,6 +115,8 @@ public:
      */
     void createLinkShare(const QString &path, const QString &name,
         const QString &password);
+
+    void createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password);
 
     /**
      * Create a new share
@@ -130,6 +137,8 @@ public:
      * Returns information on the items shared with the current user.
      */
     void getSharedWithMe();
+
+    static const QString _pathForSharesRequest;
 
 signals:
     /**

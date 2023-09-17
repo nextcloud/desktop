@@ -24,12 +24,12 @@ ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState,
 {
 }
 
-void ServerNotificationHandler::slotFetchNotifications()
+bool ServerNotificationHandler::startFetchNotifications()
 {
     // check connectivity and credentials
     if (!(_accountState && _accountState->isConnected() && _accountState->account() && _accountState->account()->credentials() && _accountState->account()->credentials()->ready())) {
         deleteLater();
-        return;
+        return false;
     }
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
@@ -37,7 +37,7 @@ void ServerNotificationHandler::slotFetchNotifications()
         if (!_accountState->account()->capabilities().notificationsAvailable()) {
             qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
-            return;
+            return false;
         }
     }
 
@@ -50,6 +50,7 @@ void ServerNotificationHandler::slotFetchNotifications()
     _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
     _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
+    return true;
 }
 
 void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode)
@@ -66,12 +67,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();
+        emit jobFinished();
         return;
     }
 
     if (statusCode == notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
         deleteLater();
+        emit jobFinished();
         return;
     }
 
@@ -82,7 +85,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     ActivityList list;
     ActivityList callList;
 
-
     foreach (auto element, notifies) {
         auto json = element.toObject();
         auto a = Activity::fromActivityJson(json, ai->account());
@@ -92,16 +94,21 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         if(json.contains("subjectRichParameters")) {
             const auto richParams = json.value("subjectRichParameters").toObject();
-            for(const auto &key : richParams.keys()) {
+            const auto richParamsKeys = richParams.keys();
+            for(const auto &key : richParamsKeys) {
                 const auto parameterJsonObject = richParams.value(key).toObject();
-                a._subjectRichParameters.insert(key, Activity::RichSubjectParameter{
+                a._subjectRichParameters.insert(key, QVariant::fromValue(Activity::RichSubjectParameter{
                                                     parameterJsonObject.value(QStringLiteral("type")).toString(),
                                                     parameterJsonObject.value(QStringLiteral("id")).toString(),
                                                     parameterJsonObject.value(QStringLiteral("name")).toString(),
                                                     QString(),
                                                     QUrl()
-                                                });
+                                                     }));
             }
+        }
+
+        if (json.contains("shouldNotify")) {
+            a._shouldNotify = json.value("shouldNotify").toBool(true);
         }
 
         // 2 cases to consider:
@@ -110,30 +117,37 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         if (a._objectType == "chat" || a._objectType == "call" || a._objectType == "room") {
             const auto objectId = json.value("object_id").toString();
             const auto objectIdData = objectId.split("/");
+
+            ActivityLink al;
+            al._label = tr("Reply");
+            al._verb = "REPLY";
+            al._primary = true;
+
             a._talkNotificationData.conversationToken = objectIdData.first();
+
             if (a._objectType == "chat" && objectIdData.size() > 1) {
                 a._talkNotificationData.messageId = objectIdData.last();
             } else {
                 qCInfo(lcServerNotification) << "Replying directly to Talk conversation" << a._talkNotificationData.conversationToken << "will not be possible because the notification doesn't contain the message ID.";
             }
 
-            ActivityLink al;
-            al._label = tr("Reply");
-            al._verb = "REPLY";
-            al._primary = true;
-            a._links.insert(0, al);
+            if (a._subjectRichParameters.contains("user")) {
 
-            if(a._subjectRichParameters.contains("user")) {
-                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].id + QStringLiteral("/128");
+                // callback then it is the primary action
+                if (a._objectType == "call") {
+                    al._primary = false;
+                }
+
+                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].value<Activity::RichSubjectParameter>().id + QStringLiteral("/128");
             }
 
             // We want to serve incoming call dialogs to the user for calls that
-            if(a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
+            if (a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
                 callList.append(a);
             }
-        } 
 
-        a._status = 0;
+            a._links.insert(al._primary? 0 : a._links.size(), al);
+        }
 
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
@@ -147,26 +161,11 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         }
         a._link = link;
 
-        // Add another action to dismiss notification on server
-        // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
-        constexpr auto deleteVerb = "DELETE";
-        const auto itLink = std::find_if(std::cbegin(a._links), std::cend(a._links), [deleteVerb](const ActivityLink& link) {
-            Q_UNUSED(deleteVerb)
-            return link._verb == deleteVerb;
-        });
-        if (itLink == std::cend(a._links)) {
-            ActivityLink al;
-            al._label = tr("Dismiss");
-            al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
-            al._verb = deleteVerb;
-            al._primary = false;
-            a._links.append(al);
-        }
-
         list.append(a);
     }
     emit newNotificationList(list);
     emit newIncomingCallsList(callList);
+    emit jobFinished();
 
     deleteLater();
 }

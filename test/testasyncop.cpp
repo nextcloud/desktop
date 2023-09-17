@@ -54,7 +54,7 @@ private slots:
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } } });
         // Reduce max chunk size a bit so we get more chunks
         SyncOptions options;
-        options._maxChunkSize = 20 * 1000;
+        options.setMaxChunkSize(20 * 1000);
         fakeFolder.syncEngine().setSyncOptions(options);
         int nGET = 0;
 
@@ -144,20 +144,19 @@ private slots:
             testCases[file] = { std::move(cb) };
         };
         fakeFolder.localModifier().mkdir("success");
-        insertFile("success/chunked_success", options._maxChunkSize * 3, successCallback);
+        insertFile("success/chunked_success", options.maxChunkSize() * 3, successCallback);
         insertFile("success/single_success", 300, successCallback);
-        insertFile("success/chunked_patience", options._maxChunkSize * 3,
-            waitAndChain(waitAndChain(successCallback)));
+        insertFile("success/chunked_patience", options.maxChunkSize() * 3, waitAndChain(waitAndChain(successCallback)));
         insertFile("success/single_patience", 300,
             waitAndChain(waitAndChain(successCallback)));
         fakeFolder.localModifier().mkdir("err");
-        insertFile("err/chunked_error", options._maxChunkSize * 3, errorCallback);
+        insertFile("err/chunked_error", options.maxChunkSize() * 3, errorCallback);
         insertFile("err/single_error", 300, errorCallback);
-        insertFile("err/chunked_error2", options._maxChunkSize * 3, waitAndChain(errorCallback));
+        insertFile("err/chunked_error2", options.maxChunkSize() * 3, waitAndChain(errorCallback));
         insertFile("err/single_error2", 300, waitAndChain(errorCallback));
 
         // First sync should finish by itself.
-        // All the things in "success/" should be transfered, the things in "err/" not
+        // All the things in "success/" should be transferred, the things in "err/" not
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
         QCOMPARE(*fakeFolder.currentLocalState().find("success"),
@@ -171,13 +170,12 @@ private slots:
         fakeFolder.localModifier().mkdir("waiting");
         insertFile("waiting/small", 300, waitForeverCallback);
         insertFile("waiting/willNotConflict", 300, waitForeverCallback);
-        insertFile("waiting/big", options._maxChunkSize * 3,
-            waitAndChain(waitAndChain([&](TestCase *tc, const QNetworkRequest &request) {
-                QTimer::singleShot(0, &fakeFolder.syncEngine(), &SyncEngine::abort);
-                return waitAndChain(waitForeverCallback)(tc, request);
-            })));
+        insertFile("waiting/big", options.maxChunkSize() * 3, waitAndChain(waitAndChain([&](TestCase *tc, const QNetworkRequest &request) {
+                       QTimer::singleShot(0, &fakeFolder.syncEngine(), &SyncEngine::abort);
+                       return waitAndChain(waitForeverCallback)(tc, request);
+                   })));
 
-        fakeFolder.syncJournal().wipeErrorBlacklist();
+        QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
 
         // This second sync will redo the files that had errors
         // But the waiting folder will not complete before it is aborted.

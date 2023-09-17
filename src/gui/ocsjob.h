@@ -19,13 +19,14 @@
 #include "abstractnetworkjob.h"
 
 #include <QVector>
-#include <QList>
-#include <QPair>
+#include <QHash>
 #include <QUrl>
 
 #define OCS_SUCCESS_STATUS_CODE 100
-// Apparantly the v2.php URLs can return that
+// Apparently the v2.php URLs can return that
 #define OCS_SUCCESS_STATUS_CODE_V2 200
+// Two factor auth notification returns Accepted 202
+#define OCS_ACCEPTED_STATUS_CODE 202
 // not modified when using  ETag
 #define OCS_NOT_MODIFIED_STATUS_CODE_V2 304
 
@@ -108,6 +109,8 @@ public:
      */
     void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
+    [[nodiscard]] QString getParamValue(const QString &key) const;
+
 
 protected slots:
 
@@ -147,7 +150,7 @@ private slots:
 
 private:
     QByteArray _verb;
-    QList<QPair<QString, QString>> _params;
+    QHash<QString, QString> _params;
     QVector<int> _passStatusCodes;
     QNetworkRequest _request;
 };

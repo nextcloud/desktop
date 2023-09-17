@@ -47,7 +47,7 @@ public:
         hashBits.setBit((hash & 0xFFFF) % NumBits); // NOLINT it's uint all the way and the modulo puts us back in the 0..1023 range
         hashBits.setBit((hash >> 16) % NumBits); // NOLINT
     }
-    bool isHashMaybeStored(uint hash) const
+    [[nodiscard]] bool isHashMaybeStored(uint hash) const
     {
         return hashBits.testBit((hash & 0xFFFF) % NumBits) // NOLINT
             && hashBits.testBit((hash >> 16) % NumBits); // NOLINT
@@ -147,8 +147,8 @@ public:
     void success(const QJsonObject &response) const;
     void failure(const QString &error) const;
 
-    const QJsonObject &arguments() const { return _arguments; }
-    QByteArray command() const { return _command; }
+    [[nodiscard]] const QJsonObject &arguments() const { return _arguments; }
+    [[nodiscard]] QByteArray command() const { return _command; }
 
 Q_SIGNALS:
     void finished() const;

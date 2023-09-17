@@ -39,7 +39,7 @@ class GeneralSettings : public QWidget
 public:
     explicit GeneralSettings(QWidget *parent = nullptr);
     ~GeneralSettings() override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
 public slots:
     void slotStyleChanged();
@@ -56,7 +56,7 @@ private slots:
     void slotShowLegalNotice();
 #if defined(BUILD_UPDATER)
     void slotUpdateInfo();
-    void slotUpdateChannelChanged(const QString &translatedChannel);
+    void slotUpdateChannelChanged();
     void slotUpdateCheckNow();
     void slotToggleAutoUpdateCheck();
 #endif

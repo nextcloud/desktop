@@ -41,7 +41,7 @@ class FormatWarningsWizardPage : public QWizardPage
 {
     Q_OBJECT
 protected:
-    QString formatWarnings(const QStringList &warnings) const;
+    [[nodiscard]] QString formatWarnings(const QStringList &warnings) const;
 };
 
 /**
@@ -55,7 +55,7 @@ public:
     explicit FolderWizardLocalPath(const AccountPtr &account);
     ~FolderWizardLocalPath() override;
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
     void initializePage() override;
     void cleanupPage() override;
 
@@ -70,7 +70,7 @@ protected slots:
 private:
     void changeStyle();
 
-    Ui_FolderWizardSourcePage _ui;
+    Ui_FolderWizardSourcePage _ui{};
     Folder::Map _folderMap;
     AccountPtr _account;
 };
@@ -88,13 +88,12 @@ public:
     explicit FolderWizardRemotePath(const AccountPtr &account);
     ~FolderWizardRemotePath() override;
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
 
     void initializePage() override;
     void cleanupPage() override;
 
 protected slots:
-
     void showWarn(const QString & = QString()) const;
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(const QString &);
@@ -110,12 +109,18 @@ protected slots:
     void slotLsColFolderEntry();
     void slotTypedPathFound(const QStringList &subpaths);
 
+protected:
+    void changeEvent(QEvent *) override;
+
+private slots:
+    void changeStyle();
+
 private:
     LsColJob *runLsColJob(const QString &path);
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
-    Ui_FolderWizardTargetPage _ui;
-    bool _warnWasVisible;
+    Ui_FolderWizardTargetPage _ui{};
+    bool _warnWasVisible = false;
     AccountPtr _account;
     QTimer _lscolTimer;
     QStringList _encryptedPaths;
@@ -167,7 +172,7 @@ public:
 
 private:
     FolderWizardLocalPath *_folderWizardSourcePage;
-    FolderWizardRemotePath *_folderWizardTargetPage;
+    FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
     FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
 };
 

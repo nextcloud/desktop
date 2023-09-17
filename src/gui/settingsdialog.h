@@ -45,7 +45,7 @@ class ownCloudGui;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QWidget* currentPage READ currentPage)
+    Q_PROPERTY(QWidget* currentPage READ currentPage NOTIFY currentPageChanged)
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
@@ -55,7 +55,7 @@ public:
 
 public slots:
     void showFirstPage();
-    void showIssuesList(AccountState *account);
+    void showIssuesList(OCC::AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
@@ -63,6 +63,7 @@ public slots:
 signals:
     void styleChanged();
     void onActivate();
+    void currentPageChanged();
 
 protected:
     void reject() override;
@@ -70,8 +71,8 @@ protected:
     void changeEvent(QEvent *) override;
 
 private slots:
-    void accountAdded(AccountState *);
-    void accountRemoved(AccountState *);
+    void accountAdded(OCC::AccountState *);
+    void accountRemoved(OCC::AccountState *);
 
 private:
     void customizeStyle();

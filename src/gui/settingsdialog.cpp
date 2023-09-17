@@ -57,10 +57,7 @@ const float buttonSizeRatio = 1.618f; // golden ratio
  */
 QString shortDisplayNameForSettings(OCC::Account *account, int width)
 {
-    QString user = account->davDisplayName();
-    if (user.isEmpty()) {
-        user = account->credentials()->user();
-    }
+    QString user = account->prettyName();
     QString host = account->url().host();
     int port = account->url().port();
     if (port > 0 && port != 80 && port != 443) {
@@ -134,6 +131,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     auto *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
+
+    connect(_ui->stack, &QStackedWidget::currentChanged, this, &SettingsDialog::currentPageChanged);
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
@@ -227,7 +226,7 @@ void SettingsDialog::showIssuesList(AccountState *account)
     const auto userModel = UserModel::instance();
     const auto id = userModel->findUserIdForAccount(account);
     UserModel::instance()->setCurrentUserId(id);
-    emit Systray::instance()->showWindow();
+    Systray::instance()->showWindow();
 }
 
 void SettingsDialog::accountAdded(AccountState *s)
@@ -235,16 +234,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    QAction *accountAction = nullptr;
-    QImage avatar = s->account()->avatar();
-    const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
-    if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"),
-            actionText);
-    } else {
-        QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
-        accountAction = createActionWithIcon(icon, actionText);
-    }
+    const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
+    const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
@@ -272,11 +263,20 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
+
+    const auto userInfo = new UserInfo(s, false, true, this);
+    connect(userInfo, &UserInfo::fetchedLastInfo, this, [userInfo](const UserInfo *fetchedInfo) {
+        // UserInfo will go and update the account avatar
+        Q_UNUSED(fetchedInfo);
+        userInfo->deleteLater();
+    });
+    userInfo->setActive(true);
+    userInfo->slotFetchInfo();
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
-    auto *account = static_cast<Account *>(sender());
+    auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
@@ -290,7 +290,7 @@ void SettingsDialog::slotAccountAvatarChanged()
 
 void SettingsDialog::slotAccountDisplayNameChanged()
 {
-    auto *account = static_cast<Account *>(sender());
+    auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
@@ -367,7 +367,7 @@ public:
     {
         auto toolbar = qobject_cast<QToolBar *>(parent);
         if (!toolbar) {
-            // this means we are in the extention menu, no special action here
+            // this means we are in the extension menu, no special action here
             return nullptr;
         }
 

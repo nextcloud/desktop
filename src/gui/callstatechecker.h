@@ -32,9 +32,9 @@ class CallStateChecker : public QObject
 public:
     explicit CallStateChecker(QObject *parent = nullptr);
 
-    QString token() const;
-    AccountState* accountState() const;
-    bool checking() const;
+    [[nodiscard]] QString token() const;
+    [[nodiscard]] AccountState* accountState() const;
+    [[nodiscard]] bool checking() const;
 
 signals:
     void tokenChanged();
@@ -57,7 +57,7 @@ private slots:
 private:
     void setup();
     void startCallStateCheck();
-    bool isAccountServerVersion22OrLater() const;
+    [[nodiscard]] bool isAccountServerVersion22OrLater() const;
 
     AccountState *_accountState = nullptr;
     QString _token;

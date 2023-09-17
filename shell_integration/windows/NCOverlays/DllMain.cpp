@@ -41,7 +41,7 @@ HRESULT CreateFactory(REFIID riid, void **ppv, int state)
 {
     HRESULT hResult = E_OUTOFMEMORY;
 
-    NCOverlayFactory* ncOverlayFactory = new NCOverlayFactory(state);
+    auto ncOverlayFactory = new NCOverlayFactory(state);
 
     if (ncOverlayFactory) {
         hResult = ncOverlayFactory->QueryInterface(riid, ppv);

@@ -121,14 +121,16 @@ public:
 
         _watcher.reset(new FolderWatcher);
         _watcher->init(_rootPath);
-        _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), SIGNAL(pathChanged(QString))));
+        _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), &FolderWatcher::pathChanged));
     }
 
     int countFolders(const QString &path)
     {
         int n = 0;
-        for (const auto &sub : QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+        const auto entryList = QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const auto &sub : entryList) {
             n += 1 + countFolders(path + '/' + sub);
+        }
         return n;
     }
 
@@ -147,7 +149,7 @@ private slots:
     void testACreate() { // create a new file
         QString file(_rootPath + "/foo.txt");
         QString cmd;
-        cmd = QString("echo \"xyz\" > %1").arg(file);
+        cmd = QString("echo \"xyz\" > \"%1\"").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 

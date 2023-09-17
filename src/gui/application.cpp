@@ -21,7 +21,9 @@
 
 #include "config.h"
 #include "account.h"
+#include "accountsetupcommandlinemanager.h"
 #include "accountstate.h"
+#include "editlocallymanager.h"
 #include "connectionvalidator.h"
 #include "folder.h"
 #include "folderman.h"
@@ -31,7 +33,6 @@
 #include "sslerrordialog.h"
 #include "theme.h"
 #include "clientproxy.h"
-#include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 #include "pushnotifications.h"
@@ -50,6 +51,8 @@
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
+#elif defined(Q_OS_MACOS)
+#include "macOS/fileprovider.h"
 #endif
 
 #if defined(WITH_CRASHREPORTER)
@@ -61,6 +64,8 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QUrlQuery>
+#include <QVersionNumber>
 
 class QSocket;
 
@@ -72,19 +77,28 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
-        "  --help, -h           : show this help screen.\n"
-        "  --version, -v        : show version information.\n"
-        "  -q --quit            : quit the running instance\n"
-        "  --logwindow, -l      : open a window to show log output.\n"
-        "  --logfile <filename> : write log output to file <filename>.\n"
-        "  --logdir <name>      : write each sync log output in a new file\n"
-        "                         in folder <name>.\n"
-        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-        "                         (to be used with --logdir)\n"
-        "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.\n"
-        "  --background         : launch the application in the background.\n";
+        "  --help, -h                 : show this help screen.\n"
+        "  --version, -v              : show version information.\n"
+        "  -q --quit                  : quit the running instance\n"
+        "  --logwindow, -l            : open a window to show log output.\n"
+        "  --logfile <filename>       : write log output to file <filename>.\n"
+        "  --logdir <name>            : write each sync log output in a new file\n"
+        "                               in folder <name>.\n"
+        "  --logexpire <hours>        : removes logs older than <hours> hours.\n"
+        "                               (to be used with --logdir)\n"
+        "  --logflush                 : flush the log file after every write.\n"
+        "  --logdebug                 : also output debug-level messages in the log.\n"
+        "  --confdir <dirname>        : Use the given configuration folder.\n"
+        "  --background               : launch the application in the background.\n"
+        "  --overrideserverurl        : specify a server URL to use for the force override to be used in the account setup wizard.\n"
+        "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
+        "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
+        "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
+        "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
+        "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
+        "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
+        "  --serverurl                : a server URL to use when creating an account via command-line.\n"
+        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n";
 
     QString applicationTrPath()
     {
@@ -109,7 +123,7 @@ namespace {
 #ifdef Q_OS_WIN
 class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
 public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override {
         const auto msg = static_cast<MSG *>(message);
         if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
             if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
@@ -131,41 +145,52 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
+    const auto previousVersion = QVersionNumber::fromString(configFile.clientVersionString());
+    const auto versionChanged = previousVersion != currentVersion;
+    const auto downgrading = previousVersion > currentVersion;
+
+    if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
+        return true;
+    }
+
+    // back up all old config files
+    QStringList backupFilesList;
+    QDir configDir(configFile.configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
+        const auto newConfigFileName = configFile.configFile();
+        backupFilesList.append(configFile.backup(oldConfigFileName));
+        if (oldConfigFilePath != newConfigFileName) {
+            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
+            }
+        }
+    }
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
-    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
-
-    if (!versionChanged && !warningMessage)
-        return true;
-
-    const auto backupFile = configFile.backup();
-
-    if (warningMessage) {
-        QString boldMessage;
-        if (!deleteKeys.isEmpty()) {
-            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
-        } else {
-            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
-        }
-
+    if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
         QMessageBox box(
             QMessageBox::Warning,
             APPLICATION_SHORTNAME,
-            tr("Some settings were configured in newer versions of this client and "
+            tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "%1<br>"
+               "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
-               "The current configuration file was already backed up to <i>%2</i>.")
-                .arg(boldMessage, backupFile));
+               "The current configuration file was already backed up to <i>%3</i>.")
+                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
+                     deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
+                     backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 
         box.exec();
         if (box.clickedButton() != continueBtn) {
-            QTimer::singleShot(0, qApp, SLOT(quit()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return false;
         }
 
@@ -173,8 +198,9 @@ bool Application::configVersionMigration()
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
-        for (const auto &badKey : deleteKeys)
+        for (const auto &badKey : qAsConst(deleteKeys)) {
             settings->remove(badKey);
+        }
     }
 
     configFile.setClientVersionString(MIRALL_VERSION_STRING);
@@ -190,15 +216,6 @@ Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
     , _gui(nullptr)
     , _theme(Theme::instance())
-    , _helpOnly(false)
-    , _versionOnly(false)
-    , _showLogWindow(false)
-    , _logExpire(0)
-    , _logFlush(false)
-    , _logDebug(true)
-    , _userTriggeredConnect(false)
-    , _debugMode(false)
-    , _backgroundMode(false)
 {
     _startedAt.start();
 
@@ -236,15 +253,23 @@ Application::Application(int &argc, char **argv)
 #endif
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_DEPRECATED
-        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
-        // behavior of adding "data" to the path
-        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+        // macOS 10.11.x does not like trailing slash for rename/move.
+        if (oldDir.endsWith('/')) {
+            oldDir.chop(1);
+        }
+
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             auto confDir = ConfigFile().configPath();
-            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+
+            // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/')) {
+                confDir.chop(1);
+            }
+
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
 
             if (!QFile::rename(oldDir, confDir)) {
@@ -275,16 +300,18 @@ Application::Application(int &argc, char **argv)
 
     parseOptions(arguments());
     //no need to waste time;
-    if (_helpOnly || _versionOnly)
+    if (_helpOnly || _versionOnly) {
         return;
+    }
 
     if (_quitInstance) {
         QTimer::singleShot(0, qApp, &QApplication::quit);
         return;
     }
 
-    if (isRunning())
+    if (isRunning()) {
         return;
+    }
 
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter()) {
@@ -306,6 +333,31 @@ Application::Application(int &argc, char **argv)
     }
 
     ConfigFile cfg;
+
+    {
+        auto shouldExit = false;
+
+        // these config values will always be empty after the first client run
+        if (!_overrideServerUrl.isEmpty()) {
+            cfg.setOverrideServerUrl(_overrideServerUrl);
+            shouldExit = true;
+        }
+
+        if (!_overrideLocalDir.isEmpty()) {
+            cfg.setOverrideLocalDir(_overrideLocalDir);
+            shouldExit = true;
+        }
+
+        if (AccountSetupCommandLineManager::instance()) {
+            cfg.setVfsEnabled(AccountSetupCommandLineManager::instance()->isVfsEnabled());
+        }
+
+        if (shouldExit) {
+            std::exit(0);
+        }
+    }
+
+
     // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
@@ -314,24 +366,30 @@ Application::Application(int &argc, char **argv)
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
+    }
+    if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         qCInfo(lcApplication) << "VFS suffix plugin is available";
+    }
 
     _folderManager.reset(new FolderMan);
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    if (!AccountManager::instance()->restore()) {
+    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
         // If there is an error reading the account settings, try again
         // after a couple of seconds, if that fails, give up.
         // (non-existence is not an error)
         Utility::sleep(5);
-        if (!AccountManager::instance()->restore()) {
+        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+                accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
                 nullptr,
@@ -340,10 +398,14 @@ Application::Application(int &argc, char **argv)
                    "file at %1. Please make sure the file can be accessed by your system account.")
                     .arg(ConfigFile().configFile()),
                 tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-            QTimer::singleShot(0, qApp, SLOT(quit()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
             return;
         }
     }
+
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    _fileProvider.reset(new Mac::FileProvider);
+#endif
 
     FolderMan::instance()->setSyncEnabled(true);
 
@@ -369,7 +431,8 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
-    for (const auto &ai : AccountManager::instance()->accounts()) {
+    const auto accounts = AccountManager::instance()->accounts();
+    for (const auto &ai : accounts) {
         slotAccountStateAdded(ai.data());
     }
 
@@ -377,7 +440,7 @@ Application::Application(int &argc, char **argv)
         _gui.data(), &ownCloudGui::slotShowShareDialog);
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
-        Systray::instance(), &Systray::showFileActivityDialog);
+        _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
@@ -406,6 +469,13 @@ Application::Application(int &argc, char **argv)
     connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
 
     _gui->createTray();
+
+    handleEditLocallyFromOptions();
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+    }
+    AccountSetupCommandLineManager::destroy();
 }
 
 Application::~Application()
@@ -572,6 +642,13 @@ void Application::slotParseMessage(const QString &msg, QObject *)
             qApp->quit();
         }
 
+        handleEditLocallyFromOptions();
+
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        }
+        AccountSetupCommandLineManager::destroy();
+
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
@@ -593,8 +670,11 @@ void Application::parseOptions(const QStringList &options)
 {
     QStringListIterator it(options);
     // skip file name;
-    if (it.hasNext())
+    if (it.hasNext()) {
         it.next();
+    }
+
+    bool shouldExit = false;
 
     //parse options; if help or bad option exit
     while (it.hasNext()) {
@@ -647,9 +727,50 @@ void Application::parseOptions(const QStringList &options)
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
+            // see the section Local file editing of the Architecture page of the user documentation
+            _editFileLocallyUrl = QUrl::fromUserInput(option);
+            if (!_editFileLocallyUrl.isValid()) {
+                _editFileLocallyUrl.clear();
+                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
+                qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
+                showHint(errorParsingLocalFileEditingUrl.toStdString());
+            }
+        } else if (option == QStringLiteral("--overrideserverurl")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                const auto overrideUrl = it.next();
+                const auto isUrlValid = (overrideUrl.startsWith(QStringLiteral("http://")) || overrideUrl.startsWith(QStringLiteral("https://")))
+                    && QUrl::fromUserInput(overrideUrl).isValid();
+                if (!isUrlValid) {
+                    showHint("Invalid URL passed to --overrideserverurl");
+                    shouldExit = true;
+                } else {
+                    _overrideServerUrl = overrideUrl;
+                }
+            } else {
+                showHint("Invalid URL passed to --overrideserverurl");
+            }
+        } else if (option == QStringLiteral("--overridelocaldir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _overrideLocalDir = it.next();
+            } else {
+                showHint("Invalid URL passed to --overridelocaldir");
+            }
+        } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
+            AccountManager::instance()->setForceLegacyImport(true);
         } else {
-            showHint("Unrecognized option '" + option.toStdString() + "'");
+            QString errorMessage;
+            if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
+                if (!errorMessage.isEmpty()) {
+                    showHint(errorMessage.toStdString());
+                    return;
+                }
+                showHint("Unrecognized option '" + option.toStdString() + "'");
+            }
         }
+    }
+    if (shouldExit) {
+        std::exit(0);
     }
 }
 
@@ -668,7 +789,7 @@ static inline void toHtml(QString &t)
 static void displayHelpText(QString t) // No console on Windows.
 {
     toHtml(t);
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+    QMessageBox::information(nullptr, Theme::instance()->appNameGUI(), t);
 }
 
 #else
@@ -728,6 +849,16 @@ void Application::setHelp()
     _helpOnly = true;
 }
 
+void Application::handleEditLocallyFromOptions()
+{
+    if (!_editFileLocallyUrl.isValid()) {
+        return;
+    }
+
+    EditLocallyManager::instance()->editLocally(_editFileLocallyUrl);
+    _editFileLocallyUrl.clear();
+}
+
 QString substLang(const QString &lang)
 {
     // Map the more appropriate script codes
@@ -735,11 +866,13 @@ QString substLang(const QString &lang)
     // transifex translation conventions.
 
     // Simplified Chinese
-    if (lang == QLatin1String("zh_Hans"))
+    if (lang == QLatin1String("zh_Hans")) {
         return QLatin1String("zh_CN");
+    }
     // Traditional Chinese
-    if (lang == QLatin1String("zh_Hant"))
+    if (lang == QLatin1String("zh_Hant")) {
         return QLatin1String("zh_TW");
+    }
     return lang;
 }
 
@@ -755,8 +888,9 @@ void Application::setupTranslations()
 #endif
 
     QString enforcedLocale = Theme::instance()->enforcedLocale();
-    if (!enforcedLocale.isEmpty())
+    if (!enforcedLocale.isEmpty()) {
         uiLanguages.prepend(enforcedLocale);
+    }
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
@@ -797,8 +931,9 @@ void Application::setupTranslations()
                 installTranslator(qtkeychainTranslator);
             break;
         }
-        if (property("ui_lang").isNull())
+        if (property("ui_lang").isNull()) {
             setProperty("ui_lang", "C");
+        }
     }
 }
 
@@ -855,15 +990,26 @@ void Application::tryTrayAgain()
 
 bool Application::event(QEvent *event)
 {
-#ifdef Q_OS_MAC
     if (event->type() == QEvent::FileOpen) {
-        QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
-        qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
-        // virtual file, open it after the Folder were created (if the app is not terminated)
-        QString fn = openEvent->file();
-        QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
+        const auto openEvent = dynamic_cast<QFileOpenEvent *>(event);
+        qCDebug(lcApplication) << "macOS: Received a QFileOpenEvent";
+
+        if(!openEvent->file().isEmpty()) {
+            qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
+            // virtual file, open it after the Folder were created (if the app is not terminated)
+            const auto fn = openEvent->file();
+            QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
+        } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
+            // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
+            // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
+            qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
+            EditLocallyManager::instance()->editLocally(openEvent->url());
+        } else {
+            const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
+            qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
+            showHint(errorParsingLocalFileEditingUrl.toStdString());
+        }
     }
-#endif
     return SharedTools::QtSingleApplication::event(event);
 }
 

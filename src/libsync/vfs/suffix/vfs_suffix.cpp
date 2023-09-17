@@ -14,11 +14,14 @@
 
 #include "vfs_suffix.h"
 
-#include <QFile>
-
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
+
+#include <QFile>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(lcVfsSuffix, "nextcloud.sync.vfs.suffix", QtInfoMsg)
 
 namespace OCC {
 
@@ -45,12 +48,17 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
     // that are not marked as a virtual file. These could be real .owncloud
     // files that were synced before vfs was enabled.
     QByteArrayList toWipe;
-    params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
+    if (!params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
         if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
             toWipe.append(rec._path);
-    });
-    for (const auto &path : toWipe)
-        params.journal->deleteFileRecord(path);
+    })) {
+        qWarning() << "Could not get files below path \"\" from local DB";
+    }
+    for (const auto &path : toWipe) {
+        if (!params.journal->deleteFileRecord(path)) {
+            qWarning() << "Failed to delete file record from local DB" << path;
+        }
+    }
 }
 
 void VfsSuffix::stop()
@@ -151,6 +159,12 @@ bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
         return true;
     }
     return false;
+}
+
+bool VfsSuffix::setPinState(const QString &folderPath, PinState state)
+{
+    qCDebug(lcVfsSuffix) << "setPinState" << folderPath << state;
+    return setPinStateInDb(folderPath, state);
 }
 
 Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)

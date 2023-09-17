@@ -66,14 +66,14 @@ public:
     void startSyncPartialDiscovery();
 
     /** Access list of files that shall be locally rediscovered. */
-    const std::set<QString> &localDiscoveryPaths() const;
+    [[nodiscard]] const std::set<QString> &localDiscoveryPaths() const;
 
 public slots:
     /**
      * Success and failure of sync items adjust what the next sync is
      * supposed to do.
      */
-    void slotItemCompleted(const SyncFileItemPtr &item);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
 
     /**
      * When a sync finishes, the lists must be updated

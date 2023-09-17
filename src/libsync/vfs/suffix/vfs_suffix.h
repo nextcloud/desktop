@@ -29,14 +29,14 @@ public:
     explicit VfsSuffix(QObject *parent = nullptr);
     ~VfsSuffix() override;
 
-    Mode mode() const override;
-    QString fileSuffix() const override;
+    [[nodiscard]] Mode mode() const override;
+    [[nodiscard]] QString fileSuffix() const override;
 
     void stop() override;
     void unregisterFolder() override;
 
-    bool socketApiPinStateActionsShown() const override { return true; }
-    bool isHydrating() const override;
+    [[nodiscard]] bool socketApiPinStateActionsShown() const override { return true; }
+    [[nodiscard]] bool isHydrating() const override;
 
     Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 
@@ -48,14 +48,13 @@ public:
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
 
-    bool setPinState(const QString &folderPath, PinState state) override
-    { return setPinStateInDb(folderPath, state); }
+    bool setPinState(const QString &folderPath, PinState state) override;
     Optional<PinState> pinState(const QString &folderPath) override
     { return pinStateInDb(folderPath); }
     AvailabilityResult availability(const QString &folderPath) override;
 
 public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
+    void fileStatusChanged(const QString &, OCC::SyncFileStatus) override {}
 
 protected:
     void startImpl(const VfsSetupParams &params) override;

@@ -41,6 +41,21 @@
 
 #include <cstdlib>
 
+namespace
+{
+constexpr QColor darkWarnYellow(63, 63, 0);
+constexpr QColor lightWarnYellow(255, 255, 192);
+
+QPalette yellowWarnWidgetPalette(const QPalette &existingPalette)
+{
+    const auto warnYellow = OCC::Theme::instance()->darkMode() ? darkWarnYellow : lightWarnYellow;
+    auto modifiedPalette = existingPalette;
+    modifiedPalette.setColor(QPalette::Window, warnYellow);
+    modifiedPalette.setColor(QPalette::Base, warnYellow);
+    return modifiedPalette;
+}
+}
+
 namespace OCC {
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
@@ -71,7 +86,7 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     QUrl serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
     QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
-    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, serverUrl);
+    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, serverUrl, FolderMan::GoodPathStrategy::AllowOnlyNewPath);
     _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
@@ -98,8 +113,8 @@ bool FolderWizardLocalPath::isComplete() const
     QUrl serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
 
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl);
+    const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
+        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
 
 
     bool isOk = errorStr.isEmpty();
@@ -162,18 +177,14 @@ void FolderWizardLocalPath::changeEvent(QEvent *e)
 
 void FolderWizardLocalPath::changeStyle()
 {
-    const auto warnYellow = Theme::isDarkColor(QGuiApplication::palette().base().color()) ? QColor(63, 63, 0) : QColor(255, 255, 192);
-    auto modifiedPalette = _ui.warnLabel->palette();
-    modifiedPalette.setColor(QPalette::Window, warnYellow);
-    _ui.warnLabel->setPalette(modifiedPalette);
+    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
+    _ui.warnLabel->setPalette(yellowWarnPalette);
 }
 
 // =================================================================================
 FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     : FormatWarningsWizardPage()
-    , _warnWasVisible(false)
     , _account(account)
-
 {
     _ui.setupUi(this);
     _ui.warnFrame->hide();
@@ -194,6 +205,8 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
+
+    changeStyle();
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
@@ -239,7 +252,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
     qCDebug(lcWizard) << "webdav mkdir request finished";
     showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
     slotRefreshFolders();
-    _ui.folderEntry->setText(static_cast<MkColJob *>(sender())->path());
+    _ui.folderEntry->setText(dynamic_cast<MkColJob *>(sender())->path());
     slotLsColFolderEntry();
 }
 
@@ -525,6 +538,28 @@ void FolderWizardRemotePath::showWarn(const QString &msg) const
     }
 }
 
+void FolderWizardRemotePath::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        changeStyle();
+        break;
+    default:
+        break;
+    }
+
+    FormatWarningsWizardPage::changeEvent(e);
+}
+
+void FolderWizardRemotePath::changeStyle()
+{
+    const auto yellowWarnPalette = yellowWarnWidgetPalette(_ui.warnLabel->palette());
+    _ui.warnLabel->setPalette(yellowWarnPalette);
+}
+
 // ====================================================================================
 
 FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
@@ -634,7 +669,6 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
 FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     : QWizard(parent)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
-    , _folderWizardTargetPage(nullptr)
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

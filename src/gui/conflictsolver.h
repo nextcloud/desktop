@@ -32,11 +32,12 @@ public:
         KeepRemoteVersion,
         KeepBothVersions
     };
+    Q_ENUM(Solution);
 
     explicit ConflictSolver(QWidget *parent = nullptr);
 
-    QString localVersionFilename() const;
-    QString remoteVersionFilename() const;
+    [[nodiscard]] QString localVersionFilename() const;
+    [[nodiscard]] QString remoteVersionFilename() const;
 
     bool exec(Solution solution);
 

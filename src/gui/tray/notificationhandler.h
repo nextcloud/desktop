@@ -16,11 +16,12 @@ public:
     explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = nullptr);
 
 signals:
-    void newNotificationList(ActivityList);
-    void newIncomingCallsList(ActivityList);
+    void newNotificationList(OCC::ActivityList);
+    void newIncomingCallsList(OCC::ActivityList);
+    void jobFinished();
 
-public slots:
-    void slotFetchNotifications();
+public:
+    bool startFetchNotifications();
 
 private slots:
     void slotNotificationsReceived(const QJsonDocument &json, int statusCode);

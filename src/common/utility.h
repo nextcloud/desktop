@@ -145,7 +145,7 @@ namespace Utility {
     // if false, the two cases are two different files.
     OCSYNC_EXPORT bool fsCasePreserving();
 
-    // Check if two pathes that MUST exist are equal. This function
+    // Check if two paths that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.
     OCSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
@@ -167,7 +167,7 @@ namespace Utility {
      * Use this to get a string that describes the timespan between the first and
      * the second timestamp in a human readable and understandable form.
      *
-     * If the second parameter is ommitted, the current time is used.
+     * If the second parameter is omitted, the current time is used.
      */
     OCSYNC_EXPORT QString timeAgoInWords(const QDateTime &dt, const QDateTime &from = QDateTime());
 
@@ -185,9 +185,9 @@ namespace Utility {
         void reset();
 
         // out helpers, return the measured times.
-        QDateTime startTime() const;
-        QDateTime timeOfLap(const QString &lapName) const;
-        quint64 durationOfLap(const QString &lapName) const;
+        [[nodiscard]] QDateTime startTime() const;
+        [[nodiscard]] QDateTime timeOfLap(const QString &lapName) const;
+        [[nodiscard]] quint64 durationOfLap(const QString &lapName) const;
     };
 
     /**
@@ -223,10 +223,13 @@ namespace Utility {
     OCSYNC_EXPORT QString makeConflictFileName(
         const QString &fn, const QDateTime &dt, const QString &user);
 
+    OCSYNC_EXPORT QString makeCaseClashConflictFileName(const QString &filename, const QDateTime &datetime);
+
     /** Returns whether a file name indicates a conflict file
      */
-    OCSYNC_EXPORT bool isConflictFile(const char *name);
+    bool isConflictFile(const char *name) = delete;
     OCSYNC_EXPORT bool isConflictFile(const QString &name);
+    OCSYNC_EXPORT bool isCaseClashConflictFile(const QString &name);
 
     /** Find the base name for a conflict file name, using name pattern only
      *
@@ -246,6 +249,13 @@ namespace Utility {
      * @brief Retrieves current logged-in user name from the OS
      */
     OCSYNC_EXPORT QString getCurrentUserName();
+
+    /**
+     * @brief Registers the desktop app as a handler for a custom URI to enable local editing
+     */
+    OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
+
+    OCSYNC_EXPORT QString trailingSlashPath(const QString &path);
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
@@ -268,7 +278,7 @@ namespace Utility {
     {
     public:
         /**
-         * NTFS permissions lookup is diabled by default for performance reasons
+         * NTFS permissions lookup is disabled by default for performance reasons
          * Enable it and disable it again once we leave the scope
          * https://doc.qt.io/Qt-5/qfileinfo.html#ntfs-permissions
          */

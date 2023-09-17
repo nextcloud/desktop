@@ -1,180 +1,163 @@
-import QtQuick 2.9
-import QtQuick.Window 2.3
-import QtQuick.Controls 2.2
-import QtQuick.Layouts 1.2
+/*
+ * Copyright (C) 2019 by Dominique Fuchs <32204802+DominiqueFuchs@users.noreply.github.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
-MenuItem {
+AbstractButton {
     id: userLine
-    height: Style.trayWindowHeaderHeight
 
-    Accessible.role: Accessible.MenuItem
-    Accessible.name: qsTr("Account entry")
+    signal showUserStatusSelector(int id)
 
     property variant dialog;
     property variant comp;
-    activeFocusOnTab: false
 
-    signal showUserStatusSelectorDialog(int id)
+    Accessible.role: Accessible.MenuItem
+    Accessible.name: qsTr("Switch to account") + " " + model.name
 
-    RowLayout {
-        id: userLineLayout
-        spacing: 0
+    height: Style.trayWindowHeaderHeight
+
+    background: Rectangle {
         anchors.fill: parent
+        anchors.margins: 1
+        color: (userLine.hovered || userLine.visualFocus) &&
+               !(userMoreButton.hovered || userMoreButton.visualFocus) ?
+                   palette.highlight : palette.base
+    }
 
-        Button {
-            id: accountButton
-            Layout.preferredWidth: (userLineLayout.width * (5/6))
-            Layout.preferredHeight: (userLineLayout.height)
-            display: AbstractButton.IconOnly
-            hoverEnabled: true
-            flat: true
+    contentItem: RowLayout {
+        id: userLineLayout
+        spacing: Style.userStatusSpacing
 
-            Accessible.role: Accessible.Button
-            Accessible.name: qsTr("Switch to account") + " " + name
+        Image {
+            id: accountAvatar
+            Layout.leftMargin: 7
+            verticalAlignment: Qt.AlignCenter
+            cache: false
+            source: model.avatar !== "" ? model.avatar : Theme.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
+            Layout.preferredHeight: Style.accountAvatarSize
+            Layout.preferredWidth: Style.accountAvatarSize
 
-            onClicked: {
-                UserModel.currentUserId = id;
-                accountMenu.close();
+            Rectangle {
+                id: accountStatusIndicatorBackground
+                visible: model.isConnected && model.serverHasUserStatus
+                width: accountStatusIndicator.sourceSize.width + 2
+                height: width
+                anchors.bottom: accountAvatar.bottom
+                anchors.right: accountAvatar.right
+                color: userLine.hovered || userLine.visualFocus ? "#f6f6f6" : "white"
+                radius: width*0.5
             }
 
-            background: Item {
-                height: parent.height
-                width: userLine.menu ? userLine.menu.width : 0
-                Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 1
-                    color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : Style.backgroundColor
-                }
+            Image {
+                id: accountStatusIndicator
+                visible: model.isConnected && model.serverHasUserStatus
+                source: model.statusIcon
+                cache: false
+                x: accountStatusIndicatorBackground.x + 1
+                y: accountStatusIndicatorBackground.y + 1
+                sourceSize.width: Style.accountAvatarStateIndicatorSize
+                sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                Accessible.role: Accessible.Indicator
+                Accessible.name: model.desktopNotificationsAllowed ? qsTr("Current account status is online") : qsTr("Current account status is do not disturb")
+            }
+        }
+
+        ColumnLayout {
+            id: accountLabels
+            Layout.leftMargin: Style.accountLabelsSpacing
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            EnforcedPlainTextLabel {
+                id: accountUser
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+                verticalAlignment: Text.AlignBottom
+                text: name
+                elide: Text.ElideRight
+                font.pixelSize: Style.topLinePixelSize
+                font.bold: true
             }
 
             RowLayout {
-                id: accountControlRowLayout
-                anchors.fill: parent
-                spacing: Style.userStatusSpacing
-                Image {
-                    id: accountAvatar
-                    Layout.leftMargin: 7
-                    verticalAlignment: Qt.AlignCenter
-                    cache: false
-                    source: model.avatar != "" ? model.avatar : Theme.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
-                    Layout.preferredHeight: Style.accountAvatarSize
-                    Layout.preferredWidth: Style.accountAvatarSize
-                    Rectangle {
-                        id: accountStatusIndicatorBackground
-                        visible: model.isConnected &&
-                                 model.serverHasUserStatus
-                        width: accountStatusIndicator.sourceSize.width + 2
-                        height: width
-                        anchors.bottom: accountAvatar.bottom
-                        anchors.right: accountAvatar.right
-                        color: accountButton.hovered || accountButton.visualFocus ? "#f6f6f6" : "white"
-                        radius: width*0.5
-                    }
-                    Image {
-                        id: accountStatusIndicator
-                        visible: model.isConnected &&
-                                 model.serverHasUserStatus
-                        source: model.statusIcon
-                        cache: false
-                        x: accountStatusIndicatorBackground.x + 1
-                        y: accountStatusIndicatorBackground.y + 1
-                        sourceSize.width: Style.accountAvatarStateIndicatorSize
-                        sourceSize.height: Style.accountAvatarStateIndicatorSize
+                id: statusLayout
+                Layout.fillWidth: true
+                height: visible ? implicitHeight : 0
+                visible: model.isConnected &&
+                         model.serverHasUserStatus &&
+                         (model.statusEmoji !== "" || model.statusMessage !== "")
 
-                        Accessible.role: Accessible.Indicator
-                        Accessible.name: model.desktopNotificationsAllowed ? qsTr("Current account status is online") : qsTr("Current account status is do not disturb")
-                    }
+                EnforcedPlainTextLabel {
+                    id: emoji
+                    visible: model.statusEmoji !== ""
+                    text: statusEmoji
+                    topPadding: -Style.accountLabelsSpacing
                 }
 
-                Column {
-                    id: accountLabels
-                    Layout.leftMargin: Style.accountLabelsSpacing
+                EnforcedPlainTextLabel {
+                    id: message
                     Layout.fillWidth: true
-                    Layout.maximumWidth: parent.width - Style.accountLabelsSpacing
-                    Label {
-                        id: accountUser
-                        text: name
-                        elide: Text.ElideRight
-                        color: Style.ncTextColor
-                        font.pixelSize: Style.topLinePixelSize
-                        font.bold: true
-                        width: parent.width
-                    }
-                    Row {
-                        visible: model.isConnected &&
-                                 model.serverHasUserStatus
-                        width: parent.width
-                        Label {
-                            id: emoji
-                            visible: model.statusEmoji !== ""
-                            text: statusEmoji
-                            topPadding: -Style.accountLabelsSpacing
-                        }
-                        Label {
-                            id: message
-                            width: parent.width - parent.spacing - emoji.width
-                            visible: model.statusMessage !== ""
-                            text: statusMessage
-                            elide: Text.ElideRight
-                            color: Style.ncTextColor
-                            font.pixelSize: Style.subLinePixelSize
-                            leftPadding: Style.accountLabelsSpacing
-                        }
-                    }
-                    Label {
-                        id: accountServer
-                        width: Style.currentAccountLabelWidth
-                        height: Style.topLinePixelSize
-                        text: server
-                        elide: Text.ElideRight
-                        color: Style.ncTextColor
-                        font.pixelSize: Style.subLinePixelSize
-                    }
+                    visible: model.statusMessage !== ""
+                    text: statusMessage
+                    elide: Text.ElideRight
+                    font.pixelSize: Style.subLinePixelSize
+                    leftPadding: Style.accountLabelsSpacing
                 }
             }
-        } // accountButton
+
+            EnforcedPlainTextLabel {
+                id: accountServer
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+                verticalAlignment: Text.AlignTop
+                text: server
+                elide: Text.ElideRight
+                font.pixelSize: Style.subLinePixelSize
+            }
+        }
 
         Button {
             id: userMoreButton
-            Layout.preferredWidth: (userLineLayout.width * (1/6))
-            Layout.preferredHeight: userLineLayout.height
+            Layout.preferredWidth: Style.headerButtonIconSize
+            Layout.fillHeight: true
             flat: true
 
             icon.source: "qrc:///client/theme/more.svg"
-            icon.color: Style.ncTextColor
+            icon.color: palette.buttonText
 
             Accessible.role: Accessible.ButtonMenu
             Accessible.name: qsTr("Account actions")
             Accessible.onPressAction: userMoreButtonMouseArea.clicked()
 
-            onClicked: {
-                if (userMoreButtonMenu.visible) {
-                    userMoreButtonMenu.close()
-                } else {
-                    userMoreButtonMenu.popup()
-                }
-            }
-            background:
-                Rectangle {
-                color: userMoreButton.hovered || userMoreButton.visualFocus ? "grey" : "transparent"
-                opacity: 0.2
-                height: userMoreButton.height - 2
-                y: userMoreButton.y + 1
+            onClicked: userMoreButtonMenu.visible ? userMoreButtonMenu.close() : userMoreButtonMenu.popup()
+            background: Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : "transparent"
             }
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                background: Rectangle {
-                    border.color: Style.menuBorder
-                    color: Style.backgroundColor
-                    radius: 2
-                }
 
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
@@ -183,17 +166,7 @@ MenuItem {
                     font.pixelSize: Style.topLinePixelSize
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true
-                    onClicked: showUserStatusSelectorDialog(index)
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
-                        }
-                    }
+                    onClicked: showUserStatusSelector(index)
                 }
 
                 MenuItem {
@@ -212,7 +185,7 @@ MenuItem {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.parent.hovered ? palette.highlight : "transparent"
                         }
                     }
 
@@ -246,7 +219,7 @@ MenuItem {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.parent.hovered ? palette.highlight : "transparent"
                         }
                     }
 

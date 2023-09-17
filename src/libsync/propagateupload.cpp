@@ -130,7 +130,7 @@ bool PollJob::finished()
     }
 
     QByteArray jsonData = reply()->readAll().trimmed();
-    QJsonParseError jsonParseError;
+    QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << json << jsonParseError.errorString();
     if (jsonParseError.error != QJsonParseError::NoError) {
@@ -173,8 +173,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _finished(false)
     , _deleteExisting(false)
     , _aborting(false)
-    , _uploadEncryptedHelper(nullptr)
-    , _uploadingEncrypted(false)
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
@@ -221,7 +219,7 @@ void PropagateUploadFileCommon::start()
 
     if (!account->capabilities().clientSideEncryptionAvailable() ||
         !parentRec.isValid() ||
-        !parentRec._isE2eEncrypted) {
+        !parentRec.isE2eEncrypted()) {
         setupUnencryptedFile();
         return;
     }
@@ -257,6 +255,8 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
 }
 
 void PropagateUploadFileCommon::startUploadFile() {
+    Q_ASSERT(_item->_type != CSyncEnums::ItemTypeVirtualFile);
+
     if (propagator()->_abortRequested) {
         return;
     }
@@ -368,7 +368,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
 
 void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
 {
-    // Remove ourselfs from the list of active job, before any posible call to done()
+    // Remove ourselves from the list of active job, before any possible call to done()
     // When we start chunks, we will add it again, once for every chunks.
     propagator()->_activeJobList.removeOne(this);
 
@@ -629,10 +629,10 @@ void PropagateUploadFileCommon::slotPollFinished()
     finalize();
 }
 
-void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString &errorString)
+void PropagateUploadFileCommon::done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category)
 {
     _finished = true;
-    PropagateItemJob::done(status, errorString);
+    PropagateItemJob::done(status, errorString, category);
 }
 
 void PropagateUploadFileCommon::checkResettingErrors()
@@ -694,6 +694,13 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
         status = SyncFileItem::DetailError;
         errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
         emit propagator()->insufficientRemoteStorage();
+    } else if (_item->_httpErrorCode == 400) {
+        const auto exception = job->errorStringParsingBodyException(replyContent);
+
+        if (exception.endsWith(QStringLiteral("\\InvalidPath"))) {
+            errorString = tr("Unable to upload an item with invalid characters");
+            status = SyncFileItem::FileNameInvalidOnServer;
+        }
     }
 
     abortWithError(status, errorString);
@@ -716,7 +723,7 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
 }
 
-// This function is used whenever there is an error occuring and jobs might be in progress
+// This function is used whenever there is an error occurring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
     if (_aborting)
@@ -857,7 +864,7 @@ void PropagateUploadFileCommon::abortNetworkJobs(
 
         // Abort the job
         if (abortType == AbortType::Asynchronous) {
-            // Connect to finished signal of job reply to asynchonously finish the abort
+            // Connect to finished signal of job reply to asynchronously finish the abort
             connect(reply, &QNetworkReply::finished, this, oneAbortFinished);
         }
         reply->abort();

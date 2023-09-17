@@ -57,12 +57,6 @@ public:
      */
     qint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
 
-    /** The minimum chunk size in bytes for chunked uploads */
-    qint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
-
-    /** The maximum chunk size in bytes for chunked uploads */
-    qint64 _maxChunkSize = 1000 * 1000 * 1000; // 1000MB
-
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
      * Set to 0 it will disable dynamic chunk sizing.
@@ -71,6 +65,17 @@ public:
 
     /** The maximum number of active jobs in parallel  */
     int _parallelNetworkJobs = 6;
+
+    static constexpr auto chunkV2MinChunkSize = 5LL * 1000LL * 1000LL; // 5 MB
+    static constexpr auto chunkV2MaxChunkSize = 5LL * 1000LL * 1000LL * 1000LL; // 5 GB
+
+    /** The minimum chunk size in bytes for chunked uploads */
+    [[nodiscard]] qint64 minChunkSize() const;
+    void setMinChunkSize(const qint64 minChunkSize);
+
+    /** The maximum chunk size in bytes for chunked uploads */
+    [[nodiscard]] qint64 maxChunkSize() const;
+    void setMaxChunkSize(const qint64 maxChunkSize);
 
     /** Reads settings from env vars where available.
      *
@@ -92,7 +97,7 @@ public:
     /** A regular expression to match file names
      * If no pattern is provided the default is an invalid regular expression.
      */
-    QRegularExpression fileRegex() const;
+    [[nodiscard]] QRegularExpression fileRegex() const;
 
     /**
      * A pattern like *.txt, matching only file names
@@ -106,10 +111,13 @@ public:
 
 private:
     /**
-     * Only sync files that mathc the expression
+     * Only sync files that match the expression
      * Invalid pattern by default.
      */
     QRegularExpression _fileRegex = QRegularExpression(QStringLiteral("("));
+
+    qint64 _minChunkSize = chunkV2MinChunkSize;
+    qint64 _maxChunkSize = chunkV2MaxChunkSize;
 };
 
 }

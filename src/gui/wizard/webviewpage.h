@@ -18,10 +18,10 @@ public:
 
     void initializePage() override;
     void cleanupPage() override;
-    int nextId() const override;
-    bool isComplete() const override;
+    [[nodiscard]] int nextId() const override;
+    [[nodiscard]] bool isComplete() const override;
 
-    AbstractCredentials* getCredentials() const override;
+    [[nodiscard]] AbstractCredentials* getCredentials() const override;
     void setConnected();
 
 signals:
@@ -40,7 +40,7 @@ private:
     QString _user;
     QString _pass;
 
-    bool _useSystemProxy;
+    bool _useSystemProxy = false;
 
     QSize _originalWizardSize;
 };

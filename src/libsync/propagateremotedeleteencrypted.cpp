@@ -51,7 +51,14 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
         return;
     }
 
-    FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+    FolderMetadata metadata(_propagator->account(),
+                            _item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                            json.toJson(QJsonDocument::Compact), statusCode);
+
+    if (!metadata.isMetadataSetup()) {
+        taskFailed();
+        return;
+    }
 
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata Received, preparing it for removal of the file";
 

@@ -12,7 +12,6 @@ class QVBoxLayout;
 
 namespace OCC {
 
-class HeaderBanner;
 #ifdef WITH_WEBENGINE
 class WebView;
 #endif // WITH_WEBENGINE
@@ -28,7 +27,7 @@ public:
     void setInfo(const QString &msg);
     void setError(const QString &error);
 
-    bool isUsingFlow2() const {
+    [[nodiscard]] bool isUsingFlow2() const {
         return _useFlow2;
     }
 
@@ -51,16 +50,15 @@ private:
 
     bool _useFlow2;
 
-    Flow2AuthWidget *_flow2AuthWidget;
+    Flow2AuthWidget *_flow2AuthWidget = nullptr;
 #ifdef WITH_WEBENGINE
-    WebView *_webView;
+    WebView *_webView = nullptr;
 #endif // WITH_WEBENGINE
 
     QLabel *_errorLabel;
     QLabel *_infoLabel;
     QVBoxLayout *_layout;
     QVBoxLayout *_containerLayout;
-    HeaderBanner *_headerBanner;
 };
 
 } // namespace OCC

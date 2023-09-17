@@ -76,6 +76,17 @@
     </dict>
 </array>
 
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleURLName</key>
+        <string>@APPLICATION_NAME@ Edit Locally</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>@APPLICATION_URI_HANDLER_SCHEME@</string>
+        </array>
+    </dict>
+</array>
 
 </dict>
 </plist>

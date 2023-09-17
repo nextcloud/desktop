@@ -20,19 +20,20 @@
 #include <QDesktopServices>
 #include <QApplication>
 
-#include "wizard/owncloudwizardcommon.h"
-#include "wizard/owncloudwizard.h"
-#include "owncloudsetupwizard.h"
-#include "configfile.h"
-#include "folderman.h"
 #include "accessmanager.h"
 #include "account.h"
-#include "networkjobs.h"
-#include "sslerrordialog.h"
 #include "accountmanager.h"
 #include "clientproxy.h"
+#include "common/utility.h"
+#include "configfile.h"
 #include "filesystem.h"
+#include "folderman.h"
+#include "networkjobs.h"
 #include "owncloudgui.h"
+#include "owncloudsetupwizard.h"
+#include "sslerrordialog.h"
+#include "wizard/owncloudwizard.h"
+#include "wizard/owncloudwizardcommon.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -69,6 +70,14 @@ static QPointer<OwncloudSetupWizard> wiz = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
+    ConfigFile cfg;
+    if (!cfg.overrideServerUrl().isEmpty()) {
+        Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
+        Theme::instance()->setForceOverrideServerUrl(true);
+        Theme::instance()->setVfsEnabled(cfg.isVfsEnabled());
+
+        Theme::instance()->setStartLoginFlowAutomatically(true);
+    }
     if (!wiz.isNull()) {
         bringWizardToFrontIfVisible();
         return;
@@ -109,26 +118,28 @@ void OwncloudSetupWizard::startWizard()
     }
 
     _ocWizard->setProperty("localFolder", localFolder);
-
-    // remember the local folder to compare later if it changed, but clean first
-    QString lf = QDir::fromNativeSeparators(localFolder);
-    if (!lf.endsWith(QLatin1Char('/'))) {
-        lf.append(QLatin1Char('/'));
+    {
+        ConfigFile cfg;
+        if (!cfg.overrideLocalDir().isEmpty()) {
+            _ocWizard->setProperty("localFolder", cfg.overrideLocalDir());
+        }
     }
 
-    _initLocalFolder = lf;
-
+    // remember the local folder to compare later if it changed, but clean first
+    _initLocalFolder = Utility::trailingSlashPath(QDir::fromNativeSeparators(localFolder));
     _ocWizard->setRemoteFolder(_remoteFolder);
 
+    const auto isEnforcedServerSetup =
+        Theme::instance()->startLoginFlowAutomatically() && Theme::instance()->forceOverrideServerUrl() && !account->url().isEmpty();
+
 #ifdef WITH_PROVIDERS
-    const auto startPage = WizardCommon::Page_Welcome;
+    const auto startPage = isEnforcedServerSetup ? WizardCommon::Page_ServerSetup : WizardCommon::Page_Welcome;
 #else // WITH_PROVIDERS
     const auto startPage = WizardCommon::Page_ServerSetup;
 #endif // WITH_PROVIDERS
     _ocWizard->setStartId(startPage);
-
     _ocWizard->restart();
-
+    _ocWizard->adjustWizardSize();
     _ocWizard->open();
     _ocWizard->raise();
 }

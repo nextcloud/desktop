@@ -1,5 +1,6 @@
 project(gui)
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 Xml Network)
+find_package(KF5Archive REQUIRED)
 
 if(QUICK_COMPILER)
         find_package(Qt5QuickCompiler)
@@ -27,8 +28,8 @@ set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 set(client_UI_SRCS
     accountsettings.ui
     conflictdialog.ui
-    internallinkwidget.ui
     invalidfilenamedialog.ui
+    caseclashfilenamedialog.ui
     foldercreationdialog.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -38,10 +39,6 @@ set(client_UI_SRCS
     ignorelisttablewidget.ui
     networksettings.ui
     settingsdialog.ui
-    sharedialog.ui
-    sharelinkwidget.ui
-    shareusergroupwidget.ui
-    shareuserline.ui
     sslerrordialog.ui
     addcertificatedialog.ui
     passwordinputdialog.ui
@@ -68,10 +65,16 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.h
     accountsettings.cpp
+    accountsetupfromcommandlinejob.h
+    accountsetupfromcommandlinejob.cpp
+    accountsetupcommandlinemanager.h
+    accountsetupcommandlinemanager.cpp
     application.h
     application.cpp
     invalidfilenamedialog.h
     invalidfilenamedialog.cpp
+    caseclashfilenamedialog.h
+    caseclashfilenamedialog.cpp
     callstatechecker.h
     callstatechecker.cpp
     conflictdialog.h
@@ -80,6 +83,12 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.h
     connectionvalidator.cpp
+    editlocallyjob.h
+    editlocallyjob.cpp
+    editlocallymanager.h
+    editlocallymanager.cpp
+    filetagmodel.h
+    filetagmodel.cpp
     folder.h
     folder.cpp
     foldercreationdialog.h
@@ -100,8 +109,6 @@ set(client_SRCS
     generalsettings.cpp
     legalnotice.h
     legalnotice.cpp
-    internallinkwidget.h
-    internallinkwidget.cpp
     ignorelisteditor.h
     ignorelisteditor.cpp
     ignorelisttablewidget.h
@@ -134,14 +141,8 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.h
     settingsdialog.cpp
-    sharedialog.h
-    sharedialog.cpp
-    sharelinkwidget.h
-    sharelinkwidget.cpp
     sharemanager.h
     sharemanager.cpp
-    shareusergroupwidget.h
-    shareusergroupwidget.cpp
     profilepagewidget.h
     profilepagewidget.cpp
     sharee.h
@@ -176,8 +177,6 @@ set(client_SRCS
     guiutility.cpp
     elidedlabel.h
     elidedlabel.cpp
-    headerbanner.h
-    headerbanner.cpp
     iconutils.h
     iconutils.cpp
     remotewipe.h
@@ -186,8 +185,20 @@ set(client_SRCS
     userstatusselectormodel.cpp
     emojimodel.h
     emojimodel.cpp
+    syncconflictsmodel.h
+    syncconflictsmodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
+    filedetails/datefieldbackend.h
+    filedetails/datefieldbackend.cpp
+    filedetails/filedetails.h
+    filedetails/filedetails.cpp
+    filedetails/sharemodel.h
+    filedetails/sharemodel.cpp
+    filedetails/shareemodel.h
+    filedetails/shareemodel.cpp
+    filedetails/sortedsharemodel.h
+    filedetails/sortedsharemodel.cpp
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h
@@ -206,6 +217,8 @@ set(client_SRCS
     tray/usermodel.cpp
     tray/notificationhandler.h
     tray/notificationhandler.cpp
+    tray/sortedactivitylistmodel.h
+    tray/sortedactivitylistmodel.cpp
     creds/credentialsfactory.h
     tray/talkreply.cpp
     creds/credentialsfactory.cpp
@@ -273,6 +286,19 @@ IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
+    if (BUILD_FILE_PROVIDER_MODULE)
+        list(APPEND client_SRCS
+            macOS/fileprovider.h
+            macOS/fileprovider_mac.mm
+            macOS/fileproviderdomainmanager.h
+            macOS/fileproviderdomainmanager_mac.mm
+            macOS/fileprovidersocketcontroller.h
+            macOS/fileprovidersocketcontroller.cpp
+            macOS/fileprovidersocketserver.h
+            macOS/fileprovidersocketserver.cpp
+            macOS/fileprovidersocketserver_mac.mm)
+    endif()
+
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
         add_definitions(-DHAVE_SPARKLE)
@@ -314,10 +340,15 @@ set(3rdparty_SRC
     ../3rdparty/kirigami/wheelhandler.cpp
    )
 
+set_property(SOURCE ../3rdparty/kmessagewidget/kmessagewidget.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+set_property(SOURCE ../3rdparty/kirigami/wheelhandler.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+
 if(NOT WIN32)
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
+   set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
+   set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_win.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endif()
 
 find_package(Qt5LinguistTools)
@@ -350,11 +381,7 @@ if(Qt5Keychain_FOUND)
 endif()
 
 # add executable icon on windows and osx
-
-# UPSTREAM our ECMAddAppIcon.cmake then require that version here
-# find_package(ECM 1.7.0 REQUIRED NO_MODULE)
-# list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-include(ECMAddAppIcon)
+include(GenerateIconsUtils)
 
 # For historical reasons we can not use the application_shortname
 # for ownCloud but must rather set it manually.
@@ -365,61 +392,6 @@ endif()
 if(NOT DEFINED APPLICATION_FOLDER_ICON_INDEX)
     set(APPLICATION_FOLDER_ICON_INDEX 0)
 endif()
-
-# Generate png icons from svg
-find_program(SVG_CONVERTER
-  NAMES inkscape inkscape.exe rsvg-convert
-  REQUIRED
-  HINTS "C:\\Program Files\\Inkscape\\bin" "/usr/bin" ENV SVG_CONVERTER_DIR)
-# REQUIRED keyword is only supported on CMake 3.18 and above
-if (NOT SVG_CONVERTER)
-  message(FATAL_ERROR "Could not find a suitable svg converter. Set SVG_CONVERTER_DIR to the path of either the inkscape or rsvg-convert executable.")
-endif()
-
-function(generate_sized_png_from_svg icon_path size)
-  set(options)
-  set(oneValueArgs OUTPUT_ICON_NAME OUTPUT_ICON_FULL_NAME_WLE OUTPUT_ICON_PATH)
-  set(multiValueArgs)
-
-  cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-
-  get_filename_component(icon_name_dir ${icon_path} DIRECTORY)
-  get_filename_component(icon_name_wle ${icon_path} NAME_WLE)
-
-  if (ARG_OUTPUT_ICON_NAME)
-    set(icon_name_wle ${ARG_OUTPUT_ICON_NAME})
-  endif ()
-
-  if (ARG_OUTPUT_ICON_PATH)
-    set(icon_name_dir ${ARG_OUTPUT_ICON_PATH})
-  endif ()
-
-  set(output_icon_full_name_wle "${size}-${icon_name_wle}")
-
-  if (ARG_OUTPUT_ICON_FULL_NAME_WLE)
-    set(output_icon_full_name_wle ${ARG_OUTPUT_ICON_FULL_NAME_WLE})
-  endif ()
-
-  if (EXISTS "${icon_name_dir}/${output_icon_full_name_wle}.png")
-    return()
-  endif()
-
-  set(icon_output_name "${output_icon_full_name_wle}.png")
-  message(STATUS "Generate ${icon_output_name}")
-  execute_process(COMMAND
-    "${SVG_CONVERTER}" -w ${size} -h ${size} "${icon_path}" -o "${icon_output_name}"
-    WORKING_DIRECTORY "${icon_name_dir}"
-    RESULT_VARIABLE
-    SVG_CONVERTER_SIDEBAR_ERROR
-    OUTPUT_QUIET
-    ERROR_QUIET)
-
-  if (SVG_CONVERTER_SIDEBAR_ERROR)
-    message(FATAL_ERROR
-      "${SVG_CONVERTER} could not generate icon: ${SVG_CONVERTER_SIDEBAR_ERROR}")
-  else()
-  endif()
-endfunction()
 
 set(STATE_ICONS_COLORS colored black white)
 
@@ -566,9 +538,20 @@ target_link_libraries(nextcloudCore
   Qt5::Qml
   Qt5::Quick
   Qt5::QuickControls2
+  KF5::Archive
   )
 
 add_subdirectory(socketapi)
+
+# skip unity inclusion for files which cause problems with a CMake unity build
+set_property(SOURCE
+    ${CMAKE_CURRENT_SOURCE_DIR}/socketapi/socketapi.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/socketapi/socketuploadjob.cpp
+    PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+
+foreach(FILE IN LISTS client_UI_SRCS)
+	set_property(SOURCE ${FILE} PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+endforeach()
 
 if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   target_link_libraries(nextcloudCore PUBLIC Qt5::WebEngineWidgets)
@@ -677,6 +660,12 @@ if(TARGET PkgConfig::CLOUDPROVIDERS)
       PkgConfig::GLIB2
       PkgConfig::GIO
     )
+
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "Implements=org.freedesktop.CloudProviders\n")
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "[org.freedesktop.CloudProviders]")
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "BusName=${LIBCLOUDPROVIDERS_DBUS_BUS_NAME}")
+    list(APPEND LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "ObjectPath=${LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH}")
+    list(JOIN LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS "\n" LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS)
 endif()
 
 ## handle DBUS for Fdo notifications
@@ -688,7 +677,12 @@ endif()
 
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
-    target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+
+    if (BUILD_FILE_PROVIDER_MODULE)
+        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
+    else()
+        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+    endif()
 endif()
 
 if(WITH_CRASHREPORTER)

@@ -37,7 +37,7 @@ public:
 
     void clearMessage() override;
 
-    UserStatus userStatus() const override;
+    [[nodiscard]] UserStatus userStatus() const override;
 
 private:
     void onUserStatusFetched(const QJsonDocument &json, int statusCode);

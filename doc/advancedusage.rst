@@ -9,6 +9,11 @@ Options
 .. index:: command line switches, command line, options, parameters
 .. include:: options.rst
 
+Mass Deployment And Account Creation
+-------
+.. index:: mass deployment
+.. include:: massdeploymentcommandline.rst
+
 Configuration File
 ------------------
 .. index:: config file
@@ -28,3 +33,8 @@ Low Disk Space
 --------------
 .. index:: disk space
 .. include:: lowdiskspace.rst
+
+Wizard Account Setup Command-line Options
+-------
+.. index:: wizard accountsetup command-line
+.. include:: wizardaccountsetupcommandline.rst

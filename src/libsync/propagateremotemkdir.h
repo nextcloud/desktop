@@ -28,8 +28,8 @@ class PropagateRemoteMkdir : public PropagateItemJob
 {
     Q_OBJECT
     QPointer<AbstractNetworkJob> _job;
-    bool _deleteExisting;
-    PropagateUploadEncrypted *_uploadEncryptedHelper;
+    bool _deleteExisting = false;
+    PropagateUploadEncrypted *_uploadEncryptedHelper = nullptr;
     friend class PropagateDirectory; // So it can access the _item;
 public:
     PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item);

@@ -28,10 +28,10 @@ public:
     explicit ElidedLabel(const QString &text, QWidget *parent = nullptr);
 
     void setText(const QString &text);
-    const QString &text() const { return _text; }
+    [[nodiscard]] const QString &text() const { return _text; }
 
     void setElideMode(Qt::TextElideMode elideMode);
-    Qt::TextElideMode elideMode() const { return _elideMode; }
+    [[nodiscard]] Qt::TextElideMode elideMode() const { return _elideMode; }
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

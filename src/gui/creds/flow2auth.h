@@ -51,17 +51,17 @@ public:
     void start();
     void openBrowser();
     void copyLinkToClipboard();
-    QUrl authorisationLink() const;
+    [[nodiscard]] QUrl authorisationLink() const;
 
 signals:
     /**
      * The state has changed.
      * when logged in, appPassword has the value of the app password.
      */
-    void result(Flow2Auth::Result result, const QString &errorString = QString(),
+    void result(OCC::Flow2Auth::Result result, const QString &errorString = QString(),
                 const QString &user = QString(), const QString &appPassword = QString());
 
-    void statusChanged(const PollStatus status, int secondsLeft);
+    void statusChanged(const OCC::Flow2Auth::PollStatus status, int secondsLeft);
 
 public slots:
     void slotPollNow();
@@ -77,10 +77,10 @@ private:
     QString _pollToken;
     QString _pollEndpoint;
     QTimer _pollTimer;
-    qint64 _secondsLeft;
-    qint64 _secondsInterval;
-    bool _isBusy;
-    bool _hasToken;
+    qint64 _secondsLeft = 0LL;
+    qint64 _secondsInterval = 0LL;
+    bool _isBusy = false;
+    bool _hasToken = false;
     bool _enforceHttps = false;
 };
 

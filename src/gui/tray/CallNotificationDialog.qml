@@ -22,7 +22,7 @@ import QtMultimedia 5.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 
-Window {
+ApplicationWindow {
     id: root
     color: "transparent"
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
@@ -48,10 +48,32 @@ Window {
         callStateChecker.checking = false;
         ringSound.stop();
         root.close();
+
+        Systray.destroyDialog(root);
     }
 
     width: root.windowWidth
     height: rootBackground.height
+
+    // TODO: Rather than setting all these palette colours manually,
+    // create a custom style and do it for all components globally
+    palette {
+        text: Style.ncTextColor
+        windowText: Style.ncTextColor
+        buttonText: Style.ncTextColor
+        brightText: Style.ncTextBrightColor
+        highlight: Style.lightHover
+        highlightedText: Style.ncTextColor
+        light: Style.lightHover
+        midlight: Style.ncSecondaryTextColor
+        mid: Style.darkerHover
+        dark: Style.menuBorder
+        button: Style.buttonBackgroundColor
+        window: Style.backgroundColor
+        base: Style.backgroundColor
+        toolTipBase: Style.backgroundColor
+        toolTipText: Style.ncTextColor
+    }
 
     Component.onCompleted: {
         Systray.forceWindowInit(root);
@@ -87,7 +109,7 @@ Window {
         radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         color: Style.backgroundColor
         border.width: Style.trayWindowBorderWidth
-        border.color: Style.menuBorder
+        border.color: palette.dark
         clip: true
 
         Loader {
@@ -162,7 +184,7 @@ Window {
                     cache: true
 
                     source: root.usingUserAvatar ? root.talkNotificationData.userAvatar :
-                                                   Theme.darkMode ? root.talkIcon + Style.ncTextColor : root.talkIcon + Style.ncBlue
+                                                   Theme.darkMode ? root.talkIcon + palette.windowText : root.talkIcon + Style.ncBlue
                     sourceSize.width: Style.accountAvatarSize
                     sourceSize.height: Style.accountAvatarSize
 
@@ -190,10 +212,10 @@ Window {
                 }
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: message
                 text: root.subject
-                color: root.usingUserAvatar ? "white" : Style.ncTextColor
+                color: root.usingUserAvatar ? palette.brightText : palette.windowText
                 font.pixelSize: Style.topLinePixelSize
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
@@ -217,14 +239,14 @@ Window {
 
                         visible: isAnswerCallButton
                         text: modelData.label
-                        bold: true
+                        contentsFont.bold: true
                         bgColor: Style.ncBlue
-                        bgOpacity: 0.8
+                        bgNormalOpacity: 0.8
 
-                        textColor: Style.ncHeaderTextColor
+                        textColor: palette.brightText
 
-                        imageSource: root.talkIcon + Style.ncHeaderTextColor
-                        imageSourceHover: root.talkIcon + Style.ncHeaderTextColor
+                        icon.source: root.talkIcon + palette.brightText
+                        imageSourceHover: root.talkIcon + palette.brightText
 
                         Layout.fillWidth: true
                         Layout.preferredHeight: Style.callNotificationPrimaryButtonMinHeight
@@ -244,13 +266,13 @@ Window {
                 CustomButton {
                     id: declineCall
                     text: qsTr("Decline")
-                    bold: true
+                    contentsFont.bold: true
                     bgColor: Style.errorBoxBackgroundColor
-                    bgOpacity: 0.8
+                    bgNormalOpacity: 0.8
 
-                    textColor: Style.ncHeaderTextColor
+                    textColor: palette.brightText
 
-                    imageSource: root.deleteIcon + "white"
+                    icon.source: root.deleteIcon + "white"
                     imageSourceHover: root.deleteIcon + "white"
 
                     Layout.fillWidth: true

@@ -7,7 +7,7 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
 
 RowLayout {
-    id: layout
+    id: root
 
     property alias model: syncStatus
 
@@ -47,16 +47,16 @@ RowLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        Text {
+        EnforcedPlainTextLabel {
             id: syncProgressText
-            
+
             Layout.fillWidth: true
 
             text: syncStatus.syncStatusString
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Style.topLinePixelSize
             font.bold: true
-            color: Style.ncTextColor
+            wrapMode: Text.Wrap
         }
 
         Loader {
@@ -64,23 +64,98 @@ RowLayout {
 
             active: syncStatus.syncing
             visible: syncStatus.syncing
-            
+
             sourceComponent: ProgressBar {
                 id: syncProgressBar
 
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally.
+                //
+                // Additionally, we need to override the entire palette when we
+                // set one palette property, as otherwise we default back to the
+                // theme palette -- not the parent palette
+                palette {
+                    text: Style.ncTextColor
+                    windowText: Style.ncTextColor
+                    buttonText: Style.ncTextColor
+                    brightText: Style.ncTextBrightColor
+                    highlight: Style.lightHover
+                    highlightedText: Style.ncTextColor
+                    light: Style.lightHover
+                    midlight: Style.ncSecondaryTextColor
+                    mid: Style.darkerHover
+                    dark: Style.menuBorder
+                    button: Style.buttonBackgroundColor
+                    window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the progress bar
+                    base: Style.backgroundColor
+                    toolTipBase: Style.backgroundColor
+                    toolTipText: Style.ncTextColor
+                }
                 value: syncStatus.syncProgress
             }
         }
 
-        Text {
+        EnforcedPlainTextLabel {
             id: syncProgressDetailText
 
             Layout.fillWidth: true
 
             text: syncStatus.syncStatusDetailString
             visible: syncStatus.syncStatusDetailString !== ""
-            color: Style.ncSecondaryTextColor
+            color: palette.midlight
             font.pixelSize: Style.subLinePixelSize
+            wrapMode: Text.Wrap
         }
+    }
+
+    CustomButton {
+        id: syncNowButton
+
+        FontMetrics {
+            id: syncNowFm
+            font: syncNowButton.contentsFont
+        }
+
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Sync now")
+
+        padding: Style.smallSpacing
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        contentsFont.bold: true
+        bgColor: Style.currentUserHeaderColor
+
+        visible: !activityModel.hasSyncConflicts &&
+                 !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
+        enabled: visible
+        onClicked: {
+            if(!syncStatus.syncing) {
+                NC.UserModel.currentUser.forceSyncNow();
+            }
+        }
+    }
+
+    CustomButton {
+        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
+                               leftPadding +
+                               rightPadding +
+                               Style.standardSpacing * 2
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Resolve conflicts")
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        contentsFont.bold: true
+        bgColor: Style.currentUserHeaderColor
+
+        visible: activityModel.hasSyncConflicts &&
+                 !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
+        enabled: visible
+        onClicked: NC.Systray.createResolveConflictsDialog(activityModel.allConflicts);
     }
 }

@@ -23,12 +23,15 @@
 #include <QPointer>
 #include <QIODevice>
 #include <QMutex>
+#include <QNetworkReply>
 
-#include "csync.h"
-#include "syncfileitem.h"
-#include "common/syncjournaldb.h"
-#include "bandwidthmanager.h"
 #include "accountfwd.h"
+#include "bandwidthmanager.h"
+#include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "csync.h"
+#include "progressdispatcher.h"
+#include "syncfileitem.h"
 #include "syncoptions.h"
 
 #include <deque>
@@ -62,7 +65,7 @@ class PropagatorCompositeJob;
  *
  * @ingroup libsync
  */
-class PropagatorJob : public QObject
+class OWNCLOUDSYNC_EXPORT PropagatorJob : public QObject
 {
     Q_OBJECT
 
@@ -81,7 +84,7 @@ public:
         Running,
         Finished
     };
-    JobState _state;
+    JobState _state = NotYetStarted;
 
     Q_ENUM(JobState)
 
@@ -98,7 +101,7 @@ public:
 
     Q_ENUM(JobParallelism)
 
-    virtual JobParallelism parallelism() { return FullParallelism; }
+    [[nodiscard]] virtual JobParallelism parallelism() const { return FullParallelism; }
 
     /**
      * For "small" jobs
@@ -110,7 +113,7 @@ public:
      * Note that this does *not* include the disk space that's already
      * in use by running jobs for things like a download-in-progress.
      */
-    virtual qint64 committedDiskSpace() const { return 0; }
+    [[nodiscard]] virtual qint64 committedDiskSpace() const { return 0; }
 
     /** Set the associated composite job
      *
@@ -145,7 +148,9 @@ signals:
      */
     void abortFinished(SyncFileItem::Status status = SyncFileItem::NormalError);
 protected:
-    OwncloudPropagator *propagator() const;
+    [[nodiscard]] OwncloudPropagator *propagator() const;
+
+    static ErrorCategory errorCategoryFromNetworkError(const QNetworkReply::NetworkError error);
 
     /** If this job gets added to a composite job, this will point to the parent.
      *
@@ -165,13 +170,13 @@ class PropagateItemJob : public PropagatorJob
 {
     Q_OBJECT
 protected:
-    virtual void done(SyncFileItem::Status status, const QString &errorString = QString());
+    virtual void done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category);
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.
      * It is displayed in the activity view.
      */
-    QString restoreJobMsg() const
+    [[nodiscard]] QString restoreJobMsg() const
     {
         return _item->_isRestoration ? _item->_errorString : QString();
     }
@@ -181,26 +186,25 @@ protected:
         _item->_errorString = msg;
     }
 
-    bool hasEncryptedAncestor() const;
+    [[nodiscard]] bool hasEncryptedAncestor() const;
 
 protected slots:
     void slotRestoreJobFinished(SyncFileItem::Status status);
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
-    JobParallelism _parallelism;
+    JobParallelism _parallelism = FullParallelism;
 
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator)
-        , _parallelism(FullParallelism)
         , _item(item)
     {
         // we should always execute jobs that process the E2EE API calls as sequential jobs
         // TODO: In fact, we must make sure Lock/Unlock are not colliding and always wait for each other to complete. So, we could refactor this "_parallelism" later
         // so every "PropagateItemJob" that will potentially execute Lock job on E2EE folder will get executed sequentially.
         // As an alternative, we could optimize Lock/Unlock calls, so we do a batch-write on one folder and only lock and unlock a folder once per batch.
-        _parallelism = (_item->_isEncrypted || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
+        _parallelism = (_item->isEncrypted() || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
     }
     ~PropagateItemJob() override;
 
@@ -216,7 +220,7 @@ public:
         return true;
     }
 
-    JobParallelism parallelism() override { return _parallelism; }
+    [[nodiscard]] JobParallelism parallelism() const override { return _parallelism; }
 
     SyncFileItemPtr _item;
 
@@ -235,12 +239,11 @@ public:
     QVector<PropagatorJob *> _jobsToDo;
     SyncFileItemVector _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
-    SyncFileItem::Status _hasError; // NoStatus,  or NormalError / SoftError if there was an error
-    quint64 _abortsCount;
+    SyncFileItem::Status _hasError = SyncFileItem::NoStatus; // NoStatus,  or NormalError / SoftError if there was an error
+    quint64 _abortsCount = 0;
 
     explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
         : PropagatorJob(propagator)
-        , _hasError(SyncFileItem::NoStatus), _abortsCount(0)
     {
     }
 
@@ -256,7 +259,7 @@ public:
     }
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
 
     /*
      * Abort synchronously or asynchronously - some jobs
@@ -279,11 +282,11 @@ public:
         }
     }
 
-    qint64 committedDiskSpace() const override;
+    [[nodiscard]] qint64 committedDiskSpace() const override;
 
 private slots:
     void slotSubJobAbortFinished();
-    bool possiblyRunNextJob(PropagatorJob *next)
+    bool possiblyRunNextJob(OCC::PropagatorJob *next)
     {
         if (next->_state == NotYetStarted) {
             connect(next, &PropagatorJob::finished, this, &PropagatorCompositeJob::slotSubJobFinished);
@@ -291,7 +294,7 @@ private slots:
         return next->scheduleSelfOrChild();
     }
 
-    void slotSubJobFinished(SyncFileItem::Status status);
+    void slotSubJobFinished(OCC::SyncFileItem::Status status);
     void finalize();
 };
 
@@ -322,7 +325,7 @@ public:
     }
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override
     {
         if (_firstJob)
@@ -342,15 +345,15 @@ public:
     }
 
 
-    qint64 committedDiskSpace() const override
+    [[nodiscard]] qint64 committedDiskSpace() const override
     {
         return _subJobs.committedDiskSpace();
     }
 
 private slots:
 
-    void slotFirstJobFinished(SyncFileItem::Status status);
-    virtual void slotSubJobsFinished(SyncFileItem::Status status);
+    void slotFirstJobFinished(OCC::SyncFileItem::Status status);
+    virtual void slotSubJobsFinished(OCC::SyncFileItem::Status status);
 
 };
 
@@ -365,23 +368,28 @@ class OWNCLOUDSYNC_EXPORT PropagateRootDirectory : public PropagateDirectory
 {
     Q_OBJECT
 public:
-    PropagatorCompositeJob _dirDeletionJobs;
-
     explicit PropagateRootDirectory(OwncloudPropagator *propagator);
 
     bool scheduleSelfOrChild() override;
-    JobParallelism parallelism() override;
+    [[nodiscard]] JobParallelism parallelism() const override;
     void abort(PropagatorJob::AbortType abortType) override;
 
-    qint64 committedDiskSpace() const override;
+    [[nodiscard]] qint64 committedDiskSpace() const override;
+
+public slots:
+    void appendDirDeletionJob(OCC::PropagatorJob *job);
 
 private slots:
-    void slotSubJobsFinished(SyncFileItem::Status status) override;
-    void slotDirDeletionJobsFinished(SyncFileItem::Status status);
+    void slotSubJobsFinished(OCC::SyncFileItem::Status status) override;
+    void slotDirDeletionJobsFinished(OCC::SyncFileItem::Status status);
 
 private:
 
     bool scheduleDelayedJobs();
+
+    PropagatorCompositeJob _dirDeletionJobs;
+
+    SyncFileItem::Status _errorStatus = SyncFileItem::Status::NoStatus;
 };
 
 /**
@@ -396,19 +404,7 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() override
-    {
-        SyncFileItem::Status status = _item->_status;
-        if (status == SyncFileItem::NoStatus) {
-            if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
-                status = SyncFileItem::NormalError;
-            } else {
-                status = SyncFileItem::FileIgnored;
-                ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
-            }
-        }
-        done(status, _item->_errorString);
-    }
+    void start() override;
 };
 
 class PropagateUploadFileCommon;
@@ -418,20 +414,16 @@ class OWNCLOUDSYNC_EXPORT OwncloudPropagator : public QObject
     Q_OBJECT
 public:
     SyncJournalDb *const _journal;
-    bool _finishedEmited; // used to ensure that finished is only emitted once
+    bool _finishedEmited = false; // used to ensure that finished is only emitted once
 
 public:
-    OwncloudPropagator(AccountPtr account, const QString &localDir,
-                       const QString &remoteFolder, SyncJournalDb *progressDb,
-                       QSet<QString> &bulkUploadBlackList)
+    OwncloudPropagator(AccountPtr account, const QString &localDir, const QString &remoteFolder, SyncJournalDb *progressDb, QSet<QString> &bulkUploadBlackList)
         : _journal(progressDb)
-        , _finishedEmited(false)
         , _bandwidthManager(this)
-        , _anotherSyncNeeded(false)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
-        , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
-        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
+        , _localDir(Utility::trailingSlashPath(localDir))
+        , _remoteFolder(Utility::trailingSlashPath(remoteFolder))
         , _bulkUploadBlackList(bulkUploadBlackList)
     {
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
@@ -453,7 +445,7 @@ public:
                               QString &removedDirectory,
                               QString &maybeConflictDirectory);
 
-    const SyncOptions &syncOptions() const;
+    [[nodiscard]] const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);
 
     int _downloadLimit = 0;
@@ -463,19 +455,19 @@ public:
     bool _abortRequested = false;
 
     /** The list of currently active jobs.
-        This list contains the jobs that are currently using ressources and is used purely to
+        This list contains the jobs that are currently using resources and is used purely to
         know how many jobs there is currently running for the scheduler.
-        Jobs add themself to the list when they do an assynchronous operation.
+        Jobs add themself to the list when they do an asynchronous operation.
         Jobs can be several time on the list (example, when several chunks are uploaded in parallel)
      */
     QList<PropagateItemJob *> _activeJobList;
 
     /** We detected that another sync is required after this one */
-    bool _anotherSyncNeeded;
+    bool _anotherSyncNeeded = false;
 
     /** Per-folder quota guesses.
      *
-     * This starts out empty. When an upload in a folder fails due to insufficent
+     * This starts out empty. When an upload in a folder fails due to insufficient
      * remote quota, the quota guess is updated to be attempted_size-1 at maximum.
      *
      * Note that it will usually just an upper limit for the actual quota - but
@@ -518,14 +510,14 @@ public:
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
     Q_REQUIRED_RESULT QString fullLocalPath(const QString &tmp_file_name) const;
-    QString localPath() const;
+    [[nodiscard]] QString localPath() const;
 
     /**
      * Returns the full remote path including the folder root of a
      * folder sync path.
      */
     Q_REQUIRED_RESULT QString fullRemotePath(const QString &tmp_file_name) const;
-    QString remotePath() const;
+    [[nodiscard]] QString remotePath() const;
 
     /** Creates the job for an item.
      */
@@ -538,6 +530,8 @@ public:
     {
         if (_abortRequested)
             return;
+
+        _abortRequested = true;
         if (_rootJob) {
             // Connect to abortFinished  which signals that abort has been asynchronously finished
             connect(_rootJob.data(), &PropagateDirectory::abortFinished, this, &OwncloudPropagator::emitFinished);
@@ -547,14 +541,14 @@ public:
                                       Q_ARG(PropagatorJob::AbortType, PropagatorJob::AbortType::Asynchronous));
 
             // Give asynchronous abort 5000 msec to finish on its own
-            QTimer::singleShot(5000, this, SLOT(abortTimeout()));
+            QTimer::singleShot(5000, this, &OwncloudPropagator::abortTimeout);
         } else {
             // No root job, call emitFinished
             emitFinished(SyncFileItem::NormalError);
         }
     }
 
-    AccountPtr account() const;
+    [[nodiscard]] AccountPtr account() const;
 
     enum DiskSpaceResult {
         DiskSpaceOk,
@@ -565,7 +559,7 @@ public:
     /** Checks whether there's enough disk space available to complete
      *  all jobs that are currently running.
      */
-    DiskSpaceResult diskSpaceCheck() const;
+    [[nodiscard]] DiskSpaceResult diskSpaceCheck() const;
 
     /** Handles a conflict by renaming the file 'item'.
      *
@@ -579,9 +573,17 @@ public:
     bool createConflict(const SyncFileItemPtr &item,
         PropagatorCompositeJob *composite, QString *error);
 
+    /** Handles a case clash conflict by renaming the file 'item'.
+     *
+     * Sets up conflict records.
+     *
+     * Returns true on success, false and error on error.
+     */
+    OCC::Optional<QString> createCaseClashConflict(const SyncFileItemPtr &item, const QString &temporaryDownloadedFile);
+
     // Map original path (as in the DB) to target final path
     QMap<QString, QString> _renamedDirectories;
-    QString adjustRenamedPath(const QString &original) const;
+    [[nodiscard]] QString adjustRenamedPath(const QString &original) const;
 
     /** Update the database for an item.
      *
@@ -617,7 +619,7 @@ public:
 
     void removeFromBulkUploadBlackList(const QString &file);
 
-    bool isInBulkUploadBlackList(const QString &file) const;
+    [[nodiscard]] bool isInBulkUploadBlackList(const QString &file) const;
 
 private slots:
 
@@ -629,19 +631,20 @@ private slots:
     }
 
     /** Emit the finished signal and make sure it is only emitted once */
-    void emitFinished(SyncFileItem::Status status)
+    void emitFinished(OCC::SyncFileItem::Status status)
     {
         if (!_finishedEmited)
             emit finished(status == SyncFileItem::Success);
+        _abortRequested = false;
         _finishedEmited = true;
     }
 
     void scheduleNextJobImpl();
 
 signals:
-    void newItem(const SyncFileItemPtr &);
-    void itemCompleted(const SyncFileItemPtr &);
-    void progress(const SyncFileItem &, qint64 bytes);
+    void newItem(const OCC::SyncFileItemPtr &);
+    void itemCompleted(const SyncFileItemPtr &item, OCC::ErrorCategory category);
+    void progress(const OCC::SyncFileItem &, qint64 bytes);
     void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */
@@ -698,10 +701,13 @@ class CleanupPollsJob : public QObject
     QSharedPointer<Vfs> _vfs;
 
 public:
-    explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account, SyncJournalDb *journal, const QString &localPath,
-                             const QSharedPointer<Vfs> &vfs, QObject *parent = nullptr)
+    explicit CleanupPollsJob(AccountPtr account,
+                             SyncJournalDb *journal,
+                             const QString &localPath,
+                             const QSharedPointer<Vfs> &vfs,
+                             QObject *parent = nullptr)
         : QObject(parent)
-        , _pollInfos(pollInfos)
+        , _pollInfos(journal->getPollInfos())
         , _account(account)
         , _journal(journal)
         , _localPath(localPath)
@@ -718,7 +724,7 @@ public:
     void start();
 signals:
     void finished();
-    void aborted(const QString &error);
+    void aborted(const QString &error, const ErrorCategory errorCategory);
 private slots:
     void slotPollFinished();
 };

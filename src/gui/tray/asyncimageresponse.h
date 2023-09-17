@@ -16,13 +16,14 @@
 
 #include <QImage>
 #include <QQuickImageProvider>
+#include <QFileIconProvider>
 
 class AsyncImageResponse : public QQuickImageResponse
 {
 public:
     AsyncImageResponse(const QString &id, const QSize &requestedSize);
     void setImageAndEmitFinished(const QImage &image = {});
-    QQuickTextureFactory *textureFactory() const override;
+    [[nodiscard]] QQuickTextureFactory *textureFactory() const override;
 
 private:
     void processNextImage();
@@ -34,5 +35,6 @@ private slots:
     QStringList _imagePaths;
     QSize _requestedImageSize;
     QColor _svgRecolor;
+    QFileIconProvider _fileIconProvider;
     int _index = 0;
 };

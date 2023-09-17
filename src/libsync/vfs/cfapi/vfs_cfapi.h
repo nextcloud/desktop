@@ -61,7 +61,7 @@ public:
 
 public slots:
     void requestHydration(const QString &requestId, const QString &path);
-    void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) override;
+    void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
 
 signals:
     void hydrationRequestReady(const QString &requestId);
@@ -75,6 +75,9 @@ private:
     void scheduleHydrationJob(const QString &requestId, const QString &folderPath, const SyncJournalFileRecord &record);
     void onHydrationJobFinished(HydrationJob *job);
     HydrationJob *findHydrationJob(const QString &requestId) const;
+
+    bool setPinStateLocal(const QString &localPath, PinState state);
+    [[nodiscard]] Optional<PinState> pinStateLocal(const QString &localPath) const;
 
     struct HasHydratedDehydrated {
         bool hasHydrated = false;

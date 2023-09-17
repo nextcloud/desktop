@@ -84,7 +84,7 @@ public:
     void abort() override {
         aborted = true;
     }
-    qint64 bytesAvailable() const override {
+    [[nodiscard]] qint64 bytesAvailable() const override {
         if (aborted)
             return 0;
         return payload->bytesAvailable();
@@ -116,7 +116,7 @@ public:
     Q_ENUM(State);
     bool replyToBrowserOk = false;
     bool gotAuthOk = false;
-    virtual bool done() const { return replyToBrowserOk && gotAuthOk; }
+    [[nodiscard]] virtual bool done() const { return replyToBrowserOk && gotAuthOk; }
 
     FakeQNAM *fakeQnam = nullptr;
     QNetworkAccessManager realQNAM;
@@ -187,7 +187,7 @@ public:
         return new FakePostReply(op, req, std::move(payload), fakeQnam);
     }
 
-    virtual QByteArray tokenReplyPayload() const {
+    [[nodiscard]] virtual QByteArray tokenReplyPayload() const {
         QJsonDocument jsondata(QJsonObject{
                 { "access_token", "123" },
                 { "refresh_token" , "456" },

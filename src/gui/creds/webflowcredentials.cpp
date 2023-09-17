@@ -164,7 +164,7 @@ void WebFlowCredentials::askFromUser() {
         }
 
         QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
-                          .arg(_user, _account->displayName());
+                          .arg(_account->prettyName(), _account->url().toDisplayString());
         _askDialog->setInfo(msg);
 
         _askDialog->show();
@@ -180,29 +180,9 @@ void WebFlowCredentials::askFromUser() {
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
     Q_UNUSED(host)
 
-    // Compare the re-entered username case-insensitive and save the new value (avoid breaking the account)
-    // See issue: https://github.com/nextcloud/desktop/issues/1741
-    if (QString::compare(_user, user, Qt::CaseInsensitive) == 0) {
-        _user = user;
-    } else {
-        qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
-
-        QString msg = tr("Please login with the account: %1")
-                .arg(_user);
-        _askDialog->setError(msg);
-
-        if (!_askDialog->isUsingFlow2()) {
-            QUrl url = _account->url();
-            QString path = url.path() + "/index.php/login/flow";
-            url.setPath(path);
-            _askDialog->setUrl(url);
-        }
-
-        return;
-    }
-
     qCInfo(lcWebFlowCredentials()) << "Obtained a new password";
 
+    _user = user;
     _password = pass;
     _ready = true;
     _credentialsValid = true;
@@ -238,7 +218,7 @@ void WebFlowCredentials::persist() {
     }
 
     _account->setCredentialSetting(userC, _user);
-    _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account);
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {

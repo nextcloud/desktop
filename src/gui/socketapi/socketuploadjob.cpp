@@ -13,6 +13,7 @@
  */
 
 #include "socketuploadjob.h"
+#include "common/utility.h"
 #include "socketapi_p.h"
 
 #include "accountmanager.h"
@@ -51,7 +52,11 @@ SocketUploadJob::SocketUploadJob(const QSharedPointer<SocketApiJobV2> &job)
     }
 
     _db = new SyncJournalDb(_tmp.fileName(), this);
-    _engine = new SyncEngine(account->account(), _localPath.endsWith(QLatin1Char('/')) ? _localPath : _localPath + QLatin1Char('/'), _remotePath, _db);
+
+    SyncOptions opt;
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
+    _engine = new SyncEngine(account->account(), Utility::trailingSlashPath(_localPath), opt, _remotePath, _db);
     _engine->setParent(_db);
 
     connect(_engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {

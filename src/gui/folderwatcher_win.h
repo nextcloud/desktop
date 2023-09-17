@@ -15,8 +15,9 @@
 #ifndef MIRALL_FOLDERWATCHER_WIN_H
 #define MIRALL_FOLDERWATCHER_WIN_H
 
-#include <QThread>
+#include "common/utility.h"
 #include <QAtomicInt>
+#include <QThread>
 #include <windows.h>
 
 namespace OCC {
@@ -33,7 +34,7 @@ class WatcherThread : public QThread
 public:
     WatcherThread(const QString &path)
         : QThread()
-        , _path(path + (path.endsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")))
+        , _path(Utility::trailingSlashPath(path))
         , _directory(0)
         , _resultEvent(0)
         , _stopEvent(0)

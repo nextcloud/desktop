@@ -61,8 +61,8 @@ public:
 
     bool lock(LockMode mode, bool block = true);
     bool unlock();
-    bool isLocked() const;
-    LockMode lockMode() const;
+    [[nodiscard]] bool isLocked() const;
+    [[nodiscard]] LockMode lockMode() const;
 
 private:
 #ifdef Q_OS_WIN

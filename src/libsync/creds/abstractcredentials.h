@@ -43,16 +43,16 @@ public:
      */
     virtual void setAccount(Account *account);
 
-    virtual QString authType() const = 0;
-    virtual QString user() const = 0;
-    virtual QString password() const = 0;
-    virtual QNetworkAccessManager *createQNAM() const = 0;
+    [[nodiscard]] virtual QString authType() const = 0;
+    [[nodiscard]] virtual QString user() const = 0;
+    [[nodiscard]] virtual QString password() const = 0;
+    [[nodiscard]] virtual QNetworkAccessManager *createQNAM() const = 0;
 
     /** Whether there are credentials that can be used for a connection attempt. */
-    virtual bool ready() const = 0;
+    [[nodiscard]] virtual bool ready() const = 0;
 
     /** Whether fetchFromKeychain() was called before. */
-    bool wasFetched() const { return _wasFetched; }
+    [[nodiscard]] bool wasFetched() const { return _wasFetched; }
 
     /** Trigger (async) fetching of credential information
      *

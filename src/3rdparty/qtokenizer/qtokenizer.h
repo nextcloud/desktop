@@ -65,17 +65,14 @@ struct QTokenizerPrivate {
       , tokenBegin(end)
       , tokenEnd(begin)
       , delimiters(_delims)
-      , isDelim(false)
-      , returnDelimiters(false)
-      , returnQuotes(false)
     {
     }
 
-    bool isDelimiter(char_type c) const {
+    [[nodiscard]] bool isDelimiter(char_type c) const {
         return delimiters.contains(c);
     }
 
-    bool isQuote(char_type c) const {
+    [[nodiscard]] bool isQuote(char_type c) const {
         return quotes.contains(c);
     }
 
@@ -105,9 +102,9 @@ struct QTokenizerPrivate {
     const_iterator tokenEnd;
     T delimiters;
     T quotes;
-    bool isDelim;
-    bool returnDelimiters;
-    bool returnQuotes;
+    bool isDelim = false;
+    bool returnDelimiters = false;
+    bool returnQuotes = false;
 };
 
 template <class T, class const_iterator = typename T::const_iterator>
@@ -212,14 +209,14 @@ public:
        Returns true if the current token is a delimiter,
        if one more more delimiting characters have been set.
      */
-    bool isDelimiter() const { return d->isDelim; }
+    [[nodiscard]] bool isDelimiter() const { return d->isDelim; }
 
     /*!
        Returns the current token.
 
        Use \c hasNext() to fetch the next token.
      */
-    T next() const {
+    [[nodiscard]] T next() const {
         int len = std::distance(d->tokenBegin, d->tokenEnd);
         const_iterator tmpStart = d->tokenBegin;
         if (!d->returnQuotes && len > 1 && d->isQuote(*d->tokenBegin)) {

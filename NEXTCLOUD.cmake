@@ -1,6 +1,7 @@
 set( APPLICATION_NAME       "Nextcloud" )
 set( APPLICATION_SHORTNAME  "Nextcloud" )
 set( APPLICATION_EXECUTABLE "nextcloud" )
+set( APPLICATION_CONFIG_NAME "${APPLICATION_EXECUTABLE}" )
 set( APPLICATION_DOMAIN     "nextcloud.com" )
 set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE STRING "URL for updater" )
@@ -43,6 +44,8 @@ option( WITH_PROVIDERS "Build with providers list" ON )
 
 option( ENFORCE_VIRTUAL_FILES_SYNC_FOLDER "Enforce use of virtual files sync folder when available" OFF )
 
+option(ENFORCE_SINGLE_ACCOUNT "Enforce use of a single account in desktop client" OFF)
+
 option( DO_NOT_USE_PROXY "Do not use system wide proxy, instead always do a direct connection to server" OFF )
 
 ## Theming options
@@ -69,17 +72,11 @@ if(WIN32)
     # MSI Upgrade Code (without brackets)
     set( WIN_MSI_UPGRADE_CODE                "FD2FCCA9-BB8F-4485-8F70-A0621B84A7F4" )
 
-    # CfAPI Shell Extensions
-    set( CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions )
-    
-    set( CFAPI_SHELLEXT_APPID_REG "{E314A650-DCA4-416E-974E-18EA37C213EA}")
-    set( CFAPI_SHELLEXT_APPID_DISPLAY_NAME "${APPLICATION_NAME} CfApi Shell Extensions" )
-
-    set( CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID "6FF9B5B6-389F-444A-9FDD-A286C36EA079" )
-    set( CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG "{${CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID}}" )
-    set( CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME "${APPLICATION_NAME} Thumbnail Handler" )
-
     # Windows build options
     option( BUILD_WIN_MSI "Build MSI scripts and helper DLL" OFF )
     option( BUILD_WIN_TOOLS "Build Win32 migration tools" OFF )
+endif()
+
+if (APPLE)
+    option( BUILD_FILE_PROVIDER_MODULE "Build the macOS virtual files File Provider module" OFF )
 endif()

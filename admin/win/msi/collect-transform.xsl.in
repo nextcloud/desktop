@@ -26,12 +26,9 @@
   </xsl:template>
 
   <!-- Exclude Shell Extensions -->
-  <xsl:key name="shellext-search" match="wix:Component[contains(wix:File/@Source, 'shellext')]" use="@Id" />
+  <xsl:key name="shellext-search" match="wix:Component[contains(wix:File/@Source, 'NCContextMenu.dll') or contains(wix:File/@Source, 'NCOverlays.dll')]" use="@Id" />
   <xsl:template match="wix:Component[key('shellext-search', @Id)]" />
   <xsl:template match="wix:ComponentRef[key('shellext-search', @Id)]" />
-
-  <xsl:key name="shellext-search" match="wix:Directory[contains(@Name, 'shellext')]" use="@Id" />
-  <xsl:template match="wix:Directory[key('shellext-search', @Id)]" />
 
   <!-- Exclude VC Redist -->
   <xsl:key name="vc-redist-32-search" match="wix:Component[contains(wix:File/@Source, 'vc_redist.x86.exe')]" use="@Id" />

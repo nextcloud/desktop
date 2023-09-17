@@ -26,7 +26,7 @@ CloudProvidersProviderExporter *_providerExporter;
 void on_name_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data)
 {
     Q_UNUSED(name);
-    CloudProviderManager *self;
+    CloudProviderManager *self = nullptr;
     self = static_cast<CloudProviderManager*>(user_data);
     _providerExporter = cloud_providers_provider_exporter_new(connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
     cloud_providers_provider_exporter_set_name (_providerExporter, APPLICATION_NAME);
@@ -44,7 +44,8 @@ void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user
 void CloudProviderManager::registerSignals()
 {
     OCC::FolderMan *folderManager = OCC::FolderMan::instance();
-    connect(folderManager, SIGNAL(folderListChanged(const Folder::Map &)), SLOT(slotFolderListChanged(const Folder::Map &)));
+    connect(folderManager, &OCC::FolderMan::folderListChanged,
+            this, &CloudProviderManager::slotFolderListChanged);
     slotFolderListChanged(folderManager->map());
 }
 

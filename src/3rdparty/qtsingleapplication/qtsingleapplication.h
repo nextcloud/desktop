@@ -49,10 +49,9 @@ public:
     bool isRunning(qint64 pid = -1);
 
     void setActivationWindow(QWidget* aw, bool activateOnMessage = true);
-    QWidget* activationWindow() const;
-    bool event(QEvent *event) override;
+    [[nodiscard]] QWidget* activationWindow() const;
 
-    QString applicationId() const;
+    [[nodiscard]] QString applicationId() const;
     void setBlock(bool value);
 
 public Q_SLOTS:
@@ -66,9 +65,9 @@ Q_SIGNALS:
 private:
     QString instancesFileName(const QString &appId);
 
-    qint64 firstPeer;
+    qint64 firstPeer = -1;
     QSharedMemory *instances;
-    QtLocalPeer *pidPeer;
+    QtLocalPeer *pidPeer = nullptr;
     QWidget *actWin;
     QString appId;
     bool block;

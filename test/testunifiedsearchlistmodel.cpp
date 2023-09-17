@@ -52,7 +52,7 @@ public:
     QString _id;
     QString _name;
     qint32 _order = std::numeric_limits<qint32>::max();
-    quint32 _numItemsToInsert = 5; // how many fake resuls to insert
+    quint32 _numItemsToInsert = 5; // how many fake results to insert
 };
 
 // this will be used when initializing fake search results data for each provider
@@ -265,7 +265,7 @@ public:
         return QJsonDocument::fromVariant(QVariantMap{{QStringLiteral("ocs"), ocsMap}}).toJson(QJsonDocument::Compact);
     }
 
-    const QByteArray &fakeProvidersResponseJson() const { return _providersResponse; }
+    [[nodiscard]] const QByteArray &fakeProvidersResponseJson() const { return _providersResponse; }
 
 private:
     static FakeSearchResultsStorage *_instance;

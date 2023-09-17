@@ -40,7 +40,6 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, QObject *
     : QObject(parent)
     , _accountState(accountState)
     , _account(accountState->account())
-    , _isCheckingServerAndAuth(false)
 {
 }
 
@@ -64,7 +63,7 @@ void ConnectionValidator::checkServerAndAuth()
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
         // use a queued invocation so we're as asynchronous as with the other code path
-        QMetaObject::invokeMethod(this, "slotCheckServerAndAuth", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, "slotCheckRedirectCostFreeUrl", Qt::QueuedConnection);
     }
 }
 
@@ -82,10 +81,21 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
     }
     _account->networkAccessManager()->setProxy(proxy);
 
-    slotCheckServerAndAuth();
+    slotCheckRedirectCostFreeUrl();
 }
 
 // The actual check
+
+void ConnectionValidator::slotCheckRedirectCostFreeUrl()
+{
+    const auto checkJob = new CheckRedirectCostFreeUrlJob(_account, this);
+    checkJob->setTimeout(timeoutToUseMsec);
+    checkJob->setIgnoreCredentialFailure(true);
+    connect(checkJob, &CheckRedirectCostFreeUrlJob::timeout, this, &ConnectionValidator::slotJobTimeout);
+    connect(checkJob, &CheckRedirectCostFreeUrlJob::jobFinished, this, &ConnectionValidator::slotCheckRedirectCostFreeUrlFinished);
+    checkJob->start();
+}
+
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     auto *checkJob = new CheckServerJob(_account, this);
@@ -95,6 +105,15 @@ void ConnectionValidator::slotCheckServerAndAuth()
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
     connect(checkJob, &CheckServerJob::timeout, this, &ConnectionValidator::slotJobTimeout);
     checkJob->start();
+}
+
+void ConnectionValidator::slotCheckRedirectCostFreeUrlFinished(int statusCode)
+{
+    if (statusCode >= 301 && statusCode <= 307) {
+        reportResult(StatusRedirect);
+        return;
+    }
+    slotCheckServerAndAuth();
 }
 
 void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &info)
@@ -114,7 +133,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     if (_account->url() != url) {
         qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
         _account->setUrl(url);
-        _account->wantsAccountSaved(_account.data());
+        emit _account->wantsAccountSaved(_account.data());
     }
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
@@ -278,7 +297,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
             _account->setHttp2Supported(
-                reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
+                reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
         }
     }
 #endif

@@ -83,21 +83,21 @@ public:
     explicit HttpCredentials(const QString &user, const QString &password,
             const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
-    QString authType() const override;
-    QNetworkAccessManager *createQNAM() const override;
-    bool ready() const override;
+    [[nodiscard]] QString authType() const override;
+    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
+    [[nodiscard]] bool ready() const override;
     void fetchFromKeychain() override;
     bool stillValid(QNetworkReply *reply) override;
     void persist() override;
-    QString user() const override;
+    [[nodiscard]] QString user() const override;
     // the password or token
-    QString password() const override;
+    [[nodiscard]] QString password() const override;
     void invalidateToken() override;
     void forgetSensitiveData() override;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
 
-    /* If we still have a valid refresh token, try to refresh it assynchronously and emit fetched()
+    /* If we still have a valid refresh token, try to refresh it asynchronously and emit fetched()
      * otherwise return false
      */
     bool refreshAccessToken();
@@ -106,7 +106,7 @@ public:
     void setAccount(Account *account) override;
 
     // Whether we are using OAuth
-    bool isUsingOAuth() const { return !_refreshToken.isNull(); }
+    [[nodiscard]] bool isUsingOAuth() const { return !_refreshToken.isNull(); }
 
     bool retryIfNeeded(AbstractNetworkJob *) override;
 

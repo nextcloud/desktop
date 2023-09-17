@@ -51,6 +51,11 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     _filePathLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     _ui.locationsGridLayout->addWidget(_filePathLabel.data(), 3, 3);
 
+    _filePathLabel->setTextFormat(Qt::PlainText);
+    _ui.userNameLabel->setTextFormat(Qt::PlainText);
+    _ui.serverAddressLabel->setTextFormat(Qt::PlainText);
+    _ui.localFolderDescriptionLabel->setTextFormat(Qt::PlainText);
+
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
     auto sizePolicy = _progressIndi->sizePolicy();
@@ -100,7 +105,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
 
 #ifdef Q_OS_WIN
     if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
+        _ui.wSyncStrategy->addLayout(_ui.lVirtualFileSync);
         setRadioChecked(_ui.rVirtualFileSync);
     }
 #endif
@@ -150,7 +155,14 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.lSyncEverythingSizeLabel->clear();
 
     // Update the local folder - this is not guaranteed to find a good one
-    QString goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl());
+    ConfigFile cfg;
+    const auto overrideLocalDir = !cfg.overrideLocalDir().isEmpty();
+
+    auto goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder(), serverUrl(), FolderMan::GoodPathStrategy::AllowOnlyNewPath);
+    if (overrideLocalDir) {
+        ConfigFile cfg;
+        goodLocalFolder = FolderMan::instance()->findGoodPathForNewSyncFolder(cfg.overrideLocalDir(), serverUrl(), FolderMan::GoodPathStrategy::AllowOverrideExistingPath);
+    }
     wizard()->setProperty("localFolder", goodLocalFolder);
 
     // call to init label
@@ -159,7 +171,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     // ensure "next" gets the focus, not obSelectLocalFolder
     QTimer::singleShot(0, wizard()->button(QWizard::FinishButton), qOverload<>(&QWidget::setFocus));
 
-    auto acc = static_cast<OwncloudWizard *>(wizard())->account();
+    auto acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
     auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
     quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
@@ -187,6 +199,18 @@ void OwncloudAdvancedSetupPage::initializePage()
     auto nextButton = qobject_cast<QPushButton *>(_ocWizard->button(QWizard::NextButton));
     if (nextButton) {
         nextButton->setDefault(true);
+    }
+    if (Theme::instance()->forceOverrideServerUrl()) {
+        QTimer::singleShot(0, this, [this]() {
+            ConfigFile cfg;
+            connect(_ocWizard, &QDialog::accepted, [&]() {
+                cfg.setOverrideServerUrl({});
+                cfg.setOverrideLocalDir({});
+            });
+            if (!cfg.overrideLocalDir().isEmpty()) {
+                _ocWizard->accept();
+            }
+        });
     }
 }
 
@@ -258,8 +282,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
     const QString locFolder = localFolder();
 
     // check if the local folder exists. If so, and if its not empty, show a warning.
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
-    _localFolderValid = errorStr.isEmpty();
+    const auto pathValidityCheckResult = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
+    auto errorStr = pathValidityCheckResult.second;
+    _localFolderValid = errorStr.isEmpty() || pathValidityCheckResult.first == FolderMan::PathValidityResult::ErrorNonEmptyFolder;
 
     QString t;
 
@@ -330,8 +355,8 @@ void OwncloudAdvancedSetupPage::stopSpinner()
 
 QUrl OwncloudAdvancedSetupPage::serverUrl() const
 {
-    const QString urlString = static_cast<OwncloudWizard *>(wizard())->ocUrl();
-    const QString user = static_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
+    const QString urlString = dynamic_cast<OwncloudWizard *>(wizard())->ocUrl();
+    const QString user = dynamic_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
 
     QUrl url(urlString);
     url.setUserName(user);
@@ -446,7 +471,7 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
-    AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
+    AccountPtr acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
     auto *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Claudio Cambra <claudio.cambra@nextcloud.com>
+ * Copyright (C) 2022 by Claudio Cambra <claudio.cambra@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,45 +13,49 @@
  */
 
 import QtQuick 2.15
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.15
 
 import Style 1.0
+import "./tray"
 
 ComboBox {
     id: clearComboBox
 
-    padding: Style.standardSpacing
+    topPadding: Style.smallSpacing + topInset
+    leftPadding: Style.smallSpacing + leftInset
+    rightPadding: Style.smallSpacing + rightInset
+    bottomPadding: Style.smallSpacing + bottomInset
 
     background: Rectangle {
         radius: Style.slightlyRoundedButtonRadius
-        color: Style.buttonBackgroundColor
+        color: palette.button
         opacity: clearComboBox.hovered ? Style.hoverOpacity : 1.0
     }
 
-    contentItem: Label {
-        leftPadding: 0
+    contentItem: EnforcedPlainTextLabel {
+        leftPadding: clearComboBox.leftPadding
         rightPadding: clearComboBox.indicator.width + clearComboBox.spacing
 
         text: clearComboBox.displayText
-        color: Style.ncTextColor
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
 
     indicator: ColorOverlay {
-        x: clearComboBox.width - clearComboBox.rightPadding
-        y: clearComboBox.topPadding + (clearComboBox.availableHeight - height) / 2
+        anchors.right: clearComboBox.right
+        anchors.rightMargin: clearComboBox.rightPadding
+        anchors.verticalCenter: clearComboBox.verticalCenter
+
         cached: true
-        color: Style.ncTextColor
         width: source.width
         height: source.height
+
         source: Image {
             horizontalAlignment: Qt.AlignRight
             verticalAlignment: Qt.AlignVCenter
-            source: "qrc:///client/theme/white/caret-down.svg"
+            source: "image://svgimage-custom-color/caret-down.svg/" + palette.windowText
             sourceSize.width: Style.accountDropDownCaretSize
             sourceSize.height: Style.accountDropDownCaretSize
             Accessible.role: Accessible.PopupMenu
@@ -75,8 +79,8 @@ ComboBox {
         }
 
         background: Rectangle {
-            color: Style.backgroundColor
-            border.color: Style.menuBorder
+            color: palette.toolTipBase
+            border.color: palette.dark
             radius: Style.slightlyRoundedButtonRadius
         }
     }
@@ -85,15 +89,11 @@ ComboBox {
     delegate: ItemDelegate {
         id: clearStatusDelegate
         width: clearComboBox.width
-        contentItem: Label {
+        contentItem: EnforcedPlainTextLabel {
             text: modelData.display
-            color: Style.ncTextColor
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
         highlighted: clearComboBox.highlightedIndex === index
-        background: Rectangle {
-           color: clearStatusDelegate.highlighted || clearStatusDelegate.hovered ? Style.lightHover : Style.backgroundColor
-       }
     }
 }

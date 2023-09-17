@@ -117,13 +117,13 @@ public:
         return &_result;
     }
 
-    const T &get() const
+    [[nodiscard]] const T &get() const
     {
         ASSERT(!_isError)
         return _result;
     }
 
-    const Error &error() const &
+    [[nodiscard]] const Error &error() const &
     {
         ASSERT(_isError);
         return _error;
@@ -134,7 +134,7 @@ public:
         return std::move(_error);
     }
 
-    bool isValid() const { return !_isError; }
+    [[nodiscard]] bool isValid() const { return !_isError; }
 };
 
 namespace detail {

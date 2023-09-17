@@ -14,14 +14,11 @@
 
 #include "thumbnailprovideripc.h"
 #include "common/shellextensionutils.h"
-#include "common/utility.h"
+#include "ipccommon.h"
 #include <QString>
 #include <QSize>
 #include <QtNetwork/QLocalSocket>
 #include <QJsonDocument>
-#include <QObject>
-#include <QDir>
-#include <Windows.h>
 namespace {
 // we don't want to block the Explorer for too long (default is 30K, so we'd keep it at 10K, except QLocalSocket::waitForDisconnected())
 constexpr auto socketTimeoutMs = 10000;
@@ -61,7 +58,7 @@ QByteArray ThumbnailProviderIpc::fetchThumbnailForFile(const QString &filePath, 
         {
             VfsShellExtensions::Protocol::ThumbnailProviderRequestKey,
             QVariantMap {
-                {VfsShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey, filePath},
+                {VfsShellExtensions::Protocol::FilePathKey, filePath},
                 {VfsShellExtensions::Protocol::ThumbnailProviderRequestFileSizeKey, QVariantMap{{QStringLiteral("width"), size.width()}, {QStringLiteral("height"), size.height()}}}
             }
         }
@@ -99,26 +96,8 @@ QString ThumbnailProviderIpc::getServerNameForPath(const QString &filePath)
     if (!overrideServerName.isEmpty()) {
         return overrideServerName;
     }
-    // SyncRootManager Registry key contains all registered folders for Cf API. It will give us the correct name of the current app based on the folder path
-    QString serverName;
-    constexpr auto syncRootManagerRegKey = R"(SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager)";
 
-    if (OCC::Utility::registryKeyExists(HKEY_LOCAL_MACHINE, syncRootManagerRegKey)) {
-        OCC::Utility::registryWalkSubKeys(HKEY_LOCAL_MACHINE, syncRootManagerRegKey, [&](HKEY, const QString &syncRootId) {
-            const QString syncRootIdUserSyncRootsRegistryKey = syncRootManagerRegKey + QStringLiteral("\\") + syncRootId + QStringLiteral(R"(\UserSyncRoots\)");
-            OCC::Utility::registryWalkValues(HKEY_LOCAL_MACHINE, syncRootIdUserSyncRootsRegistryKey, [&](const QString &userSyncRootName, bool *done) {
-                const auto userSyncRootValue = QDir::fromNativeSeparators(OCC::Utility::registryGetKeyValue(HKEY_LOCAL_MACHINE, syncRootIdUserSyncRootsRegistryKey, userSyncRootName).toString());
-                if (QDir::fromNativeSeparators(filePath).startsWith(userSyncRootValue)) {
-                    const auto syncRootIdSplit = syncRootId.split(QLatin1Char('!'), Qt::SkipEmptyParts);
-                    if (!syncRootIdSplit.isEmpty()) {
-                        serverName = VfsShellExtensions::serverNameForApplicationName(syncRootIdSplit.first());
-                        *done = true;
-                    }
-                }
-            });
-        });
-    }
-    return serverName;
+    return findServerNameForPath(filePath);
 }
 
 bool ThumbnailProviderIpc::connectSocketToServer(const QString &serverName)

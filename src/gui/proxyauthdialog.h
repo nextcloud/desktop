@@ -38,8 +38,8 @@ public:
 
     void setProxyAddress(const QString &address);
 
-    QString username() const;
-    QString password() const;
+    [[nodiscard]] QString username() const;
+    [[nodiscard]] QString password() const;
 
     /// Resets the dialog for new credential entry.
     void reset();

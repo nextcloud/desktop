@@ -28,10 +28,7 @@ RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
     : QObject(parent),
       _account(account),
       _appPassword(QString()),
-      _accountRemoved(false),
-      _networkManager(nullptr),
-      _networkReplyCheck(nullptr),
-      _networkReplySuccess(nullptr)
+      _networkManager(nullptr)
 {
     QObject::connect(AccountManager::instance(), &AccountManager::accountRemoved,
                      this, [=](AccountState *) {
@@ -61,8 +58,8 @@ void RemoteWipe::startCheckJobWithAppPassword(QString pwd){
     QUrlQuery arguments(QString("token=%1").arg(_appPassword));
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
     _networkReplyCheck = _networkManager.post(request, requestBody);
-    QObject::connect(&_networkManager, SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
-		_account.data(), SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
+    QObject::connect(&_networkManager, &QNetworkAccessManager::sslErrors,
+        _account.data(), &Account::slotHandleSslErrors);
     QObject::connect(_networkReplyCheck, &QNetworkReply::finished, this,
                      &RemoteWipe::checkJobSlot);
 }
@@ -70,14 +67,13 @@ void RemoteWipe::startCheckJobWithAppPassword(QString pwd){
 void RemoteWipe::checkJobSlot()
 {
     auto jsonData = _networkReplyCheck->readAll();
-    QJsonParseError jsonParseError;
+    QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     bool wipe = false;
 
     //check for errors
     if (_networkReplyCheck->error() != QNetworkReply::NoError ||
             jsonParseError.error != QJsonParseError::NoError) {
-        QString errorReason;
         QString errorFromJson = json["error"].toString();
         if (!errorFromJson.isEmpty()) {
             qCWarning(lcRemoteWipe) << QString("Error returned from the server: <em>%1<em>")
@@ -149,11 +145,10 @@ void RemoteWipe::notifyServerSuccessJob(AccountState *accountState, bool dataWip
 void RemoteWipe::notifyServerSuccessJobSlot()
 {
     auto jsonData = _networkReplySuccess->readAll();
-    QJsonParseError jsonParseError;
+    QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     if (_networkReplySuccess->error() != QNetworkReply::NoError ||
             jsonParseError.error != QJsonParseError::NoError) {
-        QString errorReason;
         QString errorFromJson = json["error"].toString();
         if (!errorFromJson.isEmpty()) {
             qCWarning(lcRemoteWipe) << QString("Error returned from the server: <em>%1</em>")

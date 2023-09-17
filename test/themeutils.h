@@ -22,12 +22,12 @@ class FakePaintDevice : public QPaintDevice
 public:
     FakePaintDevice();
 
-    QPaintEngine *paintEngine() const override;
+    [[nodiscard]] QPaintEngine *paintEngine() const override;
 
     void setHidpi(bool value);
 
 protected:
-    int metric(QPaintDevice::PaintDeviceMetric metric) const override;
+    [[nodiscard]] int metric(QPaintDevice::PaintDeviceMetric metric) const override;
 
 private:
     bool _hidpi = false;

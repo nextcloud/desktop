@@ -5,6 +5,7 @@
 #include "accountfwd.h"
 #include <QString>
 #include <QJsonDocument>
+#include <QSslKey>
 
 namespace OCC {
 /* Here are all of the network jobs for the client side encryption.
@@ -24,6 +25,8 @@ namespace OCC {
  *
  * @ingroup libsync
  */
+
+class SyncJournalDb;
 class OWNCLOUDSYNC_EXPORT SignPublicKeyApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
@@ -129,7 +132,9 @@ protected:
 
 signals:
     void success(const QByteArray &fileId);
-    void error(const QByteArray &fileId, int httpReturnCode);
+    void error(const QByteArray &fileId,
+               const int httpReturnCode,
+               const QString &errorMessage);
 
 private:
     QByteArray _fileId;
@@ -140,7 +145,7 @@ class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = nullptr);
+    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray &fileId, SyncJournalDb *journalDb, const QSslKey publicKey, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -150,10 +155,14 @@ protected:
 
 signals:
     void success(const QByteArray& fileId, const QByteArray& token);
-    void error(const QByteArray& fileId, int httpdErrorCode);
+    void error(const QByteArray& fileId,
+               const int httpErrorCode,
+               const QString &errorMessage);
 
 private:
     QByteArray _fileId;
+    QPointer<SyncJournalDb> _journalDb;
+    QSslKey _publicKey;
 };
 
 
@@ -165,6 +174,7 @@ public:
         const AccountPtr &account,
         const QByteArray& fileId,
         const QByteArray& token,
+        SyncJournalDb *journalDb,
         QObject *parent = nullptr);
 
 public slots:
@@ -175,12 +185,16 @@ protected:
 
 signals:
     void success(const QByteArray& fileId);
-    void error(const QByteArray& fileId, int httpReturnCode);
+    void error(const QByteArray& fileId,
+               const int httpReturnCode,
+               const QString &errorMessage);
+    void done();
 
 private:
     QByteArray _fileId;
     QByteArray _token;
-    QBuffer *_tokenBuf;
+    QBuffer *_tokenBuf = nullptr;
+    QPointer<SyncJournalDb> _journalDb;
 };
 
 

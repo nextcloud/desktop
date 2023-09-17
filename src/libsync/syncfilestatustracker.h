@@ -44,11 +44,11 @@ public slots:
     void slotAddSilentlyExcluded(const QString &folderPath);
 
 signals:
-    void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus);
+    void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus);
 
 private slots:
-    void slotAboutToPropagate(SyncFileItemVector &items);
-    void slotItemCompleted(const SyncFileItemPtr &item);
+    void slotAboutToPropagate(OCC::SyncFileItemVector &items);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
     void slotSyncFinished();
     void slotSyncEngineRunningChanged();
 

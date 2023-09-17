@@ -151,6 +151,9 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         if (bname.startsWith(QLatin1String(".owncloudsync.log"), Qt::CaseInsensitive)) { // ".owncloudsync.log*"
             return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
+        if (bname.startsWith(QLatin1String(".nextcloudsync.log"), Qt::CaseInsensitive)) { // ".nextcloudsync.log*"
+            return CSYNC_FILE_SILENTLY_EXCLUDED;
+        }
     }
 
     // check the strlen and ignore the file if its name is longer than 254 chars.
@@ -171,7 +174,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     }
 
     if (csync_is_windows_reserved_word(bname)) {
-        return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
     // Filter out characters not allowed in a filename on windows
@@ -202,10 +205,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
-
-    if (excludeConflictFiles && OCC::Utility::isConflictFile(path)) {
-        return CSYNC_FILE_EXCLUDE_CONFLICT;
+    if (excludeConflictFiles) {
+        if (OCC::Utility::isCaseClashConflictFile(path)) {
+            return CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT;
+        } else if (OCC::Utility::isConflictFile(path)) {
+            return CSYNC_FILE_EXCLUDE_CONFLICT;
+        }
     }
+
     return CSYNC_NOT_EXCLUDED;
 }
 
@@ -435,7 +442,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
             addExcludeFilePath(absolutePath);
             reloadExcludeFiles();
         } else {
+#if !defined QT_NO_DEBUG
             qWarning() << "System exclude list file could not be read:" << absolutePath;
+#endif
         }
     }
 

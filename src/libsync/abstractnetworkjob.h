@@ -40,21 +40,21 @@ class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    explicit AbstractNetworkJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
     ~AbstractNetworkJob() override;
 
     virtual void start();
 
-    AccountPtr account() const { return _account; }
+    [[nodiscard]] AccountPtr account() const { return _account; }
 
     void setPath(const QString &path);
-    QString path() const { return _path; }
+    [[nodiscard]] QString path() const { return _path; }
 
     void setReply(QNetworkReply *reply);
-    QNetworkReply *reply() const { return _reply; }
+    [[nodiscard]] QNetworkReply *reply() const { return _reply; }
 
     void setIgnoreCredentialFailure(bool ignore);
-    bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
+    [[nodiscard]] bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
     /** Whether to handle redirects transparently.
      *
@@ -67,17 +67,17 @@ public:
      * requests where custom handling is necessary.
      */
     void setFollowRedirects(bool follow);
-    bool followRedirects() const { return _followRedirects; }
+    [[nodiscard]] bool followRedirects() const { return _followRedirects; }
 
     QByteArray responseTimestamp();
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
 
-    qint64 timeoutMsec() const { return _timer.interval(); }
-    bool timedOut() const { return _timedout; }
+    [[nodiscard]] qint64 timeoutMsec() const { return _timer.interval(); }
+    [[nodiscard]] bool timedOut() const { return _timedout; }
 
     /** Returns an error message, if any. */
-    virtual QString errorString() const;
+    [[nodiscard]] virtual QString errorString() const;
 
     /** Like errorString, but also checking the reply body for information.
      *
@@ -85,11 +85,23 @@ public:
      * This function reads the body of the reply and parses out the
      * error information, if possible.
      *
-     * \a body is optinally filled with the reply body.
+     * \a body is optionally filled with the reply body.
      *
      * Warning: Needs to call reply()->readAll().
      */
     QString errorStringParsingBody(QByteArray *body = nullptr);
+
+    /** Like errorString, but also checking the reply body for information.
+     *
+     * Specifically, sometimes xml bodies have extra error information.
+     * This function reads the body of the reply and parses out the
+     * error information, if possible.
+     *
+     * \a body is optionally filled with the reply body.
+     *
+     * Warning: Needs to call reply()->readAll().
+     */
+    [[nodiscard]] QString errorStringParsingBodyException(const QByteArray &body) const;
 
     /** Make a new request */
     void retry();
@@ -159,12 +171,12 @@ protected:
     virtual void newReplyHook(QNetworkReply *) {}
 
     /// Creates a url for the account from a relative path
-    QUrl makeAccountUrl(const QString &relativePath) const;
+    [[nodiscard]] QUrl makeAccountUrl(const QString &relativePath) const;
 
     /// Like makeAccountUrl() but uses the account's dav base path
-    QUrl makeDavUrl(const QString &relativePath) const;
+    [[nodiscard]] QUrl makeDavUrl(const QString &relativePath) const;
 
-    int maxRedirects() const { return 10; }
+    [[nodiscard]] int maxRedirects() const { return 10; }
 
     /** Called at the end of QNetworkReply::finished processing.
      *
@@ -179,11 +191,11 @@ protected:
     virtual void onTimedOut();
 
     QByteArray _responseTimestamp;
-    bool _timedout; // set to true when the timeout slot is received
+    bool _timedout = false; // set to true when the timeout slot is received
 
     // Automatically follows redirects. Note that this only works for
     // GET requests that don't set up any HTTP body or other flags.
-    bool _followRedirects;
+    bool _followRedirects = true;
 
     QString replyStatusString();
 
@@ -196,7 +208,7 @@ protected:
 
 private:
     QNetworkReply *addTimer(QNetworkReply *reply);
-    bool _ignoreCredentialFailure;
+    bool _ignoreCredentialFailure = false;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
     QString _path;
     QTimer _timer;
@@ -232,6 +244,16 @@ private:
  * Returns a null string if no message was found.
  */
 QString OWNCLOUDSYNC_EXPORT extractErrorMessage(const QByteArray &errorResponse);
+
+
+/** Gets the SabreDAV-style exception from an error response.
+ *
+ * This assumes the response is XML with a 'exception' tag that has a
+ * 'exception' tag that contains the data to extract.
+ *
+ * Returns a null string if no message was found.
+ */
+[[nodiscard]] QString OWNCLOUDSYNC_EXPORT extractException(const QByteArray &errorResponse);
 
 /** Builds a error message based on the error and the reply body. */
 QString OWNCLOUDSYNC_EXPORT errorMessage(const QString &baseError, const QByteArray &body);

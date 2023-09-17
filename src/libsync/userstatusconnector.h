@@ -41,8 +41,8 @@ struct OWNCLOUDSYNC_EXPORT ClearAt
 {
     ClearAtType _type = ClearAtType::Period;
 
-    quint64 _timestamp;
-    int _period;
+    quint64 _timestamp = 0ULL;
+    int _period = 0;
     QString _endof;
 };
 
@@ -76,7 +76,7 @@ public:
     Q_REQUIRED_RESULT OnlineStatus state() const;
     Q_REQUIRED_RESULT Optional<ClearAt> clearAt() const;
 
-    QString clearAtDisplayString() const;
+    [[nodiscard]] QString clearAtDisplayString() const;
 
     void setId(const QString &id);
     void setMessage(const QString &message);
@@ -94,7 +94,7 @@ private:
     QString _message;
     QString _icon;
     OnlineStatus _state = OnlineStatus::Online;
-    bool _messagePredefined;
+    bool _messagePredefined = false;
     Optional<ClearAt> _clearAt;
 };
 
@@ -125,15 +125,15 @@ public:
 
     virtual void clearMessage() = 0;
 
-    virtual UserStatus userStatus() const = 0;
+    [[nodiscard]] virtual UserStatus userStatus() const = 0;
 
 signals:
-    void userStatusFetched(const UserStatus &userStatus);
-    void predefinedStatusesFetched(const QVector<UserStatus> &statuses);
+    void userStatusFetched(const OCC::UserStatus &userStatus);
+    void predefinedStatusesFetched(const QVector<OCC::UserStatus> &statuses);
     void userStatusSet();
     void serverUserStatusChanged();
     void messageCleared();
-    void error(Error error);
+    void error(OCC::UserStatusConnector::Error error);
 };
 }
 

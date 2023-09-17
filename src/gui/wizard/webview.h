@@ -23,12 +23,18 @@ public:
     WebView(QWidget *parent = nullptr);
     ~WebView() override;
     void setUrl(const QUrl &url);
+    virtual QSize minimumSizeHint() const override;
 
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
 
+private slots:
+    void slotResizeToContents(const QSizeF &size);
+
 private:
     Ui_WebView _ui;
+
+    QSize _size;
 
     QWebEngineView *_webview;
     QWebEngineProfile *_profile;

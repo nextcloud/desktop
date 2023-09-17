@@ -74,7 +74,7 @@ IFACEMETHODIMP NCOverlayFactory::CreateInstance(
     if (pUnkOuter) { return hResult; }
 
     hResult = E_OUTOFMEMORY;
-    NCOverlay *lrOverlay = new (std::nothrow) NCOverlay(_state);
+    auto lrOverlay = new (std::nothrow) NCOverlay(_state);
     if (!lrOverlay) { return hResult; }
 
     hResult = lrOverlay->QueryInterface(riid, ppv);

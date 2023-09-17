@@ -13,11 +13,12 @@
  */
 
 import QtQuick 2.6
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Style 1.0
+
+import "./tray"
 
 AbstractButton {
     id: root
@@ -33,7 +34,7 @@ AbstractButton {
 
     background: Rectangle {
         radius: root.primary ? Style.veryRoundedButtonRadius : Style.mediumRoundedButtonRadius
-        color: root.colored ? Style.ncBlue : Style.buttonBackgroundColor
+        color: root.colored ? Style.ncBlue : palette.button
         opacity: root.colored && root.hovered ? Style.hoverOpacity : 1.0
         border.color: Style.ncBlue
         border.width: root.showBorder ? root.primary ? Style.normalBorderWidth : Style.thickBorderWidth : 0
@@ -59,7 +60,7 @@ AbstractButton {
             visible: root.icon.source !== ""
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.column: root.icon.source === "" ? 0 : 1
             Layout.columnSpan: root.icon.source === "" ? 2 : 1
             Layout.row: 0
@@ -70,11 +71,11 @@ AbstractButton {
 
             text: root.text
             wrapMode: Text.Wrap
-            color: root.colored ? Style.ncHeaderTextColor : Style.ncTextColor
+            color: root.colored ? palette.brightText : palette.buttonText
             font.bold: root.primary
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.column: root.icon.source === "" ? 0 : 1
             Layout.columnSpan: root.icon.source === "" ? 2 : 1
             Layout.row: 1
@@ -84,7 +85,7 @@ AbstractButton {
 
             text: root.secondaryText
             wrapMode: Text.Wrap
-            color: Style.ncSecondaryTextColor
+            color: palette.midlight
             visible: root.secondaryText !== ""
         }
     }

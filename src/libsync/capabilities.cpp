@@ -143,24 +143,43 @@ bool Capabilities::clientSideEncryptionAvailable() const
     }
 
     const auto version = properties.value(QStringLiteral("api-version"), "1.0").toByteArray();
-    qCInfo(lcServerCapabilities) << "E2EE API version:" << version;
     const auto splittedVersion = version.split('.');
 
     bool ok = false;
     const auto major = !splittedVersion.isEmpty() ? splittedVersion.at(0).toInt(&ok) : 0;
     if (!ok) {
-        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (major), E2EE disabled";
+        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (major), E2EE disabled" << version;
         return false;
     }
 
     ok = false;
     const auto minor = splittedVersion.size() > 1 ? splittedVersion.at(1).toInt(&ok) : 0;
     if (!ok) {
-        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (minor), E2EE disabled";
+        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (minor), E2EE disabled" << version;
         return false;
     }
 
-    return major == 1 && minor >= 1;
+    const auto capabilityAvailable = (major == 1 && minor >= 1);
+    if (!capabilityAvailable) {
+        qCInfo(lcServerCapabilities) << "Incompatible E2EE API version:" << version;
+    }
+    return capabilityAvailable;
+}
+
+double Capabilities::clientSideEncryptionVersion() const
+{
+    const auto foundEndToEndEncryptionInCaps = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
+    if (foundEndToEndEncryptionInCaps == _capabilities.constEnd()) {
+        return 1.0;
+    }
+
+    const auto properties = (*foundEndToEndEncryptionInCaps).toMap();
+    const auto enabled = properties.value(QStringLiteral("enabled"), false).toBool();
+    if (!enabled) {
+        return false;
+    }
+
+    return properties.value(QStringLiteral("api-version"), 1.0).toDouble();
 }
 
 bool Capabilities::notificationsAvailable() const
@@ -329,6 +348,11 @@ bool Capabilities::uploadConflictFiles() const
         return envValue != 0;
 
     return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
+}
+
+bool Capabilities::groupFoldersAvailable() const
+{
+    return _capabilities[QStringLiteral("groupfolders")].toMap().value(QStringLiteral("hasGroupFolders"), false).toBool();
 }
 
 QStringList Capabilities::blacklistedFiles() const

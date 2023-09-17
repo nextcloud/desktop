@@ -26,7 +26,7 @@ private slots:
     void testAccountDavPath_unitialized_noCrash()
     {
         AccountPtr account = Account::create();
-        account->davPath();
+        [[maybe_unused]] const auto davPath = account->davPath();
     }
 };
 

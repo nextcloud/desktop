@@ -1,16 +1,16 @@
 [main]
-host = https://www.transifex.com
-lang_map = bg_BG: bg, cs_CZ: cs, de_DE: de, fi_FI: fi, hu_HU: hu, nb_NO: nb, sk_SK: sk, th_TH: th, ja_JP: ja, pt_PT: pt, et_EE: et
+host     = https://www.transifex.com
+lang_map = bg_BG: bg, cs_CZ: cs, fi_FI: fi, hu_HU: hu, nb_NO: nb, sk_SK: sk, th_TH: th, ja_JP: ja, pt_PT: pt, et_EE: et
 
-[nextcloud.client]
-host = https://www.transifex.com
-source_lang = en
-source_file = translations/client_en.ts
+[o:nextcloud:p:nextcloud:r:client]
 file_filter = translations/client_<lang>.ts
-type = QT
+source_file = translations/client_en.ts
+source_lang = en
+type        = QT
 
-[nextcloud.client-desktop]
-host = https://www.transifex.com
+[o:nextcloud:p:nextcloud:r:client-desktop]
+file_filter = nextcloud.client-desktop/<lang>_translation.desktop
 source_file = mirall.desktop.in
 source_lang = en
-type = DESKTOP
+type        = DESKTOP
+

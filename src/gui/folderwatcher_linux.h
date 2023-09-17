@@ -39,7 +39,7 @@ public:
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate() override;
 
-    int testWatchCount() const { return _pathToWatch.size(); }
+    [[nodiscard]] int testWatchCount() const { return _pathToWatch.size(); }
 
     /// On linux the watcher is ready when the ctor finished.
     bool _ready = true;
@@ -54,13 +54,13 @@ protected:
     void removeFoldersBelow(const QString &path);
 
 private:
-    FolderWatcher *_parent;
+    FolderWatcher *_parent = nullptr;
 
     QString _folder;
     QHash<int, QString> _watchToPath;
     QMap<QString, int> _pathToWatch;
     QScopedPointer<QSocketNotifier> _socket;
-    int _fd;
+    int _fd = 0;
 };
 }
 

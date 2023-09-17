@@ -43,12 +43,12 @@ public:
             const QSslKey &key = QSslKey(),
             const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
 
-    QString authType() const override;
-    QString user() const override;
-    QString password() const override;
-    QNetworkAccessManager *createQNAM() const override;
+    [[nodiscard]] QString authType() const override;
+    [[nodiscard]] QString user() const override;
+    [[nodiscard]] QString password() const override;
+    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
 
-    bool ready() const override;
+    [[nodiscard]] bool ready() const override;
 
     void fetchFromKeychain() override;
     void askFromUser() override;

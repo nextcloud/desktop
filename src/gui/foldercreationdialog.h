@@ -31,6 +31,9 @@ public:
     explicit FolderCreationDialog(const QString &destination, QWidget *parent = nullptr);
     ~FolderCreationDialog() override;
 
+signals:
+    void folderCreated(const QString &fullFolderPath);
+
 private slots:
     void accept() override;
 

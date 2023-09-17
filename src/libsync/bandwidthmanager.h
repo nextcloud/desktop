@@ -44,10 +44,10 @@ public:
 
 
 public slots:
-    void registerUploadDevice(UploadDevice *);
+    void registerUploadDevice(OCC::UploadDevice *);
     void unregisterUploadDevice(QObject *);
 
-    void registerDownloadJob(GETFileJob *);
+    void registerDownloadJob(OCC::GETFileJob *);
     void unregisterDownloadJob(QObject *);
 
     void absoluteLimitTimerExpired();
@@ -80,11 +80,11 @@ private:
     QTimer _relativeUploadDelayTimer;
 
     // the device measured
-    UploadDevice *_relativeLimitCurrentMeasuredDevice;
+    UploadDevice *_relativeLimitCurrentMeasuredDevice = nullptr;
 
     // for measuring how much progress we made at start
-    qint64 _relativeUploadLimitProgressAtMeasuringRestart;
-    qint64 _currentUploadLimit;
+    qint64 _relativeUploadLimitProgressAtMeasuringRestart = 0;
+    qint64 _currentUploadLimit = 0;
 
     std::list<GETFileJob *> _downloadJobList;
     QTimer _relativeDownloadMeasuringTimer;
@@ -93,12 +93,12 @@ private:
     QTimer _relativeDownloadDelayTimer;
 
     // the device measured
-    GETFileJob *_relativeLimitCurrentMeasuredJob;
+    GETFileJob *_relativeLimitCurrentMeasuredJob = nullptr;
 
     // for measuring how much progress we made at start
-    qint64 _relativeDownloadLimitProgressAtMeasuringRestart;
+    qint64 _relativeDownloadLimitProgressAtMeasuringRestart = 0LL;
 
-    qint64 _currentDownloadLimit;
+    qint64 _currentDownloadLimit = 0;
 };
 
 } // namespace OCC

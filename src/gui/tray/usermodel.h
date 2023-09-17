@@ -8,16 +8,39 @@
 #include <QQuickImageProvider>
 #include <QHash>
 
-#include "activitylistmodel.h"
 #include "accountfwd.h"
 #include "accountmanager.h"
+#include "activitydata.h"
+#include "activitylistmodel.h"
 #include "folderman.h"
-#include "userstatusselectormodel.h"
 #include "userstatusconnector.h"
+#include "userstatusselectormodel.h"
 #include <chrono>
 
 namespace OCC {
 class UnifiedSearchResultsListModel;
+
+
+class TrayFolderInfo
+{
+    Q_GADGET
+
+    Q_PROPERTY(QString name MEMBER _name)
+    Q_PROPERTY(QString parentPath MEMBER _parentPath)
+    Q_PROPERTY(QString fullPath MEMBER _fullPath)
+    Q_PROPERTY(bool isGroupFolder READ isGroupFolder CONSTANT)
+public:
+    enum FolderType { Folder, GroupFolder };
+
+    TrayFolderInfo(const QString &name, const QString &parentPath, const QString &fullPath, FolderType folderType);
+    TrayFolderInfo() = default;
+    [[nodiscard]] bool isGroupFolder() const;
+
+    QString _name;
+    QString _parentPath;
+    QString _fullPath;
+    FolderType _folderType = Folder;
+};
 
 class User : public QObject
 {
@@ -37,42 +60,45 @@ class User : public QObject
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
+    Q_PROPERTY(QVariantList groupFolders READ groupFolders NOTIFY groupFoldersChanged)
 
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
 
-    AccountPtr account() const;
-    AccountStatePtr accountState() const;
+    [[nodiscard]] AccountPtr account() const;
+    [[nodiscard]] AccountStatePtr accountState() const;
 
-    bool isConnected() const;
-    bool isCurrentUser() const;
+    [[nodiscard]] bool isConnected() const;
+    [[nodiscard]] bool isCurrentUser() const;
     void setCurrentUser(const bool &isCurrent);
-    Folder *getFolder() const;
+    [[nodiscard]] Folder *getFolder() const;
     ActivityListModel *getActivityModel();
-    UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
+    [[nodiscard]] UnifiedSearchResultsListModel *getUnifiedSearchResultsListModel() const;
     void openLocalFolder();
-    QString name() const;
-    QString server(bool shortened = true) const;
-    bool hasLocalFolder() const;
-    bool serverHasTalk() const;
-    bool serverHasUserStatus() const;
-    AccountApp *talkApp() const;
-    bool hasActivities() const;
-    QColor accentColor() const;
-    QColor headerColor() const;
-    QColor headerTextColor() const;
-    AccountAppList appList() const;
-    QImage avatar() const;
+    void openFolderLocallyOrInBrowser(const QString &fullRemotePath);
+    [[nodiscard]] QString name() const;
+    [[nodiscard]] QString server(bool shortened = true) const;
+    [[nodiscard]] bool hasLocalFolder() const;
+    [[nodiscard]] bool serverHasTalk() const;
+    [[nodiscard]] bool serverHasUserStatus() const;
+    [[nodiscard]] AccountApp *talkApp() const;
+    [[nodiscard]] bool hasActivities() const;
+    [[nodiscard]] QColor accentColor() const;
+    [[nodiscard]] QColor headerColor() const;
+    [[nodiscard]] QColor headerTextColor() const;
+    [[nodiscard]] AccountAppList appList() const;
+    [[nodiscard]] QImage avatar() const;
     void login() const;
     void logout() const;
     void removeAccount() const;
-    QString avatarUrl() const;
-    bool isDesktopNotificationsAllowed() const;
-    UserStatus::OnlineStatus status() const;
-    QString statusMessage() const;
-    QUrl statusIcon() const;
-    QString statusEmoji() const;
+    [[nodiscard]] QString avatarUrl() const;
+    [[nodiscard]] bool isDesktopNotificationsAllowed() const;
+    [[nodiscard]] UserStatus::OnlineStatus status() const;
+    [[nodiscard]] QString statusMessage() const;
+    [[nodiscard]] QUrl statusIcon() const;
+    [[nodiscard]] QString statusEmoji() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
+    [[nodiscard]] const QVariantList &groupFolders() const;
 
 signals:
     void nameChanged();
@@ -86,19 +112,22 @@ signals:
     void headerTextColorChanged();
     void accentColorChanged();
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
+    void groupFoldersChanged();
 
 public slots:
-    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
-    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
-    void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
-    void slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
+    void slotProgressInfo(const QString &folder, const OCC::ProgressInfo &progress);
+    void slotAddError(const QString &folderAlias, const QString &message, OCC::ErrorCategory category);
+    void slotAddErrorToGui(const QString &folderAlias, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+    void slotAddNotification(const OCC::Folder *folder, const OCC::Activity &activity);
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
-    void slotBuildNotificationDisplay(const ActivityList &list);
-    void slotBuildIncomingCallDialogs(const ActivityList &list);
+    void slotBuildNotificationDisplay(const OCC::ActivityList &list);
+    void slotNotificationFetchFinished();
+    void slotBuildIncomingCallDialogs(const OCC::ActivityList &list);
     void slotRefreshNotifications();
     void slotRefreshActivitiesInitial();
     void slotRefreshActivities();
@@ -108,28 +137,44 @@ public slots:
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
     void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
+    void forceSyncNow() const;
+    void slotAccountCapabilitiesChangedRefreshGroupFolders();
+    void slotFetchGroupFolders();
 
-private:
+private slots:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
-    void slotReceivedPushNotification(Account *account);
-    void slotReceivedPushActivity(Account *account);
+    void slotReceivedPushNotification(OCC::Account *account);
+    void slotReceivedPushActivity(OCC::Account *account);
     void slotCheckExpiredActivities();
-
-    void connectPushNotifications() const;
-    bool checkPushNotificationsAreReady() const;
-
-    bool isActivityOfCurrentAccount(const Folder *folder) const;
-    bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
-
+    void slotGroupFoldersFetched(QNetworkReply *reply);
+    void checkNotifiedNotifications();
     void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
+    void showDesktopNotification(const OCC::Activity &activity);
+    void showDesktopNotification(const OCC::ActivityList &activityList);
+    void showDesktopTalkNotification(const OCC::Activity &activity);
 
 private:
+    void prePendGroupFoldersWithLocalFolder();
+    void parseNewGroupFolderPath(const QString &path);
+    void connectPushNotifications() const;
+    [[nodiscard]] bool checkPushNotificationsAreReady() const;
+
+    bool isActivityOfCurrentAccount(const Folder *folder) const;
+    [[nodiscard]] bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
+
+    bool notificationAlreadyShown(const long notificationId);
+    bool canShowNotification(const long notificationId);
+
+    void checkAndRemoveSeenActivities(const ActivityList &list, const int numChatNotificationsReceived);
+
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
     UnifiedSearchResultsListModel *_unifiedSearchResultsModel;
     ActivityList _blacklistedNotifications;
+    
+    QVariantList _trayFolderInfos;
 
     QTimer _expiredActivitiesCheckTimer;
     QTimer _notificationCheckTimer;
@@ -141,7 +186,11 @@ private:
 
     // number of currently running notification requests. If non zero,
     // no query for notifications is started.
-    int _notificationRequestsRunning;
+    int _notificationRequestsRunning = 0;
+
+    int _lastChatNotificationsReceivedCount = 0;
+
+    bool _isNotificationFetchRunning = false;
 };
 
 class UserModel : public QAbstractListModel
@@ -150,24 +199,25 @@ class UserModel : public QAbstractListModel
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
     Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
 public:
+
     static UserModel *instance();
     ~UserModel() override = default;
 
     void addUser(AccountStatePtr &user, const bool &isCurrent = false);
     int currentUserIndex();
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    QImage avatarById(const int id);
+    [[nodiscard]]  QImage avatarById(const int id) const;
 
-    User *currentUser() const;
-
-    int findUserIdForAccount(AccountState *account) const;
+    [[nodiscard]] User *currentUser() const;
+    [[nodiscard]] User *findUserForAccount(AccountState *account) const;
+    [[nodiscard]] int findUserIdForAccount(AccountState *account) const;
 
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();
-    int currentUserId() const;
+    [[nodiscard]] int currentUserId() const;
 
     Q_INVOKABLE bool isUserConnected(const int id);
 
@@ -189,7 +239,7 @@ public:
         IdRole
     };
 
-    AccountAppList appList() const;
+    [[nodiscard]] AccountAppList appList() const;
 
 signals:
     void addAccount();
@@ -200,19 +250,20 @@ public slots:
     void openCurrentAccountLocalFolder();
     void openCurrentAccountTalk();
     void openCurrentAccountServer();
+    void openCurrentAccountFolderFromTrayInfo(const QString &fullRemotePath);
     void setCurrentUserId(const int id);
     void login(const int id);
     void logout(const int id);
     void removeAccount(const int id);
 
 protected:
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
 private:
     static UserModel *_instance;
     UserModel(QObject *parent = nullptr);
     QList<User*> _users;
-    int _currentUserId = 0;
+    int _currentUserId = -1;
     bool _init = true;
 
     void buildUserList();
@@ -232,9 +283,9 @@ public:
     static UserAppsModel *instance();
     ~UserAppsModel() override = default;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     enum UserAppsRoles {
         NameRole = Qt::UserRole + 1,
@@ -248,7 +299,7 @@ public slots:
     void openAppUrl(const QUrl &url);
 
 protected:
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
 private:
     static UserAppsModel *_instance;

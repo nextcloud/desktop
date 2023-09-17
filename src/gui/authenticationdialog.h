@@ -31,8 +31,8 @@ class AuthenticationDialog : public QDialog
 public:
     AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent = nullptr);
 
-    QString user() const;
-    QString password() const;
+    [[nodiscard]] QString user() const;
+    [[nodiscard]] QString password() const;
 
 private:
     QLineEdit *_user;

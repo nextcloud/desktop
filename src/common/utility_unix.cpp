@@ -19,6 +19,7 @@
 
 #include <QStandardPaths>
 #include <QtGlobal>
+#include <QProcess>
 
 namespace OCC {
 
@@ -111,6 +112,28 @@ static inline bool hasDarkSystray_private()
 QString Utility::getCurrentUserName()
 {
     return {};
+}
+
+void Utility::registerUriHandlerForLocalEditing()
+{
+    const auto appImagePath = qEnvironmentVariable("APPIMAGE");
+    const auto runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
+
+    if (!runningInsideAppImage) {
+        // only register x-scheme-handler if running inside appImage
+        return;
+    }
+
+    // mirall.desktop.in must have an x-scheme-handler mime type specified
+    const QString desktopFileName = QLatin1String(LINUX_APPLICATION_ID) + QLatin1String(".desktop");
+    QProcess process;
+    const QStringList args = {
+        QLatin1String("default"),
+        desktopFileName,
+        QStringLiteral("x-scheme-handler/%1").arg(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME))
+    };
+    process.start(QStringLiteral("xdg-mime"), args, QIODevice::ReadOnly);
+    process.waitForFinished();
 }
 
 } // namespace OCC

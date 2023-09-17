@@ -29,7 +29,7 @@ class AbstractCredentialsWizardPage : public QWizardPage
 {
 public:
     void cleanupPage() override;
-    virtual AbstractCredentials *getCredentials() const = 0;
+    [[nodiscard]] virtual AbstractCredentials *getCredentials() const = 0;
 };
 
 } // namespace OCC
