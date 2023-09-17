@@ -380,34 +380,14 @@ Application::Application(int &argc, char **argv)
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
-    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
-    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
-            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
-                accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-            qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
-                tr("There was an error while accessing the configuration "
-                   "file at %1. Please make sure the file can be accessed by your system account.")
-                    .arg(ConfigFile().configFile()),
-                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-            return;
-        }
+    if (restoreLegacyAccount()) {
+        FolderMan::instance()->setSyncEnabled(true);
+        FolderMan::instance()->setupFolders();
     }
 
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     _fileProvider.reset(new Mac::FileProvider);
 #endif
-
-    FolderMan::instance()->setSyncEnabled(true);
 
     setQuitOnLastWindowClosed(false);
 
@@ -424,7 +404,6 @@ Application::Application(int &argc, char **argv)
     _gui->setupCloudProviders();
 #endif
 
-    FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
@@ -490,6 +469,34 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
+}
+
+bool Application::restoreLegacyAccount()
+{
+    ConfigFile cfg;
+    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+            qCCritical(lcApplication) << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                nullptr,
+                tr("Error accessing the configuration file"),
+                tr("There was an error while accessing the configuration "
+                   "file at %1. Please make sure the file can be accessed by your system account.")
+                    .arg(ConfigFile().configFile()),
+                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+            return false;
+        }
+    }
+    return true;
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
