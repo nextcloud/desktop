@@ -98,6 +98,10 @@ protected:
     void setupTranslations();
     void setupLogging();
 
+    // Attempt to setup new settings or restore legacy settings
+    // The settings include the accounts and folders saved in the config file
+    void setupOrRestoreSettings();
+
 signals:
     void folderRemoved();
     void folderStateChanged(OCC::Folder *);
