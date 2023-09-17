@@ -250,10 +250,7 @@ bool AccountManager::restoreFromLegacySettings()
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
             if (const auto acc = loadAccountHelper(*settings)) {
-                addAccount(acc);
-                QMessageBox::information(nullptr,
-                                         tr("Legacy import"),
-                                         tr("Successfully imported account from legacy client: %1").arg(acc->prettyName()));                
+                addAccount(acc);              
             }
             settings->endGroup();
         }

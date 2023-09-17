@@ -122,7 +122,7 @@ private:
 
     void handleEditLocallyFromOptions();
 
-    bool restoreLegacyAccount();
+    AccountManager::AccountsRestoreResult  restoreLegacyAccount();
     void createConfigFile();
     /**
      * Maybe a newer version of the client was used with this config file:
