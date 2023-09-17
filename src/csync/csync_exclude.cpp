@@ -453,7 +453,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
     QStringView bnameStr(path);
     int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
-        bnameStr = path.mid(lastSlash + 1);
+        bnameStr = bnameStr.mid(lastSlash + 1);
     }
 
     QString basePath(_localPath + path);
