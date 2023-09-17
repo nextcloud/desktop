@@ -428,15 +428,26 @@ Application::~Application()
 void Application::setupOrRestoreSettings()
 {
     // try to restore legacy accounts
-    if (restoreLegacyAccount()) {
-        // to do: notify users
-    }
+    const auto accountsRestored = restoreLegacyAccount();
 
     _folderManager.reset(new FolderMan);
     FolderMan::instance()->setSyncEnabled(true);
 
     // try to restore legacy folders or set up folders
-    FolderMan::instance()->setupFolders();
+    const auto foldersRestored = FolderMan::instance()->setupFolders();
+
+    if (accountsRestored == AccountManager::AccountsRestoreSuccessFromLegacyVersion) {
+        const auto importedAccounts = AccountManager::instance()->accounts();
+        const auto messageBox = new QMessageBox(QMessageBox::Information,
+                                                tr("Legacy import"),
+                                                tr("Imported %1 account and %2 folders from legacy client.")
+                                                    .arg(QString::number(importedAccounts.size()),
+                                                         QString::number(foldersRestored)),
+                                                QMessageBox::Ok);
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
+        messageBox->setWindowModality(Qt::NonModal);
+        messageBox->open();
+    }
 }
 
 void Application::createConfigFile()
@@ -494,7 +505,7 @@ void Application::createConfigFile()
     }
 }
 
-bool Application::restoreLegacyAccount()
+AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
 {
     ConfigFile cfg;
     const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
@@ -516,10 +527,9 @@ bool Application::restoreLegacyAccount()
                     .arg(ConfigFile().configFile()),
                 tr("Quit %1").arg(Theme::instance()->appNameGUI()));
             QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-            return false;
         }
     }
-    return true;
+    return accountsRestoreResult;
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
