@@ -159,8 +159,13 @@ void FileInfo::remove(const QString &relativePath)
     const PathComponents pathComponents { relativePath };
     FileInfo *parent = findInvalidatingEtags(pathComponents.parentDirComponents());
     Q_ASSERT(parent);
-    parent->children.erase(std::find_if(parent->children.begin(), parent->children.end(),
-        [&pathComponents](const FileInfo &fi) { return fi.name == pathComponents.fileName(); }));
+    auto childrenIt = std::find_if(parent->children.begin(), parent->children.end(),
+                                   [&pathComponents](const FileInfo &fi) {
+                                       return fi.name == pathComponents.fileName();
+                                   });
+    if (childrenIt != parent->children.end()) {
+        parent->children.erase(childrenIt);
+    }
 }
 
 void FileInfo::insert(const QString &relativePath, qint64 size, char contentChar)
