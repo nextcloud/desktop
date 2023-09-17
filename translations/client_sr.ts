@@ -1991,7 +1991,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1618"/>
         <source>Last sync was successful.</source>
-        <translation>Последња синхорнизација је била успешна.</translation>
+        <translation>Последња синхронизација је била успешна.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1624"/>
