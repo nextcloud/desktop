@@ -568,7 +568,7 @@ void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, Accoun
             auto legacyBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                                    &ok);
             if (!ok) {
-                qCInfo(lcFolderMan) << "There was a problem retriving the database selective sync for " << folder;
+                qCInfo(lcFolderMan) << "There was a problem retrieving the database selective sync for " << folder;
             }
 
             legacyBlacklist << settings.value(QLatin1String("blackList")).toStringList();

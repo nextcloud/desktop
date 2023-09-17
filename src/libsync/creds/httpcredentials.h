@@ -97,7 +97,7 @@ public:
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
 
-    /* If we still have a valid refresh token, try to refresh it assynchronously and emit fetched()
+    /* If we still have a valid refresh token, try to refresh it asynchronously and emit fetched()
      * otherwise return false
      */
     bool refreshAccessToken();

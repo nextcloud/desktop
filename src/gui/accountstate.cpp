@@ -567,10 +567,10 @@ void AccountState::slotCheckServerAvailibility()
         || state() == AccountState::SignedOut
         || state() == AccountState::MaintenanceMode
         || state() == AccountState::AskingCredentials) {
-        qCInfo(lcAccountState) << "Skipping server availibility check for account" << _account->davUser() << "with state" << state();
+        qCInfo(lcAccountState) << "Skipping server availability check for account" << _account->davUser() << "with state" << state();
         return;
     }
-    qCInfo(lcAccountState) << "Checking server availibility for account" << _account->davUser();
+    qCInfo(lcAccountState) << "Checking server availability for account" << _account->davUser();
     const auto serverAvailibilityUrl = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/204"));
     auto checkServerAvailibilityJob = _account->sendRequest(QByteArrayLiteral("GET"), serverAvailibilityUrl);
     connect(checkServerAvailibilityJob, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {

@@ -457,7 +457,7 @@ public:
     /** The list of currently active jobs.
         This list contains the jobs that are currently using resources and is used purely to
         know how many jobs there is currently running for the scheduler.
-        Jobs add themself to the list when they do an assynchronous operation.
+        Jobs add themself to the list when they do an asynchronous operation.
         Jobs can be several time on the list (example, when several chunks are uploaded in parallel)
      */
     QList<PropagateItemJob *> _activeJobList;

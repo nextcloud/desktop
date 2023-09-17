@@ -878,7 +878,7 @@ QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolde
             result += createBlackList(root._subs.at(i), oldBlackList);
         }
     } else {
-        // We did not load from the server so we re-use the one from the old black list
+        // We did not load from the server so we reuse the one from the old black list
         const QString path = root._path;
         foreach (const QString &it, oldBlackList) {
             if (it.startsWith(path))

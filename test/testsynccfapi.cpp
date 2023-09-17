@@ -1361,7 +1361,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo{}};
         auto vfs = setupVfs(fakeFolder);
 
-        // Create a Windows shotcut (.lnk) file
+        // Create a Windows shortcut (.lnk) file
         fakeFolder.remoteModifier().insert("linkfile.lnk");
 
         QVERIFY(fakeFolder.syncOnce());

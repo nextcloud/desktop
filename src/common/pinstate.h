@@ -78,7 +78,7 @@ enum class PinState {
 
     /** The file will never be synced to the cloud.
      * 
-     * Usefull for ignored files to indicate to the OS the file will never be
+     * Useful for ignored files to indicate to the OS the file will never be
      * synced
      */
     Excluded = 4,

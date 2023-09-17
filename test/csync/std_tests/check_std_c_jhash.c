@@ -34,7 +34,7 @@ static void check_c_jhash_trials(void **state)
     z=0;
     for (i=0; i<hlen; ++i) {  /*----------------------- for each input byte, */
       for (j=0; j<8; ++j) { /*------------------------ for each input bit, */
-        for (m=1; m<8; ++m) { /*------------ for serveral possible initvals, */
+        for (m=1; m<8; ++m) { /*------------ for several possible initvals, */
           for (l=0; l<HASHSTATE; ++l) e[l]=f[l]=g[l]=h[l]=x[l]=y[l]=~((uint32_t)0);
 
           /*---- check that every output bit is affected by that input bit */
@@ -168,7 +168,7 @@ static void check_c_jhash64_trials(void **state)
     z=0;
     for (i=0; i<hlen; ++i) { /*----------------------- for each byte, */
       for (j=0; j<8; ++j) { /*------------------------ for each bit, */
-        for (m=0; m<8; ++m) { /*-------- for serveral possible levels, */
+        for (m=0; m<8; ++m) { /*-------- for several possible levels, */
           for (l=0; l<HASHSTATE; ++l) e[l]=f[l]=g[l]=h[l]=x[l]=y[l]=~((uint64_t)0);
 
           /*---- check that every input bit affects every output bit */

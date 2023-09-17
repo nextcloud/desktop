@@ -1671,7 +1671,7 @@ private slots:
         fakeFolder.remoteModifier().insert(testUpperCaseFile);
         QVERIFY(fakeFolder.syncOnce());
 
-        // we must get conflits
+        // we must get conflicts
         conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
         QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
 
