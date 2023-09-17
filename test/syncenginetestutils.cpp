@@ -1076,7 +1076,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
         const bool isUpload = newRequest.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
-        auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
+        auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toString();
         if (verb == QLatin1String("PROPFIND")) {
             // Ignore outgoingData always returning something good enough, works for now.
             reply = new FakePropfindReply { info, op, newRequest, this };
