@@ -245,54 +245,8 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (!ConfigFile().exists()) {
-        // Migrate from version <= 2.4
-        setApplicationName(_theme->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-#define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_DEPRECATED
-        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-
-        // macOS 10.11.x does not like trailing slash for rename/move.
-        if (oldDir.endsWith('/')) {
-            oldDir.chop(1);
-        }
-
-        QT_WARNING_POP
-        setApplicationName(_theme->appName());
-        if (QFileInfo(oldDir).isDir()) {
-            auto confDir = ConfigFile().configPath();
-
-            // macOS 10.11.x does not like trailing slash for rename/move.
-            if (confDir.endsWith('/')) {
-                confDir.chop(1);
-            }
-
-            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
-
-            if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
-
-                // Try to move the files one by one
-                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
-                    for (const auto &name : filesList) {
-                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
-                        }
-                    }
-                }
-            } else {
-#ifndef Q_OS_WIN
-                // Create a symbolic link so a downgrade of the client would still find the config.
-                QFile::link(confDir, oldDir);
-#endif
-            }
-        }
-    }
+    // create config file if needed
+    createConfigFile();
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
@@ -328,8 +282,9 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
+    // try to migrate the settings if there was an older version before
     if (!configVersionMigration()) {
-        return;
+        qCWarning(lcApplication) << "Config version migration was not possible.";
     }
 
     ConfigFile cfg;
@@ -357,42 +312,40 @@ Application::Application(int &argc, char **argv)
         }
     }
 
-
     // The timeout is initialized with an environment variable, if not, override with the value from the config
-    if (!AbstractNetworkJob::httpTimeout)
+    if (!AbstractNetworkJob::httpTimeout) {
         AbstractNetworkJob::httpTimeout = cfg.timeout();
+    }
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
+
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         qCInfo(lcApplication) << "VFS windows plugin is available";
     }
+
     if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         qCInfo(lcApplication) << "VFS suffix plugin is available";
     }
 
-    _folderManager.reset(new FolderMan);
+    _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+
 #if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    if (restoreLegacyAccount()) {
-        FolderMan::instance()->setSyncEnabled(true);
-        FolderMan::instance()->setupFolders();
-    }
-
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     _fileProvider.reset(new Mac::FileProvider);
 #endif
 
-    setQuitOnLastWindowClosed(false);
+    setupOrRestoreSettings();
 
-    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+    setQuitOnLastWindowClosed(false);
 
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
@@ -400,6 +353,7 @@ Application::Application(int &argc, char **argv)
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
+
 #if WITH_LIBCLOUDPROVIDERS
     _gui->setupCloudProviders();
 #endif
@@ -469,6 +423,75 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
+}
+
+void Application::setupOrRestoreSettings()
+{
+    // try to restore legacy accounts
+    if (restoreLegacyAccount()) {
+        // to do: notify users
+    }
+
+    _folderManager.reset(new FolderMan);
+    FolderMan::instance()->setSyncEnabled(true);
+
+    // try to restore legacy folders or set up folders
+    FolderMan::instance()->setupFolders();
+}
+
+void Application::createConfigFile()
+{
+    if (ConfigFile().exists()) {
+        return;
+    }
+
+    // Migrate from version <= 2.4
+    setApplicationName(_theme->appNameGUI());
+    #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
+    #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+    #endif
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_DEPRECATED
+    QT_WARNING_POP
+    setApplicationName(_theme->appName());
+
+    QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (oldDir.endsWith('/')) {
+        oldDir.chop(1);
+    }
+
+    if (QFileInfo(oldDir).isDir()) {
+        auto confDir = ConfigFile().configPath();
+
+               // macOS 10.11.x does not like trailing slash for rename/move.
+        if (confDir.endsWith('/')) {
+            confDir.chop(1);
+        }
+
+        qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+
+        if (!QFile::rename(oldDir, confDir)) {
+            qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+            // Try to move the files one by one
+            if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                for (const auto &name : filesList) {
+                    if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                        qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                    }
+                }
+            }
+        } else {
+#ifndef Q_OS_WIN
+            // Create a symbolic link so a downgrade of the client would still find the config.
+            QFile::link(confDir, oldDir);
+#endif
+        }
+    }
 }
 
 bool Application::restoreLegacyAccount()
