@@ -70,7 +70,8 @@ static void callback(
         | kFSEventStreamEventFlagItemRemoved // for rm
         | kFSEventStreamEventFlagItemInodeMetaMod // for mtime change
         | kFSEventStreamEventFlagItemRenamed // also coming for moves to trash in finder
-        | kFSEventStreamEventFlagItemModified; // for content change
+        | kFSEventStreamEventFlagItemModified // for content change
+        | kFSEventStreamEventFlagItemCloned; // for cloned items (since 10.13)
     //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
 
     QStringList paths;
