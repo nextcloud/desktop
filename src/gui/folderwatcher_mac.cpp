@@ -48,17 +48,31 @@ static void callback(
     const FSEventStreamEventId eventIds[])
 {
     Q_UNUSED(streamRef)
-    Q_UNUSED(eventFlags)
     Q_UNUSED(eventIds)
 
-    const FSEventStreamEventFlags c_interestingFlags = kFSEventStreamEventFlagItemCreated // for new folder/file
+    qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::callback by OS X";
+
+    // These flags indicate that either due to system error or for unknown reasons, the entire
+    // directory structure must be rescanned (including files)
+    const auto c_fullScanFlags = kFSEventStreamEventFlagMustScanSubDirs
+        | kFSEventStreamEventFlagKernelDropped
+        | kFSEventStreamEventFlagUserDropped;
+
+    for (int i = 0; i < static_cast<int>(numEvents); ++i) {
+        const auto flag = eventFlags[i];
+        if (flag & c_fullScanFlags) {
+            reinterpret_cast<FolderWatcherPrivate *>(clientCallBackInfo)->notifyAll();
+            return;
+        }
+    }
+
+    const auto c_interestingFlags = kFSEventStreamEventFlagItemCreated // for new folder/file
         | kFSEventStreamEventFlagItemRemoved // for rm
         | kFSEventStreamEventFlagItemInodeMetaMod // for mtime change
         | kFSEventStreamEventFlagItemRenamed // also coming for moves to trash in finder
-        | kFSEventStreamEventFlagItemModified; // for content change
+        | kFSEventStreamEventFlagItemModified // for content change
+        | kFSEventStreamEventFlagItemCloned; // for cloned items (since 10.13)
     //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
-
-    qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::callback by OS X";
 
     QStringList paths;
     CFArrayRef eventPaths = (CFArrayRef)eventPathsVoid;
@@ -110,11 +124,11 @@ QStringList FolderWatcherPrivate::addCoalescedPaths(const QStringList &paths) co
     QStringList coalescedPaths;
     for (const auto &eventPath : paths) {
         if (QDir(eventPath).exists()) {
-            QDirIterator it(eventPath, QDir::AllDirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+            QDirIterator it(eventPath, QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files, QDirIterator::Subdirectories);
             while (it.hasNext()) {
-                auto subfolder = it.next();
-                if (!paths.contains(subfolder)) {
-                    coalescedPaths.append(subfolder);
+                const auto path = it.next();
+                if (!paths.contains(path)) {
+                    coalescedPaths.append(path);
                 }
             }
         }
@@ -126,6 +140,19 @@ void FolderWatcherPrivate::doNotifyParent(const QStringList &paths)
 {
     const QStringList totalPaths = addCoalescedPaths(paths);
     _parent->changeDetected(totalPaths);
+}
+
+void FolderWatcherPrivate::notifyAll()
+{
+    QDirIterator dirIterator(_folder, QDirIterator::Subdirectories);
+    QStringList allPaths;
+
+    while(dirIterator.hasNext()) {
+        const auto dirEntry = dirIterator.next();
+        allPaths.append(dirEntry);
+    }
+
+    _parent->changeDetected(allPaths);
 }
 
 

@@ -36,6 +36,7 @@ public:
     void startWatching();
     QStringList addCoalescedPaths(const QStringList &) const;
     void doNotifyParent(const QStringList &);
+    void notifyAll();
 
     /// On OSX the watcher is ready when the ctor finished.
     bool _ready = true;
