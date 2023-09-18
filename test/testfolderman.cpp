@@ -5,16 +5,15 @@
  *
  */
 
-#include <qglobal.h>
+#include <QtGlobal>
 #include <QTemporaryDir>
 #include <QtTest>
 
-#include "QtTest/qtestcase.h"
 #include "common/utility.h"
 #include "folderman.h"
 #include "account.h"
 #include "accountstate.h"
-#include <accountmanager.h>
+#include "accountmanager.h"
 #include "configfile.h"
 #include "syncenginetestutils.h"
 #include "testhelper.h"
