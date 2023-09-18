@@ -124,11 +124,11 @@ QStringList FolderWatcherPrivate::addCoalescedPaths(const QStringList &paths) co
     QStringList coalescedPaths;
     for (const auto &eventPath : paths) {
         if (QDir(eventPath).exists()) {
-            QDirIterator it(eventPath, QDir::AllDirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+            QDirIterator it(eventPath, QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Files, QDirIterator::Subdirectories);
             while (it.hasNext()) {
-                auto subfolder = it.next();
-                if (!paths.contains(subfolder)) {
-                    coalescedPaths.append(subfolder);
+                const auto path = it.next();
+                if (!paths.contains(path)) {
+                    coalescedPaths.append(path);
                 }
             }
         }
