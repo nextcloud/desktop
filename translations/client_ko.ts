@@ -2235,12 +2235,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="647"/>
+        <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
         <translation>동기화 폴더 연결 추가</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="649"/>
+        <location filename="../src/gui/folderwizard.cpp" line="686"/>
         <source>Add Sync Connection</source>
         <translation>동기화 연결 추가</translation>
     </message>
@@ -2248,17 +2248,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="69"/>
+        <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Click to select a local folder to sync.</source>
         <translation>동기화할 폴더를 선택하려면 이 버튼을 클릭하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="76"/>
+        <location filename="../src/gui/folderwizard.cpp" line="91"/>
         <source>Enter the path to the local folder.</source>
         <translation>로컬 폴더의 경로를 입력하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="137"/>
+        <location filename="../src/gui/folderwizard.cpp" line="152"/>
         <source>Select the source folder</source>
         <translation>원본 폴더 선택</translation>
     </message>
@@ -2266,52 +2266,52 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Create Remote Folder</source>
         <translation>원격 폴더 생성</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="224"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>&quot;%1&quot; 아래에 만들 새 폴더의 이름을 입력하세요:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="253"/>
         <source>Folder was successfully created on %1.</source>
         <translation>%1에 폴더가 성공적으로 생성되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="248"/>
+        <location filename="../src/gui/folderwizard.cpp" line="263"/>
         <source>Authentication failed accessing %1</source>
         <translation>%1에 액세스하는 인증이 실패했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="250"/>
+        <location filename="../src/gui/folderwizard.cpp" line="265"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1에 폴더를 생성하지 못했습니다. 수동으로 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="268"/>
+        <location filename="../src/gui/folderwizard.cpp" line="283"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>폴더를 나열하지 못했습니다. 오류: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="349"/>
+        <location filename="../src/gui/folderwizard.cpp" line="364"/>
         <source>Choose this to sync the entire account</source>
         <translation>전체 계정을 동기화하려면 이 옵션을 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="492"/>
+        <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>이 폴더는 이미 동기화 중입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="494"/>
+        <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>이미 &lt;i&gt;%2&lt;/i&gt;의 상위 폴더 인 &lt;i&gt;%1&lt;/i&gt;을 동기화하고 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="496"/>
+        <location filename="../src/gui/folderwizard.cpp" line="511"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>이미 &lt;i&gt;%2&lt;/i&gt;의 하위 폴더인 &lt;i&gt;%1&lt;/i&gt;을 동기화하고 있습니다.</translation>
     </message>
@@ -2319,25 +2319,25 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>내용을 즉시 다운로드 하는 대신 가상 파일을 사용 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
         <translation>(실험적)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>가상 파일은 윈도우 파티션 루트에 로컬 폴더로 지원되지 않습니다.
 드라이브 문자가 지정된 유효한 하위 폴더를 선택하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="591"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>가상 파일을 선택한 폴더에서 사용 가능하지 않음</translation>
     </message>
@@ -2345,12 +2345,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="50"/>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;경고:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation>&lt;b&gt;경고:&lt;/b&gt;</translation>
     </message>

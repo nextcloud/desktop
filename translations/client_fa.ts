@@ -2237,12 +2237,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="647"/>
+        <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
         <translation>اضافه کردن اتصال همگام سازی پوشه</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="649"/>
+        <location filename="../src/gui/folderwizard.cpp" line="686"/>
         <source>Add Sync Connection</source>
         <translation>افزودن اتصال همگام سازی</translation>
     </message>
@@ -2250,17 +2250,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="69"/>
+        <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Click to select a local folder to sync.</source>
         <translation>کلیک کنید تا یک پوشه را برای همگام سازی انتخاب نمایید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="76"/>
+        <location filename="../src/gui/folderwizard.cpp" line="91"/>
         <source>Enter the path to the local folder.</source>
         <translation>مسیر را به پوشه محلی وارد کنید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="137"/>
+        <location filename="../src/gui/folderwizard.cpp" line="152"/>
         <source>Select the source folder</source>
         <translation>پوشه ی اصلی را انتخاب کنید</translation>
     </message>
@@ -2268,52 +2268,52 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Create Remote Folder</source>
         <translation>ایجاد پوشه از راه دور</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="224"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Enter the name of the new folder to be created below &quot;%1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="253"/>
         <source>Folder was successfully created on %1.</source>
         <translation>پوشه با موفقیت ایجاد شده است  %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="248"/>
+        <location filename="../src/gui/folderwizard.cpp" line="263"/>
         <source>Authentication failed accessing %1</source>
         <translation>تأیید اعتبار دسترسی به 1% شکست خورد</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="250"/>
+        <location filename="../src/gui/folderwizard.cpp" line="265"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>شکست در ساخت پوشه در 1%. لطفا به صورت دستی بررسی کنید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="268"/>
+        <location filename="../src/gui/folderwizard.cpp" line="283"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>شکست در فهرست کردن یک پوشه. خطا: 1%</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="349"/>
+        <location filename="../src/gui/folderwizard.cpp" line="364"/>
         <source>Choose this to sync the entire account</source>
         <translation>این را برای همگام سازی کل حساب انتخاب کنید</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="492"/>
+        <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>این پوشه همگام‌سازی شده است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="494"/>
+        <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>شما از قبل &lt;i&gt;1%&lt;/i&gt; را همگام سازی کرده اید، که یک پوشه والد از &lt;i&gt;2%&lt;/i&gt; است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="496"/>
+        <location filename="../src/gui/folderwizard.cpp" line="511"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -2321,24 +2321,24 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Use virtual files instead of downloading content immediately %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="591"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Virtual files are not available for the selected folder</translation>
     </message>
@@ -2346,12 +2346,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="50"/>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;اخطار:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation>&lt;b&gt;اخطار:&lt;/b&gt;</translation>
     </message>

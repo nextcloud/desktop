@@ -2235,12 +2235,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="647"/>
+        <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
         <translation>Добавяне на папка за синхронизиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="649"/>
+        <location filename="../src/gui/folderwizard.cpp" line="686"/>
         <source>Add Sync Connection</source>
         <translation>Добави</translation>
     </message>
@@ -2248,17 +2248,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="69"/>
+        <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Click to select a local folder to sync.</source>
         <translation>Кликнете, за да изберете локална папка за синхрнизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="76"/>
+        <location filename="../src/gui/folderwizard.cpp" line="91"/>
         <source>Enter the path to the local folder.</source>
         <translation>Въведете път до локалната папка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="137"/>
+        <location filename="../src/gui/folderwizard.cpp" line="152"/>
         <source>Select the source folder</source>
         <translation>Изберете папката източник</translation>
     </message>
@@ -2266,52 +2266,52 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Create Remote Folder</source>
         <translation>Създаване на отдалечена папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="224"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Въведете име за новата папка, която ще бъде създадена под  „%1“:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="253"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Папката беше създадена успешно на %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="248"/>
+        <location filename="../src/gui/folderwizard.cpp" line="263"/>
         <source>Authentication failed accessing %1</source>
         <translation>Неуспешно удостоверяване при достъпа % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="250"/>
+        <location filename="../src/gui/folderwizard.cpp" line="265"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Неуспешно създаване на папката на % 1 . Моля, проверете ръчно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="268"/>
+        <location filename="../src/gui/folderwizard.cpp" line="283"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation> Неуспешно вписване на папка в списък. Грешка:% 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="349"/>
+        <location filename="../src/gui/folderwizard.cpp" line="364"/>
         <source>Choose this to sync the entire account</source>
         <translation>Синхронизирай целия профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="492"/>
+        <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>Папката вече се синхронизира.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="494"/>
+        <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Вече синхронизирате &lt;i&gt;% 1&lt;/i&gt;, която е родителска папка от &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="496"/>
+        <location filename="../src/gui/folderwizard.cpp" line="511"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Вече синхронизирате &lt;i&gt;1%&lt;/i&gt;, която е подпапка от &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -2319,24 +2319,24 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Използвайте виртуални файлове, вместо да изтегляте незабавно% 1 съдържание</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
         <translation>(експериментално)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Виртуалните файлове не се поддържат за основни дялове на Windows като локална папка. Моля, изберете валидна подпапка под буквата на устройството.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="591"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Не са налични виртуални файлове за избраната папка</translation>
     </message>
@@ -2344,12 +2344,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="50"/>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Внимание:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Внимание:&lt;/b&gt;</translation>
     </message>

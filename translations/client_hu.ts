@@ -2236,12 +2236,12 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="647"/>
+        <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
         <translation>Mappa szinkronizálási kapcsolat hozzáadása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="649"/>
+        <location filename="../src/gui/folderwizard.cpp" line="686"/>
         <source>Add Sync Connection</source>
         <translation>Szinkronizálási kapcsolat hozzáadása</translation>
     </message>
@@ -2249,17 +2249,17 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="69"/>
+        <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Click to select a local folder to sync.</source>
         <translation>A szinkronizáláshoz válasszon egy helyi mappát.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="76"/>
+        <location filename="../src/gui/folderwizard.cpp" line="91"/>
         <source>Enter the path to the local folder.</source>
         <translation>Adja meg egy helyi mappa elérési útját.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="137"/>
+        <location filename="../src/gui/folderwizard.cpp" line="152"/>
         <source>Select the source folder</source>
         <translation>Forrásmappa kiválasztása</translation>
     </message>
@@ -2267,52 +2267,52 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Create Remote Folder</source>
         <translation>Távoli mappa létrehozása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="224"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Adja meg a(z) „%1” alatt létrehozandó új mappa nevét:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="253"/>
         <source>Folder was successfully created on %1.</source>
         <translation>A mappa sikeresen létrehozva itt: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="248"/>
+        <location filename="../src/gui/folderwizard.cpp" line="263"/>
         <source>Authentication failed accessing %1</source>
         <translation>A hitelesítés sikertelen a(z) %1 elérésekor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="250"/>
+        <location filename="../src/gui/folderwizard.cpp" line="265"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>A mappa létrehozása sikertelen itt: 1. Ellenőrizze kézzel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="268"/>
+        <location filename="../src/gui/folderwizard.cpp" line="283"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Egy mappa listázása meghiúsult. Hiba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="349"/>
+        <location filename="../src/gui/folderwizard.cpp" line="364"/>
         <source>Choose this to sync the entire account</source>
         <translation>Válassza ezt a teljes fiókja szinkronizálásához</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="492"/>
+        <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>Ez a mappa már szinkronizálva van.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="494"/>
+        <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Már szinkronizál a(z) &lt;i&gt;%1&lt;/i&gt; mappával, amely a(z) &lt;i&gt;%2&lt;/i&gt; szülőmappája.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="496"/>
+        <location filename="../src/gui/folderwizard.cpp" line="511"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Már szinkronizálja a(z) &lt;i&gt;%1&lt;/i&gt; mappát, amely a(z) &lt;i&gt;%2&lt;/i&gt; almappája.</translation>
     </message>
@@ -2320,24 +2320,24 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Virtuális fájlok használata a tartalom azonnali letöltése helyett %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
         <translation>(kísérleti)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>A virtuális fájlok nem támogatottak a windowsos partíciók gyökerében helyi mappaként. Válasszon érvényes almappát a meghajtó betűjele alatt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="591"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>A virtuális fájlok nem érhetők el a kiválasztott mappához</translation>
     </message>
@@ -2345,12 +2345,12 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="50"/>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Figyelmeztetés:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Figyelmeztetés:&lt;/b&gt;</translation>
     </message>

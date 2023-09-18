@@ -2238,12 +2238,12 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="647"/>
+        <location filename="../src/gui/folderwizard.cpp" line="684"/>
         <source>Add Folder Sync Connection</source>
         <translation>Lägg till mappsynkroniseringsanslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="649"/>
+        <location filename="../src/gui/folderwizard.cpp" line="686"/>
         <source>Add Sync Connection</source>
         <translation>Lägg till anslutning.</translation>
     </message>
@@ -2251,17 +2251,17 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="69"/>
+        <location filename="../src/gui/folderwizard.cpp" line="84"/>
         <source>Click to select a local folder to sync.</source>
         <translation>Klicka för att välja en lokal mapp att synkronisera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="76"/>
+        <location filename="../src/gui/folderwizard.cpp" line="91"/>
         <source>Enter the path to the local folder.</source>
         <translation>Ange sökvägen till den lokala mappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="137"/>
+        <location filename="../src/gui/folderwizard.cpp" line="152"/>
         <source>Select the source folder</source>
         <translation>Välj källmapp</translation>
     </message>
@@ -2269,52 +2269,52 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Create Remote Folder</source>
         <translation>Skapa fjärrmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="224"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Ange namn på den mapp som ska placeras under &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="253"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Mappen skapades på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="248"/>
+        <location filename="../src/gui/folderwizard.cpp" line="263"/>
         <source>Authentication failed accessing %1</source>
         <translation>Autentisering misslyckades att komma åt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="250"/>
+        <location filename="../src/gui/folderwizard.cpp" line="265"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Det gick inte att skapa mappen på %1. Kontrollera manuellt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="268"/>
+        <location filename="../src/gui/folderwizard.cpp" line="283"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Kunde inte lista en mapp. Felkod: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="349"/>
+        <location filename="../src/gui/folderwizard.cpp" line="364"/>
         <source>Choose this to sync the entire account</source>
         <translation>Välj detta för att synkronisera hela kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="492"/>
+        <location filename="../src/gui/folderwizard.cpp" line="507"/>
         <source>This folder is already being synced.</source>
         <translation>Den här mappen synkroniseras redan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="494"/>
+        <location filename="../src/gui/folderwizard.cpp" line="509"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Du synkrroniserar redan &lt;i&gt;%1&lt;/i&gt;, vilket är övermapp till &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="496"/>
+        <location filename="../src/gui/folderwizard.cpp" line="511"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Du synkroniserar redan &lt;i&gt;%1&lt;/i&gt;, vilket är en undermapp till &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -2322,24 +2322,24 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Använd virtuella filer istället för att ladda ner innehåll direkt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="535"/>
         <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="609"/>
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="605"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows stödjer inte virtuella filer direkt i rotkataloger. Välj en underkatalog.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="591"/>
+        <location filename="../src/gui/folderwizard.cpp" line="628"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Virtuella filer är inte tillgängliga för den valda mappen</translation>
     </message>
@@ -2347,12 +2347,12 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="50"/>
+        <location filename="../src/gui/folderwizard.cpp" line="65"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Varning:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="52"/>
+        <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Varning:&lt;/b&gt;</translation>
     </message>
