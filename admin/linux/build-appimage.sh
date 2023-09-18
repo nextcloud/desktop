@@ -98,6 +98,8 @@ export LD_LIBRARY_PATH=/app/usr/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/l
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
 then
-    mv *.AppImage ${APPNAME}-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
+    mv *.AppImage ${EXECUTABLE_NAME}-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
+else
+    mv *.AppImage ${EXECUTABLE_NAME}-${SUFFIX}-x86_64.AppImage
 fi
 mv *.AppImage ${DESKTOP_CLIENT_ROOT}/
