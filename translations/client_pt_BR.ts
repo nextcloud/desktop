@@ -3176,7 +3176,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="303"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Aviso: A pasta local não está vazia. Escolha uma resolução!</translation>
+        <translation>Aviso: A pasta local não está vazia. Escolha uma opção!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="313"/>
@@ -5316,7 +5316,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
-        <translation>Apaguei a pasta local e inicie uma sincronização limpa</translation>
+        <translation>Apagar a pasta local e iniciar uma sincronização limpa</translation>
     </message>
 </context>
 <context>
