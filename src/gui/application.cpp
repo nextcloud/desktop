@@ -1019,13 +1019,17 @@ void Application::setupTranslations()
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 if (!qtTranslator->load(qtTrFile, trPath)) {
                     if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
-                        qtTranslator->load(qtBaseTrFile, trPath);
+                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
+                            qCDebug(lcApplication()) << "impossible to load Qt translation catalog" << qtBaseTrFile;
+                        }
                     }
                 }
             }
             const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
             if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
-                qtkeychainTranslator->load(qtkeychainTrFile, trPath);
+                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
+                    qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
+                }
             }
             if (!translator->isEmpty())
                 installTranslator(translator);
