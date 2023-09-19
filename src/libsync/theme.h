@@ -467,13 +467,6 @@ public:
     [[nodiscard]] QString quotaBaseFolder() const;
 
     /**
-     * The OAuth client_id, secret pair.
-     * Note that client that change these value cannot connect to un-branded owncloud servers.
-     */
-    [[nodiscard]] QString oauthClientId() const;
-    [[nodiscard]] QString oauthClientSecret() const;
-
-    /**
      * @brief What should be output for the --version command line switch.
      *
      * By default, it's a combination of appName(), version(), the GIT SHA1 and some

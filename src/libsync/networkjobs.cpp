@@ -1056,16 +1056,13 @@ void DetermineAuthTypeJob::start()
     });
     connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
-        if (authChallenge.contains("bearer ")) {
-            _resultPropfind = OAuth;
+
+        if (authChallenge.isEmpty()) {
+            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
         } else {
-            if (authChallenge.isEmpty()) {
-                qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
-            } else {
-                qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
-            }
-            _resultPropfind = Basic;
+            qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
         }
+        _resultPropfind = Basic;
         _propfindDone = true;
         checkAllDone();
     });
@@ -1111,13 +1108,13 @@ void DetermineAuthTypeJob::checkAllDone()
     auto result = _resultPropfind;
 
 #ifdef WITH_WEBENGINE
-    // WebViewFlow > OAuth > Basic
+    // WebViewFlow > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
     }
 #endif // WITH_WEBENGINE
 
-    // LoginFlowV2 > WebViewFlow > OAuth > Basic
+    // LoginFlowV2 > WebViewFlow > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
     }
