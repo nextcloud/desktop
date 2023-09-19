@@ -31,7 +31,6 @@ bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
     const QStringList allowedUrlSchemes = {
         "http",
         "https",
-        "oauthtest"
     };
 
     if (!allowedUrlSchemes.contains(url.scheme())) {

@@ -32,7 +32,6 @@ Q_DECLARE_LOGGING_CATEGORY(lcWizard)
 class WelcomePage;
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
-class OwncloudOAuthCredsPage;
 class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
@@ -122,7 +121,6 @@ private:
     WelcomePage *_welcomePage;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
-    OwncloudOAuthCredsPage *_browserCredsPage;
     Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage = nullptr;

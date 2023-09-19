@@ -456,10 +456,6 @@ void AccountState::handleInvalidCredentials()
     if (account()->credentials()->ready()) {
         account()->credentials()->invalidateToken();
     }
-    if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
-        if (creds->refreshAccessToken())
-            return;
-    }
     account()->credentials()->askFromUser();
 }
 

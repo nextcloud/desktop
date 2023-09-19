@@ -146,7 +146,7 @@ void WebFlowCredentials::askFromUser() {
     // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
-    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    // LoginFlowV2 > WebViewFlow > Shib > Basic
 #ifdef WITH_WEBENGINE
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
 #else // WITH_WEBENGINE

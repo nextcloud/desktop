@@ -163,7 +163,7 @@ void GETFileJob::slotMetaDataChanged()
 
     if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307
         || httpStatus == 308 || httpStatus == 401) {
-        // Redirects and auth failures (oauth token renew) are handled by AbstractNetworkJob and
+        // Redirects and auth failures (token renew) are handled by AbstractNetworkJob and
         // will end up restarting the job. We do not want to process further data from the initial
         // request. newReplyHook() will reestablish signal connections for the follow-up request.
         bool ok = disconnect(reply(), &QNetworkReply::finished, this, &GETFileJob::slotReadyRead)

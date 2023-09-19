@@ -23,7 +23,6 @@
 #include "wizard/welcomepage.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
-#include "wizard/owncloudoauthcredspage.h"
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/webviewpage.h"
 #include "wizard/flow2authcredspage.h"
@@ -49,7 +48,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _welcomePage(new WelcomePage(this))
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
-    , _browserCredsPage(new OwncloudOAuthCredsPage)
     , _flow2CredsPage(new Flow2AuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage(this))
 #ifdef WITH_WEBENGINE
@@ -64,7 +62,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_Welcome, _welcomePage);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
-    setPage(WizardCommon::Page_OAuthCreds, _browserCredsPage);
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
 #ifdef WITH_WEBENGINE
@@ -79,7 +76,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(this, &QWizard::currentIdChanged, this, &OwncloudWizard::slotCurrentPageChanged);
     connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-    connect(_browserCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_flow2CredsPage, &Flow2AuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #ifdef WITH_WEBENGINE
     connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
@@ -233,10 +229,6 @@ void OwncloudWizard::successfulStep()
         _httpCredsPage->setConnected();
         break;
 
-    case WizardCommon::Page_OAuthCreds:
-        _browserCredsPage->setConnected();
-        break;
-
     case WizardCommon::Page_Flow2AuthCreds:
         _flow2CredsPage->setConnected();
         break;
@@ -280,9 +272,7 @@ void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _setupPage->setAuthType(type);
 
-    if (type == DetermineAuthTypeJob::OAuth) {
-        _credentialsPage = _browserCredsPage;
-    } else if (type == DetermineAuthTypeJob::LoginFlowV2) {
+    if (type == DetermineAuthTypeJob::LoginFlowV2) {
         _credentialsPage = _flow2CredsPage;
 #ifdef WITH_WEBENGINE
     } else if (type == DetermineAuthTypeJob::WebViewFlow) {
@@ -329,8 +319,8 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         emit clearPendingRequests();
     }
 
-    if (id == WizardCommon::Page_AdvancedSetup && (_credentialsPage == _browserCredsPage || _credentialsPage == _flow2CredsPage)) {
-        // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
+    if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _flow2CredsPage) {
+        // Disable the back button in the Page_AdvancedSetup because we don't want
         // to re-open the browser.
         button(QWizard::BackButton)->setEnabled(false);
     }

@@ -430,7 +430,7 @@ void OwncloudSetupWizard::slotAuthError()
 
     // bring wizard to top
     _ocWizard->bringToTop();
-    if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds || _ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
+    if (_ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
         _ocWizard->back();
     }
     _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
