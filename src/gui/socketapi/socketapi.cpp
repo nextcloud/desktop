@@ -170,9 +170,6 @@ SocketApi::SocketApi(QObject *parent)
         qCWarning(lcSocketApi) << "can't start server" << socketPath;
     }
 
-    // folder watcher
-    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
-
     // Now we're ready to start the native shell integration:
     Utility::startShellIntegration();
 

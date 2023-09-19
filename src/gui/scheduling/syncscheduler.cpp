@@ -135,7 +135,7 @@ void SyncScheduler::startNext()
         return;
     }
     auto nextSync = _queue->pop();
-    while (nextSync && !nextSync->isReady()) {
+    while (nextSync && !nextSync->canSync()) {
         nextSync = _queue->pop();
     }
     _currentSync = nextSync;

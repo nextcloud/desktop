@@ -374,6 +374,11 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
             gitUrl = gitSHA1(format) + br;
         }
     }
+    QStringList sysInfo = {QStringLiteral("OS: %1-%2").arg(QSysInfo::productType(), QSysInfo::kernelVersion())};
+    // may be called by both GUI and CLI, but we can display QPA only for the former
+    if (auto guiApp = qobject_cast<QGuiApplication *>(qApp)) {
+        sysInfo << QStringLiteral("QPA: %1").arg(guiApp->platformName());
+    }
 
     return QCoreApplication::translate("ownCloudTheme::aboutVersions()",
         "%1 %2%7"
@@ -382,8 +387,7 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
         "Using virtual files plugin: %5%7"
         "%6")
         .arg(appName(), _version, qtVersionString, QSslSocket::sslLibraryVersionString(),
-            Utility::enumToString(VfsPluginManager::instance().bestAvailableVfsMode()), QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion(),
-            br, gitUrl);
+            Utility::enumToString(VfsPluginManager::instance().bestAvailableVfsMode()), sysInfo.join(br), br, gitUrl);
 }
 
 

@@ -381,5 +381,5 @@ Feature: Syncing files
         And the user waits for the files to sync
         Then as "Alice" folder "folder1" should exist in the server
         And as "Alice" folder "folder2" should exist in the server
-        And the content of file "file1.txt" for user "Alice" should be "Test file1" on the server
-        And the content of file "file2.txt" for user "Alice" should be "Test file2" on the server
+        And as "Alice" the file "file1.txt" should have the content "Test file1" in the server
+        And as "Alice" the file "file2.txt" should have the content "Test file2" in the server
