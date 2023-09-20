@@ -432,7 +432,7 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>이 폴더에 가상 파일 기능이 사용되고 있는 것 같습니다. 현재는 종단간 암호화된 파일을 자동으로 가상 파일로 받을 수 없습니다. 가상 파일과 종단간 암호화가 잘 작동하게 하려면, 암호화된 폴더가 &quot;항상 이 장치에 유지&quot;되도록 지정하세요.</translation>
+        <translation>이 폴더에 가상 파일 기능이 사용되고 있는 것 같습니다. 현재는 종단간 암호화된 가상 파일을 자동으로 받을 수 없습니다. 가상 파일과 종단간 암호화가 잘 작동하게 하려면, 암호화된 폴더가 &quot;항상 이 장치에 유지&quot;되도록 지정하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
@@ -447,13 +447,14 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>종단간 암호화</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>폴더와 안의 파일을 암호화합니다. 암호화 니모닉 키가 없으면 파일에 더 이상 접근할 수 없습니다.
+&lt;b&gt;이 과정은 되돌릴 수 없습니다. 계속 진행하겠습니까?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -483,17 +484,17 @@ Should an account import be attempted?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>폴더를 암호화하기 전에 동기화 될 때까지 기다려 주세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="358"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>폴더에 약간의 동기화 문제가 있습니다. 이 폴더를 성공적으로 동기화 한 후 암호화할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="360"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
-        <translation type="unfinished"/>
+        <translation>폴더에 동기화 오류가 있습니다. 이 폴더를 성공적으로 동기화 한 후 암호화할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
@@ -533,7 +534,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
-        <translation>무시된 파일 수정</translation>
+        <translation>무시할 파일 수정</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
@@ -708,7 +709,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1227"/>
         <source>Connected to %1.</source>
-        <translation>%1(으)로 연결했습니다.</translation>
+        <translation>%1에 연결되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1231"/>
@@ -723,7 +724,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1237"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation type="unfinished"/>
+        <translation>%1 서버가 현재 리디렉트 되고 있거나, 당신이 종속 포털에 연결되어 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1240"/>
@@ -771,9 +772,9 @@ This action will abort any currently running synchronization.</source>
         <translation>사이즈가 너무 크거나 외부 저장소이므로 동기화되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1584"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1572"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation type="unfinished"/>
+        <translation>크기가 %1MB보다 더 커진 폴더가 있습니다: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1577"/>
@@ -839,7 +840,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>리디렉션 감지됨</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="160"/>
@@ -998,7 +999,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;사용자 이름:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
@@ -1829,27 +1830,28 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <location filename="../src/gui/folder.cpp" line="1364"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>폴더가 설정된 크기 제한인 %1MB를 초과했습니다: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1375"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>계속 동기화</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1383"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중지</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1394"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>%1 폴더가 설정된 크기 제한인 %2MB를 초과했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1395"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>이 폴더의 동기화를 중단하겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1294"/>
@@ -2182,23 +2184,23 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1115"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>수 초 남음, %2의 %1, %4의 파일 %3</translation>
+        <translation>수 초 남음, %2 중 %1, %4개 파일 중 %3개</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <translation>%5 남음, %2의 %1, %4의 파일 %3</translation>
+        <translation>%5 남음, %2 중 %1, %4개 파일 중 %3개</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1129"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%2의 %1, %4의 파일 %3</translation>
+        <translation>%2 중 %1, %4개 파일 중 %3개</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1136"/>
         <source>file %1 of %2</source>
-        <translation>%2의 파일 %1</translation>
+        <translation>%2개 파일 중 %1개</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1191"/>
@@ -2476,7 +2478,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="234"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>다음보다 큰 폴더를 동기화할 때 확인을 요청</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2487,12 +2489,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
+        <translation>동기화된 폴더가 지정된 크기보다 더 커질 때 알림</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="324"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
+        <translation>크기 제한을 넘는 폴더의 동기화를 자동으로 중단</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="273"/>
@@ -2502,7 +2504,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>제거된 파일을 휴지통으로 이동</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -2517,7 +2519,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>무시된 파일 수정</translation>
+        <translation>무시할 파일 수정</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
@@ -2635,7 +2637,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>무시된 파일 편집기</translation>
+        <translation>무시할 파일 편집기</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
@@ -2650,7 +2652,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>패턴에 의해 무시된 파일</translation>
+        <translation>패턴을 통해 무시할 파일</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -3036,45 +3038,6 @@ Note that using any logging command line options will override this setting.</so
     </message>
 </context>
 <context>
-    <name>OCC::OAuth</name>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
-        <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>서버로부터 오류가 반환되었습니다: &lt;em&gt;%1&lt;/em&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
-        <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>&apos;토큰&apos; 종단점에 액세스하는 중 오류가 발생했습니다: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;
- </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="122"/>
-        <source>Empty JSON from OAuth2 redirect</source>
-        <translation>OAuth2 리디렉션에서 보낸 빈 JSON</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="127"/>
-        <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>서버에서 반환된 JSON을 구문 분석 할 수 없습니다: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="130"/>
-        <source>The reply from the server did not contain all expected fields</source>
-        <translation>서버의 응답에 모든 예상 필드가 포함되지 않았습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="134"/>
-        <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;로그인 오류&lt;/h1&gt; &lt;p&gt;%1&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
-        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;잘못된 계정&lt;/h1&gt;&lt;p&gt;귀하는 계정 &lt;em&gt;%1&lt;/em&gt;(으)로 로그인을 시도하였으나, 계정 &lt;em&gt;%2&lt;/em&gt;(으)로 로그인 해야합니다. &lt;br&gt;다른 탭에서 %3을(를) 로그아웃 한 후, &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 클릭하여 %2(으)로 로그인 하십시오.&lt;/p&gt;</translation>
-    </message>
-</context>
-<context>
     <name>OCC::OCUpdater</name>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
@@ -3259,19 +3222,6 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Enter user credentials</source>
         <translation>사용자 인증 정보 입력</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudOAuthCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
-        <source>Connect to %1</source>
-        <translation>%1에 연결</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
-        <source>Login in your browser</source>
-        <translation>브라우저에서 로그인</translation>
     </message>
 </context>
 <context>
@@ -5336,29 +5286,6 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>OwncloudOAuthCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
-        <source>Please switch to your browser to proceed.</source>
-        <translation>진행을 위해서 브라우저를 전환하세요.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
-        <source>An error occurred while connecting. Please try again.</source>
-        <translation>연결하는 중 오류가 발생했습니다. 다시 시도하십시오.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
-        <source>Re-open Browser</source>
-        <translation>브라우저를 다시 열기</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
-        <source>Copy link</source>
-        <translation>링크 복사</translation>
-    </message>
-</context>
-<context>
     <name>OwncloudSetupPage</name>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
@@ -5563,7 +5490,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>재공유 허용</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
@@ -6278,6 +6205,58 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>OCC::OAuth</name>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
+        <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
+        <translation>서버로부터 오류가 반환되었습니다: &lt;em&gt;%1&lt;/em&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
+        <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <translation>&apos;토큰&apos; 종단점에 액세스하는 중 오류가 발생했습니다: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;
+ </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="122"/>
+        <source>Empty JSON from OAuth2 redirect</source>
+        <translation>OAuth2 리디렉션에서 보낸 빈 JSON</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="127"/>
+        <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <translation>서버에서 반환된 JSON을 구문 분석 할 수 없습니다: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="130"/>
+        <source>The reply from the server did not contain all expected fields</source>
+        <translation>서버의 응답에 모든 예상 필드가 포함되지 않았습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="134"/>
+        <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
+        <translation>&lt;h1&gt;로그인 오류&lt;/h1&gt; &lt;p&gt;%1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
+        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
+        <translation>&lt;h1&gt;잘못된 계정&lt;/h1&gt;&lt;p&gt;귀하는 계정 &lt;em&gt;%1&lt;/em&gt;(으)로 로그인을 시도하였으나, 계정 &lt;em&gt;%2&lt;/em&gt;(으)로 로그인 해야합니다. &lt;br&gt;다른 탭에서 %3을(를) 로그아웃 한 후, &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 클릭하여 %2(으)로 로그인 하십시오.&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OwncloudOAuthCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
+        <source>Connect to %1</source>
+        <translation>%1에 연결</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
+        <source>Login in your browser</source>
+        <translation>브라우저에서 로그인</translation>
+    </message>
+</context>
+<context>
     <name>OCC::ShareUserLine</name>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="80"/>
@@ -6303,6 +6282,29 @@ Server replied with error: %2</source>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
         <translation>만료:</translation>
+    </message>
+</context>
+<context>
+    <name>OwncloudOAuthCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
+        <source>Please switch to your browser to proceed.</source>
+        <translation>진행을 위해서 브라우저를 전환하세요.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation>연결하는 중 오류가 발생했습니다. 다시 시도하십시오.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
+        <source>Re-open Browser</source>
+        <translation>브라우저를 다시 열기</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
+        <source>Copy link</source>
+        <translation>링크 복사</translation>
     </message>
 </context>
 </TS>
