@@ -178,24 +178,32 @@ bool AccountManager::restoreFromLegacySettings()
                                                       legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
 
         for (const auto &configFile : legacyLocations) {
+            auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
+            if (oCSettings->status() != QSettings::Status::NoError) {
+                qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
+                break;
+            }
+
+            oCSettings->beginGroup(QLatin1String(accountsC));
+            const auto accountsListSize = oCSettings->childGroups().size();
+            oCSettings->endGroup();
             if (const QFileInfo configFileInfo(configFile); configFileInfo.exists() && configFileInfo.isReadable()) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
-
-                if (!forceLegacyImport()) {
-                    const auto importQuestion = tr("An existing configuration from a legacy desktop client was detected.\n"
-                                                   "Should an account import be attempted?");
-                    const auto messageBoxSelection = QMessageBox::question(nullptr, tr("Legacy import"), importQuestion);
-
-                    if (messageBoxSelection == QMessageBox::No) {
+                if (!forceLegacyImport() && accountsListSize > 0) {
+                    const auto importQuestion = accountsListSize > 1
+                        ? tr("%1 accounts were detected on a legacy desktop client.\n"
+                             "Should the accounts be imported?").arg(QString::number(accountsListSize))
+                        : tr("One account was detected on a legacy desktop client.\n"
+                             "Should the account be imported?");
+                    auto importMessageBox = new QMessageBox (QMessageBox::Question, tr("Legacy import"), importQuestion);
+                    importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
+                    importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                    importMessageBox->setAttribute(Qt::WA_DeleteOnClose);
+                    const auto selection = importMessageBox->exec();
+                    if (selection == QMessageBox::DestructiveRole) {
                         // User said don't import, return immediately
                         return false;
                     }
-                }
-
-                auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
-                if (oCSettings->status() != QSettings::Status::NoError) {
-                    qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
-                    break;
                 }
 
                 // Check the theme url to see if it is the same url that the oC config was for
@@ -206,7 +214,6 @@ bool AccountManager::restoreFromLegacySettings()
                 if (!cleanOverrideUrl.isEmpty()) {
                     oCSettings->beginGroup(QLatin1String(accountsC));
                     const auto accountsChildGroups = oCSettings->childGroups();
-
                     for (const auto &accountId : accountsChildGroups) {
                         oCSettings->beginGroup(accountId);
                         const auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
