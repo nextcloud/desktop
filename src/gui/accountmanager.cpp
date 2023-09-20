@@ -194,7 +194,7 @@ bool AccountManager::restoreFromLegacySettings()
                     const auto importQuestion = accountsListSize > 1
                         ? tr("%1 accounts were detected on a legacy desktop client.\n"
                              "Should the accounts be imported?").arg(QString::number(accountsListSize))
-                        : tr("One account was detected on a legacy desktop client.\n"
+                        : tr("1 account was detected on a legacy desktop client.\n"
                              "Should the account be imported?");
                     const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
                     importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
