@@ -151,7 +151,7 @@ void SyncStatusSummary::setSyncStateForFolder(const Folder *folder)
         break;
     case SyncResult::SyncRunning:
     case SyncResult::NotYetStarted:
-        setSyncing(true);
+        setSyncing(false);  // disabled the animation because of performance problems, see issue #4918
         setSyncStatusString(tr("Syncing"));
         setSyncStatusDetailString("");
         setSyncIcon(Theme::instance()->syncStatusRunning());
