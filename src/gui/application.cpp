@@ -245,8 +245,9 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    // create config file if needed
-    createConfigFile();
+    if (ConfigFile().exists()) {
+        createConfigFile();
+    }
 
     if (_theme->doNotUseProxy()) {
         ConfigFile().setProxyType(QNetworkProxy::NoProxy);
@@ -282,13 +283,13 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-    // try to migrate the settings if there was an older version before
+    // try to migrate legacy accounts and folders from a previous client version
+    // only copy the settings and check what should be skipped
     if (!configVersionMigration()) {
         qCWarning(lcApplication) << "Config version migration was not possible.";
     }
 
     ConfigFile cfg;
-
     {
         auto shouldExit = false;
 
@@ -343,6 +344,7 @@ Application::Application(int &argc, char **argv)
     _fileProvider.reset(new Mac::FileProvider);
 #endif
 
+    // create accounts and folders from a legacy desktop client or from the current config file
     setupOrRestoreSettings();
 
     setQuitOnLastWindowClosed(false);
@@ -427,23 +429,20 @@ Application::~Application()
 
 void Application::setupOrRestoreSettings()
 {
-    // try to restore legacy accounts
     const auto accountsRestoreResult = restoreLegacyAccount();
 
     _folderManager.reset(new FolderMan);
     FolderMan::instance()->setSyncEnabled(true);
+    const auto foldersListSize = FolderMan::instance()->setupFolders();
 
-    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts)
-    {
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accountStates) {
         QStringList list;
-        for (const auto &account : accounts) {
+        for (const auto &account : accountStates) {
             list << account->account()->prettyName().prepend("- ");
         }
         return list.join("\n");
     };
 
-    // try to restore legacy folders or set up folders
-    const auto foldersListSize = FolderMan::instance()->setupFolders();
     if (const auto accounts = AccountManager::instance()->accounts();
         accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
         && accounts.size() > 0) {
@@ -464,15 +463,15 @@ void Application::setupOrRestoreSettings()
                                                 );
         messageBox->setWindowModality(Qt::NonModal);
         messageBox->open();
+    } else {
+        qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult: " << accountsRestoreResult;
+        qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;
+        qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
     }
 }
 
 void Application::createConfigFile()
 {
-    if (ConfigFile().exists()) {
-        return;
-    }
-
     // Migrate from version <= 2.4
     setApplicationName(_theme->appNameGUI());
     #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
