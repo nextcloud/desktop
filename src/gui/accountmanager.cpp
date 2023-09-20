@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QPushButton>
 
 namespace {
 constexpr auto urlC = "url";
@@ -195,13 +196,12 @@ bool AccountManager::restoreFromLegacySettings()
                              "Should the accounts be imported?").arg(QString::number(accountsListSize))
                         : tr("One account was detected on a legacy desktop client.\n"
                              "Should the account be imported?");
-                    auto importMessageBox = new QMessageBox (QMessageBox::Question, tr("Legacy import"), importQuestion);
+                    const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
                     importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
-                    importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                    const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
                     importMessageBox->setAttribute(Qt::WA_DeleteOnClose);
-                    const auto selection = importMessageBox->exec();
-                    if (selection == QMessageBox::DestructiveRole) {
-                        // User said don't import, return immediately
+                    importMessageBox->exec();
+                    if (importMessageBox->clickedButton() == skipButton) {
                         return false;
                     }
                 }
