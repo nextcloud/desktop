@@ -159,6 +159,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(
 
     // allows resetting local directory to default value once changed
     _ui->resetLocalDirectoryButton->setIcon(Resources::getCoreIcon(QStringLiteral("undo")));
+    _ui->chooseLocalDirectoryButton->setIcon(Resources::getCoreIcon(QStringLiteral("more")));
     auto enableResetLocalDirectoryButton = [this, defaultSyncTargetDir]() {
         return _ui->localDirectoryLineEdit->text() != QDir::toNativeSeparators(defaultSyncTargetDir);
     };

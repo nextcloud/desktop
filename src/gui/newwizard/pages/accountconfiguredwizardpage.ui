@@ -215,31 +215,17 @@
               </item>
               <item>
                <widget class="QToolButton" name="chooseLocalDirectoryButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
                 <property name="text">
-                 <string>...</string>
+                 <string notr="true"/>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../../resources/client.qrc">
+                  <normaloff>:/client/resources/light/more.svg</normaloff>:/client/resources/light/more.svg</iconset>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QToolButton" name="resetLocalDirectoryButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>24</height>
-                 </size>
-                </property>
                 <property name="toolTip">
                  <string>Restore default value</string>
                 </property>
