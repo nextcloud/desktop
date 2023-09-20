@@ -364,7 +364,7 @@ int FolderMan::setupFoldersMigration()
     for (const auto &fileName : dirFiles) {
         for (const auto &accountState : legacyAccounts) {
             const auto fullFilePath = dir.filePath(fileName);
-            setupFolderFromOldConfigFile(fullFilePath, accountState.data());
+            setupLegacyFolder(fullFilePath, accountState.data());
         }
     }
 
@@ -481,7 +481,7 @@ QString FolderMan::unescapeAlias(const QString &alias)
     return a;
 }
 
-void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, AccountState *accountState)
+void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *accountState)
 {
     qCInfo(lcFolderMan) << "  ` -> setting up:" << fileNamePath;
     QString escapedFileNamePath(fileNamePath);
