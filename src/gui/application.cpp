@@ -428,23 +428,40 @@ Application::~Application()
 void Application::setupOrRestoreSettings()
 {
     // try to restore legacy accounts
-    const auto accountsRestored = restoreLegacyAccount();
+    const auto accountsRestoreResult = restoreLegacyAccount();
 
     _folderManager.reset(new FolderMan);
     FolderMan::instance()->setSyncEnabled(true);
 
-    // try to restore legacy folders or set up folders
-    const auto foldersRestored = FolderMan::instance()->setupFolders();
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts)
+    {
+        QStringList list;
+        for (const auto &account : accounts) {
+            list << account->account()->prettyName().prepend("- ");
+        }
+        return list.join("\n");
+    };
 
-    if (accountsRestored == AccountManager::AccountsRestoreSuccessFromLegacyVersion) {
-        const auto importedAccounts = AccountManager::instance()->accounts();
+    // try to restore legacy folders or set up folders
+    const auto foldersListSize = FolderMan::instance()->setupFolders();
+    if (const auto accounts = AccountManager::instance()->accounts();
+        accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
+        && accounts.size() > 0) {
+        const auto accountsListSize = accounts.size();
+        const auto accountsRestoreMessage = accountsListSize > 1
+            ? tr("%1 accounts", "number of legacy accounts imported").arg(QString::number(accountsListSize))
+            : tr("one account");
+        const auto foldersRestoreMessage = foldersListSize > 1
+            ? tr("%1 folders", "number of legacy folders imported").arg(QString::number(foldersListSize))
+            : tr("one folder");
         const auto messageBox = new QMessageBox(QMessageBox::Information,
                                                 tr("Legacy import"),
-                                                tr("Imported %1 account and %2 folders from legacy client.")
-                                                    .arg(QString::number(importedAccounts.size()),
-                                                         QString::number(foldersRestored)),
-                                                QMessageBox::Ok);
-        messageBox->setAttribute(Qt::WA_DeleteOnClose);
+                                                tr("Imported %1 and %2 from a legacy desktop client.\n%3",
+                                                   "number of legacy accounts and folders imported. list of users.")
+                                                    .arg(accountsRestoreMessage,
+                                                         foldersRestoreMessage,
+                                                         prettyNamesList(accounts))
+                                                );
         messageBox->setWindowModality(Qt::NonModal);
         messageBox->open();
     }
