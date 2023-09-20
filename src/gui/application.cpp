@@ -246,7 +246,7 @@ Application::Application(int &argc, char **argv)
     setWindowIcon(_theme->applicationIcon());
 
     if (ConfigFile().exists()) {
-        createConfigFile();
+        setupConfigFile();
     }
 
     if (_theme->doNotUseProxy()) {
@@ -345,7 +345,7 @@ Application::Application(int &argc, char **argv)
 #endif
 
     // create accounts and folders from a legacy desktop client or from the current config file
-    setupOrRestoreSettings();
+    setupAccountsAndFolders();
 
     setQuitOnLastWindowClosed(false);
 
@@ -427,7 +427,7 @@ Application::~Application()
     AccountManager::instance()->shutdown();
 }
 
-void Application::setupOrRestoreSettings()
+void Application::setupAccountsAndFolders()
 {
     const auto accountsRestoreResult = restoreLegacyAccount();
 
@@ -435,9 +435,9 @@ void Application::setupOrRestoreSettings()
     FolderMan::instance()->setSyncEnabled(true);
     const auto foldersListSize = FolderMan::instance()->setupFolders();
 
-    const auto prettyNamesList = [](const QList<AccountStatePtr> &accountStates) {
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
         QStringList list;
-        for (const auto &account : accountStates) {
+        for (const auto &account : accounts) {
             list << account->account()->prettyName().prepend("- ");
         }
         return list.join("\n");
@@ -445,18 +445,18 @@ void Application::setupOrRestoreSettings()
 
     if (const auto accounts = AccountManager::instance()->accounts();
         accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
-        && accounts.size() > 0) {
+        && !accounts.isEmpty()) {
         const auto accountsListSize = accounts.size();
         const auto accountsRestoreMessage = accountsListSize > 1
-            ? tr("%1 accounts", "number of legacy accounts imported").arg(QString::number(accountsListSize))
-            : tr("one account");
+            ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
+            : tr("1 account");
         const auto foldersRestoreMessage = foldersListSize > 1
-            ? tr("%1 folders", "number of legacy folders imported").arg(QString::number(foldersListSize))
-            : tr("one folder");
+            ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
+            : tr("1 folder");
         const auto messageBox = new QMessageBox(QMessageBox::Information,
                                                 tr("Legacy import"),
                                                 tr("Imported %1 and %2 from a legacy desktop client.\n%3",
-                                                   "number of legacy accounts and folders imported. list of users.")
+                                                   "number of accounts and folders imported. list of users.")
                                                     .arg(accountsRestoreMessage,
                                                          foldersRestoreMessage,
                                                          prettyNamesList(accounts))
@@ -470,54 +470,55 @@ void Application::setupOrRestoreSettings()
     }
 }
 
-void Application::createConfigFile()
+void Application::setupConfigFile()
 {
     // Migrate from version <= 2.4
     setApplicationName(_theme->appNameGUI());
-    #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
+#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
     #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-    #endif
+#endif
     QT_WARNING_PUSH
     QT_WARNING_DISABLE_DEPRECATED
     QT_WARNING_POP
     setApplicationName(_theme->appName());
 
-    QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 
     // macOS 10.11.x does not like trailing slash for rename/move.
     if (oldDir.endsWith('/')) {
         oldDir.chop(1);
     }
 
-    if (QFileInfo(oldDir).isDir()) {
-        auto confDir = ConfigFile().configPath();
+    if (!QFileInfo(oldDir).isDir()) {
+        return;
+    }
 
-               // macOS 10.11.x does not like trailing slash for rename/move.
-        if (confDir.endsWith('/')) {
-            confDir.chop(1);
-        }
+    auto confDir = ConfigFile().configPath();
 
-        qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (confDir.endsWith('/')) {
+        confDir.chop(1);
+    }
 
-        if (!QFile::rename(oldDir, confDir)) {
-            qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    if (!QFile::rename(oldDir, confDir)) {
+        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
 
-            // Try to move the files one by one
-            if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-                const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-                qCInfo(lcApplication) << "Will move the individual files" << filesList;
-                for (const auto &name : filesList) {
-                    if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                        qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
-                    }
+        // Try to move the files one by one
+        if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+            const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+            qCInfo(lcApplication) << "Will move the individual files" << filesList;
+            for (const auto &name : filesList) {
+                if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
                 }
             }
-        } else {
-#ifndef Q_OS_WIN
-            // Create a symbolic link so a downgrade of the client would still find the config.
-            QFile::link(confDir, oldDir);
-#endif
         }
+    } else {
+#ifndef Q_OS_WIN
+        // Create a symbolic link so a downgrade of the client would still find the config.
+        QFile::link(confDir, oldDir);
+#endif
     }
 }
 
