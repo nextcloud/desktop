@@ -98,10 +98,6 @@ protected:
     void setupTranslations();
     void setupLogging();
 
-    // Attempt to setup new settings or restore legacy settings
-    // The settings include the accounts and folders saved in the config file
-    void setupOrRestoreSettings();
-
 signals:
     void folderRemoved();
     void folderStateChanged(OCC::Folder *);
@@ -122,8 +118,9 @@ private:
 
     void handleEditLocallyFromOptions();
 
-    AccountManager::AccountsRestoreResult  restoreLegacyAccount();
-    void createConfigFile();
+    AccountManager::AccountsRestoreResult restoreLegacyAccount();
+    void setupConfigFile();
+    void setupAccountsAndFolders();
 
     /**
      * Maybe a newer version of the client was used with this config file:
