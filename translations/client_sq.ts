@@ -4278,12 +4278,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="374"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>Error accessing the configuration file</source>
         <translation>Gabim gjatë hyrjes në kartelën e formësimit</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Pati një gabim teksa hyhej te kartela e formësimit në %1.</translation>
     </message>

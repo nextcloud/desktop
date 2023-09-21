@@ -4275,12 +4275,12 @@ Está seguro que quiere continuar?</translation>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="374"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>Error accessing the configuration file</source>
         <translation>Error al acceder al archivo de configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Ha ocurrido un error al acceder al archivo de configuración %1.</translation>
     </message>

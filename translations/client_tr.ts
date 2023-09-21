@@ -4277,12 +4277,12 @@ Devam etmek istediğinizden emin misiniz?</translation>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="374"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>Error accessing the configuration file</source>
         <translation>Konfigürasyon dosyasına erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Konfigürasyon dosyası %1 satırına erişimde hata</translation>
     </message>
