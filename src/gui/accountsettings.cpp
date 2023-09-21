@@ -759,25 +759,15 @@ void AccountSettings::slotAccountStateChanged()
 
             auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_askForOAuthLoginDialog->contentWidget());
 
-            connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [account]() {
+            connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget,
+                [cred, contentWidget] { contentWidget->setUrl(cred->authorisationLink()); });
+
+            connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [](const QUrl &url) {
                 // TODO: use authorisationLinkAsync
-                auto link = qobject_cast<HttpCredentialsGui *>(account->credentials())->authorisationLink().toString();
-                qApp->clipboard()->setText(link);
+                qApp->clipboard()->setText(url.toString());
             });
 
-            connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, _askForOAuthLoginDialog, [cred]() {
-                cred->openBrowser();
-            });
-
-            contentWidget->setEnabled(false);
-            connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget, [contentWidget]() {
-                contentWidget->setEnabled(true);
-            });
-
-            connect(
-                cred, &HttpCredentialsGui::authorisationLinkChanged,
-                this, &AccountSettings::slotAccountStateChanged,
-                Qt::UniqueConnection);
+            connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, cred, &HttpCredentialsGui::openBrowser);
 
             connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, this, [this]() {
                 // if a user dismisses the dialog, we have no choice but signing them out

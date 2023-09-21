@@ -32,8 +32,16 @@ OAuthLoginWidget::OAuthLoginWidget(QWidget *parent)
     _ui->setupUi(this);
 
 
-    connect(_ui->openBrowserButton, &QPushButton::clicked, this, &OAuthLoginWidget::openBrowserButtonClicked);
-    connect(_ui->copyUrlToClipboardButton, &QPushButton::clicked, this, &OAuthLoginWidget::copyUrlToClipboardButtonClicked);
+    _ui->openBrowserButton->setDisabled(true);
+    _ui->copyUrlToClipboardButton->setDisabled(true);
+    connect(_ui->openBrowserButton, &QPushButton::clicked, this, [this] {
+        Q_ASSERT(_url.isValid());
+        Q_EMIT openBrowserButtonClicked(_url);
+    });
+    connect(_ui->copyUrlToClipboardButton, &QPushButton::clicked, this, [this] {
+        Q_ASSERT(_url.isValid());
+        Q_EMIT copyUrlToClipboardButtonClicked(_url);
+    });
 
     // depending on the theme we have to use a light or dark icon
     _ui->copyUrlToClipboardButton->setIcon(Resources::getCoreIcon(QStringLiteral("copy")));
@@ -68,7 +76,16 @@ void OAuthLoginWidget::showRetryFrame()
 void OAuthLoginWidget::hideRetryFrame()
 {
     _ui->retryWidget->setCurrentWidget(_ui->emptyPage);
+}
 
+QUrl OAuthLoginWidget::url()
+{
+    return _url;
+}
+
+void OAuthLoginWidget::setUrl(const QUrl &url)
+{
+    _url = url;
     _ui->openBrowserButton->setEnabled(true);
     _ui->copyUrlToClipboardButton->setEnabled(true);
 }

@@ -12,9 +12,6 @@
  * for more details.
  */
 
-#include <QApplication>
-#include <QClipboard>
-
 #include "gui/application.h"
 #include "jobs/webfingeruserinfojobfactory.h"
 #include "oauthcredentialssetupwizardstate.h"
@@ -39,9 +36,6 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
     auto oAuth = new OAuth(authServerUrl, _context->accountBuilder().legacyWebFingerUsername(), _context->accessManager(), {}, this);
 
     connect(oAuth, &OAuth::result, this, [this, oAuthCredentialsPage](OAuth::Result result, const QString &token, const QString &refreshToken) {
-        // the button may not be clicked anymore, since the server has been shut down right before this signal was emitted by the OAuth instance
-        oAuthCredentialsPage->setButtonsEnabled(false);
-
         _context->window()->slotStartTransition();
 
         // bring window up top again, as the browser may have been raised in front of it
@@ -99,20 +93,11 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
         oAuth->openBrowser();
     });
 
-    oAuthCredentialsPage->setButtonsEnabled(false);
-    connect(oAuth, &OAuth::authorisationLinkChanged, this, [oAuthCredentialsPage]() {
-        oAuthCredentialsPage->setButtonsEnabled(true);
-    });
-
     connect(oAuth, &OAuth::dynamicRegistrationDataReceived, this, [this](const QVariantMap &dynamicRegistrationData) {
         _context->accountBuilder().setDynamicRegistrationData(dynamicRegistrationData);
     });
-
-    connect(oAuthCredentialsPage, &OAuthCredentialsSetupWizardPage::copyUrlToClipboardButtonPushed, this, [oAuth]() {
-        const auto link = oAuth->authorisationLink();
-        Q_ASSERT(!link.isEmpty());
-        qApp->clipboard()->setText(link.toString());
-    });
+    connect(oAuth, &OAuth::authorisationLinkChanged, oAuthCredentialsPage,
+        [oAuthCredentialsPage, oAuth] { oAuthCredentialsPage->setAuthUrl(oAuth->authorisationLink()); });
 
     // the implementation moves to the next state automatically once ready, no user interaction needed
     _context->window()->disableNextButton();

@@ -18,6 +18,8 @@
 #include "gui/guiutility.h"
 #include "theme.h"
 
+#include <QClipboard>
+
 namespace OCC::Wizard {
 
 OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &serverUrl)
@@ -33,19 +35,16 @@ OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &ser
     // we want to give the user a chance to preserve their privacy when using a private proxy for instance
     // therefore, we need to make sure the user can manually
     // using clicked allows a user to "abort the click" (unlike pressed and released)
-    connect(_ui->oauthLoginWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, [this]() {
-        Q_EMIT openBrowserButtonPushed();
+    connect(_ui->oauthLoginWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, [this](const QUrl &url) {
+        Q_EMIT openBrowserButtonPushed(url);
 
         // change button title after first click
+        // TODO: move to OAuthLoginWidget
         _ui->oauthLoginWidget->setOpenBrowserButtonText(tr("Reopen Browser"));
     });
-    connect(_ui->oauthLoginWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, this, [this]() {
-        Q_EMIT copyUrlToClipboardButtonPushed();
-    });
-
-    connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
-        _ui->oauthLoginWidget->setFocus();
-    });
+    connect(
+        _ui->oauthLoginWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, this, [](const QUrl &url) { qApp->clipboard()->setText(url.toString()); });
+    connect(this, &AbstractSetupWizardPage::pageDisplayed, _ui->oauthLoginWidget, qOverload<>(&OAuthLoginWidget::setFocus));
 
     _ui->topLabel->setText(tr("Please use your browser to log in to %1.").arg(Theme::instance()->appNameGUI()));
 }
@@ -62,10 +61,9 @@ bool OAuthCredentialsSetupWizardPage::validateInput()
     return false;
 }
 
-void OAuthCredentialsSetupWizardPage::setButtonsEnabled(bool enabled)
+void OAuthCredentialsSetupWizardPage::setAuthUrl(const QUrl &url)
 {
-    _ui->oauthLoginWidget->setEnabled(enabled);
-    _ui->oauthLoginWidget->setFocus();
+    _ui->oauthLoginWidget->setUrl(url);
 }
 
 } // namespace OCC::Wizard
