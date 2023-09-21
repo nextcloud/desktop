@@ -34,6 +34,7 @@ Q_LOGGING_CATEGORY(lcPlatform, "platform.macos")
 
 @interface OwnAppDelegate : NSObject <NSApplicationDelegate>
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag;
+- (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app;
 
 @property (readwrite) OCC::MacPlatform *platform;
 @end
@@ -44,6 +45,14 @@ Q_LOGGING_CATEGORY(lcPlatform, "platform.macos")
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
     Q_EMIT _platform->requestAttention();
+    return YES;
+}
+
+- (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app
+{
+    Q_UNUSED(app)
+
+    // We do not use `NSCoder` classes (nor does Qt), nor override the `initWithCoder` method, so we are fine with SecureCoding.
     return YES;
 }
 
