@@ -824,6 +824,14 @@ bool SyncJournalDb::updateMetadataTableStructure()
     addColumn(QStringLiteral("lockTime"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("lockTimeout"), QStringLiteral("INTEGER"));
 
+    SqlQuery query(_db);
+    query.prepare("CREATE INDEX IF NOT EXISTS caseconflicts_basePath ON caseconflicts(basePath);");
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("caseconflictsTableStructure: create index basePath"), query);
+        return re = false;
+    }
+    commitInternal(QStringLiteral("update database structure: add basePath index"));
+
     return re;
 }
 

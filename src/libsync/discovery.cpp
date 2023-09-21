@@ -76,6 +76,8 @@ void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
+    _discoveryData->_noCaseConflictRecordsInDb = _discoveryData->_statedb->caseClashConflictRecordPaths().isEmpty();
+
     if (_queryServer == NormalQuery) {
         _serverJob = startAsyncServerQuery();
     } else {
@@ -799,7 +801,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_modtime = serverEntry.modtime;
     item->_size = serverEntry.size;
 
-    const auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
+    const auto conflictRecord = _discoveryData->_noCaseConflictRecordsInDb
+        ? ConflictRecord{} :
+        _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
     if (conflictRecord.isValid() && QString::fromUtf8(conflictRecord.path).contains(QStringLiteral("(case clash from"))) {
         qCInfo(lcDisco) << "should ignore" << item->_file << "has already a case clash conflict record" << conflictRecord.path;
 
