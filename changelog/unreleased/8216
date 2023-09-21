@@ -1,0 +1,7 @@
+Enhancement: Windows VFS: Prevent rename to ignored file name
+
+We now prevent ranems of virtual files to ignored file names.
+This basically resulted in a delte on the server and a local placeholder that pointed to a non existing file.
+
+https://github.com/owncloud/client/issues/8216
+https://github.com/owncloud/client-desktop-vfs-win/pull/63
