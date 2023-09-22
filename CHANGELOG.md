@@ -28,6 +28,7 @@ Summary
 * Change - We removed the pre 2.9 credentials migration: [#11081](https://github.com/owncloud/client/pull/11081)
 * Change - Remove libcloudproviders integration: [#11148](https://github.com/owncloud/client/issues/11148)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
+* Enhancement - Windows VFS: Prevent rename to ignored file name: [#8216](https://github.com/owncloud/client/issues/8216)
 * Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
 * Enhancement - Port from QtSingleApplication to KDSingleApplication: [#8432](https://github.com/owncloud/client/issues/8432)
 * Enhancement - Enable crash reporter in commandline client: [#8991](https://github.com/owncloud/client/issues/8991)
@@ -172,6 +173,14 @@ Details
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 
    https://github.com/owncloud/client/issues/261
+
+* Enhancement - Windows VFS: Prevent rename to ignored file name: [#8216](https://github.com/owncloud/client/issues/8216)
+
+   We now prevent ranems of virtual files to ignored file names. This basically resulted in a delte
+   on the server and a local placeholder that pointed to a non existing file.
+
+   https://github.com/owncloud/client/issues/8216
+   https://github.com/owncloud/client-desktop-vfs-win/pull/63
 
 * Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
 
