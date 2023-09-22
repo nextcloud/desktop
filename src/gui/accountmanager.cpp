@@ -179,7 +179,7 @@ bool AccountManager::restoreFromLegacySettings()
                                                       legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
 
         for (const auto &configFile : legacyLocations) {
-            auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
+            const auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
             if (oCSettings->status() != QSettings::Status::NoError) {
                 qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
                 break;
@@ -192,9 +192,9 @@ bool AccountManager::restoreFromLegacySettings()
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
                 if (!forceLegacyImport() && accountsListSize > 0) {
                     const auto importQuestion = accountsListSize > 1
-                        ? tr("%1 accounts were detected on a legacy desktop client.\n"
+                        ? tr("%1 accounts were detected from a legacy desktop client.\n"
                              "Should the accounts be imported?").arg(QString::number(accountsListSize))
-                        : tr("1 account was detected on a legacy desktop client.\n"
+                        : tr("1 account was detected from a legacy desktop client.\n"
                              "Should the account be imported?");
                     const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
                     importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
