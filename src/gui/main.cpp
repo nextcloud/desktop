@@ -229,11 +229,12 @@ bool checkClientVersion()
     auto configVersion = QVersionNumber::fromString(configFile.clientVersionWithBuildNumberString());
     auto clientVersion = OCC::Version::versionWithBuildNumber();
 
-    if (configVersion.majorVersion() == clientVersion.majorVersion()) {
-        // no migration needed
+    if (configVersion == clientVersion) {
+        // no config backup needed
         return true;
     }
 
+    // We allow downgrades as long as the major version stays the same.
     if (clientVersion.majorVersion() < configVersion.majorVersion()) {
         // We refuse to downgrade, too much can go wrong.
         showDowngradeDialog();

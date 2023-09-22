@@ -29,6 +29,8 @@ namespace {
 constexpr auto pollTimeoutC = 30s;
 }
 
+Q_LOGGING_CATEGORY(lcEtagWatcher, "scheduler.etagwatcher", QtInfoMsg)
+
 ETagWatcher::ETagWatcher(FolderMan *folderMan, QObject *parent)
     : QObject(parent)
     , _folderMan(folderMan)
@@ -81,6 +83,7 @@ void ETagWatcher::updateEtag(Folder *f, const QString &etag)
     if (OC_ENSURE_NOT(etag.isEmpty())) {
         auto &info = _lastEtagJob[f];
         if (f->canSync() && info.etag != etag) {
+            qCDebug(lcEtagWatcher) << "Scheduling sync of" << f->displayName() << "due to an etag change";
             info.etag = etag;
             _folderMan->scheduler()->enqueueFolder(f);
         }
@@ -103,6 +106,7 @@ void ETagWatcher::startOC10EtagJob(Folder *f)
                     f->accountState()->tagLastSuccessfullETagRequest(requestEtagJob->responseQTimeStamp());
                 }
             });
+            qCDebug(lcEtagWatcher) << "Starting etag check for folder" << f->displayName();
             requestEtagJob->start();
         }
     }

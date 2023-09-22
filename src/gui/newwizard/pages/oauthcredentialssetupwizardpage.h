@@ -32,11 +32,10 @@ public:
 
     bool validateInput() override;
 
-    void setButtonsEnabled(bool enabled);
+    void setAuthUrl(const QUrl &url);
 
 Q_SIGNALS:
-    void openBrowserButtonPushed();
-    void copyUrlToClipboardButtonPushed();
+    void openBrowserButtonPushed(const QUrl &url);
 
 private:
     ::Ui::CredentialsSetupWizardPage *_ui;

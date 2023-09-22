@@ -37,12 +37,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="225"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
         <translation type="unfinished"/>
     </message>
@@ -4253,12 +4248,12 @@ Are you sure you want to proceed?</source>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="374"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>Error accessing the configuration file</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า %1</translation>
     </message>

@@ -37,12 +37,7 @@
         <translation>Valige lokaalne allalaadimiskataloog:</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="225"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
         <translation>Taasta vaikeväärtus</translation>
     </message>
@@ -4276,12 +4271,12 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="374"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>Error accessing the configuration file</source>
         <translation>Viga seadete faili pääsemisel</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Tekkis viga pääsuga seadete faili aadressil %1.</translation>
     </message>

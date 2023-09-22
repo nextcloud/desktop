@@ -44,15 +44,19 @@ public:
     void showRetryFrame();
     void hideRetryFrame();
 
+    void setUrl(const QUrl &url);
+    QUrl url();
+
 Q_SIGNALS:
     void retryButtonClicked();
 
 Q_SIGNALS:
-    void openBrowserButtonClicked();
-    void copyUrlToClipboardButtonClicked();
+    void openBrowserButtonClicked(const QUrl &url);
+    void copyUrlToClipboardButtonClicked(const QUrl &url);
 
 private:
     ::Ui::OAuthLoginWidget *_ui;
+    QUrl _url;
 };
 
 }

@@ -37,12 +37,7 @@
         <translation>Vyberte lokální složku pro stahování:</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="225"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="244"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
         <translation type="unfinished"/>
     </message>
@@ -4252,12 +4247,12 @@ Jste si jisti, že chcete pokračovat?</translation>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="374"/>
+        <location filename="../src/gui/main.cpp" line="375"/>
         <source>Error accessing the configuration file</source>
         <translation>Chyba přístupu ke konfiguračnímu souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Došlo k chybě při přístupu ke konfiguračnímu souboru %1.</translation>
     </message>
