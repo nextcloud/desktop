@@ -16,9 +16,6 @@ version = 5
 version = master
 revision = ab3623cbeeabe3444742a3325a201d73062e301c
 
-[dev-utils/clazy]
-version = 1.11
-
 [dev-utils/cmake]
 version = latest
 
