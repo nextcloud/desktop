@@ -127,7 +127,9 @@ void SyncScheduler::enqueueFolder(Folder *folder, Priority priority)
     Q_ASSERT(folder->isReady());
     Q_ASSERT(folder->canSync());
     _queue->enqueueFolder(folder, priority);
-    startNext();
+    if (!_currentSync) {
+        startNext();
+    }
 }
 
 void SyncScheduler::startNext()
