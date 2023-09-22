@@ -403,6 +403,7 @@ void PropagateUploadFileNG::slotPutFinished()
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _item->_requestId = job->requestId();
+        _item->_requestBodySize = job->device()->size();
         commonErrorHandling(job);
         return;
     }
@@ -413,10 +414,9 @@ void PropagateUploadFileNG::slotPutFinished()
     //
     // Dynamic chunk sizing is enabled if the server configured a
     // target duration for each chunk upload.
-    auto targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
-    if (targetDuration.count() > 0) {
-        auto uploadTime = ++job->msSinceStart(); // add one to avoid div-by-zero
-        qint64 predictedGoodSize = (_currentChunkSize * targetDuration) / uploadTime;
+    if (const auto opts = propagator()->syncOptions(); opts.isDynamicChunkSize()) {
+        const auto uploadTime = job->msSinceStart();
+        const auto predictedGoodSize = opts.predictedGoodChunkSize(_currentChunkSize, uploadTime);
 
         // The whole targeting is heuristic. The predictedGoodSize will fluctuate
         // quite a bit because of external factors (like available bandwidth)
@@ -424,15 +424,21 @@ void PropagateUploadFileNG::slotPutFinished()
         //
         // We use an exponential moving average here as a cheap way of smoothing
         // the chunk sizes a bit.
-        qint64 targetSize = propagator()->_chunkSize / 2 + predictedGoodSize / 2;
+        const auto targetSize = propagator()->_chunkSize / 2 + predictedGoodSize / 2;
 
         // Adjust the dynamic chunk size _chunkSize used for sizing of the item's chunks to be send
-        propagator()->_chunkSize = ::qBound(propagator()->syncOptions().minChunkSize(), targetSize, propagator()->syncOptions().maxChunkSize());
+        propagator()->_chunkSize = opts.toValidChunkSize(targetSize);
 
         qCInfo(lcPropagateUploadNG) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime.count()
-                                  << "ms, desired is" << targetDuration.count() << "ms, expected good chunk size is"
-                                  << predictedGoodSize << "bytes and nudged next chunk size to "
-                                  << propagator()->_chunkSize << "bytes";
+                                    << "ms, desired is" << opts._targetChunkUploadDuration.count() << "ms, expected"
+                                    << "good chunk size is" << predictedGoodSize << "bytes and nudged next chunk size"
+                                    << "to" << propagator()->_chunkSize << "bytes";
+
+        // Remembering the new chunk size in account so that it can be reused
+        const auto account = propagator()->account();
+        qCDebug(lcPropagateUploadNG) << "Reusing chunk size of" << propagator()->_chunkSize << "bytes"
+                                     << "in the next sync with" << account->displayName();
+        account->setLastChunkSize(propagator()->_chunkSize);
     }
 
     _finished = _sent == _item->_size;

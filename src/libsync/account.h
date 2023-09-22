@@ -16,6 +16,7 @@
 #ifndef SERVERCONNECTION_H
 #define SERVERCONNECTION_H
 
+#include <QAtomicInteger>
 #include <QByteArray>
 #include <QUrl>
 #include <QNetworkCookie>
@@ -276,6 +277,24 @@ public:
     bool isHttp2Supported() { return _http2Supported; }
     void setHttp2Supported(bool value) { _http2Supported = value; }
 
+    /** Max allowed request size in bytes that the server accepts. Is <= 0 if not limited */
+    qint64 getMaxRequestSize() const { return _maxRequestSize; }
+    void setMaxRequestSize(qint64 value) { _maxRequestSize = value; }
+    void setMaxRequestSizeIfLower(qint64 value) {
+        while (true) {
+            const auto size = _maxRequestSize;
+
+            if (size > 0 && value >= size)
+                break;
+            if (_maxRequestSize.testAndSetOrdered(size, value))
+                break;
+        }
+    }
+
+    /** Last successful chunk size in bytes, used to speedup auto-sensing. */
+    qint64 getLastChunkSize() const { return _lastChunkSize; }
+    void setLastChunkSize(qint64 value) { _lastChunkSize = value; }
+
     void clearCookieJar();
     void lendCookieJarTo(QNetworkAccessManager *guest);
     QString cookieJarPath();
@@ -421,6 +440,8 @@ private:
     QSharedPointer<QNetworkAccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
+    QAtomicInteger<qint64> _maxRequestSize = -1;
+    QAtomicInteger<qint64> _lastChunkSize = -1;
 
     /// Certificates that were explicitly rejected by the user
     QList<QSslCertificate> _rejectedCertificates;

@@ -7,8 +7,10 @@
 #include <QtTest>
 #include <QDebug>
 
+#include "account.h"
 #include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
+#include "syncoptions.h"
 
 using namespace OCC;
 namespace OCC {
@@ -75,6 +77,46 @@ private slots:
         foreach (const auto& test, tests) {
             QCOMPARE(parseEtag(test.first), QByteArray(test.second));
         }
+    }
+
+    void testRespectsLowestPossibleChunkSize()
+    {
+        QSet<QString> __blacklist;
+        OwncloudPropagator propagator(Account::create(), "", "", nullptr, __blacklist);
+        auto opts = propagator.syncOptions();
+
+        opts.setMinChunkSize(0);
+        opts.setMaxChunkSize(0);
+        opts.setInitialChunkSize(0);
+
+        propagator.setSyncOptions(opts);
+
+        opts = propagator.syncOptions();
+        QCOMPARE( opts.minChunkSize(), SyncOptions::chunkV2MinChunkSize );
+        QCOMPARE( opts.initialChunkSize(), SyncOptions::chunkV2MinChunkSize );
+        QCOMPARE( opts.maxChunkSize(), SyncOptions::chunkV2MinChunkSize );
+    }
+
+    void testLimitsMaxChunkSizeByAccount()
+    {
+        QSet<QString> __blacklist;
+        OwncloudPropagator propagator(Account::create(), "", "", nullptr, __blacklist);
+        auto opts = propagator.syncOptions();
+        
+        SyncOptions defaultOpts;
+        QCOMPARE( opts.minChunkSize(), defaultOpts.minChunkSize() );
+        QVERIFY( opts.minChunkSize() < defaultOpts.maxChunkSize() );
+        QVERIFY( opts.minChunkSize() < defaultOpts.initialChunkSize() );
+        QCOMPARE( opts.initialChunkSize(), defaultOpts.initialChunkSize() );
+        QCOMPARE( opts.maxChunkSize(), defaultOpts.maxChunkSize() );
+
+        propagator.account()->setMaxRequestSizeIfLower(defaultOpts.minChunkSize());
+        propagator.setSyncOptions(opts);
+        
+        opts = propagator.syncOptions();
+        QCOMPARE( opts.minChunkSize(), defaultOpts.minChunkSize() );
+        QCOMPARE( opts.initialChunkSize(), defaultOpts.minChunkSize() );
+        QCOMPARE( opts.maxChunkSize(), defaultOpts.minChunkSize() );
     }
 };
 

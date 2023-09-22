@@ -9,6 +9,7 @@
 
 #include "caseclashconflictsolver.h"
 #include "configfile.h"
+#include "syncoptions.h"
 #include "propagatorjobs.h"
 #include "syncengine.h"
 
@@ -624,6 +625,102 @@ private slots:
         QCOMPARE(n507, 3);
     }
 
+    /**
+     * Checks whether a HTTP-413 reply reduces the maxChunkSize in the propagator
+     */
+    void testReplyOfRequestEntityToLargeReducesChunkSize()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        const int minRequestSize = SyncOptions::chunkV2MinChunkSize;
+        int maxAllowedRequestSize = SyncOptions::maxChunkSizeAfterFailure;
+
+        SyncOptions options;
+        options.setMinChunkSize(minRequestSize);
+        options.setMaxChunkSize(4 * maxAllowedRequestSize);
+        options.setInitialChunkSize(4 * maxAllowedRequestSize);
+        options._parallelNetworkJobs = 0;
+
+        auto &&engine = fakeFolder.syncEngine();
+        engine.setSyncOptions(options);
+
+        // Produce an error based on upload size
+        QObject parent;
+        int n413 = 0, nPUT = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            FakeErrorReply *reply = nullptr;
+            if (op == QNetworkAccessManager::PutOperation && outgoingData != nullptr) {
+                nPUT++;
+                auto requestSize = outgoingData->size();
+                auto closeConnection = getFilePathFromUrl(request.url()).contains("bigClose");
+
+                if (requestSize > maxAllowedRequestSize) {
+                    if (closeConnection) {
+                        reply = new FakeErrorReply(op, request, &parent, 500);
+                        reply->setError(QNetworkReply::RemoteHostClosedError, "");
+                    } else {
+                        n413++;
+                        reply = new FakeErrorReply(op, request, &parent, 413);
+                    }
+                }
+            }
+            return reply;
+        });
+
+        auto reset = [&]() {
+            nPUT = n413 = 0;
+        };
+
+        // Test initial upload at max size succeeds
+        reset();
+        fakeFolder.localModifier().insert("A/big", maxAllowedRequestSize);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(n413, 0);
+        QCOMPARE(fakeFolder.account()->getMaxRequestSize(), -1);
+
+        // Test SyncOptions::maxChunkSizeAfterFailure applies on first failure
+        reset();
+        fakeFolder.localModifier().insert("A/big1", maxAllowedRequestSize + 1);
+        QVERIFY(!fakeFolder.syncOnce() && engine.isAnotherSyncNeeded() == AnotherSyncNeeded::ImmediateFollowUp);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 2);
+        QCOMPARE(n413, 1);
+        QCOMPARE(fakeFolder.account()->getMaxRequestSize(), SyncOptions::maxChunkSizeAfterFailure);
+
+        // Test "Connection: Close" applies SyncOptions::maxChunkSizeAfterFailure as limit
+        reset();
+        fakeFolder.account()->setMaxRequestSize(-1);
+        fakeFolder.localModifier().insert("A/bigClose", SyncOptions::maxChunkSizeAfterFailure + 1);
+        QVERIFY(!fakeFolder.syncOnce() && engine.isAnotherSyncNeeded() == AnotherSyncNeeded::ImmediateFollowUp);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 3);
+        QCOMPARE(n413, 0);
+        QCOMPARE(fakeFolder.account()->getMaxRequestSize(), SyncOptions::maxChunkSizeAfterFailure);
+
+        // Test _maxChunkSize is reduced until upload succeeds
+        reset();
+        maxAllowedRequestSize = options.minChunkSize();
+        fakeFolder.localModifier().insert("A/big2", options.minChunkSize() * 4);
+        QVERIFY(!fakeFolder.syncOnce() && engine.isAnotherSyncNeeded() == AnotherSyncNeeded::ImmediateFollowUp);
+        QVERIFY(!fakeFolder.syncOnce() && engine.isAnotherSyncNeeded() == AnotherSyncNeeded::ImmediateFollowUp);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 4);
+        QCOMPARE(n413, 2);
+        QCOMPARE(fakeFolder.account()->getMaxRequestSize(), options.minChunkSize());
+
+        // Test _maxChunkSize is not reduced below minChunkSize() and retry is not requested
+        reset();
+        maxAllowedRequestSize = options.minChunkSize() / 2;
+        fakeFolder.localModifier().insert("A/big3", options.minChunkSize());
+        QVERIFY(!fakeFolder.syncOnce() && engine.isAnotherSyncNeeded() == AnotherSyncNeeded::NoFollowUpSync);
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 2);
+        QCOMPARE(n413, 2);
+        QCOMPARE(fakeFolder.account()->getMaxRequestSize(), options.minChunkSize());
+    }
+
     // Checks whether downloads with bad checksums are accepted
     void testChecksumValidation()
     {
@@ -850,9 +947,9 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo{} };
         SyncOptions options;
-        options._initialChunkSize = 10;
-        options.setMaxChunkSize(10);
-        options.setMinChunkSize(10);
+        options.setMinChunkSize(SyncOptions::chunkV2MinChunkSize);
+        options.setMaxChunkSize(SyncOptions::chunkV2MinChunkSize);
+        options.setInitialChunkSize(SyncOptions::chunkV2MinChunkSize);
         fakeFolder.syncEngine().setSyncOptions(options);
 
         QObject parent;
@@ -865,8 +962,8 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().insert("file", 100, 'W');
-        QTimer::singleShot(100, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
+        fakeFolder.localModifier().insert("file", 5 * options.maxChunkSize(), 'W');
+        QTimer::singleShot(500, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
         QVERIFY(!fakeFolder.syncOnce());
 
         QCOMPARE(nPUT, 3);

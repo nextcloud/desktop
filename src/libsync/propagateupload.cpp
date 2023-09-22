@@ -676,6 +676,49 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     SyncFileItem::Status status = classifyError(job->reply()->error(), _item->_httpErrorCode,
         &propagator()->_anotherSyncNeeded, replyContent);
 
+    // Request entity to large: Chunk size is larger than supported by the server
+    if (status == SyncFileItem::NormalError && _item->_requestBodySize > 0) {
+        const auto opts = propagator()->syncOptions();
+        const auto requestSize = _item->_requestBodySize;
+
+        // Check if remote host closed the connection after an upload larger than SyncOptions::maxChunkSizeAfterFailure
+        const bool isConnectionClosedOnLargeUpload = job->reply()->error() == QNetworkReply::RemoteHostClosedError
+                                                     && requestSize > SyncOptions::maxChunkSizeAfterFailure;
+
+        if (isConnectionClosedOnLargeUpload) {
+            qCInfo(lcPropagateUpload()) << "Remote host closed the connection when uploading" 
+                                        << Utility::octetsToString(requestSize) << "."
+                                        << "Treating the error like HTTP-413 (request entity too large)";
+        }
+
+        // Calculate new upload limit and set it in propagator()->account() 
+        // Sent bytes is no indicator how much is allowed by the server as requests must be consumed fully.
+        if (_item->_httpErrorCode == 413 || isConnectionClosedOnLargeUpload) {
+            const auto maxRequestSize = opts.toValidChunkSize(
+                requestSize > SyncOptions::maxChunkSizeAfterFailure
+                    ? SyncOptions::maxChunkSizeAfterFailure
+                    : requestSize / 2
+            );
+            
+            // Set new upload limit
+            propagator()->account()->setMaxRequestSizeIfLower(maxRequestSize);
+
+            // Apply to this propagator (limit is applied in setSyncOptions())
+            propagator()->setSyncOptions(opts);
+            const auto adjustedOpts = propagator()->syncOptions();
+            
+            // Trigger retry
+            if (adjustedOpts.maxChunkSize() < requestSize) {
+                propagator()->_anotherSyncNeeded = true;
+                status = SyncFileItem::SoftError;
+            }
+
+            errorString = tr("Upload of %1 exceeds the max upload size allowed by the server. Reducing max upload size to %2")
+                            .arg(Utility::octetsToString(requestSize))
+                            .arg(Utility::octetsToString(adjustedOpts.maxChunkSize()));
+        }
+    }
+
     // Insufficient remote storage.
     if (_item->_httpErrorCode == 507) {
         // Update the quota expectation

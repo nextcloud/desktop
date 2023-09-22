@@ -2433,6 +2433,11 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="687"/>
+        <source>Upload of %1 exceeds the max upload size allowed by the server. Reducing max upload size to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>

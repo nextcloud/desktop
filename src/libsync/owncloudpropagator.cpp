@@ -395,8 +395,8 @@ std::unique_ptr<PropagateUploadFileCommon> OwncloudPropagator::createUploadJob(S
 {
     auto job = std::unique_ptr<PropagateUploadFileCommon>{};
 
-    if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
-        // Item is above _initialChunkSize, thus will be classified as to be chunked
+    if (item->_size > syncOptions().initialChunkSize() && account()->capabilities().chunkingNg()) {
+        // Item is above initialChunkSize(), thus will be classified as to be chunked
         job = std::make_unique<PropagateUploadFileNG>(this, item);
     } else {
         job = std::make_unique<PropagateUploadFileV1>(this, item);
@@ -706,7 +706,8 @@ const SyncOptions &OwncloudPropagator::syncOptions() const
 void OwncloudPropagator::setSyncOptions(const SyncOptions &syncOptions)
 {
     _syncOptions = syncOptions;
-    _chunkSize = syncOptions._initialChunkSize;
+    _syncOptions.fillFromAccount(account());
+    _chunkSize = _syncOptions.initialChunkSize();
 }
 
 bool OwncloudPropagator::localFileNameClash(const QString &relFile)

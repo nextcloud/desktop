@@ -16,6 +16,7 @@
 
 #include "owncloudlib.h"
 #include "common/vfs.h"
+#include "common/syncjournaldb.h"
 
 #include <QRegularExpression>
 #include <QSharedPointer>
@@ -35,6 +36,27 @@ public:
     SyncOptions();
     ~SyncOptions();
 
+    /** Min chunk size and the default value */
+    static constexpr auto chunkV2MinChunkSize = 5LL * 1000LL * 1000LL; // 5 MB
+
+    /** Max chunk size and the default value */
+    static constexpr auto chunkV2MaxChunkSize = 5LL * 1000LL * 1000LL * 1000LL; // 5 GB
+
+    /** Default upload duration target for dynamically sized chunks */
+    static constexpr auto chunkV2TargetChunkUploadDuration = std::chrono::minutes(1);
+
+    /** Default initial chunk size for dynamic chunks or the chunk size for fixed size transfers */
+    static constexpr auto defaultChunkSize = 10LL * 1000LL * 1000LL; // 10 MB
+
+    /** Max possible chunk size after an upload caused HTTP-413 or RemoteHostClosedError */
+    static constexpr auto maxChunkSizeAfterFailure = 100LL * 1000LL * 1000LL; // 100 MB
+
+    /** Default value for parallel network jobs */
+    static constexpr auto defaultParallelNetworkJobs = 6;
+
+    /** Default value for parallel network jobs for HTTP/2 connections */
+    static constexpr auto defaultParallelNetworkJobsH2 = 20;
+
     /** Maximum size (in Bytes) a folder can have without asking for confirmation.
      * -1 means infinite */
     qint64 _newBigFolderSizeLimit = -1;
@@ -48,26 +70,27 @@ public:
     /** Create a virtual file for new files instead of downloading. May not be null */
     QSharedPointer<Vfs> _vfs;
 
-    /** The initial un-adjusted chunk size in bytes for chunked uploads, both
-     * for old and new chunking algorithm, which classifies the item to be chunked
-     *
-     * In chunkingNG, when dynamic chunk size adjustments are done, this is the
-     * starting value and is then gradually adjusted within the
-     * minChunkSize / maxChunkSize bounds.
-     */
-    qint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
-
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
      * Set to 0 it will disable dynamic chunk sizing.
      */
-    std::chrono::milliseconds _targetChunkUploadDuration = std::chrono::minutes(1);
+    std::chrono::milliseconds _targetChunkUploadDuration = chunkV2TargetChunkUploadDuration;
 
     /** The maximum number of active jobs in parallel  */
-    int _parallelNetworkJobs = 6;
+    int _parallelNetworkJobs = defaultParallelNetworkJobs;
 
-    static constexpr auto chunkV2MinChunkSize = 5LL * 1000LL * 1000LL; // 5 MB
-    static constexpr auto chunkV2MaxChunkSize = 5LL * 1000LL * 1000LL * 1000LL; // 5 GB
+    /** True for dynamic chunk sizing, false if _initialChunkSize should always be used as chunk size */
+    bool isDynamicChunkSize() const { return _targetChunkUploadDuration.count() > 0; };
+    
+    /** Returns a good new chunk size based on the current size and time of the uploaded chunk */
+    qint64 predictedGoodChunkSize(const qint64 currentChunkSize, const std::chrono::milliseconds uploadTime) const;
+    
+    /** Returns chunkSize after applying the configured bounds of _minChunkSize and _maxChunkSize */
+    qint64 toValidChunkSize(const qint64 chunkSize) const { return qBound(_minChunkSize, chunkSize, _maxChunkSize); };
+
+    /** The initial chunk size in bytes for chunked uploads */
+    [[nodiscard]] qint64 initialChunkSize() const;
+    void setInitialChunkSize(const qint64 initialChunkSize);
 
     /** The minimum chunk size in bytes for chunked uploads */
     [[nodiscard]] qint64 minChunkSize() const;
@@ -84,15 +107,10 @@ public:
      */
     void fillFromEnvironmentVariables();
 
-    /** Ensure min <= initial <= max
-     *
-     * Previously min/max chunk size values didn't exist, so users might
-     * have setups where the chunk size exceeds the new min/max default
-     * values. To cope with this, adjust min/max to always include the
-     * initial chunk size value.
+    /** Reads settings from the given account when available.
+     * Currently reads _initialChunkSize and _maxChunkSize.
      */
-    void verifyChunkSizes();
-
+    void fillFromAccount(const AccountPtr account);
 
     /** A regular expression to match file names
      * If no pattern is provided the default is an invalid regular expression.
@@ -116,6 +134,7 @@ private:
      */
     QRegularExpression _fileRegex = QRegularExpression(QStringLiteral("("));
 
+    qint64 _initialChunkSize = defaultChunkSize;
     qint64 _minChunkSize = chunkV2MinChunkSize;
     qint64 _maxChunkSize = chunkV2MaxChunkSize;
 };

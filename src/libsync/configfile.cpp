@@ -15,6 +15,7 @@
 #include "config.h"
 
 #include "configfile.h"
+#include "syncoptions.h"
 #include "theme.h"
 #include "version.h"
 #include "common/utility.h"
@@ -246,25 +247,25 @@ int ConfigFile::timeout() const
 qint64 ConfigFile::chunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(chunkSizeC), 10LL * 1000LL * 1000LL).toLongLong(); // default to 10 MB
+    return settings.value(QLatin1String(chunkSizeC), SyncOptions::defaultChunkSize).toLongLong(); // default to 10 MB
 }
 
 qint64 ConfigFile::maxChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(maxChunkSizeC), 5LL * 1000LL * 1000LL * 1000LL).toLongLong(); // default to 5000 MB
+    return settings.value(QLatin1String(maxChunkSizeC), SyncOptions::chunkV2MaxChunkSize).toLongLong(); // default to 5 GB
 }
 
 qint64 ConfigFile::minChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(minChunkSizeC), 5LL * 1000LL * 1000LL).toLongLong(); // default to 5 MB
+    return settings.value(QLatin1String(minChunkSizeC), SyncOptions::chunkV2MinChunkSize).toLongLong(); // default to 5 MB
 }
 
 chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return millisecondsValue(settings, targetChunkUploadDurationC, chrono::minutes(1));
+    return millisecondsValue(settings, targetChunkUploadDurationC, SyncOptions::chunkV2TargetChunkUploadDuration);
 }
 
 void ConfigFile::setOptionalServerNotifications(bool show)
