@@ -18,6 +18,8 @@
 #include "common/utility.h"
 
 #include <QBuffer>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLoggingCategory>
 #include <QPointer>
 #include <QRegularExpression>
@@ -42,47 +44,39 @@ bool isTextBody(const QString &s)
     return regexp.match(s).hasMatch();
 }
 
-void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device, const nanoseconds &duration = {})
+void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, QJsonObject &&header, QIODevice *device,
+    const nanoseconds &duration = {})
 {
+    static const bool redact = !qEnvironmentVariableIsSet("OWNCLOUD_HTTPLOGGER_NO_REDACT");
     const auto reply = qobject_cast<QNetworkReply *>(device);
     const auto contentLength = device ? device->size() : 0;
-    QString msg;
-    QDebug stream(&msg);
-    stream.nospace().noquote();
-    stream << id << ": ";
-    if (!reply) {
-        stream << "Request: ";
-    } else {
-        stream << "Response: ";
+
+    if (redact) {
+        const QString authKey = QStringLiteral("Authorization");
+        const QString auth = header.value(authKey).toString();
+        header.insert(authKey, auth.startsWith(QStringLiteral("Bearer ")) ? QStringLiteral("Bearer [redacted]") : QStringLiteral("Basic [redacted]"));
     }
-    stream << verb;
+
+    QJsonObject info{{QStringLiteral("method"), QString::fromUtf8(verb)}, {QStringLiteral("id"), QString::fromUtf8(id)}, {QStringLiteral("url"), url}};
+
     if (reply) {
-        stream << " " << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << " (";
+        QString durationString;
+        QDebug(&durationString).nospace() << duration;
+        QJsonObject replyInfo{{QStringLiteral("status"), reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()},
+            {QStringLiteral("cached"), reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool()},
+            // downcast to int, this is json
+            {QStringLiteral("duration"), static_cast<int>(duration_cast<milliseconds>(duration).count())}, //
+            {QStringLiteral("durationString"), durationString},
+            {QStringLiteral("version"),
+                QStringLiteral("HTTP %1").arg(
+                    reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool() ? QStringLiteral("1.1") : QStringLiteral("2"))}};
         if (reply->error() != QNetworkReply::NoError) {
-            stream << "Error: " << reply->errorString() << ",";
+            replyInfo.insert(QStringLiteral("error"), reply->errorString());
         }
-        if (reply->attribute(QNetworkRequest::HttpPipeliningWasUsedAttribute).toBool()) {
-            stream << "Piplined,";
-        }
-        if (reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool()) {
-            stream << "Cached,";
-        }
-        const auto durationInMs = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
-        stream << durationInMs.count() << "ms)";
+        info.insert(QStringLiteral("reply"), replyInfo);
     }
-    stream << " " << url << " Header: { ";
-    for (const auto &it : header) {
-        stream << it.first << ": ";
-        static const bool dontRedact = qEnvironmentVariableIsSet("OWNCLOUD_HTTPLOGGER_NO_REDACT");
-        if (!dontRedact && it.first == "Authorization") {
-            stream << (it.second.startsWith("Bearer ") ? "Bearer" : "Basic");
-            stream << " [redacted]";
-        } else {
-            stream << it.second;
-        }
-        stream << ", ";
-    }
-    stream << "} Data: [";
+
+    QJsonObject body = {{QStringLiteral("length"), contentLength}};
     if (contentLength > 0) {
         if (isTextBody(contentType)) {
             if (!device->isOpen()) {
@@ -91,17 +85,22 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
                 device->open(QIODevice::ReadOnly);
             }
             Q_ASSERT(device->pos() == 0);
-            stream << device->peek(PeekSize);
+            QString data = QString::fromUtf8(device->peek(PeekSize));
             if (PeekSize < contentLength)
             {
-                stream << "...(" << (contentLength - PeekSize) << "bytes elided)";
+                data += QStringLiteral("...(%1 bytes elided)").arg(QString::number(contentLength - PeekSize));
             }
+            body[QStringLiteral("data")] = data;
         } else {
-            stream << contentLength << " bytes of " << contentType << " data";
+            body[QStringLiteral("data")] = QStringLiteral("%1 bytes of %2 data").arg(QString::number(contentLength), contentType);
         }
     }
-    stream << "]";
-    qCInfo(lcNetworkHttp) << msg;
+
+    qCInfo(lcNetworkHttp).noquote() << (reply ? "RESPONSE" : "REQUEST") << id
+                                    << QJsonDocument{QJsonObject{{reply ? QStringLiteral("response") : QStringLiteral("request"),
+                                                         QJsonObject{{QStringLiteral("info"), info}, {QStringLiteral("header"), header},
+                                                             {QStringLiteral("body"), body}}}}}
+                                           .toJson(QJsonDocument::Compact);
 }
 }
 
@@ -121,14 +120,12 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
         timer->reset();
 
         const auto request = reply->request();
-        const auto keys = request.rawHeaderList();
-        QList<QNetworkReply::RawHeaderPair> header;
-        header.reserve(keys.size());
-        for (const auto &key : keys) {
-            header << qMakePair(key, request.rawHeader(key));
+        QJsonObject header;
+        for (const auto &key : request.rawHeaderList()) {
+            header[QString::fromUtf8(key)] = QString::fromUtf8(request.rawHeader(key));
         }
         logHttp(requestVerb(operation, request), request.url().toString(), request.rawHeader(XRequestId()),
-            request.header(QNetworkRequest::ContentTypeHeader).toString(), header, device);
+            request.header(QNetworkRequest::ContentTypeHeader).toString(), std::move(header), device);
     };
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend);
@@ -137,8 +134,12 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
 #endif
 
     QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer = std::move(timer)] {
+        QJsonObject header;
+        for (const auto &[key, value] : reply->rawHeaderPairs()) {
+            header[QString::fromUtf8(key)] = QString::fromUtf8(value);
+        }
         logHttp(requestVerb(*reply), reply->url().toString(), reply->request().rawHeader(XRequestId()),
-            reply->header(QNetworkRequest::ContentTypeHeader).toString(), reply->rawHeaderPairs(), reply, timer->duration());
+            reply->header(QNetworkRequest::ContentTypeHeader).toString(), std::move(header), reply, timer->duration());
     });
 }
 
