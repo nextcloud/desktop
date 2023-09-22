@@ -851,7 +851,69 @@ ApplicationWindow {
             anchors.right: trayWindowMainItem.right
         }
 
+        Loader {
+            id: newActivitiesButtonLoader
+
+            anchors.top: activityList.top
+            anchors.topMargin: 5
+            anchors.horizontalCenter: activityList.horizontalCenter
+
+            width: Style.newActivitiesButtonWidth
+            height: Style.newActivitiesButtonHeight
+
+            z: 1
+
+            active: false
+
+            sourceComponent: CustomButton {
+                id: newActivitiesButton
+                hoverEnabled: true
+                padding: Style.smallSpacing
+
+                textColor: Style.currentUserHeaderTextColor
+                textColorHovered: Style.currentUserHeaderTextColor
+                contentsFont.bold: true
+                bgNormalColor: Qt.lighter(bgHoverColor, 1.25)
+                bgHoverColor: Style.currentUserHeaderColor
+                bgNormalOpacity: Style.newActivitiesBgNormalOpacity
+                bgHoverOpacity: Style.newActivitiesBgHoverOpacity
+
+                anchors.fill: parent
+
+                text: qsTr("New activities")
+
+                icon.source: "image://svgimage-custom-color/expand-less-black.svg" + "/" + Style.currentUserHeaderTextColor
+                icon.width: Style.activityLabelBaseWidth
+                icon.height: Style.activityLabelBaseWidth
+
+                onClicked: {
+                    activityList.scrollToTop();
+                    newActivitiesButtonLoader.active = false
+                }
+
+                Timer {
+                    id: newActivitiesButtonDisappearTimer
+                    interval: Style.newActivityButtonDisappearTimeout
+                    running: newActivitiesButtonLoader.active && !newActivitiesButton.hovered
+                    repeat: false
+                    onTriggered: fadeoutActivitiesButtonDisappear.running = true
+                }
+
+                OpacityAnimator {
+                    id: fadeoutActivitiesButtonDisappear
+                    target: newActivitiesButton;
+                    from: 1;
+                    to: 0;
+                    duration: Style.newActivityButtonDisappearFadeTimeout
+                    loops: 1
+                    running: false
+                    onFinished: newActivitiesButtonLoader.active = false
+                }
+            }
+        }
+
         ActivityList {
+            id: activityList
             visible: !trayWindowMainItem.isUnifiedSearchActive
             anchors.top: syncStatus.bottom
             anchors.left: trayWindowMainItem.left
@@ -863,6 +925,14 @@ ApplicationWindow {
             onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {
                 model.slotTriggerDefaultAction(index)
+            }
+            Connections {
+                target: activityModel
+                onInteractiveActivityReceived: {
+                    if (!activityList.atYBeginning) {
+                        newActivitiesButtonLoader.active = true;
+                    }
+                }
             }
         }
     } // Item trayWindowMainItem

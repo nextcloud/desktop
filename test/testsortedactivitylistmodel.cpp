@@ -153,7 +153,7 @@ private slots:
         sourceModel->startMaxActivitiesFetchJob();
         QSignalSpy activitiesJob(sourceModel, &TestingALM::activitiesProcessed);
         QVERIFY(activitiesJob.wait(3000));
-        QCOMPARE(sourceModel->rowCount(), sourceModel->maxPossibleActivities());
+        QCOMPARE(sourceModel->rowCount(), FakeRemoteActivityStorage::instance()->totalNumActivites());
 
         auto errorSyncFileItemActivity = exampleSyncFileItemActivity(accountState->account()->displayName(), {});
         errorSyncFileItemActivity._message = QStringLiteral("Something went wrong and everything exploded!");
@@ -165,38 +165,73 @@ private slots:
         addActivity(model, &TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
         addActivity(model, &TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
 
-        const QVector<OCC::Activity::Type> activityDefaultTypeOrder {
-            OCC::Activity::DummyFetchingActivityType,
-            OCC::Activity::NotificationType,
-            OCC::Activity::SyncResultType,
-            OCC::Activity::SyncFileItemType,
-            OCC::Activity::ActivityType,
-            OCC::Activity::DummyMoreActivitiesAvailableType};
+        // first let's go through priority activities (interactive ones and those with _fileAction == "security"
+        auto i = 0;
+        for (; i < model->rowCount(); ++i) {
+            const auto index = model->index(i, 0);
+            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
+
+            const auto foundIt = std::find_if(std::cbegin(activity._links), std::cend(activity._links), [](const auto &link) {
+                return link._verb == QByteArrayLiteral("POST") || link._verb == QByteArrayLiteral("REPLY") || link._verb == QByteArrayLiteral("WEB")
+                    || link._verb == QByteArrayLiteral("DELETE");
+            });
+            const auto isInteractiveOrSecurityActivity = foundIt != std::cend(activity._links) || activity._fileAction == QStringLiteral("security");
+            if (!isInteractiveOrSecurityActivity) {
+                break;
+            }
+        }
+        auto lasIndex = i;
+
+        // now, let's check if activity is an error
+        for (; i < lasIndex + 1 && i < model->rowCount(); ++i) {
+            const auto index = model->index(i, 0);
+            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
+
+            QCOMPARE(activity._type, OCC::Activity::SyncResultType);
+            QCOMPARE(activity._syncResultStatus, OCC::SyncResult::Error);
+        }
+        lasIndex = i;
+
+        // now, let's check if activity is a fatal error
+        for (; i < lasIndex + 1 && i < model->rowCount(); ++i) {
+            const auto index = model->index(i, 0);
+            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
+
+            QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
+            QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FatalError);
+        }
+        lasIndex = i;
+
+        // now, let's check if activity is an ignored file
+        for (; i < lasIndex + 1 && i < model->rowCount(); ++i) {
+            const auto index = model->index(i, 0);
+            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
+            QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
+            QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FileIgnored);
+        }
+        lasIndex = i;
+
+        const QVector<OCC::Activity::Type> activityDefaultTypeOrder{OCC::Activity::DummyFetchingActivityType,
+                                                                    OCC::Activity::SyncResultType,
+                                                                    OCC::Activity::NotificationType,
+                                                                    OCC::Activity::SyncFileItemType,
+                                                                    OCC::Activity::ActivityType,
+                                                                    OCC::Activity::DummyMoreActivitiesAvailableType};
         auto currentTypeSection = 1;
         auto previousType = activityDefaultTypeOrder[currentTypeSection];
 
-        for (auto i = 0; i < model->rowCount(); ++i) {
+        // let's go through rest of activities (Now normal type order)
+        for (; i < model->rowCount(); ++i) {
             const auto index = model->index(i, 0);
             const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
 
             qDebug() << i << activity._type << activity._subject << activity._message;
-            if (i == 0) { // Error syncresult activity should be at top
-                QCOMPARE(activity._type, OCC::Activity::SyncResultType);
-                QCOMPARE(activity._syncResultStatus, OCC::SyncResult::Error);
-            } else if (i == 1) { // Error syncfileitem activity should be next up
-                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
-                QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FatalError);
-            } else if (i == 2) { // Ignored file syncfileitem activity should be next up
-                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
-                QCOMPARE(activity._syncFileItemStatus, OCC::SyncFileItem::FileIgnored);
-            } else { // Now normal type order
-                while (i != 3 && activity._type != previousType) {
-                    ++currentTypeSection;
-                    previousType = activityDefaultTypeOrder[currentTypeSection];
-                }
-
-                QCOMPARE(activity._type, activityDefaultTypeOrder[currentTypeSection]);
+            
+            while (activity._type != previousType) {
+                ++currentTypeSection;
+                previousType = activityDefaultTypeOrder[currentTypeSection];
             }
+            QCOMPARE(activity._type, activityDefaultTypeOrder[currentTypeSection]);
         }
     }
 };

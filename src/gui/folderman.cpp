@@ -1314,7 +1314,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
         if (acc && folder->accountState()->account() != acc) {
             continue;
         }
-        if (!serverPath.startsWith(folder->remotePath()))
+        if (!serverPath.startsWith(folder->remotePathTrailingSlash()))
             continue;
 
         QString path = folder->cleanPath() + '/';

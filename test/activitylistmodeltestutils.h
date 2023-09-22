@@ -64,7 +64,7 @@ public:
 private:
     QJsonArray _activityData;
     QVariantMap _metaSuccess;
-    quint32 _numItemsToInsert = 30;
+    quint32 _numItemsToInsert = 10;
     int _startingId = 90000;
 
     static FakeRemoteActivityStorage *_instance;

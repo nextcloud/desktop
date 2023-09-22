@@ -61,36 +61,13 @@ RowLayout {
 
         Loader {
             Layout.fillWidth: true
+            Layout.preferredHeight: Style.progressBarPreferredHeight
 
-            active: syncStatus.syncing
-            visible: syncStatus.syncing
+            active: syncStatus.syncing && syncStatus.totalFiles > 0
+            visible: active
 
-            sourceComponent: ProgressBar {
+            sourceComponent: NCProgressBar {
                 id: syncProgressBar
-
-                // TODO: Rather than setting all these palette colours manually,
-                // create a custom style and do it for all components globally.
-                //
-                // Additionally, we need to override the entire palette when we
-                // set one palette property, as otherwise we default back to the
-                // theme palette -- not the parent palette
-                palette {
-                    text: Style.ncTextColor
-                    windowText: Style.ncTextColor
-                    buttonText: Style.ncTextColor
-                    brightText: Style.ncTextBrightColor
-                    highlight: Style.lightHover
-                    highlightedText: Style.ncTextColor
-                    light: Style.lightHover
-                    midlight: Style.ncSecondaryTextColor
-                    mid: Style.darkerHover
-                    dark: Style.menuBorder
-                    button: Style.buttonBackgroundColor
-                    window: palette.dark // NOTE: Fusion theme uses darker window colour for the border of the progress bar
-                    base: Style.backgroundColor
-                    toolTipBase: Style.backgroundColor
-                    toolTipText: Style.ncTextColor
-                }
                 value: syncStatus.syncProgress
             }
         }

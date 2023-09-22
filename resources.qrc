@@ -49,6 +49,7 @@
         <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
         <file>src/gui/tray/NCBusyIndicator.qml</file>
         <file>src/gui/tray/NCToolTip.qml</file>
+        <file>src/gui/tray/NCProgressBar.qml</file>
         <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
