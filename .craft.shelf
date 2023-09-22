@@ -7,12 +7,14 @@ version = 2023-01-10
 
 [craft/craft-blueprints-kde]
 version = master
+revision = d2f855b1fa83f05025cc342c931d0805a5025551
 
 [craft/craft-blueprints-owncloud]
 version = 5
 
 [craft/craft-core]
 version = master
+revision = ab3623cbeeabe3444742a3325a201d73062e301c
 
 [dev-utils/clazy]
 version = 1.11
