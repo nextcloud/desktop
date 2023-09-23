@@ -4670,6 +4670,11 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Preparing sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
         <translation>Sinkronigante</translation>
@@ -5938,6 +5943,11 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <source>New activities</source>
         <translation type="unfinished"/>
     </message>
 </context>

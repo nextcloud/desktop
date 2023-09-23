@@ -4702,6 +4702,11 @@ Server replied with error: %2</source>
         <translation>오류는 아래를 참조하세요.</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Preparing sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
         <translation>동기화 중</translation>
@@ -5971,6 +5976,11 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>통합 검색 결과 목록</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <source>New activities</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

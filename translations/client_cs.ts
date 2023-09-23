@@ -4700,6 +4700,11 @@ Server odpověděl chybou: %2</translation>
         <translation>Chyby viz níže</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Preparing sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
         <translation>Synchronizuje se</translation>
@@ -5969,6 +5974,11 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>Seznam výsledků sjednoceného vyhledávání</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <source>New activities</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

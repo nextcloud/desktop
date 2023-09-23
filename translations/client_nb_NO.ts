@@ -4700,6 +4700,11 @@ Server svarte med feil: %2</translation>
         <translation>Se nedenfor for feil</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
+        <source>Preparing sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
         <translation>Synkroniserer</translation>
@@ -5969,6 +5974,11 @@ Server svarte med feil: %2</translation>
         <location filename="../src/gui/tray/Window.qml" line="821"/>
         <source>Unified search results list</source>
         <translation>Samlet søkeresultatliste</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <source>New activities</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
