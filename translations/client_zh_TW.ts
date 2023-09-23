@@ -423,7 +423,7 @@
         <location filename="../src/gui/accountsettings.ui" line="283"/>
         <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <location filename="../src/gui/accountsettings.cpp" line="575"/>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -464,14 +464,14 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
-        <location filename="../src/gui/accountsettings.cpp" line="845"/>
+        <location filename="../src/gui/accountsettings.cpp" line="835"/>
         <source>Add Space</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="192"/>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Add Folder</source>
         <translation>新增資料夾</translation>
     </message>
@@ -529,12 +529,12 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="804"/>
         <source>Connecting to: %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="825"/>
+        <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>Disconnected from: %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -566,73 +566,73 @@ Please authenticate using your browser.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="790"/>
         <source>Reauthorization required.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="799"/>
         <source>Connecting to %1...</source>
         <translation>正在連接到 ％1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>Server configuration error: %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Log in</source>
         <translation>登入</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>Click this button to add a Space.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="849"/>
+        <location filename="../src/gui/accountsettings.cpp" line="839"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>點擊此按鈕來新增同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>You need to be connected to add a folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="951"/>
+        <location filename="../src/gui/accountsettings.cpp" line="941"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>有部份的資料夾因為容量太大沒有辦法同步:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="953"/>
+        <location filename="../src/gui/accountsettings.cpp" line="943"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>有部分資料夾因為是外部存儲沒有辦法同步: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="954"/>
+        <location filename="../src/gui/accountsettings.cpp" line="944"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>有部分資料夾因為容量太大或是外部存儲沒有辦法同步: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="987"/>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>Confirm Account Removal</source>
         <translation>確認移除帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988"/>
+        <location filename="../src/gui/accountsettings.cpp" line="978"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您確定要中斷此帳號 &lt;i&gt;%1&lt;/i&gt; 的連線?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;此操作 &lt;b&gt;不會&lt;/b&gt; 刪除任何的檔案。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
+        <location filename="../src/gui/accountsettings.cpp" line="983"/>
         <source>Remove connection</source>
         <translation>移除連線</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
-        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="828"/>
         <source>Log out</source>
         <translation>登出</translation>
     </message>
@@ -3657,17 +3657,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Wizard::OAuthCredentialsSetupWizardPage</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="33"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="43"/>
         <source>Reopen Browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
         <source>Please use your browser to log in to %1.</source>
         <translation type="unfinished"/>
     </message>
@@ -3675,17 +3675,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Wizard::OAuthCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="58"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="52"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="63"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="57"/>
         <source>Server reports that OAuth2 is not supported.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="67"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="61"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation type="unfinished"/>
     </message>
