@@ -2073,7 +2073,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source>Could not decrypt!</source>
-        <translation>Datoteke ni bilo mogoče dešifrirati!</translation>
+        <translation>Datoteke ni mogoče odšifrirati!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>

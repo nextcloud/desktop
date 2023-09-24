@@ -4702,7 +4702,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Preparing sync</source>
-        <translation type="unfinished"/>
+        <translation>Préparation de la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -5978,7 +5978,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="883"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nouvelles activités</translation>
     </message>
 </context>
 <context>

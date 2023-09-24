@@ -4703,7 +4703,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Preparing sync</source>
-        <translation type="unfinished"/>
+        <translation>Förbereder synk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -5979,7 +5979,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="883"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nya aktiviteter</translation>
     </message>
 </context>
 <context>
