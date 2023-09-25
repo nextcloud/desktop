@@ -52,6 +52,7 @@ public:
     {
         q = parent;
         initialCheck();
+        fetchMaterialisedFilesStorageUsage();
     };
 
     ~MacImplementation() = default;
@@ -154,20 +155,46 @@ private:
 
     void fetchMaterialisedFilesStorageUsage()
     {
+        qCDebug(lcFileProviderSettingsController) << "Fetching materialised files storage usage";
+
         [NSFileProviderManager getDomainsWithCompletionHandler: ^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
             if (error != nil) {
-                qCWarning(lcFileProviderSettingsController) << "Could not get file provider domains:" << error.localizedDescription;
+                qCWarning(lcFileProviderSettingsController) << "Could not get file provider domains:"
+                                                            << error.localizedDescription
+                                                            << "Will try again in 2 secs";
+
+                // HACK: Sometimes the system is not in a state where it wants to give us access to
+                //       the file provider domains. We will try again in 2 seconds and hope it works
+                __block const auto thisQobject = (QObject*)this;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [NSTimer scheduledTimerWithTimeInterval:2 repeats:NO block:^(NSTimer *const timer) {
+                        QMetaObject::invokeMethod(thisQobject, [this] { fetchMaterialisedFilesStorageUsage(); });
+                    }];
+                });
                 return;
             }
 
             for (NSFileProviderDomain *const domain in domains) {
+                qCDebug(lcFileProviderSettingsController) << "Checking storage use for domain:" << domain.identifier;
+
                 NSFileProviderManager *const managerForDomain = [NSFileProviderManager managerForDomain:domain];
-                id<NSFileProviderEnumerator> enumerator = [managerForDomain enumeratorForMaterializedItems];
+                if (managerForDomain == nil) {
+                    qCWarning(lcFileProviderSettingsController) << "Got a nil file provider manager for domain"
+                                                                << domain.identifier
+                                                                << ", returning early.";
+                    return;
+                }
+
+                const id<NSFileProviderEnumerator> enumerator = [managerForDomain enumeratorForMaterializedItems];
+                Q_ASSERT(enumerator != nil);
+
                 FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
 
                 storageUseObserver.enumerationFinishedHandler = ^(NSNumber *const usage, NSError *const error) {
                     if (error != nil) {
                         qCWarning(lcFileProviderSettingsController) << "Error while enumerating storage use" << error.localizedDescription;
+                        [storageUseObserver release];
+                        [enumerator release];
                         return;
                     }
 
@@ -175,20 +202,33 @@ private:
 
                     // Remember that OCC::Account::userIdAtHost == domain.identifier for us
                     NSMutableDictionary<NSString *, NSNumber *> *const mutableStorageDictCopy = _storageUsage.mutableCopy;
+
+                    qCDebug(lcFileProviderSettingsController) << "Local storage use for"
+                                                              << domain.identifier
+                                                              << usage.unsignedLongLongValue;
+
                     [mutableStorageDictCopy setObject:usage forKey:domain.identifier];
                     _storageUsage = mutableStorageDictCopy.copy;
 
                     const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
                     emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
+
+                    [storageUseObserver release];
+                    [enumerator release];
                 };
 
                 [enumerator enumerateItemsForObserver:storageUseObserver startingAtPage:NSFileProviderInitialPageSortedByName];
+
+                [storageUseObserver retain];
+                [enumerator retain];
             }
         }];
     }
 
     void initialCheck()
     {
+        qCDebug(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
+
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
         if (vfsEnabledAccounts != nil) {
             return;
@@ -198,7 +238,6 @@ private:
                                                   << "Enabling all accounts on initial setup.";
 
         [[maybe_unused]] const auto result = enableVfsForAllAccounts();
-        fetchMaterialisedFilesStorageUsage();
     }
 
     FileProviderSettingsController *q = nullptr;
@@ -258,7 +297,7 @@ unsigned long long FileProviderSettingsController::localStorageUsageForAccount(c
 float FileProviderSettingsController::localStorageUsageGbForAccount(const QString &userIdAtHost) const
 {
     static constexpr auto bytesIn100Mb = 1ULL * 1000ULL * 1000ULL * 100ULL;
-    return (float)(localStorageUsageForAccount(userIdAtHost) / bytesIn100Mb) / 10.0;
+    return ((localStorageUsageForAccount(userIdAtHost) * 1.0) / bytesIn100Mb) / 10.0;
 }
 
 } // namespace Mac
