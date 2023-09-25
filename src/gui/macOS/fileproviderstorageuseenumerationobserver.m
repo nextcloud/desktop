@@ -16,7 +16,7 @@
 
 @interface FileProviderStorageUseEnumerationObserver ()
 
-@property (readwrite) NSNumber *usage;
+@property (readwrite) NSUInteger usage;
 
 @end
 
@@ -26,7 +26,7 @@
 {
     self = [super init];
     if (self) {
-        self.usage = @(0);
+        self.usage = 0ULL;
     }
     return self;
 }
@@ -35,18 +35,23 @@
 - (void)didEnumerateItems:(NSArray<id<NSFileProviderItem>> *)updatedItems
 {
     for (const id<NSFileProviderItem> item in updatedItems) {
-        self.usage = @(self.usage.unsignedLongLongValue + item.documentSize.unsignedLongLongValue);
+        NSLog(@"StorageUseEnumerationObserver: Enumerating %@ with size %llu", item.filename, item.documentSize.unsignedLongLongValue);
+        self.usage += item.documentSize.unsignedLongLongValue;
     }
 }
 
 - (void)finishEnumeratingWithError:(NSError *)error
 {
-    self.enumerationFinishedHandler(nil, error);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.enumerationFinishedHandler(nil, error);
+    });
 }
 
 - (void)finishEnumeratingUpToPage:(NSFileProviderPage)nextPage
 {
-    self.enumerationFinishedHandler(self.usage, nil);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.enumerationFinishedHandler(@(self.usage), nil);
+    });
 }
 
 @end
