@@ -19,6 +19,6 @@ typedef void(^UsageEnumerationFinishedHandler)(NSNumber *const usage, NSError *c
 
 @interface FileProviderStorageUseEnumerationObserver : NSObject<NSFileProviderEnumerationObserver>
 
-@property (readwrite) UsageEnumerationFinishedHandler enumerationFinishedHandler; // In bytes
+@property (readwrite, strong) UsageEnumerationFinishedHandler enumerationFinishedHandler;
 
 @end
