@@ -423,7 +423,7 @@
         <location filename="../src/gui/accountsettings.ui" line="283"/>
         <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <location filename="../src/gui/accountsettings.cpp" line="575"/>
-        <location filename="../src/gui/accountsettings.cpp" line="994"/>
+        <location filename="../src/gui/accountsettings.cpp" line="984"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -464,14 +464,14 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
-        <location filename="../src/gui/accountsettings.cpp" line="845"/>
+        <location filename="../src/gui/accountsettings.cpp" line="835"/>
         <source>Add Space</source>
         <translation>Space hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="192"/>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Add Folder</source>
         <translation>Ordner hinzufügen</translation>
     </message>
@@ -529,12 +529,12 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
         <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Trotzdem beenden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="804"/>
         <source>Connecting to: %1.</source>
         <translation>Verbinde mit %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="825"/>
+        <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>Disconnected from: %1.</source>
         <translation>Getrennt von %1</translation>
     </message>
@@ -568,73 +568,73 @@ Please authenticate using your browser.</source>
 Bitte über den Browser authentifizieren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="790"/>
         <source>Reauthorization required.</source>
         <translation>Eine erneute Authentifizierung ist erforderlich.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="799"/>
         <source>Connecting to %1...</source>
         <translation>Verbinde mit %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>Server configuration error: %1.</source>
         <translation>Fehler in der Serverkonfiguration: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Log in</source>
         <translation>Anmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>Click this button to add a Space.</source>
         <translation>Diese Schaltfläche drücken, um einen Space hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="849"/>
+        <location filename="../src/gui/accountsettings.cpp" line="839"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Diesen Knopf drücken, um einen Ordner zur Synchronisation hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>You need to be connected to add a folder.</source>
         <translation>Verbindung notwendig, um einen Ordner hinzuzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="951"/>
+        <location filename="../src/gui/accountsettings.cpp" line="941"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="953"/>
+        <location filename="../src/gui/accountsettings.cpp" line="943"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da diese externe Speicher sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="954"/>
+        <location filename="../src/gui/accountsettings.cpp" line="944"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da diese zu groß oder externe Speicher sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="987"/>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>Confirm Account Removal</source>
         <translation>Löschen des Benutzerkontos bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988"/>
+        <location filename="../src/gui/accountsettings.cpp" line="978"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Möchten Sie den Zugang zum Benutzerkonto &lt;i&gt;%1&lt;/i&gt; wirklich entfernen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt; Bei diesem Vorgang werden &lt;b&gt;keine&lt;/b&gt; lokalen Daten gelöscht.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
+        <location filename="../src/gui/accountsettings.cpp" line="983"/>
         <source>Remove connection</source>
         <translation>Verbindung entfernen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
-        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="828"/>
         <source>Log out</source>
         <translation>Abmelden</translation>
     </message>
@@ -3672,17 +3672,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich dafür entscheiden, ber
 <context>
     <name>OCC::Wizard::OAuthCredentialsSetupWizardPage</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="33"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
         <translation>Verbinde zu &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="43"/>
         <source>Reopen Browser</source>
         <translation>Browser erneut öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
+        <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="49"/>
         <source>Please use your browser to log in to %1.</source>
         <translation>Bitte verwende deinen Browser, um dich in %1 einzuloggen.</translation>
     </message>
@@ -3690,17 +3690,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich dafür entscheiden, ber
 <context>
     <name>OCC::Wizard::OAuthCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="58"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="52"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
         <translation>Fehler bei der Anmeldung an einem OAuth2-fähigen Server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="63"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="57"/>
         <source>Server reports that OAuth2 is not supported.</source>
         <translation>Der Server meldet, dass OAuth2 nicht unterstützt wird.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="67"/>
+        <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="61"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>Die OAuth2 Anmeldung benötigt eine gesicherte Verbindung.</translation>
     </message>

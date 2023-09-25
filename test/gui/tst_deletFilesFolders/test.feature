@@ -19,6 +19,7 @@ Feature: deleting files and folders
             | fileName                                    |
             | textfile0.txt                               |
             | textfile0-with-name-more-than-20-characters |
+            |  ~`!@#$^&()-_=+{[}];',textfile.txt	  |
 
     @issue-9439
     Scenario Outline: Delete a folder

@@ -157,10 +157,10 @@ void SyncScheduler::startNext()
                 if (result.status() != SyncResult::Success) {
                     auto reschedule = [this]() {
                         QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [folder = _currentSync, this] {
-                            if (_currentSync->canSync()) {
+                            if (folder->canSync()) {
                                 enqueueFolder(folder);
                             } else {
-                                qCInfo(lcSyncScheduler) << "Cannot schedule sync for" << _currentSync->displayName();
+                                qCInfo(lcSyncScheduler) << "Cannot schedule sync for" << folder->displayName();
                             }
                         });
                     };
