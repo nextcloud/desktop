@@ -1,13 +1,10 @@
 name: Windows Build and Test
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: Windows Build and Test
     runs-on: windows-2019
     env:
       CRAFT_TARGET: windows-msvc2019_64-cl

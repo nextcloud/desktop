@@ -1,13 +1,10 @@
 name: macOS Build and Test
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: macOS Build and Test
     runs-on: macos-latest
     env:
       CRAFT_TARGET: macos-64-clang

@@ -1,13 +1,10 @@
 name: SonarCloud analysis
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: SonarCloud analysis
     runs-on: ubuntu-22.04
     container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
     env:

@@ -1,8 +1,8 @@
-name: "Check translations"
+name: Check translations
 
 on:
   pull_request:
-    branches: [ master, stable-* ]
+    types: [opened, synchronize, reopened]
 
 # Declare default permissions as read only.
 permissions: read-all
