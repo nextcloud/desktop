@@ -7,7 +7,7 @@ name: Block fixup and squash commits
 
 on:
   pull_request:
-    types: [opened, ready_for_review, reopened, synchronize]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read

@@ -1,13 +1,10 @@
 name: QML Label component check
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: QML Label component check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
