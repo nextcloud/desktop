@@ -32,6 +32,12 @@ constexpr auto fpSettingsAccountUserIdAtHostProp = "accountUserIdAtHost";
 
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
+
+float gbFromBytesWithOneDecimal(const unsigned long long bytes)
+{
+    constexpr auto bytesIn100Mb = 1ULL * 1000ULL * 1000ULL * 100ULL;
+    return ((bytes * 1.0) / bytesIn100Mb) / 10.0;
+}
 } // namespace
 
 namespace OCC {
@@ -296,8 +302,7 @@ unsigned long long FileProviderSettingsController::localStorageUsageForAccount(c
 
 float FileProviderSettingsController::localStorageUsageGbForAccount(const QString &userIdAtHost) const
 {
-    static constexpr auto bytesIn100Mb = 1ULL * 1000ULL * 1000ULL * 100ULL;
-    return ((localStorageUsageForAccount(userIdAtHost) * 1.0) / bytesIn100Mb) / 10.0;
+    return gbFromBytesWithOneDecimal(localStorageUsageForAccount(userIdAtHost));
 }
 
 } // namespace Mac
