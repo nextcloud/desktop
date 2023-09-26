@@ -62,4 +62,7 @@
         <file>src/gui/ConflictItemFileInfo.qml</file>
         <file>src/gui/filedetails/NCInputDateField.qml</file>
     </qresource>
+    <qresource prefix="/qss">
+        <file>theme/Style/style.qss</file>
+    </qresource>
 </RCC>

@@ -41,14 +41,6 @@
 #include <QPainterPath>
 
 namespace {
-const QString TOOLBAR_CSS()
-{
-    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
-                          "QToolBar QToolBarExtension { padding:0; } "
-                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
-}
-
 const float buttonSizeRatio = 1.618f; // golden ratio
 
 
@@ -337,12 +329,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
 
 void SettingsDialog::customizeStyle()
 {
-    QString highlightColor(palette().highlight().color().name());
-    QString highlightTextColor(palette().highlightedText().color().name());
-    QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
-
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);

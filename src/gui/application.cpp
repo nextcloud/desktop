@@ -245,6 +245,8 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
+    addCustomStyleSheet();
+
     if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
@@ -1011,6 +1013,21 @@ bool Application::event(QEvent *event)
         }
     }
     return SharedTools::QtSingleApplication::event(event);
+}
+
+void Application::addCustomStyleSheet()
+{
+    const auto wizardPalette = palette();
+    const auto highlightColor = wizardPalette.highlight().color().name();
+    const auto highlightTextColor = wizardPalette.highlightedText().color().name();
+    const auto dark = wizardPalette.dark().color().name();
+    const auto background = wizardPalette.base().color().name();
+
+    QFile file(QStringLiteral(":/qss/theme/Style/style.qss"));
+    if (file.open(QFile::ReadOnly)) {
+        const auto &styleSheet = QString::fromLatin1(file.readAll());
+        setStyleSheet(styleSheet.arg(background, dark, highlightColor, highlightTextColor));
+    }
 }
 
 } // namespace OCC

@@ -1,0 +1,9 @@
+
+QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; }
+QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; }
+QToolBar QToolBarExtension { padding:0; }
+QToolBar QToolButton:checked { background: %3; color: %4; }
+
+
+QProgressBar { border: 1px solid grey; border-radius: 5px; text-align: center; }
+QProgressBar::chunk { background-color: %3 ; width: 1px; }
