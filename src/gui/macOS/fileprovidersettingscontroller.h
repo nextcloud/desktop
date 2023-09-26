@@ -19,6 +19,8 @@
 
 namespace OCC {
 
+class UserInfo;
+
 namespace Mac {
 
 class FileProviderSettingsController : public QObject
@@ -50,6 +52,8 @@ private:
 
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;
+
+    QHash<QString, UserInfo*> _userInfos;
 };
 
 } // Mac

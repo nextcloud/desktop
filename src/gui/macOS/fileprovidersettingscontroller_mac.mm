@@ -264,6 +264,18 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
 {
     d = std::make_unique<FileProviderSettingsController::MacImplementation>(this);
+
+    const auto accManager = AccountManager::instance();
+    const auto accountsList = accManager->accounts();
+
+    for (const auto &accountState : accountsList) {
+        const auto userInfo = new UserInfo(accountState.data(), false, false, this);
+        const auto account = accountState->account();
+        const auto accountUserIdAtHost = account->userIdAtHostWithPort();
+
+        _userInfos.insert(accountUserIdAtHost, userInfo);
+        userInfo->setActive(true);
+    }
 }
 
 QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &accountUserIdAtHost,
