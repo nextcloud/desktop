@@ -66,6 +66,8 @@
 #include <QGuiApplication>
 #include <QUrlQuery>
 #include <QVersionNumber>
+#include <QRandomGenerator>
+#include <QHttp2Configuration>
 
 class QSocket;
 
@@ -219,8 +221,6 @@ Application::Application(int &argc, char **argv)
 {
     _startedAt.start();
 
-    qsrand(std::random_device()());
-
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
@@ -248,19 +248,10 @@ Application::Application(int &argc, char **argv)
     if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-#define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_DEPRECATED
-        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-
-        // macOS 10.11.x does not like trailing slash for rename/move.
-        if (oldDir.endsWith('/')) {
-            oldDir.chop(1);
-        }
-
-        QT_WARNING_POP
+        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
+        // behavior of adding "data" to the path
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/data/" + organizationName() + "/" + applicationName();
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             auto confDir = ConfigFile().configPath();
@@ -450,7 +441,7 @@ Application::Application(int &argc, char **argv)
     QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
+    connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
 #if defined(BUILD_UPDATER)
@@ -541,9 +532,10 @@ void Application::slotCleanup()
 // FIXME: This is not ideal yet since a ConnectionValidator might already be running and is in
 // progress of timing out in some seconds.
 // Maybe we need 2 validators, one triggered by timer, one by network configuration changes?
-void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf)
+void Application::slotSystemOnlineConfigurationChanged()
 {
-    if (cnf.state() & QNetworkConfiguration::Active) {
+    if (QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Site ||
+            QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Online) {
         const auto list = AccountManager::instance()->accounts();
         for (const auto &accountState : list) {
             accountState->systemOnlineConfigurationChanged();
@@ -807,16 +799,16 @@ void Application::showHelp()
     QTextStream stream(&helpText);
     stream << _theme->appName()
            << QLatin1String(" version ")
-           << _theme->version() << endl;
+           << _theme->version() << Qt::endl;
 
-    stream << QLatin1String("File synchronisation desktop utility.") << endl
-           << endl
+    stream << QLatin1String("File synchronisation desktop utility.") << Qt::endl
+           << Qt::endl
            << QLatin1String(optionsC);
 
     if (_theme->appName() == QLatin1String("ownCloud"))
-        stream << endl
-               << "For more information, see http://www.owncloud.org" << endl
-               << endl;
+        stream << Qt::endl
+               << "For more information, see http://www.owncloud.org" << Qt::endl
+               << Qt::endl;
 
     displayHelpText(helpText);
 }
@@ -915,13 +907,17 @@ void Application::setupTranslations()
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 if (!qtTranslator->load(qtTrFile, trPath)) {
                     if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
-                        qtTranslator->load(qtBaseTrFile, trPath);
+                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
+                            qCDebug(lcApplication()) << "impossible to load Qt translation catalog" << qtBaseTrFile;
+                        }
                     }
                 }
             }
             const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
             if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
-                qtkeychainTranslator->load(qtkeychainTrFile, trPath);
+                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
+                    qCDebug(lcApplication()) << "impossible to load QtKeychain translation catalog" << qtkeychainTrFile;
+                }
             }
             if (!translator->isEmpty())
                 installTranslator(translator);

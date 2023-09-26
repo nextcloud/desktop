@@ -93,7 +93,7 @@ private slots:
                     return FakePutReply::perform(fakeFolder.remoteModifier(), request, putPayload);
                 };
                 return new FakeAsyncReply("/async-poll/" + file.toUtf8(), op, request, &fakeFolder.syncEngine());
-            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE") {
                 QString file = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
                 Q_ASSERT(testCases.contains(file));
                 auto &testCase = testCases[file];
@@ -214,7 +214,7 @@ private slots:
                 nGET++;
             } else if (op == QNetworkAccessManager::DeleteOperation) {
                 nDELETE++;
-            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE") {
                 nMOVE++;
             }
             return nullptr;

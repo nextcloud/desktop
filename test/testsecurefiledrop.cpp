@@ -105,7 +105,7 @@ private slots:
                     reply = new FakePayloadReply(op, req, {}, nullptr);
                     ++_putMetadataCallsCount;
                 }
-            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute) == QStringLiteral("PROPFIND") && path.endsWith(fakeE2eeFolderPath)) {
+            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("PROPFIND") && path.endsWith(fakeE2eeFolderPath)) {
                 auto fileState = _fakeFolder.currentRemoteState();
                 reply = new FakePropfindReply(fileState, op, req, nullptr);
                 ++_propFindCallsCount;

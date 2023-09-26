@@ -85,7 +85,6 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
         const QString executablePath = runningInsideAppImage ? appImagePath : QCoreApplication::applicationFilePath();
 
         QTextStream ts(&iniFile);
-        ts.setCodec("UTF-8");
         ts << QLatin1String("[Desktop Entry]\n")
            << QLatin1String("Name=") << guiName << QLatin1Char('\n')
            << QLatin1String("GenericName=") << QLatin1String("File Synchronizer\n")

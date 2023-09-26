@@ -51,8 +51,8 @@ public:
         const auto activityType = QStringLiteral("file");
         const auto activityId = 90000;
         const auto message = QString();
-        const auto objectName = QStringLiteral("test.").append(fileFormat);
-        const auto link = account->url().toString().append(QStringLiteral("/f/")).append(activityId);
+        const auto objectName = QStringLiteral("test.%1").arg(fileFormat);
+        const auto link = account->url().toString().append(QStringLiteral("/f/%1").arg(activityId));
         const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
         const auto icon = account->url().toString().append(QStringLiteral("/apps/files/img/add-color.svg"));
 

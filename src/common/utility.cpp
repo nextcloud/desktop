@@ -245,7 +245,7 @@ qint64 Utility::freeDiskSpace(const QString &path)
 QString Utility::compactFormatDouble(double value, int prec, const QString &unit)
 {
     QLocale locale = QLocale::system();
-    QChar decPoint = locale.decimalPoint();
+    const auto decPoint = locale.decimalPoint();
     QString str = locale.toString(value, 'f', prec);
     while (str.endsWith(QLatin1Char('0')) || str.endsWith(decPoint)) {
         if (str.endsWith(decPoint)) {
@@ -617,7 +617,7 @@ QString Utility::makeConflictFileName(
 
 bool Utility::isConflictFile(const QString &name)
 {
-    auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+    auto bname = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
 
     if (bname.contains(QStringLiteral("_conflict-"))) {
         return true;
@@ -718,7 +718,7 @@ QString Utility::makeCaseClashConflictFileName(const QString &filename, const QD
 
 bool Utility::isCaseClashConflictFile(const QString &name)
 {
-    const auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+    const auto bname = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
 
     return bname.contains(QStringLiteral("(case clash from"));
 }

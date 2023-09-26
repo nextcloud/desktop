@@ -222,7 +222,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     addAction(syncNowAction);
 
     auto *syncNowWithRemoteDiscovery = new QAction(this);
-    syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
+    syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F6));
     connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery);
     addAction(syncNowWithRemoteDiscovery);
 

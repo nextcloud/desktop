@@ -29,7 +29,7 @@ struct OperationCounter {
                 ++nPUT;
             if (op == QNetworkAccessManager::DeleteOperation)
                 ++nDELETE;
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE")
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "MOVE")
                 ++nMOVE;
             return nullptr;
         };

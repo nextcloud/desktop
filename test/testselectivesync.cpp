@@ -30,7 +30,7 @@ private slots:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &req, QIODevice *device)
                                          -> QNetworkReply * {
             // Record what path we are querying for the size
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND") {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "PROPFIND") {
                 if (device->readAll().contains("<size "))
                     sizeRequests << req.url().path();
             }

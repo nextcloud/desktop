@@ -31,6 +31,7 @@ namespace {
 static const auto placeholderLinkShareId = QStringLiteral("__placeholderLinkShareId__");
 static const auto internalLinkShareId = QStringLiteral("__internalLinkShareId__");
 static const auto secureFileDropPlaceholderLinkShareId = QStringLiteral("__secureFileDropPlaceholderLinkShareId__");
+
 }
 
 namespace OCC
@@ -1297,7 +1298,7 @@ QString ShareModel::generatePassword()
 
     for (const auto newChar : unsignedCharArray) {
         // Ensure byte is within asciiRange
-        const auto byte = (newChar % (asciiRange + 1)) + asciiMin;
+        const auto byte = QChar((newChar % (asciiRange + 1)) + asciiMin);
         passwd.append(byte);
     }
 

@@ -1,3 +1,5 @@
+#define OPENSSL_SUPPRESS_DEPRECATED
+
 #include "clientsideencryption.h"
 
 #include <openssl/rsa.h>
@@ -17,7 +19,7 @@
 #include "common/constants.h"
 #include "wordlist.h"
 
-#include <qt5keychain/keychain.h>
+#include <qt6keychain/keychain.h>
 
 #include <QDebug>
 #include <QLoggingCategory>

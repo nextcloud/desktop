@@ -443,7 +443,9 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         if (property == QLatin1String("resourcetype")) {
             result.isDirectory = value.contains(QLatin1String("collection"));
         } else if (property == QLatin1String("getlastmodified")) {
+            value.replace("GMT", "+0000");
             const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
+            qCInfo(lcDiscovery()) << value << date << date.isValid() << QDateTime::currentDateTime().toString(Qt::RFC2822Date);
             Q_ASSERT(date.isValid());
             result.modtime = 0;
             if (date.toSecsSinceEpoch() > 0) {

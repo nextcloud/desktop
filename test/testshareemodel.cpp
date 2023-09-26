@@ -245,7 +245,7 @@ private slots:
 
             if(req.url().toString().startsWith(_accountState->account()->url().toString()) &&
                 reqPath == QStringLiteral("ocs/v2.php/apps/files_sharing/api/v1/sharees") &&
-                req.attribute(QNetworkRequest::CustomVerbAttribute) == "GET") {
+                req.attribute(QNetworkRequest::CustomVerbAttribute).toString() == "GET") {
 
                 const auto urlQuery = QUrlQuery(req.url());
                 const auto searchParam = urlQuery.queryItemValue(QStringLiteral("search"));

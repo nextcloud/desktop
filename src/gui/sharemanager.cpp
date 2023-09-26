@@ -30,7 +30,7 @@ namespace OCC {
 /**
  * When a share is modified, we need to tell the folders so they can adjust overlay icons
  */
-static void updateFolder(const AccountPtr &account, const QString &path)
+static void updateFolder(const AccountPtr &account, QStringView path)
 {
     foreach (Folder *f, FolderMan::instance()->map()) {
         if (f->accountState()->account() != account)
@@ -39,7 +39,7 @@ static void updateFolder(const AccountPtr &account, const QString &path)
         if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
             // Workaround the fact that the server does not invalidate the etags of parent directories
             // when something is shared.
-            auto relative = path.midRef(f->remotePathTrailingSlash().length());
+            auto relative = path.mid(f->remotePathTrailingSlash().length());
             f->journalDb()->schedulePathForRemoteDiscovery(relative.toString());
 
             // Schedule a sync so it can update the remote permission flag and let the socket API

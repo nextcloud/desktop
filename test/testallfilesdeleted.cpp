@@ -216,7 +216,7 @@ private slots:
 
         int fingerprintRequests = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *stream) -> QNetworkReply * {
-            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute).toString();
             if (verb == "PROPFIND") {
                 auto data = stream->readAll();
                 if (data.contains("data-fingerprint")) {

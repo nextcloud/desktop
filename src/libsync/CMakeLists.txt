@@ -171,7 +171,7 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
-find_package(Qt5 REQUIRED COMPONENTS WebSockets Xml)
+find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS WebSockets Xml)
 
 add_library(nextcloudsync SHARED ${libsync_SRCS})
 add_library(Nextcloud::sync ALIAS nextcloudsync)
@@ -182,15 +182,16 @@ target_link_libraries(nextcloudsync
   OpenSSL::Crypto
   OpenSSL::SSL
   ${OS_SPECIFIC_LINK_LIBRARIES}
-  Qt5::Core
-  Qt5::Network
-  Qt5::WebSockets
-  Qt5::Xml
+  Qt::Core
+  Qt::Network
+  Qt::WebSockets
+  Qt::Xml
+  Qt::Core5Compat
 )
 
 if (NOT TOKEN_AUTH_ONLY)
-    find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
-    target_link_libraries(nextcloudsync PUBLIC Qt5::Widgets Qt5::Svg qt5keychain)
+    find_package(Qt${QT_MAJOR_VERSION} COMPONENTS REQUIRED Widgets Svg)
+    target_link_libraries(nextcloudsync PUBLIC Qt::Widgets Qt::Svg Qt${QT_MAJOR_VERSION}Keychain::Qt${QT_MAJOR_VERSION}Keychain)
 endif()
 
 if(Inotify_FOUND)

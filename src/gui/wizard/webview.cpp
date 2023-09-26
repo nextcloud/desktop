@@ -86,7 +86,7 @@ WebView::WebView(QWidget *parent)
     const QString userAgent(Utility::userAgentString());
     _profile->setHttpUserAgent(userAgent);
     QWebEngineProfile::defaultProfile()->setHttpUserAgent(userAgent);
-    _profile->setRequestInterceptor(_interceptor);
+    _profile->setUrlRequestInterceptor(_interceptor);
     _profile->installUrlSchemeHandler("nc", _schemeHandler);
 
     /*

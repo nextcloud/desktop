@@ -498,24 +498,22 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
 
     const auto regex = syncOptions().fileRegex();
     if (regex.isValid()) {
-        QSet<QStringRef> names;
+        QSet<QStringView> names;
         for (auto &i : items) {
             if (regex.match(i->_file).hasMatch()) {
                 int index = -1;
-                QStringRef ref;
+                QStringView ref;
                 do {
-                    ref = i->_file.midRef(0, index);
+                    ref = i->_file.mid(0, index);
                     names.insert(ref);
                     index = ref.lastIndexOf(QLatin1Char('/'));
                 } while (index > 0);
             }
         }
-        items.erase(std::remove_if(items.begin(),
-                                   items.end(),
-                                   [&names](auto i) {
-                                       return !names.contains(QStringRef{&i->_file});
-                                   }),
-                    items.end());
+        items.erase(std::remove_if(items.begin(), items.end(), [&names](auto i) {
+            return !names.contains(QStringView { i->_file });
+        }),
+            items.end());
     }
 
     QStringList files;

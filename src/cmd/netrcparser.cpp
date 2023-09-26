@@ -15,8 +15,7 @@
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
-
-#include <qtokenizer.h>
+#include <QStringTokenizer>
 
 #include <QDebug>
 
@@ -59,33 +58,32 @@ bool NetrcParser::parse()
     }
     QString content = netrc.readAll();
 
-    QStringTokenizer tokenizer(content, " \n\t");
-    tokenizer.setQuoteCharacters("\"'");
+    auto tokenizer = QStringTokenizer{content, u" \n\t"};
 
     LoginPair pair;
     QString machine;
     bool isDefault = false;
-    while (tokenizer.hasNext()) {
-        QString key = tokenizer.next();
+    for(auto itToken = tokenizer.cbegin(); itToken != tokenizer.cend(); ++itToken) {
+        const auto key = *itToken;
         if (key == defaultKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
             isDefault = true;
             continue; // don't read a value
         }
 
-        if (!tokenizer.hasNext()) {
+        if (itToken != tokenizer.cend()) {
             qDebug() << "error fetching value for" << key;
             return false;
         }
-        QString value = tokenizer.next();
+        auto value = *(++itToken);
 
         if (key == machineKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
-            machine = value;
+            machine = value.toString();
         } else if (key == loginKeyword) {
-            pair.first = value;
+            pair.first = value.toString();
         } else if (key == passwordKeyword) {
-            pair.second = value;
+            pair.second = value.toString();
         } // ignore unsupported tokens
     }
     tryAddEntryAndClear(machine, pair, isDefault);

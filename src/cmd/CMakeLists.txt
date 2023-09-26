@@ -10,12 +10,9 @@ add_library(cmdCore STATIC
 target_link_libraries(cmdCore
   PUBLIC
   Nextcloud::sync
-  Qt5::Core
-  Qt5::Network
+  Qt::Core
+  Qt::Network
   )
-
-# Need tokenizer for netrc parser
-target_include_directories(cmdCore PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")

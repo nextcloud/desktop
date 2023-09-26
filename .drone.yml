@@ -4,16 +4,16 @@ name: qt-5.15
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.4.2-1
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DADD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
+    - cmake -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DADD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
 
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.4.2-1
   volumes:
     - name: build
       path: /drone/build
@@ -22,7 +22,7 @@ steps:
     - ninja
 
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.4.2-1
   volumes:
     - name: build
       path: /drone/build
@@ -74,15 +74,15 @@ name: qt-5.15-clang
 
 steps:
 - name: cmake
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.4.2-1
   volumes:
     - name: build
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DADD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
+    - cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQT_MAJOR_VERSION=6 -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DADD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
 - name: compile
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.4.2-1
   volumes:
     - name: build
       path: /drone/build
@@ -90,7 +90,7 @@ steps:
     - cd /drone/build
     - ninja
 - name: test
-  image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-14
+  image: ghcr.io/nextcloud/continuous-integration-client-qt6:client-6.4.2-1
   volumes:
     - name: build
       path: /drone/build
@@ -142,7 +142,7 @@ name: AppImage
 
 steps:
 - name: build
-  image: ghcr.io/nextcloud/continuous-integration-client-appimage:client-appimage-9
+  image: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-6.4.2-1
   environment:
     CI_UPLOAD_GIT_TOKEN:
       from_secret: CI_UPLOAD_GIT_TOKEN
@@ -196,6 +196,6 @@ trigger:
     - push
 ---
 kind: signature
-hmac: d72110d7f9cba086ca21f9f4f4032ae87f3d9555ab4c5f55d3aeb3df99cab540
+hmac: 49bf64b47cde39ed7396cf63f9d686b7c76a4e51dea4f54c7c81b3b3bc1314b3
 
 ...

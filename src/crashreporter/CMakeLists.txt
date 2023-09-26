@@ -24,14 +24,14 @@ if(NOT BUILD_LIBRARIES_ONLY)
         ${crashreporter_RC_RCC}
     )
 
-    find_package(Qt5 REQUIRED COMPONENTS Widgets)
+    find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets)
 
     target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
     target_link_libraries(${CRASHREPORTER_EXECUTABLE}
         crashreporter-gui
-        Qt5::Core Qt5::Widgets
+        Qt::Core Qt::Widgets
     )
 
     if(BUILD_OWNCLOUD_OSX_BUNDLE)
@@ -48,7 +48,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
     # currently it needs to be done because the code right above needs to be executed no matter
     # if building a bundle or not and the install_qt4_executable needs to be called afterwards
     if(BUILD_OWNCLOUD_OSX_BUNDLE)
-        get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+        get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
         get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
         find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
 
