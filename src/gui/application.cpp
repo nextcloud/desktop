@@ -245,53 +245,8 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (!ConfigFile().exists()) {
-        // Migrate from version <= 2.4
-        setApplicationName(_theme->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-#define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_DEPRECATED
-        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-
-        // macOS 10.11.x does not like trailing slash for rename/move.
-        if (oldDir.endsWith('/')) {
-            oldDir.chop(1);
-        }
-
-        QT_WARNING_POP
-        setApplicationName(_theme->appName());
-        if (QFileInfo(oldDir).isDir()) {
-            auto confDir = ConfigFile().configPath();
-
-            // macOS 10.11.x does not like trailing slash for rename/move.
-            if (confDir.endsWith('/')) {
-                confDir.chop(1);
-            }
-
-            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
-
-            if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
-
-                // Try to move the files one by one
-                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
-                    for (const auto &name : filesList) {
-                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
-                        }
-                    }
-                }
-            } else {
-#ifndef Q_OS_WIN
-                // Create a symbolic link so a downgrade of the client would still find the config.
-                QFile::link(confDir, oldDir);
-#endif
-            }
-        }
+    if (ConfigFile().exists()) {
+        setupConfigFile();
     }
 
     if (_theme->doNotUseProxy()) {
@@ -328,12 +283,13 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
+    // try to migrate legacy accounts and folders from a previous client version
+    // only copy the settings and check what should be skipped
     if (!configVersionMigration()) {
-        return;
+        qCWarning(lcApplication) << "Config version migration was not possible.";
     }
 
     ConfigFile cfg;
-
     {
         auto shouldExit = false;
 
@@ -357,62 +313,41 @@ Application::Application(int &argc, char **argv)
         }
     }
 
-
     // The timeout is initialized with an environment variable, if not, override with the value from the config
-    if (!AbstractNetworkJob::httpTimeout)
+    if (!AbstractNetworkJob::httpTimeout) {
         AbstractNetworkJob::httpTimeout = cfg.timeout();
+    }
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
+
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         qCInfo(lcApplication) << "VFS windows plugin is available";
     }
+
     if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         qCInfo(lcApplication) << "VFS suffix plugin is available";
     }
 
-    _folderManager.reset(new FolderMan);
+    _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+
 #if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
-    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
-    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
-            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
-                accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
-            qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
-                tr("There was an error while accessing the configuration "
-                   "file at %1. Please make sure the file can be accessed by your system account.")
-                    .arg(ConfigFile().configFile()),
-                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-            return;
-        }
-    }
-
 #if defined(BUILD_FILE_PROVIDER_MODULE)
     _fileProvider.reset(new Mac::FileProvider);
 #endif
 
-    FolderMan::instance()->setSyncEnabled(true);
+    // create accounts and folders from a legacy desktop client or from the current config file
+    setupAccountsAndFolders();
 
     setQuitOnLastWindowClosed(false);
-
-    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
@@ -420,11 +355,11 @@ Application::Application(int &argc, char **argv)
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
+
 #if WITH_LIBCLOUDPROVIDERS
     _gui->setupCloudProviders();
 #endif
 
-    FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
@@ -490,6 +425,128 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
+}
+
+void Application::setupAccountsAndFolders()
+{
+    const auto accountsRestoreResult = restoreLegacyAccount();
+
+    _folderManager.reset(new FolderMan);
+    FolderMan::instance()->setSyncEnabled(true);
+    const auto foldersListSize = FolderMan::instance()->setupFolders();
+
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
+        QStringList list;
+        for (const auto &account : accounts) {
+            list << account->account()->prettyName().prepend("- ");
+        }
+        return list.join("\n");
+    };
+
+    if (const auto accounts = AccountManager::instance()->accounts();
+        accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
+        && !accounts.isEmpty()) {
+        const auto accountsListSize = accounts.size();
+        const auto accountsRestoreMessage = accountsListSize > 1
+            ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
+            : tr("1 account");
+        const auto foldersRestoreMessage = foldersListSize > 1
+            ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
+            : tr("1 folder");
+        const auto messageBox = new QMessageBox(QMessageBox::Information,
+                                                tr("Legacy import"),
+                                                tr("Imported %1 and %2 from a legacy desktop client.\n%3",
+                                                   "number of accounts and folders imported. list of users.")
+                                                    .arg(accountsRestoreMessage,
+                                                         foldersRestoreMessage,
+                                                         prettyNamesList(accounts))
+                                                );
+        messageBox->setWindowModality(Qt::NonModal);
+        messageBox->open();
+    } else {
+        qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult: " << accountsRestoreResult;
+        qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;
+        qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
+    }
+}
+
+void Application::setupConfigFile()
+{
+    // Migrate from version <= 2.4
+    setApplicationName(_theme->appNameGUI());
+#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
+    #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+#endif
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_DEPRECATED
+    QT_WARNING_POP
+    setApplicationName(_theme->appName());
+
+    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (oldDir.endsWith('/')) {
+        oldDir.chop(1);
+    }
+
+    if (!QFileInfo(oldDir).isDir()) {
+        return;
+    }
+
+    auto confDir = ConfigFile().configPath();
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (confDir.endsWith('/')) {
+        confDir.chop(1);
+    }
+
+    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    if (!QFile::rename(oldDir, confDir)) {
+        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+        // Try to move the files one by one
+        if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+            const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+            qCInfo(lcApplication) << "Will move the individual files" << filesList;
+            for (const auto &name : filesList) {
+                if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                }
+            }
+        }
+    } else {
+#ifndef Q_OS_WIN
+        // Create a symbolic link so a downgrade of the client would still find the config.
+        QFile::link(confDir, oldDir);
+#endif
+    }
+}
+
+AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
+{
+    ConfigFile cfg;
+    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+            qCCritical(lcApplication) << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                nullptr,
+                tr("Error accessing the configuration file"),
+                tr("There was an error while accessing the configuration "
+                   "file at %1. Please make sure the file can be accessed by your system account.")
+                    .arg(ConfigFile().configFile()),
+                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        }
+    }
+    return accountsRestoreResult;
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)

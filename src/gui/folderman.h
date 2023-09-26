@@ -122,7 +122,7 @@ public:
      * Migrate accounts from owncloud
      * Creates a folder for a specific configuration, identified by alias.
      */
-    void setupFolderFromOldConfigFile(const QString &, AccountState *account);
+    void setupLegacyFolder(const QString &, AccountState *account);
 
     /**
      * Ensures that a given directory does not contain a sync journal file.
