@@ -17,6 +17,7 @@
 #include <QQmlApplicationEngine>
 
 #include "gui/systray.h"
+#include "gui/userinfo.h"
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
@@ -174,6 +175,7 @@ private:
                 __block const auto thisQobject = (QObject*)this;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [NSTimer scheduledTimerWithTimeInterval:2 repeats:NO block:^(NSTimer *const timer) {
+                        Q_UNUSED(timer)
                         QMetaObject::invokeMethod(thisQobject, [this] { fetchMaterialisedFilesStorageUsage(); });
                     }];
                 });
@@ -274,6 +276,9 @@ FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
         const auto accountUserIdAtHost = account->userIdAtHostWithPort();
 
         _userInfos.insert(accountUserIdAtHost, userInfo);
+        connect(userInfo, &UserInfo::fetchedLastInfo, this, [this, accountUserIdAtHost] {
+            emit remoteStorageUsageForAccountChanged(accountUserIdAtHost);
+        });
         userInfo->setActive(true);
     }
 }
@@ -315,6 +320,21 @@ unsigned long long FileProviderSettingsController::localStorageUsageForAccount(c
 float FileProviderSettingsController::localStorageUsageGbForAccount(const QString &userIdAtHost) const
 {
     return gbFromBytesWithOneDecimal(localStorageUsageForAccount(userIdAtHost));
+}
+
+unsigned long long FileProviderSettingsController::remoteStorageUsageForAccount(const QString &userIdAtHost) const
+{
+    const auto userInfoForAccount = _userInfos.value(userIdAtHost);
+    if (!userInfoForAccount) {
+        return 0;
+    }
+
+    return userInfoForAccount->lastQuotaUsedBytes();
+}
+
+float FileProviderSettingsController::remoteStorageUsageGbForAccount(const QString &userIdAtHost) const
+{
+    return gbFromBytesWithOneDecimal(remoteStorageUsageForAccount(userIdAtHost));
 }
 
 } // namespace Mac

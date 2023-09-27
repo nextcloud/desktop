@@ -38,6 +38,8 @@ public:
     [[nodiscard]] Q_INVOKABLE bool vfsEnabledForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] unsigned long long localStorageUsageForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE float localStorageUsageGbForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] unsigned long long remoteStorageUsageForAccount(const QString &userIdAtHost) const;
+    [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
@@ -45,6 +47,7 @@ public slots:
 signals:
     void vfsEnabledAccountsChanged();
     void localStorageUsageForAccountChanged(const QString &userIdAtHost);
+    void remoteStorageUsageForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
