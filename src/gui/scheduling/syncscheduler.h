@@ -43,6 +43,7 @@ public:
         // Usually triggered by a user (ForceSync)
         High
     };
+    Q_ENUM(Priority);
 
     explicit SyncScheduler(FolderMan *parent);
     ~SyncScheduler() override;
