@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 by Claudio Cambra <claudio.cambra@nextcloud.com>
+ * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,13 +60,23 @@ Page {
     padding: Style.standardSpacing
 
     ColumnLayout {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+
         EnforcedPlainTextLabel {
+            Layout.fillWidth: true
             text: qsTr("General settings")
             font.bold: true
             font.pointSize: root.font.pointSize + 2
+            elide: Text.ElideRight
         }
 
         CheckBox {
+            id: vfsEnabledCheckBox
+            Layout.fillWidth: true
             text: qsTr("Enable virtual files")
             checked: root.controller.vfsEnabledForAccount(root.accountUserIdAtHost)
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
