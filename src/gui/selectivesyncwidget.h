@@ -41,11 +41,6 @@ public:
     /// Returns a list of blacklisted paths, each including the trailing /
     QSet<QString> createBlackList(QTreeWidgetItem *root = nullptr) const;
 
-    /** Returns the oldBlackList passed into setFolderInfo(), except that
-     *  a "/" entry is expanded to all top-level folder names.
-     */
-    QSet<QString> oldBlackList() const;
-
     // Estimates the total size of checked items (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = nullptr);
 

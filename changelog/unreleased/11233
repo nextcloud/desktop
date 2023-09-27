@@ -1,0 +1,3 @@
+Bugfix: Selective sync when not the remote root is synced
+
+https://github.com/owncloud/client/issues/11233
