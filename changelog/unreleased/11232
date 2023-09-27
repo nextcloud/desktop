@@ -1,0 +1,5 @@
+Bugfix: Creation of folder on the server
+
+We fixed an issue in the FolderSyncWizard when the user provided a path with multiple slashes (//folder).
+
+https://github.com/owncloud/client/issues/11232 

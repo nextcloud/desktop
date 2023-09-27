@@ -88,7 +88,9 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     if (current) {
         fullPath = current->data(0, Qt::UserRole).toString();
     }
-    fullPath += QLatin1Char('/') + folder;
+    // clean user input
+    fullPath = QDir::cleanPath(QStringLiteral("%1/%2").arg(fullPath, folder)).replace(QRegularExpression(QStringLiteral("/+")), QStringLiteral("/"));
+
 
     MkColJob *job = new MkColJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), fullPath, {}, this);
     /* check the owncloud configuration file and query the ownCloud */
