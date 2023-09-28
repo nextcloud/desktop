@@ -136,16 +136,20 @@ bool AbstractNetworkJob::needsRetry() const
     }
 
     if (auto reply = this->reply()) {
+        // we had an unsupported redirect
         if (!reply->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull()) {
             return true;
         }
-        if (reply->error() != QNetworkReply::NoError) {
-            if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
+        switch (reply->error()) {
+        case QNetworkReply::AuthenticationRequiredError:
+            return true;
+        case QNetworkReply::ContentReSendError:
+            if (_reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
                 return true;
             }
-        }
-        if (_reply->error() == QNetworkReply::ContentReSendError && _reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
-            return true;
+            [[fallthrough]];
+        default:
+            break;
         }
     }
     return false;
