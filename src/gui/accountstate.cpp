@@ -123,7 +123,8 @@ AccountState::AccountState(AccountPtr account)
             case QNetworkInformation::Reachability::Site:
                 [[fallthrough]];
             case QNetworkInformation::Reachability::Unknown:
-                checkConnectivity(false);
+                // the connection might not yet be established
+                QTimer::singleShot(0, this, [this] { checkConnectivity(false); });
                 break;
             case QNetworkInformation::Reachability::Disconnected:
                 // explicitly set disconnected, this way a successful checkConnectivity call above will trigger a local discover
