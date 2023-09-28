@@ -56,6 +56,8 @@ class FileProviderItemMetadata
 	Q_PROPERTY(bool sharedByCurrentUser READ sharedByCurrentUser CONSTANT)
 
 public:
+	static FileProviderItemMetadata fromNSFileProviderItem(const void *const nsFileProviderItem);
+
     QString identifier() const;
     QString parentItemIdentifier() const;
     QString filename() const;

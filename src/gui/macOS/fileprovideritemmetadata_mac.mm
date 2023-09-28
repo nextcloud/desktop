@@ -41,3 +41,52 @@ QHash<QString, QByteArray> extendedAttributesToHash(NSDictionary<NSString *, NSD
 }
 
 }
+
+namespace OCC {
+
+namespace Mac {
+
+FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const void *const nsFileProviderItem)
+{
+    FileProviderItemMetadata metadata;
+    const id<NSFileProviderItem> bridgedNsFileProviderItem = (__bridge id<NSFileProviderItem>)nsFileProviderItem;
+    if (bridgedNsFileProviderItem == nil) {
+        return {};
+    }
+
+    metadata._identifier = QString::fromNSString(bridgedNsFileProviderItem.itemIdentifier);
+    metadata._parentItemIdentifier = QString::fromNSString(bridgedNsFileProviderItem.parentItemIdentifier);
+    metadata._filename = QString::fromNSString(bridgedNsFileProviderItem.filename);
+    metadata._typeIdentifier = QString::fromNSString(bridgedNsFileProviderItem.contentType.identifier);
+    metadata._symlinkTargetPath = QString::fromNSString(bridgedNsFileProviderItem.symlinkTargetPath);
+    metadata._uploadingError = QString::fromNSString(bridgedNsFileProviderItem.uploadingError.localizedDescription);
+    metadata._downloadingError = QString::fromNSString(bridgedNsFileProviderItem.downloadingError.localizedDescription);
+    metadata._mostRecentEditorName = nsNameComponentsToLocalisedQString(bridgedNsFileProviderItem.mostRecentEditorNameComponents);
+    metadata._ownerName = nsNameComponentsToLocalisedQString(bridgedNsFileProviderItem.ownerNameComponents);
+    metadata._contentModificationDate = QDateTime::fromNSDate(bridgedNsFileProviderItem.contentModificationDate);
+    metadata._creationDate = QDateTime::fromNSDate(bridgedNsFileProviderItem.creationDate);
+    metadata._lastUsedDate = QDateTime::fromNSDate(bridgedNsFileProviderItem.lastUsedDate);
+    metadata._contentVersion = QByteArray::fromNSData(bridgedNsFileProviderItem.itemVersion.contentVersion);
+    metadata._metadataVersion = QByteArray::fromNSData(bridgedNsFileProviderItem.itemVersion.metadataVersion);
+    metadata._tagData = QByteArray::fromNSData(bridgedNsFileProviderItem.tagData);
+    metadata._extendedAttributes = extendedAttributesToHash(bridgedNsFileProviderItem.extendedAttributes);
+    metadata._capabilities = bridgedNsFileProviderItem.capabilities;
+    metadata._fileSystemFlags = bridgedNsFileProviderItem.fileSystemFlags;
+    metadata._childItemCount = bridgedNsFileProviderItem.childItemCount.unsignedIntegerValue;
+    metadata._typeOsCode = bridgedNsFileProviderItem.typeAndCreator.type;
+    metadata._creatorOsCode = bridgedNsFileProviderItem.typeAndCreator.creator;
+    metadata._documentSize = bridgedNsFileProviderItem.documentSize.unsignedLongLongValue;
+    metadata._mostRecentVersionDownloaded = bridgedNsFileProviderItem.mostRecentVersionDownloaded;
+    metadata._uploading = bridgedNsFileProviderItem.uploading;
+    metadata._uploaded = bridgedNsFileProviderItem.uploaded;
+    metadata._downloading = bridgedNsFileProviderItem.downloading;
+    metadata._downloaded = bridgedNsFileProviderItem.downloaded;
+    metadata._shared = bridgedNsFileProviderItem.shared;
+    metadata._sharedByCurrentUser = bridgedNsFileProviderItem.sharedByCurrentUser;
+
+    return metadata;
+}
+
+}
+
+}
