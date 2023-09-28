@@ -196,9 +196,9 @@ private:
                 const id<NSFileProviderEnumerator> enumerator = [managerForDomain enumeratorForMaterializedItems];
                 Q_ASSERT(enumerator != nil);
 
-                FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
+                __block FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
 
-                storageUseObserver.enumerationFinishedHandler = ^(NSNumber *const usage, NSError *const error) {
+                storageUseObserver.enumerationFinishedHandler = ^(NSError *const error) {
                     if (error != nil) {
                         qCWarning(lcFileProviderSettingsController) << "Error while enumerating storage use" << error.localizedDescription;
                         [storageUseObserver release];
@@ -206,16 +206,16 @@ private:
                         return;
                     }
 
-                    Q_ASSERT(usage != nil);
+                    const NSUInteger usage = storageUseObserver.usage;
 
                     // Remember that OCC::Account::userIdAtHost == domain.identifier for us
                     NSMutableDictionary<NSString *, NSNumber *> *const mutableStorageDictCopy = _storageUsage.mutableCopy;
 
                     qCDebug(lcFileProviderSettingsController) << "Local storage use for"
                                                               << domain.identifier
-                                                              << usage.unsignedLongLongValue;
+                                                              << usage;
 
-                    [mutableStorageDictCopy setObject:usage forKey:domain.identifier];
+                    [mutableStorageDictCopy setObject:@(usage) forKey:domain.identifier];
                     _storageUsage = mutableStorageDictCopy.copy;
 
                     const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
