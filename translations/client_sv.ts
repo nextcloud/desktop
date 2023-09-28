@@ -366,13 +366,15 @@ Ska ett försök av kontoimport göras?</translation>
         <location filename="../src/gui/accountmanager.cpp" line="195"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation type="unfinished"/>
+        <translation>%1 konton upptäcktes från en äldre skrivbordsklient.
+Ska dessa konton importeras?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="197"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>1 konto upptäcktes från en äldre skrivbordsklient.
+Ska detta konto importeras?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
@@ -384,12 +386,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Importera</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="201"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Hoppa över</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
@@ -995,35 +997,36 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <location filename="../src/gui/application.cpp" line="451"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 konton</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="452"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 konto</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="454"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="455"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="457"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Äldre import</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="458"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation type="unfinished"/>
+        <translation>Importerade %1 och %2 från en äldre skrivbordsklient.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="394"/>

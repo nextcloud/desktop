@@ -638,7 +638,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Supprimer la synchronisation de ce dossier</translation>
+        <translation>Retirer la synchronisation de ce dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
@@ -1955,12 +1955,12 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folder.cpp" line="1420"/>
         <source>Remove All Files?</source>
-        <translation>Supprimer tous les fichiers ?</translation>
+        <translation>Retirer tous les fichiers ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1424"/>
         <source>Remove all files</source>
-        <translation>Supprimer tous les fichiers</translation>
+        <translation>Retirer tous les fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1425"/>
@@ -3845,7 +3845,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="105"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Impossible de supprimer %1 à cause d&apos;un conflit local de nom de fichier</translation>
+        <translation>Impossible de retirer %1 en raison d&apos;un conflit de nom de fichier local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
