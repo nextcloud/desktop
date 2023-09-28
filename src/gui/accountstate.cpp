@@ -126,6 +126,8 @@ AccountState::AccountState(AccountPtr account)
                 checkConnectivity(false);
                 break;
             case QNetworkInformation::Reachability::Disconnected:
+                // explicitly set disconnected, this way a successful checkConnectivity call above will trigger a local discover
+                setState(State::Disconnected);
                 [[fallthrough]];
             case QNetworkInformation::Reachability::Local:
                 break;
