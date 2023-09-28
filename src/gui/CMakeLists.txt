@@ -295,6 +295,7 @@ IF( APPLE )
             macOS/fileproviderdomainmanager_mac.mm
             macOS/fileprovideritemmetadata.h
             macOS/fileprovideritemmetadata.cpp
+            macOS/fileprovideritemmetadata_mac.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileprovidersocketcontroller.h
