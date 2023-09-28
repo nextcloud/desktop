@@ -293,6 +293,8 @@ IF( APPLE )
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
             macOS/fileproviderdomainmanager_mac.mm
+            macOS/fileprovideritemmetadata.h
+            macOS/fileprovideritemmetadata.cpp
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileprovidersocketcontroller.h
