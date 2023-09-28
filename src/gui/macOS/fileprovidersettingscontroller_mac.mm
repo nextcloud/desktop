@@ -18,6 +18,7 @@
 
 #include "gui/systray.h"
 #include "gui/userinfo.h"
+#include "gui/macOS/fileprovideritemmetadata.h"
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
@@ -152,6 +153,24 @@ public:
             return 0;
         }
         return storageUsage.unsignedLongLongValue;
+    }
+
+    [[nodiscard]] QVector<FileProviderItemMetadata> materialisedItemsForAccount(const QString &userIdAtHost) const
+    {
+        const auto materialisedItems = [_materialisedFiles objectForKey:userIdAtHost.toNSString()];
+        if (materialisedItems == nil) {
+            return {};
+        }
+
+        QVector<FileProviderItemMetadata> qMaterialisedItems;
+        qMaterialisedItems.reserve(materialisedItems.count);
+
+        for (const id<NSFileProviderItem> item in materialisedItems) {
+            const auto itemMetadata = FileProviderItemMetadata::fromNSFileProviderItem(item);
+            qMaterialisedItems.append(itemMetadata);
+        }
+
+        return qMaterialisedItems;
     }
 
 private:
