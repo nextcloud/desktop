@@ -30,4 +30,14 @@ QString nsNameComponentsToLocalisedQString(NSPersonNameComponents *const nameCom
     return QString::fromNSString(name);
 }
 
+QHash<QString, QByteArray> extendedAttributesToHash(NSDictionary<NSString *, NSData *> *const extendedAttributes)
+{
+    QHash<QString, QByteArray> hash;
+    for (NSString *const key in extendedAttributes) {
+        NSData *const value = [extendedAttributes objectForKey:key];
+        hash.insert(QString::fromNSString(key), QByteArray::fromNSData(value));
+    }
+    return hash;
+}
+
 }
