@@ -29,12 +29,17 @@
 // NSFileProviderEnumerationObserver protocol methods
 - (void)didEnumerateItems:(NSArray<id<NSFileProviderItem>> *)updatedItems
 {
+    NSMutableSet<id<NSFileProviderItem>> * const existingItems = self.materialisedItems.mutableCopy;
+
     for (const id<NSFileProviderItem> item in updatedItems) {
         NSLog(@"StorageUseEnumerationObserver: Enumerating %@ with size %llu",
               item.filename, item.documentSize.unsignedLongLongValue);
 
         _usage += item.documentSize.unsignedLongLongValue;
+        [existingItems addObject:item];
     }
+
+    _materialisedItems = existingItems.copy;
 }
 
 - (void)finishEnumeratingWithError:(NSError *)error

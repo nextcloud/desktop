@@ -21,5 +21,6 @@ typedef void(^UsageEnumerationFinishedHandler)(NSError *const error);
 
 @property (readwrite, strong) UsageEnumerationFinishedHandler enumerationFinishedHandler;
 @property (readonly) NSUInteger usage;
+@property (readonly) NSSet<id<NSFileProviderItem>> *materialisedItems;
 
 @end
