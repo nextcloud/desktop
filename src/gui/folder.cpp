@@ -724,7 +724,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
         emit watchedFileChangedExternally(path);
         needSync = true;
     }
-    if (needSync) {
+    if (needSync && canSync()) {
         FolderMan::instance()->scheduler()->enqueueFolder(this);
     }
 }
