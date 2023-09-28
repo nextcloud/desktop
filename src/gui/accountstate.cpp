@@ -115,7 +115,7 @@ AccountState::AccountState(AccountPtr account)
         Qt::QueuedConnection);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
-    if (QNetworkInformation::instance()) {
+    if (QNetworkInformation::loadDefaultBackend()) {
         connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability reachability) {
             switch (reachability) {
             case QNetworkInformation::Reachability::Online:
@@ -133,6 +133,8 @@ AccountState::AccountState(AccountPtr account)
                 break;
             }
         });
+    } else {
+        qCWarning(lcAccountState) << "Failed to load QNetworkInformation";
     }
 #endif
     // as a fallback and to recover after server issues we also poll
