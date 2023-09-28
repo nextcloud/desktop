@@ -22,6 +22,7 @@
     self = [super init];
     if (self) {
         _usage = 0ULL;
+        _materialisedItems = [NSSet set];
     }
     return self;
 }

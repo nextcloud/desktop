@@ -207,16 +207,22 @@ private:
                     }
 
                     const NSUInteger usage = storageUseObserver.usage;
+                    NSSet<id<NSFileProviderItem>> *const items = storageUseObserver.materialisedItems;
+                    Q_ASSERT(items != nil);
 
                     // Remember that OCC::Account::userIdAtHost == domain.identifier for us
                     NSMutableDictionary<NSString *, NSNumber *> *const mutableStorageDictCopy = _storageUsage.mutableCopy;
+                    NSMutableDictionary<NSString *, NSSet<id<NSFileProviderItem>> *> *const mutableFilesDictCopy = _materialisedFiles.mutableCopy;
 
                     qCDebug(lcFileProviderSettingsController) << "Local storage use for"
                                                               << domain.identifier
                                                               << usage;
 
                     [mutableStorageDictCopy setObject:@(usage) forKey:domain.identifier];
+                    [mutableFilesDictCopy setObject:items forKey:domain.identifier];
+
                     _storageUsage = mutableStorageDictCopy.copy;
+                    _materialisedFiles = mutableFilesDictCopy.copy;
 
                     const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
                     emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
@@ -252,6 +258,7 @@ private:
     NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
     NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
     NSDictionary <NSString *, NSNumber *> *_storageUsage = @{};
+    NSDictionary <NSString *, NSSet<id<NSFileProviderItem>> *> *_materialisedFiles = @{};
 };
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
