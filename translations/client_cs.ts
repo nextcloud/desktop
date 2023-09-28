@@ -1408,47 +1408,47 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Zadejte název nově vytvářeného adresáře níže &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="104"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="106"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Adresář byl úspěšně vytvořen na %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="114"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ověření selhalo při připojení %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="118"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Na %1 selhalo vytvoření adresáře. Zkontrolujte to prosím ručně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="134"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="136"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Chyba při vypsání adresáře. Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="218"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="220"/>
         <source>Choose this to sync the entire account</source>
         <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="332"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="334"/>
         <source>This folder is already being synced.</source>
         <translation>Tento adresář je již synchronizován.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="337"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation>Tento adresář nemůže být synchronizován. Prosím vyberte jiný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Již synchronizujete adresář &lt;i&gt;%1&lt;/i&gt;, který je adresáři &lt;i&gt;%2&lt;/i&gt; nadřazený.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="342"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Již synchronizujete adresář &lt;i&gt;%1&lt;/i&gt;, který je podsložkou &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>

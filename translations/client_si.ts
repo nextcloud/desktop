@@ -1411,47 +1411,47 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&apos;%1&apos;පහතින් නිර්මාණය කිරීමට නව ෆෝල්ඩරයේ නම ඇතුළත් කරන්න:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="104"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="106"/>
         <source>Folder was successfully created on %1.</source>
         <translation>ෆෝල්ඩරය %1මත සාර්ථකව සාදන ලදී.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="114"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
         <source>Authentication failed accessing %1</source>
         <translation>%1වෙත ප්‍රවේශ වීම සත්‍යාපනය අසාර්ථක විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="118"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1මත ෆෝල්ඩරය සෑදීමට අසමත් විය. කරුණාකර අතින් පරීක්ෂා කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="134"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="136"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>ෆෝල්ඩරයක් ලැයිස්තුගත කිරීමට අසමත් විය. දෝෂය: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="218"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="220"/>
         <source>Choose this to sync the entire account</source>
         <translation>සම්පූර්ණ ගිණුම සමමුහුර්ත කිරීමට මෙය තෝරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="332"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="334"/>
         <source>This folder is already being synced.</source>
         <translation>මෙම ෆෝල්ඩරය දැනටමත් සමමුහුර්ත වෙමින් පවතී.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="337"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation>මෙම ෆෝල්ඩරය&apos;t සමමුහුර්ත කළ හැක. කරුණාකර වෙනත් එකක් තෝරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>ඔබ දැනටමත් &lt;i&gt;%2&lt;/i&gt;හි මව් ෆෝල්ඩරයක් වන &lt;i&gt;%1&lt;/i&gt;සමමුහුර්ත කරමින් සිටී.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="342"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>ඔබ දැනටමත් &lt;i&gt;%1&lt;/i&gt;සමමුහුර්ත කරමින් සිටී, එය &lt;i&gt;%2&lt;/i&gt;හි උප ෆෝල්ඩරයක් වේ.</translation>
     </message>
