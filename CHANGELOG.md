@@ -22,11 +22,14 @@ Summary
 * Bugfix - Only syncronize after the server settings where refreshed: [#11168](https://github.com/owncloud/client/issues/11168)
 * Bugfix - Consitently use the same icon for folders: [#11190](https://github.com/owncloud/client/pull/11190)
 * Bugfix - Branding of folder status overlay: [#11192](https://github.com/owncloud/client/pull/11192)
+* Bugfix - Creation of folder on the server: [#11232](https://github.com/owncloud/client/issues/11232)
+* Bugfix - Selective sync when not the remote root is synced: [#11233](https://github.com/owncloud/client/issues/11233)
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
 * Change - We removed the pre 2.9 credentials migration: [#11081](https://github.com/owncloud/client/pull/11081)
 * Change - Remove libcloudproviders integration: [#11148](https://github.com/owncloud/client/issues/11148)
+* Change - Disable context menu item to get a public link for a space: [#11242](https://github.com/owncloud/client/issues/11242)
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 * Enhancement - Windows VFS: Prevent rename to ignored file name: [#8216](https://github.com/owncloud/client/issues/8216)
 * Enhancement - Change how all files deleted is handled: [#8360](https://github.com/owncloud/client/issues/8360)
@@ -135,6 +138,17 @@ Details
 
    https://github.com/owncloud/client/pull/11192
 
+* Bugfix - Creation of folder on the server: [#11232](https://github.com/owncloud/client/issues/11232)
+
+   We fixed an issue in the FolderSyncWizard when the user provided a path with multiple slashes
+   (//folder).
+
+   https://github.com/owncloud/client/issues/11232
+
+* Bugfix - Selective sync when not the remote root is synced: [#11233](https://github.com/owncloud/client/issues/11233)
+
+   https://github.com/owncloud/client/issues/11233
+
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 
    For vfs setups, this is handled by Windows itself.
@@ -169,6 +183,15 @@ Details
 
    https://github.com/owncloud/client/issues/11148
    https://github.com/owncloud/client/pull/11157
+
+* Change - Disable context menu item to get a public link for a space: [#11242](https://github.com/owncloud/client/issues/11242)
+
+   The context menu item "Create and copy public link to clipboard" didn't work correctly when
+   used with Spaces: users were always redirected to the web frontend. This menu item is now
+   disabled, waiting for a server-side changes.
+
+   https://github.com/owncloud/client/issues/11242
+   https://github.com/owncloud/client/pull/11079
 
 * Enhancement - Store proxy password securely: [#261](https://github.com/owncloud/client/issues/261)
 
