@@ -354,17 +354,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="264"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="268"/>
         <source>Connection timed out</source>
         <translation>Ühendus aegus</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="266"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="270"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Tundmatu viga: võrguvastus kustutati</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="363"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="367"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Server vastas &quot;%3 %4&quot; päringule &quot;%1 %2&quot;</translation>
     </message>
@@ -1376,17 +1376,17 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="164"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="166"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Virtuaalsed failid ei ole valitud kausta jaoks saadaval</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="177"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="179"/>
         <source>Add Folder Sync Connection</source>
         <translation>Lisa kaustade sünkroniseerimise ühendus</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="179"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="181"/>
         <source>Add Sync Connection</source>
         <translation>Lisa sünkroniseerimisühendus</translation>
     </message>
@@ -2814,13 +2814,13 @@ for additional privileges during the process.</source>
         <translation>Suurus</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="204"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="252"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="217"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="262"/>
         <source>No subfolders currently on the server.</source>
         <translation>Serveris pole praegu alamkaustasid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="254"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="264"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Alamkaustade loendi laadimisel tekkis viga.</translation>
     </message>
