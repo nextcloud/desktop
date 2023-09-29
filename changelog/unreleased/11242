@@ -1,0 +1,9 @@
+Change: Disable context menu item to get a public link for a space
+
+The context menu item "Create and copy public link to clipboard" didn't
+work correctly when used with Spaces: users were always redirected to
+the web frontend. This menu item is now disabled, waiting for a
+server-side changes.
+
+https://github.com/owncloud/client/issues/11242
+https://github.com/owncloud/client/pull/11079

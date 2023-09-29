@@ -102,10 +102,12 @@ FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountStatePtr 
 QString FolderWizardPrivate::initialLocalPath() const
 {
     if (_account->supportsSpaces()) {
-        return FolderMan::instance()->findGoodPathForNewSyncFolder(
-            defaultSyncRoot(), _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Name).toString());
+        return FolderMan::findGoodPathForNewSyncFolder(defaultSyncRoot(), _spacesPage->selectedSpaceData(Spaces::SpacesModel::Columns::Name).toString());
     }
-    return defaultSyncRoot();
+
+    // Split default sync root:
+    const QFileInfo path(defaultSyncRoot());
+    return FolderMan::findGoodPathForNewSyncFolder(path.path(), path.fileName());
 }
 
 QString FolderWizardPrivate::remotePath() const

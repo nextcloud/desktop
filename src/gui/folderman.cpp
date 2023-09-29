@@ -796,7 +796,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
     return {};
 }
 
-QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder) const
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QString &newFolder)
 {
     // reserve extra characters to allow appending of a number
     const QString normalisedPath = FileSystem::createPortableFileName(basePath, FileSystem::pathEscape(newFolder), std::string_view(" (100)").size());

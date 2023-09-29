@@ -354,17 +354,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="264"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="268"/>
         <source>Connection timed out</source>
         <translation>සම්බන්ධතාවය කල් ඉකුත් විය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="266"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="270"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>නොදන්නා දෝෂය: ජාල පිළිතුර මකා ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="363"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="367"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>සේවාදායකය &quot;%1 %2&quot; සිට &quot;%3 %4&quot;දක්වා පිළිතුරු දුන්නේය</translation>
     </message>
@@ -1365,17 +1365,17 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="164"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="166"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>තෝරාගත් ෆෝල්ඩරය සඳහා අතථ්‍ය ගොනු නොමැත</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="177"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="179"/>
         <source>Add Folder Sync Connection</source>
         <translation>ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවය එක් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="179"/>
+        <location filename="../src/gui/folderwizard/folderwizard.cpp" line="181"/>
         <source>Add Sync Connection</source>
         <translation>සමමුහුර්ත සම්බන්ධතාවය එක් කරන්න</translation>
     </message>
@@ -1411,47 +1411,47 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>&apos;%1&apos;පහතින් නිර්මාණය කිරීමට නව ෆෝල්ඩරයේ නම ඇතුළත් කරන්න:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="104"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="106"/>
         <source>Folder was successfully created on %1.</source>
         <translation>ෆෝල්ඩරය %1මත සාර්ථකව සාදන ලදී.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="114"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
         <source>Authentication failed accessing %1</source>
         <translation>%1වෙත ප්‍රවේශ වීම සත්‍යාපනය අසාර්ථක විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="118"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1මත ෆෝල්ඩරය සෑදීමට අසමත් විය. කරුණාකර අතින් පරීක්ෂා කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="134"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="136"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>ෆෝල්ඩරයක් ලැයිස්තුගත කිරීමට අසමත් විය. දෝෂය: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="218"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="220"/>
         <source>Choose this to sync the entire account</source>
         <translation>සම්පූර්ණ ගිණුම සමමුහුර්ත කිරීමට මෙය තෝරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="332"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="334"/>
         <source>This folder is already being synced.</source>
         <translation>මෙම ෆෝල්ඩරය දැනටමත් සමමුහුර්ත වෙමින් පවතී.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="337"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation>මෙම ෆෝල්ඩරය&apos;t සමමුහුර්ත කළ හැක. කරුණාකර වෙනත් එකක් තෝරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>ඔබ දැනටමත් &lt;i&gt;%2&lt;/i&gt;හි මව් ෆෝල්ඩරයක් වන &lt;i&gt;%1&lt;/i&gt;සමමුහුර්ත කරමින් සිටී.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="342"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>ඔබ දැනටමත් &lt;i&gt;%1&lt;/i&gt;සමමුහුර්ත කරමින් සිටී, එය &lt;i&gt;%2&lt;/i&gt;හි උප ෆෝල්ඩරයක් වේ.</translation>
     </message>
@@ -2803,13 +2803,13 @@ for additional privileges during the process.</source>
         <translation>ප්රමාණය</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="204"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="252"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="217"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="262"/>
         <source>No subfolders currently on the server.</source>
         <translation>දැනට සේවාදායකයේ උප ෆෝල්ඩර නොමැත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="254"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="264"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>උප ෆෝල්ඩර ලැයිස්තුව පූරණය කිරීමේදී දෝෂයක් ඇති විය.</translation>
     </message>

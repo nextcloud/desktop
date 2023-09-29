@@ -115,7 +115,7 @@ AccountState::AccountState(AccountPtr account)
         Qt::QueuedConnection);
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
-    if (QNetworkInformation::instance()) {
+    if (QNetworkInformation::loadDefaultBackend()) {
         connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability reachability) {
             switch (reachability) {
             case QNetworkInformation::Reachability::Online:
@@ -123,14 +123,21 @@ AccountState::AccountState(AccountPtr account)
             case QNetworkInformation::Reachability::Site:
                 [[fallthrough]];
             case QNetworkInformation::Reachability::Unknown:
-                checkConnectivity(false);
+                // the connection might not yet be established
+                QTimer::singleShot(0, this, [this] { checkConnectivity(false); });
                 break;
             case QNetworkInformation::Reachability::Disconnected:
+                // explicitly set disconnected, this way a successful checkConnectivity call above will trigger a local discover
+                if (state() != State::SignedOut) {
+                    setState(State::Disconnected);
+                }
                 [[fallthrough]];
             case QNetworkInformation::Reachability::Local:
                 break;
             }
         });
+    } else {
+        qCWarning(lcAccountState) << "Failed to load QNetworkInformation";
     }
 #endif
     // as a fallback and to recover after server issues we also poll

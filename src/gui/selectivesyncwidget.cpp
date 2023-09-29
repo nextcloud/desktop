@@ -178,24 +178,37 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
-    const QString pathToRemove = Utility::concatUrlPath(davUrl(), _folderPath).path();
+    const QString rootPath = [&]() -> QString {
+        const QString path = Utility::concatUrlPath(davUrl(), _folderPath).path();
+        if (path.endsWith(QLatin1Char('/'))) {
+            return path;
+        }
+        return path + QLatin1Char('/');
+    }();
 
     // Check for excludes.
     list.erase(std::remove_if(list.begin(), list.end(),
-                   [&pathToRemove, this](const QString &it) {
-                       return _excludedFiles.isExcludedRemote(it, pathToRemove, FolderMan::instance()->ignoreHiddenFiles(), ItemTypeDirectory);
+                   [&rootPath, this](const QString &it) {
+                       return _excludedFiles.isExcludedRemote(it, rootPath, FolderMan::instance()->ignoreHiddenFiles(), ItemTypeDirectory);
                    }),
         list.end());
+
+
+    QStringList relativeList;
+    relativeList.reserve(list.size());
+    for (const QString &path : qAsConst(list)) {
+        Q_ASSERT(path.startsWith(rootPath));
+        const QString relativePath = path.mid(rootPath.size());
+        if (!relativePath.isEmpty()) {
+            relativeList.append(relativePath);
+        }
+    }
 
     // Since / cannot be in the blacklist, expand it to the actual
     // list of top-level folders as soon as possible.
     if (_oldBlackList.size() == 1 && _oldBlackList.contains(QLatin1String("/"))) {
         _oldBlackList.clear();
-        for (auto path : qAsConst(list)) {
-            path.remove(pathToRemove);
-            if (path.isEmpty()) {
-                continue;
-            }
+        for (const QString &path : qAsConst(relativeList)) {
             _oldBlackList.insert(path);
         }
     }
@@ -214,24 +227,21 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         root->setIcon(0, Theme::instance()->applicationIcon());
         root->setData(0, Qt::UserRole, QString());
         root->setCheckState(0, Qt::Checked);
-        qint64 size = job ? job->sizes().value(pathToRemove, -1) : -1;
+        qint64 size = job ? job->sizes().value(rootPath, -1) : -1;
         if (size >= 0) {
             root->setText(1, Utility::octetsToString(size));
             root->setData(1, Qt::UserRole, size);
         }
     }
 
-    Utility::sortFilenames(list);
-    for (auto path : qAsConst(list)) {
-        auto size = job ? job->sizes().value(path) : 0;
-        path.remove(pathToRemove);
+    Utility::sortFilenames(relativeList);
+    for (const QString &path : qAsConst(relativeList)) {
+        const auto size = job ? job->sizes().value(rootPath + QLatin1Char('/') + path) : 0;
         const QStringList paths = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
-        if (paths.isEmpty())
+        if (paths.isEmpty()) {
             continue;
-        if (!path.endsWith(QLatin1Char('/'))) {
-            path.append(QLatin1Char('/'));
         }
-        recursiveInsert(root, paths, path, size);
+        recursiveInsert(root, paths, Utility::stripTrailingSlash(path), size);
     }
 
     // Root is partially checked if any children are not checked
@@ -259,9 +269,10 @@ void SelectiveSyncWidget::slotLscolFinishedWithError(QNetworkReply *r)
 void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
-    if (dir.isEmpty())
+    if (dir.isEmpty()) {
         return;
-    PropfindJob *job = new PropfindJob(_account, davUrl(), _folderPath + dir, PropfindJob::Depth::One, this);
+    }
+    PropfindJob *job = new PropfindJob(_account, davUrl(), _folderPath + QLatin1Char('/') + dir, PropfindJob::Depth::One, this);
     job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
     connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
     job->start();
@@ -356,11 +367,6 @@ QSet<QString> SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
         }
     }
     return result;
-}
-
-QSet<QString> SelectiveSyncWidget::oldBlackList() const
-{
-    return _oldBlackList;
 }
 
 qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)

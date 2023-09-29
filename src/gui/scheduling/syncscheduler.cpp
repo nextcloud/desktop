@@ -56,7 +56,8 @@ public:
         }
     }
 
-    bool empty() { return _queue.empty(); }
+    auto empty() { return _queue.empty(); }
+    auto size() { return _queue.size(); }
 
     QPointer<Folder> pop()
     {
@@ -126,6 +127,7 @@ void SyncScheduler::enqueueFolder(Folder *folder, Priority priority)
 {
     Q_ASSERT(folder->isReady());
     Q_ASSERT(folder->canSync());
+    qCInfo(lcSyncScheduler) << "Enqueue" << folder->path() << priority << "QueueSize:" << _queue->size();
     _queue->enqueueFolder(folder, priority);
     if (!_currentSync) {
         startNext();
@@ -153,14 +155,14 @@ void SyncScheduler::startNext()
         connect(
             _currentSync, &Folder::syncFinished, this,
             [this](const SyncResult &result) {
-                qCInfo(lcSyncScheduler) << "Sync finished for" << _currentSync->displayName() << "with status" << result.status();
+                qCInfo(lcSyncScheduler) << "Sync finished for" << _currentSync->path() << "with status" << result.status();
                 if (result.status() != SyncResult::Success) {
                     auto reschedule = [this]() {
                         QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [folder = _currentSync, this] {
                             if (folder->canSync()) {
                                 enqueueFolder(folder);
                             } else {
-                                qCInfo(lcSyncScheduler) << "Cannot schedule sync for" << folder->displayName();
+                                qCInfo(lcSyncScheduler) << "Cannot schedule sync for" << folder->path();
                             }
                         });
                     };
@@ -168,13 +170,13 @@ void SyncScheduler::startNext()
                     // Retry a couple of times after failure; or regularly if requested
                     if (_currentSync->consecutiveFailingSyncs() > 0) {
                         if (_currentSync->consecutiveFailingSyncs() < 3) {
-                            qCInfo(lcSyncScheduler) << "Sync failed, rescheduling sync for" << _currentSync->displayName();
+                            qCInfo(lcSyncScheduler) << "Sync failed, rescheduling sync for" << _currentSync->path();
                             reschedule();
                         } else {
-                            qCInfo(lcSyncScheduler) << "Sync for" << _currentSync->displayName() << "failed 3 times, not rescheduling";
+                            qCInfo(lcSyncScheduler) << "Sync for" << _currentSync->path() << "failed 3 times, not rescheduling";
                         }
                     } else if (_currentSync->syncEngine().isAnotherSyncNeeded() == AnotherSyncNeeded::DelayedFollowUp) {
-                        qCInfo(lcSyncScheduler) << "Delayed follow-up needed, rescheduling sync for" << _currentSync->displayName();
+                        qCInfo(lcSyncScheduler) << "Delayed follow-up needed, rescheduling sync for" << _currentSync->path();
                         reschedule();
                     }
                 }
@@ -183,7 +185,7 @@ void SyncScheduler::startNext()
             },
             Qt::SingleShotConnection);
         connect(_currentSync, &Folder::destroyed, this, &SyncScheduler::startNext, Qt::SingleShotConnection);
-        qCInfo(lcSyncScheduler) << "Starting sync for" << _currentSync->displayName();
+        qCInfo(lcSyncScheduler) << "Starting sync for" << _currentSync->path();
         _currentSync->startSync();
     }
 }
