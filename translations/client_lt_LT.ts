@@ -4324,7 +4324,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Pakartotinai dalintis failu negalima</translation>
+        <translation>Neleidžiama pakartotinai bendrinti šį failą</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
@@ -4972,7 +4972,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Šiandien</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>

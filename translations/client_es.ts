@@ -367,13 +367,15 @@ Should an account import be attempted?</source>
         <location filename="../src/gui/accountmanager.cpp" line="195"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
-        <translation type="unfinished"/>
+        <translation>%1 cuentas se detectaron de un cliente legado de escritorio.
+¿Deben estas cuentas ser importadas?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="197"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation type="unfinished"/>
+        <translation>1 cuenta se detectó desde un cliente legado de escritorio.
+¿Debe importarse esta cuenta?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
@@ -385,12 +387,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Importar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="201"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Saltar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
@@ -996,35 +998,36 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <location filename="../src/gui/application.cpp" line="451"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 cuentas</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="452"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="454"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 carpetas</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="455"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="457"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importación legada</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="458"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation type="unfinished"/>
+        <translation>Se importaron %1 y %2 desde un cliente de escritorio legado.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="394"/>
