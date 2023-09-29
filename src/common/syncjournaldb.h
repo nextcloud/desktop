@@ -53,9 +53,6 @@ public:
     static QString makeDbName(const QString &localPath,
         const QString &infix = QStringLiteral("journal"));
 
-    /// Migrate a csync_journal to the new path, if necessary. Returns false on error
-    static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
-
     static bool dbIsTooNewForClient(const QString &dbFilePath);
 
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()

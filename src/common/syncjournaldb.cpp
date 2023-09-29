@@ -131,67 +131,6 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
     return journalPath;
 }
 
-bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath)
-{
-    const QString oldDbName = localPath + QLatin1String(".csync_journal.db");
-    if (!FileSystem::fileExists(oldDbName)) {
-        return true;
-    }
-    const QString oldDbNameShm = oldDbName + QStringLiteral("-shm");
-    const QString oldDbNameWal = oldDbName + QStringLiteral("-wal");
-
-    const QString newDbName = absoluteJournalPath;
-    const QString newDbNameShm = newDbName + QStringLiteral("-shm");
-    const QString newDbNameWal = newDbName + QStringLiteral("-wal");
-
-    // Whenever there is an old db file, migrate it to the new db path.
-    // This is done to make switching from older versions to newer versions
-    // work correctly even if the user had previously used a new version
-    // and therefore already has an (outdated) new-style db file.
-    QString error;
-
-    if (FileSystem::fileExists(newDbName)) {
-        if (!FileSystem::remove(newDbName, &error)) {
-            qCWarning(lcDb) << "Database migration: Could not remove db file" << newDbName
-                            << "due to" << error;
-            return false;
-        }
-    }
-    if (FileSystem::fileExists(newDbNameWal)) {
-        if (!FileSystem::remove(newDbNameWal, &error)) {
-            qCWarning(lcDb) << "Database migration: Could not remove db WAL file" << newDbNameWal
-                            << "due to" << error;
-            return false;
-        }
-    }
-    if (FileSystem::fileExists(newDbNameShm)) {
-        if (!FileSystem::remove(newDbNameShm, &error)) {
-            qCWarning(lcDb) << "Database migration: Could not remove db SHM file" << newDbNameShm
-                            << "due to" << error;
-            return false;
-        }
-    }
-
-    if (!FileSystem::rename(oldDbName, newDbName, &error)) {
-        qCWarning(lcDb) << "Database migration: could not rename" << oldDbName
-                        << "to" << newDbName << ":" << error;
-        return false;
-    }
-    if (!FileSystem::rename(oldDbNameWal, newDbNameWal, &error)) {
-        qCWarning(lcDb) << "Database migration: could not rename" << oldDbNameWal
-                        << "to" << newDbNameWal << ":" << error;
-        return false;
-    }
-    if (!FileSystem::rename(oldDbNameShm, newDbNameShm, &error)) {
-        qCWarning(lcDb) << "Database migration: could not rename" << oldDbNameShm
-                        << "to" << newDbNameShm << ":" << error;
-        return false;
-    }
-
-    qCInfo(lcDb) << "Journal successfully migrated from" << oldDbName << "to" << newDbName;
-    return true;
-}
-
 bool SyncJournalDb::dbIsTooNewForClient(const QString &dbFilePath)
 {
     SqlDatabase db;
