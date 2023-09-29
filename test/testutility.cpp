@@ -31,25 +31,25 @@ private slots:
     void testOctetsToString()
     {
         QLocale::setDefault(QLocale(QStringLiteral("en")));
-        QCOMPARE(octetsToString(999), QString::fromLatin1("999 B"));
-        QCOMPARE(octetsToString(1024), QString::fromLatin1("1 KB"));
-        QCOMPARE(octetsToString(1364), QString::fromLatin1("1 KB"));
+        QCOMPARE(octetsToString(999), QString::fromLatin1("999 bytes"));
+        QCOMPARE(octetsToString(1024), QString::fromLatin1("1 kB"));
+        QCOMPARE(octetsToString(1364), QString::fromLatin1("1 kB"));
 
-        QCOMPARE(octetsToString(9110), QString::fromLatin1("9 KB"));
-        QCOMPARE(octetsToString(9910), QString::fromLatin1("10 KB"));
-        QCOMPARE(octetsToString(10240), QString::fromLatin1("10 KB"));
+        QCOMPARE(octetsToString(9110), QString::fromLatin1("9 kB"));
+        QCOMPARE(octetsToString(9910), QString::fromLatin1("10 kB"));
+        QCOMPARE(octetsToString(10240), QString::fromLatin1("10 kB"));
 
-        QCOMPARE(octetsToString(123456), QString::fromLatin1("121 KB"));
+        QCOMPARE(octetsToString(123456), QString::fromLatin1("121 kB"));
         QCOMPARE(octetsToString(1234567), QString::fromLatin1("1.2 MB"));
-        QCOMPARE(octetsToString(12345678), QString::fromLatin1("12 MB"));
-        QCOMPARE(octetsToString(123456789), QString::fromLatin1("118 MB"));
-        QCOMPARE(octetsToString(1000LL * 1000 * 1000 * 5), QString::fromLatin1("4.7 GB"));
+        QCOMPARE(octetsToString(12345678), QString::fromLatin1("11.8 MB"));
+        QCOMPARE(octetsToString(123456789), QString::fromLatin1("117.7 MB"));
+        QCOMPARE(octetsToString(1000LL * 1000 * 1000 * 5), QString::fromLatin1("4.66 GB"));
 
-        QCOMPARE(octetsToString(1), QString::fromLatin1("1 B"));
-        QCOMPARE(octetsToString(2), QString::fromLatin1("2 B"));
-        QCOMPARE(octetsToString(1024), QString::fromLatin1("1 KB"));
-        QCOMPARE(octetsToString(1024 * 1024), QString::fromLatin1("1 MB"));
-        QCOMPARE(octetsToString(1024LL * 1024 * 1024), QString::fromLatin1("1 GB"));
+        QCOMPARE(octetsToString(1), QString::fromLatin1("1 bytes"));
+        QCOMPARE(octetsToString(2), QString::fromLatin1("2 bytes"));
+        QCOMPARE(octetsToString(1024), QString::fromLatin1("1 kB"));
+        QCOMPARE(octetsToString(1024 * 1024), QString::fromLatin1("1.0 MB"));
+        QCOMPARE(octetsToString(1024LL * 1024 * 1024), QString::fromLatin1("1.00 GB"));
     }
 
     void testLaunchOnStartup()

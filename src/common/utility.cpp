@@ -84,44 +84,20 @@ QString Utility::formatFingerprint(const QByteArray &fmhash, bool colonSeparated
 
 QString Utility::octetsToString(qint64 octets)
 {
-#define THE_FACTOR 1024
-    static const qint64 kb = THE_FACTOR;
-    static const qint64 mb = THE_FACTOR * kb;
-    static const qint64 gb = THE_FACTOR * mb;
+    OC_ASSERT(octets >= 0)
 
-    QString s;
-    qreal value = octets;
+    using namespace FileSystem::SizeLiterals;
 
-    // Whether we care about decimals: only for GB/MB and only
-    // if it's less than 10 units.
-    bool round = true;
-
-    // do not display terra byte with the current units, as when
-    // the MB, GB and KB units were made, there was no TB,
-    // see the JEDEC standard
-    // https://en.wikipedia.org/wiki/JEDEC_memory_standards
-    if (octets >= gb) {
-        s = QCoreApplication::translate("Utility", "%L1 GB");
-        value /= gb;
-        round = false;
-    } else if (octets >= mb) {
-        s = QCoreApplication::translate("Utility", "%L1 MB");
-        value /= mb;
-        round = false;
-    } else if (octets >= kb) {
-        s = QCoreApplication::translate("Utility", "%L1 KB");
-        value /= kb;
-    } else {
-        s = QCoreApplication::translate("Utility", "%L1 B");
+    // We do what macOS 10.8 and above do: 0 fraction digits for bytes and KB; 1 fraction digits for MB; 2 for GB and above.
+    // See also https://developer.apple.com/documentation/foundation/nsbytecountformatter/1417887-adaptive
+    int precision = 0;
+    if (quint64(octets) >= 1_gb) {
+        precision = 2;
+    } else if (quint64(octets) >= 1_mb) {
+        precision = 1;
     }
 
-    if (value > 9.95)
-        round = true;
-
-    if (round)
-        return s.arg(qRound(value));
-
-    return s.arg(value, 0, 'g', 2);
+    return QLocale().formattedDataSize(octets, precision, QLocale::DataSizeTraditionalFormat);
 }
 
 // Qtified version of get_platforms() in csync_owncloud.c
