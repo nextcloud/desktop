@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[uk]=@APPLICATION_ICON_NAME@
 Name[uk]=@APPLICATION_NAME@ Desktop
 Comment[uk]=Клієнт синхронізації @APPLICATION_NAME@ для ПК
 GenericName[uk]=Синхронізація каталогів
+Icon[uk]=@APPLICATION_ICON_NAME@

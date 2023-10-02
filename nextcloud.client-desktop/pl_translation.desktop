@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[pl]=@APPLICATION_ICON_NAME@
 Name[pl]=@APPLICATION_NAME@ Desktop
 Comment[pl]=Desktopowy klient synchronizacji @APPLICATION_NAME@
 GenericName[pl]=Katalog synchronizacji
+Icon[pl]=@APPLICATION_ICON_NAME@

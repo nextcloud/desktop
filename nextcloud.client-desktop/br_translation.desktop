@@ -21,6 +21,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[br]=@APPLICATION_ICON_NAME@
 Comment[br]=@APPLICATION_NAME@ burev kempreet an implijer
 GenericName[br]=Tuliad kemprenan
+Icon[br]=@APPLICATION_ICON_NAME@

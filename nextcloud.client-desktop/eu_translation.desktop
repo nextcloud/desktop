@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[eu]=@APPLICATION_ICON_NAME@
 Name[eu]=@APPLICATION_NAME@ Mahaigaina
 Comment[eu]=@APPLICATION_NAME@ mahaigainerako sinkronizazio bezeroa
 GenericName[eu]=Karpeta-sinkronizazioa
+Icon[eu]=@APPLICATION_ICON_NAME@

@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[eo]=@APPLICATION_ICON_NAME@
 Name[eo]=@APPLICATION_NAME@ por Labortablo
 Comment[eo]=@APPLICATION_NAME@ sinkroniga kliento
 GenericName[eo]=Dosieruja sinkronigo
+Icon[eo]=@APPLICATION_ICON_NAME@

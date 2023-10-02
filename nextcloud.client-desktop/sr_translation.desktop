@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[sr]=@APPLICATION_ICON_NAME@
 Name[sr]=@APPLICATION_NAME@ Радна површина
 Comment[sr]=@APPLICATION_NAME@ десктоп клијент за синхронизацију
 GenericName[sr]=Синхронизација фасцикли
+Icon[sr]=@APPLICATION_ICON_NAME@
