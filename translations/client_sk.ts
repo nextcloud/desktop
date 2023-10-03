@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
-        <translation>Odmietnuť všetky upozornenia z hovorov Talk</translation>
+        <translation>Zatvoriť všetky upozornenia z hovorov Talk</translation>
     </message>
 </context>
 <context>
@@ -5518,7 +5518,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="232"/>
         <source>Dismiss</source>
-        <translation>Odmietnuť</translation>
+        <translation>Zatvoriť</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
