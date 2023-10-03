@@ -1023,9 +1023,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Not modified locally (ParentNotChanged)
             if (noServerEntry) {
                 // not on the server: Removed on the server, delete locally
-#if !defined QT_NO_DEBUG
                 qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
-#endif
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
@@ -1616,7 +1614,16 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_direction = _dirItem->_direction;
     }
 
-    qCDebug(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
+    {
+        const auto discoveredItemLog = QStringLiteral("%1 %2 %3 %4").arg(item->_file).arg(item->_instruction).arg(item->_direction).arg(item->_type);
+        const auto isImportantInstruction = item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_IGNORE
+            && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
+        if (isImportantInstruction) {
+            qCInfo(lcDisco) << discoveredItemLog;
+        } else {
+            qCDebug(lcDisco) << discoveredItemLog;
+        }
+    }
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
