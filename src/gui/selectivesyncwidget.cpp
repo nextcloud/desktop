@@ -114,7 +114,7 @@ void SelectiveSyncWidget::refreshFolders()
 
 void SelectiveSyncWidget::setFolderInfo(const QString &folderPath, const QString &rootName, const QSet<QString> &oldBlackList)
 {
-    _folderPath = folderPath;
+    _folderPath = Utility::stripTrailingSlash(folderPath);
     _rootName = rootName;
     _oldBlackList = oldBlackList;
     refreshFolders();
@@ -178,13 +178,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
-    const QString rootPath = [&]() -> QString {
-        const QString path = Utility::concatUrlPath(davUrl(), _folderPath).path();
-        if (path.endsWith(QLatin1Char('/'))) {
-            return path;
-        }
-        return path + QLatin1Char('/');
-    }();
+    const QString rootPath = Utility::ensureTrailingSlash(Utility::concatUrlPath(davUrl(), _folderPath).path());
 
     // Check for excludes.
     list.erase(std::remove_if(list.begin(), list.end(),
@@ -236,12 +230,12 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     Utility::sortFilenames(relativeList);
     for (const QString &path : qAsConst(relativeList)) {
-        const auto size = job ? job->sizes().value(rootPath + QLatin1Char('/') + path) : 0;
+        const auto size = job ? job->sizes().value(Utility::ensureTrailingSlash(Utility::concatUrlPathItems({rootPath, path}))) : 0;
         const QStringList paths = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
         if (paths.isEmpty()) {
             continue;
         }
-        recursiveInsert(root, paths, Utility::stripTrailingSlash(path), size);
+        recursiveInsert(root, paths, Utility::ensureTrailingSlash(path), size);
     }
 
     // Root is partially checked if any children are not checked
@@ -272,7 +266,7 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     if (dir.isEmpty()) {
         return;
     }
-    PropfindJob *job = new PropfindJob(_account, davUrl(), _folderPath + QLatin1Char('/') + dir, PropfindJob::Depth::One, this);
+    PropfindJob *job = new PropfindJob(_account, davUrl(), Utility::concatUrlPathItems({_folderPath, dir}), PropfindJob::Depth::One, this);
     job->setProperties({QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size")});
     connect(job, &PropfindJob::directoryListingSubfolders, this, &SelectiveSyncWidget::slotUpdateDirectories);
     job->start();
