@@ -21,7 +21,8 @@ MenuItem {
     id: root
 
     property string subline: ""
-    property string iconSource: "image://svgimage-custom-color/folder-group.svg/" + palette.buttonText
+    property string iconSource: "image://svgimage-custom-color/account-group.svg/" + palette.buttonText
+    property string backgroundIconSource: value
     property string toolTipText: root.text
 
     NCToolTip {
@@ -45,13 +46,12 @@ MenuItem {
         anchors.rightMargin: Style.trayWindowMenuEntriesMargin
         spacing: Style.trayHorizontalMargin
 
-        Image {
-            source: root.iconSource
-            cache: true
-            sourceSize.width: root.height * Style.smallIconScaleFactor
-            sourceSize.height: root.height * Style.smallIconScaleFactor
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignHCenter
+        NCIconWithBackgroundImage {
+            source: root.backgroundIconSource
+
+            icon.source: root.iconSource
+            icon.height: height * Style.smallIconScaleFactor
+            icon.width: icon.height
 
             Layout.preferredHeight: root.height * Style.smallIconScaleFactor
             Layout.preferredWidth: root.height * Style.smallIconScaleFactor
@@ -64,7 +64,10 @@ MenuItem {
 
             spacing: Style.extraSmallSpacing
 
+            Layout.alignment: Qt.AlignVCenter
+
             Layout.fillWidth: true
+
         }
     }
 }
