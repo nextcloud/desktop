@@ -157,6 +157,14 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
         return s.toString();
     }
 
+    inline QString ensureTrailingSlash(QStringView s)
+    {
+        if (!s.endsWith(QLatin1Char('/'))) {
+            return s.toString() + QLatin1Char('/');
+        }
+        return s.toString();
+    }
+
     // Call the given command with the switch --version and rerun the first line
     // of the output.
     // If command is empty, the function calls the running application which, on
@@ -201,6 +209,11 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
      * @brief Sort a QStringList in a way that's appropriate for filenames
      */
     OCSYNC_EXPORT void sortFilenames(QStringList &fileNames);
+
+    /**
+     * Concatenate parts of a URL path with a given delimiter, eliminating duplicate
+     */
+    OCSYNC_EXPORT QString concatUrlPathItems(QStringList && items, const QLatin1Char delimiter = QLatin1Char('/'));
 
     /** Appends concatPath and queryItems to the url */
     OCSYNC_EXPORT QUrl concatUrlPath(

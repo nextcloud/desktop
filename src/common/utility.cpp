@@ -463,6 +463,16 @@ void Utility::sortFilenames(QStringList &fileNames)
     std::sort(fileNames.begin(), fileNames.end(), collator);
 }
 
+QString Utility::concatUrlPathItems(QStringList &&items, const QLatin1Char delimiter)
+{
+    for (QString &item : items) {
+        while (item.endsWith(QLatin1Char('/'))) {
+            item.chop(1);
+        }
+    }
+    return items.join(delimiter);
+}
+
 QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
     const QUrlQuery &queryItems)
 {
