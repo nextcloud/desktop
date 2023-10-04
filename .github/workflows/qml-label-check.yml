@@ -15,7 +15,7 @@ jobs:
           echo "EXPECTED_MATCHES=1" >> $GITHUB_ENV
       - name: Check label component use count
         if: env.MATCHES != env.EXPECTED_MATCHES
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
               core.setFailed('Using QML Labels! Make sure to use EnforcedPlainTextLabel instead!')
