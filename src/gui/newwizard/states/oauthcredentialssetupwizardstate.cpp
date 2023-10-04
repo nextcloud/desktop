@@ -12,10 +12,8 @@
  * for more details.
  */
 
-#include "gui/application.h"
-#include "jobs/webfingeruserinfojobfactory.h"
 #include "oauthcredentialssetupwizardstate.h"
-#include "theme.h"
+#include "jobs/webfingeruserinfojobfactory.h"
 
 namespace OCC::Wizard {
 

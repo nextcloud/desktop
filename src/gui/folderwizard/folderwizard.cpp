@@ -23,18 +23,12 @@
 
 #include "account.h"
 #include "common/asserts.h"
-#include "configfile.h"
-#include "creds/abstractcredentials.h"
 #include "gui/application.h"
-#include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
-#include "gui/guiutility.h"
 #include "gui/settingsdialog.h"
-#include "networkjobs.h"
 #include "theme.h"
 
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
-#include "gui/selectivesyncwidget.h"
 #include "gui/spaces/spacesmodel.h"
 
 #include <QDesktopServices>
