@@ -201,6 +201,8 @@ Result<void, QString> Folder::checkPathLength(const QString &path)
             return tr("The path '%1' is too long. Please enable long paths in the Windows settings or choose a different folder.").arg(path);
         }
     }
+#else
+    Q_UNUSED(path)
 #endif
     return {};
 }
@@ -311,6 +313,8 @@ void Folder::prepareFolder(const QString &path)
         const auto error = GetLastError();
         qCWarning(lcFolder) << "SetFileAttributesW failed on" << longDesktopIniPath << Utility::formatWinError(error);
     }
+#else
+    Q_UNUSED(path)
 #endif
 }
 
@@ -614,7 +618,7 @@ void Folder::startVfs()
     _vfs->start(vfsParams);
 }
 
-int Folder::slotDiscardDownloadProgress()
+void Folder::slotDiscardDownloadProgress()
 {
     // Delete from journal and from filesystem.
     QDir folderpath(_definition.localPath());
@@ -626,7 +630,6 @@ int Folder::slotDiscardDownloadProgress()
         qCInfo(lcFolder) << "Deleting temporary file: " << tmppath;
         FileSystem::remove(tmppath);
     }
-    return deleted_infos.size();
 }
 
 int Folder::downloadInfoCount()
@@ -657,7 +660,7 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
 
             {
                 // horrible hack to compensate that we don't handle folder deletes on a per file basis
-                int index = 0;
+                qsizetype index = 0;
                 QString p = relativePath;
                 while ((index = p.lastIndexOf(QLatin1Char('/'))) != -1) {
                     p = p.left(index);
@@ -1342,7 +1345,7 @@ FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &i
     folder.paused = settings.value(QStringLiteral("paused")).toBool();
     folder.ignoreHiddenFiles = settings.value(QStringLiteral("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder._deployed = settings.value(deployedC(), false).toBool();
-    folder._priority = settings.value(priorityC(), 0).toInt();
+    folder._priority = settings.value(priorityC(), 0).toUInt();
 
     folder.virtualFilesMode = Vfs::Off;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();

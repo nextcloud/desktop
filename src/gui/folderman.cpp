@@ -39,7 +39,7 @@ using namespace std::chrono;
 using namespace std::chrono_literals;
 
 namespace {
-int numberOfSyncJournals(const QString &path)
+qsizetype numberOfSyncJournals(const QString &path)
 {
     return QDir(path).entryList({ QStringLiteral(".sync_*.db"), QStringLiteral("._sync_*.db") }, QDir::Hidden | QDir::Files).size();
 }
@@ -90,8 +90,8 @@ FolderMan *FolderMan::_instance = nullptr;
 FolderMan::FolderMan()
     : _lockWatcher(new LockWatcher)
     , _scheduler(new SyncScheduler(this))
-    , _appRestartRequired(false)
     , _socketApi(new SocketApi)
+    , _appRestartRequired(false)
 {
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &FolderMan::slotRemoveFoldersForAccount);

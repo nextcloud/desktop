@@ -375,7 +375,7 @@ public slots:
       */
     void startSync();
 
-    int slotDiscardDownloadProgress();
+    void slotDiscardDownloadProgress();
     int downloadInfoCount();
     int slotWipeErrorBlacklist();
     int errorBlackListEntryCount();
