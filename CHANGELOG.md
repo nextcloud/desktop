@@ -3,7 +3,28 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v4.2.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v5.0.0...master
+
+Summary
+-------
+
+* Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
+
+Details
+-------
+
+* Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
+
+   We fixed a potential crash when clicking on a notification.
+
+   https://github.com/owncloud/client/issues/11226
+
+Changelog for ownCloud Desktop Client [5.0.0] (2023-10-05)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 5.0.0 relevant to
+ownCloud admins and users.
+
+[5.0.0]: https://github.com/owncloud/client/compare/v4.2.0...v5.0.0
 
 Summary
 -------
