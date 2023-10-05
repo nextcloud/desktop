@@ -13,17 +13,16 @@
  */
 
 
+#import "SyncClientProxy.h"
 #import <Cocoa/Cocoa.h>
 #import <FinderSync/FinderSync.h>
-#import "SyncClientProxy.h"
 
-@interface FinderSync : FIFinderSync <SyncClientProxyDelegate>
-{
-	SyncClientProxy *_syncClientProxy;
-	NSMutableSet *_registeredDirectories;
-	NSString *_shareMenuTitle;
-	NSMutableDictionary *_strings;
-	NSMutableArray *_menuItems;
+@interface FinderSync : FIFinderSync <SyncClientProxyDelegate> {
+    SyncClientProxy *_syncClientProxy;
+    NSMutableSet *_registeredDirectories;
+    NSString *_shareMenuTitle;
+    NSMutableDictionary *_strings;
+    NSMutableArray *_menuItems;
 }
 
 @end

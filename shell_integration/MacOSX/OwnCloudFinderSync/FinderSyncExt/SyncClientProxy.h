@@ -16,30 +16,29 @@
 
 
 @protocol SyncClientProxyDelegate <NSObject>
-- (void)setResultForPath:(NSString*)path result:(NSString*)result;
-- (void)reFetchFileNameCacheForPath:(NSString*)path;
-- (void)registerPath:(NSString*)path;
-- (void)unregisterPath:(NSString*)path;
-- (void)setString:(NSString*)key value:(NSString*)value;
+- (void)setResultForPath:(NSString *)path result:(NSString *)result;
+- (void)reFetchFileNameCacheForPath:(NSString *)path;
+- (void)registerPath:(NSString *)path;
+- (void)unregisterPath:(NSString *)path;
+- (void)setString:(NSString *)key value:(NSString *)value;
 - (void)resetMenuItems;
 - (void)addMenuItem:(NSDictionary *)item;
 - (void)connectionDidDie;
 @end
 
 @protocol ChannelProtocol <NSObject>
-- (void)sendMessage:(NSData*)msg;
+- (void)sendMessage:(NSData *)msg;
 @end
 
-@interface SyncClientProxy : NSObject <ChannelProtocol>
-{
-	NSString *_serverName;
-	NSDistantObject <ChannelProtocol> *_remoteEnd;
+@interface SyncClientProxy : NSObject <ChannelProtocol> {
+    NSString *_serverName;
+    NSDistantObject<ChannelProtocol> *_remoteEnd;
 }
 
-@property (weak) id <SyncClientProxyDelegate> delegate;
+@property (weak) id<SyncClientProxyDelegate> delegate;
 
-- (instancetype)initWithDelegate:(id)arg1 serverName:(NSString*)serverName;
+- (instancetype)initWithDelegate:(id)arg1 serverName:(NSString *)serverName;
 - (void)start;
-- (void)askOnSocket:(NSString*)path query:(NSString*)verb;
-- (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDir;
+- (void)askOnSocket:(NSString *)path query:(NSString *)verb;
+- (void)askForIcon:(NSString *)path isDirectory:(BOOL)isDir;
 @end
