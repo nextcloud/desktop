@@ -1,0 +1,5 @@
+Bugfix: Crash when accepting a notification
+
+We fixed a potential crash when clicking on a notification.
+
+https://github.com/owncloud/client/issues/11226

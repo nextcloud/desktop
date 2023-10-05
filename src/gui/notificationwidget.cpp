@@ -117,7 +117,7 @@ void NotificationWidget::slotNotificationRequestFinished(bool success)
 
     QString timeStr = locale.toString(QTime::currentTime());
 
-    if (success) {
+    if (!success) {
         qCWarning(lcNotifications) << "Notification Request to Server failed, leave button visible.";
         for (auto *button : qAsConst(_buttons)) {
             button->setEnabled(true);
