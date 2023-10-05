@@ -2815,13 +2815,13 @@ for additional privileges during the process.</source>
         <translation>크기</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="217"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="262"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="211"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="256"/>
         <source>No subfolders currently on the server.</source>
         <translation>현재 서버에 하위 디렉터리가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="264"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="258"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>하위 폴더 목록을 불러오는 중 오류가 발생했습니다.</translation>
     </message>

@@ -2798,13 +2798,13 @@ for additional privileges during the process.</source>
         <translation>サイズ</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="217"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="262"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="211"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="256"/>
         <source>No subfolders currently on the server.</source>
         <translation>現在サーバーにサブフォルダーはありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="264"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="258"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>サーバーからフォルダーのリスト取得時にエラーが発生しました。</translation>
     </message>

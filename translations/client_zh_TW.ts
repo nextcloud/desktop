@@ -2801,13 +2801,13 @@ for additional privileges during the process.</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="217"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="262"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="211"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="256"/>
         <source>No subfolders currently on the server.</source>
         <translation>目前沒有子資料夾在伺服器上。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="264"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="258"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>載入子目錄列表時發生錯誤。</translation>
     </message>

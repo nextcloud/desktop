@@ -2803,13 +2803,13 @@ for additional privileges during the process.</source>
         <translation>ප්රමාණය</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="217"/>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="262"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="211"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="256"/>
         <source>No subfolders currently on the server.</source>
         <translation>දැනට සේවාදායකයේ උප ෆෝල්ඩර නොමැත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncwidget.cpp" line="264"/>
+        <location filename="../src/gui/selectivesyncwidget.cpp" line="258"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>උප ෆෝල්ඩර ලැයිස්තුව පූරණය කිරීමේදී දෝෂයක් ඇති විය.</translation>
     </message>
