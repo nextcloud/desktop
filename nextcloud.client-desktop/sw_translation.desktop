@@ -21,6 +21,6 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[sw]=@APPLICATION_ICON_NAME@
 Comment[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa 
 GenericName[sw]=Fanana Kabrasha
+Icon[sw]=@APPLICATION_ICON_NAME@

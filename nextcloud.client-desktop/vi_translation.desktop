@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[vi]=@APPLICATION_ICON_NAME@
 Name[vi]=@APPLICATION_NAME@ Máy tính
 Comment[vi]=Ứng dụng đồng bộ @APPLICATION_NAME@ cho máy tính
 GenericName[vi]=Đồng bộ thư mục
+Icon[vi]=@APPLICATION_ICON_NAME@
