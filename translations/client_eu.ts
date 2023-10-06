@@ -1068,7 +1068,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="123"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>%1 fitxategia ezin da kargatu izen bereko beste fitxategi bat dagoelako -soilik kasuan ezberdina-</translation>
+        <translation>%1 fitxategia ezin da igo izen bereko beste fitxategi bat dagoelako, baina letra maiuskula eta xehe ezberdinekin</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="175"/>
@@ -1078,12 +1078,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="296"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Fitxategia kendu da (hasi karga) %1</translation>
+        <translation>Fitxategia kendu da (hasi igoera) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="308"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>%1 fitxategiak aldaketa-data baliogabea du. Ez kargatu hau zerbitzarira.</translation>
+        <translation>%1 fitxategiak aldaketa-data baliogabea du. Ez igo hau zerbitzarira.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="320"/>
@@ -1928,7 +1928,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Sinkronizatutako karpeten aldaketen segimendua ezin izan da egin fidagarritasunez.
 
-Honek esan nahi du sinkronizazio bezeroak agian ez duela berehalakoan kargatuko tokiko aldaketak eta haren ordez tokiko aldaketak bilatu eta tarteka kargatuko ditu (berez, bi orduero).
+Honek esan nahi du sinkronizazio bezeroak agian ez duela berehalakoan igoko tokiko aldaketak eta haren ordez tokiko aldaketak bilatu eta tarteka igoko ditu (berez, bi orduro).
 
 %1</translation>
     </message>
@@ -2217,7 +2217,7 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Kargatu %1/s</translation>
+        <translation>igo %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
@@ -3064,7 +3064,7 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
     <message>
         <location filename="../src/gui/networksettings.ui" line="276"/>
         <source>Upload Bandwidth</source>
-        <translation>Kargaren banda zabalera</translation>
+        <translation>Igoeraren banda-zabalera</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
