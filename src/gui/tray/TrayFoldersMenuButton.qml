@@ -100,8 +100,13 @@ HeaderButton {
 
         Image {
             id: openLocalFolderButtonIcon
-            cache: false
+            cache: true
             source: "image://svgimage-custom-color/folder.svg/" + Style.currentUserHeaderTextColor
+
+            sourceSize {
+                width: Style.headerButtonIconSize
+                height: Style.headerButtonIconSize
+            }
 
             verticalAlignment: Qt.AlignCenter
 
@@ -185,9 +190,10 @@ HeaderButton {
                         subline: model.modelData.parentPath
                         width: foldersMenuListView.width
                         height: Style.standardPrimaryButtonHeight
-                        iconSource: !isGroupFolder ?
-                                        "image://svgimage-custom-color/folder.svg/" + palette.buttonText :
-                                        "image://svgimage-custom-color/folder-group.svg/" + palette.buttonText
+                        backgroundIconSource: "image://svgimage-custom-color/folder.svg/" + palette.buttonText
+                        iconSource: isGroupFolder
+                                    ? "image://svgimage-custom-color/account-group.svg/" + palette.brightText
+                                    : ""
 
                         onTriggered: {
                             foldersMenu.close();
