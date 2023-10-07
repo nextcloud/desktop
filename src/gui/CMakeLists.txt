@@ -365,11 +365,14 @@ ENDIF()
 set( final_src
     ${client_SRCS}
     ${client_UI_SRCS}
-    ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
-    ${3rdparty_MOC}
 )
+
+source_group(TREE ${CMAKE_CURRENT_LIST_DIR} PREFIX "Source Files" FILES ${client_SRCS})
+source_group(TREE ${CMAKE_CURRENT_LIST_DIR}/.. PREFIX "Source Files" FILES ${3rdparty_SRC})
+source_group(TREE ${CMAKE_CURRENT_LIST_DIR} PREFIX "UI" FILES ${client_UI_SRCS})
+source_group(TREE ${CMAKE_CURRENT_BINARY_DIR} PREFIX "Translations" FILES ${client_I18N})
 
 if(Qt5Keychain_FOUND)
     list(APPEND libsync_LINK_TARGETS qt5keychain)
