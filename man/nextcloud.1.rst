@@ -1,7 +1,7 @@
 :orphan:
 
 nextcloud(1)
-————
+------------
 
 SYNOPSIS
 ========
