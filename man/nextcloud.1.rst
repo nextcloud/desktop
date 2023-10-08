@@ -24,7 +24,6 @@ CONFIG FILE
 
 BUGS
 ====
-
 Please report bugs at https://github.com/nextcloud/client/issues.
 
 
