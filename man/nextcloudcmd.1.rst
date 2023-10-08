@@ -42,7 +42,7 @@ the command line would be::
                 https://server/nextcloud
 
 ``nextcloudcmd`` will enquire user name and password, unless they have
-been specified on the command line or ``-n`` (see `netrc(5)`) has been passed.
+been specified on the command line or ``-n`` (see :manpage:`netrc(5)`) has been passed.
 
 Using the legacy scheme, it would be::
 
@@ -57,4 +57,4 @@ Please report bugs at https://github.com/nextcloud/client/issues.
 
 SEE ALSO
 ========
-:manpage:`nextcloud(1)`
+:manpage:`nextcloud(1)`, :manpage:`netrc(5)`
