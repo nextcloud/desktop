@@ -530,7 +530,7 @@ QString Theme::gitSHA1() const
     const QString githubPrefix(QLatin1String(
         "https://github.com/nextcloud/desktop/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
-    devString = QCoreApplication::translate("nextcloudTheme::about()",
+    devString = QCoreApplication::translate("nextcloudTheme::aboutInfo()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
         " on %3, %4 using Qt %5, %6</small></p>")
                     .arg(githubPrefix + gitSha1)
@@ -543,25 +543,31 @@ QString Theme::gitSHA1() const
     return devString;
 }
 
+QString Theme::aboutInfo() const
+{
+    // Shorten Qt's OS name: "macOS Mojave (10.14)" -> "macOS"
+    QStringList osStringList = Utility::platformName().split(QLatin1Char(' '));
+    QString osName = osStringList.at(0);
+
+    //: Example text: "<p>Nextcloud Desktop Client</p>"   (%1 is the application name)
+    auto devString = QString(tr("<p>%1 Desktop Client</p><p>Version %1. For more information please click <a href='%2'>here</a>.</p>") + QStringLiteral(" (%3)"))
+            .arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)), helpUrl(), osName);
+                      
+
+    devString += tr("<p><small>Using virtual files plugin: %1</small></p>").arg(Vfs::modeToString(bestAvailableVfsMode()));
+    devString += QStringLiteral("<br>%1").arg(QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion());
+
+    return devString;
+}
+
 QString Theme::about() const
 {
     // Shorten Qt's OS name: "macOS Mojave (10.14)" -> "macOS"
     QStringList osStringList = Utility::platformName().split(QLatin1Char(' '));
     QString osName = osStringList.at(0);
 
-    QString devString;
     //: Example text: "<p>Nextcloud Desktop Client</p>"   (%1 is the application name)
-    devString = tr("<p>%1 Desktop Client</p>")
-              .arg(APPLICATION_NAME);
-
-    devString += tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
-              .arg(QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)) + QString(" (%1)").arg(osName))
-              .arg(helpUrl());
-
-    devString += tr("<p><small>Using virtual files plugin: %1</small></p>")
-                     .arg(Vfs::modeToString(bestAvailableVfsMode()));
-    devString += QStringLiteral("<br>%1")
-              .arg(QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion());
+    const auto devString = tr("<p>%1 desktop client %2</p>").arg(APPLICATION_NAME, QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)));
 
     return devString;
 }

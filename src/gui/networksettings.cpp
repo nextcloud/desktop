@@ -34,6 +34,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
+    _ui->manualSettings->setVisible(_ui->manualProxyRadioButton->isChecked());
+
     _ui->proxyGroupBox->setVisible(!Theme::instance()->doNotUseProxy());
 
     if (!Theme::instance()->doNotUseProxy()) {
@@ -53,8 +55,7 @@ NetworkSettings::NetworkSettings(QWidget *parent)
         _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
         connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, _ui->authWidgets, &QWidget::setEnabled);
 
-        connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->manualSettings, &QWidget::setEnabled);
-        connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->typeComboBox, &QWidget::setEnabled);
+        connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, _ui->manualSettings, &QWidget::setVisible);
         connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled, this, &NetworkSettings::checkAccountLocalhost);
 
         loadProxySettings();
@@ -78,6 +79,11 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     }
 
     loadBWLimitSettings();
+
+    _ui->downloadSpinBox->setVisible(_ui->downloadLimitRadioButton->isChecked());
+    _ui->downloadSpinBoxLabel->setVisible(_ui->downloadLimitRadioButton->isChecked());
+    _ui->uploadSpinBox->setVisible(_ui->uploadLimitRadioButton->isChecked());
+    _ui->uploadSpinBoxLabel->setVisible(_ui->uploadLimitRadioButton->isChecked());
 
     connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
