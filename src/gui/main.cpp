@@ -82,8 +82,6 @@ struct CommandLineOptions
 
     bool debugMode = false;
 
-    QString userEnforcedLanguage;
-
     QString fileToOpen;
 };
 
@@ -128,8 +126,6 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     auto logDirOption = addOption({QStringLiteral("logdir"), QStringLiteral("Write each sync log output in a new file in folder."), QStringLiteral("name")});
     auto logFlushOption = addOption({QStringLiteral("logflush"), QStringLiteral("Flush the log file after every write.")});
     auto logDebugOption = addOption({QStringLiteral("logdebug"), QStringLiteral("Output debug-level messages in the log.")});
-    auto languageOption = addOption({QStringLiteral("language"), QStringLiteral("Override UI language."), QStringLiteral("language")});
-    auto listLanguagesOption = addOption({QStringLiteral("list-languages"), QStringLiteral("Lists available translations, see --language.")});
     auto confDirOption = addOption({QStringLiteral("confdir"), QStringLiteral("Use the given configuration folder."), QStringLiteral("dirname")});
     auto debugOption = addOption({QStringLiteral("debug"), QStringLiteral("Enable debug mode.")});
     addOption({QStringLiteral("cmd"), QStringLiteral("Forward all arguments to the cmd client. This argument must be the first.")});
@@ -173,25 +169,6 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     if (parser.isSet(debugOption)) {
         out.logDebug = true;
         out.debugMode = true;
-    }
-    if (parser.isSet(languageOption)) {
-        const auto languageValue = parser.value(languageOption);
-
-        // fail if the language is unknown
-        if (!Translations::listAvailableTranslations().contains(languageValue)) {
-            displayHelpText(
-                QStringLiteral("Error: unknown language \"%1\" (use --list-languages to get a complete list of supported translations)").arg(languageValue));
-            std::exit(1);
-        } else {
-            out.userEnforcedLanguage = languageValue;
-        }
-    }
-    if (parser.isSet(listLanguagesOption)) {
-        const auto translationSet = Translations::listAvailableTranslations();
-        auto availableTranslations = QStringList{translationSet.cbegin(), translationSet.cend()};
-        availableTranslations.sort(Qt::CaseInsensitive);
-        displayHelpText(QStringLiteral("Available translations: %1").arg(availableTranslations.join(QStringLiteral(", "))));
-        std::exit(1);
     }
 
     auto positionalArguments = parser.positionalArguments();

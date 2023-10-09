@@ -88,7 +88,6 @@ private:
     QPointer<ownCloudGui> _gui = {};
 
     const bool _debugMode = false;
-    QString _userEnforcedLanguage;
     QString _displayLanguage;
 
     static Application *_instance;

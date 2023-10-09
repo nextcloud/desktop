@@ -1,0 +1,8 @@
+Change: Remove unused command line option --language
+
+This option was used before the UI language could be chosen in the
+settings. The option --list-languages is also removed, as it no longer
+serves a purpose.
+
+https://github.com/owncloud/client/issues/11245
+https://github.com/owncloud/client/pull/11270

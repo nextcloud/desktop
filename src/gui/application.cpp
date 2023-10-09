@@ -267,23 +267,18 @@ void Application::setupTranslations()
     qCDebug(lcApplication) << "UI languages:" << uiLanguages;
 
     // the user can also set a locale in the settings, so we need to load the config file
-    ConfigFile cfg;
+    const ConfigFile cfg;
 
-    // we need to track the enforced languages separately, since we need to distinguish between locale-provided
-    // and user-enforced ones below
-    QSet<QString> enforcedLanguages;
+    // we need to track the enforced language separately, since we need to distinguish between locale-provided
+    // and user-enforced one below
+    const QString enforcedLocale = cfg.uiLanguage();
+    qCDebug(lcApplication) << "Enforced language:" << enforcedLocale;
 
-    // note that user-enforced languages are prioritized over the theme enforced one
-    // to make testing easier, --language overrides the setting from the config file
-    // as we are prepending to the list of languages, the list passed to the loop must be sorted with ascending priority
-    for (const auto &enforcedLocale : {cfg.uiLanguage(), _userEnforcedLanguage}) {
-        if (!enforcedLocale.isEmpty()) {
-            enforcedLanguages.insert(enforcedLocale);
-            uiLanguages.prepend(enforcedLocale);
-        }
+    // note that user-enforced language are prioritized over the theme enforced one
+    // to make testing easier.
+    if (!enforcedLocale.isEmpty()) {
+        uiLanguages.prepend(enforcedLocale);
     }
-
-    qCDebug(lcApplication) << "Enforced languages:" << enforcedLanguages;
 
     QTranslator *translator = new QTranslator(this);
     QTranslator *qtTranslator = new QTranslator(this);
@@ -341,7 +336,7 @@ void Application::setupTranslations()
             // not mess with the system locale, though
             // if we did, we would enforce a locale for no apparent reason
             // see https://github.com/owncloud/client/issues/8608 for more information
-            if (enforcedLanguages.contains(lang)) {
+            if (enforcedLocale == lang) {
                 QLocale newLocale(lang);
                 qCDebug(lcApplication) << "language" << lang << "was enforced, changing default locale to" << newLocale;
                 QLocale::setDefault(newLocale);
