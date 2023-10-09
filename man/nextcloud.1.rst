@@ -1,7 +1,7 @@
 :orphan:
 
 nextcloud(1)
-————
+------------
 
 SYNOPSIS
 ========
@@ -14,17 +14,16 @@ The nextCloud Client is a file synchronization desktop utility. It synchronizes 
 
 Normally, you start the client by clicking on the desktop icon or by starting it from the client application menu. After starting, an nextCloud icon appears in the computer system tray or on your tablet or handheld device.
 
-Options
+OPTIONS
 =======
 .. include:: ../doc/options.rst
 
-Config File
+CONFIG FILE
 ===========
 .. include:: ../doc/conffile.rst
 
 BUGS
 ====
-
 Please report bugs at https://github.com/nextcloud/client/issues.
 
 

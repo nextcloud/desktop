@@ -1,7 +1,7 @@
 :orphan:
 
 nextcloudcmd(1)
-—————
+---------------
 
 SYNOPSIS
 ========
@@ -29,41 +29,7 @@ the server URL.
 
 OPTIONS
 =======
-``--path``
-       Overrides default remote root folder to a specific subfolder on the server(e.g.: /Documents would sync the Documents subfolder on the server)
-
-``—user``, ``-u`` ``[user]``
-       Use ``user`` as the login name.
-
-``—password``, ``-p`` ``[password]``
-       Use ``password`` as the password.
-
-``-n``
-       Use ``netrc (5)`` for login.
-
-``—non-interactive``
-       Do not prompt for questions.
-
-``—silent``, ``—s``
-       Inhibits verbose log output.
-
-``—trust``
-       Trust any SSL certificate, including invalid ones.
-
-``—httpproxy  http://[user@pass:]<server>:<port>``
-      Uses ``server`` as HTTP proxy.
-
-``—exclude [file]``
-      Exclude list file
-
-``—unsyncedfolders [file]``
-      File containing the list of unsynced folders (selective sync)
-
-``—max-sync-retries [n]``
-      Retries maximum n times (defaults to 3)
-
-``-h``
-      Sync hidden files,do not ignore them
+.. include:: ../doc/options-cmd.rst
 
 Example
 =======
@@ -71,16 +37,16 @@ To synchronize the nextCloud directory ``Music`` to the local directory ``media/
 through a proxy listening on port ``8080`` on the gateway machine ``192.168.178.1``,
 the command line would be::
 
-  $ nextcloudcmd —httpproxy http://192.168.178.1:8080 --path /Music \
+  $ nextcloudcmd --httpproxy http://192.168.178.1:8080 --path /Music \
                 $HOME/media/music \
                 https://server/nextcloud
 
 ``nextcloudcmd`` will enquire user name and password, unless they have
-been specified on the command line or ``-n`` (see `netrc(5)`) has been passed.
+been specified on the command line or ``-n`` (see :manpage:`netrc(5)`) has been passed.
 
 Using the legacy scheme, it would be::
 
-  $ nextcloudcmd —httpproxy http://192.168.178.1:8080 --path /Music \
+  $ nextcloudcmd --httpproxy http://192.168.178.1:8080 --path /Music \
                 $HOME/media/music \
                 ownclouds://server/nextcloud
 
@@ -91,4 +57,4 @@ Please report bugs at https://github.com/nextcloud/client/issues.
 
 SEE ALSO
 ========
-:manpage:`nextcloud(1)`
+:manpage:`nextcloud(1)`, :manpage:`netrc(5)`
