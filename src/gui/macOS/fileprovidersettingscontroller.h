@@ -48,6 +48,7 @@ signals:
     void vfsEnabledAccountsChanged();
     void localStorageUsageForAccountChanged(const QString &userIdAtHost);
     void remoteStorageUsageForAccountChanged(const QString &userIdAtHost);
+    void materialisedItemsForAccountChanged(const QString &userIdAtHost);
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);

@@ -245,6 +245,7 @@ private:
 
                     const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
                     emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
+                    emit q->materialisedItemsForAccountChanged(qDomainIdentifier);
 
                     [storageUseObserver release];
                     [enumerator release];
