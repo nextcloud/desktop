@@ -28,22 +28,23 @@ jobs:
         fail-fast: false
         matrix:
             include:
-            - name: Windows 64-bit cl
+            - name: windows-cl-x86_64
               target: windows-cl-msvc2022-x86_64
               os: windows-latest
               fetch-depth: 0
               container:
-            - name: macOS 64-bit clang
+            # TODO: align the target with the name
+            - name: macos-clang-x86_64
               target: macos-64-clang
               os: macos-latest
               fetch-depth: 1
               container:
-            - name: macOS 64-bit clang debug
+            - name: macos-clang-x86_64-debug
               target: macos-64-clang-debug
               os: macos-latest
               fetch-depth: 1
               container:
-            - name: CentOS 7 64-bit gcc
+            - name: linux-gcc-x86_64
               target: linux-64-gcc
               os: ubuntu-latest
               container: owncloudci/appimage-build:centos7-devtoolset11-amd64
