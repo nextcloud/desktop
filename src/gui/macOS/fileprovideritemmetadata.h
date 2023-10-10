@@ -86,7 +86,10 @@ public:
 	bool downloading() const;
 	bool downloaded() const;
 	bool shared() const;
-	bool sharedByCurrentUser() const;
+    bool sharedByCurrentUser() const;
+
+    // Check equality via identifier, contentVersion, and metadataVersion
+    friend bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs);
 
 private:
 	QString _identifier;

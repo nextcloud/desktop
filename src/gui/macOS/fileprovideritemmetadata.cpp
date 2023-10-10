@@ -163,6 +163,13 @@ bool FileProviderItemMetadata::sharedByCurrentUser() const
     return _sharedByCurrentUser;
 }
 
+bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs)
+{
+    return lhs.identifier() == rhs.identifier() &&
+        lhs.contentVersion() == rhs.contentVersion() &&
+        lhs.metadataVersion() == rhs.metadataVersion();
 }
 
-}
+} // namespace Mac
+
+} // namespace OCC
