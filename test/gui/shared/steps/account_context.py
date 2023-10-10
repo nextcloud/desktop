@@ -119,7 +119,7 @@ def step(context, username):
     displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
     test.compare(
-        AccountSetting.isUserSignedIn(displayname, server),
+        AccountSetting.waitUntilAccountIsConnected(displayname, server),
         True,
         "User '%s' is connected" % username,
     )

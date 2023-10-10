@@ -111,6 +111,21 @@ class AccountSetting:
             )
 
     @staticmethod
+    def waitUntilAccountIsConnected(displayname, server, timeout=5000):
+        result = squish.waitFor(
+            lambda: AccountSetting.isUserSignedIn(displayname, server),
+            timeout,
+        )
+
+        if not result:
+            raise Exception(
+                "Timeout waiting for the account to be connected for "
+                + str(timeout)
+                + " milliseconds"
+            )
+        return result
+
+    @staticmethod
     def confirmRemoveAllFiles():
         squish.clickButton(squish.waitForObject(AccountSetting.REMOVE_ALL_FILES))
 
