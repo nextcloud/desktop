@@ -25,12 +25,40 @@ FileProviderMaterialisedItemsModel::FileProviderMaterialisedItemsModel(QObject *
 
 int FileProviderMaterialisedItemsModel::rowCount(const QModelIndex &parent) const
 {
-    return 0;
+    if (parent.isValid()) {
+        return 0;
+    }
+
+    return _items.count();
 }
 
 QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int role) const
 {
+    const auto item = _items.at(index.row());
+
+    switch (role) {
+    case Qt::DisplayRole:
+        return item.filename();
+    }
     return {};
+}
+
+QVector<FileProviderItemMetadata> FileProviderMaterialisedItemsModel::items() const
+{
+    return _items;
+}
+
+void FileProviderMaterialisedItemsModel::setItems(const QVector<FileProviderItemMetadata> &items)
+{
+    if (items == _items) {
+        return;
+    }
+
+    beginResetModel();
+    _items = items;
+    endResetModel();
+
+    Q_EMIT itemsChanged();
 }
 
 } // namespace Mac

@@ -16,6 +16,8 @@
 
 #include <QAbstractListModel>
 
+#include "gui/macOS/fileprovideritemmetadata.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -24,10 +26,23 @@ class FileProviderMaterialisedItemsModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    Q_PROPERTY(QVector<FileProviderItemMetadata> items READ items WRITE setItems NOTIFY itemsChanged)
+
 public:
     explicit FileProviderMaterialisedItemsModel(QObject *parent = nullptr);
     int rowCount(const QModelIndex &parent = {}) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    QVector<FileProviderItemMetadata> items() const;
+
+signals:
+    void itemsChanged();
+
+public slots:
+    void setItems(const QVector<FileProviderItemMetadata> &items);
+
+private:
+    QVector<FileProviderItemMetadata> _items;
 };
 
 } // namespace Mac
