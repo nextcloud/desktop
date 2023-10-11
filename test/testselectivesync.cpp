@@ -17,7 +17,11 @@ class TestSelectiveSync : public QObject
     Q_OBJECT
 
 private slots:
-
+    void initTestCase()
+    {
+        Logger::instance()->setLogFlush(true);
+        Logger::instance()->setLogDebug(true);
+    }
 
     void testSelectiveSyncBigFolders()
     {
