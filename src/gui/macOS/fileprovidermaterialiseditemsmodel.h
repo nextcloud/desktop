@@ -29,6 +29,38 @@ class FileProviderMaterialisedItemsModel : public QAbstractListModel
     Q_PROPERTY(QVector<FileProviderItemMetadata> items READ items WRITE setItems NOTIFY itemsChanged)
 
 public:
+    enum Roles {
+        IdentifierRole = Qt::UserRole + 1,
+        ParentItemIdentifierRole,
+        FilenameRole,
+        TypeIdentifierRole,
+        SymlinkTargetPathRole,
+        UploadingErrorRole,
+        DownloadingErrorRole,
+        MostRecentEditorNameRole,
+        OwnerNameRole,
+        ContentModificationDateRole,
+        CreationDateRole,
+        LastUsedDateRole,
+        ContentVersionRole,
+        MetadataVersionRole,
+        TagDataRole,
+        CapabilitiesRole,
+        FileSystemFlagsRole,
+        ChildItemCountRole,
+        TypeOsCodeRole,
+        CreatorOsCodeRole,
+        DocumentSizeRole,
+        MostRecentVersionDownloadedRole,
+        UploadingRole,
+        UploadedRole,
+        DownloadingRole,
+        DownloadedRole,
+        SharedRole,
+        SharedByCurrentUserRole,
+    };
+    Q_ENUM(Roles)
+
     explicit FileProviderMaterialisedItemsModel(QObject *parent = nullptr);
     int rowCount(const QModelIndex &parent = {}) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

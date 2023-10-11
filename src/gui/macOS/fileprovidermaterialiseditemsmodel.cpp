@@ -38,7 +38,62 @@ QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int 
 
     switch (role) {
     case Qt::DisplayRole:
+    case FilenameRole:
         return item.filename();
+    case IdentifierRole:
+        return item.identifier();
+    case ParentItemIdentifierRole:
+        return item.parentItemIdentifier();
+    case TypeIdentifierRole:
+        return item.typeIdentifier();
+    case SymlinkTargetPathRole:
+        return item.symlinkTargetPath();
+    case UploadingErrorRole:
+        return item.uploadingError();
+    case DownloadingErrorRole:
+        return item.downloadingError();
+    case MostRecentEditorNameRole:
+        return item.mostRecentEditorName();
+    case OwnerNameRole:
+        return item.ownerName();
+    case ContentModificationDateRole:
+        return item.contentModificationDate();
+    case CreationDateRole:
+        return item.creationDate();
+    case LastUsedDateRole:
+        return item.lastUsedDate();
+    case ContentVersionRole:
+        return item.contentVersion();
+    case MetadataVersionRole:
+        return item.metadataVersion();
+    case TagDataRole:
+        return item.tagData();
+    case CapabilitiesRole:
+        return item.capabilities();
+    case FileSystemFlagsRole:
+        return item.fileSystemFlags();
+    case ChildItemCountRole:
+        return item.childItemCount();
+    case TypeOsCodeRole:
+        return item.typeOsCode();
+    case CreatorOsCodeRole:
+        return item.creatorOsCode();
+    case DocumentSizeRole:
+        return item.documentSize();
+    case MostRecentVersionDownloadedRole:
+        return item.mostRecentVersionDownloaded();
+    case UploadingRole:
+        return item.uploading();
+    case UploadedRole:
+        return item.uploaded();
+    case DownloadingRole:
+        return item.downloading();
+    case DownloadedRole:
+        return item.downloaded();
+    case SharedRole:
+        return item.shared();
+    case SharedByCurrentUserRole:
+        return item.sharedByCurrentUser();
     }
     return {};
 }
