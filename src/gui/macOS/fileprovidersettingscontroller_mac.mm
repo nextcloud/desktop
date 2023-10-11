@@ -19,6 +19,7 @@
 #include "gui/systray.h"
 #include "gui/userinfo.h"
 #include "gui/macOS/fileprovideritemmetadata.h"
+#include "gui/macOS/fileprovidermaterialiseditemsmodel.h"
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
@@ -28,9 +29,11 @@
 
 namespace {
 constexpr auto fpSettingsQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderSettings.qml";
+constexpr auto fpEvictionDialogQmlPath = "qrc:/qml/src/gui/macOS/ui/FileProviderEvictionDialog.qml";
 
-// FileProviderSettingsPage properties -- make sure they match up in QML file!
-constexpr auto fpSettingsAccountUserIdAtHostProp = "accountUserIdAtHost";
+// QML properties -- make sure they match up in QML file!
+constexpr auto fpAccountUserIdAtHostProp = "accountUserIdAtHost";
+constexpr auto fpMaterialisedItemsModelProp = "materialisedItemsModel";
 
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
@@ -317,7 +320,7 @@ QQuickWidget *FileProviderSettingsController::settingsViewWidget(const QString &
     const auto settingsViewWidget = new QQuickWidget(Systray::instance()->trayEngine(), parent);
     settingsViewWidget->setResizeMode(resizeMode);
     settingsViewWidget->setSource(QUrl(fpSettingsQmlPath));
-    settingsViewWidget->rootObject()->setProperty(fpSettingsAccountUserIdAtHostProp, accountUserIdAtHost);
+    settingsViewWidget->rootObject()->setProperty(fpAccountUserIdAtHostProp, accountUserIdAtHost);
     return settingsViewWidget;
 }
 
@@ -384,6 +387,20 @@ QAbstractListModel *FileProviderSettingsController::materialisedItemsModelForAcc
     });
 
     return model;
+}
+
+void FileProviderSettingsController::createEvictionWindowForAccount(const QString &userIdAtHost)
+{
+    const auto engine = Systray::instance()->trayEngine();
+    QQmlComponent component(engine, QUrl(fpEvictionDialogQmlPath));
+    const auto model = materialisedItemsModelForAccount(userIdAtHost);
+    const auto genericDialog = component.createWithInitialProperties({
+            {fpAccountUserIdAtHostProp, userIdAtHost},
+            {fpMaterialisedItemsModelProp, QVariant::fromValue(model)},
+    });
+    const auto dialog = qobject_cast<QQuickWindow *>(genericDialog);
+    Q_ASSERT(dialog);
+    dialog->show();
 }
 
 } // namespace Mac
