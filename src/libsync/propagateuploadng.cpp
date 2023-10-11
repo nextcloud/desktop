@@ -85,6 +85,14 @@ QUrl PropagateUploadFileNG::chunkUrl(const int chunk) const
 
  */
 
+QByteArray PropagateUploadFileNG::destinationHeader() const
+{
+    const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
+    const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
+    const auto destination = QString(davUrl + remotePath);
+    return destination.toUtf8();
+}
+
 void PropagateUploadFileNG::doStartUpload()
 {
     propagator()->_activeJobList.append(this);
@@ -362,11 +370,7 @@ void PropagateUploadFileNG::startNextChunk()
 
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
-
-    const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
-    const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
-    const auto destination = QString(davUrl + remotePath);
-    headers["Destination"] = destination.toUtf8();
+    headers["Destination"] = destinationHeader();
 
     _sent += _currentChunkSize;
     const auto url = chunkUrl(_currentChunk);
