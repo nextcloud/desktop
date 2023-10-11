@@ -1036,8 +1036,9 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
     */
 
     for (const auto &syncItem : qAsConst(syncItems)) {
-        if (syncItem->_direction != SyncFileItem::Down)
+        if (syncItem->_direction != SyncFileItem::Down || syncItem->_isSelectiveSync) {
             continue;
+        }
 
         switch (syncItem->_instruction) {
         case CSYNC_INSTRUCTION_SYNC:
