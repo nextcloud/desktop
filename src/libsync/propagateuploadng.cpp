@@ -360,10 +360,12 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    auto headers = PropagateUploadFileCommon::headers();
+    QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
 
-    const auto destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_fileToUpload._file));
+    const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
+    const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
+    const auto destination = QString(davUrl + remotePath);
     headers["Destination"] = destination.toUtf8();
 
     _sent += _currentChunkSize;
