@@ -490,7 +490,7 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
     return newAccountState;
 }
 
-void AccountManager::deleteAccount(AccountState *account)
+void AccountManager::deleteAccount(OCC::AccountState *account)
 {
     const auto it = std::find(_accounts.begin(), _accounts.end(), account);
     if (it == _accounts.end()) {
