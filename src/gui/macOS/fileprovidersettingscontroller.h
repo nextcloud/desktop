@@ -17,6 +17,8 @@
 #include <QObject>
 #include <QtQuickWidgets/QtQuickWidgets>
 
+class QAbstractListModel;
+
 namespace OCC {
 
 class UserInfo;
@@ -40,6 +42,8 @@ public:
     [[nodiscard]] Q_INVOKABLE float localStorageUsageGbForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] unsigned long long remoteStorageUsageForAccount(const QString &userIdAtHost) const;
     [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
+
+    [[nodiscard]] Q_INVOKABLE QAbstractListModel *materialisedItemsModelForAccount(const QString &userIdAtHost);
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);

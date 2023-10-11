@@ -364,6 +364,28 @@ float FileProviderSettingsController::remoteStorageUsageGbForAccount(const QStri
     return gbFromBytesWithOneDecimal(remoteStorageUsageForAccount(userIdAtHost));
 }
 
+QAbstractListModel *FileProviderSettingsController::materialisedItemsModelForAccount(const QString &userIdAtHost)
+{
+    const auto items = d->materialisedItemsForAccount(userIdAtHost);
+    if (items.isEmpty()) {
+        return nullptr;
+    }
+
+    const auto model = new FileProviderMaterialisedItemsModel(this);
+    model->setItems(items);
+
+    connect(this, &FileProviderSettingsController::materialisedItemsForAccountChanged, model, [this, model, userIdAtHost](const QString &accountUserIdAtHost) {
+        if (accountUserIdAtHost != userIdAtHost) {
+            return;
+        }
+
+        const auto items = d->materialisedItemsForAccount(userIdAtHost);
+        model->setItems(items);
+    });
+
+    return model;
+}
+
 } // namespace Mac
 
 } // namespace OCC
