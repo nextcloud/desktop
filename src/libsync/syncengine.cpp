@@ -919,7 +919,7 @@ void SyncEngine::slotDiscoveryFinished()
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error, const ErrorCategory errorCategory)
 {
-    syncError(error, errorCategory);
+    emit syncError(error, errorCategory);
     finalize(false);
 }
 
