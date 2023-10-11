@@ -811,7 +811,7 @@ void SyncEngine::slotDiscoveryFinished()
         }
 
         if (_discoveryPhase->_hasDownloadRemovedItems && _discoveryPhase->_hasUploadErrorItems) {
-            for (const auto &item : _syncItems) {
+            for (const auto &item : qAsConst(_syncItems)) {
                 if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
                     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 }
