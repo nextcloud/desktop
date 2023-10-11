@@ -276,6 +276,7 @@ void PropagateUploadFileNG::startNewUpload()
 
     // But we should send the temporary (or something) one.
     headers["OC-Total-Length"] = QByteArray::number(_fileToUpload._size);
+    headers["Destination"] = destinationHeader();
     const auto job = new MkColJob(propagator()->account(), chunkUploadFolderUrl(), headers, this);
 
     connect(job, &MkColJob::finishedWithError,
