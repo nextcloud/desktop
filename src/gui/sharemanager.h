@@ -310,7 +310,6 @@ signals:
     void noteSet();
     void nameSet();
     void labelSet();
-    void hideDownloadSet();
 
 private slots:
     void slotNoteSet(const QJsonDocument &, const QVariant &value);
