@@ -633,8 +633,9 @@ private slots:
     /** Emit the finished signal and make sure it is only emitted once */
     void emitFinished(OCC::SyncFileItem::Status status)
     {
-        if (!_finishedEmited)
-            emit finished(status == SyncFileItem::Success);
+        if (!_finishedEmited) {
+            emit finished(status);
+        }
         _abortRequested = false;
         _finishedEmited = true;
     }
@@ -645,7 +646,7 @@ signals:
     void newItem(const OCC::SyncFileItemPtr &);
     void itemCompleted(const SyncFileItemPtr &item, OCC::ErrorCategory category);
     void progress(const OCC::SyncFileItem &, qint64 bytes);
-    void finished(bool success);
+    void finished(OCC::SyncFileItem::Status status);
 
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName);
