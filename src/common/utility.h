@@ -256,6 +256,7 @@ namespace Utility {
     OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
 
     OCSYNC_EXPORT QString trailingSlashPath(const QString &path);
+    OCSYNC_EXPORT QString noLeadingSlashPath(const QString &path);
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
