@@ -212,7 +212,7 @@ private slots:
 
     void slotItemCompleted(const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
     void slotDiscoveryFinished();
-    void slotPropagationFinished(bool success);
+    void slotPropagationFinished(SyncFileItem::Status status);
     void slotProgress(const OCC::SyncFileItem &item, qint64 current);
     void slotCleanPollsJobAborted(const QString &error, const OCC::ErrorCategory category);
 
