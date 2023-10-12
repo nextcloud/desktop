@@ -560,7 +560,7 @@ Počkajte na novú synchronizáciu a potom ho zašifrujte.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
         <location filename="../src/gui/accountsettings.cpp" line="608"/>
         <source>Create new folder</source>
-        <translation>Vytvoriť nový adresár</translation>
+        <translation>Vytvoriť nový priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
@@ -1970,7 +1970,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation>Vytvoriť nový adresár</translation>
+        <translation>Vytvoriť nový priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
@@ -2556,7 +2556,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
-        <translation>Presunúť vymazané súbory do koša</translation>
+        <translation>Presúvať vymazané súbory do koša</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -5523,7 +5523,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="291"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať značku</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
