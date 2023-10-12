@@ -65,15 +65,8 @@ void WinPlatform::setApplication(QCoreApplication *application)
     const QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 
-    // The Windows style still has pixelated elements with Qt 5.6,
-    // it's recommended to use the Fusion style in this case, even
-    // though it looks slightly less native. Check here after the
-    // QApplication was constructed, but before any QWidget is
-    // constructed.
     if (auto guiApp = qobject_cast<QGuiApplication *>(application)) {
-        if (!qFuzzyCompare(guiApp->devicePixelRatio(), 1)) {
-            QApplication::setStyle(QStringLiteral("fusion"));
-        }
+        QApplication::setStyle(QStringLiteral("fusion"));
     }
 }
 

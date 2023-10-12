@@ -27,14 +27,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
 #ifdef Q_OS_WIN
-    // The Windows style still has pixelated elements with Qt 5.6,
-    // it's recommended to use the Fusion style in this case, even
-    // though it looks slightly less native. Check here after the
-    // QApplication was constructed, but before any QWidget is
-    // constructed.
-    if (!qFuzzyCompare(app.devicePixelRatio(), 1)) {
-        QApplication::setStyle(QStringLiteral("fusion"));
-    }
+    QApplication::setStyle(QStringLiteral("fusion"));
 #endif // Q_OS_WIN
 
     if (app.arguments().size() != 2) {
