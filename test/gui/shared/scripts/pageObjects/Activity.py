@@ -27,14 +27,16 @@ class Activity:
     }
 
     @staticmethod
+    def getTabObject(tab_index):
+        return {
+            "container": Activity.SUBTAB_CONTAINER,
+            "index": tab_index,
+            "type": "TabItem",
+        }
+
+    @staticmethod
     def getTabText(tab_index):
-        return squish.waitForObjectExists(
-            {
-                "container": Activity.SUBTAB_CONTAINER,
-                "index": tab_index,
-                "type": "TabItem",
-            }
-        ).text
+        return squish.waitForObjectExists(Activity.getTabObject(tab_index)).text
 
     @staticmethod
     def getNotSyncedFileSelector(resource):
@@ -69,7 +71,13 @@ class Activity:
 
             if tabName in tabText:
                 tabFound = True
-                squish.clickTab(squish.waitForObject(Activity.SUBTAB), tabText)
+                squish.mouseClick(
+                    squish.waitForObjectExists(Activity.getTabObject(index)),
+                    0,
+                    0,
+                    squish.Qt.NoModifier,
+                    squish.Qt.LeftButton,
+                )
                 break
 
         if not tabFound:
@@ -85,7 +93,6 @@ class Activity:
 
     @staticmethod
     def checkBlackListedResourceExist(filename):
-
         result = squish.waitFor(
             lambda: Activity.isResourceBlackListed(filename),
             get_config('maxSyncTimeout') * 1000,
