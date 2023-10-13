@@ -448,6 +448,9 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
     Q_ASSERT(d->hydrationJobs.contains(job));
     qCInfo(lcCfApi) << "Hydration job finished" << job->requestId() << job->folderPath() << job->status();
     emit hydrationRequestFinished(job->requestId());
+    if (!job->errorString().isEmpty()) {
+        emit failureHydrating(job->errorCode(), job->statusCode(), job->errorString(), job->folderPath());
+    }
 }
 
 int VfsCfApi::finalizeHydrationJob(const QString &requestId)
