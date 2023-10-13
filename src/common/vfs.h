@@ -265,6 +265,8 @@ signals:
     void beginHydrating();
     /// Emitted when the hydration ends
     void doneHydrating();
+    // Emitted when hydration fails
+    void failureHydrating(int errorCode, int statusCode, const QString &errorString, const QString &fileName);
 
 protected:
     /** Setup the plugin for the folder.

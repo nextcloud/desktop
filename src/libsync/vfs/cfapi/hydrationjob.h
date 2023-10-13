@@ -71,6 +71,10 @@ public:
 
     Status status() const;
 
+    [[nodiscard]] int errorCode() const;
+    [[nodiscard]] int statusCode() const;
+    [[nodiscard]] QString errorString() const;
+
     void start();
     void cancel();
     void finalize(OCC::VfsCfApi *vfs);
@@ -114,6 +118,9 @@ private:
     QLocalSocket *_signalSocket = nullptr;
     GETFileJob *_job = nullptr;
     Status _status = Success;
+    int _errorCode = 0;
+    int _statusCode = 0;
+    QString _errorString;
 };
 
 } // namespace OCC
