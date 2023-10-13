@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
+* Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 
 Details
 -------
@@ -18,6 +19,14 @@ Details
    We fixed a potential crash when clicking on a notification.
 
    https://github.com/owncloud/client/issues/11226
+
+* Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
+
+   This option was used before the UI language could be chosen in the settings. The option
+   --list-languages is also removed, as it no longer serves a purpose.
+
+   https://github.com/owncloud/client/issues/11245
+   https://github.com/owncloud/client/pull/11270
 
 Changelog for ownCloud Desktop Client [5.0.0] (2023-10-05)
 =======================================
