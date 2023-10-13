@@ -2628,7 +2628,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Zip Archives</source>
-        <translation>Zip-архіви</translation>
+        <translation>ZIP-архіви </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="475"/>
