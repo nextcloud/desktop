@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Restore default value</translation>
     </message>
 </context>
 <context>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="81"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Preparing the account</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="173"/>
@@ -753,7 +753,7 @@ Please authenticate using your browser.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 does not provide activities.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -1308,7 +1308,7 @@ Please consider removing this folder from the account and adding it again.</tran
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1147"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Queued</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1061"/>
@@ -1690,7 +1690,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Please enter your password to log in to the account %1.</translation>
     </message>
 </context>
 <context>
@@ -2328,7 +2328,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: Ignored because its path is deselected</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -3301,7 +3301,7 @@ for additional privileges during the process.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Show file versions in web browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1027"/>
@@ -3851,7 +3851,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Create a new account</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="725"/>
@@ -3872,7 +3872,7 @@ Are you sure you want to proceed?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Resume synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="658"/>
@@ -4183,7 +4183,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Filename Reserved</translation>
     </message>
 </context>
 <context>
@@ -4288,7 +4288,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="383"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4370,7 +4370,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Server version downloaded, local copy was backed up as conflict file</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4462,7 +4462,7 @@ Are you sure you want to proceed?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="209"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Some settings were configured in newer versions of this client and use features that are not available in this version</translation>
     </message>
 </context>
 </TS>
