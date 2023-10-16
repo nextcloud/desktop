@@ -729,4 +729,11 @@ QString Utility::trailingSlashPath(const QString &path)
     return path.endsWith(slash) ? path : QString(path + slash);
 }
 
+QString Utility::noLeadingSlashPath(const QString &path)
+{
+    static const auto slash = QLatin1Char('/');
+    return path.startsWith(slash) ? path.mid(1) : path;
+}
+
+
 } // namespace OCC

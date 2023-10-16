@@ -85,6 +85,14 @@ QUrl PropagateUploadFileNG::chunkUrl(const int chunk) const
 
  */
 
+QByteArray PropagateUploadFileNG::destinationHeader() const
+{
+    const auto davUrl = Utility::trailingSlashPath(propagator()->account()->davUrl().toString());
+    const auto remotePath = Utility::noLeadingSlashPath(propagator()->fullRemotePath(_fileToUpload._file));
+    const auto destination = QString(davUrl + remotePath);
+    return destination.toUtf8();
+}
+
 void PropagateUploadFileNG::doStartUpload()
 {
     propagator()->_activeJobList.append(this);
@@ -268,6 +276,7 @@ void PropagateUploadFileNG::startNewUpload()
 
     // But we should send the temporary (or something) one.
     headers["OC-Total-Length"] = QByteArray::number(_fileToUpload._size);
+    headers["Destination"] = destinationHeader();
     const auto job = new MkColJob(propagator()->account(), chunkUploadFolderUrl(), headers, this);
 
     connect(job, &MkColJob::finishedWithError,
@@ -360,11 +369,9 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    auto headers = PropagateUploadFileCommon::headers();
+    QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
-
-    const auto destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_fileToUpload._file));
-    headers["Destination"] = destination.toUtf8();
+    headers["Destination"] = destinationHeader();
 
     _sent += _currentChunkSize;
     const auto url = chunkUrl(_currentChunk);
