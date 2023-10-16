@@ -584,6 +584,13 @@ public:
 
     [[nodiscard]] bool enforceVirtualFilesSyncFolder() const;
 
+    /**
+     * @brief Whether to show certain widgets in the settings dialog.
+     *
+     * By default, the widgets are shown unless set otherwise via NEXTCLOUD_SETTINGS_WIDGET_VISIBLE
+     */
+    bool isSettingsWidgetsVisible() const;
+
     static QColor defaultColor();
 
     static constexpr const char *themePrefix = ":/client/theme/";
@@ -637,6 +644,7 @@ private:
     bool _forceOverrideServerUrl = false;
     bool _isVfsEnabled = false;
     bool _startLoginFlowAutomatically = false;
+    bool _isSettingWidgetsVisible = true;
 
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
