@@ -410,6 +410,7 @@ private:
 
     [[nodiscard]] QUrl chunkUploadFolderUrl() const;
     [[nodiscard]] QUrl chunkUrl(const int chunk) const;
+    [[nodiscard]] QByteArray destinationHeader() const;
 
     void startNewUpload();
     void startNextChunk();
