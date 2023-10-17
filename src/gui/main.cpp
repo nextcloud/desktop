@@ -26,6 +26,7 @@
 #include "common/version.h"
 #include "gui/translations.h"
 #include "libsync/logger.h"
+#include "socketapi/socketapi.h"
 
 #include <kdsingleapplication.h>
 
@@ -389,7 +390,7 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    FolderMan::instance()->setSyncEnabled(true);
+    folderManager->setSyncEnabled(true);
 
     auto ocApp = Application::createInstance(platform.get(), options.debugMode);
 
@@ -441,6 +442,9 @@ int main(int argc, char **argv)
     if (AccountManager::instance()->accounts().isEmpty()) {
         QTimer::singleShot(0, ocApp->gui(), &ownCloudGui::runNewAccountWizard);
     }
+
+    // Now that everything is up and running, start accepting connections/requests from the shell integration.
+    folderManager->socketApi()->startShellIntegration();
 
     return app.exec();
 }

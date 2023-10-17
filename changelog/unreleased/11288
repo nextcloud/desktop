@@ -1,0 +1,8 @@
+Bugfix: Fix crash on start-up when starting shell integration
+
+A possible crash has been fixed that could occur during start-up, when
+the shell integration started doing requests before the client itself
+completed starting up.
+
+https://github.com/owncloud/client/issues/11280
+https://github.com/owncloud/client/pull/11288

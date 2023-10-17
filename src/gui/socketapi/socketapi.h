@@ -53,6 +53,8 @@ public:
     explicit SocketApi(QObject *parent = nullptr);
     ~SocketApi() override;
 
+    void startShellIntegration();
+
 public slots:
     void registerAccount(const AccountPtr &a);
     void unregisterAccount(const AccountPtr &a);
@@ -155,6 +157,7 @@ private:
 
     QString buildRegisterPathMessage(const QString &path);
 
+    QString _socketPath;
     QSet<Folder *> _registeredFolders;
     QSet<AccountPtr> _registeredAccounts;
     QMap<SocketApiSocket *, QSharedPointer<SocketListener>> _listeners;
