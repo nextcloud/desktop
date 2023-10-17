@@ -173,7 +173,7 @@ public slots:
     void toggleShareExpirationDateFromQml(const QVariant &share, const bool enable) const;
     void toggleShareNoteToRecipient(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareNoteToRecipientFromQml(const QVariant &share, const bool enable) const;
-    void changePermissionModeFromQml(const QVariant &share, const SharePermissionsMode permissionMode);
+    void changePermissionModeFromQml(const QVariant &share, const OCC::ShareModel::SharePermissionsMode permissionMode);
 
     void setLinkShareLabel(const QSharedPointer<OCC::LinkShare> &linkShare, const QString &label) const;
     void setLinkShareLabelFromQml(const QVariant &linkShare, const QString &label) const;

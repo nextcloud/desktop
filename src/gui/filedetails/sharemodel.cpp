@@ -945,7 +945,7 @@ void ShareModel::toggleShareNoteToRecipientFromQml(const QVariant &share, const 
     toggleShareNoteToRecipient(ptr, enable);
 }
 
-void ShareModel::changePermissionModeFromQml(const QVariant &share, const SharePermissionsMode permissionMode)
+void ShareModel::changePermissionModeFromQml(const QVariant &share, const OCC::ShareModel::SharePermissionsMode permissionMode)
 {
     const auto sharePtr = share.value<SharePtr>();
     if (sharePtr.isNull() || _sharePermissionsChangeInProgress) {

@@ -142,7 +142,8 @@ private slots:
 
             bool isAnyFileDropFileMissing = false;
 
-            for (const auto &key : metadata->fileDrop().keys()) {
+            const auto allKeys = metadata->fileDrop().keys();
+            for (const auto &key : allKeys) {
                 if (std::find_if(metadata->files().constBegin(), metadata->files().constEnd(), [&key](const EncryptedFile &encryptedFile) {
                     return encryptedFile.encryptedFilename == key;
                 }) == metadata->files().constEnd()) {

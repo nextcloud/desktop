@@ -644,7 +644,7 @@ private slots:
 
 signals:
     void newItem(const OCC::SyncFileItemPtr &);
-    void itemCompleted(const SyncFileItemPtr &item, OCC::ErrorCategory category);
+    void itemCompleted(const OCC::SyncFileItemPtr &item, OCC::ErrorCategory category);
     void progress(const OCC::SyncFileItem &, qint64 bytes);
     void finished(OCC::SyncFileItem::Status status);
 
@@ -725,7 +725,7 @@ public:
     void start();
 signals:
     void finished();
-    void aborted(const QString &error, const ErrorCategory errorCategory);
+    void aborted(const QString &error, const OCC::ErrorCategory errorCategory);
 private slots:
     void slotPollFinished();
 };
