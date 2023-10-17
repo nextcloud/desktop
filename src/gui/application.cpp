@@ -669,6 +669,11 @@ void Application::setupLogging()
         logger->setupTemporaryFolderLogDir();
     }
 
+#if defined QT_DEBUG
+    logger->setLogFlush(true);
+    logger->setLogDebug(true);
+#endif
+
     logger->enterNextLogFile();
 
     qCInfo(lcApplication) << "##################" << _theme->appName()

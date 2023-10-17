@@ -1,3 +1,5 @@
+#define OPENSSL_SUPPRESS_DEPRECATED
+
 #include "clientsideencryption.h"
 
 #include <openssl/rsa.h>
