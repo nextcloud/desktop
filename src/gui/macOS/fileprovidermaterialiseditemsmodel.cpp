@@ -98,6 +98,42 @@ QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int 
     return {};
 }
 
+QHash<int, QByteArray> FileProviderMaterialisedItemsModel::roleNames() const
+{
+    auto roleNames = QAbstractListModel::roleNames();
+    roleNames.insert({
+        { IdentifierRole, "identifier" },
+        { ParentItemIdentifierRole, "parentItemIdentifier" },
+        { FilenameRole, "fileName" },
+        { TypeIdentifierRole, "typeIdentifier" },
+        { SymlinkTargetPathRole, "symlinkTargetPath" },
+        { UploadingErrorRole, "uploadingError" },
+        { DownloadingErrorRole, "downloadingError" },
+        { MostRecentEditorNameRole, "mostRecentEditorName" },
+        { OwnerNameRole, "ownerName" },
+        { ContentModificationDateRole, "contentModificationDate" },
+        { CreationDateRole, "creationDate" },
+        { LastUsedDateRole, "lastUsedDate" },
+        { ContentVersionRole, "contentVersion" },
+        { MetadataVersionRole, "metadataVersion" },
+        { TagDataRole, "tagData" },
+        { CapabilitiesRole, "capabilities" },
+        { FileSystemFlagsRole, "fileSystemFlags" },
+        { ChildItemCountRole, "childItemCount" },
+        { TypeOsCodeRole, "typeOsCode" },
+        { CreatorOsCodeRole, "creatorOsCode" },
+        { DocumentSizeRole, "documentSize" },
+        { MostRecentVersionDownloadedRole, "mostRecentVersionDownloaded" },
+        { UploadingRole, "uploading" },
+        { UploadedRole, "uploaded" },
+        { DownloadingRole, "downloading" },
+        { DownloadedRole, "downloaded" },
+        { SharedRole, "shared" },
+        { SharedByCurrentUserRole, "sharedByCurrentUser" },
+    });
+    return roleNames;
+}
+
 QVector<FileProviderItemMetadata> FileProviderMaterialisedItemsModel::items() const
 {
     return _items;
