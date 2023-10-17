@@ -947,13 +947,13 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item, const ErrorCateg
     emit itemCompleted(item, category);
 }
 
-void SyncEngine::slotPropagationFinished(bool success)
+void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
 {
     if (_propagator->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
-    if (success && _discoveryPhase) {
+    if ((status == SyncFileItem::Success || status == SyncFileItem::BlacklistedError) && _discoveryPhase) {
         _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
     }
 
@@ -970,7 +970,7 @@ void SyncEngine::slotPropagationFinished(bool success)
     _progressInfo->_status = ProgressInfo::Done;
     emit transmissionProgress(*_progressInfo);
 
-    finalize(success);
+    finalize(status == SyncFileItem::Success);
 }
 
 void SyncEngine::finalize(bool success)
@@ -1036,8 +1036,9 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
     */
 
     for (const auto &syncItem : qAsConst(syncItems)) {
-        if (syncItem->_direction != SyncFileItem::Down)
+        if (syncItem->_direction != SyncFileItem::Down || syncItem->_isSelectiveSync) {
             continue;
+        }
 
         switch (syncItem->_instruction) {
         case CSYNC_INSTRUCTION_SYNC:
