@@ -304,6 +304,8 @@ public:
     void trySetupPushNotifications();
     [[nodiscard]] PushNotifications *pushNotifications() const;
     void setPushNotificationsReconnectInterval(int interval);
+    bool pushNotificationNotificationsReady() const;
+    bool pushNotificationActivitiesReady() const;
 
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
