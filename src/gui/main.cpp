@@ -95,9 +95,9 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     QString descriptionText;
     QTextStream descriptionTextStream(&descriptionText);
 
-    descriptionTextStream
-        << QStringLiteral("%1 version %2\r\nFile synchronization desktop utility.").arg(Theme::instance()->appName(), OCC::Version::displayString())
-        << Qt::endl;
+    descriptionTextStream << QApplication::translate("CommandLine", "%1 version %2\r\nFile synchronization desktop utility.")
+                                 .arg(Theme::instance()->appName(), OCC::Version::displayString())
+                          << Qt::endl;
 
     if (Theme::instance()->appName() == QLatin1String("ownCloud")) {
         descriptionTextStream
@@ -122,19 +122,21 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     parser.addOption(showSettingsLegacyOption);
 
     auto showOption = addOption({{QStringLiteral("s"), QStringLiteral("show")},
-        QStringLiteral(
+        QApplication::translate("CommandLine",
             "Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.")});
-    auto quitInstanceOption = addOption({{QStringLiteral("q"), QStringLiteral("quit")}, QStringLiteral("Quit the running instance.")});
-    auto logFileOption = addOption({QStringLiteral("logfile"), QStringLiteral("Write log to file (use - to write to stdout)."), QStringLiteral("filename")});
-    auto logDirOption = addOption({QStringLiteral("logdir"), QStringLiteral("Write each sync log output in a new file in folder."), QStringLiteral("name")});
-    auto logFlushOption = addOption({QStringLiteral("logflush"), QStringLiteral("Flush the log file after every write.")});
-    auto logDebugOption = addOption({QStringLiteral("logdebug"), QStringLiteral("Output debug-level messages in the log.")});
-    auto debugOption = addOption({QStringLiteral("debug"), QStringLiteral("Enable debug mode.")});
-    addOption({QStringLiteral("cmd"), QStringLiteral("Forward all arguments to the cmd client. This argument must be the first.")});
+    auto quitInstanceOption = addOption({{QStringLiteral("q"), QStringLiteral("quit")}, QApplication::translate("CommandLine", "Quit the running instance.")});
+    auto logFileOption = addOption(
+        {QStringLiteral("logfile"), QApplication::translate("CommandLine", "Write log to file (use - to write to stdout)."), QStringLiteral("filename")});
+    auto logDirOption = addOption(
+        {QStringLiteral("logdir"), QApplication::translate("CommandLine", "Write each sync log output in a new file in folder."), QStringLiteral("name")});
+    auto logFlushOption = addOption({QStringLiteral("logflush"), QApplication::translate("CommandLine", "Flush the log file after every write.")});
+    auto logDebugOption = addOption({QStringLiteral("logdebug"), QApplication::translate("CommandLine", "Output debug-level messages in the log.")});
+    auto debugOption = addOption({QStringLiteral("debug"), QApplication::translate("CommandLine", "Enable debug mode.")});
+    addOption({QStringLiteral("cmd"), QApplication::translate("CommandLine", "Forward all arguments to the cmd client. This argument must be the first.")});
 
     // virtual file system parameters (optional)
-    parser.addPositionalArgument(
-        QStringLiteral("vfs file"), QStringLiteral("Virtual file system file to be opened (optional)."), {QStringLiteral("[<vfs file>]")});
+    parser.addPositionalArgument(QStringLiteral("vfs file"), QApplication::translate("CommandLine", "Virtual file system file to be opened (optional)."),
+        {QStringLiteral("[<vfs file>]")});
 
     parser.process(arguments);
 
@@ -150,7 +152,7 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     }
     if (parser.isSet(logDirOption)) {
         if (parser.isSet(logFileOption)) {
-            displayHelpText(QStringLiteral("--logfile and --logdir are mutually exclusive"));
+            displayHelpText(QApplication::translate("CommandLine", "--logfile and --logdir are mutually exclusive"));
             std::exit(1);
         }
         out.logDir = parser.value(logDirOption);

@@ -1,0 +1,10 @@
+Change: Make messages translatable that occur early in start-up
+
+These messages include the command-line messages (both errors and the
+help text). To do this, the deprecated `--confdir` option has been
+removed. This option was only used on windows before roaming profiles
+were supported.
+
+https://github.com/owncloud/client/issues/11142
+https://github.com/owncloud/client/issues/11246
+https://github.com/owncloud/client/pull/11300
