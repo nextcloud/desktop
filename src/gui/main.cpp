@@ -127,7 +127,6 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     auto logDirOption = addOption({QStringLiteral("logdir"), QStringLiteral("Write each sync log output in a new file in folder."), QStringLiteral("name")});
     auto logFlushOption = addOption({QStringLiteral("logflush"), QStringLiteral("Flush the log file after every write.")});
     auto logDebugOption = addOption({QStringLiteral("logdebug"), QStringLiteral("Output debug-level messages in the log.")});
-    auto confDirOption = addOption({QStringLiteral("confdir"), QStringLiteral("Use the given configuration folder."), QStringLiteral("dirname")});
     auto debugOption = addOption({QStringLiteral("debug"), QStringLiteral("Enable debug mode.")});
     addOption({QStringLiteral("cmd"), QStringLiteral("Forward all arguments to the cmd client. This argument must be the first.")});
 
@@ -159,13 +158,6 @@ CommandLineOptions parseOptions(const QStringList &arguments)
     }
     if (parser.isSet(logDebugOption)) {
         out.logDebug = true;
-    }
-    if (parser.isSet(confDirOption)) {
-        const auto confDir = parser.value(confDirOption);
-        if (!ConfigFile::setConfDir(confDir)) {
-            displayHelpText(QStringLiteral("Invalid path passed to --confdir"));
-            std::exit(1);
-        }
     }
     if (parser.isSet(debugOption)) {
         out.logDebug = true;

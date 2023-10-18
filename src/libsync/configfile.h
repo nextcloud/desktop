@@ -150,6 +150,7 @@ public:
     bool moveToTrash() const;
     void setMoveToTrash(bool);
 
+    /// Used for testing, so we do not change the user's config file.
     static bool setConfDir(const QString &value);
 
     bool optionalDesktopNotifications() const;
