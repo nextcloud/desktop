@@ -103,7 +103,7 @@
 <context>
     <name>CommandLine</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="105"/>
+        <location filename="../src/gui/main.cpp" line="106"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
         <translation>За повече информация, вижте %1</translation>
@@ -807,7 +807,7 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="212"/>
+        <location filename="../src/gui/main.cpp" line="213"/>
         <source>Quit</source>
         <translation>Изход</translation>
     </message>
@@ -3207,48 +3207,48 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="507"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="509"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Споделяне с %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="540"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="542"/>
         <source>Context menu share</source>
         <translation>Контекстно меню за споделяне</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="545"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="547"/>
         <source>Context menu share %1</source>
         <translation>Контекстно меню за споделяне на %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
         <source>Confirm deletion</source>
         <translation>Потвърдете изтриването</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="723"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Искате ли да изтриете за постоянно директорията &lt;i&gt;%1&lt;/i&gt; и цялото и съдържание?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="722"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="724"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Искате ли да изтриете за постоянно файла &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="764"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
         <source>Select new location...</source>
         <translation>Избор на ново местоположение...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="774"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="776"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="775"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="777"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3257,90 +3257,90 @@ for additional privileges during the process.</source>
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="850"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="852"/>
         <source>I shared something with you</source>
         <translation>Споделих нещо с теб</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="863"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="895"/>
         <source>Share...</source>
         <translation>Споделяне...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="915"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="867"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="917"/>
         <source>Copy private link to clipboard</source>
         <translation>Копиране на поверителната връзка в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="868"/>
         <source>Send private link by email...</source>
         <translation>Изпращане на поверителната връзка чрез имейл...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="891"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
         <source>Resharing this file is not allowed</source>
         <translation>Повторното споделяне на този файл не е позволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="891"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Повторното споделяне на тази папка не е позволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Create and copy public link to clipboard</source>
         <translation>Създаване и копиране на публична връзка в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="910"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
         <source>Copy public link to clipboard</source>
         <translation>Копиране на публичната връзка в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="996"/>
         <source>Open in %1</source>
         <translation>Отваряне в %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
         <source>Show file versions in web browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1027"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
         <source>Rename...</source>
         <translation>Преименуване</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1032"/>
         <source>Rename and upload...</source>
         <translation>Преименуване и качване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1035"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1039"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1037"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1041"/>
         <source>Move and rename...</source>
         <translation>Преместване и преименуване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1044"/>
         <source>Move, rename and upload...</source>
         <translation>Преместване, преименуване и качване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1045"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1047"/>
         <source>Delete local changes</source>
         <translation>Изтриване на локалните промени</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1050"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1052"/>
         <source>Move and upload...</source>
         <translation>Преместване и качване...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1053"/>
         <source>Delete</source>
         <translation>Изтриване</translation>
     </message>
@@ -4278,12 +4278,12 @@ Are you sure you want to proceed?</source>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>Error accessing the configuration file</source>
         <translation>Грешка при достъп до конфигурационния файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="376"/>
+        <location filename="../src/gui/main.cpp" line="377"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Възникна грешка при достъп до конфигурационния файл в %1.</translation>
     </message>
@@ -4465,7 +4465,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>version check</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="209"/>
+        <location filename="../src/gui/main.cpp" line="210"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
         <translation type="unfinished"/>
     </message>
