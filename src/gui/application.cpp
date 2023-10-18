@@ -45,10 +45,8 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileOpenEvent>
-#include <QLibraryInfo>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QTranslator>
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
 #include <QNetworkInformation>
@@ -70,12 +68,11 @@ ownCloudGui *Application::gui() const
 
 Application *Application::_instance = nullptr;
 
-Application::Application(Platform *platform, bool debugMode)
+Application::Application(Platform *platform, const QString &displayLanguage, bool debugMode)
     : _debugMode(debugMode)
+    , _displayLanguage(displayLanguage)
 {
     platform->migrate();
-
-    setupTranslations();
 
     qCInfo(lcApplication) << "Plugin search paths:" << qApp->libraryPaths();
 
@@ -246,110 +243,6 @@ bool Application::debugMode()
     return _debugMode;
 }
 
-QString substLang(const QString &lang)
-{
-    // Map the more appropriate script codes
-    // to country codes as used by Qt and
-    // transifex translation conventions.
-
-    // Simplified Chinese
-    if (lang == QLatin1String("zh_Hans"))
-        return QStringLiteral("zh_CN");
-    // Traditional Chinese
-    if (lang == QLatin1String("zh_Hant"))
-        return QStringLiteral("zh_TW");
-    return lang;
-}
-
-void Application::setupTranslations()
-{
-    const auto trPath = Translations::translationsDirectoryPath();
-    qCDebug(lcApplication) << "Translations directory path:" << trPath;
-
-    QStringList uiLanguages = QLocale::system().uiLanguages();
-    qCDebug(lcApplication) << "UI languages:" << uiLanguages;
-
-    // the user can also set a locale in the settings, so we need to load the config file
-    const ConfigFile cfg;
-
-    // we need to track the enforced language separately, since we need to distinguish between locale-provided
-    // and user-enforced one below
-    const QString enforcedLocale = cfg.uiLanguage();
-    qCDebug(lcApplication) << "Enforced language:" << enforcedLocale;
-
-    // note that user-enforced language are prioritized over the theme enforced one
-    // to make testing easier.
-    if (!enforcedLocale.isEmpty()) {
-        uiLanguages.prepend(enforcedLocale);
-    }
-
-    QTranslator *translator = new QTranslator(this);
-    QTranslator *qtTranslator = new QTranslator(this);
-    QTranslator *qtkeychainTranslator = new QTranslator(this);
-
-    for (QString lang : qAsConst(uiLanguages)) {
-        lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
-        lang = substLang(lang);
-        const QString trFile = Translations::translationsFilePrefix() + lang;
-        if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
-            // Permissive approach: Qt and keychain translations
-            // may be missing, but Qt translations must be there in order
-            // for us to accept the language. Otherwise, we try with the next.
-            // "en" is an exception as it is the default language and may not
-            // have a translation file provided.
-            qCInfo(lcApplication) << "Using" << lang << "translation";
-            _displayLanguage = lang;
-
-            const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
-            qCDebug(lcApplication) << "qtTrPath:" << qtTrPath;
-            const QString qtTrFile = QLatin1String("qt_") + lang;
-            qCDebug(lcApplication) << "qtTrFile:" << qtTrFile;
-            const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
-            qCDebug(lcApplication) << "qtBaseTrFile:" << qtBaseTrFile;
-
-            if (!qtTranslator->load(qtTrFile, qtTrPath)) {
-                if (!qtTranslator->load(qtTrFile, trPath)) {
-                    if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
-                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
-                            qCCritical(lcApplication) << "Could not load Qt translations";
-                        }
-                    }
-                }
-            }
-
-            const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
-            if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
-                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
-                    qCCritical(lcApplication) << "Could not load qtkeychain translations";
-                }
-            }
-
-            if (!translator->isEmpty() && !qApp->installTranslator(translator)) {
-                qCCritical(lcApplication) << "Failed to install translator";
-            }
-            if (!qtTranslator->isEmpty() && !qApp->installTranslator(qtTranslator)) {
-                qCCritical(lcApplication) << "Failed to install Qt translator";
-            }
-            if (!qtkeychainTranslator->isEmpty() && !qApp->installTranslator(qtkeychainTranslator)) {
-                qCCritical(lcApplication) << "Failed to install qtkeychain translator";
-            }
-
-            // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
-            // if the language is provided by the system locale anyway (i.e., coming from QLocale::system().uiLanguages()), we should
-            // not mess with the system locale, though
-            // if we did, we would enforce a locale for no apparent reason
-            // see https://github.com/owncloud/client/issues/8608 for more information
-            if (enforcedLocale == lang) {
-                QLocale newLocale(lang);
-                qCDebug(lcApplication) << "language" << lang << "was enforced, changing default locale to" << newLocale;
-                QLocale::setDefault(newLocale);
-            }
-
-            break;
-        }
-    }
-}
-
 void Application::openVirtualFile(const QString &filename)
 {
     QString virtualFileExt = Theme::instance()->appDotVirtualFileSuffix();
@@ -396,10 +289,10 @@ bool Application::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
-std::unique_ptr<Application> Application::createInstance(Platform *platform, bool debugMode)
+std::unique_ptr<Application> Application::createInstance(Platform *platform, const QString &displayLanguage, bool debugMode)
 {
     Q_ASSERT(!_instance);
-    _instance = new Application(platform, debugMode);
+    _instance = new Application(platform, displayLanguage, debugMode);
     return std::unique_ptr<Application>(_instance);
 }
 

@@ -47,7 +47,7 @@ class Application : public QObject
 {
     Q_OBJECT
 public:
-    static std::unique_ptr<Application> createInstance(Platform *platform, bool debugMode);
+    static std::unique_ptr<Application> createInstance(Platform *platform, const QString &displayLanguage, bool debugMode);
     ~Application();
 
     bool debugMode();
@@ -72,8 +72,6 @@ public slots:
     void tryTrayAgain();
 
 protected:
-    void setupTranslations();
-
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 protected slots:
@@ -83,7 +81,7 @@ protected slots:
     void slotAccountStateRemoved() const;
 
 private:
-    explicit Application(Platform *platform, bool debugMode);
+    explicit Application(Platform *platform, const QString &displayLanguage, bool debugMode);
 
     QPointer<ownCloudGui> _gui = {};
 

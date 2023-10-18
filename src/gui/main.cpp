@@ -36,9 +36,11 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QLibraryInfo>
 #include <QMessageBox>
 #include <QProcess>
 #include <QTimer>
+#include <QTranslator>
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #endif
@@ -242,7 +244,119 @@ void setupLogging(const CommandLineOptions &options)
                    << "version:" << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
     qCInfo(lcMain) << "Arguments:" << qApp->arguments();
 }
+
+QString setupTranslations(QApplication *app)
+{
+    const auto trPath = Translations::translationsDirectoryPath();
+    qCDebug(lcMain) << "Translations directory path:" << trPath;
+
+    QStringList uiLanguages = QLocale::system().uiLanguages();
+    qCDebug(lcMain) << "UI languages:" << uiLanguages;
+
+    // the user can also set a locale in the settings, so we need to load the config file
+    const ConfigFile cfg;
+
+    // we need to track the enforced language separately, since we need to distinguish between locale-provided
+    // and user-enforced one below
+    const QString enforcedLocale = cfg.uiLanguage();
+    qCDebug(lcMain) << "Enforced language:" << enforcedLocale;
+
+    // note that user-enforced language are prioritized over the theme enforced one
+    // to make testing easier.
+    if (!enforcedLocale.isEmpty()) {
+        uiLanguages.prepend(enforcedLocale);
+    }
+
+    QString displayLanguage;
+
+    auto substLang = [](const QString &lang) {
+        // Map the more appropriate script codes
+        // to country codes as used by Qt and
+        // transifex translation conventions.
+
+        if (lang == QLatin1String("zh_Hans")) {
+            // Simplified Chinese
+            return QStringLiteral("zh_CN");
+        } else if (lang == QLatin1String("zh_Hant")) {
+            // Traditional Chinese
+            return QStringLiteral("zh_TW");
+        }
+
+        return lang;
+    };
+
+    for (QString lang : qAsConst(uiLanguages)) {
+        lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
+        lang = substLang(lang);
+        const QString trFile = Translations::translationsFilePrefix() + lang;
+        QTranslator *translator = new QTranslator(app);
+
+        if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
+            // Permissive approach: Qt and keychain translations
+            // may be missing, but Qt translations must be there in order
+            // for us to accept the language. Otherwise, we try with the next.
+            // "en" is an exception as it is the default language and may not
+            // have a translation file provided.
+            qCInfo(lcMain) << "Using" << lang << "translation";
+            displayLanguage = lang;
+
+            const QString qtTrPath = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+            qCDebug(lcMain) << "qtTrPath:" << qtTrPath;
+            const QString qtTrFile = QLatin1String("qt_") + lang;
+            qCDebug(lcMain) << "qtTrFile:" << qtTrFile;
+            const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
+            qCDebug(lcMain) << "qtBaseTrFile:" << qtBaseTrFile;
+
+            QTranslator *qtTranslator = new QTranslator(app);
+            QTranslator *qtkeychainTranslator = new QTranslator(app);
+
+            if (!qtTranslator->load(qtTrFile, qtTrPath)) {
+                if (!qtTranslator->load(qtTrFile, trPath)) {
+                    if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
+                        if (!qtTranslator->load(qtBaseTrFile, trPath)) {
+                            qCCritical(lcMain) << "Could not load Qt translations";
+                        }
+                    }
+                }
+            }
+
+            const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
+            if (!qtkeychainTranslator->load(qtkeychainTrFile, qtTrPath)) {
+                if (!qtkeychainTranslator->load(qtkeychainTrFile, trPath)) {
+                    qCCritical(lcMain) << "Could not load qtkeychain translations";
+                }
+            }
+
+            if (!translator->isEmpty() && !qApp->installTranslator(translator)) {
+                qCCritical(lcMain) << "Failed to install translator";
+            }
+            if (!qtTranslator->isEmpty() && !qApp->installTranslator(qtTranslator)) {
+                qCCritical(lcMain) << "Failed to install Qt translator";
+            }
+            if (!qtkeychainTranslator->isEmpty() && !qApp->installTranslator(qtkeychainTranslator)) {
+                qCCritical(lcMain) << "Failed to install qtkeychain translator";
+            }
+
+            // makes sure widgets with locale-dependent formatting, e.g., QDateEdit, display the correct formatting
+            // if the language is provided by the system locale anyway (i.e., coming from QLocale::system().uiLanguages()), we should
+            // not mess with the system locale, though
+            // if we did, we would enforce a locale for no apparent reason
+            // see https://github.com/owncloud/client/issues/8608 for more information
+            if (enforcedLocale == lang) {
+                QLocale newLocale(lang);
+                qCDebug(lcMain) << "language" << lang << "was enforced, changing default locale to" << newLocale;
+                QLocale::setDefault(newLocale);
+            }
+
+            break;
+        }
+
+        delete translator;
+    }
+
+    return displayLanguage;
 }
+} // Anonymous namespace
 
 int main(int argc, char **argv)
 {
@@ -298,6 +412,9 @@ int main(int argc, char **argv)
     app.setWindowIcon(Theme::instance()->applicationIcon());
     app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
+    // Load the translations before option parsing, so we can localize help text and error messages.
+    QString displayLanguage = setupTranslations(&app);
+
     // parse the arguments before we handle singleApplication
     // errors and help/version need to be handled in this instance
     const auto options = parseOptions(app.arguments());
@@ -336,7 +453,7 @@ int main(int argc, char **argv)
     auto folderManager = FolderMan::createInstance();
 
     if (!AccountManager::instance()->restore()) {
-        qCCritical(lcApplication) << "Could not read the account settings, quitting";
+        qCCritical(lcMain) << "Could not read the account settings, quitting";
         QMessageBox::critical(nullptr, QCoreApplication::translate("account loading", "Error accessing the configuration file"),
             QCoreApplication::translate("account loading", "There was an error while accessing the configuration file at %1.").arg(ConfigFile::configFile()),
             QMessageBox::Close);
@@ -354,7 +471,7 @@ int main(int argc, char **argv)
 
     folderManager->setSyncEnabled(true);
 
-    auto ocApp = Application::createInstance(platform.get(), options.debugMode);
+    auto ocApp = Application::createInstance(platform.get(), displayLanguage, options.debugMode);
 
     QObject::connect(platform.get(), &Platform::requestAttention, ocApp->gui(), &ownCloudGui::slotShowSettings);
 
