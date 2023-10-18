@@ -384,12 +384,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Importálás</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="201"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Kihagy</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
@@ -469,7 +469,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Végpontok közötti titkosítás</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
@@ -862,7 +862,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Redirect detected</source>
-        <translation type="unfinished"/>
+        <translation>Átirányítás észlelve</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="160"/>
@@ -994,28 +994,28 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <location filename="../src/gui/application.cpp" line="451"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 fiók</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="452"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 fiók</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="454"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 mappa</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="455"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 mappa</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="457"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importálás örökölt kliensből</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="458"/>
@@ -1891,12 +1891,12 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
     <message>
         <location filename="../src/gui/folder.cpp" line="1375"/>
         <source>Keep syncing</source>
-        <translation type="unfinished"/>
+        <translation>Tovább szinkronizálás</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1383"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás megszakítása</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1394"/>
@@ -1906,7 +1906,7 @@ Ezt a problémát valószínűleg az OpenSSL programkönyvtárakban kell keresni
     <message>
         <location filename="../src/gui/folder.cpp" line="1395"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation type="unfinished"/>
+        <translation>Meg szeretné szakítani a mappa szinkronizációját?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1294"/>
@@ -2558,7 +2558,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
     <message>
         <location filename="../src/gui/generalsettings.ui" line="348"/>
         <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
+        <translation>Az eltávolított fájlok kukába mozgatása</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
@@ -4758,7 +4758,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="159"/>
         <source>Preparing sync</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizáslás előkészítése</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -5549,7 +5549,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
         <source>Allow resharing</source>
-        <translation type="unfinished"/>
+        <translation>Újra-megosztás engedélyezése</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="466"/>
@@ -6034,7 +6034,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="883"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Új tevékenység</translation>
     </message>
 </context>
 <context>
