@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="230"/>
         <source>Restore default value</source>
-        <translation type="unfinished"/>
+        <translation>Standardeinstellung wiederherstellen</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
         <location filename="../src/gui/main.cpp" line="106"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
-        <translation>Siehe %1 für mehr Informationen</translation>
+        <translation>Siehe %1 für mehr Informationen.</translation>
     </message>
 </context>
 <context>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="81"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Konto vorbereiten</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="173"/>
@@ -599,7 +599,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="848"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Du musst verbunden sein, um einen Space hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
@@ -757,7 +757,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="158"/>
         <source>&lt;br/&gt;%1 does not provide activities.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;%1 stellt keine Aktivitäten bereit.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="296"/>
@@ -1310,7 +1310,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1147"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>In Warteschlange gestellt</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1061"/>
@@ -1691,7 +1691,7 @@ Beachte, das dies nur bestimmt von welchem Bereich Sie Aktualisierungen erhalten
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Zum Einlogen in Konto %1 Passwort eingeben.</translation>
     </message>
 </context>
 <context>
@@ -2327,7 +2327,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: Selektive Synchronisierung wurde ignoriert, da der Pfad dafür abgewählt ist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -3300,7 +3300,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Dateiversionen im Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
@@ -3756,7 +3756,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="201"/>
         <source>Failed to retrieve user information from server</source>
-        <translation>Die Userinformationen konnten nicht vom Server geladen werden</translation>
+        <translation>Die Benutzerinformationen konnten nicht vom Server geladen werden.</translation>
     </message>
 </context>
 <context>
@@ -3848,7 +3848,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Neues Konto erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="725"/>
@@ -3869,7 +3869,7 @@ Möchtest du fortfahren?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="658"/>
@@ -4180,7 +4180,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Dateiname reserviert</translation>
     </message>
 </context>
 <context>
@@ -4319,7 +4319,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/common/pinstate.cpp" line="31"/>
         <source>Some available online only</source>
-        <translation>Nur einige Online verfügbar</translation>
+        <translation>Einige nur online verfügbar</translation>
     </message>
     <message>
         <location filename="../src/common/pinstate.cpp" line="35"/>
@@ -4367,7 +4367,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Serverversion heruntergeladen, lokale Kopie wurde als Konfliktdatei gesichert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4459,7 +4459,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="210"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Manche Einstellungen wurden in neueren Versionen dieses Clients konfiguriert und benutzen Features, die in dieser Version nicht verfügbar sind.</translation>
     </message>
 </context>
 </TS>

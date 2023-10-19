@@ -601,7 +601,7 @@ Bitte über den Browser authentifizieren.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="848"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Sie müssen verbunden sein, um einen Space hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
@@ -3851,7 +3851,7 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation>Neues Konto anlegen</translation>
+        <translation>Neues Konto erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="725"/>
