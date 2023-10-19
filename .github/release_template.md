@@ -30,12 +30,12 @@ __TODO__:
 ### Copy for Each Build (Beta/RC)
 
 * [ ] DEV: Tag (Beta or RC) and build [builds](https://confluence.owncloud.com/display/OG/Build+and+Tags#BuildandTags-Sprintbuild) for theme 'ownCloud' and 'testpilotcloud' (includes ChangeLog for the tag on https://github.com/owncloud/client/releases/)
-* [ ] Smoke test
-* [ ] GitHub release
+* [ ] QA: [Smoke test](https://owncloud.testrail.io/index.php?/cases/view/2469) (for public prelease)
+* [ ] DEV: GitHub release
 * [ ] Beta/RC [Communication](https://confluence.owncloud.com/x/loJK)
-    * [ ] Inform ``#updates`` and ``#marketing`` that we have Beta/RC    
-    * [ ] For public prerelease: Tell marketing to send email to beta testers
-    * [ ] For public prerelease: Write Central post https://central.owncloud.org/tags/c/news/desktop with link to github release 
+    * [ ] Inform ``#updates`` that we have Beta/RC    
+    * [ ] For public prerelease: Inform ``#marketing`` and tell them to send email to beta testers
+    * [ ] For public prerelease: Write/edit Central post https://central.owncloud.org/tags/c/news/desktop with link to github release 
 * [ ] DEV: Prepare the update server for new version (AppImages included)
    * [ ] DEV: Provide 'testpilotcloud' on **Beta** update channel
      
@@ -77,7 +77,7 @@ __TODO__:
 
 ### [Marketing and Communication](https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
    
-* [ ] QA: Ping ``#marketing``: @bwalter to update links on https://owncloud.com/desktop-app/ (provide links from github releases) and @mfeilner to update [wiki de](https://de.wikipedia.org/wiki/OwnCloud), [wiki en](https://en.wikipedia.org/wiki/OwnCloud), [wikidata](https://www.wikidata.org/wiki/Q20763576))
+* [ ] QA: Ping ``#marketing``at marketing@owncloud.com; @bwalter to update links on https://owncloud.com/desktop-app/ (provide links from github releases) and @mfeilner to update [wiki de](https://de.wikipedia.org/wiki/OwnCloud), [wiki en](https://en.wikipedia.org/wiki/OwnCloud), [wikidata](https://www.wikidata.org/wiki/Q20763576))
 * [ ] QA: Central post https://central.owncloud.org/tags/c/news/desktop
 * [ ] QA: Inform on ``#updates`` channel
 * [ ] QA: Inform [packagers](https://confluence.owncloud.com/x/QYLEAg)
