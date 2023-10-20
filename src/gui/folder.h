@@ -449,6 +449,9 @@ private slots:
     /** Unblocks normal sync operation */
     void slotHydrationDone();
 
+    /* Hydration failed, perform required steps to notify user */
+    void slotHydrationFailed(int errorCode, int statusCode, const QString &errorString, const QString &fileName);
+
     void slotCapabilitiesChanged();
 
 private:
