@@ -38,6 +38,7 @@
 #include <QCommandLineParser>
 #include <QLibraryInfo>
 #include <QMessageBox>
+#include <QNetworkInformation>
 #include <QProcess>
 #include <QTimer>
 #include <QTranslator>
@@ -447,6 +448,14 @@ int main(int argc, char **argv)
     if (!checkClientVersion()) {
         return -1;
     }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    if (!QNetworkInformation::loadDefaultBackend()) {
+        qCWarning(lcMain) << "Failed to load QNetworkInformation";
+    }
+#else
+    qCWarning(lcMain) << "QNetworkInformation is not available";
+#endif
 
     setupLogging(options);
 
