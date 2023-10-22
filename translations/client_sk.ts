@@ -51,12 +51,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="194"/>
         <source>Talk notification caller avatar</source>
-        <translation>Avatar Talku pri upozornení na hovor</translation>
+        <translation>Avatar Rozhovoru pri upozornení na hovor</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="260"/>
         <source>Answer Talk call notification</source>
-        <translation>Prijať upozornenie na hovor v Talku</translation>
+        <translation>Prijať upozornenie na volanie v Rozhovore</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="268"/>
@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="284"/>
         <source>Decline Talk call notification</source>
-        <translation>Zatvoriť všetky upozornenia z hovorov Talk</translation>
+        <translation>Zatvoriť všetky upozornenia z volaní v Rozhovore</translation>
     </message>
 </context>
 <context>
@@ -6052,7 +6052,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation>Otvoriť Nextcloud Talk v prehliadači</translation>
+        <translation>Otvoriť Nextcloud Rozhovor v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="661"/>
