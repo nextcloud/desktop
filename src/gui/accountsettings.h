@@ -89,6 +89,7 @@ private:
         QStringList errors = QStringList());
     bool event(QEvent *) override;
     void createAccountToolbox();
+    void doForceSyncCurrentFolder(Folder *selectedFolder);
 
     /// Returns the alias of the selected folder, empty string if none
     Folder *selectedFolder() const;

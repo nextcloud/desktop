@@ -73,7 +73,7 @@ void TrayOverallStatusResult::addResult(Folder *f)
         lastSyncDone = time;
     }
 
-    auto status = f->syncPaused() ? SyncResult::Paused : f->syncResult().status();
+    auto status = f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered ? SyncResult::Paused : f->syncResult().status();
     if (status == SyncResult::Undefined) {
         status = SyncResult::Problem;
     }

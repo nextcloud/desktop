@@ -15,6 +15,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
+    <widget class="QCheckBox" name="pauseSyncWhenMeteredCheckbox">
+     <property name="text">
+      <string>Pause synchronization when the Internet connection is metered</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="proxyGroupBox">
      <property name="enabled">
       <bool>true</bool>

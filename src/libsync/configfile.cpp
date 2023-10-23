@@ -97,6 +97,10 @@ const QString downloadLimitC() { return QStringLiteral("BWLimit/downloadLimit");
 const QString newBigFolderSizeLimitC() { return QStringLiteral("newBigFolderSizeLimit"); }
 const QString useNewBigFolderSizeLimitC() { return QStringLiteral("useNewBigFolderSizeLimit"); }
 const QString confirmExternalStorageC() { return QStringLiteral("confirmExternalStorage"); }
+const QString pauseSyncWhenMeteredC()
+{
+    return QStringLiteral("pauseWhenMetered");
+}
 const QString moveToTrashC() { return QStringLiteral("moveToTrash"); }
 
 const QString issuesWidgetFilterC()
@@ -719,6 +723,16 @@ bool ConfigFile::confirmExternalStorage() const
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
 {
     setValue(confirmExternalStorageC(), isChecked);
+}
+
+bool ConfigFile::pauseSyncWhenMetered() const
+{
+    return getValue(pauseSyncWhenMeteredC(), {}, false).toBool();
+}
+
+void ConfigFile::setPauseSyncWhenMetered(bool isChecked)
+{
+    setValue(pauseSyncWhenMeteredC(), isChecked);
 }
 
 bool ConfigFile::moveToTrash() const

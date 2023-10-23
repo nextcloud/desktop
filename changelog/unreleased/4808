@@ -1,0 +1,9 @@
+Enhancement: Add option to pause synchronization on metered connections
+
+On platforms that support metered-connection detection, an option is now
+available to pause folder synchronization when the network connection
+switches to metered. When synchronization is paused, force-syncing can
+still be done.
+
+https://github.com/owncloud/client/issues/4808
+https://github.com/owncloud/client/pull/11305

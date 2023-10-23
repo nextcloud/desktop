@@ -277,6 +277,7 @@ public:
     {
         return *_engine;
     }
+
     Vfs &vfs()
     {
         OC_ENFORCE(_vfs);

@@ -43,6 +43,7 @@
 #include <QIcon>
 #include <QKeySequence>
 #include <QMessageBox>
+#include <QNetworkInformation>
 #include <QPropertyAnimation>
 #include <QSortFilterProxyModel>
 #include <QToolTip>
@@ -642,19 +643,42 @@ void AccountSettings::slotScheduleCurrentFolderForceFullDiscovery()
 void AccountSettings::slotForceSyncCurrentFolder()
 {
     if (auto selectedFolder = this->selectedFolder()) {
-        // Terminate and reschedule any running sync
-        for (auto *folder : FolderMan::instance()->folders()) {
-            if (folder->isSyncRunning()) {
-                folder->slotTerminateSync(tr("User triggered force sync"));
-                FolderMan::instance()->scheduler()->enqueueFolder(folder);
-            }
+        if (Utility::internetConnectionIsMetered() && ConfigFile().pauseSyncWhenMetered()) {
+            auto messageBox = new QMessageBox(QMessageBox::Question, tr("Internet connection is metered"),
+                tr("Synchronization is paused because the Internet connection is a metered connection"
+                   "<p>Do you really want to force a Synchronization now?"),
+                QMessageBox::Yes | QMessageBox::No, ocApp()->gui()->settingsDialog());
+            messageBox->setAttribute(Qt::WA_DeleteOnClose);
+            connect(messageBox, &QMessageBox::accepted, this, [this, selectedFolder] { doForceSyncCurrentFolder(selectedFolder); });
+            messageBox->open();
+            ownCloudGui::raiseDialog(messageBox);
+        } else {
+            doForceSyncCurrentFolder(selectedFolder);
         }
-
-        selectedFolder->slotWipeErrorBlacklist(); // issue #6757
-        selectedFolder->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
-        // Insert the selected folder at the front of the queue
-        FolderMan::instance()->scheduler()->enqueueFolder(selectedFolder, SyncScheduler::Priority::High);
     }
+}
+
+void AccountSettings::doForceSyncCurrentFolder(Folder *selectedFolder)
+{
+    // Prevent new sync starts
+    FolderMan::instance()->scheduler()->stop();
+
+    // Terminate and reschedule any running sync
+    for (auto *folder : FolderMan::instance()->folders()) {
+        if (folder->isSyncRunning()) {
+            folder->slotTerminateSync(tr("User triggered force sync"));
+            FolderMan::instance()->scheduler()->enqueueFolder(folder);
+        }
+    }
+
+    selectedFolder->slotWipeErrorBlacklist(); // issue #6757
+    selectedFolder->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
+
+    // Insert the selected folder at the front of the queue
+    FolderMan::instance()->scheduler()->enqueueFolder(selectedFolder, SyncScheduler::Priority::High);
+
+    // Restart scheduler
+    FolderMan::instance()->scheduler()->start();
 }
 
 void AccountSettings::slotAccountStateChanged()
@@ -670,19 +694,27 @@ void AccountSettings::slotAccountStateChanged()
         _model->slotUpdateFolderState(folder);
     }
 
+    auto acceptOAuthLogin = [this]() {
+        if (_askForOAuthLoginDialog != nullptr) {
+            _askForOAuthLoginDialog->accept();
+        }
+    };
+
     const QString server = QStringLiteral("<a href=\"%1\">%1</a>")
                                .arg(Utility::escape(safeUrl.toString()));
 
     switch (state) {
+    case AccountState::PausedDueToMetered:
+        showConnectionLabel(tr("Sync to %1 is paused due to metered internet connection.").arg(server));
+        acceptOAuthLogin();
+        break;
     case AccountState::Connected: {
         QStringList errors;
         if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
             errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
         }
         showConnectionLabel(tr("Connected to %1.").arg(server), errors);
-        if (_askForOAuthLoginDialog != nullptr) {
-            _askForOAuthLoginDialog->accept();
-        }
+        acceptOAuthLogin();
         break;
     }
     case AccountState::ServiceUnavailable:

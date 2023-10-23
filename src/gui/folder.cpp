@@ -806,7 +806,6 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         };
         if (isSyncRunning()) {
             connect(this, &Folder::syncFinished, this, finalizeVfsSwitch, Qt::SingleShotConnection);
-            QString reason;
             slotTerminateSync(tr("Switching VFS mode on folder '%1'").arg(displayName()));
         } else {
             finalizeVfsSwitch();

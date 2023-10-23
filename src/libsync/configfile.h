@@ -143,6 +143,9 @@ public:
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
 
+    bool pauseSyncWhenMetered() const;
+    void setPauseSyncWhenMetered(bool isChecked);
+
     /** If we should move the files deleted on the server in the trash  */
     bool moveToTrash() const;
     void setMoveToTrash(bool);

@@ -303,7 +303,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             auto status = f->syncResult();
             if (!accountConnected) {
                 status.setStatus(SyncResult::Status::Offline);
-            } else if (f->syncPaused()) {
+            } else if (f->syncPaused() || f->accountState()->state() == AccountState::PausedDueToMetered) {
                 status.setStatus(SyncResult::Status::Paused);
             }
             return Theme::instance()->syncStateIconName(status);

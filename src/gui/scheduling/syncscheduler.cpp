@@ -19,6 +19,10 @@
 #include "libsync/configfile.h"
 #include "libsync/syncengine.h"
 
+#include "guiutility.h"
+
+#include <QNetworkInformation>
+
 using namespace std::chrono_literals;
 
 using namespace OCC;
@@ -27,6 +31,28 @@ Q_LOGGING_CATEGORY(lcSyncScheduler, "gui.scheduler.syncscheduler", QtInfoMsg)
 
 class FolderPriorityQueue
 {
+private:
+    struct Element
+    {
+        Element() { }
+
+        Element(Folder *f, SyncScheduler::Priority p)
+            : folder(f)
+            , rawFolder(f)
+            , priority(p)
+        {
+        }
+
+        // We don't own the folder, so it might get deleted
+        QPointer<Folder> folder = nullptr;
+        // raw pointer for lookup in _scheduledFolders
+        Folder *rawFolder = nullptr;
+        SyncScheduler::Priority priority = SyncScheduler::Priority::Low;
+
+        friend bool operator<(const Element &lhs, const Element &rhs) { return lhs.priority < rhs.priority; }
+    };
+
+
 public:
     FolderPriorityQueue() = default;
 
@@ -59,37 +85,19 @@ public:
     auto empty() { return _queue.empty(); }
     auto size() { return _queue.size(); }
 
-    QPointer<Folder> pop()
+    std::pair<Folder *, SyncScheduler::Priority> pop()
     {
-        QPointer<Folder> out;
-        while (!_queue.empty() && !out) {
+        Element out;
+        while (!_queue.empty() && !out.folder) {
             // could be a nullptr by now
-            out = _queue.top().folder;
+            out = _queue.top();
             _scheduledFolders.erase(_queue.top().rawFolder);
             _queue.pop();
         }
-        return out;
+        return std::make_pair(out.folder, out.priority);
     }
 
 private:
-    struct Element
-    {
-        Element(Folder *f, SyncScheduler::Priority p)
-            : folder(f)
-            , rawFolder(f)
-            , priority(p)
-        {
-        }
-
-        // We don't own the folder, so it might get deleted
-        QPointer<Folder> folder;
-        // raw pointer for lookup in _scheduledFolders
-        Folder *rawFolder;
-        SyncScheduler::Priority priority;
-
-        friend bool operator<(const Element &lhs, const Element &rhs) { return lhs.priority < rhs.priority; }
-    };
-
     // the actual queue
     std::priority_queue<Element> _queue;
     // helper container to ensure we don't enqueue a Folder multiple times
@@ -98,6 +106,7 @@ private:
 
 SyncScheduler::SyncScheduler(FolderMan *parent)
     : QObject(parent)
+    , _pauseSyncWhenMetered(ConfigFile().pauseSyncWhenMetered())
     , _queue(new FolderPriorityQueue)
 {
     new ETagWatcher(parent, this);
@@ -147,11 +156,23 @@ void SyncScheduler::startNext()
     }
 
     auto nextSync = _queue->pop();
-    while (nextSync && !nextSync->canSync()) {
+    while (nextSync.first && !nextSync.first->canSync()) {
         nextSync = _queue->pop();
     }
-    _currentSync = nextSync;
+    _currentSync = nextSync.first;
+    auto syncPriority = nextSync.second;
+
     if (!_currentSync.isNull()) {
+        if (_pauseSyncWhenMetered && Utility::internetConnectionIsMetered()) {
+            if (syncPriority == Priority::High) {
+                qCInfo(lcSyncScheduler) << "Scheduler is paused due to metered internet connection, BUT next sync is HIGH priority, so allow sync to start";
+            } else {
+                enqueueFolder(_currentSync, syncPriority);
+                qCInfo(lcSyncScheduler) << "Scheduler is paused due to metered internet connection, next sync is not started";
+                return;
+            }
+        }
+
         connect(
             _currentSync, &Folder::syncFinished, this,
             [this](const SyncResult &result) {
@@ -204,4 +225,12 @@ void SyncScheduler::stop()
 bool SyncScheduler::hasCurrentRunningSyncRunning() const
 {
     return _currentSync;
+}
+
+void SyncScheduler::setPauseSyncWhenMetered(bool pauseSyncWhenMetered)
+{
+    _pauseSyncWhenMetered = pauseSyncWhenMetered;
+    if (!pauseSyncWhenMetered) {
+        startNext();
+    }
 }

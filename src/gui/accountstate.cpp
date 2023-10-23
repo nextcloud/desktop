@@ -18,6 +18,7 @@
 #include "application.h"
 #include "configfile.h"
 #include "fetchserversettings.h"
+#include "guiutility.h"
 
 #include "libsync/creds/abstractcredentials.h"
 #include "libsync/creds/httpcredentials.h"
@@ -136,6 +137,18 @@ AccountState::AccountState(AccountPtr account)
                 break;
             }
         });
+
+        connect(qNetInfo, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) {
+            if (ConfigFile().pauseSyncWhenMetered()) {
+                if (state() == State::Connected && isMetered) {
+                    qCInfo(lcAccountState) << "Network switched to a metered connection, setting account state to PausedDueToMetered";
+                    setState(State::PausedDueToMetered);
+                } else if (state() == State::PausedDueToMetered && !isMetered) {
+                    qCInfo(lcAccountState) << "Network switched to a NON-metered connection, setting account state to Connected";
+                    setState(State::Connected);
+                }
+            }
+        });
     }
 #endif
     // as a fallback and to recover after server issues we also poll
@@ -231,6 +244,8 @@ void AccountState::setState(State state)
             _connectionValidator->deleteLater();
             _connectionValidator.clear();
             checkConnectivity();
+        } else if (_state == Connected && Utility::internetConnectionIsMetered() && ConfigFile().pauseSyncWhenMetered()) {
+            _state = PausedDueToMetered;
         }
     }
 
@@ -290,7 +305,7 @@ void AccountState::signIn()
 
 bool AccountState::isConnected() const
 {
-    return _state == Connected;
+    return _state == Connected || _state == PausedDueToMetered;
 }
 
 void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)

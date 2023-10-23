@@ -22,6 +22,7 @@
 #include "theme.h"
 
 #include <QList>
+#include <QNetworkInformation>
 #include <QNetworkProxy>
 #include <QString>
 #include <QtGui/QtEvents>
@@ -69,6 +70,7 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 
     loadProxySettings();
     loadBWLimitSettings();
+    loadMeteredSettings();
 
     // proxy
     connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
@@ -92,6 +94,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     connect(_ui->hostLineEdit, &QLineEdit::textChanged, this, &NetworkSettings::checkEmptyProxyHost);
     checkEmptyProxyHost();
     checkAccountLocalhost();
+
+    connect(_ui->pauseSyncWhenMeteredCheckbox, &QAbstractButton::clicked, this, &NetworkSettings::saveMeteredSettings);
 }
 
 NetworkSettings::~NetworkSettings()
@@ -177,6 +181,21 @@ void NetworkSettings::loadBWLimitSettings()
     _ui->uploadSpinBox->setValue(cfgFile.uploadLimit());
 }
 
+void NetworkSettings::loadMeteredSettings()
+{
+    if (QNetworkInformation *qNetInfo = QNetworkInformation::instance()) {
+        if (Utility::isWindows() // The backend implements the metered feature, but does not report it as supported.
+                                 // See https://bugreports.qt.io/browse/QTBUG-118741
+            || qNetInfo->supports(QNetworkInformation::Feature::Metered)) {
+            _ui->pauseSyncWhenMeteredCheckbox->setChecked(ConfigFile().pauseSyncWhenMetered());
+            return;
+        }
+    }
+
+    _ui->pauseSyncWhenMeteredCheckbox->setEnabled(false);
+    _ui->pauseSyncWhenMeteredCheckbox->setToolTip(tr("Querying metered connection status is not supported on this platform"));
+}
+
 void NetworkSettings::saveProxySettings()
 {
     ConfigFile cfgFile;
@@ -229,6 +248,13 @@ void NetworkSettings::saveBWLimitSettings()
     cfgFile.setUploadLimit(_ui->uploadSpinBox->value());
 
     FolderMan::instance()->setDirtyNetworkLimits();
+}
+
+void NetworkSettings::saveMeteredSettings()
+{
+    bool pauseSyncWhenMetered = _ui->pauseSyncWhenMeteredCheckbox->isChecked();
+    ConfigFile().setPauseSyncWhenMetered(pauseSyncWhenMetered);
+    FolderMan::instance()->scheduler()->setPauseSyncWhenMetered(pauseSyncWhenMetered);
 }
 
 void NetworkSettings::checkEmptyProxyHost()

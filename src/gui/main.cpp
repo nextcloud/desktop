@@ -449,15 +449,19 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    setupLogging(options);
+
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+    qCDebug(lcMain) << QNetworkInformation::availableBackends().join(QStringLiteral(", "));
     if (!QNetworkInformation::loadDefaultBackend()) {
         qCWarning(lcMain) << "Failed to load QNetworkInformation";
+    } else {
+        qCDebug(lcMain) << "Loaded network information backend:" << QNetworkInformation::instance()->backendName()
+                        << "supported features:" << QNetworkInformation::instance()->supportedFeatures();
     }
 #else
     qCWarning(lcMain) << "QNetworkInformation is not available";
 #endif
-
-    setupLogging(options);
 
     platform->setApplication(&app);
 
