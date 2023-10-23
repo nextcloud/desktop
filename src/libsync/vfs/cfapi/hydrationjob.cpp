@@ -351,9 +351,15 @@ void OCC::HydrationJob::onGetFinished()
 {
     _errorCode = _job->reply()->error();
     _statusCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    _errorString = _job->reply()->errorString();
-
-    qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _errorCode << _statusCode << _errorString;
+    if (_errorCode != 0 || (_statusCode != 200 && _statusCode != 204)) {
+        _errorString = _job->reply()->errorString();
+    }
+    
+    if (!_errorString.isEmpty()) {
+        qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _errorCode << _statusCode << _errorString;
+    } else {
+        qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath;
+    }
     // GETFileJob deletes itself after this signal was handled
     _job = nullptr;
     if (_isCancelled) {
