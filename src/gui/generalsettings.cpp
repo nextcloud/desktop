@@ -18,7 +18,6 @@
 #include "theme.h"
 #include "configfile.h"
 #include "application.h"
-#include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "guiutility.h"
@@ -124,7 +123,7 @@ void createDebugArchive(const QString &filename)
     zip.writeData(clientParameters, clientParameters.size());
     zip.finishWriting(clientParameters.size());
 
-    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
+    const auto buildInfo = QString(OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
     zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
@@ -169,13 +168,16 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     }
 
     // setup about section
-    QString about = Theme::instance()->about();
-    _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-    _ui->aboutLabel->setText(about);
-    _ui->aboutLabel->setOpenExternalLinks(true);
+    _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+    _ui->infoAndUpdatesLabel->setText(Theme::instance()->about());
+    _ui->infoAndUpdatesLabel->setOpenExternalLinks(true);
 
     // About legal notice
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &GeneralSettings::slotShowLegalNotice);
+
+    connect(_ui->usageDocumentationButton, &QPushButton::clicked, this, []() {
+        Utility::openBrowser(QUrl(Theme::instance()->helpUrl()));
+    });
 
     loadMiscSettings();
     // updater info now set in: customizeStyle
@@ -277,7 +279,7 @@ void GeneralSettings::slotUpdateInfo()
     const auto updater = Updater::instance();
     if (ConfigFile().skipUpdateCheck() || !updater) {
         // updater disabled on compile
-        _ui->updatesGroupBox->setVisible(false);
+        _ui->updatesContainer->setVisible(false);
         return;
     }
 
@@ -517,15 +519,18 @@ void GeneralSettings::slotStyleChanged()
 void GeneralSettings::customizeStyle()
 {
     // setup about section
-    QString about = Theme::instance()->about();
-    Theme::replaceLinkColorStringBackgroundAware(about);
-    _ui->aboutLabel->setText(about);
+    const auto aboutText = []() {
+        auto aboutText = Theme::instance()->about();
+        Theme::replaceLinkColorStringBackgroundAware(aboutText);
+        return aboutText;
+    }();
+    _ui->infoAndUpdatesLabel->setText(aboutText);
 
 #if defined(BUILD_UPDATER)
     // updater info
     slotUpdateInfo();
 #else
-    _ui->updatesGroupBox->setVisible(false);
+    _ui->updatesContainer->setVisible(false);
 #endif
 }
 
