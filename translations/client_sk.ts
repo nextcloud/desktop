@@ -4961,7 +4961,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Funkcia emotikonov nie je podporovaná. Niektoré funkcie stavu užívateľa nemusia fungovať. </translation>
+        <translation>Funkcia emotikon nie je podporovaná. Niektoré funkcie stavu užívateľa nemusia fungovať. </translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
