@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
+* Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 
 Details
 -------
@@ -27,6 +28,14 @@ Details
 
    https://github.com/owncloud/client/issues/11245
    https://github.com/owncloud/client/pull/11270
+
+* Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
+
+   We already used the fusion style on Windows for years if the system used dpi scaling. Since Qt6.5
+   the fusion style also support the dark theme on Windows. Those two reasons convinced us that
+   always using the fusion style on Windows will result in the best experience for the users.
+
+   https://github.com/owncloud/client/issues/11275
 
 Changelog for ownCloud Desktop Client [5.0.0] (2023-10-05)
 =======================================
