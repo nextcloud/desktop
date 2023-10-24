@@ -50,6 +50,7 @@ constexpr auto syncRootManagerRegKey = R"(SOFTWARE\Microsoft\Windows\CurrentVers
 
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 currentBlockLength, qint64 totalLength)
 {
+    qCInfo(lcCfApiWrapper) << status << buffer << offset << currentBlockLength << totalLength;
 
     CF_OPERATION_INFO opInfo = { 0 };
     CF_OPERATION_PARAMETERS opParams = { 0 };
@@ -71,6 +72,7 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 
     const auto isDownloadFinished = ((offset + currentBlockLength) == totalLength);
     if (isDownloadFinished) {
+        qCInfo(lcCfApiWrapper) << "download is finished";
         return;
     }
 
@@ -143,6 +145,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     qCInfo(lcCfApiWrapper) << "VFS replied for hydration of" << path << requestId << "status was:" << hydrationRequestResult;
 
     if (!hydrationRequestResult) {
+        qCInfo(lcCfApiWrapper) << "calling sendTransferError";
         sendTransferError();
         return;
     }
@@ -190,6 +193,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         protrudingData = data.right(protudingSize);
         data.chop(protudingSize);
 
+        qCInfo(lcCfApiWrapper) << "calling sendTransferInfo" << dataOffset;
         sendTransferInfo(data, dataOffset);
         dataOffset += data.size();
     };
@@ -221,7 +225,8 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     loop.exec();
 
     if (!hydrationRequestCancelled && !protrudingData.isEmpty()) {
-        qCDebug(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
+        qCInfo(lcCfApiWrapper) << "Send remaining protruding data. Size:" << protrudingData.size();
+        qCInfo(lcCfApiWrapper) << "calling sendTransferInfo" << dataOffset;
         sendTransferInfo(protrudingData, dataOffset);
     }
 
@@ -237,6 +242,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     }
 
     if (hydrationJobResult != OCC::HydrationJob::Success) {
+        qCInfo(lcCfApiWrapper) << "calling sendTransferError";
         sendTransferError();
     }
 }
