@@ -225,15 +225,18 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         sendTransferInfo(protrudingData, dataOffset);
     }
 
-    int hydrationJobResult = OCC::HydrationJob::Status::Error;
-    const auto invokeFinalizeResult = QMetaObject::invokeMethod(
-        vfs, [=] { vfs->finalizeHydrationJob(requestId); }, Qt::BlockingQueuedConnection,
+    auto hydrationJobResult = OCC::HydrationJob::Status::Error;
+    const auto invokeFinalizeResult = QMetaObject::invokeMethod(vfs,
+        [=] () -> OCC::HydrationJob::Status {
+            return vfs->finalizeHydrationJob(requestId);
+        },
+        Qt::BlockingQueuedConnection,
         &hydrationJobResult);
     if (!invokeFinalizeResult) {
         qCCritical(lcCfApiWrapper) << "Failed to finalize hydration job for" << path << requestId;
     }
 
-    if (static_cast<OCC::HydrationJob::Status>(hydrationJobResult) != OCC::HydrationJob::Success) {
+    if (hydrationJobResult != OCC::HydrationJob::Success) {
         sendTransferError();
     }
 }

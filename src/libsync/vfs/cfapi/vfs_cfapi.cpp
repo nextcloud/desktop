@@ -453,7 +453,7 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
     }
 }
 
-int VfsCfApi::finalizeHydrationJob(const QString &requestId)
+HydrationJob::Status VfsCfApi::finalizeHydrationJob(const QString &requestId)
 {
     qCDebug(lcCfApi) << "Finalize hydration job" << requestId;
     // Find matching hydration job for request id

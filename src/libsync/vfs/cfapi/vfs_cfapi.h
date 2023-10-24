@@ -16,11 +16,11 @@
 #include <QObject>
 #include <QScopedPointer>
 
+#include "hydrationjob.h"
 #include "common/vfs.h"
 #include "common/plugin.h"
 
 namespace OCC {
-class HydrationJob;
 class VfsCfApiPrivate;
 class SyncJournalFileRecord;
 
@@ -57,7 +57,7 @@ public:
 
     void cancelHydration(const QString &requestId, const QString &path);
 
-    int finalizeHydrationJob(const QString &requestId);
+    HydrationJob::Status finalizeHydrationJob(const QString &requestId);
 
 public slots:
     void requestHydration(const QString &requestId, const QString &path);
