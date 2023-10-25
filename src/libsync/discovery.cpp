@@ -496,6 +496,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
+        qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
     }
 
     // The item shall only have this type if the db request for the virtual download
@@ -505,8 +506,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_type = ItemTypeVirtualFile;
     // Similarly db entries with a dehydration request denote a regular file
     // until the request is processed.
-    if (item->_type == ItemTypeVirtualFileDehydration)
+    if (item->_type == ItemTypeVirtualFileDehydration) {
         item->_type = ItemTypeFile;
+        qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
+    }
 
     // VFS suffixed files on the server are ignored
     if (isVfsWithSuffix()) {
@@ -1437,8 +1440,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // but it complicates handling a lot and will happen rarely.
         if (item->_type == ItemTypeVirtualFileDownload)
             item->_type = ItemTypeVirtualFile;
-        if (item->_type == ItemTypeVirtualFileDehydration)
+        if (item->_type == ItemTypeVirtualFileDehydration) {
             item->_type = ItemTypeFile;
+            qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
+        }
 
         qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
     };

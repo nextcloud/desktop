@@ -396,8 +396,19 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
         return;
     }
 
+    bool isNotVirtualFileFailure = false;
     if (!record.isVirtualFile()) {
-        qCInfo(lcCfApi) << "Couldn't hydrate, the file is not virtual";
+        if (isDehydratedPlaceholder(path)) {
+            qCWarning(lcCfApi) << "Hydration requested for a placeholder file not marked as virtual in local DB. Attempting to fix it...";
+            record._type = ItemTypeVirtualFileDownload;
+            isNotVirtualFileFailure = !journal->setFileRecord(record);
+        } else {
+            isNotVirtualFileFailure = true;
+        }
+    }
+
+    if (isNotVirtualFileFailure) {
+        qCWarning(lcCfApi) << "Couldn't hydrate, the file is not virtual";
         emit hydrationRequestFailed(requestId);
         return;
     }
