@@ -251,7 +251,7 @@ public slots:
      * Schedules folders of newly connected accounts, terminates and
      * de-schedules folders of disconnected accounts.
      */
-    void slotAccountStateChanged();
+    void slotIsConnectedChanged();
 
     /**
      * restart the client as soon as it is possible, ie. no folders syncing.

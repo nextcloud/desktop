@@ -367,7 +367,7 @@ void FolderMan::slotSyncOnceFileUnlocks(const QString &path, FileSystem::LockMod
     _lockWatcher->addFile(path, mode);
 }
 
-void FolderMan::slotAccountStateChanged()
+void FolderMan::slotIsConnectedChanged()
 {
     AccountStatePtr accountState(qobject_cast<AccountState *>(sender()));
     if (!accountState) {
