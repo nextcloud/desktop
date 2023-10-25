@@ -1,0 +1,6 @@
+Bugfix: Don't start credentials save jobs during shutdown
+
+Due to a bug we "re saved" the credentials during application shutdown.
+As the application was quitting while the jobs where running we might have encountered corruped credentials or crashes.
+
+https://github.com/owncloud/client/pull/11313

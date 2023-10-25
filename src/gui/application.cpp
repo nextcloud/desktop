@@ -186,7 +186,10 @@ void Application::slotCleanup()
     _gui->slotShutdown();
     delete _gui;
 
-    AccountManager::instance()->save();
+    // by now the credentials are supposed to be persisted
+    // don't start async credentials jobs during shutdown
+    AccountManager::instance()->save(false);
+
     FolderMan::instance()->unloadAndDeleteAllFolders();
 
     // Remove the account from the account manager so it can be deleted.
