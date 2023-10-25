@@ -81,8 +81,10 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
 
     // Some types should never be written to the database when propagation completes
     rec._type = _type;
-    if (rec._type == ItemTypeVirtualFileDownload)
+    if (rec._type == ItemTypeVirtualFileDownload) {
         rec._type = ItemTypeFile;
+        qCInfo(lcFileItem) << "Changing item type from ItemTypeVirtualFileDownload to normal file to avoid wrong record type in database" << rec._path;
+    }
     if (rec._type == ItemTypeVirtualFileDehydration)
         rec._type = ItemTypeVirtualFile;
 
