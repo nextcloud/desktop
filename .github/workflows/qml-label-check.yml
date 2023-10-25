@@ -7,7 +7,7 @@ jobs:
     name: QML Label component check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Run label component count
         run: |
           MATCHESRESULT=$(find . -iname "*.qml" | xargs grep -r -e "^\s*Label\s*[{]" | wc -l | sed "s/ //g")
