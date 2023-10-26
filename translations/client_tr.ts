@@ -883,7 +883,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="227"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="229"/>
         <source>Failed to parse credentials %1</source>
         <translation>%1 kimlik bilgileri ayrıştırılamadı</translation>
     </message>
