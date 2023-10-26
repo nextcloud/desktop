@@ -362,7 +362,7 @@ public slots:
     /**
        * terminate the current sync run
        */
-    void slotTerminateSync();
+    void slotTerminateSync(const QString &reason);
 
     // connected to the corresponding signals in the SyncEngine
     void slotAboutToRemoveAllFiles(SyncFileItem::Direction);

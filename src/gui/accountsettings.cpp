@@ -609,7 +609,7 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
         // message box can return at any time while the thread keeps running,
         // so better check again after the user has responded.
         if (folder->isSyncRunning() && terminate) {
-            folder->slotTerminateSync();
+            folder->slotTerminateSync(tr("Sync paused by user"));
         }
         folder->slotNextSyncFullLocalDiscovery(); // ensure we don't forget about local errors
         folder->setSyncPaused(!currentlyPaused);
@@ -645,7 +645,7 @@ void AccountSettings::slotForceSyncCurrentFolder()
         // Terminate and reschedule any running sync
         for (auto *folder : FolderMan::instance()->folders()) {
             if (folder->isSyncRunning()) {
-                folder->slotTerminateSync();
+                folder->slotTerminateSync(tr("User triggered force sync"));
                 FolderMan::instance()->scheduler()->enqueueFolder(folder);
             }
         }

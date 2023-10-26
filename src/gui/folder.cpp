@@ -806,7 +806,8 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         };
         if (isSyncRunning()) {
             connect(this, &Folder::syncFinished, this, finalizeVfsSwitch, Qt::SingleShotConnection);
-            slotTerminateSync();
+            QString reason;
+            slotTerminateSync(tr("Switching VFS mode on folder '%1'").arg(displayName()));
         } else {
             finalizeVfsSwitch();
         }
@@ -879,12 +880,12 @@ bool Folder::isFileExcludedRelative(const QString &relativePath) const
     return isFileExcludedAbsolute(path() + relativePath);
 }
 
-void Folder::slotTerminateSync()
+void Folder::slotTerminateSync(const QString &reason)
 {
     if (isReady()) {
         qCInfo(lcFolder) << "folder " << path() << " Terminating!";
         if (_engine->isSyncRunning()) {
-            _engine->abort();
+            _engine->abort(reason);
             setSyncState(SyncResult::SyncAbortRequested);
         }
     }

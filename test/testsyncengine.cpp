@@ -779,7 +779,7 @@ private slots:
         // wait until the sync engine is ready
         // wait a second and abort
         connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, &fakeFolder.syncEngine(),
-            [&]() { QTimer::singleShot(1s, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); }); });
+            [&]() { QTimer::singleShot(1s, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort({}); }); });
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(counter->nPUT, 3);

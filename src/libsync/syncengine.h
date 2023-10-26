@@ -72,8 +72,8 @@ public:
     Q_INVOKABLE void startSync();
     void setNetworkLimits(int upload, int download);
 
-    /* Abort the sync.  Called from the main thread */
-    void abort();
+    /* Abort the sync. Called from the main thread */
+    void abort(const QString &reason);
 
     bool isSyncRunning() const { return _syncRunning; }
 

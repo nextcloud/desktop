@@ -214,7 +214,10 @@ private slots:
         });
 
         bool timedOut = false;
-        QTimer::singleShot(10s, &fakeFolder.syncEngine(), [&]() { timedOut = true; fakeFolder.syncEngine().abort(); });
+        QTimer::singleShot(10s, &fakeFolder.syncEngine(), [&]() {
+            timedOut = true;
+            fakeFolder.syncEngine().abort({});
+        });
         if (filesAreDehydrated) {
             QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // Success, because files are never downloaded
         } else {
