@@ -1,7 +1,11 @@
 import names
 import squish
 from os import path
-from helpers.SetupClientHelper import getCurrentUserSyncPath
+from helpers.SetupClientHelper import (
+    getCurrentUserSyncPath,
+    getTempResourcePath,
+    setCurrentUserSyncPath,
+)
 from helpers.ConfigHelper import get_config
 
 
@@ -67,20 +71,25 @@ class SyncConnectionWizard:
     }
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizardOc10():
+    def setSyncPathInSyncConnectionWizardOc10(folderName=''):
         squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
-        squish.type(
-            SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
-            getCurrentUserSyncPath(),
-        )
+        if folderName:
+            currentSyncPath = getTempResourcePath(folderName)
+            squish.type(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER, currentSyncPath)
+            setCurrentUserSyncPath(currentSyncPath)
+        else:
+            squish.type(
+                SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
+                getCurrentUserSyncPath(),
+            )
         SyncConnectionWizard.nextStep()
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizard(spaceName=''):
+    def setSyncPathInSyncConnectionWizard(folderName=''):
         if get_config('ocis'):
-            SyncConnectionWizard.setSyncPathInSyncConnectionWizardOcis(spaceName)
+            SyncConnectionWizard.setSyncPathInSyncConnectionWizardOcis(folderName)
         else:
-            SyncConnectionWizard.setSyncPathInSyncConnectionWizardOc10()
+            SyncConnectionWizard.setSyncPathInSyncConnectionWizardOc10(folderName)
 
     @staticmethod
     def nextStep():
