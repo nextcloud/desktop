@@ -84,8 +84,6 @@ def startClient():
         + get_config('clientLogFile')
         + " --logdebug"
         + " --logflush"
-        + " --confdir "
-        + get_config('clientConfigDir')
     )
 
 

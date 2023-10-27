@@ -3,6 +3,27 @@ import builtins
 from tempfile import gettempdir
 from configparser import ConfigParser
 
+
+def read_env_file():
+    envs = {}
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    env_path = os.path.abspath(os.path.join(script_path, '..', '..', '..', 'envs.txt'))
+    with open(env_path, "rt", encoding="UTF-8") as f:
+        for line in f:
+            if line.startswith('#'):
+                continue
+            key, value = line.split('=', 1)
+            envs[key] = value.strip()
+    return envs
+
+
+def get_config_from_env_file(env):
+    envs = read_env_file()
+    if env in envs:
+        return envs[env]
+    raise Exception('Environment "%s" not found in envs.txt' % env)
+
+
 # map environment variables to config keys
 CONFIG_ENV_MAP = {
     'localBackendUrl': 'BACKEND_HOST',
@@ -30,7 +51,9 @@ CONFIG = {
     'clientLogFile': '-',
     'clientRootSyncPath': '/tmp/client-bdd/',
     'tempFolderPath': gettempdir() + '/client-bdd/temp/',
-    'clientConfigDir': '/tmp/owncloud-client/',
+    'clientConfigDir': os.path.join(
+        get_config_from_env_file("XDG_CONFIG_HOME"), "ownCloud"
+    ),
     'guiTestReportDir': os.path.abspath('../reports/'),
     'ocis': False,
     'custom_lib': os.path.abspath('../shared/scripts/custom_lib'),
