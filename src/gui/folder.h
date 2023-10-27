@@ -258,6 +258,8 @@ public:
 
     void setDirtyNetworkLimits();
 
+    void reloadSyncOptions();
+
     /**
       * Ignore syncing of hidden files or not. This is defined in the
       * folder definition

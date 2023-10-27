@@ -859,6 +859,15 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
     return *it;
 }
 
+void FolderMan::slotReloadSyncOptions()
+{
+    for (auto *f : qAsConst(_folders)) {
+        if (f) {
+            f->reloadSyncOptions();
+        }
+    }
+}
+
 bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 {
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);

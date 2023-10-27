@@ -120,7 +120,10 @@ void PropagateLocalRemove::start()
         bool ok = false;
         QString removeError;
         if (_moveToTrash) {
-            ok = FileSystem::moveToTrash(filename, &removeError);
+            ok = QFile(filename).moveToTrash();
+            if (!ok) {
+                removeError = tr("Could not move '%1' to the trash bin").arg(filename);
+            }
         } else {
             if (_item->isDirectory()) {
                 // removeRecursively will call done on error

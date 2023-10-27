@@ -80,6 +80,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     _ui->crashreporterCheckBox->setVisible(Theme::instance()->withCrashReporter());
 
+    connect(_ui->moveToTrashCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
+        ConfigFile().setMoveToTrash(checked);
+        Q_EMIT syncOptionsChanged();
+    });
+
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
      */
@@ -287,6 +292,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
 void GeneralSettings::reloadConfig()
 {
     _ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
+    _ui->moveToTrashCheckBox->setChecked(ConfigFile().moveToTrash());
     if (Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
         _ui->autostartCheckBox->setChecked(true);
         _ui->autostartCheckBox->setDisabled(true);

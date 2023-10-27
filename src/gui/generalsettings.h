@@ -41,6 +41,7 @@ public:
 
 signals:
     void showAbout();
+    void syncOptionsChanged();
 
 private slots:
     void saveMiscSettings();
