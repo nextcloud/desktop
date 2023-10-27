@@ -9,6 +9,9 @@ Summary
 -------
 
 * Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
+* Bugfix - Fix crash on start-up when starting shell integration: [#11280](https://github.com/owncloud/client/issues/11280)
+* Bugfix - Properly schedule the sync after an account was added: [#11308](https://github.com/owncloud/client/issues/11308)
+* Bugfix - Don't start credentials save jobs during shutdown: [#11313](https://github.com/owncloud/client/pull/11313)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 
@@ -20,6 +23,30 @@ Details
    We fixed a potential crash when clicking on a notification.
 
    https://github.com/owncloud/client/issues/11226
+
+* Bugfix - Fix crash on start-up when starting shell integration: [#11280](https://github.com/owncloud/client/issues/11280)
+
+   A possible crash has been fixed that could occur during start-up, when the shell integration
+   started doing requests before the client itself completed starting up.
+
+   https://github.com/owncloud/client/issues/11280
+   https://github.com/owncloud/client/pull/11288
+
+* Bugfix - Properly schedule the sync after an account was added: [#11308](https://github.com/owncloud/client/issues/11308)
+
+   We fixed a bug where a folder was scheduled to be synced before the account reported it was ready.
+   This resulted in the sync having no effect and the folder was then only synced once we polled the
+   etag.
+
+   https://github.com/owncloud/client/issues/11308
+
+* Bugfix - Don't start credentials save jobs during shutdown: [#11313](https://github.com/owncloud/client/pull/11313)
+
+   Due to a bug we "re saved" the credentials during application shutdown. As the application was
+   quitting while the jobs where running we might have encountered corruped credentials or
+   crashes.
+
+   https://github.com/owncloud/client/pull/11313
 
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 
