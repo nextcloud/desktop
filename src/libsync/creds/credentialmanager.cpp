@@ -19,6 +19,7 @@ using namespace OCC;
 Q_LOGGING_CATEGORY(lcCredentialsManager, "sync.credentials.manager", QtDebugMsg)
 
 namespace {
+constexpr auto tiemoutC = 5s;
 QString credentialKeyC()
 {
     return QStringLiteral("%1_credentials").arg(Theme::instance()->appName());
@@ -67,18 +68,36 @@ QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
     qCInfo(lcCredentialsManager) << "set" << scopedKey(this, key);
     auto writeJob = new QKeychain::WritePasswordJob(Theme::instance()->appName());
     writeJob->setKey(scopedKey(this, key));
-    connect(writeJob, &QKeychain::WritePasswordJob::finished, this, [writeJob, key, this] {
+
+    auto timer = new QTimer(writeJob);
+    timer->setInterval(tiemoutC);
+    timer->setSingleShot(true);
+
+    auto timedOut = std::make_unique<bool>(false);
+    connect(timer, &QTimer::timeout, writeJob, [writeJob, timedOut = timedOut.get()] {
+        *timedOut = true;
+        Q_EMIT writeJob->finished(writeJob);
+        writeJob->deleteLater();
+    });
+    connect(writeJob, &QKeychain::WritePasswordJob::finished, this, [writeJob, timer, key, timedOut = std::move(timedOut), this] {
+        timer->stop();
         if (writeJob->error() == QKeychain::NoError) {
-            qCInfo(lcCredentialsManager) << "added" << scopedKey(this, key);
-            // just a list, the values don't matter
-            credentialsList().setValue(key, true);
+            if (*timedOut.get()) {
+                qCInfo(lcCredentialsManager) << "set" << writeJob->key() << "timed out";
+            } else {
+                qCInfo(lcCredentialsManager) << "added" << writeJob->key();
+                // just a list, the values don't matter
+                credentialsList().setValue(key, true);
+            }
         } else {
-            qCWarning(lcCredentialsManager) << "Failed to set:" << scopedKey(this, key) << writeJob->errorString();
+            qCWarning(lcCredentialsManager) << "Failed to set:" << writeJob->key() << writeJob->errorString();
         }
     });
     writeJob->setBinaryData(QCborValue::fromVariant(data).toCbor());
     // start is delayed so we can directly call it
     writeJob->start();
+    timer->start();
+
     return writeJob;
 }
 
@@ -183,6 +202,7 @@ void CredentialJob::start()
     if (!_parent->contains(_key)) {
         _error = QKeychain::EntryNotFound;
         // QKeychain is started delayed, emit the signal delayed to make sure we are connected
+        qCDebug(lcCredentialsManager) << "We don't know" << _key << "skipping retrieval from keychain";
         QTimer::singleShot(0, this, &CredentialJob::finished);
         return;
     }

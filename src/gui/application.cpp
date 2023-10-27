@@ -174,7 +174,7 @@ void Application::slotAccountStateAdded(AccountStatePtr accountState) const
         });
 
     // Hook up the folder manager slots to the account state's signals:
-    connect(accountState.data(), &AccountState::stateChanged, FolderMan::instance(), &FolderMan::slotAccountStateChanged);
+    connect(accountState.data(), &AccountState::isConnectedChanged, FolderMan::instance(), &FolderMan::slotIsConnectedChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged, FolderMan::instance(),
         [account = accountState->account().data()] { FolderMan::instance()->slotServerVersionChanged(account); });
     accountState->checkConnectivity();
@@ -186,7 +186,10 @@ void Application::slotCleanup()
     _gui->slotShutdown();
     delete _gui;
 
-    AccountManager::instance()->save();
+    // by now the credentials are supposed to be persisted
+    // don't start async credentials jobs during shutdown
+    AccountManager::instance()->save(false);
+
     FolderMan::instance()->unloadAndDeleteAllFolders();
 
     // Remove the account from the account manager so it can be deleted.

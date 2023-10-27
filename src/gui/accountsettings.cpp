@@ -828,9 +828,10 @@ void AccountSettings::slotAccountStateChanged()
         _toggleSignInOutAction->setText(tr("Log out"));
     }
 
-    ui->addButton->setEnabled(state == AccountState::Connected);
     if (state == AccountState::Connected) {
         ui->_folderList->setItemsExpandable(true);
+        ui->addButton->setEnabled(true);
+
         if (_accountState->supportsSpaces()) {
             ui->addButton->setText(tr("Add Space"));
             ui->addButton->setToolTip(tr("Click this button to add a Space."));
@@ -840,8 +841,15 @@ void AccountSettings::slotAccountStateChanged()
         }
     } else {
         ui->_folderList->setItemsExpandable(false);
-        ui->addButton->setText(tr("Add Folder"));
-        ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
+        ui->addButton->setEnabled(false);
+
+        if (_accountState->supportsSpaces()) {
+            ui->addButton->setText(tr("Add Space"));
+            ui->addButton->setToolTip(tr("You need to be connected to add a Space."));
+        } else {
+            ui->addButton->setText(tr("Add Folder"));
+            ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
+        }
 
         /* check if there are expanded root items, if so, close them */
         ui->_folderList->collapseAll();

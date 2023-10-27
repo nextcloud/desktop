@@ -14,7 +14,7 @@ Feature: Visually check all tabs
             | Settings     |
             | QuitOwncloud |
 
-    @skip
+
     Scenario: Open log dialog with Ctrl+l keys combination
         Given user "Alice" has been created on the server with default attributes and without skeleton files
         And user "Alice" has set up a client with default settings

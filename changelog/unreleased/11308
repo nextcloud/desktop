@@ -1,0 +1,6 @@
+Bugfix: Properly schedule the sync after an account was added
+
+We fixed a bug where a folder was scheduled to be synced before the account reported it was ready.
+This resulted in the sync having no effect and the folder was then only synced once we polled the etag.
+
+https://github.com/owncloud/client/issues/11308

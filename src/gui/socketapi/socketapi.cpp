@@ -140,38 +140,27 @@ SocketApi::SocketApi(QObject *parent)
     qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
     qRegisterMetaType<QSharedPointer<SocketApiJobV2>>("QSharedPointer<SocketApiJobV2>");
 
-    const QString socketPath = Utility::socketApiSocketPath();
+    _socketPath = Utility::socketApiSocketPath();
 
     // Remove any old socket that might be lying around:
-    SocketApiServer::removeServer(socketPath);
+    SocketApiServer::removeServer(_socketPath);
 
     // Create the socket path:
     if (!Utility::isMac()) {
         // Not on macOS: there the directory is there, and created for us by the sandboxing
         // environment, because we belong to an App Group.
-        QFileInfo info(socketPath);
+        QFileInfo info(_socketPath);
         if (!info.dir().exists()) {
             bool result = info.dir().mkpath(QStringLiteral("."));
             qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
             if (result) {
-                QFile::setPermissions(socketPath,
-                    QFile::Permissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
+                QFile::setPermissions(_socketPath, QFile::Permissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
             }
         }
     }
 
     // Wire up the server instance to us, so we can accept new connections:
     connect(&_localServer, &SocketApiServer::newConnection, this, &SocketApi::slotNewConnection);
-
-    // Start listeneing:
-    if (_localServer.listen(socketPath)) {
-        qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
-    } else {
-        qCWarning(lcSocketApi) << "can't start server" << socketPath;
-    }
-
-    // Now we're ready to start the native shell integration:
-    Utility::startShellIntegration();
 
     connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](const auto &accountState) {
         if (_registeredAccounts.contains(accountState->account())) {
@@ -187,6 +176,19 @@ SocketApi::~SocketApi()
     // All remaining sockets will be destroyed with _localServer, their parent
     OC_ASSERT(_listeners.isEmpty() || _listeners.first()->socket->parent() == &_localServer);
     _listeners.clear();
+}
+
+void SocketApi::startShellIntegration()
+{
+    // Start listeneing:
+    if (_localServer.listen(_socketPath)) {
+        qCInfo(lcSocketApi) << "server started, listening at " << _socketPath;
+    } else {
+        qCWarning(lcSocketApi) << "can't start server" << _socketPath;
+    }
+
+    // Now we're ready to start the native shell integration:
+    Utility::startShellIntegration();
 }
 
 void SocketApi::slotNewConnection()

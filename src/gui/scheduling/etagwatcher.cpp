@@ -83,11 +83,13 @@ void ETagWatcher::updateEtag(Folder *f, const QString &etag)
     if (OC_ENSURE_NOT(etag.isEmpty())) {
         auto &info = _lastEtagJob[f];
         if (f->canSync() && info.etag != etag) {
-            qCDebug(lcEtagWatcher) << "Scheduling sync of" << f->displayName() << "due to an etag change";
+            qCDebug(lcEtagWatcher) << "Scheduling sync of" << f->displayName() << f->path() << "due to an etag change";
             info.etag = etag;
             _folderMan->scheduler()->enqueueFolder(f);
         }
         info.lastUpdate.reset();
+    } else {
+        qCWarning(lcEtagWatcher) << "Invalid empty etag received for" << f->displayName() << f->path();
     }
 }
 
@@ -102,11 +104,15 @@ void ETagWatcher::startOC10EtagJob(Folder *f)
             requestEtagJob->setTimeout(pollTimeoutC);
             connect(requestEtagJob, &RequestEtagJob::finishedSignal, this, [requestEtagJob, f, this] {
                 if (requestEtagJob->httpStatusCode() == 207) {
-                    updateEtag(f, requestEtagJob->etag());
-                    f->accountState()->tagLastSuccessfullETagRequest(requestEtagJob->responseQTimeStamp());
+                    if (OC_ENSURE_NOT(requestEtagJob->etag().isEmpty())) {
+                        f->accountState()->tagLastSuccessfullETagRequest(requestEtagJob->responseQTimeStamp());
+                        updateEtag(f, requestEtagJob->etag());
+                    } else {
+                        qCWarning(lcEtagWatcher) << "Invalid empty etag received for" << f->displayName() << f->path() << requestEtagJob;
+                    }
                 }
             });
-            qCDebug(lcEtagWatcher) << "Starting etag check for folder" << f->displayName();
+            qCDebug(lcEtagWatcher) << "Starting etag check for folder" << f->displayName() << f->path();
             requestEtagJob->start();
         }
     }

@@ -103,7 +103,7 @@
 <context>
     <name>CommandLine</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="105"/>
+        <location filename="../src/gui/main.cpp" line="106"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
         <translation>Siehe %1 für mehr Informationen</translation>
@@ -423,7 +423,7 @@
         <location filename="../src/gui/accountsettings.ui" line="283"/>
         <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <location filename="../src/gui/accountsettings.cpp" line="575"/>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="992"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -464,14 +464,15 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
-        <location filename="../src/gui/accountsettings.cpp" line="835"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>Add Space</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="192"/>
-        <location filename="../src/gui/accountsettings.cpp" line="838"/>
-        <location filename="../src/gui/accountsettings.cpp" line="843"/>
+        <location filename="../src/gui/accountsettings.cpp" line="839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="850"/>
         <source>Add Folder</source>
         <translation type="unfinished"/>
     </message>
@@ -586,47 +587,52 @@ Bitte über den Browser authentifizieren.</translation>
         <translation>Anmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Click this button to add a Space.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="840"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Diesen Knopf drücken um einen Ordner zur Synchronisation hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="844"/>
+        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <source>You need to be connected to add a Space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>You need to be connected to add a folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="941"/>
+        <location filename="../src/gui/accountsettings.cpp" line="949"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu gross sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="951"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie externer Speicher sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="944"/>
+        <location filename="../src/gui/accountsettings.cpp" line="952"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie  zu gross oder externer Speicher sind:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>Confirm Account Removal</source>
         <translation>Löschen des Benutzerkontos bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="978"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Möchtest Du den Zugang zum Benutzerkonto &lt;i&gt;%1&lt;/i&gt; wirklich entfernen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt;Es werden &lt;b&gt;keine&lt;/b&gt; lokalen Daten gelöscht.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="983"/>
+        <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Remove connection</source>
         <translation>Verbindung entfernen</translation>
     </message>
@@ -799,7 +805,7 @@ Die Aktualisierung wird im Hintergrund durchgeführt und überschreibt die aktue
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="212"/>
+        <location filename="../src/gui/main.cpp" line="213"/>
         <source>Quit</source>
         <translation>Schließen</translation>
     </message>
@@ -873,7 +879,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="209"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="229"/>
         <source>Failed to parse credentials %1</source>
         <translation>Fehler beim Verarbeiten der Zugangsdaten %1</translation>
     </message>
@@ -3196,48 +3202,48 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="507"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="509"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Teile mit %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="540"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="542"/>
         <source>Context menu share</source>
         <translation>Teilen über das Kontextmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="545"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="547"/>
         <source>Context menu share %1</source>
         <translation>Freigabe %1 über das Kontextmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="719"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
         <source>Confirm deletion</source>
         <translation>Löschung bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="721"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="723"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>Soll der Ordner &lt;i&gt;%1&lt;/i&gt; und alle seine Inhalte dauerhaft gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="722"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="724"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>Soll die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft gelöscht werden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="764"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="766"/>
         <source>Select new location...</source>
         <translation>Neuen Ort wählen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="774"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="776"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="775"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="777"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3246,90 +3252,90 @@ for additional privileges during the process.</source>
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="850"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="852"/>
         <source>I shared something with you</source>
         <translation>Ich habe etwas mit dir geteilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="863"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="895"/>
         <source>Share...</source>
         <translation>Teilen…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="865"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="915"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="867"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="917"/>
         <source>Copy private link to clipboard</source>
         <translation>Privaten Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="866"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="868"/>
         <source>Send private link by email...</source>
         <translation>Privaten Link über E-Mail senden...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="891"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
         <source>Resharing this file is not allowed</source>
         <translation>Weiteres Teilen ist nicht erlaubt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="891"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="893"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Weiterteilen des Ordners ist nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="907"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="909"/>
         <source>Create and copy public link to clipboard</source>
         <translation>Neuen öffentlichen Link erstellen und in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="910"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="912"/>
         <source>Copy public link to clipboard</source>
         <translation>Öffentlichen Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="994"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="996"/>
         <source>Open in %1</source>
         <translation>In %1 öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
         <source>Show file versions in web browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1027"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
         <source>Rename...</source>
         <translation>Umbenennen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1032"/>
         <source>Rename and upload...</source>
         <translation>Umbenennen und hochladen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1035"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1039"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1037"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1041"/>
         <source>Move and rename...</source>
         <translation>Verschieben und umbenennen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1042"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1044"/>
         <source>Move, rename and upload...</source>
         <translation>Verschieben, umbenennen und hochladen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1045"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1047"/>
         <source>Delete local changes</source>
         <translation>Lokale Änderungen löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1050"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1052"/>
         <source>Move and upload...</source>
         <translation>Verschieben und hochladen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1053"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
@@ -4265,12 +4271,12 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>account loading</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="375"/>
+        <location filename="../src/gui/main.cpp" line="376"/>
         <source>Error accessing the configuration file</source>
         <translation>Fehler beim Zugriff auf die Konfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="376"/>
+        <location filename="../src/gui/main.cpp" line="377"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Es ist ein Fehler beim Zugriff auf die Konfigurationsdatei unter %1 aufgetreten.</translation>
     </message>
@@ -4452,7 +4458,7 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>version check</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="209"/>
+        <location filename="../src/gui/main.cpp" line="210"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
         <translation type="unfinished"/>
     </message>

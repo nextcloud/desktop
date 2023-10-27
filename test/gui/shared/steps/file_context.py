@@ -18,6 +18,9 @@ from helpers.FilesHelper import (
     can_write,
     read_file_content,
 )
+from helpers.SetupClientHelper import (
+    getTempResourcePath,
+)
 
 
 def folderExists(folderPath, timeout=1000):
@@ -263,15 +266,23 @@ def step(context, username):
         writeFile(file, '')
 
 
+@Given('the user has created a folder "|any|" in temp folder')
+def step(context, folderName):
+    createFolder(folderName, isTempFolder=True)
+
+
 @Given(
-    'the user has created a folder "|any|" with "|any|" files each of size "|any|" bytes in temp folder'
+    'the user has created "|any|" files each of size "|any|" bytes inside folder "|any|" in temp folder'
 )
-def step(context, foldername, filenumber, filesize):
-    createFolder(foldername, isTempFolder=True)
-    filesize = builtins.int(filesize)
-    for i in range(0, builtins.int(filenumber)):
-        filename = f"file{i}.txt"
-        createFileWithSize(join(foldername, filename), filesize, True)
+def step(context, fileNumber, fileSize, folderName):
+    currentSyncPath = getTempResourcePath(folderName)
+    if folderExists(currentSyncPath):
+        fileSize = builtins.int(fileSize)
+        for i in range(0, builtins.int(fileNumber)):
+            fileName = f"file{i}.txt"
+            createFileWithSize(join(currentSyncPath, fileName), fileSize, True)
+    else:
+        raise Exception(f"Folder '{folderName}' does not exist in the temp folder")
 
 
 @When(

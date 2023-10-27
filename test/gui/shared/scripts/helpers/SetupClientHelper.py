@@ -69,6 +69,10 @@ def getResourcePath(resource='', user='', space=''):
     )
 
 
+def getTempResourcePath(resourceName):
+    return join(get_config('tempFolderPath'), resourceName)
+
+
 def getCurrentUserSyncPath():
     return get_config('currentUserSyncPath')
 

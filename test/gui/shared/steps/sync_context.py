@@ -158,6 +158,13 @@ def step(context):
     SyncConnectionWizard.setSyncPathInSyncConnectionWizard()
 
 
+@When(
+    'the user sets the temp folder "|any|" as local sync path in sync connection wizard'
+)
+def step(context, folderName):
+    SyncConnectionWizard.setSyncPathInSyncConnectionWizard(folderName)
+
+
 @When('the user selects "|any|" as a remote destination folder')
 def step(context, folderName):
     SyncConnectionWizard.selectRemoteDestinationFolder(folderName)

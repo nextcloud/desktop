@@ -343,8 +343,10 @@ Feature: Syncing files
 
 
     Scenario: Syncing folders each having 500 files
-        Given the user has created a folder "folder1" with "500" files each of size "1048576" bytes in temp folder
-        And the user has created a folder "folder2" with "500" files each of size "1048576" bytes in temp folder
+        Given the user has created a folder "folder1" in temp folder
+        And the user has created "500" files each of size "1048576" bytes inside folder "folder1" in temp folder
+        And the user has created a folder "folder2" in temp folder
+        And the user has created "500" files each of size "1048576" bytes inside folder "folder2" in temp folder
         And user "Alice" has set up a client with default settings
         When user "Alice" moves folder "folder1" from the temp folder into the sync folder
         And user "Alice" moves folder "folder2" from the temp folder into the sync folder
@@ -383,3 +385,23 @@ Feature: Syncing files
         And as "Alice" folder "folder2" should exist in the server
         And as "Alice" the file "file1.txt" should have the content "Test file1" in the server
         And as "Alice" the file "file2.txt" should have the content "Test file2" in the server
+
+
+    @skipOnOCIS
+    Scenario: sync remote folder to a local sync folder having special characters
+        Given user "Alice" has created folder "~`!@#$^&()-_=+{[}];',)" in the server
+        And user "Alice" has created folder "~test%" in the server
+        And the user has created a folder "~`!@#$^&()-_=+{[}];',)PRN%" in temp folder
+        And the user has started the client
+        And the user has added the following account information:
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
+        When the user selects manual sync folder option in advanced section
+        And the user sets the temp folder "~`!@#$^&()-_=+{[}];',)PRN%" as local sync path in sync connection wizard
+        And the user selects "ownCloud" as a remote destination folder
+        And the user selects the following folders to sync:
+            | folder                 |
+            | ~`!@#$^&()-_=+{[}];',) |
+        Then the folder "~`!@#$^&()-_=+{[}];',)" should exist on the file system
+        But the folder "~test%" should not exist on the file system
