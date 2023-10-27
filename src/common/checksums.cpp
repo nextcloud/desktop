@@ -187,25 +187,16 @@ QByteArray ComputeChecksum::checksumType() const
 void ComputeChecksum::start(const QString &filePath)
 {
     qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
-    startImpl(QSharedPointer<QFile>::create(filePath));
+    startImpl(filePath);
 }
 
-void ComputeChecksum::start(QSharedPointer<QIODevice> device)
-{
-    ENFORCE(device);
-    qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of device" << device.get() << "in a thread";
-    ASSERT(!device->parent());
-
-    startImpl(device);
-}
-
-void ComputeChecksum::startImpl(QSharedPointer<QIODevice> device)
+void ComputeChecksum::startImpl(const QString &filePath)
 {
     connect(&_watcher, &QFutureWatcherBase::finished,
         this, &ComputeChecksum::slotCalculationDone,
         Qt::UniqueConnection);
 
-    _checksumCalculator.reset(new ChecksumCalculator(device, _checksumType));
+    _checksumCalculator.reset(new ChecksumCalculator(filePath, _checksumType));
     _watcher.setFuture(QtConcurrent::run([this]() {
         return _checksumCalculator->calculate();
     }));
@@ -213,17 +204,17 @@ void ComputeChecksum::startImpl(QSharedPointer<QIODevice> device)
 
 QByteArray ComputeChecksum::computeNowOnFile(const QString &filePath, const QByteArray &checksumType)
 {
-    return computeNow(QSharedPointer<QFile>::create(filePath), checksumType);
+    return computeNow(filePath, checksumType);
 }
 
-QByteArray ComputeChecksum::computeNow(QSharedPointer<QIODevice> device, const QByteArray &checksumType)
+QByteArray ComputeChecksum::computeNow(const QString &filePath, const QByteArray &checksumType)
 {
     if (!checksumComputationEnabled()) {
         qCWarning(lcChecksums) << "Checksum computation disabled by environment variable";
         return QByteArray();
     }
 
-    ChecksumCalculator checksumCalculator(device, checksumType);
+    ChecksumCalculator checksumCalculator(filePath, checksumType);
     return checksumCalculator.calculate();
 }
 
@@ -268,13 +259,6 @@ void ValidateChecksumHeader::start(const QString &filePath, const QByteArray &ch
 {
     if (auto calculator = prepareStart(checksumHeader))
         calculator->start(filePath);
-}
-
-void ValidateChecksumHeader::start(QSharedPointer<QIODevice> device, const QByteArray &checksumHeader)
-{
-    if (auto calculator = prepareStart(checksumHeader)) {
-        calculator->start(device);
-    }
 }
 
 QByteArray ValidateChecksumHeader::calculatedChecksumType() const
