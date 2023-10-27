@@ -1,5 +1,5 @@
 if ($IsWindows) {
-    $python=(py -V:3.11 -c "import sys; print(sys.executable)")
+    $python = (Get-Command py).Source
 } else {
     $python = (Get-Command python3).Source
 }
