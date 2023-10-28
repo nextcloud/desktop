@@ -6349,7 +6349,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="46"/>
         <source>Could not open browser</source>
-        <translation>Неможливо запустити переглядач</translation>
+        <translation>Неможливо відкрити бравзер</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="47"/>
@@ -6359,7 +6359,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
         <source>Could not open email client</source>
-        <translation>Неможливо запустити поштовий клієнт</translation>
+        <translation>Неможливо відкрити поштовий клієнт</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="71"/>
