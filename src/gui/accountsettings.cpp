@@ -212,6 +212,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     }
 #else
     disguiseTabWidget();
+    _ui->tabWidget->setCurrentIndex(0);
 #endif
 
     const auto mouseCursorChanger = new MouseCursorChanger(this);
