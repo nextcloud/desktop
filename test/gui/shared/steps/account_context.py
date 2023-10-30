@@ -114,6 +114,16 @@ def step(context, username):
     waitForInitialSyncToComplete(getResourcePath('/', username))
 
 
+@When('user "|any|" opens login dialog')
+def step(context, username):
+    AccountSetting.login()
+
+
+@When('user "|any|" enters the password "|any|"')
+def step(context, username, password):
+    EnterPassword.reLogin(username, password)
+
+
 @Then('user "|any|" should be connect to the client-UI')
 def step(context, username):
     displayname = getDisplaynameForUser(username)
@@ -257,3 +267,8 @@ def step(context):
 @Then("the sync folder should not be added")
 def step(context):
     test.vp("empty_sync_connection")
+
+
+@When('user "|any|" logs out from the login required dialog')
+def step(context, username):
+    AccountSetting.logoutFromLoginRequiredDialog()
