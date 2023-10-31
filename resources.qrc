@@ -63,6 +63,7 @@
         <file>src/gui/ConflictDelegate.qml</file>
         <file>src/gui/ConflictItemFileInfo.qml</file>
         <file>src/gui/macOS/ui/FileProviderSettings.qml</file>
+        <file>src/gui/macOS/ui/FileProviderFileDelegate.qml</file>
         <file>src/gui/macOS/ui/FileProviderEvictionDialog.qml</file>
     </qresource>
 </RCC>

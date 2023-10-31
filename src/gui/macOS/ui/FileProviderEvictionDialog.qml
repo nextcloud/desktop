@@ -36,8 +36,9 @@ ApplicationWindow {
     ListView {
         anchors.fill: parent
         model: root.materialisedItemsModel
-        delegate: Text {
-            text: model.display
+        delegate: FileProviderFileDelegate {
+            width: parent.width
+            height: 60
         }
     }
 }
