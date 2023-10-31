@@ -36,21 +36,14 @@ Item {
 
     required property size documentSize
 
-    GridLayout {
+    RowLayout {
         id: internalLayout
 
         anchors.fill: parent
-        rows: 3
-        columns: 4
 
         Image {
             id: fileIconImage
-
             Layout.fillHeight: true
-            Layout.row: 0
-            Layout.rowSpan: internalLayout.rows
-            Layout.column: 0
-
             verticalAlignment: Image.AlignVCenter
             horizontalAlignment: Image.AlignHCenter
             source: "image://tray-image-provider/:/fileicon/" + root.userVisiblePath
@@ -59,60 +52,48 @@ Item {
             fillMode: Image.PreserveAspectFit
         }
 
-        EnforcedPlainTextLabel {
-            id: fileNameLabel
-
+        Column {
             Layout.fillWidth: true
-            Layout.row: 0
-            Layout.column: 1
-            Layout.columnSpan: 2
 
-            text: root.fileName
+            EnforcedPlainTextLabel {
+                id: fileNameLabel
+                width: parent.width
+                text: root.fileName
+            }
+
+            EnforcedPlainTextLabel {
+                id: pathLabel
+                width: parent.width
+                text: root.userVisiblePath
+                elide: Text.ElideLeft
+            }
+
+            Row {
+                width: parent.width
+
+                EnforcedPlainTextLabel {
+                    id: fileSizeLabel
+                    text: root.documentSize
+                }
+
+                EnforcedPlainTextLabel {
+                    id: fileTypeLabel
+                    text: root.fileType
+                    color: Style.ncSecondaryTextColor
+                }
+            }
         }
 
         CustomButton {
             id: deleteButton
 
-            Layout.preferredWidth: width
             Layout.minimumWidth: implicitWidth
             Layout.fillHeight: true
-            Layout.row: 0
-            Layout.rowSpan: internalLayout.rows
-            Layout.column: 2
+            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
             text: qsTr("Delete")
             bgColor: Style.errorBoxBackgroundColor
             onClicked: root.evictItem(root.identifier, root.domainIdentifier)
-        }
-
-        EnforcedPlainTextLabel {
-            id: pathLabel
-
-            Layout.fillWidth: true
-            Layout.row: 1
-            Layout.column: 1
-            Layout.columnSpan: 2
-
-            text: root.userVisiblePath
-        }
-
-        EnforcedPlainTextLabel {
-            id: fileSizeLabel
-
-            Layout.row: 2
-            Layout.column: 1
-
-            text: root.documentSize
-        }
-
-        EnforcedPlainTextLabel {
-            id: fileTypeLabel
-
-            Layout.row: 2
-            Layout.column: 2
-
-            text: root.fileType
-            color: Style.ncSecondaryTextColor
         }
     }
 }
