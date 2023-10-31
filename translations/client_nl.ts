@@ -601,7 +601,7 @@ Hernieuw de authenticatie met de web browser.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="848"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>U moet verbonden zijn om een Space toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
@@ -3308,7 +3308,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1007"/>
         <source>Show file versions in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Toon bestandsversies in browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1029"/>
@@ -3858,7 +3858,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Create a new account</source>
-        <translation type="unfinished"/>
+        <translation>Maak een nieuw account</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="725"/>
@@ -4190,7 +4190,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="122"/>
         <source>Filename Reserved</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsnaam is gereserveerd</translation>
     </message>
 </context>
 <context>
