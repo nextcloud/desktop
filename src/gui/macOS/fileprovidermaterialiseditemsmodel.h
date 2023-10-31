@@ -75,6 +75,7 @@ signals:
 
 public slots:
     void setItems(const QVector<FileProviderItemMetadata> &items);
+    void evictItem(const QString &identifier, const QString &domainIdentifier);
 
 private:
     QVector<FileProviderItemMetadata> _items;

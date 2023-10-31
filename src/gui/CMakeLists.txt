@@ -298,6 +298,7 @@ IF( APPLE )
             macOS/fileprovideritemmetadata_mac.mm
             macOS/fileprovidermaterialiseditemsmodel.h
             macOS/fileprovidermaterialiseditemsmodel.cpp
+            macOS/fileprovidermaterialiseditemsmodel_mac.mm
             macOS/fileprovidersettingscontroller.h
             macOS/fileprovidersettingscontroller_mac.mm
             macOS/fileprovidersocketcontroller.h
