@@ -99,6 +99,7 @@ void PropagateUploadFileV1::startNextChunk()
     auto headers = PropagateUploadFileCommon::headers();
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
     headers[QByteArrayLiteral("OC-Chunk-Size")] = QByteArray::number(chunkSize());
+    headers[QByteArrayLiteral("OC-File-Type")] = QByteArray::number(_fileToUpload._isSymlink ? ItemTypeSoftLink : ItemTypeFile);
 
     QString path = _fileToUpload._file;
 

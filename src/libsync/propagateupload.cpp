@@ -258,6 +258,7 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
     _fileToUpload._file = _item->_file;
     _fileToUpload._size = _item->_size;
     _fileToUpload._path = propagator()->fullLocalPath(_fileToUpload._file);
+    _fileToUpload._isSymlink = _item->_type == ItemTypeSoftLink;
     startUploadFile();
 }
 
