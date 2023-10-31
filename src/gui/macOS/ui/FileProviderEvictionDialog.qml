@@ -39,6 +39,7 @@ ApplicationWindow {
         delegate: FileProviderFileDelegate {
             width: parent.width
             height: 60
+            onEvictItem: root.materialisedItemsModel.evictItem(identifier, domainIdentifier)
         }
     }
 }

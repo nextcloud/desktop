@@ -25,7 +25,11 @@ import com.nextcloud.desktopclient 1.0
 Item {
     id: root
 
+    signal evictItem(string identifier, string domainIdentifier)
+
     // Match with model rolenames for automagic setting of properties
+    required property string identifier
+    required property string domainIdentifier
     required property string fileName
     required property string userVisiblePath
     required property string fileType
@@ -78,6 +82,7 @@ Item {
 
             text: qsTr("Delete")
             bgColor: Style.errorBoxBackgroundColor
+            onClicked: root.evictItem(root.identifier, root.domainIdentifier)
         }
 
         EnforcedPlainTextLabel {
