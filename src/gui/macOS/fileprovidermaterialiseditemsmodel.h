@@ -32,6 +32,7 @@ public:
     enum Roles {
         IdentifierRole = Qt::UserRole + 1,
         ParentItemIdentifierRole,
+        DomainIdentifierRole,
         FilenameRole,
         TypeIdentifierRole,
         SymlinkTargetPathRole,

@@ -44,6 +44,8 @@ QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int 
         return item.identifier();
     case ParentItemIdentifierRole:
         return item.parentItemIdentifier();
+    case DomainIdentifierRole:
+        return item.domainIdentifier();
     case TypeIdentifierRole:
         return item.typeIdentifier();
     case SymlinkTargetPathRole:
@@ -108,6 +110,7 @@ QHash<int, QByteArray> FileProviderMaterialisedItemsModel::roleNames() const
     roleNames.insert({
         { IdentifierRole, "identifier" },
         { ParentItemIdentifierRole, "parentItemIdentifier" },
+        { DomainIdentifierRole, "domainIdentifier" },
         { FilenameRole, "fileName" },
         { TypeIdentifierRole, "typeIdentifier" },
         { SymlinkTargetPathRole, "symlinkTargetPath" },
