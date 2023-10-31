@@ -173,6 +173,11 @@ QString FileProviderItemMetadata::userVisiblePath() const
     return _userVisiblePath;
 }
 
+QString FileProviderItemMetadata::fileTypeString() const
+{
+    return _fileTypeString;
+}
+
 bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs)
 {
     return lhs.identifier() == rhs.identifier() &&

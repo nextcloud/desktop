@@ -90,6 +90,7 @@ FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const 
     metadata._sharedByCurrentUser = bridgedNsFileProviderItem.sharedByCurrentUser;
 
     metadata._userVisiblePath = metadata.getUserVisiblePath();
+    metadata._fileTypeString = QString::fromNSString(bridgedNsFileProviderItem.contentType.localizedDescription);
 
     return metadata;
 }

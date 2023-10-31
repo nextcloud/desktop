@@ -93,6 +93,7 @@ public:
     bool sharedByCurrentUser() const;
 
     QString userVisiblePath() const;
+    QString fileTypeString() const;
 
     // Check equality via identifier, contentVersion, and metadataVersion
     friend bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs);
@@ -134,6 +135,7 @@ private:
     bool _trashed = false;
 
     QString _userVisiblePath;
+    QString _fileTypeString;
 };
 
 }
