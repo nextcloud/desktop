@@ -28,6 +28,11 @@ QString FileProviderItemMetadata::parentItemIdentifier() const
     return _parentItemIdentifier;
 }
 
+QString FileProviderItemMetadata::domainIdentifier() const
+{
+    return _domainIdentifier;
+}
+
 QString FileProviderItemMetadata::filename() const
 {
     return _filename;

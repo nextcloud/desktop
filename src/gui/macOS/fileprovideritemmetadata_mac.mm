@@ -46,7 +46,7 @@ namespace OCC {
 
 namespace Mac {
 
-FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const void *const nsFileProviderItem)
+FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const void *const nsFileProviderItem, const QString &domainIdentifier)
 {
     FileProviderItemMetadata metadata;
     const id<NSFileProviderItem> bridgedNsFileProviderItem = (__bridge id<NSFileProviderItem>)nsFileProviderItem;
@@ -56,6 +56,7 @@ FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const 
 
     metadata._identifier = QString::fromNSString(bridgedNsFileProviderItem.itemIdentifier);
     metadata._parentItemIdentifier = QString::fromNSString(bridgedNsFileProviderItem.parentItemIdentifier);
+    metadata._domainIdentifier = domainIdentifier;
     metadata._filename = QString::fromNSString(bridgedNsFileProviderItem.filename);
     metadata._typeIdentifier = QString::fromNSString(bridgedNsFileProviderItem.contentType.identifier);
     metadata._symlinkTargetPath = QString::fromNSString(bridgedNsFileProviderItem.symlinkTargetPath);

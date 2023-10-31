@@ -169,7 +169,7 @@ public:
         qMaterialisedItems.reserve(materialisedItems.count);
 
         for (const id<NSFileProviderItem> item in materialisedItems) {
-            const auto itemMetadata = FileProviderItemMetadata::fromNSFileProviderItem(item);
+            const auto itemMetadata = FileProviderItemMetadata::fromNSFileProviderItem(item, userIdAtHost);
             qMaterialisedItems.append(itemMetadata);
         }
 

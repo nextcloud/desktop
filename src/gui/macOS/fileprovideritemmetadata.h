@@ -27,6 +27,7 @@ class FileProviderItemMetadata
 
 	Q_PROPERTY(QString identifier READ identifier CONSTANT)
 	Q_PROPERTY(QString parentItemIdentifier READ parentItemIdentifier CONSTANT)
+    Q_PROPERTY(QString domainIdentifier READ domainIdentifier CONSTANT)
 	Q_PROPERTY(QString filename READ filename CONSTANT)
 	Q_PROPERTY(QString typeIdentifier READ typeIdentifier CONSTANT)
 	Q_PROPERTY(QString symlinkTargetPath READ symlinkTargetPath CONSTANT)
@@ -56,10 +57,11 @@ class FileProviderItemMetadata
 	Q_PROPERTY(bool sharedByCurrentUser READ sharedByCurrentUser CONSTANT)
 
 public:
-	static FileProviderItemMetadata fromNSFileProviderItem(const void *const nsFileProviderItem);
+    static FileProviderItemMetadata fromNSFileProviderItem(const void *const nsFileProviderItem, const QString &domainIdentifier);
 
     QString identifier() const;
     QString parentItemIdentifier() const;
+    QString domainIdentifier() const;
     QString filename() const;
     QString typeIdentifier() const;
 	QString symlinkTargetPath() const;
@@ -94,6 +96,7 @@ public:
 private:
 	QString _identifier;
 	QString _parentItemIdentifier;
+    QString _domainIdentifier;
     QString _filename;
     QString _typeIdentifier;
     QString _symlinkTargetPath;
