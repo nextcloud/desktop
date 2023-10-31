@@ -89,10 +89,12 @@ FileProviderItemMetadata FileProviderItemMetadata::fromNSFileProviderItem(const 
     metadata._shared = bridgedNsFileProviderItem.shared;
     metadata._sharedByCurrentUser = bridgedNsFileProviderItem.sharedByCurrentUser;
 
+    metadata._userVisiblePath = metadata.getUserVisiblePath();
+
     return metadata;
 }
 
-QString FileProviderItemMetadata::userVisiblePath() const
+QString FileProviderItemMetadata::getUserVisiblePath() const
 {
     qCDebug(lcMacImplFileProviderItemMetadata) << "Getting user visible path";
 

@@ -168,6 +168,11 @@ bool FileProviderItemMetadata::sharedByCurrentUser() const
     return _sharedByCurrentUser;
 }
 
+QString FileProviderItemMetadata::userVisiblePath() const
+{
+    return _userVisiblePath;
+}
+
 bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs)
 {
     return lhs.identifier() == rhs.identifier() &&

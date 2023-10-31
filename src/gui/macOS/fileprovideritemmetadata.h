@@ -98,6 +98,8 @@ public:
     friend bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs);
 
 private:
+    QString getUserVisiblePath() const;
+
 	QString _identifier;
 	QString _parentItemIdentifier;
     QString _domainIdentifier;
@@ -130,6 +132,8 @@ private:
     bool _shared = false;
     bool _sharedByCurrentUser = false;
     bool _trashed = false;
+
+    QString _userVisiblePath;
 };
 
 }
