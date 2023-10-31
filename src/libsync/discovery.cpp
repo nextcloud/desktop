@@ -306,7 +306,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
-    if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
+    if (excluded == CSYNC_NOT_EXCLUDED) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
         emit _discoveryData->silentlyExcluded(path);
@@ -327,8 +327,6 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     }
 
     if (entries.localEntry.isSymLink) {
-        /* Symbolic links are ignored. */
-        item->_errorString = tr("Symbolic links are not supported in syncing.");
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
