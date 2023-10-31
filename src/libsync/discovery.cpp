@@ -1068,8 +1068,18 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     item->_inode = localEntry.inode;
 
+
+    auto getItemType = [](const LocalInfo& localEntry, bool allowVirtualFile = false) {
+        return localEntry.isDirectory ? ItemTypeDirectory :
+               localEntry.isSymLink ? ItemTypeSoftLink :
+               localEntry.isVirtualFile && allowVirtualFile ? ItemTypeVirtualFile :
+               ItemTypeFile;
+    };
+
+
     if (dbEntry.isValid()) {
-        bool typeChange = localEntry.isDirectory != dbEntry.isDirectory();
+        bool typeChange = localEntry.isDirectory != dbEntry.isDirectory() ||
+                          localEntry.isSymLink != dbEntry.isSymLink();
         if (!typeChange && localEntry.isVirtualFile) {
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -1139,7 +1149,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
-            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_type = getItemType(localEntry);
             _childModified = true;
         } else if (dbEntry._modtime > 0 && (localEntry.modtime <= 0 || localEntry.modtime >= 0xFFFFFFFF) && dbEntry._fileSize == localEntry.size) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -1147,7 +1157,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size > 0 ? localEntry.size : dbEntry._fileSize;
             item->_modtime = dbEntry._modtime;
             item->_previousModtime = dbEntry._modtime;
-            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_type = getItemType(localEntry);
             qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: File" << item->_file << "if (dbEntry._modtime > 0 && localEntry.modtime <= 0)"
                              << "dbEntry._modtime:" << dbEntry._modtime
                              << "localEntry.modtime:" << localEntry.modtime;
@@ -1209,7 +1219,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_checksumHeader.clear();
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
-    item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+    item->_type = getItemType(localEntry, true);
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1322,7 +1332,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        if (base.isDirectory() != item->isDirectory()) {
+        if (item->_type != base._type) {
             qCInfo(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
             return false;
         }

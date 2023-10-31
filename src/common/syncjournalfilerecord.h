@@ -65,6 +65,7 @@ public:
     [[nodiscard]] QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
     [[nodiscard]] bool isDirectory() const { return _type == ItemTypeDirectory; }
+    [[nodiscard]] bool isSymLink() const { return _type == ItemTypeSoftLink; }
     [[nodiscard]] bool isFile() const { return _type == ItemTypeFile || _type == ItemTypeVirtualFileDehydration; }
     [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
     [[nodiscard]] QString path() const { return QString::fromUtf8(_path); }

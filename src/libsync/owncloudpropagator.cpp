@@ -680,7 +680,7 @@ void OwncloudPropagator::startFilePropagation(const SyncFileItemPtr &item,
                                               QString &removedDirectory,
                                               QString &maybeConflictDirectory)
 {
-    if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+    if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE && item->_type == ItemTypeDirectory) {
         // will delete directories, so defer execution
         auto job = createJob(item);
         if (job) {
