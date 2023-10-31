@@ -11,18 +11,18 @@ Feature: adding accounts
 
     Scenario: Check default options in advanced configuration
         Given the user has started the client
-        When the user adds the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        And the user opens the advanced configuration
+        When the user opens the advanced configuration
         Then the download everything option should be selected by default
         And the user should be able to choose the local download directory
 
 
     Scenario: Adding normal Account
         Given the user has started the client
-        When the user adds the first account with
+        When the user adds the following account:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -32,7 +32,8 @@ Feature: adding accounts
     Scenario: Adding multiple accounts
         Given user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has set up a client with default settings
-        When the user adds another account with
+        When the user opens the add-account dialog
+        And the user adds the following account:
             | server   | %local_server% |
             | user     | Brian          |
             | password | AaBb2Cc3Dd4    |
@@ -43,7 +44,8 @@ Feature: adding accounts
     @skipOnOCIS
     Scenario: Adding account with wrong credentials
         Given the user has started the client
-        And the user has added the server "%local_server%"
+        And the user has entered the following account information:
+            | server   | %local_server% |
         When the user adds the following wrong user credentials:
             | user     | Alice |
             | password | 12345 |
@@ -59,7 +61,7 @@ Feature: adding accounts
 
     Scenario: Adding account with vfs enabled
         Given the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -70,7 +72,7 @@ Feature: adding accounts
 
     Scenario: Try to enable experimental vfs option and cancel it
         Given the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -83,7 +85,7 @@ Feature: adding accounts
     Scenario: Add space manually from sync connection window
         Given user "Alice" has created folder "simple-folder" in the server
         And the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |

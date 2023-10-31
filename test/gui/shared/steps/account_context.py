@@ -65,15 +65,18 @@ def step(context):
     startClient()
 
 
-@When(r'^the user adds (the first|another) account with$', regexp=True)
-def step(context, accountType):
-    if accountType == 'another':
-        Toolbar.openNewAccountSetup()
+@When('the user opens the add-account dialog')
+def step(context):
+    Toolbar.openNewAccountSetup()
+
+
+@When('the user adds the following account:')
+def step(context):
     account_details = getClientDetails(context)
     AccountConnectionWizard.addAccount(account_details)
 
 
-@Given('the user has added the following account information:')
+@Given('the user has entered the following account information:')
 def step(context):
     account_details = getClientDetails(context)
     AccountConnectionWizard.addAccountInformation(account_details)
@@ -163,17 +166,6 @@ def step(context, errorMsg):
     test.compare(AccountConnectionWizard.getErrorMessage(), errorMsg)
 
 
-@Given('the user has added the server "|any|"')
-def step(context, server):
-    server_url = substituteInLineCodes(server)
-    AccountConnectionWizard.addServer(server_url)
-    test.compare(
-        AccountConnectionWizard.isCredentialWindowVisible(),
-        True,
-        "Assert credentials page is visible",
-    )
-
-
 @When('the user adds the server "|any|"')
 def step(context, server):
     server_url = substituteInLineCodes(server)
@@ -207,17 +199,6 @@ def step(context, action):
     else:
         AccountConnectionWizard.cancelEnableExperimentalVFSOption()
     AccountConnectionWizard.nextStep()
-
-
-@When('the user adds the following account information:')
-def step(context):
-    account_details = getClientDetails(context)
-    AccountConnectionWizard.addServer(account_details['server'])
-    if get_config('ocis'):
-        AccountConnectionWizard.acceptCertificate()
-    AccountConnectionWizard.addUserCreds(
-        account_details['user'], account_details['password']
-    )
 
 
 @When("the user opens the advanced configuration")

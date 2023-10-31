@@ -242,7 +242,8 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared folder "FOLDER" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user adds another account with
+        When the user opens the add-account dialog
+        And the user adds the following account:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |

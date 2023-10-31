@@ -1,8 +1,12 @@
 import names
 import squish
-from helpers.SetupClientHelper import getClientDetails, createUserSyncPath
 from helpers.WebUIHelper import authorize_via_webui
 from helpers.ConfigHelper import get_config
+from helpers.SetupClientHelper import (
+    createUserSyncPath,
+    getTempResourcePath,
+    setCurrentUserSyncPath,
+)
 import test
 
 
@@ -224,19 +228,45 @@ class AccountConnectionWizard:
         squish.clickButton(squish.waitForObject(AccountConnectionWizard.CHOOSE_BUTTON))
 
     @staticmethod
+    def set_temp_folder_as_sync_folder(folder_name):
+        sync_path = getTempResourcePath(folder_name)
+
+        # clear the current path
+        squish.mouseClick(
+            squish.waitForObject(AccountConnectionWizard.SELECT_LOCAL_FOLDER)
+        )
+        squish.nativeType("<Ctrl+a>")
+        squish.nativeType("<Backspace>")
+
+        squish.type(
+            squish.waitForObject(AccountConnectionWizard.SELECT_LOCAL_FOLDER),
+            sync_path,
+        )
+        setCurrentUserSyncPath(sync_path)
+
+    @staticmethod
     def addAccount(account_details):
         AccountConnectionWizard.addAccountInformation(account_details)
         AccountConnectionWizard.nextStep()
 
     @staticmethod
     def addAccountInformation(account_details):
-        AccountConnectionWizard.addServer(account_details['server'])
-        if get_config('ocis'):
-            AccountConnectionWizard.acceptCertificate()
-        AccountConnectionWizard.addUserCreds(
-            account_details['user'], account_details['password']
-        )
-        AccountConnectionWizard.selectSyncFolder(account_details['user'])
+        if account_details['server']:
+            AccountConnectionWizard.addServer(account_details['server'])
+            if get_config('ocis'):
+                AccountConnectionWizard.acceptCertificate()
+        if account_details['user']:
+            AccountConnectionWizard.addUserCreds(
+                account_details['user'], account_details['password']
+            )
+
+        if account_details['sync_folder']:
+            AccountConnectionWizard.selectAdvancedConfig()
+            AccountConnectionWizard.set_temp_folder_as_sync_folder(
+                account_details['sync_folder']
+            )
+        elif account_details['user']:
+            AccountConnectionWizard.selectSyncFolder(account_details['user'])
 
     @staticmethod
     def selectManualSyncFolderOption():
