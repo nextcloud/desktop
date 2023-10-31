@@ -56,6 +56,8 @@ class FileProviderItemMetadata
 	Q_PROPERTY(bool shared READ shared CONSTANT)
 	Q_PROPERTY(bool sharedByCurrentUser READ sharedByCurrentUser CONSTANT)
 
+    Q_PROPERTY(QString userVisiblePath READ userVisiblePath CONSTANT)
+
 public:
     static FileProviderItemMetadata fromNSFileProviderItem(const void *const nsFileProviderItem, const QString &domainIdentifier);
 
@@ -89,6 +91,8 @@ public:
 	bool downloaded() const;
 	bool shared() const;
     bool sharedByCurrentUser() const;
+
+    QString userVisiblePath() const;
 
     // Check equality via identifier, contentVersion, and metadataVersion
     friend bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs);
