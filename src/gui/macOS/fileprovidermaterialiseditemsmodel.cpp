@@ -94,6 +94,8 @@ QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int 
         return item.shared();
     case SharedByCurrentUserRole:
         return item.sharedByCurrentUser();
+    case UserVisiblePathRole:
+        return item.userVisiblePath();
     }
     return {};
 }
@@ -130,6 +132,7 @@ QHash<int, QByteArray> FileProviderMaterialisedItemsModel::roleNames() const
         { DownloadedRole, "downloaded" },
         { SharedRole, "shared" },
         { SharedByCurrentUserRole, "sharedByCurrentUser" },
+        { UserVisiblePathRole, "userVisiblePath" },
     });
     return roleNames;
 }

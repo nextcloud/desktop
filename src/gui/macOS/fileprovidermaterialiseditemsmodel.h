@@ -58,6 +58,7 @@ public:
         DownloadedRole,
         SharedRole,
         SharedByCurrentUserRole,
+        UserVisiblePathRole,
     };
     Q_ENUM(Roles)
 
