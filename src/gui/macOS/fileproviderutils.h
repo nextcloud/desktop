@@ -16,6 +16,7 @@
 
 class QString;
 
+@class NSFileProviderDomain;
 @class NSFileProviderManager;
 
 /**
@@ -35,6 +36,9 @@ namespace OCC {
 namespace Mac {
 
 namespace FileProviderUtils {
+
+// Synchronous function to get the domain for a domain identifier
+NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier);
 
 // Synchronous function to get manager for a domain identifier
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier);
