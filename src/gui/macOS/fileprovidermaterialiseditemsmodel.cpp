@@ -98,8 +98,10 @@ QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int 
         return item.sharedByCurrentUser();
     case UserVisiblePathRole:
         return item.userVisiblePath();
-    case FileTypeRole:
+    case FileTypeStringRole:
         return item.fileTypeString();
+    case FileSizeStringRole:
+        return _locale.formattedDataSize(item.documentSize());
     }
     return {};
 }
@@ -138,7 +140,8 @@ QHash<int, QByteArray> FileProviderMaterialisedItemsModel::roleNames() const
         { SharedRole, "shared" },
         { SharedByCurrentUserRole, "sharedByCurrentUser" },
         { UserVisiblePathRole, "userVisiblePath" },
-        { FileTypeRole, "fileType" },
+        { FileTypeStringRole, "fileTypeString" },
+        { FileSizeStringRole, "fileSizeString" },
     });
     return roleNames;
 }

@@ -32,9 +32,9 @@ Item {
     required property string domainIdentifier
     required property string fileName
     required property string userVisiblePath
-    required property string fileType
+    required property string fileTypeString
 
-    required property size documentSize
+    required property string fileSizeString
 
     RowLayout {
         id: internalLayout
@@ -73,12 +73,12 @@ Item {
 
                 EnforcedPlainTextLabel {
                     id: fileSizeLabel
-                    text: root.documentSize
+                    text: root.fileSizeString
                 }
 
                 EnforcedPlainTextLabel {
                     id: fileTypeLabel
-                    text: root.fileType
+                    text: root.fileTypeString
                     color: Style.ncSecondaryTextColor
                 }
             }

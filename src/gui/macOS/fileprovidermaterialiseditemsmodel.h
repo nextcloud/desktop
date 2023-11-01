@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QLocale>
 
 #include "gui/macOS/fileprovideritemmetadata.h"
 
@@ -60,7 +61,8 @@ public:
         SharedRole,
         SharedByCurrentUserRole,
         UserVisiblePathRole,
-        FileTypeRole,
+        FileTypeStringRole,
+        FileSizeStringRole,
     };
     Q_ENUM(Roles)
 
@@ -80,6 +82,7 @@ public slots:
 
 private:
     QVector<FileProviderItemMetadata> _items;
+    QLocale _locale;
 };
 
 } // namespace Mac
