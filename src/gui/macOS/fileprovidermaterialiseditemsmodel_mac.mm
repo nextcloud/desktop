@@ -42,6 +42,8 @@ void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, co
         return;
     }
 
+    __block BOOL successfullyDeleted = YES;
+
     [manager evictItemWithIdentifier:identifier.toNSString() completionHandler:^(NSError *error) {
         if (error != nil) {
             const auto errorDesc = QString::fromNSString(error.localizedDescription);
@@ -49,10 +51,31 @@ void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, co
             Systray::instance()->showMessage(tr("Error"),
                                              tr("An error occurred while trying to delete the local copy of this item: %1").arg(errorDesc),
                                              QSystemTrayIcon::Warning);
+            successfullyDeleted = NO;
         }
     }];
 
-    // TODO: Update the model
+    if (successfullyDeleted == NO) {
+        return;
+    }
+
+    const auto deletedItemIt = std::find_if(_items.cbegin(),
+                                            _items.cend(),
+                                            [identifier, domainIdentifier](const FileProviderItemMetadata &item) {
+        return item.identifier() == identifier && item.domainIdentifier() == domainIdentifier;
+    });
+
+    if (deletedItemIt == _items.cend()) {
+        qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Could not find item"
+                                                                  << identifier
+                                                                  << "in model items.";
+        return;
+    }
+
+    const auto deletedItemRow = std::distance(_items.cbegin(), deletedItemIt);
+    beginRemoveRows({}, deletedItemRow, deletedItemRow);
+    _items.remove(deletedItemRow);
+    endRemoveRows();
 }
 
 
