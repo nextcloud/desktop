@@ -308,6 +308,8 @@ IF( APPLE )
             macOS/fileprovidersocketserver_mac.mm
             macOS/fileproviderstorageuseenumerationobserver.h
             macOS/fileproviderstorageuseenumerationobserver.m
+            macOS/fileproviderutils.h
+            macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
