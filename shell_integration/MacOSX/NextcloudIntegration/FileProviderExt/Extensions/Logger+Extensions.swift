@@ -48,4 +48,24 @@ extension Logger {
             return nil
         }
     }
+
+    @available(macOSApplicationExtension 12.0, *)
+    static func createDebugArchive(saveFolderUrl: URL) {
+        let saveFileUrl = saveFolderUrl.appendingPathComponent("nc-fileprovider-debug.txt")
+        let saveFilePath = saveFolderUrl.path
+
+        guard FileManager.default.createFile(atPath: saveFilePath, contents: nil) else {
+            Logger.logger.error("Could not create log file")
+            return
+        }
+
+        guard let logs = Logger.logEntries() else {
+            Logger.logger.error("Cannot create debug archive without any logs.")
+            return
+        }
+
+        for logString in logs {
+            try? logString.write(to: saveFileUrl, atomically: true, encoding: .utf8)
+        }
+    }
 }
