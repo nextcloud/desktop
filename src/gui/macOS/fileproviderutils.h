@@ -14,7 +14,9 @@
 
 #pragma once
 
-#import <FileProvider/FileProvider.h>
+class QString;
+
+@class NSFileProviderManager;
 
 /**
  * This file contains the FileProviderUtils namespace, which contains
@@ -34,7 +36,8 @@ namespace Mac {
 
 namespace FileProviderUtils {
 
-
+// Synchronous function to get manager for a domain identifier
+NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier);
 
 } // namespace FileProviderUtils
 
