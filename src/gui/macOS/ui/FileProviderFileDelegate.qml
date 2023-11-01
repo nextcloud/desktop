@@ -70,10 +70,12 @@ Item {
 
             Row {
                 width: parent.width
+                spacing: Style.smallSpacing
 
                 EnforcedPlainTextLabel {
                     id: fileSizeLabel
                     text: root.fileSizeString
+                    font.bold: true
                 }
 
                 EnforcedPlainTextLabel {
