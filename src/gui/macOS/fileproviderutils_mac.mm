@@ -47,8 +47,9 @@ NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier)
 
         for (NSFileProviderDomain *const domain in domains) {
             if ([domain.identifier isEqualToString:nsDomainIdentifier]) {
-                 foundDomain = domain;
-                 break;
+                [domain retain];
+                foundDomain = domain;
+                break;
             }
         }
 
@@ -56,6 +57,7 @@ NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier)
     }];
 
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore);
 
     if (foundDomain == nil) {
         qCWarning(lcMacFileProviderUtils) << "No matching item domain for identifier"
@@ -68,13 +70,20 @@ NSFileProviderDomain *domainForIdentifier(const QString &domainIdentifier)
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier)
 {
     NSFileProviderDomain * const domain = domainForIdentifier(domainIdentifier);
-    NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
+    if (domain == nil) {
+        qCWarning(lcMacFileProviderUtils) << "Received null domain for identifier"
+                                          << domainIdentifier
+                                          << "cannot acquire manager";
+        return nil;
+    }
 
+    NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
     if (manager == nil) {
         qCWarning(lcMacFileProviderUtils) << "Received null manager for domain"
                                           << domainIdentifier;
     }
 
+    [domain release];
     return manager;
 }
 
