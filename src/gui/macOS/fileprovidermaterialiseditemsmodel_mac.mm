@@ -18,6 +18,8 @@
 
 #import <FileProvider/FileProvider.h>
 
+#include "fileproviderutils.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -26,40 +28,7 @@ Q_LOGGING_CATEGORY(lcMacImplFileProviderMaterialisedItemsModelMac, "nextcloud.gu
 
 void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, const QString &domainIdentifier)
 {
-    __block NSFileProviderManager *manager = nil;
-    NSString *const nsDomainIdentifier = domainIdentifier.toNSString();
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-
-    // getDomainsWithCompletionHandler is asynchronous -- we create a dispatch semaphore in order
-    // to wait until it is done. This should tell you that we should not call this method very
-    // often!
-
-    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
-        if (error != nil) {
-            qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Error fetching domains:"
-                                                                      << error.localizedDescription;
-            dispatch_semaphore_signal(semaphore);
-            return;
-        }
-
-        BOOL foundDomain = NO;
-
-        for (NSFileProviderDomain *const domain in domains) {
-            if ([domain.identifier isEqualToString:nsDomainIdentifier]) {
-                 foundDomain = YES;
-                 manager = [NSFileProviderManager managerForDomain:domain];
-            }
-        }
-
-        if (!foundDomain) {
-            qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "No matching item domain, cannot get manager";
-        }
-
-        dispatch_semaphore_signal(semaphore);
-    }];
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-
+    NSFileProviderManager * const manager = FileProviderUtils::managerForDomainIdentifier(domainIdentifier);
     if (manager == nil) {
         qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Received null manager for domain" << domainIdentifier
                                                                   << "cannot evict item" << identifier;
