@@ -20,6 +20,8 @@
 
 #include "fileproviderutils.h"
 
+#include "gui/systray.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -30,15 +32,23 @@ void FileProviderMaterialisedItemsModel::evictItem(const QString &identifier, co
 {
     NSFileProviderManager * const manager = FileProviderUtils::managerForDomainIdentifier(domainIdentifier);
     if (manager == nil) {
-        qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Received null manager for domain" << domainIdentifier
-                                                                  << "cannot evict item" << identifier;
+        qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Received null manager for domain"
+                                                                  << domainIdentifier
+                                                                  << "cannot evict item"
+                                                                  << identifier;
+        Systray::instance()->showMessage(tr("Error"),
+                                         tr("An internal error occurred. Please try again later."),
+                                         QSystemTrayIcon::Warning);
         return;
     }
 
     [manager evictItemWithIdentifier:identifier.toNSString() completionHandler:^(NSError *error) {
         if (error != nil) {
-            qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Error evicting item due to error:"
-                                                                      << error.localizedDescription;
+            const auto errorDesc = QString::fromNSString(error.localizedDescription);
+            qCWarning(lcMacImplFileProviderMaterialisedItemsModelMac) << "Error evicting item:" << errorDesc;
+            Systray::instance()->showMessage(tr("Error"),
+                                             tr("An error occurred while trying to delete the local copy of this item: %1").arg(errorDesc),
+                                             QSystemTrayIcon::Warning);
         }
     }];
 
