@@ -20,6 +20,8 @@
 #import <FileProvider/FileProvider.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
+#include "fileproviderutils.h"
+
 namespace {
 
 QString nsNameComponentsToLocalisedQString(NSPersonNameComponents *const nameComponents)
@@ -107,53 +109,21 @@ QString FileProviderItemMetadata::getUserVisiblePath() const
         return QStringLiteral("Unknown");
     }
 
-    NSString *const nsItemIdentifier = id.toNSString();
-    NSString *const nsDomainIdentifier = domainId.toNSString();
-
     __block QString returnPath = QObject::tr("Unknown");
-    __block NSFileProviderManager *manager = nil;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    NSFileProviderManager *manager = FileProviderUtils::managerForDomainIdentifier(domainId);
 
-    // getDomainsWithCompletionHandler is asynchronous -- we create a dispatch semaphore in order
-    // to wait until it is done. This should tell you that we should not call this method very
-    // often!
-
-    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
-        if (error != nil) {
-            qCWarning(lcMacImplFileProviderItemMetadata) << "Error fetching domains:" << error.localizedDescription;
-            dispatch_semaphore_signal(semaphore);
-            return;
-        }
-
-        BOOL foundDomain = NO;
-
-        for (NSFileProviderDomain *const domain in domains) {
-            if ([domain.identifier isEqualToString:nsDomainIdentifier]) {
-                 foundDomain = YES;
-                 manager = [NSFileProviderManager managerForDomain:domain];
-            }
-        }
-
-        if (!foundDomain) {
-            qCWarning(lcMacImplFileProviderItemMetadata) << "No matching item domain, cannot get item path";
-        }
-
-        dispatch_semaphore_signal(semaphore);
-    }];
-
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-
-    if (manager == nil) {
+     if (manager == nil) {
         qCWarning(lcMacImplFileProviderItemMetadata) << "Null manager, cannot get item path";
-        dispatch_release(semaphore);
         return returnPath;
     }
 
-    // getUserVisibleUrl is also async, so wait here too
+    NSString *const nsItemIdentifier = id.toNSString();
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    // getUserVisibleUrl is async, so wait here
 
     [manager getUserVisibleURLForItemIdentifier:nsItemIdentifier
                               completionHandler:^(NSURL *const userVisibleFile, NSError *const error) {
-        qCDebug(lcMacImplFileProviderItemMetadata) << "Got user visible url for item identifier." << "url:" << userVisibleFile << "error:" << error.localizedDescription;
 
         if (error != nil) {
             qCWarning(lcMacImplFileProviderItemMetadata) << "Error fetching user visible url for item identifier." << error.localizedDescription;
