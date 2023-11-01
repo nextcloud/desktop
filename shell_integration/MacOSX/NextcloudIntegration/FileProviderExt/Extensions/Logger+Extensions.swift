@@ -26,5 +26,26 @@ extension Logger {
     static let localFileOps = Logger(subsystem: subsystem, category: "localfileoperations")
     static let ncFilesDatabase = Logger(subsystem: subsystem, category: "nextcloudfilesdatabase")
     static let materialisedFileHandling = Logger(
-        subsystem: subsystem, category: "materialisedfilehandling")
+        subsystem: subsystem, category: "materialisedfilehandling"
+    )
+    static let logger = Logger(subsystem: subsystem, category: "logger")
+
+    @available(macOSApplicationExtension 12.0, *)
+    static func logEntries(interval: TimeInterval = -3600) -> Array<String>? {
+        do {
+            let logStore = try OSLogStore(scope: .currentProcessIdentifier)
+            let timeDate = Date().addingTimeInterval(interval)
+            let logPosition = logStore.position(date: timeDate)
+            let entries = try logStore.getEntries(at: logPosition)
+
+            return entries
+                .compactMap { $0 as? OSLogEntryLog }
+                .filter { $0.subsystem == Logger.subsystem }
+                .map { $0.composedMessage }
+
+        } catch let error {
+            Logger.logger.error("Could not acquire os log store: \(error)");
+            return nil
+        }
+    }
 }
