@@ -664,7 +664,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemonické šifrovanie medzi koncovými bodmi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
@@ -827,7 +827,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Neplatná odpoveď na overenú WebDAV požiadavku</translation>
     </message>
 </context>
 <context>
@@ -1130,22 +1130,22 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor sa nepodarilo premenovať. Uistite sa, prosím, že ste pripojený k serveru.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Nemáte oprávnenie premenovať tento súbor. Požiadajte o premenovanie súboru jeho vlastníka.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa načítať oprávnenia s chybou %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na začiatku a na konci.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
@@ -1163,7 +1163,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt veľkých a malých písmen</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
@@ -1183,7 +1183,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>súbor A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
@@ -1201,17 +1201,17 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť existujúci súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation type="unfinished"/>
+        <translation>Súbor s konfliktom veľkých a malých písmen</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>súbor B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
@@ -1222,7 +1222,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>Prosím, zadajte nový názov súboru s konfliktom:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
@@ -1232,7 +1232,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Premenovať súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
@@ -1247,27 +1247,27 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na začiatku a na konci.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru sa začína medzerou.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru sa končí medzerou.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Použiť neplatné meno</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje neplatné znaky: %1</translation>
     </message>
 </context>
 <context>
@@ -1533,7 +1533,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <location filename="../src/gui/editlocallyjob.cpp" line="557"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="577"/>
         <source>Could not start editing locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa spustiť lokálnu úpravu súboru.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
@@ -1591,7 +1591,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="578"/>
         <source>Invalid local file path.</source>
-        <translation type="unfinished"/>
+        <translation>Neplatná cesta k lokálnemu súboru.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
@@ -1884,7 +1884,8 @@ Môže to byť problém s knižnicami OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1366"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Priečinok prekročil nastavený limit veľkosti priečinka %1 MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1377"/>
@@ -2134,7 +2135,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source>Could not decrypt!</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa dešifrovať!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
@@ -2494,7 +2495,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation>Zobraziť upozornenia na hovor</translation>
+        <translation>Zobraziť upozornenia na hovory</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2545,7 +2546,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Create Debug Archive</source>
-        <translation>Vytvoriť debug archív</translation>
+        <translation>Vytvoriť archív pre ladenie programu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
@@ -2555,7 +2556,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Informácie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -2565,12 +2566,12 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="245"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Desktopový klient x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizovať kanál</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
@@ -2597,12 +2598,12 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="323"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Automaticky kontrolovať aktualizácie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="339"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Skontrolovať teraz</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="363"/>
@@ -2612,7 +2613,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="370"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Právne upozornenie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -2627,22 +2628,22 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/generalsettings.ui" line="420"/>
         <source>Use &amp;monochrome icons</source>
-        <translation type="unfinished"/>
+        <translation>Použiť &amp;monochromatické ikony</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="427"/>
         <source>&amp;Launch on system startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Spustiť pri štarte systému</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="434"/>
         <source>Show server &amp;notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť &amp;hlásenia zo servera</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="441"/>
         <source>Show call notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť upozornenia na hovory</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -4333,7 +4334,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="286"/>
         <source>Global search results</source>
-        <translation type="unfinished"/>
+        <translation>Globálne výsledky vyhľadávania</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/shareemodel.cpp" line="302"/>
@@ -4357,19 +4358,21 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa zašifrovať priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa zašifrovať nasledujúci priečinok: &quot;%1&quot;.
+
+Server odpovedal chybou: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>Priečinok bol úspešne zašifrovaný</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
@@ -4416,7 +4419,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1162"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Opustiť toto zdieľanie</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
@@ -5133,12 +5136,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri sťahovaní</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri sťahovaní</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
@@ -5148,17 +5151,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
         <source>&gt; More details</source>
-        <translation type="unfinished"/>
+        <translation>&gt; Viac podrobností</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation type="unfinished"/>
+        <translation>Viac podrobností</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri sťahovaní %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
