@@ -23,6 +23,7 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include "common/checksums.h"
+#include "symlinkuploaddevice.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
@@ -136,8 +137,14 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     const QString fileName = _fileToUpload._path;
-    auto device = std::make_unique<UploadDevice>(
-            fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
+    std::unique_ptr<UploadDevice> device;
+    if (_fileToUpload._isSymlink) {
+        device = std::make_unique<SymLinkUploadDevice>(
+                fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
+    } else {
+        device = std::make_unique<UploadDevice>(
+                fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
+    }
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadV1) << "Could not prepare upload device: " << device->errorString();
 
