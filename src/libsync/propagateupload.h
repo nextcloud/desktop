@@ -60,7 +60,7 @@ public:
 
 signals:
 
-private:
+protected:
     /// The local file to read data from
     QFile _file;
 
