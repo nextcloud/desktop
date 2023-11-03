@@ -169,7 +169,7 @@ Folder::Folder(const FolderDefinition &definition,
             if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
                 if (auto winvfs = VfsPluginManager::instance().createVfsFromPlugin(Vfs::WindowsCfApi)) {
                     // Wipe the existing suffix files from fs and journal
-                    SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
+                    _vfs->wipeVirtualFiles();
 
                     // Then switch to winvfs mode
                     _vfs.reset(winvfs.release());
@@ -770,7 +770,8 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
     if (newMode != _definition.virtualFilesMode) {
         // TODO: Must wait for current sync to finish!
-        SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
+        OC_ENFORCE(!isSyncRunning());
+        _vfs->wipeVirtualFiles();
 
         _vfs->stop();
         _vfs->unregisterFolder();
@@ -1279,8 +1280,8 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
         if (_removeAllFilesDialog->clickedButton() == keepBtn) {
             // reset the db upload all local files or download all remote files
             FileSystem::setFolderMinimumPermissions(path());
-            // will remove placeholders in the next sync
-            SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
+            // will remove all dehydrated placeholders
+            _vfs->wipeVirtualFiles();
             journalDb()->clearFileTable();
         }
         // if all local files where placeholders, they might be gone after the next sync

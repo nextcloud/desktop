@@ -32,6 +32,24 @@
 #endif
 using namespace OCC;
 
+Q_LOGGING_CATEGORY(lcVfs, "sync.vfs", QtInfoMsg)
+
+namespace {
+QString modeToPluginName(Vfs::Mode mode)
+{
+    switch (mode) {
+    case Vfs::Off:
+        return QStringLiteral("off");
+    case Vfs::WithSuffix:
+        return QStringLiteral("suffix");
+    case Vfs::WindowsCfApi:
+        return QStringLiteral("win");
+    default:
+        Q_UNREACHABLE();
+    }
+}
+}
+
 Vfs::Vfs(QObject* parent)
     : QObject(parent)
 {
@@ -127,18 +145,28 @@ Vfs::AvailabilityResult Vfs::availabilityInDb(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
-static QString modeToPluginName(Vfs::Mode mode)
+void Vfs::wipeVirtualFiles()
 {
-    switch (mode) {
-    case Vfs::Off:
-        return QStringLiteral("off");
-    case Vfs::WithSuffix:
-        return QStringLiteral("suffix");
-    case Vfs::WindowsCfApi:
-        return QStringLiteral("win");
-    default:
-        Q_UNREACHABLE();
-    }
+    _setupParams->journal->getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
+        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
+            return;
+
+        qCDebug(lcVfs) << "Removing db record for" << rec._path;
+        _setupParams->journal->deleteFileRecord(QString::fromUtf8(rec._path));
+
+        // If the local file is a dehydrated placeholder, wipe it too.
+        // Otherwise leave it to allow the next sync to have a new-new conflict.
+        QString localFile = _setupParams->filesystemPath + QString::fromUtf8(rec._path);
+        if (QFile::exists(localFile) && isDehydratedPlaceholder(localFile)) {
+            qCDebug(lcVfs) << "Removing local dehydrated placeholder" << rec._path;
+            FileSystem::remove(localFile);
+        }
+    });
+
+    _setupParams->journal->forceRemoteDiscoveryNextSync();
+
+    // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db.
+    // But hydrated placeholders may still be around.
 }
 
 Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)

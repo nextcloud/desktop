@@ -891,7 +891,7 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // Now wipe the virtuals
-        SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
+        fakeFolder.syncEngine().syncOptions()._vfs->wipeVirtualFiles();
 
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("f1") + Theme::instance()->appDotVirtualFileSuffix()));
         QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
