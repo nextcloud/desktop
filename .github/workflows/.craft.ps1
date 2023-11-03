@@ -1,5 +1,7 @@
 if ($IsWindows) {
     $python=(py -V:3.11 -c "import sys; print(sys.executable)")
+} elseif ($IsMacOS) {
+    $python = (Get-Command "python3.11").Source
 } else {
     $python = (Get-Command python3).Source
 }
