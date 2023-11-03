@@ -1,0 +1,7 @@
+Change: Extract Nautilus
+
+While the crash reporter still requires a graphical user interface to work, this
+change nevertheless simplifies reporting crashes from the commandline client
+a lot.
+
+https://github.com/owncloud/client/issues/8991

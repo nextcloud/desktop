@@ -20,7 +20,7 @@ def substituteInLineCodes(value):
 
 
 def getClientDetails(context):
-    clientDetails = {'server': '', 'user': '', 'password': ''}
+    clientDetails = {'server': '', 'user': '', 'password': '', 'sync_folder': ''}
     for row in context.table[0:]:
         row[1] = substituteInLineCodes(row[1])
         if row[0] == 'server':
@@ -29,6 +29,8 @@ def getClientDetails(context):
             clientDetails.update({'user': row[1]})
         elif row[0] == 'password':
             clientDetails.update({'password': row[1]})
+        elif row[0] == 'sync_folder':
+            clientDetails.update({'sync_folder': row[1]})
     return clientDetails
 
 

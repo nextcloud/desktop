@@ -20,6 +20,16 @@ Feature:  Logout users
     Then user "Alice" should be connect to the client-UI
 
   @skipOnOCIS
+  Scenario: login with incorrect and correct password after log out
+    Given user "Alice" has set up a client with default settings
+    And user "Alice" has logged out of the client-UI
+    When user "ALice" opens login dialog
+    And user "ALice" enters the password "invalid"
+    And user "Alice" logs out from the login required dialog
+    And user "Alice" logs in to the client-UI
+    Then user "Alice" should be connect to the client-UI
+
+  @skipOnOCIS
   Scenario: login with oauth2 enabled
       Given app "oauth2" has been "enabled" in the server
       And the user has started the client

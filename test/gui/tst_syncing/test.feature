@@ -59,7 +59,7 @@ Feature: Syncing files
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
         And the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -73,7 +73,7 @@ Feature: Syncing files
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
         And the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -94,7 +94,7 @@ Feature: Syncing files
         And user "Alice" has uploaded file on the server with content "more contents" to "aFolder/lorem.txt"
         And user "Alice" has created folder "bFolder" in the server
         And the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -360,7 +360,7 @@ Feature: Syncing files
 
     Scenario: Skip sync folder configuration
         Given the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
@@ -393,7 +393,7 @@ Feature: Syncing files
         And user "Alice" has created folder "~test%" in the server
         And the user has created a folder "~`!@#$^&()-_=+{[}];',)PRN%" in temp folder
         And the user has started the client
-        And the user has added the following account information:
+        And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |

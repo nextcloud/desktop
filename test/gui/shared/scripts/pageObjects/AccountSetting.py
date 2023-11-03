@@ -40,6 +40,13 @@ class AccountSetting:
         "type": "OCC::LogBrowser",
         "visible": 1,
     }
+    LOGIN_DIALOG_LOGOUT_BUTTON = {
+        "text": "Log out",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+        "window": names.loginRequiredDialog_OCC_LoginRequiredDialog,
+    }
 
     @staticmethod
     def accountAction(action):
@@ -71,6 +78,12 @@ class AccountSetting:
     @staticmethod
     def login():
         AccountSetting.accountAction("Log in")
+
+    @staticmethod
+    def logoutFromLoginRequiredDialog():
+        squish.clickButton(
+            squish.waitForObject(AccountSetting.LOGIN_DIALOG_LOGOUT_BUTTON)
+        )
 
     @staticmethod
     def getAccountConnectionLabel():
