@@ -3,7 +3,50 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v5.0.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v5.1.0...master
+
+Summary
+-------
+
+* Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
+* Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
+* Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
+
+Details
+-------
+
+* Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
+
+   These messages include the command-line messages (both errors and the help text). To do this,
+   the deprecated `--confdir` option has been removed. This option was only used on windows
+   before roaming profiles were supported.
+
+   https://github.com/owncloud/client/issues/11142
+   https://github.com/owncloud/client/issues/11246
+   https://github.com/owncloud/client/pull/11300
+
+* Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
+
+   This option was used before the UI language could be chosen in the settings. The option
+   --list-languages is also removed, as it no longer serves a purpose.
+
+   https://github.com/owncloud/client/issues/11245
+   https://github.com/owncloud/client/pull/11270
+
+* Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
+
+   We already used the fusion style on Windows for years if the system used dpi scaling. Since Qt6.5
+   the fusion style also support the dark theme on Windows. Those two reasons convinced us that
+   always using the fusion style on Windows will result in the best experience for the users.
+
+   https://github.com/owncloud/client/issues/11275
+
+Changelog for ownCloud Desktop Client [5.1.0] (2023-11-02)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 5.1.0 relevant to
+ownCloud admins and users.
+
+[5.1.0]: https://github.com/owncloud/client/compare/v5.0.0...v5.1.0
 
 Summary
 -------
@@ -12,9 +55,6 @@ Summary
 * Bugfix - Fix crash on start-up when starting shell integration: [#11280](https://github.com/owncloud/client/issues/11280)
 * Bugfix - Properly schedule the sync after an account was added: [#11308](https://github.com/owncloud/client/issues/11308)
 * Bugfix - Don't start credentials save jobs during shutdown: [#11313](https://github.com/owncloud/client/pull/11313)
-* Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
-* Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
-* Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 
 Details
 -------
@@ -49,32 +89,6 @@ Details
 
    https://github.com/owncloud/client/pull/11313
 
-* Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
-
-   These messages include the command-line messages (both errors and the help text). To do this,
-   the deprecated `--confdir` option has been removed. This option was only used on windows
-   before roaming profiles were supported.
-
-   https://github.com/owncloud/client/issues/11142
-   https://github.com/owncloud/client/issues/11246
-   https://github.com/owncloud/client/pull/11300
-
-* Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
-
-   This option was used before the UI language could be chosen in the settings. The option
-   --list-languages is also removed, as it no longer serves a purpose.
-
-   https://github.com/owncloud/client/issues/11245
-   https://github.com/owncloud/client/pull/11270
-
-* Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
-
-   We already used the fusion style on Windows for years if the system used dpi scaling. Since Qt6.5
-   the fusion style also support the dark theme on Windows. Those two reasons convinced us that
-   always using the fusion style on Windows will result in the best experience for the users.
-
-   https://github.com/owncloud/client/issues/11275
-
 Changelog for ownCloud Desktop Client [5.0.0] (2023-10-05)
 =======================================
 The following sections list the changes in ownCloud Desktop Client 5.0.0 relevant to
@@ -101,6 +115,7 @@ Summary
 * Bugfix - Branding of folder status overlay: [#11192](https://github.com/owncloud/client/pull/11192)
 * Bugfix - Creation of folder on the server: [#11232](https://github.com/owncloud/client/issues/11232)
 * Bugfix - Selective sync when not the remote root is synced: [#11233](https://github.com/owncloud/client/issues/11233)
+* Change - Extract Nautilus: [#8991](https://github.com/owncloud/client/issues/8991)
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 * Change - Remove support for client side system proxy credentials: [#10866](https://github.com/owncloud/client/pull/10866)
 * Change - Modernize systray menu: [#10939](https://github.com/owncloud/client/issues/10939)
@@ -225,6 +240,13 @@ Details
 * Bugfix - Selective sync when not the remote root is synced: [#11233](https://github.com/owncloud/client/issues/11233)
 
    https://github.com/owncloud/client/issues/11233
+
+* Change - Extract Nautilus: [#8991](https://github.com/owncloud/client/issues/8991)
+
+   While the crash reporter still requires a graphical user interface to work, this change
+   nevertheless simplifies reporting crashes from the commandline client a lot.
+
+   https://github.com/owncloud/client/issues/8991
 
 * Change - Remove support for sidebar entries for non-vfs setups on Windows: [#10788](https://github.com/owncloud/client/issues/10788)
 
