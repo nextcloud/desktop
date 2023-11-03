@@ -145,21 +145,30 @@ Vfs::AvailabilityResult Vfs::availabilityInDb(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
-void Vfs::wipeVirtualFiles()
+void Vfs::wipeDehydratedVirtualFiles()
 {
+    if (mode() == Vfs::Mode::Off) {
+        // there are no placeholders
+        return;
+    }
     _setupParams->journal->getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
-        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
+        // only handle dehydrated files
+        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload) {
             return;
-
-        qCDebug(lcVfs) << "Removing db record for" << rec._path;
-        _setupParams->journal->deleteFileRecord(QString::fromUtf8(rec._path));
+        }
+        const QString relativePath = QString::fromUtf8(rec._path);
+        qCDebug(lcVfs) << "Removing db record for dehydrated file" << relativePath;
+        _setupParams->journal->deleteFileRecord(relativePath);
 
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
-        QString localFile = _setupParams->filesystemPath + QString::fromUtf8(rec._path);
-        if (QFile::exists(localFile) && isDehydratedPlaceholder(localFile)) {
-            qCDebug(lcVfs) << "Removing local dehydrated placeholder" << rec._path;
-            FileSystem::remove(localFile);
+        const QString absolutePath = _setupParams->filesystemPath + relativePath;
+        if (QFile::exists(absolutePath)) {
+            // according to our db this is a dehydrated file, check it  to be sure
+            if (isDehydratedPlaceholder(absolutePath)) {
+                qCDebug(lcVfs) << "Removing local dehydrated placeholder" << relativePath;
+                FileSystem::remove(absolutePath);
+            }
         }
     });
 

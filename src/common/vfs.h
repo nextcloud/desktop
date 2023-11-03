@@ -229,9 +229,8 @@ public:
      *
      * Particularly useful when switching off vfs mode or switching to a
      * different kind of vfs.
-     *
      */
-    void wipeVirtualFiles();
+    void wipeDehydratedVirtualFiles();
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
