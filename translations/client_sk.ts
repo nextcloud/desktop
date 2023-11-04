@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="183"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 Zlyhalo odomknutie zašifrovaného adresára %2&quot;.</translation>
+        <translation>&quot;%1 Zlyhalo odomknutie zašifrovaného priečinka %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
         <source>Encrypt folder</source>
-        <translation>Zašifrovať adresár</translation>
+        <translation>Zašifrovať priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
@@ -1981,7 +1981,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation>Zadať názov adresára</translation>
+        <translation>Zadať názov priečinka</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
@@ -3882,7 +3882,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="308"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Súbor alebo adresár bol odobratý zo sprístupnenia len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
+        <translation>Súbor alebo priečinok bol odobratý zo sprístupnenia len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
     </message>
 </context>
 <context>
@@ -4099,7 +4099,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation>Zlyhalo odomykanie zamknutého adresára.</translation>
+        <translation>Zlyhalo odomykanie zamknutého priečinka.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="701"/>
@@ -4429,7 +4429,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1168"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Opätovné zdieľanie tohto adresára je zakázané</translation>
+        <translation>Opätovné zdieľanie tohto priečinka je zakázané</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1183"/>
