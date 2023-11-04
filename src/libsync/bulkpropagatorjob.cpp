@@ -16,6 +16,7 @@
 
 #include "putmultifilejob.h"
 #include "owncloudpropagator_p.h"
+#include "symlinkuploaddevice.h"
 #include "syncfileitem.h"
 #include "syncengine.h"
 #include "propagateupload.h"
@@ -203,10 +204,18 @@ void BulkPropagatorJob::triggerUpload()
     int timeout = 0;
     for(auto &singleFile : _filesToUpload) {
         // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-        auto device = std::make_unique<UploadDevice>(singleFile._localPath,
+        std::unique_ptr<UploadDevice> device;
+        if (singleFile._item->isSymLink()) {
+            device = std::make_unique<SymLinkUploadDevice>(singleFile._localPath,
+                                                            0,
+                                                            std::numeric_limits<qint64>::max(),
+                                                            &propagator()->_bandwidthManager);
+        } else {
+            device = std::make_unique<UploadDevice>(singleFile._localPath,
                                                      0,
                                                      singleFile._fileSize,
                                                      &propagator()->_bandwidthManager);
+        }
 
         if (!device->open(QIODevice::ReadOnly)) {
             qCWarning(lcBulkPropagatorJob) << "Could not prepare upload device: " << device->errorString();
@@ -224,6 +233,7 @@ void BulkPropagatorJob::triggerUpload()
         }
 
         singleFile._headers["X-File-Path"] = singleFile._remotePath.toUtf8();
+        singleFile._headers["X-File-Type"] = QString::number(singleFile._item->_type == ItemTypeSoftLink).toUtf8();
         uploadParametersData.push_back({std::move(device), singleFile._headers});
         timeout += singleFile._fileSize;
     }
