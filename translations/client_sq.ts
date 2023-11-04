@@ -1045,41 +1045,41 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>Veprimtari Njëkohësimesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="944"/>
+        <location filename="../src/gui/folder.cpp" line="948"/>
         <source>Could not read system exclude file</source>
         <translation>S’u lexua dot kartelë përjashtimi sistemi</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1137"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>U shtua një dosje më e madhe se %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1140"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>U shtua një dosje nga një depozitë e jashtme.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Ju lutemi, shkoni te rregullimet që ta përzgjidhni, nëse doni ta shkarkoni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1195"/>
+        <location filename="../src/gui/folder.cpp" line="1199"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. Të dhënat brenda saj nuk do të njëkohësohen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1198"/>
+        <location filename="../src/gui/folder.cpp" line="1202"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. S’do të njëkohësohet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1214"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1092,7 +1092,7 @@ Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëher
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1103,7 +1103,7 @@ Nëse vendosni t’i mbani këto kartela, ato do të rinjëkohësohen me shërby
 Nëse vendosni t’i fshini këto kartela, s’do të mund t’i keni, veç në mos qofshi i zoti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1261"/>
+        <location filename="../src/gui/folder.cpp" line="1265"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1112,17 +1112,17 @@ Jeni i sigurt se doni të njëkohësohen këto veprime me shërbyesin?
 Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëkohësohen me shërbyesin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1268"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>Remove All Files?</source>
         <translation>Të hiqen Krejt Kartelat?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1271"/>
+        <location filename="../src/gui/folder.cpp" line="1275"/>
         <source>Remove all files</source>
         <translation>Hiqi krejt kartelat</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1276"/>
         <source>Keep files</source>
         <translation>Mbaji kartelat</translation>
     </message>
@@ -3416,12 +3416,12 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>S’arrihet të hapet apo të krijohet një bazë vendore të dhënash njëkohësimi. Sigurohuni që keni të drejta shkrimi te dosja e njëkohësimeve.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="916"/>
+        <location filename="../src/libsync/syncengine.cpp" line="891"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Hapësira në disk është e pakët: Shkarkimet që do ta ulnin hapësirën e lirë nën %1 janë anashkaluar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="923"/>
+        <location filename="../src/libsync/syncengine.cpp" line="898"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Ka hapësirë të pamjaftueshme në shërbyes për disa nga ngarkimet.</translation>
     </message>
@@ -3451,7 +3451,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>S’hapet dot regjistri i njëkohësimeve.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="898"/>
+        <location filename="../src/libsync/syncengine.cpp" line="873"/>
         <source>Aborted</source>
         <translation>U ndërpre</translation>
     </message>
@@ -3542,17 +3542,17 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="66"/>
+        <location filename="../src/common/vfs.cpp" line="84"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
         <translation>Veçoria për sistem Virtual kartelash nuk mbulon disk si “sync root”</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="70"/>
+        <location filename="../src/common/vfs.cpp" line="88"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>Veçoria sistem Virtual kartelash lyp një sistem NTFS kartelash, %1 po përdor %2</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="74"/>
+        <location filename="../src/common/vfs.cpp" line="92"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
         <translation>Veçoria e sistemit Virtual të kartelave nuk mbulohet në disqe rrjeti</translation>
     </message>

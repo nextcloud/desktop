@@ -1035,41 +1035,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>同步活动</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="944"/>
+        <location filename="../src/gui/folder.cpp" line="948"/>
         <source>Could not read system exclude file</source>
         <translation>无法读取系统排除的文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1137"/>
+        <location filename="../src/gui/folder.cpp" line="1141"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>一个大于 %1 MB 的新文件夹 %2 已被添加。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1140"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>一个来自外部存储的文件夹已被添加。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>如果您想下载，请到设置页面选择它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1195"/>
+        <location filename="../src/gui/folder.cpp" line="1199"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>文件夹 %1 已创建，但之前已从同步中排除。 里面的数据不会同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1198"/>
+        <location filename="../src/gui/folder.cpp" line="1202"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 文件被创建但在之前的同步中被拒绝了.它将不会被同步.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1214"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1082,7 +1082,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1255"/>
+        <location filename="../src/gui/folder.cpp" line="1259"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1093,7 +1093,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 如果您决定删除这些文件，它们将不再可用，除非您是其所有者。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1261"/>
+        <location filename="../src/gui/folder.cpp" line="1265"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1102,17 +1102,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果这是一个意外而您想要保留这些文件，他们会被重新从服务器同步过来。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1268"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>Remove All Files?</source>
         <translation>删除所有文件？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1271"/>
+        <location filename="../src/gui/folder.cpp" line="1275"/>
         <source>Remove all files</source>
         <translation>删除所有文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1276"/>
         <source>Keep files</source>
         <translation>保持所有文件</translation>
     </message>
@@ -3403,12 +3403,12 @@ for additional privileges during the process.</source>
         <translation>无法打开或创建本地同步数据库，请保证你有多同步文件夹的访问和写入的权限</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="916"/>
+        <location filename="../src/libsync/syncengine.cpp" line="891"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>磁盘空间不足：已跳过将可用空间减少到 %1 以下的下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="923"/>
+        <location filename="../src/libsync/syncengine.cpp" line="898"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>该文件在服务器上不可用</translation>
     </message>
@@ -3438,7 +3438,7 @@ for additional privileges during the process.</source>
         <translation>无法打开同步日志</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="898"/>
+        <location filename="../src/libsync/syncengine.cpp" line="873"/>
         <source>Aborted</source>
         <translation>已取消</translation>
     </message>
@@ -3529,17 +3529,17 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="66"/>
+        <location filename="../src/common/vfs.cpp" line="84"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
         <translation>虚拟文件系统功能不支持将一个驱动器作为同步根目录</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="70"/>
+        <location filename="../src/common/vfs.cpp" line="88"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>虚拟文件系统功能需要 NTFS 文件系统，%1 正在使用 %2</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="74"/>
+        <location filename="../src/common/vfs.cpp" line="92"/>
         <source>The Virtual filesystem feature is not supported on network drives</source>
         <translation>网络驱动器上不支持虚拟文件系统功能</translation>
     </message>
