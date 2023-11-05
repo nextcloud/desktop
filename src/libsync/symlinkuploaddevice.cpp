@@ -82,9 +82,9 @@ qint64 SymLinkUploadDevice::readData(char *data, qint64 maxlen)
     }
 
     auto readStart = _start + _read;
-    auto readEnd = _start + _size;
-    if (_size - _read - _start < maxlen) {
-        _read = _size - _start;
+    auto readEnd = _size;
+    if (_size - _read < maxlen) {
+        _read = _size;
     } else {
         _read += maxlen;
         readEnd = _start + _read;
