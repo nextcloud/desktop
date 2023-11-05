@@ -321,13 +321,22 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
-        if (writtenBytes != readBytes) {
-            _errorString = _device->errorString();
-            _errorStatus = SyncFileItem::NormalError;
-            qCWarning(lcGetJob) << "Error while writing to file" << writtenBytes << readBytes << _errorString;
-            reply()->abort();
-            return;
+        if (reply()->hasRawHeader("OC-File-Type") &&
+            reply()->rawHeader("OC-File-Type").toInt() == ItemTypeSoftLink) {
+            // TODO: handle non-Unix OS
+            auto file_device = static_cast<QFile*>(_device);
+            file_device->close();
+            FileSystem::remove(file_device->fileName());
+            QFile::link(QString(buffer), file_device->fileName());
+        } else {
+            const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
+            if (writtenBytes != readBytes) {
+                _errorString = _device->errorString();
+                _errorStatus = SyncFileItem::NormalError;
+                qCWarning(lcGetJob) << "Error while writing to file" << writtenBytes << readBytes << _errorString;
+                reply()->abort();
+                return;
+            }
         }
     }
 
@@ -789,7 +798,7 @@ void PropagateDownloadFile::slotGetFinished()
 
         // Don't keep the temporary file if it is empty or we
         // used a bad range header or the file's not on the server anymore.
-        if (_tmpFile.exists() && (_tmpFile.size() == 0 || badRangeHeader || fileNotFound)) {
+        if (!QFileInfo(_tmpFile).isSymLink() && _tmpFile.exists() && (_tmpFile.size() == 0 || badRangeHeader || fileNotFound)) {
             _tmpFile.close();
             FileSystem::remove(_tmpFile.fileName());
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
@@ -885,19 +894,21 @@ void PropagateDownloadFile::slotGetFinished()
         return;
     }
 
-    if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
-        qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
-        propagator()->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."), ErrorCategory::GenericError);
-        return;
-    }
+    if (!QFileInfo(_tmpFile).isSymLink()) {
+        if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
+            qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
+            propagator()->_anotherSyncNeeded = true;
+            done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."), ErrorCategory::GenericError);
+            return;
+        }
 
-    if (_tmpFile.size() == 0 && _item->_size > 0) {
-        FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::NormalError,
-            tr("The downloaded file is empty, but the server said it should have been %1.")
-                .arg(Utility::octetsToString(_item->_size)), ErrorCategory::GenericError);
-        return;
+        if (_tmpFile.size() == 0 && _item->_size > 0) {
+            FileSystem::remove(_tmpFile.fileName());
+            done(SyncFileItem::NormalError,
+                tr("The downloaded file is empty, but the server said it should have been %1.")
+                    .arg(Utility::octetsToString(_item->_size)), ErrorCategory::GenericError);
+            return;
+        }
     }
 
     // Did the file come with conflict headers? If so, store them now!
