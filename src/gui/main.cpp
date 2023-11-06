@@ -61,13 +61,6 @@ int main(int argc, char **argv)
     Q_INIT_RESOURCE(resources);
     Q_INIT_RESOURCE(theme);
 
-    // Work around a bug in KDE's qqc2-desktop-style which breaks
-    // buttons with icons not based on a name, by forcing a style name
-    // the platformtheme plugin won't try to force qqc2-desktops-style
-    // anymore.
-    // Can be removed once the bug in qqc2-desktop-style is gone.
-    QQuickStyle::setStyle("Default");
-
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
@@ -79,6 +72,9 @@ int main(int argc, char **argv)
     auto surfaceFormat = QSurfaceFormat::defaultFormat();
     surfaceFormat.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(surfaceFormat);
+
+    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+    QQuickStyle::setStyle(QStringLiteral("Fusion"));
 
     OCC::Application app(argc, argv);
 
@@ -103,15 +99,6 @@ int main(int argc, char **argv)
         app.showVersion();
         return 0;
     }
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
-#else
-    // See https://bugreports.qt.io/browse/QTBUG-70481
-    if (std::fmod(app.devicePixelRatio(), 1) == 0) {
-        QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
-    }
-#endif
 
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX

@@ -221,7 +221,7 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     }
 }
 
-void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
+void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString &errorString, const ErrorCategory category)
 {
     // Duplicate calls to done() are a logic error
     ENFORCE(_state != Finished);
@@ -274,6 +274,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::BlacklistedError:
     case SyncFileItem::FileLocked:
     case SyncFileItem::FileNameInvalid:
+    case SyncFileItem::FileNameInvalidOnServer:
     case SyncFileItem::FileNameClash:
         // nothing
         break;
@@ -283,7 +284,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         qCWarning(lcPropagator) << "Could not complete propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
     else
         qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status;
-    emit propagator()->itemCompleted(_item);
+    emit propagator()->itemCompleted(_item, category);
     emit finished(_item->_status);
 
     if (_item->_status == SyncFileItem::FatalError) {
@@ -302,9 +303,9 @@ void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
 
     if (status == SyncFileItem::Success || status == SyncFileItem::Conflict
         || status == SyncFileItem::Restoration) {
-        done(SyncFileItem::SoftError, msg);
+        done(SyncFileItem::SoftError, msg, ErrorCategory::GenericError);
     } else {
-        done(status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(msg));
+        done(status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(msg), ErrorCategory::GenericError);
     }
 }
 
@@ -326,7 +327,7 @@ bool PropagateItemJob::hasEncryptedAncestor() const
             qCWarning(lcPropagator) << "could not get file from local DB" << pathCompontentsJointed;
         }
 
-        if (rec.isValid() && rec._isE2eEncrypted) {
+        if (rec.isValid() && rec.isE2eEncrypted()) {
             return true;
         }
         pathComponents.removeLast();
@@ -424,7 +425,7 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
     /* 
        process each item that is new and is a directory and make sure every parent in its tree has the instruction CSYNC_INSTRUCTION_NEW
        instead of CSYNC_INSTRUCTION_REMOVE
-       NOTE: We are iterating backwords to take advantage of optimization later, when searching for the parent of current it
+       NOTE: We are iterating backwards to take advantage of optimization later, when searching for the parent of current it
     */
     for (auto it = std::crbegin(items); it != std::crend(items); ++it) {
         if ((*it)->_instruction != CSYNC_INSTRUCTION_NEW || (*it)->_direction != SyncFileItem::Up || !(*it)->isDirectory() || (*it)->_file == QStringLiteral("/")) {
@@ -440,7 +441,7 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
         if (itemRootFolderName.isEmpty()) {
             continue;
         }
-        // #2 iterate backwords (for optimization) and find the root folder by name
+        // #2 iterate backwards (for optimization) and find the root folder by name
         const auto itemRootFolderReverseIt = std::find_if(it, std::crend(items), [&itemRootFolderName](const auto &currentItem) {
             return currentItem->_file == itemRootFolderName;
         });
@@ -509,10 +510,12 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                 } while (index > 0);
             }
         }
-        items.erase(std::remove_if(items.begin(), items.end(), [&names](auto i) {
-            return !names.contains(QStringRef { &i->_file });
-        }),
-            items.end());
+        items.erase(std::remove_if(items.begin(),
+                                   items.end(),
+                                   [&names](auto i) {
+                                       return !names.contains(QStringRef{&i->_file});
+                                   }),
+                    items.end());
     }
 
     QStringList files;
@@ -650,6 +653,23 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
         directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
         item->_instruction = CSYNC_INSTRUCTION_NONE;
         _anotherSyncNeeded = true;
+    } else if (item->_isEncryptedMetadataNeedUpdate) {
+        SyncJournalFileRecord record;
+        const auto isUnexpectedMetadataFormat = _journal->getFileRecord(item->_file, &record)
+            && record._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2;
+        if (isUnexpectedMetadataFormat && _account->shouldSkipE2eeMetadataChecksumValidation()) {
+            qCDebug(lcPropagator) << "Getting unexpected metadata format, but allowing to continue as shouldSkipE2eeMetadataChecksumValidation is set.";
+        } else if (isUnexpectedMetadataFormat && !_account->shouldSkipE2eeMetadataChecksumValidation()) {
+            qCDebug(lcPropagator) << "could have upgraded metadata";
+            item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_ERROR;
+            item->_errorString = tr("Error with the metadata. Getting unexpected metadata format.");
+            item->_status = SyncFileItem::NormalError;
+            emit itemCompleted(item, OCC::ErrorCategory::GenericError);
+        } else {
+            directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+            item->_instruction = CSYNC_INSTRUCTION_NONE;
+            _anotherSyncNeeded = true;
+        }
     }
     directories.push(qMakePair(item->destination() + "/", directoryPropagationJob.release()));
 }
@@ -1021,14 +1041,15 @@ bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 
         if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
             !parentRec.isValid() ||
-            !parentRec._isE2eEncrypted) {
+            !parentRec.isE2eEncrypted()) {
             return false;
         }
 
         return true;
     };
 
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->isEncrypted() && _syncOptions.minChunkSize() > item->_size
+        && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
@@ -1068,6 +1089,56 @@ PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
 OwncloudPropagator *PropagatorJob::propagator() const
 {
     return qobject_cast<OwncloudPropagator *>(parent());
+}
+
+ErrorCategory PropagatorJob::errorCategoryFromNetworkError(const QNetworkReply::NetworkError error)
+{
+    auto result = ErrorCategory::NoError;
+    switch (error)
+    {
+    case QNetworkReply::NoError:
+        result = ErrorCategory::NoError;
+        break;
+    case QNetworkReply::TemporaryNetworkFailureError:
+    case QNetworkReply::RemoteHostClosedError:
+        result = ErrorCategory::NetworkError;
+        break;
+    case QNetworkReply::ConnectionRefusedError:
+    case QNetworkReply::HostNotFoundError:
+    case QNetworkReply::TimeoutError:
+    case QNetworkReply::OperationCanceledError:
+    case QNetworkReply::SslHandshakeFailedError:
+    case QNetworkReply::NetworkSessionFailedError:
+    case QNetworkReply::BackgroundRequestNotAllowedError:
+    case QNetworkReply::TooManyRedirectsError:
+    case QNetworkReply::InsecureRedirectError:
+    case QNetworkReply::UnknownNetworkError:
+    case QNetworkReply::ProxyConnectionRefusedError:
+    case QNetworkReply::ProxyConnectionClosedError:
+    case QNetworkReply::ProxyNotFoundError:
+    case QNetworkReply::ProxyTimeoutError:
+    case QNetworkReply::ProxyAuthenticationRequiredError:
+    case QNetworkReply::UnknownProxyError:
+    case QNetworkReply::ContentAccessDenied:
+    case QNetworkReply::ContentOperationNotPermittedError:
+    case QNetworkReply::ContentNotFoundError:
+    case QNetworkReply::AuthenticationRequiredError:
+    case QNetworkReply::ContentReSendError:
+    case QNetworkReply::ContentConflictError:
+    case QNetworkReply::ContentGoneError:
+    case QNetworkReply::UnknownContentError:
+    case QNetworkReply::ProtocolUnknownError:
+    case QNetworkReply::ProtocolInvalidOperationError:
+    case QNetworkReply::ProtocolFailure:
+    case QNetworkReply::InternalServerError:
+    case QNetworkReply::OperationNotImplementedError:
+    case QNetworkReply::ServiceUnavailableError:
+    case QNetworkReply::UnknownServerError:
+        result = ErrorCategory::GenericError;
+        break;
+    }
+
+    return result;
 }
 
 // ================================================================================
@@ -1440,6 +1511,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         case SyncFileItem::FileLocked:
         case SyncFileItem::Restoration:
         case SyncFileItem::FileNameInvalid:
+        case SyncFileItem::FileNameInvalidOnServer:
         case SyncFileItem::DetailError:
         case SyncFileItem::Success:
             break;
@@ -1504,7 +1576,7 @@ void CleanupPollsJob::slotPollFinished()
     auto *job = qobject_cast<PollJob *>(sender());
     ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
-        emit aborted(job->_item->_errorString);
+        emit aborted(job->_item->_errorString, ErrorCategory::GenericError);
         deleteLater();
         return;
     } else if (job->_item->_status != SyncFileItem::Success) {
@@ -1514,7 +1586,7 @@ void CleanupPollsJob::slotPollFinished()
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
-            emit aborted(job->_item->_errorString);
+            emit aborted(job->_item->_errorString, ErrorCategory::GenericError);
             deleteLater();
             return;
         }
@@ -1537,7 +1609,7 @@ QString OwncloudPropagator::remotePath() const
 
 void PropagateIgnoreJob::start()
 {
-    SyncFileItem::Status status = _item->_status;
+    auto status = _item->_status;
     if (status == SyncFileItem::NoStatus) {
         if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
             status = SyncFileItem::NormalError;
@@ -1551,7 +1623,7 @@ void PropagateIgnoreJob::start()
             _item->_file = conflictRecord.initialBasePath;
         }
     }
-    done(status, _item->_errorString);
+    done(status, _item->_errorString, ErrorCategory::NoError);
 }
 
 }

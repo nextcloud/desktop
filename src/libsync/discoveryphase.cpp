@@ -13,8 +13,11 @@
  */
 
 #include "discoveryphase.h"
+#include "common/utility.h"
+#include "configfile.h"
 #include "discovery.h"
 #include "helpers.h"
+#include "progressdispatcher.h"
 
 #include "account.h"
 #include "clientsideencryptionjobs.h"
@@ -38,34 +41,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDiscovery, "nextcloud.sync.discovery", QtInfoMsg)
 
-/* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
-static bool findPathInList(const QStringList &list, const QString &path)
-{
-    Q_ASSERT(std::is_sorted(list.begin(), list.end()));
-
-    if (list.size() == 1 && list.first() == QLatin1String("/")) {
-        // Special case for the case "/" is there, it matches everything
-        return true;
-    }
-
-    QString pathSlash = path + QLatin1Char('/');
-
-    // Since the list is sorted, we can do a binary search.
-    // If the path is a prefix of another item or right after in the lexical order.
-    auto it = std::lower_bound(list.begin(), list.end(), pathSlash);
-
-    if (it != list.end() && *it == pathSlash) {
-        return true;
-    }
-
-    if (it == list.begin()) {
-        return false;
-    }
-    --it;
-    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
-    return pathSlash.startsWith(*it);
-}
-
 bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
@@ -74,15 +49,50 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     }
 
     // Block if it is in the black list
-    if (findPathInList(_selectiveSyncBlackList, path)) {
+    if (SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncBlackList, path)) {
         return true;
     }
 
     return false;
 }
 
-void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
-    std::function<void(bool)> callback)
+bool DiscoveryPhase::activeFolderSizeLimit() const
+{
+    return _syncOptions._newBigFolderSizeLimit > 0 && _syncOptions._vfs->mode() == Vfs::Off;
+}
+
+bool DiscoveryPhase::notifyExistingFolderOverLimit() const
+{
+    return activeFolderSizeLimit() && ConfigFile().notifyExistingFoldersOverLimit();
+}
+
+void DiscoveryPhase::checkFolderSizeLimit(const QString &path, const std::function<void(bool)> completionCallback)
+{
+    if (!activeFolderSizeLimit()) {
+        // no limit, everything is allowed;
+        return completionCallback(false);
+    }
+
+    // do a PROPFIND to know the size of this folder
+    const auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
+    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
+                                                   << "http://owncloud.org/ns:size");
+
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [=] {
+        return completionCallback(false);
+    });
+    connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+        const auto result = values.value(QLatin1String("size")).toLongLong();
+        const auto limit = _syncOptions._newBigFolderSizeLimit;
+        qCDebug(lcDiscovery) << "Folder size check complete for" << path << "result:" << result << "limit:" << limit;
+        return completionCallback(result >= limit);
+    });
+    propfindJob->start();
+}
+
+void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path,
+                                                 const RemotePermissions remotePerm,
+                                                 const std::function<void(bool)> callback)
 {
     if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
@@ -102,41 +112,38 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     // If this path or the parent is in the white list, then we do not block this file
-    if (findPathInList(_selectiveSyncWhiteList, path)) {
+    if (SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncWhiteList, path)) {
         return callback(false);
     }
 
-    auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
-        // no limit, everything is allowed;
-        return callback(false);
-    }
-
-    // do a PROPFIND to know the size of this folder
-    auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, [=] { return callback(false); });
-    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
-        auto result = values.value(QLatin1String("size")).toLongLong();
-        if (result >= limit) {
+    checkFolderSizeLimit(path, [this, path, callback](const bool bigFolder) {
+        if (bigFolder) {
             // we tell the UI there is a new folder
             emit newBigFolder(path, false);
             return callback(true);
-        } else {
-            // it is not too big, put it in the white list (so we will not do more query for the children)
-            // and and do not block.
-            auto p = path;
-            if (!p.endsWith(QLatin1Char('/')))
-                p += QLatin1Char('/');
-            _selectiveSyncWhiteList.insert(
-                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p),
-                p);
-            return callback(false);
+        }
+
+        // it is not too big, put it in the white list (so we will not do more query for the children) and and do not block.
+        const auto sanitisedPath = Utility::trailingSlashPath(path);
+        _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), sanitisedPath), sanitisedPath);
+        return callback(false);
+    });
+}
+
+void DiscoveryPhase::checkSelectiveSyncExistingFolder(const QString &path)
+{
+    // If no size limit is enforced, or if is in whitelist (explicitly allowed) or in blacklist (explicitly disallowed), do nothing.
+    if (!notifyExistingFolderOverLimit() || SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncWhiteList, path)
+        || SyncJournalDb::findPathInSelectiveSyncList(_selectiveSyncBlackList, path)) {
+        return;
+    }
+
+    checkFolderSizeLimit(path, [this, path](const bool bigFolder) {
+        if (bigFolder) {
+            // Notify the user and prompt for response.
+            emit existingFolderNowBig(path);
         }
     });
-    propfindJob->start();
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */
@@ -187,8 +194,8 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
                 qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
                 qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
                 Q_ASSERT(false);
-                emit addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath);
-                emit fatalError(tr("Error while canceling deletion of %1").arg(originalPath));
+                emit addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath, ErrorCategory::GenericError);
+                emit fatalError(tr("Error while canceling deletion of %1").arg(originalPath), ErrorCategory::GenericError);
             }
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
@@ -220,6 +227,7 @@ void DiscoveryPhase::enqueueDirectoryToDelete(const QString &path, ProcessDirect
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     ENFORCE(!_currentRootJob);
+    connect(this, &DiscoveryPhase::itemDiscovered, this, &DiscoveryPhase::slotItemDiscovered, Qt::UniqueConnection);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
         ENFORCE(_currentRootJob == sender());
         _currentRootJob = nullptr;
@@ -243,13 +251,13 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 void DiscoveryPhase::setSelectiveSyncBlackList(const QStringList &list)
 {
     _selectiveSyncBlackList = list;
-    std::sort(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end());
+    _selectiveSyncBlackList.sort();
 }
 
 void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
 {
     _selectiveSyncWhiteList = list;
-    std::sort(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end());
+    _selectiveSyncWhiteList.sort();
 }
 
 void DiscoveryPhase::scheduleMoreJobs()
@@ -257,6 +265,16 @@ void DiscoveryPhase::scheduleMoreJobs()
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
     if (_currentRootJob && _currentlyActiveJobs < limit) {
         _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);
+    }
+}
+
+void DiscoveryPhase::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
+{
+    if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
+        _hasUploadErrorItems = true;
+    }
+    if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && item->_direction == SyncFileItem::Down) {
+        _hasDownloadRemovedItems = true;
     }
 }
 
@@ -323,6 +341,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
+        i.isMetadataMissing = dirent->is_metadata_missing;
         i.type = dirent->type;
         results.push_back(i);
     }
@@ -368,6 +387,7 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
           << "http://owncloud.org/ns:checksums";
+
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
@@ -408,6 +428,11 @@ void DiscoverySingleDirectoryJob::abort()
 bool DiscoverySingleDirectoryJob::isFileDropDetected() const
 {
     return _isFileDropDetected;
+}
+
+bool DiscoverySingleDirectoryJob::encryptedMetadataNeedUpdate() const
+{
+    return _encryptedMetadataNeedUpdate;
 }
 
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
@@ -453,12 +478,12 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
-                // Piggy back on the persmission field
+                // Piggy back on the permission field
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
                 result.sharedByMe = true;
             }
         } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
-            result.isE2eEncrypted = true;
+            result._isE2eEncrypted = true;
         } else if (property == "lock") {
             result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
         }
@@ -530,7 +555,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
             _fileId = map.value("id").toUtf8();
         }
         if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
-            _isE2eEncrypted = true;
+            _isE2eEncrypted = SyncFileItem::EncryptionStatus::Encrypted;
             Q_ASSERT(!_fileId.isEmpty());
         }
         if (map.contains("size")) {
@@ -576,7 +601,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
-    } else if (_isE2eEncrypted) {
+    } else if (isE2eEncrypted()) {
         emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
@@ -621,8 +646,13 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
     qCDebug(lcDiscovery) << "Metadata received, applying it to the result list";
     Q_ASSERT(_subPath.startsWith('/'));
 
-    const auto metadata = FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode);
+    const auto metadata = FolderMetadata(_account,
+                                         _isE2eEncrypted == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                                         json.toJson(QJsonDocument::Compact),
+                                         statusCode);
     _isFileDropDetected = metadata.isFileDropPresent();
+    _encryptedMetadataNeedUpdate = metadata.encryptedMetadataNeedUpdate();
+
     const auto encryptedFiles = metadata.files();
 
     const auto findEncryptedFile = [=](const QString &name) {
@@ -640,7 +670,7 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         auto result = info;
         const auto encryptedFileInfo = findEncryptedFile(result.name);
         if (encryptedFileInfo) {
-            result.isE2eEncrypted = true;
+            result._isE2eEncrypted = true;
             result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
             result.name = encryptedFileInfo->originalFilename;
         }

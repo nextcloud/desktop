@@ -15,7 +15,7 @@
 /*
  * Removing the root encrypted folder is consisted of multiple steps:
  * - 1st step is to obtain the folderID via LsColJob so it then can be used for the next step
- * - 2nd step is to lock the root folder useing the folderID from the previous step. !!! NOTE: If there are no nested items in the folder, this, and subsequent steps are skipped until step 7.
+ * - 2nd step is to lock the root folder using the folderID from the previous step. !!! NOTE: If there are no nested items in the folder, this, and subsequent steps are skipped until step 7.
  * - 3rd step is to obtain the root folder's metadata (it contains list of nested files and folders)
  * - 4th step is to remove the nested files and folders from the metadata and send it to the server via UpdateMetadataApiJob
  * - 5th step is to trigger DeleteJob for every nested file and folder of the root folder
@@ -49,7 +49,7 @@ PropagateRemoteDeleteEncryptedRootFolder::PropagateRemoteDeleteEncryptedRootFold
 
 void PropagateRemoteDeleteEncryptedRootFolder::start()
 {
-    Q_ASSERT(_item->_isEncrypted);
+    Q_ASSERT(_item->isEncrypted());
 
     const bool listFilesResult = _propagator->_journal->listFilesInPath(_item->_file.toUtf8(), [this](const OCC::SyncJournalFileRecord &record) {
         _nestedItems[record._e2eMangledName] = record;
@@ -81,7 +81,9 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
         return;
     }
 
-    FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+    FolderMetadata metadata(_propagator->account(),
+                            _item->_e2eEncryptionStatus == SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2 ? FolderMetadata::RequiredMetadataVersion::Version1_2 : FolderMetadata::RequiredMetadataVersion::Version1,
+                            json.toJson(QJsonDocument::Compact), statusCode);
 
     if (!metadata.isMetadataSetup()) {
         taskFailed();

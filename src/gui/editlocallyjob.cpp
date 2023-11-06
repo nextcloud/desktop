@@ -89,22 +89,25 @@ void EditLocallyJob::startTokenRemoteCheck()
                                         << "accountState:" << _accountState
                                         << "relPath:" << _relPath
                                         << "token:" << _token;
+
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to verify the request to edit locally."));
         return;
     }
 
     const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(_token)); // Sanitise the token
     const auto encodedRelPath = QUrl::toPercentEncoding(_relPath); // Sanitise the relPath
 
-    _checkTokenJob.reset(new SimpleApiJob(_accountState->account(),
-                                          QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken)));
+    const auto checkTokenJob = new SimpleApiJob(_accountState->account(),
+                                          QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
 
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("path"), prefixSlashToPath(encodedRelPath));
-    _checkTokenJob->addQueryParams(params);
-    _checkTokenJob->setVerb(SimpleApiJob::Verb::Post);
-    connect(_checkTokenJob.get(), &SimpleApiJob::resultReceived, this, &EditLocallyJob::remoteTokenCheckResultReceived);
+    checkTokenJob->addQueryParams(params);
+    checkTokenJob->setVerb(SimpleApiJob::Verb::Post);
+    connect(checkTokenJob, &SimpleApiJob::resultReceived, this, &EditLocallyJob::remoteTokenCheckResultReceived);
 
-    _checkTokenJob->start();
+    checkTokenJob->start();
 }
 
 void EditLocallyJob::remoteTokenCheckResultReceived(const int statusCode)
@@ -144,7 +147,7 @@ void EditLocallyJob::proceedWithSetup()
         return;
     }
 
-    if (_relPathParent != QStringLiteral("/") && (!_fileParentItem || _fileParentItem->isEmpty())) {
+    if (!isFileParentItemValid()) {
         showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
         return;
     }
@@ -152,7 +155,7 @@ void EditLocallyJob::proceedWithSetup()
     _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
 
     Systray::instance()->destroyEditFileLocallyLoadingDialog();
-    Q_EMIT setupFinished();
+    startEditLocally();
 }
 
 void EditLocallyJob::findAfolderAndConstructPaths()
@@ -198,6 +201,8 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
 
     if (_relPathParent == QStringLiteral("/")) {
         qCWarning(lcEditLocallyJob) << "LsColJob must only be used for nested folders.";
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred during data retrieval."));
         return;
     }
 
@@ -251,7 +256,12 @@ bool EditLocallyJob::checkIfFileParentSyncIsNeeded()
 
 void EditLocallyJob::startSyncBeforeOpening()
 {
-    eraseBlacklistRecordForItem();
+    if (!eraseBlacklistRecordForItem()) {
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to synchronise the file to edit locally."));
+        return;
+    }
+
     if (!checkIfFileParentSyncIsNeeded()) {
         processLocalItem();
         return;
@@ -259,24 +269,38 @@ void EditLocallyJob::startSyncBeforeOpening()
 
     // connect to a SyncEngine::itemDiscovered so we can complete the job as soon as the file in question is discovered
     QObject::connect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
-    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent, _relativePathToRemoteRoot, _fileParentItem});
+    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent, _relativePathToRemoteRoot, _fileParentItem});
     FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
-void EditLocallyJob::eraseBlacklistRecordForItem()
+bool EditLocallyJob::eraseBlacklistRecordForItem()
 {
-    if (!_folderForFile || !_fileParentItem) {
+    if (!_folderForFile || !isFileParentItemValid()) {
         qCWarning(lcEditLocallyJob) << "_folderForFile or _fileParentItem is invalid!";
-        return;
+        return false;
     }
+
+    if (!_fileParentItem && _relPathParent == QStringLiteral("/")) {
+        return true;
+    }
+
+    Q_ASSERT(_fileParentItem);
+    if (!_fileParentItem) {
+        qCWarning(lcEditLocallyJob) << "_fileParentItem is invalid!";
+        return false;
+    }
+
     Q_ASSERT(!_folderForFile->isSyncRunning());
     if (_folderForFile->isSyncRunning()) {
         qCWarning(lcEditLocallyJob) << "_folderForFile is syncing";
-        return;
+        return false;
     }
+
     if (_folderForFile->journalDb()->errorBlacklistEntry(_fileParentItem->_file).isValid()) {
         _folderForFile->journalDb()->wipeErrorBlacklistEntry(_fileParentItem->_file);
     }
+
+    return true;
 }
 
 const QString EditLocallyJob::getRelativePathToRemoteRootForFile() const
@@ -414,7 +438,7 @@ void EditLocallyJob::showErrorNotification(const QString &message, const QString
     });
 
     if (foundFolder != folderMap.cend()) {
-        emit (*foundFolder)->syncEngine().addErrorToGui(SyncFileItem::SoftError, message, informativeText);
+        emit (*foundFolder)->syncEngine().addErrorToGui(SyncFileItem::SoftError, message, informativeText, OCC::ErrorCategory::GenericError);
     }
 }
 
@@ -438,6 +462,8 @@ void EditLocallyJob::startEditLocally()
                                         << "fileName:" << _fileName
                                         << "localFilePath:" << _localFilePath
                                         << "folderForFile:" << _folderForFile;
+
+        showError(tr("Could not start editing locally."), tr("An error occurred during setup."));
         return;
     }
 
@@ -452,6 +478,7 @@ void EditLocallyJob::startEditLocally()
         });
         _folderForFile->setSilenceErrorsUntilNextSync(true);
         _folderForFile->slotTerminateSync();
+        _shouldScheduleFolderSyncAfterFileIsOpened = true;
 
         return;
     }
@@ -493,6 +520,8 @@ void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMa
 
     if (_relPathParent == QStringLiteral("/")) {
         qCWarning(lcEditLocallyJob) << "LsColJob must only be used for nested folders.";
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred during data retrieval."));
         return;
     }
 
@@ -500,6 +529,8 @@ void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMa
     Q_ASSERT(job);
     if (!job) {
         qCWarning(lcEditLocallyJob) << "Must call slotDirectoryListingIterated from a signal.";
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred during data retrieval."));
         return;
     }
 
@@ -523,8 +554,9 @@ void EditLocallyJob::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     Q_ASSERT(item && !item->isEmpty());
     if (!item || item->isEmpty()) {
         qCWarning(lcEditLocallyJob) << "invalid item";
-    }
-    if (item->_file == _relativePathToRemoteRoot) {
+        showError(tr("Could not start editing locally."),
+                  tr("An error occurred trying to synchronise the file to edit locally."));
+    } else if (item->_file == _relativePathToRemoteRoot) {
         disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
         if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
             // return early if the file is already in sync
@@ -538,8 +570,12 @@ void EditLocallyJob::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
 void EditLocallyJob::openFile()
 {
+    Q_ASSERT(_folderForFile);
+
     if(_localFilePath.isEmpty()) {
         qCWarning(lcEditLocallyJob) << "Could not edit locally. Invalid local file path.";
+        showError(tr("Could not start editing locally."),
+                  tr("Invalid local file path."));
         return;
     }
 
@@ -553,6 +589,11 @@ void EditLocallyJob::openFile()
         }
 
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
+
+        if (_shouldScheduleFolderSyncAfterFileIsOpened) {
+            _folderForFile->startSync();
+        }
+
         emit finished();
     });
 }
@@ -591,9 +632,7 @@ void EditLocallyJob::lockFile()
     };
 
     const auto runSingleFileDiscovery = [this] {
-        const SyncEngine::SingleItemDiscoveryOptions singleItemDiscoveryOptions = {(_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent),
-                                                                                   _relativePathToRemoteRoot,
-                                                                                   _fileParentItem};
+        const SyncEngine::SingleItemDiscoveryOptions singleItemDiscoveryOptions = {_relPathParent, _relativePathToRemoteRoot, _fileParentItem};
         _folderForFile->syncEngine().setSingleItemDiscoveryOptions(singleItemDiscoveryOptions);
         FolderMan::instance()->forceSyncForFolder(_folderForFile);
     };
@@ -608,6 +647,8 @@ void EditLocallyJob::lockFile()
                                       this, &EditLocallyJob::fileLockError));
 
     _folderForFile->accountState()->account()->setLockFileState(_relPath,
+                                                                _folderForFile->remotePathTrailingSlash(),
+                                                                _folderForFile->path(),
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem);
 }
@@ -671,6 +712,11 @@ int EditLocallyJob::fileLockTimeRemainingMinutes(const qint64 lockTime, const qi
     const auto remainingTimeInMinutes = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
 
     return remainingTimeInMinutes;
+}
+
+bool EditLocallyJob::isFileParentItemValid() const
+{
+    return (_fileParentItem && !_fileParentItem->isEmpty()) || _relPathParent == QStringLiteral("/");
 }
 
 }

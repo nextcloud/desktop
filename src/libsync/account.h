@@ -31,11 +31,12 @@
 #include <QPixmap>
 #endif
 
-#include "common/utility.h"
-#include <memory>
 #include "capabilities.h"
 #include "clientsideencryption.h"
+#include "common/utility.h"
 #include "syncfileitem.h"
+
+#include <memory>
 
 class QSettings;
 class QNetworkReply;
@@ -99,7 +100,7 @@ public:
     /**
      * The user that can be used in dav url.
      *
-     * This can very well be different frome the login user that's
+     * This can very well be different from the login user that's
      * stored in credentials()->user().
      */
     [[nodiscard]] QString davUser() const;
@@ -220,7 +221,7 @@ public:
     void setCredentialSetting(const QString &key, const QVariant &value);
 
     /** Assign a client certificate */
-    void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
+    void setCertificate(const QByteArray certificate = QByteArray(), const QString privateKey = QString());
 
     /** Access the server capabilities */
     [[nodiscard]] const Capabilities &capabilities() const;
@@ -232,6 +233,10 @@ public:
      * have been received.
      */
     [[nodiscard]] QString serverVersion() const;
+
+    // check if the checksum validation of E2EE metadata is allowed to be skipped via config file, this will only work before client 3.9.0
+    [[nodiscard]] bool shouldSkipE2eeMetadataChecksumValidation() const;
+    void resetShouldSkipE2eeMetadataChecksumValidation();
 
     /** Server version for easy comparison.
      *
@@ -303,6 +308,8 @@ public:
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
     void setLockFileState(const QString &serverRelativePath,
+                          const QString &remoteSyncPathWithTrailingSlash,
+                          const QString &localSyncPath,
                           SyncJournalDb * const journal,
                           const SyncFileItem::LockStatus lockStatus);
 
@@ -368,11 +375,16 @@ protected Q_SLOTS:
     void slotCredentialsAsked();
     void slotDirectEditingRecieved(const QJsonDocument &json);
 
+private slots:
+    void removeLockStatusChangeInprogress(const QString &serverRelativePath, const SyncFileItem::LockStatus lockStatus);
+
 private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
+    void updateServerColors();
 
-    static QString davPathBase();
+    [[nodiscard]] static QString davPathBase();
+    [[nodiscard]] QColor serverColor() const;
 
     bool _trustCertificates = false;
 
@@ -402,6 +414,9 @@ private:
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
     QString _serverVersion;
+    QColor _serverColor;
+    QColor _serverTextColor = QColorConstants::White;
+    bool _skipE2eeMetadataChecksumValidation = false;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QSharedPointer<QNetworkAccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
@@ -425,6 +440,8 @@ private:
     PushNotifications *_pushNotifications = nullptr;
 
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
+
+    QHash<QString, QVector<SyncFileItem::LockStatus>> _lockStatusChangeInprogress;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!

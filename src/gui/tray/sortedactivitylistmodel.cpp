@@ -13,45 +13,43 @@
  */
 
 #include "activitylistmodel.h"
+#include <QVector>
 
 #include "sortedactivitylistmodel.h"
+
+namespace
+{
+    struct ActivityLinksSearchResult {
+        bool hasPOST = false;
+        bool hasREPLY = false;
+        bool hasWEB = false;
+        bool hasDELETE = false;
+    };
+
+    ActivityLinksSearchResult searchForVerbsInLinks(const QVector<OCC::ActivityLink> &links)
+    {
+        ActivityLinksSearchResult result;
+        for (const auto &link : links) {
+            if (link._verb == QByteArrayLiteral("POST")) {
+                result.hasPOST = true;
+            } else if (link._verb == QByteArrayLiteral("REPLY")) {
+                result.hasREPLY = true;
+            } else if (link._verb == QByteArrayLiteral("WEB")) {
+                result.hasWEB = true;
+            } else if (link._verb == QByteArrayLiteral("DELETE")) {
+                result.hasDELETE = true;
+            }
+        }
+        return result;
+    }
+}
 
 namespace OCC {
 
 SortedActivityListModel::SortedActivityListModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
-}
-
-void SortedActivityListModel::sortModel()
-{
-    sort(0);
-}
-
-ActivityListModel* SortedActivityListModel::activityListModel() const
-{
-    return dynamic_cast<ActivityListModel*>(sourceModel());
-}
-
-void SortedActivityListModel::setActivityListModel(ActivityListModel* activityListModel)
-{
-     if(const auto currentSetModel = sourceModel()) {
-         disconnect(currentSetModel, &ActivityListModel::rowsInserted, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::rowsMoved, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::rowsRemoved, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::dataChanged, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::modelReset, this, &SortedActivityListModel::sortModel);
-     }
-
-     // Re-sort model when any changes take place
-     connect(activityListModel, &ActivityListModel::rowsInserted, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::rowsMoved, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::rowsRemoved, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::dataChanged, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::modelReset, this, &SortedActivityListModel::sortModel);
-
-    setSourceModel(activityListModel);
-    Q_EMIT activityListModelChanged();
+    sort(0, Qt::AscendingOrder);
 }
 
 bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const
@@ -74,30 +72,72 @@ bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QMod
         return false;
     }
 
+    const auto leftActivityVerbsSearchResult = searchForVerbsInLinks(leftActivity._links);
+    const auto rightActivityVerbsSearchResult = searchForVerbsInLinks(rightActivity._links);
+
+    if (leftActivityVerbsSearchResult.hasPOST != rightActivityVerbsSearchResult.hasPOST) {
+        return leftActivityVerbsSearchResult.hasPOST;
+    }
+
+    if (leftActivityVerbsSearchResult.hasREPLY != rightActivityVerbsSearchResult.hasREPLY) {
+        return leftActivityVerbsSearchResult.hasREPLY;
+    }
+
+    if (leftActivityVerbsSearchResult.hasWEB != rightActivityVerbsSearchResult.hasWEB) {
+        return leftActivityVerbsSearchResult.hasWEB;
+    }
+
+    if (leftActivityVerbsSearchResult.hasDELETE != rightActivityVerbsSearchResult.hasDELETE) {
+        return leftActivityVerbsSearchResult.hasDELETE;
+    }
+
+    const auto leftActivityIsSecurityAction = leftActivity._fileAction == QStringLiteral("security");
+    const auto rightActivityIsSecurityAction = rightActivity._fileAction == QStringLiteral("security");
+    if (leftActivityIsSecurityAction != rightActivityIsSecurityAction) {
+        return leftActivityIsSecurityAction;
+    }
+
+    // Let's now check for errors as we want those near the top too
+    // Sync result errors go first
+    const auto leftSyncResultStatus = leftActivity._syncResultStatus;
+    const auto rightSyncResultStatus = rightActivity._syncResultStatus;
+
+    const auto leftIsSyncResultError = leftSyncResultStatus == SyncResult::Error ||
+                                       leftSyncResultStatus == SyncResult::SetupError ||
+                                       leftSyncResultStatus == SyncResult::Problem;
+
+    const auto rightIsSyncResultError = rightSyncResultStatus == SyncResult::Error ||
+                                        rightSyncResultStatus == SyncResult::SetupError ||
+                                        rightSyncResultStatus == SyncResult::Problem;
+
+    if (leftIsSyncResultError != rightIsSyncResultError) {
+        return leftIsSyncResultError;
+    } // If they are both errors then we will order the errors according to enum order later
+
+    // Then sync file item status errors
+    const auto leftSyncFileItemStatus = leftActivity._syncFileItemStatus;
+    const auto rightSyncFileItemStatus = rightActivity._syncFileItemStatus;
+    const bool leftIsErrorFileItemStatus = leftSyncFileItemStatus != SyncFileItem::NoStatus &&
+                                           leftSyncFileItemStatus != SyncFileItem::Success;
+
+    const bool rightIsErrorFileItemStatus = rightSyncFileItemStatus != SyncFileItem::NoStatus &&
+                                            rightSyncFileItemStatus != SyncFileItem::Success;
+
+    if (leftIsErrorFileItemStatus != rightIsErrorFileItemStatus) {
+        return leftIsErrorFileItemStatus;
+    }
+
+    // Let's go back to more broadly comparing by type
     if (const auto rightType = rightActivity._type; leftType != rightType) {
         return leftType < rightType;
     }
 
-    const auto leftSyncFileItemStatus = leftActivity._syncFileItemStatus;
-    const auto rightSyncFileItemStatus = rightActivity._syncFileItemStatus;
-
-    // Then compare by status
-    if (leftSyncFileItemStatus != rightSyncFileItemStatus) {
-        // We want to shove erors towards the top.
-        return (leftSyncFileItemStatus != SyncFileItem::NoStatus &&
-                leftSyncFileItemStatus != SyncFileItem::Success) ||
-                leftSyncFileItemStatus == SyncFileItem::FatalError ||
-                leftSyncFileItemStatus < rightSyncFileItemStatus;
+    if (leftSyncResultStatus != rightSyncResultStatus) {
+        return leftSyncResultStatus < rightSyncResultStatus;
     }
 
-    const auto leftSyncResultStatus = leftActivity._syncResultStatus;
-    const auto rightSyncResultStatus = rightActivity._syncResultStatus;
-
-    if (leftSyncResultStatus != rightSyncResultStatus) {
-        // We only ever use SyncResult::Error in activities
-        return (leftSyncResultStatus != SyncResult::Undefined &&
-                leftSyncResultStatus != SyncResult::Success) ||
-                leftSyncResultStatus == SyncResult::Error;
+    if (leftSyncFileItemStatus != rightSyncFileItemStatus) {
+        return leftSyncFileItemStatus < rightSyncFileItemStatus;
     }
 
     // Finally sort by time, latest first

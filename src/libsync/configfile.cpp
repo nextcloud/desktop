@@ -70,6 +70,7 @@ static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char updateChannelC[] = "updateChannel";
 static constexpr char overrideServerUrlC[] = "overrideServerUrl";
 static constexpr char overrideLocalDirC[] = "overrideLocalDir";
+static constexpr char isVfsEnabledC[] = "isVfsEnabled";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
 static constexpr char chunkSizeC[] = "chunkSize";
@@ -98,11 +99,17 @@ static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
 
 static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
+static constexpr char notifyExistingFoldersOverLimitC[] = "notifyExistingFoldersOverLimit";
+static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExistingFoldersOverLimit";
 static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
 static constexpr char moveToTrashC[] = "moveToTrash";
 
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
+
+static const QSet validUpdateChannels { QStringLiteral("stable"), QStringLiteral("beta") };
+
+static constexpr auto macFileProviderModuleEnabledC = "macFileProviderModuleEnabled";
 }
 
 namespace OCC {
@@ -111,8 +118,8 @@ namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
-QString ConfigFile::_confDir = QString();
-bool ConfigFile::_askedUser = false;
+QString ConfigFile::_confDir = {};
+QString ConfigFile::_discoveredLegacyConfigPath = {};
 
 static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
     chrono::milliseconds defaultValue)
@@ -239,19 +246,19 @@ int ConfigFile::timeout() const
 qint64 ConfigFile::chunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(chunkSizeC), 10 * 1000 * 1000).toLongLong(); // default to 10 MB
+    return settings.value(QLatin1String(chunkSizeC), 10LL * 1000LL * 1000LL).toLongLong(); // default to 10 MB
 }
 
 qint64 ConfigFile::maxChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(maxChunkSizeC), 1000 * 1000 * 1000).toLongLong(); // default to 1000 MB
+    return settings.value(QLatin1String(maxChunkSizeC), 5LL * 1000LL * 1000LL * 1000LL).toLongLong(); // default to 5000 MB
 }
 
 qint64 ConfigFile::minChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(minChunkSizeC), 1000 * 1000).toLongLong(); // default to 1 MB
+    return settings.value(QLatin1String(minChunkSizeC), 5LL * 1000LL * 1000LL).toLongLong(); // default to 5 MB
 }
 
 chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
@@ -357,39 +364,31 @@ QString ConfigFile::configPath() const
             _confDir = newLocation;
         }
     }
-    QString dir = _confDir;
 
-    if (!dir.endsWith(QLatin1Char('/')))
-        dir.append(QLatin1Char('/'));
-    return dir;
+    return Utility::trailingSlashPath(_confDir);
 }
 
-static const QLatin1String exclFile("sync-exclude.lst");
+static const QLatin1String syncExclFile("sync-exclude.lst");
+static const QLatin1String exclFile("exclude.lst");
 
 QString ConfigFile::excludeFile(Scope scope) const
 {
-    // prefer sync-exclude.lst, but if it does not exist, check for
-    // exclude.lst for compatibility reasons in the user writeable
-    // directories.
-    QFileInfo fi;
-
-    switch (scope) {
-    case UserScope:
-        fi.setFile(configPath(), exclFile);
-
-        if (!fi.isReadable()) {
-            fi.setFile(configPath(), QLatin1String("exclude.lst"));
-        }
-        if (!fi.isReadable()) {
-            fi.setFile(configPath(), exclFile);
-        }
-        return fi.absoluteFilePath();
-    case SystemScope:
+    if (scope == SystemScope) {
         return ConfigFile::excludeFileFromSystem();
     }
 
-    ASSERT(false);
-    return QString();
+    const auto excludeFilePath = scope == LegacyScope ? discoveredLegacyConfigPath() : configPath();
+
+    // prefer sync-exclude.lst, but if it does not exist, check for exclude.lst
+    QFileInfo exclFileInfo(excludeFilePath, syncExclFile);
+    if (!exclFileInfo.isReadable()) {
+        exclFileInfo.setFile(excludeFilePath, exclFile);
+    }
+    if (!exclFileInfo.isReadable()) {
+        exclFileInfo.setFile(excludeFilePath, syncExclFile);
+    }
+
+    return exclFileInfo.absoluteFilePath();
 }
 
 QString ConfigFile::excludeFileFromSystem()
@@ -562,7 +561,7 @@ chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) co
     auto defaultInterval = chrono::hours(2);
     auto interval = millisecondsValue(settings, forceSyncIntervalC, defaultInterval);
     if (interval < pollInterval) {
-        qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval.count();
+        qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll interval, reverting to" << pollInterval.count();
         interval = pollInterval;
     }
     return interval;
@@ -691,11 +690,27 @@ QString ConfigFile::updateChannel() const
     }
 
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
+    const auto channel = settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
+    if (!validUpdateChannels.contains(channel)) {
+        qCWarning(lcConfigFile()) << "Received invalid update channel from confog:"
+                                  << channel
+                                  << "defaulting to:"
+                                  << defaultUpdateChannel;
+        return defaultUpdateChannel;
+    }
+
+    return channel;
 }
 
 void ConfigFile::setUpdateChannel(const QString &channel)
 {
+    if (!validUpdateChannels.contains(channel)) {
+        qCWarning(lcConfigFile()) << "Received invalid update channel:"
+                                  << channel
+                                  << "can only accept 'stable' or 'beta'. Ignoring.";
+        return;
+    }
+
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(updateChannelC), channel);
 }
@@ -722,6 +737,18 @@ void ConfigFile::setOverrideLocalDir(const QString &localDir)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(overrideLocalDirC), localDir);
+}
+
+bool ConfigFile::isVfsEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value({isVfsEnabledC}, {}).toBool();
+}
+
+void ConfigFile::setVfsEnabled(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue({isVfsEnabledC}, enabled);
 }
 
 void ConfigFile::setProxyType(int proxyType,
@@ -926,6 +953,29 @@ bool ConfigFile::useNewBigFolderSizeLimit() const
     return getPolicySetting(QLatin1String(useNewBigFolderSizeLimitC), fallback).toBool();
 }
 
+bool ConfigFile::notifyExistingFoldersOverLimit() const
+{
+    const auto fallback = getValue(notifyExistingFoldersOverLimitC, {}, false);
+    return getPolicySetting(QString(notifyExistingFoldersOverLimitC), fallback).toBool();
+}
+
+void ConfigFile::setNotifyExistingFoldersOverLimit(const bool notify)
+{
+    setValue(notifyExistingFoldersOverLimitC, notify);
+}
+
+bool ConfigFile::stopSyncingExistingFoldersOverLimit() const
+{
+    const auto notifyExistingBigEnabled = notifyExistingFoldersOverLimit();
+    const auto fallback = getValue(stopSyncingExistingFoldersOverLimitC, {}, notifyExistingBigEnabled);
+    return getPolicySetting(QString(stopSyncingExistingFoldersOverLimitC), fallback).toBool();
+}
+
+void ConfigFile::setStopSyncingExistingFoldersOverLimit(const bool stopSyncing)
+{
+    setValue(stopSyncingExistingFoldersOverLimitC, stopSyncing);
+}
+
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
 {
     setValue(confirmExternalStorageC, isChecked);
@@ -1015,7 +1065,7 @@ void ConfigFile::setLogDir(const QString &dir)
 bool ConfigFile::logDebug() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(logDebugC), true).toBool();
+    return settings.value(QLatin1String(logDebugC), false).toBool();
 }
 
 void ConfigFile::setLogDebug(bool enabled)
@@ -1107,22 +1157,55 @@ std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, Q
 void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
 {
     ConfigFile cfg;
-    QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
-    QString userList = cfg.excludeFile(ConfigFile::UserScope);
+    const auto systemList = cfg.excludeFile(ConfigFile::SystemScope);
+    const auto userList = cfg.excludeFile(ConfigFile::UserScope);
+    const auto legacyList = cfg.excludeFile(ConfigFile::LegacyScope);
 
     if (!QFile::exists(userList)) {
         qCInfo(lcConfigFile) << "User defined ignore list does not exist:" << userList;
-        if (!QFile::copy(systemList, userList)) {
-            qCInfo(lcConfigFile) << "Could not copy over default list to:" << userList;
+
+        if (QFile::exists(legacyList) && QFile::copy(legacyList, userList)) {
+            qCInfo(lcConfigFile) << "Migrating legacy list" << legacyList << "to user list" << userList;
+
+        } else if (QFile::copy(systemList, userList)) {
+            qCInfo(lcConfigFile) << "Migrating system list" << legacyList << "to user list" << userList;
         }
     }
 
     if (!QFile::exists(userList)) {
         qCInfo(lcConfigFile) << "Adding system ignore list to csync:" << systemList;
         excludedFiles.addExcludeFilePath(systemList);
-    } else {
-        qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
-        excludedFiles.addExcludeFilePath(userList);
+        return;
     }
+
+    qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
+    excludedFiles.addExcludeFilePath(userList);
 }
+
+QString ConfigFile::discoveredLegacyConfigPath()
+{
+    return _discoveredLegacyConfigPath;
+}
+
+void ConfigFile::setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath)
+{
+    if (_discoveredLegacyConfigPath == discoveredLegacyConfigPath) {
+        return;
+    }
+
+    _discoveredLegacyConfigPath = discoveredLegacyConfigPath;
+}
+
+bool ConfigFile::macFileProviderModuleEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(macFileProviderModuleEnabledC, false).toBool();
+}
+
+void ConfigFile::setMacFileProviderModuleEnabled(const bool moduleEnabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(macFileProviderModuleEnabledC), moduleEnabled);
+}
+
 }

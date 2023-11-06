@@ -72,6 +72,10 @@ AccountState::AccountState(AccountPtr account)
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
     _checkConnectionTimer.start();
 
+    connect(&_checkServerAvailibilityTimer, &QTimer::timeout, this, &AccountState::slotCheckServerAvailibility);
+    _checkServerAvailibilityTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
+    _checkServerAvailibilityTimer.start();
+
     QTimer::singleShot(0, this, &AccountState::slotCheckConnection);
 }
 
@@ -118,10 +122,10 @@ void AccountState::setState(State state)
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
             checkConnectivity();
-        } else if (_state == ServiceUnavailable) {
-            // Check if we are actually down for maintenance.
+        } else if (_state == ServiceUnavailable || _state == RedirectDetected) {
+            // Check if we are actually down for maintenance/in a redirect state (captive portal?).
             // To do this we must clear the connection validator that just
-            // produced the 503. It's finished anyway and will delete itself.
+            // produced the 503/302. It's finished anyway and will delete itself.
             _connectionValidator.clear();
             checkConnectivity();
         }
@@ -150,6 +154,8 @@ QString AccountState::stateString(State state)
         return tr("Service unavailable");
     case MaintenanceMode:
         return tr("Maintenance mode");
+    case RedirectDetected:
+        return tr("Redirect detected");
     case NetworkError:
         return tr("Network error");
     case ConfigurationError:
@@ -342,10 +348,11 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
     _lastConnectionValidatorStatus = status;
 
-    // Come online gradually from 503 or maintenance mode
+    // Come online gradually from 503, captive portal(redirection) or maintenance mode
     if (status == ConnectionValidator::Connected
         && (_connectionStatus == ConnectionValidator::ServiceUnavailable
-            || _connectionStatus == ConnectionValidator::MaintenanceMode)) {
+            || _connectionStatus == ConnectionValidator::MaintenanceMode
+              || _connectionStatus == ConnectionValidator::StatusRedirect)) {
         if (!_timeSinceMaintenanceOver.isValid()) {
             qCInfo(lcAccountState) << "AccountState reconnection: delaying for"
                                    << _maintenanceToConnectedDelay << "ms";
@@ -411,6 +418,10 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         _timeSinceMaintenanceOver.invalidate();
         setState(MaintenanceMode);
         break;
+    case ConnectionValidator::StatusRedirect:
+        _timeSinceMaintenanceOver.invalidate();
+        setState(RedirectDetected);
+        break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);
         updateRetryCount();
@@ -444,10 +455,6 @@ void AccountState::handleInvalidCredentials()
 
     if (account()->credentials()->ready()) {
         account()->credentials()->invalidateToken();
-    }
-    if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
-        if (creds->refreshAccessToken())
-            return;
     }
     account()->credentials()->askFromUser();
 }
@@ -548,6 +555,28 @@ void AccountState::slotCheckConnection()
         qCWarning(lcAccountState()) << "Account is signed out due to SSL Handshake error. Going to perform a sign-in attempt...";
         trySignIn();
     }
+}
+
+void AccountState::slotCheckServerAvailibility()
+{
+    if (state() == AccountState::Connected
+        || state() == AccountState::SignedOut
+        || state() == AccountState::MaintenanceMode
+        || state() == AccountState::AskingCredentials) {
+        qCInfo(lcAccountState) << "Skipping server availability check for account" << _account->davUser() << "with state" << state();
+        return;
+    }
+    qCInfo(lcAccountState) << "Checking server availability for account" << _account->davUser();
+    const auto serverAvailibilityUrl = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/204"));
+    auto checkServerAvailibilityJob = _account->sendRequest(QByteArrayLiteral("GET"), serverAvailibilityUrl);
+    connect(checkServerAvailibilityJob, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+        if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 204) {
+            qCInfo(lcAccountState) << "Server is now available for account" << _account->davUser();
+            _lastCheckConnectionTimer.invalidate();
+            resetRetryCount();
+            QMetaObject::invokeMethod(this, &AccountState::slotCheckConnection, Qt::QueuedConnection);
+        }
+    });
 }
 
 void AccountState::slotPushNotificationsReady()

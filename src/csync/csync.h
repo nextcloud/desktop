@@ -47,6 +47,34 @@
 
 namespace OCC {
 class SyncJournalFileRecord;
+
+namespace EncryptionStatusEnums {
+
+Q_NAMESPACE
+
+enum class ItemEncryptionStatus : int {
+    NotEncrypted = 0,
+    Encrypted = 1,
+    EncryptedMigratedV1_2 = 2,
+};
+
+Q_ENUM_NS(ItemEncryptionStatus)
+
+enum class JournalDbEncryptionStatus : int {
+    NotEncrypted = 0,
+    Encrypted = 1,
+    EncryptedMigratedV1_2Invalid = 2,
+    EncryptedMigratedV1_2 = 3,
+};
+
+Q_ENUM_NS(JournalDbEncryptionStatus)
+
+ItemEncryptionStatus fromDbEncryptionStatus(JournalDbEncryptionStatus encryptionStatus);
+
+JournalDbEncryptionStatus toDbEncryptionStatus(ItemEncryptionStatus encryptionStatus);
+
+}
+
 }
 
 #if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
@@ -179,6 +207,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
   bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
   bool isE2eEncrypted BITFIELD(1);
+  bool is_metadata_missing BITFIELD(1); // Indicates the file has missing metadata, f.ex. the file is not a placeholder in case of vfs.
 
   QByteArray path;
   QByteArray rename_path;
@@ -205,6 +234,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , has_ignored_files(false)
     , is_hidden(false)
     , isE2eEncrypted(false)
+    , is_metadata_missing(false)
   { }
 };
 

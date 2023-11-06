@@ -47,7 +47,7 @@ Q_LOGGING_CATEGORY(lcNetworkJob, "nextcloud.sync.networkjob", QtInfoMsg)
 // If not set, it is overwritten by the Application constructor with the value from the config
 int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIMEOUT");
 
-AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
+AbstractNetworkJob::AbstractNetworkJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
     , _account(account)
     , _reply(nullptr)
@@ -342,6 +342,11 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
     return base;
 }
 
+QString AbstractNetworkJob::errorStringParsingBodyException(const QByteArray &body) const
+{
+    return extractException(body);
+}
+
 AbstractNetworkJob::~AbstractNetworkJob()
 {
     setReply(nullptr);
@@ -421,6 +426,23 @@ QString extractErrorMessage(const QByteArray &errorResponse)
     }
     // Fallback, if message could not be found
     return exception;
+}
+
+QString extractException(const QByteArray &errorResponse)
+{
+    QXmlStreamReader reader(errorResponse);
+    reader.readNextStartElement();
+    if (reader.name() != QLatin1String("error")) {
+        return {};
+    }
+
+    while (!reader.atEnd() && !reader.hasError()) {
+        reader.readNextStartElement();
+        if (reader.name() == QLatin1String("exception")) {
+            return reader.readElementText();
+        }
+    }
+    return {};
 }
 
 QString errorMessage(const QString &baseError, const QByteArray &body)

@@ -60,7 +60,7 @@ private:
 };
 
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
-// this leads to a strage segfault somewhere deep inside of the QWebEngine code
+// this leads to a strange segfault somewhere deep inside of the QWebEngine code
 class ExternalWebEnginePage : public QWebEnginePage {
     Q_OBJECT
 public:
@@ -90,7 +90,7 @@ WebView::WebView(QWidget *parent)
     _profile->installUrlSchemeHandler("nc", _schemeHandler);
 
     /*
-     * Set a proper accept langauge to the language of the client
+     * Set a proper accept language to the language of the client
      * code from: http://code.qt.io/cgit/qt/qtbase.git/tree/src/network/access/qhttpnetworkconnection.cpp
      */
     {
@@ -137,7 +137,7 @@ void WebView::slotResizeToContents(const QSizeF &size){
 
 WebView::~WebView() {
     /*
-     * The Qt implmentation deletes children in the order they are added to the
+     * The Qt implementation deletes children in the order they are added to the
      * object tree, so in this case _page is deleted after _profile, which
      * violates the assumption that _profile should exist longer than
      * _page [1]. Here I delete _page manually so that _profile can be safely

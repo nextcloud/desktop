@@ -292,6 +292,8 @@ OCC::PinState cfPinStateToPinState(CF_PIN_STATE state)
         return OCC::PinState::OnlineOnly;
     case CF_PIN_STATE_INHERIT:
         return OCC::PinState::Inherited;
+    case CF_PIN_STATE_EXCLUDED:
+        return OCC::PinState::Excluded;
     default:
         Q_UNREACHABLE();
         return OCC::PinState::Inherited;
@@ -309,6 +311,8 @@ CF_PIN_STATE pinStateToCfPinState(OCC::PinState state)
         return CF_PIN_STATE_UNPINNED;
     case OCC::PinState::Unspecified:
         return CF_PIN_STATE_UNSPECIFIED;
+    case OCC::PinState::Excluded:
+        return CF_PIN_STATE_EXCLUDED;
     default:
         Q_UNREACHABLE();
         return CF_PIN_STATE_UNSPECIFIED;
@@ -355,7 +359,7 @@ OCC::CfApiWrapper::PlaceHolderInfo::PlaceHolderInfo(CF_PLACEHOLDER_BASIC_INFO *d
 {
 }
 
-OCC::Optional<OCC::PinStateEnums::PinState> OCC::CfApiWrapper::PlaceHolderInfo::pinState() const
+OCC::Optional<OCC::PinState> OCC::CfApiWrapper::PlaceHolderInfo::pinState() const
 {
     Q_ASSERT(_data);
     if (!_data) {
@@ -682,7 +686,7 @@ OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const 
     }
 }
 
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::setPinState(const QString &path, OCC::PinStateEnums::PinState state, SetPinRecurseMode mode)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::setPinState(const QString &path, OCC::PinState state, SetPinRecurseMode mode)
 {
     const auto cfState = pinStateToCfPinState(state);
     const auto flags = pinRecurseModeToCfSetPinFlags(mode);
@@ -792,29 +796,41 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
         return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(path).arg(modtime)};
     }
 
-    const auto info = findPlaceholderInfo(path);
-    if (!info) {
-        return { "Can't update non existing placeholder info" };
-    }
-
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
 
-    CF_FILE_RANGE dehydrationRange;
-    dehydrationRange.StartingOffset.QuadPart = 0;
-    dehydrationRange.Length.QuadPart = size;
+    const auto info = findPlaceholderInfo(path);
+    if (info) {
+        CF_FILE_RANGE dehydrationRange;
+        dehydrationRange.StartingOffset.QuadPart = 0;
+        dehydrationRange.Length.QuadPart = size;
 
-    const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(), nullptr,
-                                              fileIdentity.data(), sizeToDWORD(fileIdentitySize),
-                                              &dehydrationRange,
-                                              1,
-                                              CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DEHYDRATE,
-                                              nullptr,
-                                              nullptr);
+        const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(),
+                                                  nullptr,
+                                                  fileIdentity.data(),
+                                                  sizeToDWORD(fileIdentitySize),
+                                                  &dehydrationRange,
+                                                  1,
+                                                  CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DEHYDRATE,
+                                                  nullptr,
+                                                  nullptr);
 
-    if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
-        return { "Couldn't update placeholder info" };
+        if (result != S_OK) {
+            qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+            return {"Couldn't update placeholder info"};
+        }
+    } else {
+        const qint64 result = CfConvertToPlaceholder(handleForPath(path).get(),
+                                                     fileIdentity.data(),
+                                                     sizeToDWORD(fileIdentitySize),
+                                                     CF_CONVERT_FLAG_MARK_IN_SYNC | CF_CONVERT_FLAG_DEHYDRATE,
+                                                     nullptr,
+                                                     nullptr);
+
+        if (result != S_OK) {
+            qCWarning(lcCfApiWrapper) << "Couldn't convert to placeholder" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+            return {"Couldn't convert to placeholder"};
+        }
     }
 
     return OCC::Vfs::ConvertToPlaceholderResult::Ok;

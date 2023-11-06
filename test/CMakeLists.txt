@@ -12,6 +12,7 @@ add_library(testutils
   testhelper.cpp
   sharetestutils.cpp
   endtoendtestutils.cpp
+  activitylistmodeltestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
@@ -63,6 +64,7 @@ nextcloud_add_test(IconUtils)
 nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(ActivityListModel)
+nextcloud_add_test(SortedActivityListModel)
 nextcloud_add_test(ActivityData)
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
@@ -70,10 +72,16 @@ nextcloud_add_test(ShareModel)
 nextcloud_add_test(ShareeModel)
 nextcloud_add_test(SortedShareModel)
 nextcloud_add_test(SecureFileDrop)
+nextcloud_add_test(FileTagModel)
+nextcloud_add_test(SyncConflictsModel)
+nextcloud_add_test(DateFieldBackend)
 
 target_link_libraries(SecureFileDropTest PRIVATE Nextcloud::sync)
 configure_file(fake2eelocksucceeded.json "${PROJECT_BINARY_DIR}/bin/fake2eelocksucceeded.json" COPYONLY)
 configure_file(fakefiledrope2eefoldermetadata.json "${PROJECT_BINARY_DIR}/bin/fakefiledrope2eefoldermetadata.json" COPYONLY)
+configure_file(e2etestsfakecert.pem "${PROJECT_BINARY_DIR}/bin/e2etestsfakecert.pem" COPYONLY)
+configure_file(e2etestsfakecertprivatekey.pem "${PROJECT_BINARY_DIR}/bin/e2etestsfakecertprivatekey.pem" COPYONLY)
+configure_file(e2etestsfakecertpublickey.pem "${PROJECT_BINARY_DIR}/bin/e2etestsfakecertpublickey.pem" COPYONLY)
 
 
 if(ADD_E2E_TESTS)
@@ -106,8 +114,6 @@ nextcloud_add_benchmark(LargeSync)
 nextcloud_add_test(Account)
 nextcloud_add_test(FolderMan)
 nextcloud_add_test(RemoteWipe)
-
-nextcloud_add_test(OAuth)
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 

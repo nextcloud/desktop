@@ -18,7 +18,6 @@
 #include "theme.h"
 #include "configfile.h"
 #include "application.h"
-#include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "guiutility.h"
@@ -124,7 +123,7 @@ void createDebugArchive(const QString &filename)
     zip.writeData(clientParameters, clientParameters.size());
     zip.finishWriting(clientParameters.size());
 
-    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
+    const auto buildInfo = QString(OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
     zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
@@ -169,13 +168,16 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     }
 
     // setup about section
-    QString about = Theme::instance()->about();
-    _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-    _ui->aboutLabel->setText(about);
-    _ui->aboutLabel->setOpenExternalLinks(true);
+    _ui->infoAndUpdatesLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+    _ui->infoAndUpdatesLabel->setText(Theme::instance()->about());
+    _ui->infoAndUpdatesLabel->setOpenExternalLinks(true);
 
     // About legal notice
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &GeneralSettings::slotShowLegalNotice);
+
+    connect(_ui->usageDocumentationButton, &QPushButton::clicked, this, []() {
+        Utility::openBrowser(QUrl(Theme::instance()->helpUrl()));
+    });
 
     loadMiscSettings();
     // updater info now set in: customizeStyle
@@ -186,7 +188,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->existingFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->stopExistingFolderNowBigSyncCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -246,15 +251,24 @@ void GeneralSettings::loadMiscSettings()
 {
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
     ConfigFile cfgFile;
+
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setEnabled(_ui->serverNotificationsCheckBox->isEnabled());
     _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
+    _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
+    _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+    _ui->moveFilesToTrashCheckBox->setChecked(cfgFile.moveToTrash());
+
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
+    _ui->existingFolderLimitCheckBox->setEnabled(_ui->newFolderLimitCheckBox->isChecked());
+    _ui->existingFolderLimitCheckBox->setChecked(_ui->newFolderLimitCheckBox->isChecked() && cfgFile.notifyExistingFoldersOverLimit());
+    _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(_ui->existingFolderLimitCheckBox->isChecked());
+    _ui->stopExistingFolderNowBigSyncCheckBox->setChecked(_ui->existingFolderLimitCheckBox->isChecked() && cfgFile.stopSyncingExistingFoldersOverLimit());
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
@@ -265,13 +279,17 @@ void GeneralSettings::slotUpdateInfo()
     const auto updater = Updater::instance();
     if (ConfigFile().skipUpdateCheck() || !updater) {
         // updater disabled on compile
-        _ui->updatesGroupBox->setVisible(false);
+        _ui->updatesContainer->setVisible(false);
         return;
     }
 
     if (updater) {
-        connect(_ui->updateButton, &QAbstractButton::clicked, this,
-                &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+        connect(_ui->updateButton,
+                &QAbstractButton::clicked,
+                this,
+
+                &GeneralSettings::slotUpdateCheckNow,
+                Qt::UniqueConnection);
         connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
                 &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
         _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
@@ -300,9 +318,15 @@ void GeneralSettings::slotUpdateInfo()
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
     }
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
+    else if (const auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
+        connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
+
+        const auto updaterState = sparkleUpdater->state();
+        const auto enableUpdateButton = updaterState == SparkleUpdater::State::Idle ||
+                                        updaterState == SparkleUpdater::State::Unknown;
+        _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
 
@@ -312,7 +336,7 @@ void GeneralSettings::slotUpdateInfo()
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
-void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
+void GeneralSettings::slotUpdateChannelChanged()
 {
     const auto updateChannelToLocalized = [](const QString &channel) {
         auto decodedTranslatedChannel = QString{};
@@ -327,26 +351,15 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
     };
 
     const auto updateChannelFromLocalized = [](const int index) {
-        auto channel = QString{};
-
-        switch (index)
-        {
-        case 0:
-            channel = QStringLiteral("stable");
-            break;
-        case 1:
-            channel = QStringLiteral("beta");
-            break;
-        default:
-            channel = QString{};
+        if (index == 1) {
+            return QStringLiteral("beta");
         }
 
-        return channel;
+        return QStringLiteral("stable");
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-
-    if (translatedChannel == ConfigFile().updateChannel()) {
+    if (channel == ConfigFile().updateChannel()) {
         return;
     }
 
@@ -417,17 +430,28 @@ void GeneralSettings::slotToggleAutoUpdateCheck()
 
 void GeneralSettings::saveMiscSettings()
 {
-    if (_currentlyLoading)
+    if (_currentlyLoading) {
         return;
-    ConfigFile cfgFile;
-    bool isChecked = _ui->monoIconsCheckBox->isChecked();
-    cfgFile.setMonoIcons(isChecked);
-    Theme::instance()->setSystrayUseMonoIcons(isChecked);
-    cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
+    }
 
-    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
-        _ui->newFolderLimitSpinBox->value());
+    ConfigFile cfgFile;
+
+    const auto useMonoIcons = _ui->monoIconsCheckBox->isChecked();
+    const auto newFolderLimitEnabled = _ui->newFolderLimitCheckBox->isChecked();
+    const auto existingFolderLimitEnabled = newFolderLimitEnabled && _ui->existingFolderLimitCheckBox->isChecked();
+    const auto stopSyncingExistingFoldersOverLimit = existingFolderLimitEnabled && _ui->stopExistingFolderNowBigSyncCheckBox->isChecked();
+    Theme::instance()->setSystrayUseMonoIcons(useMonoIcons);
+
+    cfgFile.setMonoIcons(useMonoIcons);
+    cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
+    cfgFile.setMoveToTrash(_ui->moveFilesToTrashCheckBox->isChecked());
+    cfgFile.setNewBigFolderSizeLimit(newFolderLimitEnabled, _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
+    cfgFile.setNotifyExistingFoldersOverLimit(existingFolderLimitEnabled);
+    cfgFile.setStopSyncingExistingFoldersOverLimit(stopSyncingExistingFoldersOverLimit);
+
+    _ui->existingFolderLimitCheckBox->setEnabled(newFolderLimitEnabled);
+    _ui->stopExistingFolderNowBigSyncCheckBox->setEnabled(existingFolderLimitEnabled);
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
@@ -495,15 +519,18 @@ void GeneralSettings::slotStyleChanged()
 void GeneralSettings::customizeStyle()
 {
     // setup about section
-    QString about = Theme::instance()->about();
-    Theme::replaceLinkColorStringBackgroundAware(about);
-    _ui->aboutLabel->setText(about);
+    const auto aboutText = []() {
+        auto aboutText = Theme::instance()->about();
+        Theme::replaceLinkColorStringBackgroundAware(aboutText);
+        return aboutText;
+    }();
+    _ui->infoAndUpdatesLabel->setText(aboutText);
 
 #if defined(BUILD_UPDATER)
     // updater info
     slotUpdateInfo();
 #else
-    _ui->updatesGroupBox->setVisible(false);
+    _ui->updatesContainer->setVisible(false);
 #endif
 }
 

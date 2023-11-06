@@ -51,6 +51,8 @@ class Account;
 class SyncJournalDb;
 class ProcessDirectoryJob;
 
+enum class ErrorCategory;
+
 /**
  * Represent all the meta-data about a file in the server
  */
@@ -66,12 +68,13 @@ struct RemoteInfo
     int64_t size = 0;
     int64_t sizeOfFolder = 0;
     bool isDirectory = false;
-    bool isE2eEncrypted = false;
+    bool _isE2eEncrypted = false;
     bool isFileDropDetected = false;
     QString e2eMangledName;
     bool sharedByMe = false;
 
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted; }
 
     QString directDownloadUrl;
     QString directDownloadCookies;
@@ -98,6 +101,7 @@ struct LocalInfo
     bool isHidden = false;
     bool isVirtualFile = false;
     bool isSymLink = false;
+    bool isMetadataMissing = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 
@@ -144,6 +148,7 @@ public:
     void start();
     void abort();
     [[nodiscard]] bool isFileDropDetected() const;
+    [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
 
     // This is not actually a network job, it is just a job
 signals:
@@ -160,6 +165,9 @@ private slots:
     void metadataError(const QByteArray& fileId, int httpReturnCode);
 
 private:
+
+    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted != SyncFileItem::EncryptionStatus::NotEncrypted; }
+
     QVector<RemoteInfo> _results;
     QString _subPath;
     QByteArray _firstEtag;
@@ -174,8 +182,9 @@ private:
     // If this directory is an external storage (The first item has 'M' in its permission)
     bool _isExternalStorage = false;
     // If this directory is e2ee
-    bool _isE2eEncrypted = false;
+    SyncFileItem::EncryptionStatus _isE2eEncrypted = SyncFileItem::EncryptionStatus::NotEncrypted;
     bool _isFileDropDetected = false;
+    bool _encryptedMetadataNeedUpdate = false;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;
@@ -246,10 +255,19 @@ class DiscoveryPhase : public QObject
 
     [[nodiscard]] bool isInSelectiveSyncBlackList(const QString &path) const;
 
+    [[nodiscard]] bool activeFolderSizeLimit() const;
+    [[nodiscard]] bool notifyExistingFolderOverLimit() const;
+
+    void checkFolderSizeLimit(const QString &path,
+			      const std::function<void(bool)> callback);
+
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
-    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
-        std::function<void(bool)> callback);
+    void checkSelectiveSyncNewFolder(const QString &path,
+                                     const RemotePermissions rp,
+                                     const std::function<void(bool)> callback);
+
+    void checkSelectiveSyncExistingFolder(const QString &path);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *
@@ -300,13 +318,19 @@ public:
 
     QStringList _listExclusiveFiles;
 
+    bool _hasUploadErrorItems = false;
+    bool _hasDownloadRemovedItems = false;
+
+    bool _noCaseConflictRecordsInDb = false;
+
 signals:
-    void fatalError(const QString &errorString);
+    void fatalError(const QString &errorString, const OCC::ErrorCategory errorCategory);
     void itemDiscovered(const OCC::SyncFileItemPtr &item);
     void finished();
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
+    void existingFolderNowBig(const QString &folder);
 
     /** For excluded items that don't show up in itemDiscovered()
       *
@@ -314,7 +338,10 @@ signals:
       */
     void silentlyExcluded(const QString &folderPath);
 
-    void addErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(const SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
+
+private slots:
+    void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath

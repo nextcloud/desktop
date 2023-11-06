@@ -13,16 +13,16 @@
  */
 
 #include "account.h"
-#include "accountfwd.h"
-#include "clientsideencryptionjobs.h"
-#include "cookiejar.h"
-#include "networkjobs.h"
-#include "configfile.h"
 #include "accessmanager.h"
-#include "creds/abstractcredentials.h"
+#include "accountfwd.h"
 #include "capabilities.h"
-#include "theme.h"
+#include "clientsideencryptionjobs.h"
+#include "configfile.h"
+#include "cookiejar.h"
+#include "creds/abstractcredentials.h"
+#include "networkjobs.h"
 #include "pushnotifications.h"
+#include "theme.h"
 #include "version.h"
 
 #include "deletejob.h"
@@ -61,6 +61,7 @@ namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
 constexpr int usernamePrefillServerVersionMinSupportedMajor = 24;
 constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
+constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRALL_VERSION_MAJOR == 3 && MIRALL_VERSION_MINOR == 8;
 }
 
 namespace OCC {
@@ -70,6 +71,7 @@ const char app_password[] = "_app-password";
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
+    , _serverColor(Theme::defaultColor())
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
     qRegisterMetaType<Account *>("Account*");
@@ -196,32 +198,30 @@ QString Account::prettyName() const
     return name;
 }
 
+QColor Account::serverColor() const
+{
+    return _serverColor;
+}
+
 QColor Account::headerColor() const
 {
-    const auto serverColor = capabilities().serverColor();
-    return serverColor.isValid() ? serverColor : Theme::defaultColor();
+    return serverColor();
 }
 
 QColor Account::headerTextColor() const
 {
-    const auto headerTextColor = capabilities().serverTextColor();
-    return headerTextColor.isValid() ? headerTextColor : QColor(255,255,255);
+    return _serverTextColor;
 }
 
 QColor Account::accentColor() const
 {
-    // This will need adjusting when dark theme is a thing
-    auto serverColor = capabilities().serverColor();
+    const auto accentColor = serverColor();
+    constexpr auto effectMultiplier = 8;
 
-    if(!serverColor.isValid()) {
-        serverColor = Theme::defaultColor();
-    }
-
-    const auto effectMultiplier = 8;
-    auto darknessAdjustment = static_cast<int>((1 - Theme::getColorDarkness(serverColor)) * effectMultiplier);
+    auto darknessAdjustment = static_cast<int>((1 - Theme::getColorDarkness(accentColor)) * effectMultiplier);
     darknessAdjustment *= darknessAdjustment; // Square the value to pronounce the darkness more in lighter colours
     const auto baseAdjustment = 125;
-    const auto adjusted = Theme::isDarkColor(serverColor) ? serverColor : serverColor.darker(baseAdjustment + darknessAdjustment);
+    const auto adjusted = Theme::isDarkColor(accentColor) ? accentColor : accentColor.darker(baseAdjustment + darknessAdjustment);
     return adjusted;
 }
 
@@ -464,7 +464,7 @@ QSslConfiguration Account::getOrCreateSslConfig()
     //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
     QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
 
-    // Try hard to re-use session for different requests
+    // Try hard to reuse session for different requests
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
@@ -648,9 +648,22 @@ const Capabilities &Account::capabilities() const
     return _capabilities;
 }
 
+void Account::updateServerColors()
+{
+    if (const auto capServerColor = _capabilities.serverColor(); capServerColor.isValid()) {
+        _serverColor = capServerColor;
+    }
+
+    if (const auto capServerTextColor = _capabilities.serverTextColor(); capServerTextColor.isValid()) {
+        _serverTextColor = capServerTextColor;
+    }
+}
+
 void Account::setCapabilities(const QVariantMap &caps)
 {
     _capabilities = Capabilities(caps);
+
+    updateServerColors();
 
     emit capabilitiesChanged();
 
@@ -675,6 +688,17 @@ void Account::setupUserStatusConnector()
 QString Account::serverVersion() const
 {
     return _serverVersion;
+}
+
+bool Account::shouldSkipE2eeMetadataChecksumValidation() const
+{
+    return isSkipE2eeMetadataChecksumValidationAllowedInClientVersion && _skipE2eeMetadataChecksumValidation;
+}
+
+void Account::resetShouldSkipE2eeMetadataChecksumValidation()
+{
+    _skipE2eeMetadataChecksumValidation = false;
+    emit wantsAccountSaved(this);
 }
 
 int Account::serverVersionInt() const
@@ -889,6 +913,17 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
     }
 }
 
+void Account::removeLockStatusChangeInprogress(const QString &serverRelativePath, const SyncFileItem::LockStatus lockStatus)
+{
+    const auto foundLockStatusJobInProgress = _lockStatusChangeInprogress.find(serverRelativePath);
+    if (foundLockStatusJobInProgress != _lockStatusChangeInprogress.end()) {
+        foundLockStatusJobInProgress.value().removeAll(lockStatus);
+        if (foundLockStatusJobInProgress.value().isEmpty()) {
+            _lockStatusChangeInprogress.erase(foundLockStatusJobInProgress);
+        }
+    }
+}
+
 PushNotifications *Account::pushNotifications() const
 {
     return _pushNotifications;
@@ -900,14 +935,24 @@ std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
 }
 
 void Account::setLockFileState(const QString &serverRelativePath,
+                               const QString &remoteSyncPathWithTrailingSlash,
+                               const QString &localSyncPath,
                                SyncJournalDb * const journal,
                                const SyncFileItem::LockStatus lockStatus)
 {
-    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, lockStatus);
-    connect(job.get(), &LockFileJob::finishedWithoutError, this, [this]() {
+    auto& lockStatusJobInProgress = _lockStatusChangeInprogress[serverRelativePath];
+    if (lockStatusJobInProgress.contains(lockStatus)) {
+        qCWarning(lcAccount) << "Already running a job with lockStatus:" << lockStatus << " for: " << serverRelativePath;
+        return;
+    }
+    lockStatusJobInProgress.push_back(lockStatus);
+    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, remoteSyncPathWithTrailingSlash, localSyncPath, lockStatus);
+    connect(job.get(), &LockFileJob::finishedWithoutError, this, [this, serverRelativePath, lockStatus]() {
+        removeLockStatusChangeInprogress(serverRelativePath, lockStatus);
         Q_EMIT lockFileSuccess();
     });
     connect(job.get(), &LockFileJob::finishedWithError, this, [lockStatus, serverRelativePath, this](const int httpErrorCode, const QString &errorString, const QString &lockOwnerName) {
+        removeLockStatusChangeInprogress(serverRelativePath, lockStatus);
         auto errorMessage = QString{};
         const auto filePath = serverRelativePath.mid(1);
 

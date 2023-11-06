@@ -134,6 +134,18 @@ void OcsShareJob::setLabel(const QString &shareId, const QString &label)
     start();
 }
 
+void OcsShareJob::setHideDownload(const QString &shareId, const bool hideDownload)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+
+    const auto value = QString::fromLatin1(hideDownload ? QByteArrayLiteral("true") : QByteArrayLiteral("false"));
+    addParam(QStringLiteral("hideDownload"), value);
+    _value = hideDownload;
+
+    start();
+}
+
 void OcsShareJob::createLinkShare(const QString &path,
     const QString &name,
     const QString &password)

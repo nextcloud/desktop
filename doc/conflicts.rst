@@ -11,7 +11,7 @@ The Nextcloud desktop client uploads local changes and downloads remote changes.
 When a file has changed on the local side and on the remote between synchronization
 runs the client will be unable to resolve the situation on its own. It will
 create a conflict file with the local version, download the remote version and
-notify the user that a conflict occured which needs attention.
+notify the user that a conflict occurred which needs attention.
 
 Example
 -------

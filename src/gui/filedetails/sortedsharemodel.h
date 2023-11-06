@@ -22,24 +22,13 @@ namespace OCC {
 class SortedShareModel : public QSortFilterProxyModel
 {
     Q_OBJECT
-    Q_PROPERTY(ShareModel* shareModel READ shareModel WRITE setShareModel NOTIFY shareModelChanged)
 
 public:
     explicit SortedShareModel(QObject *parent = nullptr);
 
-    [[nodiscard]] ShareModel *shareModel() const;
-
-signals:
-    void shareModelChanged();
-
-public slots:
-    void setShareModel(OCC::ShareModel *shareModel);
-
 protected:
     [[nodiscard]] bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
 
-private slots:
-    void sortModel();
 };
 
 } // namespace OCC

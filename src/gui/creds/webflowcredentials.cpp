@@ -146,7 +146,7 @@ void WebFlowCredentials::askFromUser() {
     // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
-    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    // LoginFlowV2 > WebViewFlow > Shib > Basic
 #ifdef WITH_WEBENGINE
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
 #else // WITH_WEBENGINE
@@ -180,29 +180,9 @@ void WebFlowCredentials::askFromUser() {
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
     Q_UNUSED(host)
 
-    // Compare the re-entered username case-insensitive and save the new value (avoid breaking the account)
-    // See issue: https://github.com/nextcloud/desktop/issues/1741
-    if (QString::compare(_user, user, Qt::CaseInsensitive) == 0) {
-        _user = user;
-    } else {
-        qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
-
-        QString msg = tr("Please login with the account: %1")
-                .arg(_account->prettyName());
-        _askDialog->setError(msg);
-
-        if (!_askDialog->isUsingFlow2()) {
-            QUrl url = _account->url();
-            QString path = url.path() + "/index.php/login/flow";
-            url.setPath(path);
-            _askDialog->setUrl(url);
-        }
-
-        return;
-    }
-
     qCInfo(lcWebFlowCredentials()) << "Obtained a new password";
 
+    _user = user;
     _password = pass;
     _ready = true;
     _credentialsValid = true;

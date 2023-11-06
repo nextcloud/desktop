@@ -71,7 +71,7 @@ public:
     [[nodiscard]] QColor serverColor() const;
     [[nodiscard]] QColor serverTextColor() const;
 
-    /// Returns which kind of push notfications are available
+    /// Returns which kind of push notifications are available
     [[nodiscard]] PushNotificationTypes availablePushNotifications() const;
 
     /// Websocket url for files push notifications if available
@@ -88,6 +88,8 @@ public:
 
     /// returns true if the server supports client side encryption
     [[nodiscard]] bool clientSideEncryptionAvailable() const;
+
+    [[nodiscard]] double clientSideEncryptionVersion() const;
 
     /// returns true if the capabilities are loaded already.
     [[nodiscard]] bool isValid() const;
@@ -164,6 +166,8 @@ public:
      * Whether conflict files should remain local (default) or should be uploaded.
      */
     [[nodiscard]] bool uploadConflictFiles() const;
+
+    [[nodiscard]] bool groupFoldersAvailable() const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);

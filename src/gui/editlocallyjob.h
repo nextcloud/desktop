@@ -43,10 +43,10 @@ public:
     [[nodiscard]] static QString prefixSlashToPath(const QString &path);
 
 signals:
-    void setupFinished();
     void error(const QString &message, const QString &informativeText);
     void finished();
     void callShowError(const QString &message, const QString &informativeText);
+
 public slots:
     void startSetup();
     void startEditLocally();
@@ -54,7 +54,6 @@ public slots:
 private slots:
     void fetchRemoteFileParentInfo();
     void startSyncBeforeOpening();
-    void eraseBlacklistRecordForItem();
 
     void startTokenRemoteCheck();
     void proceedWithSetup();
@@ -76,7 +75,7 @@ private slots:
     void lockFile();
 
     void fileAlreadyLocked();
-    void fileLockSuccess(const SyncFileItemPtr &item);
+    void fileLockSuccess(const OCC::SyncFileItemPtr &item);
     void fileLockError(const QString &errorMessage);
     void fileLockProcedureComplete(const QString &notificationTitle,
                                    const QString &notificationMessage,
@@ -85,12 +84,17 @@ private slots:
 
 private:
     [[nodiscard]] bool checkIfFileParentSyncIsNeeded(); // returns true if sync will be needed, false otherwise
+    [[nodiscard]] bool eraseBlacklistRecordForItem();
     [[nodiscard]] const QString getRelativePathToRemoteRootForFile() const; // returns either '/' or a (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     [[nodiscard]] const QString getRelativePathParent() const;
 
     [[nodiscard]] static int fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut);
 
+    [[nodiscard]] bool isFileParentItemValid() const;
+
     bool _tokenVerified = false;
+
+    bool _shouldScheduleFolderSyncAfterFileIsOpened = false;
 
     AccountStatePtr _accountState;
     QString _userId;
@@ -104,7 +108,6 @@ private:
     QString _localFilePath;
     QString _folderRelativePath;
     Folder *_folderForFile = nullptr;
-    std::unique_ptr<SimpleApiJob> _checkTokenJob;
     QMetaObject::Connection _syncTerminatedConnection = {};
     QVector<QMetaObject::Connection> _folderConnections;
 };

@@ -116,6 +116,21 @@ OCC::HydrationJob::Status OCC::HydrationJob::status() const
     return _status;
 }
 
+int OCC::HydrationJob::errorCode() const
+{
+    return _errorCode;
+}
+
+int OCC::HydrationJob::statusCode() const
+{
+    return _statusCode;
+}
+
+QString OCC::HydrationJob::errorString() const
+{
+    return _errorString;
+}
+
 void OCC::HydrationJob::start()
 {
     Q_ASSERT(_account);
@@ -199,7 +214,7 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (see HydrationJob::onNewConnection() for explanation of next steps)
     qCDebug(lcHydration) << "Metadata Received reading" << e2eMangledName();
     const QString filename = e2eMangledName();
-    const FolderMetadata metadata(_account, json.toJson(QJsonDocument::Compact));
+    const FolderMetadata metadata(_account, FolderMetadata::RequiredMetadataVersion::Version1, json.toJson(QJsonDocument::Compact));
 
     if (metadata.isMetadataSetup()) {
         const QVector<EncryptedFile> files = metadata.files();
@@ -334,16 +349,27 @@ void OCC::HydrationJob::finalize(OCC::VfsCfApi *vfs)
 
 void OCC::HydrationJob::onGetFinished()
 {
-    qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _job->reply()->error();
-
-    const auto isGetJobResultError = _job->reply()->error();
+    _errorCode = _job->reply()->error();
+    _statusCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (_errorCode != 0 || (_statusCode != 200 && _statusCode != 204)) {
+        _errorString = _job->reply()->errorString();
+    }
+    
+    if (!_errorString.isEmpty()) {
+        qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _errorCode << _statusCode << _errorString;
+    } else {
+        qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath;
+    }
     // GETFileJob deletes itself after this signal was handled
     _job = nullptr;
     if (_isCancelled) {
+        _errorCode = 0;
+        _statusCode = 0;
+        _errorString.clear();
         return;
     }
 
-    if (isGetJobResultError) {
+    if (_errorCode) {
         emitFinished(Error);
         return;
     }

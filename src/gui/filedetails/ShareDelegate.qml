@@ -33,11 +33,13 @@ GridLayout {
     signal resetPasswordField
     signal showPasswordSetError(string errorMessage);
 
+    signal toggleHideDownload(bool enable)
     signal toggleAllowEditing(bool enable)
     signal toggleAllowResharing(bool enable)
     signal togglePasswordProtect(bool enable)
     signal toggleExpirationDate(bool enable)
     signal toggleNoteToRecipient(bool enable)
+    signal permissionModeChanged(int permissionMode)
 
     signal setLinkShareLabel(string label)
     signal setExpireDate(var milliseconds) // Since QML ints are only 32 bits, use a variant
@@ -48,8 +50,10 @@ GridLayout {
     property FileDetails fileDetails: FileDetails {}
     property StackView rootStackView: StackView {}
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     property bool canCreateLinkShares: true
+    property bool serverAllowsResharing: true
 
     readonly property bool isLinkShare: model.shareType === ShareModel.ShareTypeLink
     readonly property bool isPlaceholderLinkShare: model.shareType === ShareModel.ShareTypePlaceholderLink
@@ -86,7 +90,7 @@ GridLayout {
             id: backgroundOrMask
             anchors.fill: parent
             radius: width / 2
-            color: Style.ncBlue
+            color: root.accentColor
             visible: !imageItem.isAvatar
         }
 
@@ -124,7 +128,6 @@ GridLayout {
         Layout.rowSpan: root.rows
 
         text: root.text
-        color: Style.ncTextColor
         elide: Text.ElideRight
     }
 
@@ -137,7 +140,7 @@ GridLayout {
         Layout.column: 1
 
         text: root.detailText
-        color: Style.ncSecondaryTextColor
+        color: palette.midlight
         elide: Text.ElideRight
         visible: text !== ""
     }
@@ -159,10 +162,12 @@ GridLayout {
 
             toolTipText: qsTr("Create a new share link")
 
-            bgColor: Style.lightHover
+            bgColor: palette.highlight
             bgNormalOpacity: 0
 
-            imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
+            icon.source: "image://svgimage-custom-color/add.svg/" + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
@@ -173,30 +178,62 @@ GridLayout {
         CustomButton {
             id: copyLinkButton
 
-            Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: Style.iconButtonWidth
-            Layout.preferredHeight: width
-
-            toolTipText: qsTr("Copy share link location")
-
-            bgColor: Style.lightHover
-            bgNormalOpacity: 0
-
-            imageSource: "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
-            icon.width: 16
-            icon.height: 16
-
-            visible: root.isLinkShare || root.isInternalLinkShare
-            enabled: visible
-
-            onClicked: {
+            function copyShareLink() {
                 clipboardHelper.text = root.link;
                 clipboardHelper.selectAll();
                 clipboardHelper.copy();
                 clipboardHelper.clear();
+
+                shareLinkCopied = true;
+                shareLinkCopyTimer.start();
             }
 
-            TextEdit { id: clipboardHelper; visible: false}
+            property bool shareLinkCopied: false
+
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.iconButtonWidth
+            Layout.preferredHeight: Style.iconButtonWidth
+
+            toolTipText: qsTr("Copy share link location")
+
+            text: shareLinkCopied ? qsTr("Copied!") : ""
+            textColor: palette.brightText
+            contentsFont.bold: true
+            bgColor: shareLinkCopied ? Style.positiveColor : palette.highlight
+            bgNormalOpacity: shareLinkCopied ? 1 : 0
+
+            icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + palette.brightText :
+                                           "image://svgimage-custom-color/copy.svg/" + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
+
+            visible: root.isLinkShare || root.isInternalLinkShare
+            enabled: visible
+
+            onClicked: copyShareLink()
+
+            Behavior on bgColor {
+                ColorAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on bgNormalOpacity {
+                NumberAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            Behavior on Layout.preferredWidth {
+                SmoothedAnimation { duration: Style.shortAnimationDuration }
+            }
+
+            TextEdit {
+                id: clipboardHelper
+                visible: false
+            }
+
+            Timer {
+                id: shareLinkCopyTimer
+                interval: Style.veryLongAnimationDuration
+                onTriggered: copyLinkButton.shareLinkCopied = false
+            }
         }
 
         CustomButton {
@@ -208,10 +245,12 @@ GridLayout {
 
             toolTipText: qsTr("Share options")
 
-            bgColor: Style.lightHover
+            bgColor: palette.highlight
             bgNormalOpacity: 0
 
-            imageSource: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
+            icon.source: "image://svgimage-custom-color/more.svg/" + palette.buttonText
+            icon.width: Style.smallIconSize
+            icon.height: Style.smallIconSize
 
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible
@@ -226,19 +265,23 @@ GridLayout {
                     width: parent.width
                     height: parent.height
                     backgroundsVisible: root.backgroundsVisible
+                    accentColor: root.accentColor
 
                     fileDetails: root.fileDetails
                     shareModelData: model
 
                     canCreateLinkShares: root.canCreateLinkShares
+                    serverAllowsResharing: root.serverAllowsResharing
 
                     onCloseShareDetails: root.rootStackView.pop(root.rootStackView.initialItem, StackView.PopTransition)
 
                     onToggleAllowEditing: root.toggleAllowEditing(enable)
                     onToggleAllowResharing: root.toggleAllowResharing(enable)
+                    onToggleHideDownload: root.toggleHideDownload(enable)
                     onTogglePasswordProtect: root.togglePasswordProtect(enable)
                     onToggleExpirationDate: root.toggleExpirationDate(enable)
                     onToggleNoteToRecipient: root.toggleNoteToRecipient(enable)
+                    onPermissionModeChanged: root.permissionModeChanged(permissionMode)
 
                     onSetLinkShareLabel: root.setLinkShareLabel(label)
                     onSetExpireDate: root.setExpireDate(milliseconds) // Since QML ints are only 32 bits, use a variant

@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QPushButton>
 
 namespace {
 constexpr auto urlC = "url";
@@ -36,11 +37,15 @@ constexpr auto userC = "user";
 constexpr auto displayNameC = "displayName";
 constexpr auto httpUserC = "http_user";
 constexpr auto davUserC = "dav_user";
+constexpr auto webflowUserC = "webflow_user";
 constexpr auto shibbolethUserC = "shibboleth_shib_user";
 constexpr auto caCertsKeyC = "CaCertificates";
 constexpr auto accountsC = "Accounts";
 constexpr auto versionC = "version";
 constexpr auto serverVersionC = "serverVersion";
+constexpr auto serverColorC = "serverColor";
+constexpr auto serverTextColorC = "serverTextColor";
+constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
 constexpr auto generalC = "General";
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -69,7 +74,7 @@ AccountManager *AccountManager::instance()
     return &instance;
 }
 
-bool AccountManager::restore(bool alsoRestoreLegacySettings)
+AccountManager::AccountsRestoreResult AccountManager::restore(const bool alsoRestoreLegacySettings)
 {
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
@@ -78,21 +83,22 @@ bool AccountManager::restore(bool alsoRestoreLegacySettings)
     if (settings->status() != QSettings::NoError || !settings->isWritable()) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
-        return false;
+        return AccountsRestoreFailure;
     }
 
     if (skipSettingsKeys.contains(settings->group())) {
         // Should not happen: bad container keys should have been deleted
         qCWarning(lcAccountManager) << "Accounts structure is too new, ignoring";
-        return true;
+        return AccountsRestoreSuccessWithSkipped;
     }
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
-        return true;
+        return AccountsRestoreSuccessFromLegacyVersion;
     }
 
+    auto result = AccountsRestoreSuccess;
     const auto settingsChildGroups = settings->childGroups();
     for (const auto &accountId : settingsChildGroups) {
         settings->beginGroup(accountId);
@@ -102,19 +108,21 @@ bool AccountManager::restore(bool alsoRestoreLegacySettings)
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
                     auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
                     ASSERT(jar);
-                    if (jar)
+                    if (jar) {
                         jar->restore(acc->cookieJarPath());
+                    }
                     addAccountState(accState);
                 }
             }
         } else {
             qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
             _additionalBlockedAccountIds.insert(accountId);
+            result = AccountsRestoreSuccessWithSkipped;
         }
         settings->endGroup();
     }
 
-    return true;
+    return result;
 }
 
 void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
@@ -171,15 +179,31 @@ bool AccountManager::restoreFromLegacySettings()
                                                       legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
 
         for (const auto &configFile : legacyLocations) {
-            if (const QFileInfo configFileInfo(configFile);
-                    configFileInfo.exists() && configFileInfo.isReadable()) {
+            auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
+            if (oCSettings->status() != QSettings::Status::NoError) {
+                qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
+                break;
+            }
 
+            oCSettings->beginGroup(QLatin1String(accountsC));
+            const auto accountsListSize = oCSettings->childGroups().size();
+            oCSettings->endGroup();
+            if (const QFileInfo configFileInfo(configFile); configFileInfo.exists() && configFileInfo.isReadable()) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
-
-                auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
-                if (oCSettings->status() != QSettings::Status::NoError) {
-                    qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
-                    break;
+                if (!forceLegacyImport() && accountsListSize > 0) {
+                    const auto importQuestion = accountsListSize > 1
+                        ? tr("%1 accounts were detected from a legacy desktop client.\n"
+                             "Should the accounts be imported?").arg(QString::number(accountsListSize))
+                        : tr("1 account was detected from a legacy desktop client.\n"
+                             "Should the account be imported?");
+                    const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
+                    importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
+                    const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
+                    importMessageBox->setAttribute(Qt::WA_DeleteOnClose);
+                    importMessageBox->exec();
+                    if (importMessageBox->clickedButton() == skipButton) {
+                        return false;
+                    }
                 }
 
                 // Check the theme url to see if it is the same url that the oC config was for
@@ -190,7 +214,6 @@ bool AccountManager::restoreFromLegacySettings()
                 if (!cleanOverrideUrl.isEmpty()) {
                     oCSettings->beginGroup(QLatin1String(accountsC));
                     const auto accountsChildGroups = oCSettings->childGroups();
-
                     for (const auto &accountId : accountsChildGroups) {
                         oCSettings->beginGroup(accountId);
                         const auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
@@ -219,6 +242,7 @@ bool AccountManager::restoreFromLegacySettings()
                     settings = std::move(oCSettings);
                 }
 
+                ConfigFile::setDiscoveredLegacyConfigPath(configFileInfo.canonicalPath());
                 break;
             } else {
                 qCInfo(lcAccountManager) << "Migrate: could not read old config " << configFile;
@@ -233,12 +257,16 @@ bool AccountManager::restoreFromLegacySettings()
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
             if (const auto acc = loadAccountHelper(*settings)) {
-                addAccount(acc);
-
-                return true;
+                addAccount(acc);              
             }
+            settings->endGroup();
         }
+        return true;
     }
+
+    QMessageBox::information(nullptr,
+                             tr("Legacy import"),
+                             tr("Could not import accounts from legacy client configuration."));
     return false;
 }
 
@@ -281,11 +309,19 @@ void AccountManager::saveAccountState(AccountState *a)
 
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
+    qCDebug(lcAccountManager) << "Saving settings to" << settings.fileName();
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
     settings.setValue(QLatin1String(displayNameC), acc->_displayName);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
+    settings.setValue(QLatin1String(serverColorC), acc->_serverColor);
+    settings.setValue(QLatin1String(serverTextColorC), acc->_serverTextColor);
+    if (!acc->_skipE2eeMetadataChecksumValidation) {
+        settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
+    } else {
+        settings.setValue(QLatin1String(skipE2eeMetadataChecksumValidationC), acc->_skipE2eeMetadataChecksumValidation);
+    }
 
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -303,8 +339,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
 
         // HACK: Save http_user also as user
-        if (acc->_settingsMap.contains(httpUserC))
+        if (acc->_settingsMap.contains(httpUserC)) {
             settings.setValue(userC, acc->_settingsMap.value(httpUserC));
+        }
     }
 
     // Save accepted certificates.
@@ -347,12 +384,14 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     auto authType = settings.value(QLatin1String(authTypeC)).toString();
 
     // There was an account-type saving bug when 'skip folder config' was used
-    // See #5408. This attempts to fix up the "dummy" authType
-    if (authType == QLatin1String(dummyAuthTypeC)) {
+    // See owncloud#5408. This attempts to fix up the "dummy" or empty authType
+    if (authType == QLatin1String(dummyAuthTypeC) || authType.isEmpty()) {
         if (settings.contains(QLatin1String(httpUserC))) {
             authType = httpAuthTypeC;
         } else if (settings.contains(QLatin1String(shibbolethUserC))) {
             authType = shibbolethAuthTypeC;
+        } else if (settings.contains(webflowUserC)) {
+            authType = webflowAuthTypeC;
         }
     }
 
@@ -370,31 +409,35 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     // Migrate to webflow
     if (authType == QLatin1String(httpAuthTypeC)) {
         authType = webflowAuthTypeC;
-        settings.setValue(QLatin1String(authTypeC), authType);
+        acc->_settingsMap.insert(QLatin1String(authTypeC), authType);
 
         const auto settingsChildKeys = settings.childKeys();
         for (const auto &key : settingsChildKeys) {
-            if (!key.startsWith(httpAuthPrefix))
+            if (!key.startsWith(httpAuthPrefix)) {
                 continue;
+            }
+
             const auto newkey = QString::fromLatin1(webflowAuthPrefix).append(key.mid(5));
-            settings.setValue(newkey, settings.value((key)));
-            settings.remove(key);
+            acc->_settingsMap.insert(newkey, settings.value(key));
         }
     }
 
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
-    acc->_davUser = settings.value(QLatin1String(davUserC), "").toString();
+    acc->_serverColor = settings.value(QLatin1String(serverColorC)).value<QColor>();
+    acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
+    acc->_skipE2eeMetadataChecksumValidation = settings.value(QLatin1String(skipE2eeMetadataChecksumValidationC), {}).toBool();
+    acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
-    // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     acc->_displayName = settings.value(QLatin1String(displayNameC), "").toString();
-    QString authTypePrefix = authType + "_";
+    const QString authTypePrefix = authType + "_";
     const auto settingsChildKeys = settings.childKeys();
     for (const auto &key : settingsChildKeys) {
-        if (!key.startsWith(authTypePrefix))
+        if (!key.startsWith(authTypePrefix)) {
             continue;
+        }
         acc->_settingsMap.insert(key, settings.value(key));
     }
 
@@ -447,7 +490,7 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
     return newAccountState;
 }
 
-void AccountManager::deleteAccount(AccountState *account)
+void AccountManager::deleteAccount(OCC::AccountState *account)
 {
     const auto it = std::find(_accounts.begin(), _accounts.end(), account);
     if (it == _accounts.end()) {
@@ -529,6 +572,22 @@ void AccountManager::addAccountState(AccountState *accountState)
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;
+    ptr->trySignIn();
     emit accountAdded(accountState);
+}
+
+bool AccountManager::forceLegacyImport() const
+{
+    return _forceLegacyImport;
+}
+
+void AccountManager::setForceLegacyImport(const bool forceLegacyImport)
+{
+    if (_forceLegacyImport == forceLegacyImport) {
+        return;
+    }
+
+    _forceLegacyImport = forceLegacyImport;
+    Q_EMIT forceLegacyImportChanged();
 }
 }

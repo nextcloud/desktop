@@ -12,23 +12,23 @@
  * for more details.
  */
 #include "selectivesyncdialog.h"
-#include "folder.h"
 #include "account.h"
+#include "common/utility.h"
+#include "configfile.h"
+#include "folder.h"
+#include "folderman.h"
 #include "networkjobs.h"
 #include "theme.h"
-#include "folderman.h"
-#include "configfile.h"
 #include <QDialogButtonBox>
-#include <QVBoxLayout>
-#include <QTreeWidget>
-#include <qpushbutton.h>
 #include <QFileIconProvider>
 #include <QHeaderView>
-#include <QSettings>
-#include <QScopedValueRollback>
-#include <QTreeWidgetItem>
 #include <QLabel>
+#include <QScopedValueRollback>
+#include <QSettings>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include <QVBoxLayout>
+#include <qpushbutton.h>
 
 namespace OCC {
 
@@ -203,10 +203,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     auto *root = dynamic_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
     QUrl url = _account->davUrl();
-    QString pathToRemove = url.path();
-    if (!pathToRemove.endsWith('/')) {
-        pathToRemove.append('/');
-    }
+    auto pathToRemove = Utility::trailingSlashPath(url.path());
     pathToRemove.append(_folderPath);
     if (!_folderPath.isEmpty())
         pathToRemove.append('/');
@@ -428,7 +425,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
             result += createBlackList(root->child(i));
         }
     } else {
-        // We did not load from the server so we re-use the one from the old black list
+        // We did not load from the server so we reuse the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
         foreach (const QString &it, _oldBlackList) {
             if (it.startsWith(path))

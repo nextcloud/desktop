@@ -82,8 +82,9 @@ public:
      * Version 2: introduction of metadata_parent hash in 2.6.0
      *            (version remains readable by 2.5.1)
      * Version 3: introduction of new windows vfs mode in 2.6.0
+     * Version 5: available in oC client 4.0.0 and 4.2.0
      */
-    static int maxSettingsVersion() { return 3; }
+    static int maxSettingsVersion() { return 5; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
@@ -233,6 +234,9 @@ public:
     /// Removes the folder from the account's settings.
     void removeFromSettings() const;
 
+    /* Check if the path is ignored. */
+    [[nodiscard]] bool pathIsIgnored(const QString &path) const;
+
     /**
       * Returns whether a file inside this folder should be excluded.
       */
@@ -298,6 +302,10 @@ public:
 
     QString fileFromLocalPath(const QString &localPath) const;
 
+    void whitelistPath(const QString &path);
+    void blacklistPath(const QString &path);
+    void migrateBlackListPath(const QString &legacyPath);
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -342,6 +350,18 @@ public slots:
        */
     void slotWatchedPathChanged(const QString &path, OCC::Folder::ChangeReason reason);
 
+    /*
+    * Triggered when lock files were removed
+    */
+    void slotFilesLockReleased(const QSet<QString> &files);
+
+    /*
+     * Triggered when lock files were added
+     */
+    void slotFilesLockImposed(const QSet<QString> &files);
+
+    void slotLockedFilesFound(const QSet<QString> &files);
+
     /**
      * Mark a virtual file as being requested for download, and start a sync.
      *
@@ -383,12 +403,12 @@ private slots:
 
     /** Adds a error message that's not tied to a specific item.
      */
-    void slotSyncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
+    void slotSyncError(const QString &message, OCC::ErrorCategory category);
 
-    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, OCC::ErrorCategory category);
 
     void slotTransmissionProgress(const OCC::ProgressInfo &pi);
-    void slotItemCompleted(const OCC::SyncFileItemPtr &);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &, OCC::ErrorCategory errorCategory);
 
     void slotRunEtagJob();
     void etagRetrieved(const QByteArray &, const QDateTime &tp);
@@ -397,6 +417,7 @@ private slots:
     void slotEmitFinishedDelayed();
 
     void slotNewBigFolderDiscovered(const QString &, bool isExternal);
+    void slotExistingFolderNowBig(const QString &folderPath);
 
     void slotLogPropagationStart();
 
@@ -428,6 +449,11 @@ private slots:
     /** Unblocks normal sync operation */
     void slotHydrationDone();
 
+    /* Hydration failed, perform required steps to notify user */
+    void slotHydrationFailed(int errorCode, int statusCode, const QString &errorString, const QString &fileName);
+
+    void slotCapabilitiesChanged();
+
 private:
     void connectSyncRoot();
 
@@ -456,6 +482,12 @@ private:
     void startVfs();
 
     void correctPlaceholderFiles();
+
+    void appendPathToSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+    void removePathFromSelectiveSyncList(const QString &path, const SyncJournalDb::SelectiveSyncListType listType);
+
+    static void postExistingFolderNowBigNotification(const QString &folderPath);
+    void postExistingFolderNowBigActivity(const QString &folderPath) const;
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;
@@ -533,6 +565,11 @@ private:
      * The vfs mode instance (created by plugin) to use. Never null.
      */
     QSharedPointer<Vfs> _vfs;
+
+    QMetaObject::Connection _officeFileLockReleaseUnlockSuccess;
+    QMetaObject::Connection _officeFileLockReleaseUnlockFailure;
+    QMetaObject::Connection _fileLockSuccess;
+    QMetaObject::Connection _fileLockFailure;
 };
 }
 

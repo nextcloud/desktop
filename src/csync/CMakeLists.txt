@@ -19,11 +19,7 @@ include(DefineOptions.cmake)
 
 include(DefineInstallationPaths)
 
-if (APPLE OR WIN32)
-    set(USE_OUR_OWN_SQLITE3 TRUE)
-else()
-    find_package(SQLite3 3.8.0 REQUIRED)
-endif()
+find_package(SQLite3 3.8.0 REQUIRED)
 
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
@@ -70,16 +66,8 @@ target_include_directories(
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-if(USE_OUR_OWN_SQLITE3)
-  message(STATUS "Using own sqlite3 version")
-  add_library(sqlite3 STATIC "${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/sqlite3.c")
-  target_include_directories(sqlite3 PUBLIC "${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3")
-  target_link_libraries(nextcloud_csync PUBLIC sqlite3)
-else()
-  target_include_directories(nextcloud_csync PUBLIC ${SQLITE3_INCLUDE_DIR})
-  target_link_libraries(nextcloud_csync PUBLIC ${SQLITE3_LIBRARIES})
-endif()
-
+target_include_directories(nextcloud_csync PUBLIC ${SQLITE3_INCLUDE_DIR})
+target_link_libraries(nextcloud_csync PUBLIC ${SQLITE3_LIBRARIES})
 
 generate_export_header(nextcloud_csync
   EXPORT_MACRO_NAME OCSYNC_EXPORT
@@ -116,6 +104,8 @@ set_target_properties(
       LIBRARY_OUTPUT_NAME
         ${APPLICATION_EXECUTABLE}_csync
       RUNTIME_OUTPUT_NAME
+        ${APPLICATION_EXECUTABLE}_csync
+      ARCHIVE_OUTPUT_NAME
         ${APPLICATION_EXECUTABLE}_csync
 )
 if(BUILD_OWNCLOUD_OSX_BUNDLE)

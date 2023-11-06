@@ -1,8 +1,22 @@
+/*
+ * Copyright (C) 2021 by Oleksandr Zolotov <alex@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 import QtQml 2.15
-import QtQuick 2.9
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
-import QtGraphicalEffects 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
 
 import Style 1.0
 
@@ -21,8 +35,9 @@ RowLayout {
     property int titleFontSize: Style.unifiedSearchResultTitleFontSize
     property int sublineFontSize: Style.unifiedSearchResultSublineFontSize
 
-    property color titleColor: Style.ncTextColor
-    property color sublineColor: Style.ncSecondaryTextColor
+    property color titleColor: palette.buttonText
+    property color sublineColor: palette.midlight
+
 
     Accessible.role: Accessible.ListItem
     Accessible.name: resultTitle
@@ -79,29 +94,16 @@ RowLayout {
         }
     }
 
-    ColumnLayout {
+    ListItemLineAndSubline {
         id: unifiedSearchResultTextContainer
+
+        spacing: Style.standardSpacing
 
         Layout.fillWidth: true
         Layout.rightMargin: Style.trayHorizontalMargin
-        spacing: Style.standardSpacing
 
-        EnforcedPlainTextLabel {
-            id: unifiedSearchResultTitleText
-            Layout.fillWidth: true
-            text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
-            elide: Text.ElideRight
-            font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
-            color: unifiedSearchResultItemDetails.titleColor
-        }
-        EnforcedPlainTextLabel {
-            id: unifiedSearchResultTextSubline
-            Layout.fillWidth: true
-            text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
-            elide: Text.ElideRight
-            font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
-            color: unifiedSearchResultItemDetails.sublineColor
-        }
+        lineText: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
+        sublineText: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
     }
 
 }

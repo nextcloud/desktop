@@ -51,6 +51,8 @@
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
+#elif defined(Q_OS_MACOS)
+#include "macOS/fileprovider.h"
 #endif
 
 #if defined(WITH_CRASHREPORTER)
@@ -75,27 +77,28 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
-        "  --help, -h           : show this help screen.\n"
-        "  --version, -v        : show version information.\n"
-        "  -q --quit            : quit the running instance\n"
-        "  --logwindow, -l      : open a window to show log output.\n"
-        "  --logfile <filename> : write log output to file <filename>.\n"
-        "  --logdir <name>      : write each sync log output in a new file\n"
-        "                         in folder <name>.\n"
-        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-        "                         (to be used with --logdir)\n"
-        "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.\n"
-        "  --background         : launch the application in the background.\n"
-        "  --overrideserverurl  : specify a server URL to use for the force override to be used in the account setup wizard.\n"
-        "  --overridelocaldir   : specify a local dir to be used in the account setup wizard.\n"
-        "  --userid             : userId (username as on the server) to pass when creating an account via command-line.\n"
-        "  --apppassword        : appPassword to pass when creating an account via command-line.\n"
-        "  --localdirpath       : (optional) path where to create a local sync folder when creating an account via command-line.\n"
-        "  --isvfsenabled       : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
-        "  --remotedirpath      : (optional) path to a remote subfolder when creating an account via command-line.\n"
-        "  --serverurl          : a server URL to use when creating an account via command-line.\n";
+        "  --help, -h                 : show this help screen.\n"
+        "  --version, -v              : show version information.\n"
+        "  -q --quit                  : quit the running instance\n"
+        "  --logwindow, -l            : open a window to show log output.\n"
+        "  --logfile <filename>       : write log output to file <filename>.\n"
+        "  --logdir <name>            : write each sync log output in a new file\n"
+        "                               in folder <name>.\n"
+        "  --logexpire <hours>        : removes logs older than <hours> hours.\n"
+        "                               (to be used with --logdir)\n"
+        "  --logflush                 : flush the log file after every write.\n"
+        "  --logdebug                 : also output debug-level messages in the log.\n"
+        "  --confdir <dirname>        : Use the given configuration folder.\n"
+        "  --background               : launch the application in the background.\n"
+        "  --overrideserverurl        : specify a server URL to use for the force override to be used in the account setup wizard.\n"
+        "  --overridelocaldir         : specify a local dir to be used in the account setup wizard.\n"
+        "  --userid                   : userId (username as on the server) to pass when creating an account via command-line.\n"
+        "  --apppassword              : appPassword to pass when creating an account via command-line.\n"
+        "  --localdirpath             : (optional) path where to create a local sync folder when creating an account via command-line.\n"
+        "  --isvfsenabled             : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
+        "  --remotedirpath            : (optional) path to a remote subfolder when creating an account via command-line.\n"
+        "  --serverurl                : a server URL to use when creating an account via command-line.\n"
+        "  --forcelegacyconfigimport  : forcefully import account configurations from legacy clients (if available).\n";
 
     QString applicationTrPath()
     {
@@ -176,7 +179,7 @@ bool Application::configVersionMigration()
             tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "Continuing will mean <b>%2 these settings</b><br>"
+               "Continuing will mean <b>%2 these settings</b>.<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
                 .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
@@ -242,53 +245,8 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (!ConfigFile().exists()) {
-        // Migrate from version <= 2.4
-        setApplicationName(_theme->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-#define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_DEPRECATED
-        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-
-        // macOS 10.11.x does not like trailing slash for rename/move.
-        if (oldDir.endsWith('/')) {
-            oldDir.chop(1);
-        }
-
-        QT_WARNING_POP
-        setApplicationName(_theme->appName());
-        if (QFileInfo(oldDir).isDir()) {
-            auto confDir = ConfigFile().configPath();
-
-            // macOS 10.11.x does not like trailing slash for rename/move.
-            if (confDir.endsWith('/')) {
-                confDir.chop(1);
-            }
-
-            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
-
-            if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
-
-                // Try to move the files one by one
-                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
-                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
-                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
-                    for (const auto &name : filesList) {
-                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
-                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
-                        }
-                    }
-                }
-            } else {
-#ifndef Q_OS_WIN
-                // Create a symbolic link so a downgrade of the client would still find the config.
-                QFile::link(confDir, oldDir);
-#endif
-            }
-        }
+    if (ConfigFile().exists()) {
+        setupConfigFile();
     }
 
     if (_theme->doNotUseProxy()) {
@@ -325,71 +283,71 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
+    // try to migrate legacy accounts and folders from a previous client version
+    // only copy the settings and check what should be skipped
     if (!configVersionMigration()) {
-        return;
+        qCWarning(lcApplication) << "Config version migration was not possible.";
     }
 
     ConfigFile cfg;
-
     {
+        auto shouldExit = false;
+
         // these config values will always be empty after the first client run
         if (!_overrideServerUrl.isEmpty()) {
-             cfg.setOverrideServerUrl(_overrideServerUrl);
+            cfg.setOverrideServerUrl(_overrideServerUrl);
+            shouldExit = true;
         }
 
         if (!_overrideLocalDir.isEmpty()) {
             cfg.setOverrideLocalDir(_overrideLocalDir);
+            shouldExit = true;
+        }
+
+        if (AccountSetupCommandLineManager::instance()) {
+            cfg.setVfsEnabled(AccountSetupCommandLineManager::instance()->isVfsEnabled());
+        }
+
+        if (shouldExit) {
+            std::exit(0);
         }
     }
 
-
     // The timeout is initialized with an environment variable, if not, override with the value from the config
-    if (!AbstractNetworkJob::httpTimeout)
+    if (!AbstractNetworkJob::httpTimeout) {
         AbstractNetworkJob::httpTimeout = cfg.timeout();
+    }
 
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
+
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         qCInfo(lcApplication) << "VFS windows plugin is available";
     }
+
     if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         qCInfo(lcApplication) << "VFS suffix plugin is available";
     }
 
-    _folderManager.reset(new FolderMan);
-#ifdef Q_OS_WIN
+    _theme->setSystrayUseMonoIcons(ConfigFile().monoIcons());
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+
+#if defined(Q_OS_WIN)
     _shellExtensionsServer.reset(new ShellExtensionsServer);
 #endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
-        // If there is an error reading the account settings, try again
-        // after a couple of seconds, if that fails, give up.
-        // (non-existence is not an error)
-        Utility::sleep(5);
-        if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
-            qCCritical(lcApplication) << "Could not read the account settings, quitting";
-            QMessageBox::critical(
-                nullptr,
-                tr("Error accessing the configuration file"),
-                tr("There was an error while accessing the configuration "
-                   "file at %1. Please make sure the file can be accessed by your system account.")
-                    .arg(ConfigFile().configFile()),
-                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
-            return;
-        }
-    }
+#if defined(BUILD_FILE_PROVIDER_MODULE)
+    _fileProvider.reset(new Mac::FileProvider);
+#endif
 
-    FolderMan::instance()->setSyncEnabled(true);
+    // create accounts and folders from a legacy desktop client or from the current config file
+    setupAccountsAndFolders();
 
     setQuitOnLastWindowClosed(false);
-
-    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
@@ -397,11 +355,11 @@ Application::Application(int &argc, char **argv)
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
+
 #if WITH_LIBCLOUDPROVIDERS
     _gui->setupCloudProviders();
 #endif
 
-    FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
@@ -467,6 +425,128 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
+}
+
+void Application::setupAccountsAndFolders()
+{
+    const auto accountsRestoreResult = restoreLegacyAccount();
+
+    _folderManager.reset(new FolderMan);
+    FolderMan::instance()->setSyncEnabled(true);
+    const auto foldersListSize = FolderMan::instance()->setupFolders();
+
+    const auto prettyNamesList = [](const QList<AccountStatePtr> &accounts) {
+        QStringList list;
+        for (const auto &account : accounts) {
+            list << account->account()->prettyName().prepend("- ");
+        }
+        return list.join("\n");
+    };
+
+    if (const auto accounts = AccountManager::instance()->accounts();
+        accountsRestoreResult == AccountManager::AccountsRestoreSuccessFromLegacyVersion
+        && !accounts.isEmpty()) {
+        const auto accountsListSize = accounts.size();
+        const auto accountsRestoreMessage = accountsListSize > 1
+            ? tr("%1 accounts", "number of accounts imported").arg(QString::number(accountsListSize))
+            : tr("1 account");
+        const auto foldersRestoreMessage = foldersListSize > 1
+            ? tr("%1 folders", "number of folders imported").arg(QString::number(foldersListSize))
+            : tr("1 folder");
+        const auto messageBox = new QMessageBox(QMessageBox::Information,
+                                                tr("Legacy import"),
+                                                tr("Imported %1 and %2 from a legacy desktop client.\n%3",
+                                                   "number of accounts and folders imported. list of users.")
+                                                    .arg(accountsRestoreMessage,
+                                                         foldersRestoreMessage,
+                                                         prettyNamesList(accounts))
+                                                );
+        messageBox->setWindowModality(Qt::NonModal);
+        messageBox->open();
+    } else {
+        qCWarning(lcApplication) << "Migration result AccountManager::AccountsRestoreResult: " << accountsRestoreResult;
+        qCWarning(lcApplication) << "Folders migrated: " << foldersListSize;
+        qCWarning(lcApplication) << "No accounts were migrated, prompting user to set up accounts and folders from scratch.";
+    }
+}
+
+void Application::setupConfigFile()
+{
+    // Migrate from version <= 2.4
+    setApplicationName(_theme->appNameGUI());
+#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
+    #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+#endif
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_DEPRECATED
+    QT_WARNING_POP
+    setApplicationName(_theme->appName());
+
+    auto oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (oldDir.endsWith('/')) {
+        oldDir.chop(1);
+    }
+
+    if (!QFileInfo(oldDir).isDir()) {
+        return;
+    }
+
+    auto confDir = ConfigFile().configPath();
+
+    // macOS 10.11.x does not like trailing slash for rename/move.
+    if (confDir.endsWith('/')) {
+        confDir.chop(1);
+    }
+
+    qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+    if (!QFile::rename(oldDir, confDir)) {
+        qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+        // Try to move the files one by one
+        if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+            const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+            qCInfo(lcApplication) << "Will move the individual files" << filesList;
+            for (const auto &name : filesList) {
+                if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                    qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                }
+            }
+        }
+    } else {
+#ifndef Q_OS_WIN
+        // Create a symbolic link so a downgrade of the client would still find the config.
+        QFile::link(confDir, oldDir);
+#endif
+    }
+}
+
+AccountManager::AccountsRestoreResult Application::restoreLegacyAccount()
+{
+    ConfigFile cfg;
+    const auto tryMigrate = cfg.overrideServerUrl().isEmpty();
+    auto accountsRestoreResult = AccountManager::AccountsRestoreFailure;
+    if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+        accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (accountsRestoreResult = AccountManager::instance()->restore(tryMigrate);
+            accountsRestoreResult == AccountManager::AccountsRestoreFailure) {
+            qCCritical(lcApplication) << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                nullptr,
+                tr("Error accessing the configuration file"),
+                tr("There was an error while accessing the configuration "
+                   "file at %1. Please make sure the file can be accessed by your system account.")
+                    .arg(ConfigFile().configFile()),
+                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
+        }
+    }
+    return accountsRestoreResult;
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
@@ -589,6 +669,11 @@ void Application::setupLogging()
         logger->setupTemporaryFolderLogDir();
     }
 
+#if defined QT_DEBUG
+    logger->setLogFlush(true);
+    logger->setLogDebug(true);
+#endif
+
     logger->enterNextLogFile();
 
     qCInfo(lcApplication) << "##################" << _theme->appName()
@@ -705,7 +790,7 @@ void Application::parseOptions(const QStringList &options)
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
-            // see the section Local file editing of the Architecture page of the user documenation
+            // see the section Local file editing of the Architecture page of the user documentation
             _editFileLocallyUrl = QUrl::fromUserInput(option);
             if (!_editFileLocallyUrl.isValid()) {
                 _editFileLocallyUrl.clear();
@@ -733,8 +818,9 @@ void Application::parseOptions(const QStringList &options)
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
-        }
-        else {
+        } else if (option == QStringLiteral("--forcelegacyconfigimport")) {
+            AccountManager::instance()->setForceLegacyImport(true);
+        } else {
             QString errorMessage;
             if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 if (!errorMessage.isEmpty()) {

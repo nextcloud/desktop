@@ -245,6 +245,7 @@ private slots:
 private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
+    [[nodiscard]] bool isEncrypted() const { return _isEncrypted; }
 
     qint64 _resumeStart = 0;
     qint64 _downloadProgress = 0;

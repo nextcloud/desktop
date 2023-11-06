@@ -3,6 +3,10 @@
 The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
 with your computer.
 
+## 📥 Download Binaries
+
+### https://github.com/nextcloud-releases/desktop/releases
+
 <p align="center">
     <img src="doc/images/main_dialog_christine.png" alt="Desktop Client on Windows" width="450">
 </p>

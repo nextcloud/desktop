@@ -95,6 +95,11 @@ bool AccountSetupCommandLineManager::isCommandLineParsed() const
     return !_appPassword.isEmpty() && !_userId.isEmpty() && _serverUrl.isValid();
 }
 
+bool AccountSetupCommandLineManager::isVfsEnabled() const
+{
+    return _isVfsEnabled;
+}
+
 void AccountSetupCommandLineManager::setupAccountFromCommandLine()
 {
     if (isCommandLineParsed()) {

@@ -43,6 +43,29 @@ private slots:
     {
         _fakeFolder.remoteModifier().mkdir(fakeE2eeFolderName);
         _fakeFolder.remoteModifier().insert(fakeE2eeFolderName + QStringLiteral("/") + QStringLiteral("fake_e2ee_file"), 100);
+
+        {
+            QFile e2eTestFakeCert(QStringLiteral("e2etestsfakecert.pem"));
+            if (e2eTestFakeCert.open(QFile::ReadOnly)) {
+                _fakeFolder.syncEngine().account()->e2e()->_certificate = QSslCertificate(e2eTestFakeCert.readAll());
+                e2eTestFakeCert.close();
+            }
+        }
+        {
+            QFile e2etestsfakecertpublickey(QStringLiteral("e2etestsfakecertpublickey.pem"));
+            if (e2etestsfakecertpublickey.open(QFile::ReadOnly)) {
+                _fakeFolder.syncEngine().account()->e2e()->_publicKey = QSslKey(e2etestsfakecertpublickey.readAll(), QSsl::KeyAlgorithm::Rsa, QSsl::EncodingFormat::Pem, QSsl::KeyType::PublicKey);
+                e2etestsfakecertpublickey.close();
+            }
+        }
+        {
+            QFile e2etestsfakecertprivatekey(QStringLiteral("e2etestsfakecertprivatekey.pem"));
+            if (e2etestsfakecertprivatekey.open(QFile::ReadOnly)) {
+                _fakeFolder.syncEngine().account()->e2e()->_privateKey = e2etestsfakecertprivatekey.readAll();
+                e2etestsfakecertprivatekey.close();
+            }
+        }
+
         _fakeFolder.setServerOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             Q_UNUSED(device);
             QNetworkReply *reply = nullptr;
@@ -69,8 +92,8 @@ private slots:
                     QFile fakeJsonReplyFile(QStringLiteral("fakefiledrope2eefoldermetadata.json"));
                     if (fakeJsonReplyFile.open(QFile::ReadOnly)) {
                         const auto jsonDoc = QJsonDocument::fromJson(fakeJsonReplyFile.readAll());
-                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), jsonDoc.toJson()));
-                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), jsonDoc.toJson()));
+                        _parsedMetadataWithFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), FolderMetadata::RequiredMetadataVersion::Version1_2, jsonDoc.toJson()));
+                        _parsedMetadataAfterProcessingFileDrop.reset(new FolderMetadata(_fakeFolder.syncEngine().account(), FolderMetadata::RequiredMetadataVersion::Version1_2, jsonDoc.toJson()));
                         [[maybe_unused]] const auto result = _parsedMetadataAfterProcessingFileDrop->moveFromFileDropToFiles();
                         reply = new FakePayloadReply(op, req, jsonDoc.toJson(), nullptr);
                         ++_getMetadataCallsCount;
@@ -119,7 +142,8 @@ private slots:
 
             bool isAnyFileDropFileMissing = false;
 
-            for (const auto &key : metadata->fileDrop().keys()) {
+            const auto allKeys = metadata->fileDrop().keys();
+            for (const auto &key : allKeys) {
                 if (std::find_if(metadata->files().constBegin(), metadata->files().constEnd(), [&key](const EncryptedFile &encryptedFile) {
                     return encryptedFile.encryptedFilename == key;
                 }) == metadata->files().constEnd()) {

@@ -22,13 +22,12 @@ import Style 1.0
 TextField {
     id: root
 
-    property color accentColor: Style.ncBlue
-    property color secondaryColor: Style.menuBorder
-    property alias submitButton: submitButton
+    readonly property color accentColor: Style.ncBlue
+    readonly property color secondaryColor: palette.dark
+    readonly property alias submitButton: submitButton
+    property bool validInput: true
 
     implicitHeight: Style.talkReplyTextFieldPreferredHeight
-    color: Style.ncTextColor
-    placeholderTextColor: secondaryColor
 
     rightPadding: submitButton.width
 
@@ -38,8 +37,8 @@ TextField {
         id: textFieldBorder
         radius: Style.slightlyRoundedButtonRadius
         border.width: Style.normalBorderWidth
-        border.color: root.activeFocus ? root.accentColor : root.secondaryColor
-        color: Style.backgroundColor
+        border.color: root.activeFocus ? root.validInput ? root.accentColor : Style.errorBoxBackgroundColor : root.secondaryColor
+        color: palette.base
     }
 
     Button {
@@ -57,7 +56,7 @@ TextField {
         icon.source: "image://svgimage-custom-color/confirm.svg" + "/" + root.secondaryColor
         icon.color: hovered && enabled ? UserModel.currentUser.accentColor : root.secondaryColor
 
-        enabled: root.text !== ""
+        enabled: root.text !== "" && root.validInput
 
         onClicked: root.accepted()
     }

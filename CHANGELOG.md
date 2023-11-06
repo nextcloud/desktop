@@ -4,6 +4,97 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.2] - 2023-05-16
+
+### Added
+* Implement missing share settings by @allexzander in https://github.com/nextcloud/desktop/pull/5622
+
+### Changed
+* Edit locally: elide loading dialog filename label in the middle by @allexzander in https://github.com/nextcloud/desktop/pull/5612
+* Properly handle all fatal errors during edit locally setup procedure by by @claucambra in https://github.com/nextcloud/desktop/pull/5583
+* Parse sharees 'lookup' key to include federated sharees by @allexzander in https://github.com/nextcloud/desktop/pull/5613
+* No longer override the pixman default version by @mgallien in https://github.com/nextcloud/desktop/pull/5630
+* Remove some SQL debug logs to unclutter the output by @allexzander in https://github.com/nextcloud/desktop/pull/5634
+* Attempt sign in when an account state is added in AccountManager by @claucambra in https://github.com/nextcloud/desktop/pull/5493
+
+### Fixed
+* Fix crash on entering new log file after file size of 512kb reached by @claucambra in https://github.com/nextcloud/desktop/pull/5603
+* Fix MacOS UTF-8 normalization issue by @xavi-b in https://github.com/nextcloud/desktop/pull/4957
+* Edit locally: fix crash on _chekTokenJob pointer deref by @allexzander in https://github.com/nextcloud/desktop/pull/5637
+* E2EE: Fix freeze on metadata checksum validation by @allexzander in https://github.com/nextcloud/desktop/pull/5655
+* Fix folder progress bar positioning in account settings on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5645
+* Use addLayout to insert the VFS option when setting account by @camilasan in https://github.com/nextcloud/desktop/pull/5665
+* Fix update request channel being set to wrong localised string by @claucambra in https://github.com/nextcloud/desktop/pull/5462
+* Fix setting [undefined] to QFont in 'Sync now' button by @claucambra in https://github.com/nextcloud/desktop/pull/5628
+* Fix account migration from legacy desktop clients (again) by @claucambra in https://github.com/nextcloud/desktop/pull/5640
+* Fix unrecoverable freezing when PutMultiFileJob is used with upload rate limits enabled by @claucambra in https://github.com/nextcloud/desktop/pull/5680
+
+## [3.8.1] - 2023-04-19
+
+### Changed
+* Do not display error status and messages when aborting a sync during hydration request in VFS mode by @allexzander in https://github.com/nextcloud/desktop/pull/5579
+* In case server has no private key, let e2ee init fail by @mgallien in https://github.com/nextcloud/desktop/pull/5566
+* Edit locally: restart current folder sync immediately after file opened by @allexzander in https://github.com/nextcloud/desktop/pull/5588
+
+### Fixed
+* Sort encrypted files by their id to compute checksum by @mgallien in https://github.com/nextcloud/desktop/pull/5568
+* Try different permutation to recover the broken checksum by @mgallien in https://github.com/nextcloud/desktop/pull/5572
+* Fix secure file drop unit tests by @allexzander in https://github.com/nextcloud/desktop/pull/5574
+* Always add the item at the end of the layout by @camilasan in https://github.com/nextcloud/desktop/pull/5595
+* Properly preserve the format of E2EE metadata during DB operations by @mgallien in https://github.com/nextcloud/desktop/pull/5577
+
+## [3.8.0] - 2023-03-31
+
+### Added
+* Secure file drop by @allexzander in https://github.com/nextcloud/desktop/pull/5327
+* Multiple bug fixes in E2EE by @mgallien in https://github.com/nextcloud/desktop/pull/5560
+* Add Ubuntu Lunar by @ivaradi in https://github.com/nextcloud/desktop/pull/5520
+
+### Changed
+* Log to stdout when built in Debug config by @claucambra in https://github.com/nextcloud/desktop/pull/5410
+
+### Fixed
+* E2EE cut extra zeroes from derypted byte array by @allexzander in https://github.com/nextcloud/desktop/pull/5534
+* Prevent ShareModel crash from accessing bad pointers by @claucambra in https://github.com/nextcloud/desktop/pull/5391
+* Show server name in tray main window by @Alkl58 in https://github.com/nextcloud/desktop/pull/5513
+* Enter next log file if the current log file is larger than 512 KB by @claucambra in https://github.com/nextcloud/desktop/pull/5580
+* Debian build classification 'beta' cannot override 'release' by @ivaradi in https://github.com/nextcloud/desktop/pull/5521
+* Follow shouldNotify flag to hide notifications when needed by @mgallien in https://github.com/nextcloud/desktop/pull/5530
+* Only accept folder setup page if --overridelocaldir option is set by @camilasan in https://github.com/nextcloud/desktop/pull/5385
+* Exit after creating config file when using --overrideserverurl option by @mgallien in https://github.com/nextcloud/desktop/pull/5532
+* Respect --overridelocaldir option by @mgallien in https://github.com/nextcloud/desktop/pull/5546
+* L10n: Correct word by @Valdnet in https://github.com/nextcloud/desktop/pull/5378
+* L10n: Added dot to end of sentence by @rakekniven in https://github.com/nextcloud/desktop/pull/5427
+* L10n: Fixed grammar by @rakekniven in https://github.com/nextcloud/desktop/pull/5430
+
+## [3.7.4] - 2023-03-09
+
+### Changed
+* Clean up account creation and deletion code by @claucambra in https://github.com/nextcloud/desktop/pull/5416
+* CI/clang tidy checks init variables by @mgallien in https://github.com/nextcloud/desktop/pull/5436
+
+### Fixed
+* Check German translation for wrong wording by @tobiasKaminsky in https://github.com/nextcloud/desktop/pull/5351
+* Fix "Create new folder" menu entries in settings not working correctly on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5435
+* Fix share dialog infinite loading by @claucambra in https://github.com/nextcloud/desktop/pull/5442
+* Fix edit locally job not finding the user account: wrong user id by @mgallien in https://github.com/nextcloud/desktop/pull/5444
+* Skip e2e encrypted files with empty filename in metadata by @mgallien in https://github.com/nextcloud/desktop/pull/5448
+* Always discover blacklisted folders to avoid data loss when modifying selectivesync list by @allexzander in https://github.com/nextcloud/desktop/pull/5459
+* Use new connect syntax by @mgallien in https://github.com/nextcloud/desktop/pull/5451
+* Add missing flag when dehydrating files with CFAPI by @mgallien in https://github.com/nextcloud/desktop/pull/5474
+* Fix avatars not showing up in settings dialog account actions until clicked on by @claucambra in https://github.com/nextcloud/desktop/pull/5453
+* Fix text labels in Sync Status component by @claucambra in https://github.com/nextcloud/desktop/pull/5478
+* Fix infinite loading in the share dialog when public link shares are disabled on the server by @claucambra in https://github.com/nextcloud/desktop/pull/5472
+* Display 'Search globally' as the last sharees list element  by @allexzander in https://github.com/nextcloud/desktop/pull/5485
+* Resize WebView widget once the loginpage rendered by @xllndr in https://github.com/nextcloud/desktop/pull/5161
+* Fix: do not restore virtual files by @mgallien in https://github.com/nextcloud/desktop/pull/5498
+* Fix display of 2FA notification @camilasan in https://github.com/nextcloud/desktop/pull/5486
+
+## [3.7.1] - 2023-02-07
+
+### Fixed
+* Init value for pointers by @mgallien in https://github.com/nextcloud/desktop/pull/5393
+
 ## [3.7.0] - 2023-02-02
 
 ### Added
@@ -54,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Don't set up tray context menu on macOS, even if not building app bundle by @claucambra in https://github.com/nextcloud/desktop/pull/4988
 * CI: check clang tidy in ci by @mgallien in https://github.com/nextcloud/desktop/pull/4995
 * Check our code with clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/4999
-* Alway use constexpr for all text constants by @mgallien in https://github.com/nextcloud/desktop/pull/4996
+* Always use constexpr for all text constants by @mgallien in https://github.com/nextcloud/desktop/pull/4996
 * Switch AppImage CI to latest tag: client-appimage-6 by @mgallien in https://github.com/nextcloud/desktop/pull/5003
 * Apply modernize-use-using via clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/4993
 * Use [[nodiscard]] by @mgallien in https://github.com/nextcloud/desktop/pull/4992
@@ -178,7 +269,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Revert "Merge pull request #5366 from nextcloud/bugfix/remove-mono-icons-setting" by @claucambra in https://github.com/nextcloud/desktop/pull/5372
 * Open calendar notifications in the browser. by @camilasan in https://github.com/nextcloud/desktop/pull/4684
 * Migrate old configs by @camilasan in https://github.com/nextcloud/desktop/pull/5362
-* Fix displaying of file details button for local syncfileitem activities by @claucambra in https://github.com/nextcloud/desktop/pull/5379
 * Fix displaying of file details button for local syncfileitem activities by @claucambra in https://github.com/nextcloud/desktop/pull/5379
 
 ### Security
@@ -549,6 +639,11 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.8.2]: https://github.com/nextcloud/desktop/compare/v3.8.1...v3.8.2
+[3.8.1]: https://github.com/nextcloud/desktop/compare/v3.8.0...v3.8.1
+[3.8.0]: https://github.com/nextcloud/desktop/compare/v3.7.4...v3.8.0
+[3.7.4]: https://github.com/nextcloud/desktop/compare/v3.7.1...v3.7.4
+[3.7.1]: https://github.com/nextcloud/desktop/compare/v3.7.0...v3.7.1
 [3.7.0]: https://github.com/nextcloud/desktop/compare/v3.6.6...v3.7.0
 [3.6.6]: https://github.com/nextcloud/desktop/compare/v3.6.5...v3.6.6
 [3.6.5]: https://github.com/nextcloud/desktop/compare/v3.6.4...v3.6.5

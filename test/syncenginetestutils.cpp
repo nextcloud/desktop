@@ -6,9 +6,10 @@
  */
 
 #include "syncenginetestutils.h"
-#include "httplogger.h"
 #include "accessmanager.h"
+#include "common/utility.h"
 #include "gui/sharepermissions.h"
+#include "httplogger.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -110,6 +111,12 @@ void DiskFileModifier::modifyLockState([[maybe_unused]] const QString &relativeP
 
 void DiskFileModifier::setE2EE([[maybe_unused]] const QString &relativePath, [[maybe_unused]] const bool enable)
 {
+}
+
+QFile DiskFileModifier::find(const QString &relativePath) const
+{
+    const auto path = _rootDir.filePath(relativePath);
+    return QFile(path);
 }
 
 FileInfo FileInfo::A12_B12_C12_S12()
@@ -285,11 +292,7 @@ QString FileInfo::path() const
 
 QString FileInfo::absolutePath() const
 {
-    if (parentPath.endsWith(QLatin1Char('/'))) {
-        return parentPath + name;
-    } else {
-        return parentPath + QLatin1Char('/') + name;
-    }
+    return OCC::Utility::trailingSlashPath(parentPath) + name;
 }
 
 void FileInfo::fixupParentPathRecursively()
@@ -339,10 +342,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
         xml.writeStartElement(davUri, QStringLiteral("response"));
 
-        auto url = QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/"));
-        if (!url.endsWith(QChar('/'))) {
-            url.append(QChar('/'));
-        }
+        const auto url = OCC::Utility::trailingSlashPath(QString::fromUtf8(QUrl::toPercentEncoding(fileInfo.absolutePath(), "/")));
         const auto href = OCC::Utility::concatUrlPath(prefix, url).path();
         xml.writeTextElement(davUri, QStringLiteral("href"), href);
         xml.writeStartElement(davUri, QStringLiteral("propstat"));
@@ -352,6 +352,12 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
             xml.writeStartElement(davUri, QStringLiteral("resourcetype"));
             xml.writeEmptyElement(davUri, QStringLiteral("collection"));
             xml.writeEndElement(); // resourcetype
+
+            auto totalSize = 0;
+            for (const auto &child : fileInfo.children.values()) {
+                totalSize += child.size;
+            }
+            xml.writeTextElement(ocUri, QStringLiteral("size"), QString::number(totalSize));
         } else
             xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
@@ -390,6 +396,18 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         writeFileResponse(childFileInfo);
     xml.writeEndElement(); // multistatus
     xml.writeEndDocument();
+
+    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+}
+
+FakePropfindReply::FakePropfindReply(const QByteArray &replyContents, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+    : FakeReply { parent }
+{
+    setRequest(request);
+    setUrl(request.url());
+    setOperation(op);
+
+    payload = replyContents;
 
     QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
 }
@@ -1039,7 +1057,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
 
         auto verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == QLatin1String("PROPFIND")) {
-            // Ignore outgoingData always returning somethign good enough, works for now.
+            // Ignore outgoingData always returning something good enough, works for now.
             reply = new FakePropfindReply { info, op, newRequest, this };
         } else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation) {
             reply = new FakeGetReply { info, op, newRequest, this };
@@ -1166,9 +1184,7 @@ FileInfo FakeFolder::currentLocalState()
 QString FakeFolder::localPath() const
 {
     // SyncEngine wants a trailing slash
-    if (_tempDir.path().endsWith(QLatin1Char('/')))
-        return _tempDir.path();
-    return _tempDir.path() + QLatin1Char('/');
+    return OCC::Utility::trailingSlashPath(_tempDir.path());
 }
 
 void FakeFolder::scheduleSync()

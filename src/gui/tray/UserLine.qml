@@ -1,7 +1,21 @@
-import QtQuick 2.9
-import QtQuick.Window 2.3
-import QtQuick.Controls 2.2
-import QtQuick.Layouts 1.2
+/*
+ * Copyright (C) 2019 by Dominique Fuchs <32204802+DominiqueFuchs@users.noreply.github.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
@@ -23,7 +37,9 @@ AbstractButton {
     background: Rectangle {
         anchors.fill: parent
         anchors.margins: 1
-        color: (userLine.hovered || userLine.visualFocus) && !(userMoreButton.hovered || userMoreButton.visualFocus) ? Style.lightHover : Style.backgroundColor
+        color: (userLine.hovered || userLine.visualFocus) &&
+               !(userMoreButton.hovered || userMoreButton.visualFocus) ?
+                   palette.highlight : palette.base
     }
 
     contentItem: RowLayout {
@@ -78,7 +94,6 @@ AbstractButton {
                 verticalAlignment: Text.AlignBottom
                 text: name
                 elide: Text.ElideRight
-                color: Style.ncTextColor
                 font.pixelSize: Style.topLinePixelSize
                 font.bold: true
             }
@@ -104,7 +119,6 @@ AbstractButton {
                     visible: model.statusMessage !== ""
                     text: statusMessage
                     elide: Text.ElideRight
-                    color: Style.ncTextColor
                     font.pixelSize: Style.subLinePixelSize
                     leftPadding: Style.accountLabelsSpacing
                 }
@@ -117,7 +131,6 @@ AbstractButton {
                 verticalAlignment: Text.AlignTop
                 text: server
                 elide: Text.ElideRight
-                color: Style.ncTextColor
                 font.pixelSize: Style.subLinePixelSize
             }
         }
@@ -129,7 +142,7 @@ AbstractButton {
             flat: true
 
             icon.source: "qrc:///client/theme/more.svg"
-            icon.color: Style.ncTextColor
+            icon.color: palette.buttonText
 
             Accessible.role: Accessible.ButtonMenu
             Accessible.name: qsTr("Account actions")
@@ -139,18 +152,12 @@ AbstractButton {
             background: Rectangle {
                 anchors.fill: parent
                 anchors.margins: 1
-                color: userMoreButton.hovered || userMoreButton.visualFocus ? Style.lightHover : "transparent"
+                color: userMoreButton.hovered || userMoreButton.visualFocus ? palette.highlight : "transparent"
             }
 
             AutoSizingMenu {
                 id: userMoreButtonMenu
                 closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
-
-                background: Rectangle {
-                    border.color: Style.menuBorder
-                    color: Style.backgroundColor
-                    radius: 2
-                }
 
                 MenuItem {
                     visible: model.isConnected && model.serverHasUserStatus
@@ -160,16 +167,6 @@ AbstractButton {
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true
                     onClicked: showUserStatusSelector(index)
-
-                    background: Item {
-                        height: parent.height
-                        width: parent.menu.width
-                        Rectangle {
-                            anchors.fill: parent
-                            anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
-                        }
-                    }
                 }
 
                 MenuItem {
@@ -188,7 +185,7 @@ AbstractButton {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.parent.hovered ? palette.highlight : "transparent"
                         }
                     }
 
@@ -222,7 +219,7 @@ AbstractButton {
                         Rectangle {
                             anchors.fill: parent
                             anchors.margins: 1
-                            color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            color: parent.parent.hovered ? palette.highlight : "transparent"
                         }
                     }
 

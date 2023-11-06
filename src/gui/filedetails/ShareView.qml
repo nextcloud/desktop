@@ -31,10 +31,12 @@ ColumnLayout {
     property int horizontalPadding: 0
     property int iconSize: 32
     property bool backgroundsVisible: true
+    property color accentColor: Style.ncBlue
 
     readonly property bool sharingPossible: shareModel && shareModel.canShare && shareModel.sharingEnabled
     readonly property bool userGroupSharingPossible: sharingPossible && shareModel.userGroupSharingEnabled
     readonly property bool publicLinkSharingPossible: sharingPossible && shareModel.publicLinkSharesEnabled
+    readonly property bool serverAllowsResharing: shareModel && shareModel.serverAllowsResharing
 
     readonly property bool loading: sharingPossible && (!shareModel ||
                                                         shareModel.fetchOngoing ||
@@ -93,22 +95,8 @@ ColumnLayout {
         modal: true
         closePolicy: Popup.NoAutoClose
 
-        // TODO: Rather than setting all these palette colours manually,
-        // create a custom style and do it for all components globally
-        palette {
-            text: Style.ncTextColor
-            windowText: Style.ncTextColor
-            buttonText: Style.ncTextColor
-            light: Style.lightHover
-            midlight: Style.lightHover
-            mid: Style.ncSecondaryTextColor
-            dark: Style.menuBorder
-            button: Style.menuBorder
-            window: Style.backgroundColor
-            base: Style.backgroundColor
-        }
-
         visible: false
+        onAboutToShow: dialogPasswordField.text = shareModel.generatePassword()
 
         onAccepted: {
             if(sharee) {
@@ -195,7 +183,7 @@ ColumnLayout {
 
                 enabled: !root.loading
                 model: SortedShareModel {
-                    shareModel: root.shareModel
+                    sourceModel: root.shareModel
                 }
 
                 delegate: ShareDelegate {
@@ -228,7 +216,9 @@ ColumnLayout {
                     fileDetails: root.fileDetails
                     rootStackView: root.rootStackView
                     backgroundsVisible: root.backgroundsVisible
+                    accentColor: root.accentColor
                     canCreateLinkShares: root.publicLinkSharingPossible
+                    serverAllowsResharing: root.serverAllowsResharing
 
                     onCreateNewLinkShare: {
                         root.waitingForSharesToChange = true;
@@ -241,9 +231,11 @@ ColumnLayout {
 
                     onToggleAllowEditing: shareModel.toggleShareAllowEditingFromQml(model.share, enable)
                     onToggleAllowResharing: shareModel.toggleShareAllowResharingFromQml(model.share, enable)
+                    onToggleHideDownload: shareModel.toggleHideDownloadFromQml(model.share, enable)
                     onTogglePasswordProtect: shareModel.toggleSharePasswordProtectFromQml(model.share, enable)
                     onToggleExpirationDate: shareModel.toggleShareExpirationDateFromQml(model.share, enable)
                     onToggleNoteToRecipient: shareModel.toggleShareNoteToRecipientFromQml(model.share, enable)
+                    onPermissionModeChanged: shareModel.changePermissionModeFromQml(model.share, permissionMode)
 
                     onSetLinkShareLabel: shareModel.setLinkShareLabelFromQml(model.share, label)
                     onSetExpireDate: shareModel.setShareExpireDateFromQml(model.share, milliseconds)
@@ -258,12 +250,12 @@ ColumnLayout {
                     z: Infinity
 
                     sourceComponent: Rectangle {
-                        color: Style.backgroundColor
+                        color: palette.window
                         opacity: 0.5
 
                         NCBusyIndicator {
                             anchors.centerIn: parent
-                            color: Style.ncSecondaryTextColor
+                            color: palette.midlight
                         }
                     }
                 }
@@ -290,7 +282,7 @@ ColumnLayout {
                 id: sharingDisabledLabel
                 width: parent.width
                 text: qsTr("Sharing is disabled")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -298,7 +290,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("This item cannot be shared.")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -307,7 +299,7 @@ ColumnLayout {
             EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("Sharing is disabled.")
-                color: Style.ncSecondaryTextColor
+                color: palette.midlight
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter

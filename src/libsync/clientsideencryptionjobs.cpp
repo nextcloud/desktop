@@ -55,7 +55,9 @@ bool GetMetadataApiJob::finished()
         return true;
     }
     QJsonParseError error{};
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    const auto replyData = reply()->readAll();
+    auto json = QJsonDocument::fromJson(replyData, &error);
+    qCInfo(lcCseJob) << "metadata received for file id" << _fileId << json.toJson(QJsonDocument::Compact);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
@@ -95,7 +97,7 @@ bool StoreMetaDataApiJob::finished()
 			emit error(_fileId, retCode);
 		}
 
-		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
 }
@@ -146,7 +148,7 @@ bool UpdateMetadataApiJob::finished()
 			emit error(_fileId, retCode);
 		}
 
-		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		qCInfo(lcCseJob()) << "Metadata submitted to the server successfully";
 		emit success(_fileId);
     return true;
 }

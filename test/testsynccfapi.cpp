@@ -120,6 +120,77 @@ private slots:
         QTest::newRow("skip local discovery") << false;
     }
 
+    void testReplaceFileByIdenticalFile()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        // Create a new local (non-placeholder) file
+        fakeFolder.localModifier().insert("file0");
+        fakeFolder.localModifier().insert("file1");
+        CopyFile(QString(fakeFolder.localPath() + "file1").toStdWString().data(), QString(fakeFolder.localPath() + "file2").toStdWString().data(), false);
+        QVERIFY(!vfs->pinState("file0").isValid());
+        QVERIFY(!vfs->pinState("file1").isValid());
+        QVERIFY(!vfs->pinState("file2").isValid());
+
+        // Sync the files: files should be converted to placeholder files
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(vfs->pinState("file1").isValid());
+        QVERIFY(vfs->pinState("file2").isValid());
+
+        // Sync again to ensure items are fully synced, otherwise test may succeed due to those pending changes.
+        QVERIFY(fakeFolder.syncOnce());
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(completeSpy.isEmpty());
+
+        // Replace file1 by identical file2: Windows will convert file1 to a regular (non-placeholder) file again.
+        CopyFile(QString(fakeFolder.localPath() + "file2").toStdWString().data(), QString(fakeFolder.localPath() + "file1").toStdWString().data(), false);
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(!vfs->pinState("file1").isValid());
+        QVERIFY(vfs->pinState("file2").isValid());
+
+        // Sync again: file should be correctly converted to placeholders
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file0").isValid());
+        QVERIFY(vfs->pinState("file1").isValid());
+        QVERIFY(vfs->pinState("file2").isValid());
+    }
+
+    void testReplaceOnlineOnlyFile()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        // Create a new local (non-placeholder) file
+        fakeFolder.localModifier().insert("file");
+        QVERIFY(!vfs->pinState("file").isValid());
+
+        CopyFile(QString(fakeFolder.localPath() + "file").toStdWString().data(), QString(fakeFolder.localPath() + "file1").toStdWString().data(), false);
+
+        // Sync the files: files should be converted to placeholder files
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file").isValid());
+
+        // Convert to Online Only
+        ::setPinState(fakeFolder.localPath() + "file", PinState::OnlineOnly, cfapi::Recurse);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("file"), PinState::OnlineOnly);
+        CFVERIFY_VIRTUAL(fakeFolder, "file");
+
+        // Replace the file
+        CopyFile(QString(fakeFolder.localPath() + "file1").toStdWString().data(), QString(fakeFolder.localPath() + "file").toStdWString().data(), false);
+
+        // Sync again: file should be correctly dehydrated again without error.
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(vfs->pinState("file").isValid());
+        QCOMPARE(*vfs->pinState("file"), PinState::OnlineOnly);
+        CFVERIFY_VIRTUAL(fakeFolder, "file");
+    }
+
     void testVirtualFileLifecycle()
     {
         QFETCH(bool, doLocalDiscovery);
@@ -1243,6 +1314,75 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testLockFile_lockedFileReadOnly_afterSync()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1");
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_locked, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        OCC::SyncJournalFileRecord fileRecordBefore;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordBefore));
+        QVERIFY(fileRecordBefore.isValid());
+        QVERIFY(!fileRecordBefore._lockstate._locked);
+
+        const auto localFileNotLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
+        QVERIFY(localFileNotLocked.isWritable());
+
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("A/a1"), FileModifier::LockState::FileLocked, 1, QStringLiteral("Nextcloud Office"), {}, QStringLiteral("richdocuments"), QDateTime::currentDateTime().toSecsSinceEpoch(), 1226);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(QStringLiteral("A/a1"), QDateTime::currentDateTime());
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
+
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(QStringLiteral("A/a1"))->_locked, OCC::SyncFileItem::LockStatus::LockedItem);
+        OCC::SyncJournalFileRecord fileRecordLocked;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("A/a1"), &fileRecordLocked));
+        QVERIFY(fileRecordLocked.isValid());
+        QVERIFY(fileRecordLocked._lockstate._locked);
+
+        const auto localFileLocked = QFileInfo{fakeFolder.localPath() + u"A/a1"};
+        QVERIFY(!localFileLocked.isWritable());
+    }
+
+    void testLinkFileDoesNotConvertToPlaceholder()
+    {
+        // inspired by GH issue #6041
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        // Create a Windows shortcut (.lnk) file
+        fakeFolder.remoteModifier().insert("linkfile.lnk");
+
+        QVERIFY(fakeFolder.syncOnce());
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!vfs->pinState("linkfile.lnk").isValid() || vfs->pinState("linkfile.lnk").get() == PinState::Excluded);
+        QVERIFY(itemInstruction(completeSpy, "linkfile.lnk", CSYNC_INSTRUCTION_NONE));
+    }
+
+    void testFolderDoesNotUpdatePlaceholderMetadata()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A", CSYNC_INSTRUCTION_NONE));
     }
 };
 

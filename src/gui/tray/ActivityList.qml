@@ -3,27 +3,37 @@ import QtQuick.Controls 2.15
 
 import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
-import Style 1.0
 
 ScrollView {
     id: controlRoot
-    property alias model: sortedActivityList.activityListModel
-
+    property alias model: sortedActivityList.sourceModel
+    property alias count: activityList.count
+    property alias atYBeginning : activityList.atYBeginning
     property bool isFileActivityList: false
     property int iconSize: Style.trayListItemIconSize
     property int delegateHorizontalPadding: 0
+
+    property bool scrollingToTop: false
+
+    function scrollToTop() {
+        // Triggers activation of repeating upward flick timer
+        scrollingToTop = true
+    }
 
     signal openFile(string filePath)
     signal activityItemClicked(int index)
 
     contentWidth: availableWidth
-    padding: 1
+    padding: 0
     focus: false
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
     data: NC.WheelHandler {
         target: controlRoot.contentItem
+        onWheel: {
+            scrollingToTop = false
+        }
     }
 
     ListView {
@@ -32,19 +42,34 @@ ScrollView {
         Accessible.role: Accessible.List
         Accessible.name: qsTr("Activity list")
 
+        keyNavigationEnabled: true
         clip: true
         spacing: 0
         currentIndex: -1
         interactive: true
 
+        Timer {
+            id: repeatUpFlickTimer
+            interval: Style.activityListScrollToTopTimerInterval
+            running: controlRoot.scrollingToTop
+            repeat: true
+            onTriggered: {
+                if (!activityList.atYBeginning) {
+                    activityList.flick(0, Style.activityListScrollToTopVelocity)
+                } else {
+                    controlRoot.scrollingToTop = false
+                }
+            }
+        }
+
         highlight: Rectangle {
             id: activityHover
-
             anchors.fill: activityList.currentItem
-
-            color: Style.lightHover
+            color: palette.highlight
+            radius: Style.mediumRoundedButtonRadius
             visible: activityList.activeFocus
         }
+
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
         highlightResizeDuration: 0
@@ -54,14 +79,11 @@ ScrollView {
 
         model: NC.SortedActivityListModel {
             id: sortedActivityList
-            activityListModel: controlRoot.model
         }
 
         delegate: ActivityItem {
-            anchors.left: if (parent) parent.left
-            anchors.right: if (parent) parent.right
-            anchors.leftMargin: controlRoot.delegateHorizontalPadding
-            anchors.rightMargin: controlRoot.delegateHorizontalPadding
+            background: null
+            width: activityList.contentItem.width
 
             isFileActivityList: controlRoot.isFileActivityList
             iconSize: controlRoot.iconSize
@@ -104,13 +126,13 @@ ScrollView {
                 verticalAlignment: Image.AlignVCenter
                 horizontalAlignment: Image.AlignHCenter
                 fillMode: Image.PreserveAspectFit
-                source: "image://svgimage-custom-color/activity.svg/" + Style.ncSecondaryTextColor
+                source: "image://svgimage-custom-color/activity.svg/" + palette.midlight
             }
 
             EnforcedPlainTextLabel {
                width: parent.width
                text: qsTr("No activities yet")
-               color: Style.ncSecondaryTextColor
+               color: palette.midlight
                font.bold: true
                wrapMode: Text.Wrap
                horizontalAlignment: Text.AlignHCenter

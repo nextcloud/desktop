@@ -23,12 +23,15 @@
 #include <QPointer>
 #include <QIODevice>
 #include <QMutex>
+#include <QNetworkReply>
 
-#include "csync.h"
-#include "syncfileitem.h"
-#include "common/syncjournaldb.h"
-#include "bandwidthmanager.h"
 #include "accountfwd.h"
+#include "bandwidthmanager.h"
+#include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "csync.h"
+#include "progressdispatcher.h"
+#include "syncfileitem.h"
 #include "syncoptions.h"
 
 #include <deque>
@@ -147,6 +150,8 @@ signals:
 protected:
     [[nodiscard]] OwncloudPropagator *propagator() const;
 
+    static ErrorCategory errorCategoryFromNetworkError(const QNetworkReply::NetworkError error);
+
     /** If this job gets added to a composite job, this will point to the parent.
      *
      * For the PropagateDirectory::_firstJob it will point to
@@ -165,7 +170,7 @@ class PropagateItemJob : public PropagatorJob
 {
     Q_OBJECT
 protected:
-    virtual void done(SyncFileItem::Status status, const QString &errorString = QString());
+    virtual void done(const SyncFileItem::Status status, const QString &errorString, const ErrorCategory category);
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.
@@ -199,7 +204,7 @@ public:
         // TODO: In fact, we must make sure Lock/Unlock are not colliding and always wait for each other to complete. So, we could refactor this "_parallelism" later
         // so every "PropagateItemJob" that will potentially execute Lock job on E2EE folder will get executed sequentially.
         // As an alternative, we could optimize Lock/Unlock calls, so we do a batch-write on one folder and only lock and unlock a folder once per batch.
-        _parallelism = (_item->_isEncrypted || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
+        _parallelism = (_item->isEncrypted() || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
     }
     ~PropagateItemJob() override;
 
@@ -412,15 +417,13 @@ public:
     bool _finishedEmited = false; // used to ensure that finished is only emitted once
 
 public:
-    OwncloudPropagator(AccountPtr account, const QString &localDir,
-                       const QString &remoteFolder, SyncJournalDb *progressDb,
-                       QSet<QString> &bulkUploadBlackList)
+    OwncloudPropagator(AccountPtr account, const QString &localDir, const QString &remoteFolder, SyncJournalDb *progressDb, QSet<QString> &bulkUploadBlackList)
         : _journal(progressDb)
         , _bandwidthManager(this)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
-        , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
-        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
+        , _localDir(Utility::trailingSlashPath(localDir))
+        , _remoteFolder(Utility::trailingSlashPath(remoteFolder))
         , _bulkUploadBlackList(bulkUploadBlackList)
     {
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
@@ -452,9 +455,9 @@ public:
     bool _abortRequested = false;
 
     /** The list of currently active jobs.
-        This list contains the jobs that are currently using ressources and is used purely to
+        This list contains the jobs that are currently using resources and is used purely to
         know how many jobs there is currently running for the scheduler.
-        Jobs add themself to the list when they do an assynchronous operation.
+        Jobs add themself to the list when they do an asynchronous operation.
         Jobs can be several time on the list (example, when several chunks are uploaded in parallel)
      */
     QList<PropagateItemJob *> _activeJobList;
@@ -464,7 +467,7 @@ public:
 
     /** Per-folder quota guesses.
      *
-     * This starts out empty. When an upload in a folder fails due to insufficent
+     * This starts out empty. When an upload in a folder fails due to insufficient
      * remote quota, the quota guess is updated to be attempted_size-1 at maximum.
      *
      * Note that it will usually just an upper limit for the actual quota - but
@@ -630,8 +633,9 @@ private slots:
     /** Emit the finished signal and make sure it is only emitted once */
     void emitFinished(OCC::SyncFileItem::Status status)
     {
-        if (!_finishedEmited)
-            emit finished(status == SyncFileItem::Success);
+        if (!_finishedEmited) {
+            emit finished(status);
+        }
         _abortRequested = false;
         _finishedEmited = true;
     }
@@ -640,9 +644,9 @@ private slots:
 
 signals:
     void newItem(const OCC::SyncFileItemPtr &);
-    void itemCompleted(const OCC::SyncFileItemPtr &);
+    void itemCompleted(const OCC::SyncFileItemPtr &item, OCC::ErrorCategory category);
     void progress(const OCC::SyncFileItem &, qint64 bytes);
-    void finished(bool success);
+    void finished(OCC::SyncFileItem::Status status);
 
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName);
@@ -721,7 +725,7 @@ public:
     void start();
 signals:
     void finished();
-    void aborted(const QString &error);
+    void aborted(const QString &error, const OCC::ErrorCategory errorCategory);
 private slots:
     void slotPollFinished();
 };

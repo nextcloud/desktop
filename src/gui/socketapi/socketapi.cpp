@@ -316,7 +316,7 @@ void SocketApi::slotNewConnection()
     if (!socket) {
         return;
     }
-    qCInfo(lcSocketApi) << "New connection" << socket;
+    qCDebug(lcSocketApi) << "New connection" << socket;
     connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
@@ -327,7 +327,7 @@ void SocketApi::slotNewConnection()
     for (Folder *f : FolderMan::instance()->map()) {
         if (f->canSync()) {
             QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-            qCInfo(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
+            qCDebug(lcSocketApi) << "Trying to send SocketAPI Register Path Message -->" << message << "to" << listener->socket;
             listener->sendMessage(message);
         }
     }
@@ -366,7 +366,7 @@ void SocketApi::slotReadSocket()
         // Make sure to normalize the input from the socket to
         // make sure that the path will match, especially on OS X.
         const QString line = QString::fromUtf8(socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
-        qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
+        qCDebug(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         const int argPos = line.indexOf(QLatin1Char(':'));
         const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();
         const int indexOfMethod = [&] {
@@ -1091,7 +1091,11 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
         return;
     }
 
-    shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath, shareFolder->journalDb(), lockState);
+    shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath,
+                                                             shareFolder->remotePathTrailingSlash(),
+                                                             shareFolder->path(),
+                                                             shareFolder->journalDb(),
+                                                             lockState);
 
     shareFolder->journalDb()->schedulePathForRemoteDiscovery(fileData.serverRelativePath);
     shareFolder->scheduleThisFolderSoon();
@@ -1180,7 +1184,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
         if (canCreateDefaultPublicLink) {
             if (isSecureFileDropSupported) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:COPY_SECUREFILEDROP_LINK") + QLatin1String("::") + tr("Copy secure filedrop link"));
+                listener->sendMessage(QLatin1String("MENU_ITEM:COPY_SECUREFILEDROP_LINK") + QLatin1String("::") + tr("Copy secure file drop link"));
             } else {
                 listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PUBLIC_LINK") + flagString + tr("Copy public link"));
             }
@@ -1220,7 +1224,7 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
     bool anyAncestorEncrypted = false;
     auto ancestor = fileData.parentFolder();
     while (ancestor.journalRecord().isValid()) {
-        if (ancestor.journalRecord()._isE2eEncrypted) {
+        if (ancestor.journalRecord().isE2eEncrypted()) {
             anyAncestorEncrypted = true;
             break;
         }
@@ -1352,8 +1356,8 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         FileData fileData = FileData::get(argument);
         const auto record = fileData.journalRecord();
         const bool isOnTheServer = record.isValid();
-        const auto isE2eEncryptedPath = fileData.journalRecord()._isE2eEncrypted || !fileData.journalRecord()._e2eMangledName.isEmpty();
-        const auto isE2eEncryptedRootFolder = fileData.journalRecord()._isE2eEncrypted && fileData.journalRecord()._e2eMangledName.isEmpty();
+        const auto isE2eEncryptedPath = fileData.journalRecord().isE2eEncrypted() || !fileData.journalRecord()._e2eMangledName.isEmpty();
+        const auto isE2eEncryptedRootFolder = fileData.journalRecord().isE2eEncrypted() && fileData.journalRecord()._e2eMangledName.isEmpty();
         auto flagString = isOnTheServer && !isE2eEncryptedPath ? QLatin1String("::") : QLatin1String(":d:");
 
         const QFileInfo fileInfo(fileData.localPath);

@@ -66,7 +66,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
-    rec._isE2eEncrypted = query.intValue(11) > 0;
+    rec._e2eEncryptionStatus = static_cast<SyncJournalFileRecord::EncryptionStatus>(query.intValue(11));
     rec._lockstate._locked = query.intValue(12) > 0;
     rec._lockstate._lockOwnerDisplayName = query.stringValue(13);
     rec._lockstate._lockOwnerId = query.stringValue(14);
@@ -203,6 +203,33 @@ bool SyncJournalDb::maybeMigrateDb(const QString &localPath, const QString &abso
 
     qCInfo(lcDb) << "Journal successfully migrated from" << oldDbName << "to" << newDbName;
     return true;
+}
+
+bool SyncJournalDb::findPathInSelectiveSyncList(const QStringList &list, const QString &path)
+{
+    Q_ASSERT(std::is_sorted(list.cbegin(), list.cend()));
+
+    if (list.size() == 1 && list.first() == QStringLiteral("/")) {
+        // Special case for the case "/" is there, it matches everything
+        return true;
+    }
+
+    const QString pathSlash = path + QLatin1Char('/');
+
+    // Since the list is sorted, we can do a binary search.
+    // If the path is a prefix of another item or right after in the lexical order.
+    auto it = std::lower_bound(list.cbegin(), list.cend(), pathSlash);
+
+    if (it != list.cend() && *it == pathSlash) {
+        return true;
+    }
+
+    if (it == list.cbegin()) {
+        return false;
+    }
+    --it;
+    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
+    return pathSlash.startsWith(*it);
 }
 
 bool SyncJournalDb::exists()
@@ -797,6 +824,14 @@ bool SyncJournalDb::updateMetadataTableStructure()
     addColumn(QStringLiteral("lockTime"), QStringLiteral("INTEGER"));
     addColumn(QStringLiteral("lockTimeout"), QStringLiteral("INTEGER"));
 
+    SqlQuery query(_db);
+    query.prepare("CREATE INDEX IF NOT EXISTS caseconflicts_basePath ON caseconflicts(basePath);");
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("caseconflictsTableStructure: create index basePath"), query);
+        return re = false;
+    }
+    commitInternal(QStringLiteral("update database structure: add basePath index"));
+
     return re;
 }
 
@@ -882,10 +917,15 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
-    qint64 h = 0;
-    int len = file.length();
+    QByteArray bytes = file;
+#ifdef Q_OS_MAC
+    bytes = QString::fromUtf8(file).normalized(QString::NormalizationForm_C).toUtf8();
+#endif
 
-    h = c_jhash64((uint8_t *)file.data(), len, 0);
+    qint64 h = 0;
+    int len = bytes.length();
+
+    h = c_jhash64((uint8_t *)bytes.data(), len, 0);
     return h;
 }
 
@@ -910,7 +950,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "modtime:" << record._modtime << "type:" << record._type << "etag:" << record._etag
                  << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm.toString()
                  << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader
-                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted
+                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record.isE2eEncrypted()
                  << "lock:" << (record._lockstate._locked ? "true" : "false")
                  << "lock owner type:" << record._lockstate._lockOwnerType
                  << "lock owner:" << record._lockstate._lockOwnerDisplayName
@@ -968,7 +1008,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(15, checksum);
     query->bindValue(16, contentChecksumTypeId);
     query->bindValue(17, record._e2eMangledName);
-    query->bindValue(18, record._isE2eEncrypted);
+    query->bindValue(18, static_cast<int>(record._e2eEncryptionStatus));
     query->bindValue(19, record._lockstate._locked ? 1 : 0);
     query->bindValue(20, record._lockstate._lockOwnerType);
     query->bindValue(21, record._lockstate._lockOwnerDisplayName);
@@ -1616,7 +1656,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
 
         if (query->next().hasData) {
             bool ok = true;
-            res._chunk = query->intValue(0);
+            res._chunkUploadV1 = query->intValue(0);
             res._transferid = query->int64Value(1);
             res._errorCount = query->intValue(2);
             res._size = query->int64Value(3);
@@ -1646,7 +1686,7 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         }
 
         query->bindValue(1, file);
-        query->bindValue(2, i._chunk);
+        query->bindValue(2, i._chunkUploadV1);
         query->bindValue(3, i._transferid);
         query->bindValue(4, i._errorCount);
         query->bindValue(5, i._size);
@@ -1953,10 +1993,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         if (!next.hasData)
             break;
 
-        auto entry = query->stringValue(0);
-        if (!entry.endsWith(QLatin1Char('/'))) {
-            entry.append(QLatin1Char('/'));
-        }
+        const auto entry = Utility::trailingSlashPath(query->stringValue(0));
         result.append(entry);
     }
     *ok = true;
@@ -1981,7 +2018,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
     }
 
     SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)", _db);
-    foreach (const auto &path, list) {
+    for (const auto &path : list) {
         insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
         insQuery.bindValue(2, int(type));
@@ -2685,13 +2722,14 @@ bool operator==(const SyncJournalDb::DownloadInfo &lhs,
 bool operator==(const SyncJournalDb::UploadInfo &lhs,
     const SyncJournalDb::UploadInfo &rhs)
 {
-    return lhs._errorCount == rhs._errorCount
-        && lhs._chunk == rhs._chunk
-        && lhs._modtime == rhs._modtime
-        && lhs._valid == rhs._valid
-        && lhs._size == rhs._size
-        && lhs._transferid == rhs._transferid
-        && lhs._contentChecksum == rhs._contentChecksum;
+    return lhs._errorCount == rhs._errorCount && lhs._chunkUploadV1 == rhs._chunkUploadV1 && lhs._modtime == rhs._modtime && lhs._valid == rhs._valid
+        && lhs._size == rhs._size && lhs._transferid == rhs._transferid && lhs._contentChecksum == rhs._contentChecksum;
+}
+
+QDebug& operator<<(QDebug &stream, const SyncJournalFileRecord::EncryptionStatus status)
+{
+    stream << static_cast<int>(status);
+    return stream;
 }
 
 } // namespace OCC

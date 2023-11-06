@@ -67,7 +67,6 @@ ItemDelegate {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             text: model.display
-            color: Style.ncTextColor
         }
     }
 }

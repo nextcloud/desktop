@@ -109,7 +109,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on succeess (QKeychain::NoError).
+     * @return Returns true on success (QKeychain::NoError).
     */
     bool exec();
 
@@ -142,7 +142,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on succeess (QKeychain::NoError).
+     * @return Returns true on success (QKeychain::NoError).
     */
     bool exec();
 
@@ -180,7 +180,7 @@ public:
      * Call this method to start the job synchronously.
      * Awaits completion with no need to connect some slot to the finished() signal first.
      *
-     * @return Returns true on succeess (QKeychain::NoError).
+     * @return Returns true on success (QKeychain::NoError).
     */
     bool exec();
 

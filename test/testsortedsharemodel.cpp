@@ -151,13 +151,13 @@ private slots:
         SortedShareModel sortedModel;
         QAbstractItemModelTester sortedModelTester(&sortedModel);
         QSignalSpy sortedModelReset(&sortedModel, &SortedShareModel::modelReset);
-        QSignalSpy shareModelChanged(&sortedModel, &SortedShareModel::shareModelChanged);
+        QSignalSpy shareModelChanged(&sortedModel, &SortedShareModel::sourceModelChanged);
 
-        sortedModel.setShareModel(&model);
+        sortedModel.setSourceModel(&model);
         QCOMPARE(shareModelChanged.count(), 1);
         QCOMPARE(sortedModelReset.count(), 1);
         QCOMPARE(sortedModel.rowCount(), model.rowCount());
-        QCOMPARE(sortedModel.shareModel(), &model);
+        QCOMPARE(sortedModel.sourceModel(), &model);
     }
 
     void testCorrectSort()
@@ -177,7 +177,7 @@ private slots:
         QAbstractItemModelTester sortedModelTester(&sortedModel);
         QSignalSpy sortedModelReset(&sortedModel, &SortedShareModel::modelReset);
 
-        sortedModel.setShareModel(&model);
+        sortedModel.setSourceModel(&model);
         QCOMPARE(sortedModelReset.count(), 1);
         QCOMPARE(sortedModel.rowCount(), model.rowCount());
 

@@ -41,7 +41,7 @@ public:
     ConfigFile();
 
     enum Scope { UserScope,
-        SystemScope };
+        SystemScope, LegacyScope };
 
     [[nodiscard]] QString configPath() const;
     [[nodiscard]] QString configFile() const;
@@ -141,6 +141,10 @@ public:
     /** [checked, size in MB] **/
     [[nodiscard]] QPair<bool, qint64> newBigFolderSizeLimit() const;
     void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
+    [[nodiscard]] bool notifyExistingFoldersOverLimit() const;
+    void setNotifyExistingFoldersOverLimit(const bool notify);
+    [[nodiscard]] bool stopSyncingExistingFoldersOverLimit() const;
+    void setStopSyncingExistingFoldersOverLimit(const bool stopSyncing);
     [[nodiscard]] bool useNewBigFolderSizeLimit() const;
     [[nodiscard]] bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
@@ -196,6 +200,9 @@ public:
     [[nodiscard]] QString overrideLocalDir() const;
     void setOverrideLocalDir(const QString &localDir);
 
+    [[nodiscard]] bool isVfsEnabled() const;
+    void setVfsEnabled(bool enabled);
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 
@@ -216,6 +223,13 @@ public:
     /// Add the system and user exclude file path to the ExcludedFiles instance.
     static void setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles);
 
+    /// Set during first time migration of legacy accounts in AccountManager
+    [[nodiscard]] static QString discoveredLegacyConfigPath();
+    static void setDiscoveredLegacyConfigPath(const QString &discoveredLegacyConfigPath);
+
+    [[nodiscard]] bool macFileProviderModuleEnabled() const;
+    void setMacFileProviderModuleEnabled(const bool moduleEnabled);
+
 protected:
     [[nodiscard]] QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
@@ -230,12 +244,10 @@ private:
 
     [[nodiscard]] QString keychainProxyPasswordKey() const;
 
-private:
     using SharedCreds = QSharedPointer<AbstractCredentials>;
 
-    static bool _askedUser;
-    static QString _oCVersion;
     static QString _confDir;
+    static QString _discoveredLegacyConfigPath;
 };
 }
 #endif // CONFIGFILE_H

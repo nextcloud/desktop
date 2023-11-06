@@ -57,10 +57,12 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    struct SingleItemDiscoveryOptions {
+    struct OWNCLOUDSYNC_EXPORT SingleItemDiscoveryOptions {
         QString discoveryPath;
         QString filePathRelative;
         SyncFileItemPtr discoveryDirItem;
+
+        [[nodiscard]] bool isValid() const;
     };
 
     SyncEngine(AccountPtr account,
@@ -128,7 +130,7 @@ public:
     [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
 
 public slots:
-    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
+    void setSingleItemDiscoveryOptions(const OCC::SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
 
     void startSync();
 
@@ -161,22 +163,22 @@ signals:
     void aboutToPropagate(OCC::SyncFileItemVector &);
 
     // after each item completed by a job (successful or not)
-    void itemCompleted(const OCC::SyncFileItemPtr &);
+    void itemCompleted(const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
 
     void transmissionProgress(const OCC::ProgressInfo &progress);
 
-    void itemDiscovered(const SyncFileItemPtr &);
+    void itemDiscovered(const OCC::SyncFileItemPtr &);
 
     /// We've produced a new sync error of a type.
-    void syncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
+    void syncError(const QString &message, const OCC::ErrorCategory category);
 
-    void addErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
 
     void finished(bool success);
     void started();
 
     /**
-     * Emited when the sync engine detects that all the files have been removed or change.
+     * Emitted when the sync engine detects that all the files have been removed or change.
      * This usually happen when the server was reset or something.
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
@@ -184,6 +186,8 @@ signals:
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
+
+    void existingFolderNowBig(const QString &folder);
 
     /** Emitted when propagation has problems with a locked file.
      *
@@ -206,11 +210,11 @@ private slots:
      */
     void slotNewItem(const OCC::SyncFileItemPtr &item);
 
-    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
     void slotDiscoveryFinished();
-    void slotPropagationFinished(bool success);
-    void slotProgress(const OCC::SyncFileItem &item, qint64 curent);
-    void slotCleanPollsJobAborted(const QString &error);
+    void slotPropagationFinished(SyncFileItem::Status status);
+    void slotProgress(const OCC::SyncFileItem &item, qint64 current);
+    void slotCleanPollsJobAborted(const QString &error, const OCC::ErrorCategory category);
 
     /** Records that a file was touched by a job. */
     void slotAddTouchedFile(const QString &fn);
@@ -289,6 +293,8 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
+    void processCaseClashConflictsBeforeDiscovery();
+
     // Aggregate scheduled sync runs into interval buckets. Can be used to
     // schedule a sync run per bucket instead of per file, reducing load.
     //
@@ -309,7 +315,7 @@ private:
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
-    // Must only be acessed during update and reconcile
+    // Must only be accessed during update and reconcile
     QVector<SyncFileItemPtr> _syncItems;
 
     AccountPtr _account;

@@ -6,10 +6,11 @@
 #include <QNetworkProxyFactory>
 #include <QScreen>
 
-#include "owncloudwizard.h"
-#include "creds/webflowcredentials.h"
-#include "webview.h"
 #include "account.h"
+#include "common/utility.h"
+#include "creds/webflowcredentials.h"
+#include "owncloudwizard.h"
+#include "webview.h"
 
 namespace OCC {
 
@@ -46,11 +47,7 @@ void WebViewPage::initializePage() {
     if (_ocWizard->registration()) {
         url = "https://nextcloud.com/register";
     } else {
-        url = _ocWizard->ocUrl();
-        if (!url.endsWith('/')) {
-            url += "/";
-        }
-        url += "index.php/login/flow";
+        url = Utility::trailingSlashPath(_ocWizard->ocUrl()) + "index.php/login/flow";
     }
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));

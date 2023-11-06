@@ -110,17 +110,23 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
 
     AccountPtr account = _accountState->account();
 
-    // User Info
-    QString user = objData.value("id").toString();
-    if (!user.isEmpty()) {
-        account->setDavUser(user);
+    if (const auto newUserId = objData.value("id").toString(); !newUserId.isEmpty()) {
+        if (QString::compare(account->davUser(), newUserId, Qt::CaseInsensitive) != 0) {
+            // TODO: the error message should be in the UI
+            qInfo() << "Authenticated with the wrong user! Please login with the account:" << account->prettyName();
+            if (const auto cred = account->credentials()) {
+                account->credentials()->askFromUser();
+            }
+            return;
+        }
+        account->setDavUser(newUserId);
     }
+
     QString displayName = objData.value("display-name").toString();
     if (!displayName.isEmpty()) {
         account->setDavDisplayName(displayName);
     }
 
-    // Quota
     auto objQuota = objData.value("quota").toObject();
     qint64 used = objQuota.value("used").toDouble();
     qint64 total = objQuota.value("quota").toDouble();
@@ -134,15 +140,15 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     _jobRestartTimer.start(defaultIntervalT);
     _lastInfoReceived = QDateTime::currentDateTime();
 
-    // Avatar Image
     if(_fetchAvatarImage) {
         auto *job = new AvatarJob(account, account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &UserInfo::slotAvatarImage);
         job->start();
+        return;
     }
-    else
-        emit fetchedLastInfo(this);
+
+    emit fetchedLastInfo(this);
 }
 
 void UserInfo::slotAvatarImage(const QImage &img)

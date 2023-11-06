@@ -18,7 +18,6 @@ ItemDelegate {
     readonly property bool isTalkReplyPossible: model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
 
-    enabled: (model.path !== "" || model.link !== "" || model.links.length > 0 ||  model.isCurrentUserFileActivity === true)
     padding: Style.standardSpacing
 
     Accessible.role: Accessible.ListItem
@@ -31,25 +30,21 @@ ItemDelegate {
     }
 
     contentItem: ColumnLayout {
-        id: contentLayout
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.rightMargin: Style.standardSpacing
-        anchors.leftMargin: Style.standardSpacing
-
-        spacing: Style.activityContentSpace
+        spacing: Style.smallSpacing
 
         ActivityItemContent {
             id: activityContent
 
             Layout.fillWidth: true
             Layout.minimumHeight: Style.minActivityHeight
+            Layout.preferredWidth: parent.width
 
             showDismissButton: model.isDismissable
 
             iconSize: root.iconSize
 
             activityData: model
+            activity: model.activity
 
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.activityIndex)
         }
@@ -61,7 +56,7 @@ ItemDelegate {
 
             Layout.preferredWidth: Style.talkReplyTextFieldPreferredWidth
             Layout.preferredHeight: Style.talkReplyTextFieldPreferredHeight
-            Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
+            Layout.leftMargin: Style.trayListItemIconSize + Style.trayHorizontalMargin
 
             sourceComponent: TalkReplyTextField {
                 onSendReply: {
@@ -69,29 +64,6 @@ ItemDelegate {
                     talkReplyTextFieldLoader.visible = false;
                 }
             }
-        }
-
-        ActivityItemActions {
-            id: activityActions
-
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
-
-            Layout.fillWidth: true
-            Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
-            Layout.preferredHeight: Style.standardPrimaryButtonHeight
-
-            displayActions: model.displayActions
-            objectType: model.objectType
-            linksForActionButtons: model.linksForActionButtons
-            linksContextMenu: model.linksContextMenu
-
-            maxActionButtons: activityModel.maxActionButtons
-
-            flickable: root.flickable
-
-            onTriggerAction: activityModel.slotTriggerAction(model.activityIndex, actionIndex)
-
-            onShowReplyField: root.isTalkReplyOptionVisible = true
         }
     }
 }

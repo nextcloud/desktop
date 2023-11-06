@@ -264,7 +264,7 @@ private slots:
     void slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum);
     // invoked when encrypted folder lock has been released
     void slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode);
-    // invoked on internal error to unlock a folder and faile
+    // invoked on internal error to unlock a folder and failed
     void slotOnErrorStartFolderUnlock(SyncFileItem::Status status, const QString &errorString);
 
 public:
@@ -281,7 +281,7 @@ private slots:
     void slotPollFinished();
 
 protected:
-    void done(SyncFileItem::Status status, const QString &errorString = QString()) override;
+    void done(const SyncFileItem::Status status, const QString &errorString = QString(), const ErrorCategory category = ErrorCategory::NoError) override;
 
     /**
      * Aborts all running network jobs, except for the ones that mayAbortJob
@@ -325,7 +325,7 @@ private:
 /**
  * @ingroup libsync
  *
- * Propagation job, impementing the old chunking agorithm
+ * Propagation job, implementing the old chunking algorithm
  *
  */
 class PropagateUploadFileV1 : public PropagateUploadFileCommon
@@ -372,33 +372,12 @@ private slots:
 /**
  * @ingroup libsync
  *
- * Propagation job, impementing the new chunking agorithm
+ * Propagation job, implementing the new chunking algorithm
  *
  */
 class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
-private:
-    qint64 _sent = 0; /// amount of data (bytes) that was already sent
-    uint _transferId = 0; /// transfer id (part of the url)
-    int _currentChunk = 0; /// Id of the next chunk that will be sent
-    qint64 _currentChunkSize = 0; /// current chunk size
-    bool _removeJobError = false; /// If not null, there was an error removing the job
-
-    // Map chunk number with its size  from the PROPFIND on resume.
-    // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
-    struct ServerChunkInfo
-    {
-        qint64 size = 0LL;
-        QString originalName;
-    };
-    QMap<qint64, ServerChunkInfo> _serverChunks;
-
-    /**
-     * Return the URL of a chunk.
-     * If chunk == -1, returns the URL of the parent folder containing the chunks
-     */
-    QUrl chunkUrl(int chunk = -1);
 
 public:
     PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
@@ -408,11 +387,9 @@ public:
 
     void doStartUpload() override;
 
-private:
-    void startNewUpload();
-    void startNextChunk();
 public slots:
     void abort(OCC::PropagateUploadFileNG::AbortType abortType) override;
+
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
@@ -422,5 +399,29 @@ private slots:
     void slotPutFinished();
     void slotMoveJobFinished();
     void slotUploadProgress(qint64, qint64);
+
+private:
+    // Map chunk number with its size  from the PROPFIND on resume.
+    // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
+    struct ServerChunkInfo {
+        qint64 size = 0LL;
+        QString originalName;
+    };
+
+    [[nodiscard]] QUrl chunkUploadFolderUrl() const;
+    [[nodiscard]] QUrl chunkUrl(const int chunk) const;
+    [[nodiscard]] QByteArray destinationHeader() const;
+
+    void startNewUpload();
+    void startNextChunk();
+    void finishUpload();
+
+    QMap<qint64, ServerChunkInfo> _serverChunks;
+
+    qint64 _sent = 0; /// amount of data (bytes) that was already sent
+    uint _transferId = 0; /// transfer id (part of the url)
+    int _currentChunk = 1; /// Id of the next chunk that will be sent
+    qint64 _currentChunkSize = 0; /// current chunk size
+    bool _removeJobError = false; /// If not null, there was an error removing the job
 };
 }

@@ -16,17 +16,17 @@
 #ifndef NETWORKJOBS_H
 #define NETWORKJOBS_H
 
+#include <QBuffer>
+
 #include "abstractnetworkjob.h"
 
 #include "common/result.h"
 
-#include <QBuffer>
-#include <QUrlQuery>
-#include <QJsonDocument>
-#include <functional>
-
 class QUrl;
+class QUrlQuery;
 class QJsonObject;
+class QJsonDocument;
+class QDomDocument;
 
 namespace OCC {
 
@@ -199,6 +199,10 @@ private slots:
     bool finished() override;
 
 private:
+    static QVariantMap processPropfindDomDocument(const QDomDocument &domDocument);
+    static QStringList processTagsInPropfindDomDocument(const QDomDocument &domDocument);
+    static QVariantList processSystemTagsInPropfindDomDocument(const QDomDocument &domDocument);
+
     QList<QByteArray> _properties;
 };
 
@@ -360,6 +364,34 @@ private:
     int _permanentRedirects = 0;
 };
 
+/**
+ * @brief The CheckRedirectCostFreeUrlJob class
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT CheckRedirectCostFreeUrlJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit CheckRedirectCostFreeUrlJob(const AccountPtr &account, QObject *parent = nullptr);
+    void start() override;
+
+signals:
+    /**
+    * a check is finished
+    * \a statusCode cost-free URL GET HTTP response code
+    */
+    void jobFinished(int statusCode);
+    /** A timeout occurred.
+     *
+     * \a url The specific url where the timeout happened.
+     */
+    void timeout(const QUrl &url);
+
+private:
+    bool finished() override;
+    void onTimedOut() override;
+};
+
 
 /**
  * @brief The RequestEtagJob class
@@ -491,7 +523,6 @@ public:
         WebViewFlow,
 #endif // WITH_WEBENGINE
         Basic, // also the catch-all fallback for backwards compatibility reasons
-        OAuth,
         LoginFlowV2
     };
     Q_ENUM(AuthType)
@@ -514,7 +545,7 @@ private:
 };
 
 /**
- * @brief A basic job around a network request without extra funtionality
+ * @brief A basic job around a network request without extra functionality
  * @ingroup libsync
  *
  * Primarily adds timeout and redirection handling.

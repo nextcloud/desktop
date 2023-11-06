@@ -19,7 +19,7 @@ import Style 1.0
 BusyIndicator {
     id: root
 
-    property color color: Style.ncSecondaryTextColor
+    property color color: palette.midlight
     property string imageSource: "image://svgimage-custom-color/change.svg/"
 
     property int imageSourceSizeWidth: 64

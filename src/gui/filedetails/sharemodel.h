@@ -35,6 +35,7 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(bool canShare READ canShare NOTIFY sharePermissionsChanged)
     Q_PROPERTY(bool fetchOngoing READ fetchOngoing NOTIFY fetchOngoingChanged)
     Q_PROPERTY(bool hasInitialShareFetchCompleted READ hasInitialShareFetchCompleted NOTIFY hasInitialShareFetchCompletedChanged)
+    Q_PROPERTY(bool serverAllowsResharing READ serverAllowsResharing NOTIFY serverAllowsResharingChanged)
     Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
 
 public:
@@ -57,7 +58,12 @@ public:
         PasswordRole,
         PasswordEnforcedRole,
         EditingAllowedRole,
-        IsSecureFileDropLinkRole,
+        CurrentPermissionModeRole,
+        SharedItemTypeRole,
+        IsSharePermissionsChangeInProgress,
+        HideDownloadEnabledRole,
+        IsHideDownloadEnabledChangeInProgress,
+        ResharingAllowedRole,
     };
     Q_ENUM(Roles)
 
@@ -79,6 +85,23 @@ public:
         ShareTypeSecureFileDropPlaceholderLink = Share::TypeSecureFileDropPlaceholderLink,
     };
     Q_ENUM(ShareType);
+    
+    enum class SharedItemType {
+        SharedItemTypeUndefined = -1,
+        SharedItemTypeFile,
+        SharedItemTypeFolder,
+        SharedItemTypeEncryptedFile,
+        SharedItemTypeEncryptedFolder,
+        SharedItemTypeEncryptedTopLevelFolder,
+    };
+    Q_ENUM(SharedItemType);
+    
+    enum class SharePermissionsMode {
+        ModeViewOnly,
+        ModeUploadAndEditing,
+        ModeFileDropOnly,
+    };
+    Q_ENUM(SharePermissionsMode);
 
     explicit ShareModel(QObject *parent = nullptr);
 
@@ -94,11 +117,14 @@ public:
     [[nodiscard]] bool publicLinkSharesEnabled() const;
     [[nodiscard]] bool userGroupSharingEnabled() const;
     [[nodiscard]] bool canShare() const;
+    [[nodiscard]] bool serverAllowsResharing() const;
 
     [[nodiscard]] bool fetchOngoing() const;
     [[nodiscard]] bool hasInitialShareFetchCompleted() const;
 
     [[nodiscard]] QVariantList sharees() const;
+
+    [[nodiscard]] Q_INVOKABLE static QString generatePassword();
 
 signals:
     void localPathChanged();
@@ -113,6 +139,7 @@ signals:
     void hasInitialShareFetchCompletedChanged();
     void shareesChanged();
     void internalLinkReady();
+    void serverAllowsResharingChanged();
 
     void serverError(const int code, const QString &message);
     void passwordSetError(const QString &shareId, const int code, const QString &message);
@@ -135,16 +162,18 @@ public slots:
     void deleteShare(const OCC::SharePtr &share) const;
     void deleteShareFromQml(const QVariant &share) const;
 
-    void toggleShareAllowEditing(const OCC::SharePtr &share, const bool enable) const;
-    void toggleShareAllowEditingFromQml(const QVariant &share, const bool enable) const;
-    void toggleShareAllowResharing(const OCC::SharePtr &share, const bool enable) const;
-    void toggleShareAllowResharingFromQml(const QVariant &share, const bool enable) const;
+    void toggleHideDownloadFromQml(const QVariant &share, const bool enable);
+    void toggleShareAllowEditing(const OCC::SharePtr &share, const bool enable);
+    void toggleShareAllowEditingFromQml(const QVariant &share, const bool enable);
+    void toggleShareAllowResharing(const OCC::SharePtr &share, const bool enable);
+    void toggleShareAllowResharingFromQml(const QVariant &share, const bool enable);
     void toggleSharePasswordProtect(const OCC::SharePtr &share, const bool enable);
     void toggleSharePasswordProtectFromQml(const QVariant &share, const bool enable);
     void toggleShareExpirationDate(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareExpirationDateFromQml(const QVariant &share, const bool enable) const;
     void toggleShareNoteToRecipient(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareNoteToRecipientFromQml(const QVariant &share, const bool enable) const;
+    void changePermissionModeFromQml(const QVariant &share, const OCC::ShareModel::SharePermissionsMode permissionMode);
 
     void setLinkShareLabel(const QSharedPointer<OCC::LinkShare> &linkShare, const QString &label) const;
     void setLinkShareLabelFromQml(const QVariant &linkShare, const QString &label) const;
@@ -164,6 +193,8 @@ private slots:
     void handleSecureFileDropLinkShare();
     void handleLinkShare();
     void setupInternalLinkShare();
+    void setSharePermissionChangeInProgress(const QString &shareId, const bool isInProgress);
+    void setHideDownloadEnabledChangeInProgress(const QString &shareId, const bool isInProgress);
 
     void slotPropfindReceived(const QVariantMap &result);
     void slotServerError(const int code, const QString &message);
@@ -176,6 +207,7 @@ private slots:
     void slotSharePermissionsSet(const QString &shareId);
     void slotSharePasswordSet(const QString &shareId);
     void slotShareNoteSet(const QString &shareId);
+    void slotHideDownloadSet(const QString &shareId);
     void slotShareNameSet(const QString &shareId);
     void slotShareLabelSet(const QString &shareId);
     void slotShareExpireDateSet(const QString &shareId);
@@ -187,9 +219,13 @@ private:
     [[nodiscard]] long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
     [[nodiscard]] bool expireDateEnforcedForShare(const SharePtr &share) const;
     [[nodiscard]] bool validCapabilities() const;
+    [[nodiscard]] bool isSecureFileDropSupportedFolder() const;
+    [[nodiscard]] bool isEncryptedItem() const;
 
     bool _fetchOngoing = false;
     bool _hasInitialShareFetchCompleted = false;
+    bool _sharePermissionsChangeInProgress = false;
+    bool _hideDownloadEnabledChangeInProgress = false;
     SharePtr _placeholderLinkShare;
     SharePtr _internalLinkShare;
     SharePtr _secureFileDropPlaceholderLinkShare;
@@ -201,8 +237,7 @@ private:
     QString _sharePath;
     SharePermissions _maxSharingPermissions;
     QByteArray _numericFileId;
-    bool _isEncryptedItem = false;
-    bool _isSecureFileDropSupportedFolder = false;
+    SharedItemType _sharedItemType = SharedItemType::SharedItemTypeUndefined;
     SyncJournalFileLockInfo _filelockState;
     QString _privateLinkUrl;
 

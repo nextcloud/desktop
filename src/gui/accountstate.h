@@ -47,6 +47,7 @@ class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
     Q_PROPERTY(AccountPtr account MEMBER _account)
+    Q_PROPERTY(State state READ state NOTIFY stateChanged)
 
 public:
     enum State {
@@ -63,6 +64,10 @@ public:
         /// There's a temporary problem with talking to the server,
         /// don't bother the user too much and try again.
         ServiceUnavailable,
+
+        /// Connection is being redirected (likely a captive portal is in effect)
+        /// Do not proceed with connecting and check back later
+        RedirectDetected,
 
         /// Similar to ServiceUnavailable, but we know the server is down
         /// for maintenance
@@ -159,12 +164,12 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
-    /** Returns the notifications status retrieved by the notificatons endpoint
+    /** Returns the notifications status retrieved by the notifications endpoint
      *  https://github.com/nextcloud/desktop/issues/2318#issuecomment-680698429
     */
     bool isDesktopNotificationsAllowed() const;
 
-    /** Set desktop notifications status retrieved by the notificatons endpoint
+    /** Set desktop notifications status retrieved by the notifications endpoint
     */
     void setDesktopNotificationsAllowed(bool isAllowed);
 
@@ -211,6 +216,7 @@ protected Q_SLOTS:
 private Q_SLOTS:
 
     void slotCheckConnection();
+    void slotCheckServerAvailibility();
     void slotPushNotificationsReady();
     void slotServerUserStatusChanged();
 
@@ -255,6 +261,8 @@ private:
 
     QTimer _checkConnectionTimer;
     QElapsedTimer _lastCheckConnectionTimer;
+
+    QTimer _checkServerAvailibilityTimer;
 
     explicit AccountState() = default;
 

@@ -163,7 +163,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             if (curEntry->NextEntryOffset == 0) {
                 break;
             }
-            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefor we first need to cast to char
+            // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefore we first need to cast to char
             curEntry = reinterpret_cast<FILE_NOTIFY_INFORMATION *>(reinterpret_cast<char*>(curEntry) + curEntry->NextEntryOffset);
         }
     }

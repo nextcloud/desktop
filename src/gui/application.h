@@ -49,6 +49,12 @@ class Folder;
 class ShellExtensionsServer;
 class SslErrorDialog;
 
+#ifdef Q_OS_MACOS
+namespace Mac {
+class FileProvider;
+}
+#endif
+
 /**
  * @brief The Application class
  * @ingroup gui
@@ -112,6 +118,10 @@ private:
 
     void handleEditLocallyFromOptions();
 
+    AccountManager::AccountsRestoreResult restoreLegacyAccount();
+    void setupConfigFile();
+    void setupAccountsAndFolders();
+
     /**
      * Maybe a newer version of the client was used with this config file:
      * if so, backup, confirm with user and remove the config that can't be read.
@@ -134,7 +144,7 @@ private:
     QString _logDir;
     int _logExpire = 0;
     bool _logFlush = false;
-    bool _logDebug = true;
+    bool _logDebug = false;
     bool _userTriggeredConnect = false;
     bool _debugMode = false;
     bool _backgroundMode = false;
@@ -152,8 +162,10 @@ private:
     QScopedPointer<CrashReporter::Handler> _crashHandler;
 #endif
     QScopedPointer<FolderMan> _folderManager;
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
+#elif defined(Q_OS_MACOS)
+    QScopedPointer<Mac::FileProvider> _fileProvider;
 #endif
 };
 
