@@ -862,6 +862,8 @@ private slots:
 
     void testWipeVirtualSuffixFiles()
     {
+        // This tests the procedure done in Folder::setVirtualFilesEnabled. For changes here, make sure they are reflected in that method.
+
         FakeFolder fakeFolder{ FileInfo{} };
         setupVfs(fakeFolder);
 
