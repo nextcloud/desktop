@@ -1669,7 +1669,7 @@ static QString checkPathValidityRecursive(const QString &path)
         // isWritable() doesn't cover all NTFS permissions
         // Try write
         auto testPath = path.toStdString() + "\\nextcloud-write-test-file.txt";
-        FILE *fp = fopen(testPath.c_str(), "w");
+        const auto fp = fopen(testPath.c_str(), "w");
         if (!fp)
             return FolderMan::tr("You have no permission to write to the selected folder!");
         fclose(fp);
