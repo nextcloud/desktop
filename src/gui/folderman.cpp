@@ -1677,8 +1677,9 @@ static QString checkPathValidityRecursive(const QString &path)
 
         // Try delete
         const auto rc = remove(testPath.c_str());
-        if (rc)
+        if (rc) {
             return FolderMan::tr("You have no permission to write to the selected folder!");
+        }
     }
     #else
     if (!selFile.isWritable()) {
