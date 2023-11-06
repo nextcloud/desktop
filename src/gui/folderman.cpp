@@ -1706,14 +1706,14 @@ static QString checkPathValidityRecursive(const QString &path)
         // isWritable() doesn't cover all NTFS permissions
         // Try write
         const auto testPath = selFile.dir().filePath("nextcloud-write-test-file.txt");
-        const auto fp = fopen(testPath.c_str(), "w");
+        const auto fp = fopen(testPath.toStdWString().c_str(), "w");
         if (!fp) {
             return FolderMan::tr("You have no permission to write to the selected folder!");
         }
         fclose(fp);
 
         // Try delete
-        const auto rc = remove(testPath.c_str());
+        const auto rc = remove(testPath.toStdWString().c_str());
         if (rc) {
             return FolderMan::tr("You have no permission to write to the selected folder!");
         }
