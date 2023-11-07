@@ -199,7 +199,6 @@ bool AccountManager::restoreFromLegacySettings()
                     const auto importMessageBox = new QMessageBox(QMessageBox::Question, tr("Legacy import"), importQuestion);
                     importMessageBox->addButton(tr("Import"), QMessageBox::AcceptRole);
                     const auto skipButton = importMessageBox->addButton(tr("Skip"), QMessageBox::DestructiveRole);
-                    importMessageBox->setAttribute(Qt::WA_DeleteOnClose);
                     importMessageBox->exec();
                     if (importMessageBox->clickedButton() == skipButton) {
                         return false;
