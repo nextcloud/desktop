@@ -500,6 +500,33 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
     }
 }
 
+void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemVector &items)
+{
+    QString previousFolderPath;
+    const auto eraseBeginIt = std::remove_if(std::begin(items), std::end(items), [&previousFolderPath](const SyncFileItemPtr &item) {
+        // we assume items is always sorted such that parent folder go before children
+        if (item->_instruction != CSYNC_INSTRUCTION_RENAME || item->_direction != SyncFileItem::Up) {
+            previousFolderPath.clear();
+            return false;
+        }
+
+        if (item->isDirectory() && (previousFolderPath.isEmpty() || !item->_originalFile.startsWith(previousFolderPath))) {
+            // if it is a directory and there was no previous directory set, do it now, same for a directory which is not a child of previous directory, assume
+            // starting a new hierarchy
+            previousFolderPath = item->_originalFile;
+            return false;
+        }
+
+        if (previousFolderPath.isEmpty()) {
+            return false;
+        }
+
+        // remove only children of previousFolderPath, not previousFolderPath itself such that parent always remains in the vector
+        return item->_originalFile.startsWith(previousFolderPath);
+    });
+    items.erase(eraseBeginIt, std::end(items));
+}
+
 qint64 OwncloudPropagator::smallFileSize()
 {
     const qint64 smallFileSize = 100 * 1024; //default to 1 MB. Not dynamic right now.
@@ -537,14 +564,11 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
             items.end());
     }
 
-    QStringList files;
-
-    for (const auto &item : items) {
-        files.push_back(item->_file);
-    }
-
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
     adjustDeletedFoldersWithNewChildren(items);
+
+    // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
+    cleanupLocallyMovedFoldersFromNestedItems(items);
 
     resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
