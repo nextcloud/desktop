@@ -1035,41 +1035,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="948"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1148"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1151"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>โฟลเดอร์ที่มีพื้นที่จัดเก็บข้อมูลภายนอกได้ถูกเพิ่ม
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1145"/>
+        <location filename="../src/gui/folder.cpp" line="1152"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>กรุณาไปในส่วนของการตั้งค่าเพื่อเลือก ถ้าคุณต้องการจะดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1199"/>
+        <location filename="../src/gui/folder.cpp" line="1206"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>โฟลเดอร์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>ไฟล์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1221"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1080,7 +1080,7 @@ This means that the synchronization client might not upload local changes immedi
 หมายความว่าการประสานข้อมูลของไคลเอ็นต์อาจยังไม่ได้อัปโหลดการเปลี่ยนแปลงในระบบทันทีและจะสแกนเฉพาะการเปลี่ยนแปลงในเครื่องและอัปโหลดไฟล์เหล่านั้นเป็นครั้งคราว (ทุกสองชั่วโมงตามค่าเริ่มต้น)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1266"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1091,7 +1091,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 หากคุณตัดสินใจลบไฟล์ก็จะทำให้ไม่มีใครสามารถใช้งานโฟลเดอร์นี้ได้เพราะคุณเป็นเจ้าของ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1265"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1101,17 +1101,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 ถ้าเรื่องนี้เป็นอุบัติเหตุและคุณตัดสินใจเก็บไฟล์ของคุณ ไฟล์ของคุณก็จะถูกประสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1279"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1275"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1276"/>
+        <location filename="../src/gui/folder.cpp" line="1283"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>

@@ -1045,41 +1045,41 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="948"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>Could not read system exclude file</source>
         <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1148"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB dan büyük yeni klasör eklendi: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1151"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Harici depolama ünitesinden bir klasör eklendi.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1145"/>
+        <location filename="../src/gui/folder.cpp" line="1152"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>İndirmek isterseniz, lütfen &quot;Ayarlar&quot; bölümünden seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1199"/>
+        <location filename="../src/gui/folder.cpp" line="1206"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 klasörü yaratıldı ama daha önce senkronizasyondan hariç tutuldu. İçerik eşitlenmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 dosyası yaratıldı ama daha önce senkronizasyondan hariç tutuldu, İçerik eşitlenmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1221"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1092,7 +1092,7 @@ Bu yüzden senkronizasyon yerel değişiklikler anlık olarak karşı tarafa yü
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1266"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1103,7 +1103,7 @@ Dosyalar silinmesin istiyorsanız, yetkiniz olduğu sürece sunucu ile tekrar se
 Silmeye karar verdiyseniz, sahibi olana kadar dosyalar kullanım dışıdır.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1265"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1112,17 +1112,17 @@ Bu işlemlerin sunucuda da gerçekleşmesini istiyor musunuz?
 Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, dosyalar sunucudan tekrar senkronize edilecektir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1279"/>
         <source>Remove All Files?</source>
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1275"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1276"/>
+        <location filename="../src/gui/folder.cpp" line="1283"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>

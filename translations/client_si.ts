@@ -1035,41 +1035,41 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>සමමුහුර්ත ක්‍රියාකාරකම්</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="948"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>Could not read system exclude file</source>
         <translation>පද්ධතිය බැහැර ගොනුව කියවීමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1148"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB ට වඩා විශාල නව ෆෝල්ඩරයක් එකතු කර ඇත: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1151"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>බාහිර ගබඩාවකින් ෆෝල්ඩරයක් එක් කර ඇත.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1145"/>
+        <location filename="../src/gui/folder.cpp" line="1152"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>ඔබට එය බාගත කිරීමට අවශ්‍ය නම් එය තේරීමට කරුණාකර සැකසීම් වෙත යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1199"/>
+        <location filename="../src/gui/folder.cpp" line="1206"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>ෆෝල්ඩරය %1 නිර්මාණය කරන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කර ඇත. එය තුළ ඇති දත්ත සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 ගොනුව සාදන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කරන ලදී. එය සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1221"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1082,7 +1082,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1259"/>
+        <location filename="../src/gui/folder.cpp" line="1266"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1093,7 +1093,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ඔබ ගොනු මකා දැමීමට තීරණය කරන්නේ නම්, ඔබ හිමිකරු නම් මිස, ඒවා ඔබට ලබාගත නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1265"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1102,17 +1102,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 මෙය හදිසි අනතුරක් නම් සහ ඔබ ඔබේ ගොනු තබා ගැනීමට තීරණය කරන්නේ නම්, ඒවා සේවාදායකයෙන් නැවත සමමුහුර්ත කරනු ලැබේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1272"/>
+        <location filename="../src/gui/folder.cpp" line="1279"/>
         <source>Remove All Files?</source>
         <translation>සියලුම ගොනු ඉවත් කරන්නද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1275"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>Remove all files</source>
         <translation>සියලුම ගොනු ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1276"/>
+        <location filename="../src/gui/folder.cpp" line="1283"/>
         <source>Keep files</source>
         <translation>ගොනු තබා ගන්න</translation>
     </message>
