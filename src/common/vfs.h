@@ -225,6 +225,13 @@ public:
      */
     [[nodiscard]] virtual AvailabilityResult availability(const QString &folderPath) = 0;
 
+    /** Removes all virtual file db entries and dehydrated local placeholders.
+     *
+     * Particularly useful when switching off vfs mode or switching to a
+     * different kind of vfs.
+     */
+    void wipeDehydratedVirtualFiles();
+
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
      *

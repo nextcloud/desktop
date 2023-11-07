@@ -166,3 +166,8 @@ def step(context, user, folder_name):
 @Given('user "|any|" has uploaded file with content "|any|" to "|any|" in the server')
 def step(context, user, file_content, file_name):
     webdav.create_file(user, file_name, file_content)
+
+
+@When("the user clicks on the settings tab")
+def step(context):
+    Toolbar.open_settings_tab()

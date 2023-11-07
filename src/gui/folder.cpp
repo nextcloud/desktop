@@ -169,7 +169,7 @@ Folder::Folder(const FolderDefinition &definition,
             if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
                 if (auto winvfs = VfsPluginManager::instance().createVfsFromPlugin(Vfs::WindowsCfApi)) {
                     // Wipe the existing suffix files from fs and journal
-                    SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
+                    _vfs->wipeDehydratedVirtualFiles();
 
                     // Then switch to winvfs mode
                     _vfs.reset(winvfs.release());
@@ -772,6 +772,16 @@ void Folder::setVirtualFilesEnabled(bool enabled)
     }
 
     if (newMode != _definition.virtualFilesMode) {
+        // This is tested in TestSyncVirtualFiles::testWipeVirtualSuffixFiles, so for changes here, have them reflected in that test.
+
+        // TODO: Must wait for current sync to finish!
+        OC_ENFORCE(!isSyncRunning());
+
+        // Wipe the dehydrated files from the DB, they will get downloaded on the next sync. We need to do this, otherwise the files
+        // are in the DB but not on disk, so the client assumes they are deleted, and removes them from the remote.
+        _vfs->wipeDehydratedVirtualFiles();
+
+        // Tear down the VFS
         _vfs->stop();
         _vfs->unregisterFolder();
 
@@ -781,6 +791,7 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         _vfsIsReady = false;
         _vfs.reset(VfsPluginManager::instance().createVfsFromPlugin(newMode).release());
 
+        // Restart VFS.
         _definition.virtualFilesMode = newMode;
         startVfs();
         saveToSettings();
@@ -1279,8 +1290,8 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)
         if (_removeAllFilesDialog->clickedButton() == keepBtn) {
             // reset the db upload all local files or download all remote files
             FileSystem::setFolderMinimumPermissions(path());
-            // will remove placeholders in the next sync
-            SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
+            // will remove all dehydrated placeholders
+            _vfs->wipeDehydratedVirtualFiles();
             journalDb()->clearFileTable();
         }
         // if all local files where placeholders, they might be gone after the next sync

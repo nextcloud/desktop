@@ -1,0 +1,7 @@
+Bugfix: Prevent permanent deletion of files when disabling VFS
+
+When a user disabled the virtual files feature on Windows, all currently dehydrated files were deleted accidentally.
+On the server those files where still available in the trash bin.
+This regression was introduced in the previous release 5.0.0.
+
+https://github.com/owncloud/client/issues/11331

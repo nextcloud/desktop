@@ -32,6 +32,24 @@
 #endif
 using namespace OCC;
 
+Q_LOGGING_CATEGORY(lcVfs, "sync.vfs", QtInfoMsg)
+
+namespace {
+QString modeToPluginName(Vfs::Mode mode)
+{
+    switch (mode) {
+    case Vfs::Off:
+        return QStringLiteral("off");
+    case Vfs::WithSuffix:
+        return QStringLiteral("suffix");
+    case Vfs::WindowsCfApi:
+        return QStringLiteral("win");
+    default:
+        Q_UNREACHABLE();
+    }
+}
+}
+
 Vfs::Vfs(QObject* parent)
     : QObject(parent)
 {
@@ -127,18 +145,37 @@ Vfs::AvailabilityResult Vfs::availabilityInDb(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
-static QString modeToPluginName(Vfs::Mode mode)
+void Vfs::wipeDehydratedVirtualFiles()
 {
-    switch (mode) {
-    case Vfs::Off:
-        return QStringLiteral("off");
-    case Vfs::WithSuffix:
-        return QStringLiteral("suffix");
-    case Vfs::WindowsCfApi:
-        return QStringLiteral("win");
-    default:
-        Q_UNREACHABLE();
+    if (mode() == Vfs::Mode::Off) {
+        // there are no placeholders
+        return;
     }
+    _setupParams->journal->getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
+        // only handle dehydrated files
+        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload) {
+            return;
+        }
+        const QString relativePath = QString::fromUtf8(rec._path);
+        qCDebug(lcVfs) << "Removing db record for dehydrated file" << relativePath;
+        _setupParams->journal->deleteFileRecord(relativePath);
+
+        // If the local file is a dehydrated placeholder, wipe it too.
+        // Otherwise leave it to allow the next sync to have a new-new conflict.
+        const QString absolutePath = _setupParams->filesystemPath + relativePath;
+        if (QFile::exists(absolutePath)) {
+            // according to our db this is a dehydrated file, check it  to be sure
+            if (isDehydratedPlaceholder(absolutePath)) {
+                qCDebug(lcVfs) << "Removing local dehydrated placeholder" << relativePath;
+                FileSystem::remove(absolutePath);
+            }
+        }
+    });
+
+    _setupParams->journal->forceRemoteDiscoveryNextSync();
+
+    // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db.
+    // But hydrated placeholders may still be around.
 }
 
 Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)

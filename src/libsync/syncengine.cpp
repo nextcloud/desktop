@@ -855,31 +855,6 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
     return false;
 }
 
-void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs)
-{
-    qCInfo(lcEngine) << "Wiping virtual files inside" << localPath;
-    journal.getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
-        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
-            return;
-
-        qCDebug(lcEngine) << "Removing db record for" << rec._path;
-        journal.deleteFileRecord(QString::fromUtf8(rec._path));
-
-        // If the local file is a dehydrated placeholder, wipe it too.
-        // Otherwise leave it to allow the next sync to have a new-new conflict.
-        QString localFile = localPath + QString::fromUtf8(rec._path);
-        if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
-            qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec._path;
-            FileSystem::remove(localFile);
-        }
-    });
-
-    journal.forceRemoteDiscoveryNextSync();
-
-    // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db.
-    // But hydrated placeholders may still be around.
-}
-
 void SyncEngine::abort()
 {
     if (_propagator)
