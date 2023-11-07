@@ -31,3 +31,7 @@ class Toolbar:
                 Toolbar.getItemSelector(displayname + "@" + host)
             ).text
         )
+
+    @staticmethod
+    def open_settings_tab():
+        squish.clickButton(squish.waitForObject(Toolbar.getItemSelector("Settings")))

@@ -2,6 +2,7 @@ from pageObjects.SyncConnectionWizard import SyncConnectionWizard
 from pageObjects.SyncConnection import SyncConnection
 from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
+from pageObjects.Settings import Settings
 
 from helpers.SetupClientHelper import getResourcePath
 from helpers.ConfigHelper import get_config
@@ -173,3 +174,31 @@ def step(context, folderName):
 @When('the user syncs the "|any|" space')
 def step(context, spaceName):
     SyncConnectionWizard.syncSpace(spaceName)
+
+
+@Then('the settings tab should have the following options in the general section:')
+def step(context):
+    for item in context.table:
+        Settings.check_general_option(item[0])
+
+
+@Then('the settings tab should have the following options in the advanced section:')
+def step(context):
+    for item in context.table:
+        Settings.check_advanced_option(item[0])
+
+
+@Then('the settings tab should have the following options in the network section:')
+def step(context):
+    for item in context.table:
+        Settings.check_network_option(item[0])
+
+
+@When('the user opens the about dialog')
+def step(context):
+    Settings.open_about_button()
+
+
+@Then('the about dialog should be opened')
+def step(context):
+    Settings.wait_for_about_dialog_to_be_visible()
