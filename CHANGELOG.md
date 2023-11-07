@@ -8,12 +8,21 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 
 Details
 -------
+
+* Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
+
+   When a user disabled the virtual files feature on Windows, all currently dehydrated files were
+   deleted accidentally. On the server those files where still available in the trash bin. This
+   regression was introduced in the previous release 5.0.0.
+
+   https://github.com/owncloud/client/issues/11331
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
