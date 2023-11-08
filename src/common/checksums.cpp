@@ -227,6 +227,7 @@ ComputeChecksum::~ComputeChecksum()
 
 void ComputeChecksum::setChecksumType(CheckSums::Algorithm type)
 {
+    Q_ASSERT(type != CheckSums::Algorithm::NONE && type != CheckSums::Algorithm::PARSE_ERROR);
     _checksumType = type;
 }
 
