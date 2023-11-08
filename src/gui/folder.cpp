@@ -759,9 +759,13 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
     if (newMode != _definition.virtualFilesMode) {
         // This is tested in TestSyncVirtualFiles::testWipeVirtualSuffixFiles, so for changes here, have them reflected in that test.
-
-        // TODO: Must wait for current sync to finish!
-        OC_ENFORCE(!isSyncRunning());
+        if (isSyncRunning()) {
+            slotTerminateSync();
+        }
+        const bool isPaused = _definition.paused;
+        if (!isPaused) {
+            setSyncPaused(true);
+        }
 
         // Wipe the dehydrated files from the DB, they will get downloaded on the next sync. We need to do this, otherwise the files
         // are in the DB but not on disk, so the client assumes they are deleted, and removes them from the remote.
@@ -780,6 +784,9 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         // Restart VFS.
         _definition.virtualFilesMode = newMode;
         startVfs();
+        if (!isPaused) {
+            setSyncPaused(isPaused);
+        }
         saveToSettings();
     }
 }
