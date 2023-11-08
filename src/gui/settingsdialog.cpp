@@ -246,7 +246,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
             tr("Are you sure you want to quit %1?").arg(appNameGui), QMessageBox::Yes | QMessageBox::No, this);
         box->setAttribute(Qt::WA_DeleteOnClose);
         connect(box, &QMessageBox::accepted, this, [] {
-            qApp->quit();
+            // delay quit to prevent a Qt 6.6 crash in the destructor of the dialog
+            QTimer::singleShot(0, qApp, &QCoreApplication::quit);
         });
         box->open();
     });
