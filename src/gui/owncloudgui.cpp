@@ -640,9 +640,9 @@ void ownCloudGui::updateContextMenu()
 
     if (_app->debugMode()) {
         auto *crashMenu = _contextMenu->addMenu(QStringLiteral("Debug actions"));
-        crashMenu->addAction(QStringLiteral("Crash now - Div by zero"), _app, &Application::slotCrash);
-        crashMenu->addAction(QStringLiteral("Crash now - ENFORCE()"), _app, &Application::slotCrashEnforce);
-        crashMenu->addAction(QStringLiteral("Crash now - qFatal"), _app, &Application::slotCrashFatal);
+        crashMenu->addAction(QStringLiteral("Crash now - Div by zero"), _app, [] { Utility::crash(); });
+        crashMenu->addAction(QStringLiteral("Crash now - ENFORCE()"), _app, [] { OC_ENFORCE(1 == 0); });
+        crashMenu->addAction(QStringLiteral("Crash now - qFatal"), _app, [] { qFatal("la Qt fatale"); });
     }
 
     _contextMenu->addSeparator();

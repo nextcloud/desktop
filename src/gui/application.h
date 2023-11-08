@@ -59,9 +59,6 @@ public:
     AccountStatePtr addNewAccount(AccountPtr newAccount);
 
 public slots:
-    void slotCrash();
-    void slotCrashEnforce();
-    void slotCrashFatal();
     /**
      * Will download a virtual file, and open the result.
      * The argument is the filename of the virtual file (including the extension)

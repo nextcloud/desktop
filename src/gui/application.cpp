@@ -193,22 +193,6 @@ void Application::slotCleanup()
     AccountManager::instance()->shutdown();
 }
 
-void Application::slotCrash()
-{
-    Utility::crash();
-}
-
-void Application::slotCrashEnforce()
-{
-    OC_ENFORCE(1 == 0);
-}
-
-
-void Application::slotCrashFatal()
-{
-    qFatal("la Qt fatale");
-}
-
 AccountStatePtr Application::addNewAccount(AccountPtr newAccount)
 {
     auto *accountMan = AccountManager::instance();
