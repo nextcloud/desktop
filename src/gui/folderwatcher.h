@@ -80,6 +80,10 @@ public:
     /// For testing linux behavior only
     int testLinuxWatchCount() const;
 
+    // pop the accumulated changes
+    QSet<QString> popChangeSet();
+
+
 signals:
     /** Emitted when one of the watched directories or one
      *  of the contained files is changed. */

@@ -956,6 +956,10 @@ void Folder::startSync()
 
     setDirtyNetworkLimits();
 
+    // get the latest touched files
+    // this will enque this folder again, it doesn't matter
+    slotWatchedPathsChanged(_folderWatcher->popChangeSet(), Folder::ChangeReason::Other);
+
     const std::chrono::milliseconds fullLocalDiscoveryInterval = ConfigFile().fullLocalDiscoveryInterval();
     const bool hasDoneFullLocalDiscovery = _timeSinceLastFullLocalDiscovery.isValid();
     // negative fullLocalDiscoveryInterval means we don't require periodic full runs

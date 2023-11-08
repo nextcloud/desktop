@@ -1,0 +1,5 @@
+Enhancement: Include recent changes in scheduled syncs
+
+When starting a new sync we now also include the recent change events in the discovery.
+
+https://github.com/owncloud/client/pull/11347

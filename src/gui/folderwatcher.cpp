@@ -50,20 +50,7 @@ FolderWatcher::FolderWatcher(Folder *folder)
 {
     _timer.setInterval(notificationTimeoutC);
     connect(&_timer, &QTimer::timeout, this, [this] {
-        auto paths = std::move(_changeSet);
-        // ------- handle ignores:
-        auto it = paths.cbegin();
-        while (it != paths.cend()) {
-            // we cause a file change from time to time to check whether the folder watcher works as expected
-            if (!_testNotificationPath.isEmpty() && Utility::fileNamesEqual(*it, _testNotificationPath)) {
-                _testNotificationPath.clear();
-            }
-            if (pathIsIgnored(*it)) {
-                it = paths.erase(it);
-            } else {
-                ++it;
-            }
-        }
+        auto paths = popChangeSet();
         if (!paths.isEmpty()) {
             qCInfo(lcFolderWatcher) << "Detected changes in paths:" << paths;
             emit pathChanged(paths);
@@ -158,6 +145,25 @@ void FolderWatcher::changeDetected(const QSet<QString> &paths)
     if (!_timer.isActive()) {
         _timer.start();
     }
+}
+
+QSet<QString> FolderWatcher::popChangeSet()
+{
+    auto paths = std::move(_changeSet);
+    // ------- handle ignores:
+    auto it = paths.cbegin();
+    while (it != paths.cend()) {
+        // we cause a file change from time to time to check whether the folder watcher works as expected
+        if (!_testNotificationPath.isEmpty() && Utility::fileNamesEqual(*it, _testNotificationPath)) {
+            _testNotificationPath.clear();
+        }
+        if (pathIsIgnored(*it)) {
+            it = paths.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    return paths;
 }
 
 } // namespace OCC
