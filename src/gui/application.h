@@ -65,9 +65,6 @@ public slots:
      */
     void openVirtualFile(const QString &filename);
 
-    /// Attempt to show() the tray icon again. Used if no systray was available initially.
-    void tryTrayAgain();
-
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 

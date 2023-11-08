@@ -252,13 +252,6 @@ void Application::openVirtualFile(const QString &filename)
     });
 }
 
-void Application::tryTrayAgain()
-{
-    qCInfo(lcApplication) << "Trying tray icon, tray available:" << QSystemTrayIcon::isSystemTrayAvailable();
-    if (!_gui->contextMenuVisible())
-        _gui->hideAndShowTray();
-}
-
 bool Application::eventFilter(QObject *obj, QEvent *event)
 {
 #ifdef Q_OS_MAC
