@@ -47,8 +47,8 @@ static QCryptographicHash::Algorithm algorithmTypeToQCryptoHashAlgorithm(Checksu
     return static_cast<QCryptographicHash::Algorithm>(-1);
 }
 
-ChecksumCalculator::ChecksumCalculator(QSharedPointer<QIODevice> sharedDevice, const QByteArray &checksumTypeName)
-    : _device(sharedDevice)
+ChecksumCalculator::ChecksumCalculator(const QString &filePath, const QByteArray &checksumTypeName)
+    : _device(new QFile(filePath))
 {
     if (checksumTypeName == checkSumMD5C) {
         _algorithmType = AlgorithmType::MD5;
