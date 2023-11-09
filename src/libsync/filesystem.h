@@ -21,6 +21,7 @@
 #include <owncloudlib.h>
 // Chain in the base include and extend the namespace
 #include "common/filesystembase.h"
+#include "common/result.h"
 
 class QFile;
 
@@ -99,6 +100,12 @@ namespace FileSystem {
         RemoveEntryList *success,
         RemoveEntryList *locked,
         RemoveErrorList *errors);
+
+    namespace Tags {
+        std::optional<QByteArray> OWNCLOUDSYNC_EXPORT get(const QString &path, const QString &key);
+        OCC::Result<void, QString> OWNCLOUDSYNC_EXPORT set(const QString &path, const QString &key, const QByteArray &value);
+        bool OWNCLOUDSYNC_EXPORT remove(const QString &path, const QString &key);
+    }
 }
 
 /** @} */

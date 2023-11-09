@@ -14,21 +14,30 @@
 
 #include "filesystem.h"
 
+#include "common/asserts.h"
 #include "common/utility.h"
-#include <QFile>
-#include <QFileInfo>
+#include <QCoreApplication>
 #include <QDir>
 #include <QDirIterator>
-#include <QCoreApplication>
+#include <QFile>
+#include <QFileInfo>
 
 #include "csync.h"
 #include "vio/csync_vio_local.h"
 #include "std/c_time.h"
 
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+#include <sys/xattr.h>
+#endif
+
 #ifdef Q_OS_WIN32
 #include "common/utility_win.h"
 #include <winsock2.h>
 #endif
+
+namespace {
+static constexpr unsigned MaxValueSize = 1023; // This is without a terminating NUL character
+} // anonymous namespace
 
 namespace OCC {
 
@@ -196,6 +205,101 @@ bool FileSystem::getInode(const QString &filename, quint64 *inode)
         return true;
     }
     return false;
+}
+
+namespace {
+
+#ifdef Q_OS_LINUX
+    Q_ALWAYS_INLINE ssize_t getxattr(const char *path, const char *name, void *value, size_t size, u_int32_t, int)
+    {
+        return ::getxattr(path, name, value, size);
+    }
+
+    Q_ALWAYS_INLINE int setxattr(const char *path, const char *name, const void *value, size_t size, u_int32_t, int)
+    {
+        return ::setxattr(path, name, value, size, 0);
+    }
+
+    Q_ALWAYS_INLINE int removexattr(const char *path, const char *name, int)
+    {
+        return ::removexattr(path, name);
+    }
+#endif // Q_OS_LINUX
+
+} // anonymous namespace
+
+std::optional<QByteArray> FileSystem::Tags::get(const QString &path, const QString &key)
+{
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+    QString platformKey = key;
+    if (Utility::isLinux()) {
+        platformKey = QStringLiteral("user.") + platformKey;
+    }
+
+    QByteArray value(MaxValueSize + 1, '\0'); // Add a NUL character to terminate a string
+    auto size = getxattr(path.toUtf8().constData(), platformKey.toUtf8().constData(), value.data(), MaxValueSize, 0, 0);
+    if (size != -1) {
+        value.truncate(size);
+        return value;
+    }
+#elif defined(Q_OS_WIN)
+    QFile file(QStringLiteral("%1:%2").arg(path, key));
+    if (file.open(QIODevice::ReadOnly)) {
+        return file.readAll();
+    }
+#endif // Q_OS_MAC || Q_OS_LINUX
+
+    return {};
+}
+
+OCC::Result<void, QString> FileSystem::Tags::set(const QString &path, const QString &key, const QByteArray &value)
+{
+    OC_ASSERT(value.size() < MaxValueSize)
+
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+    QString platformKey = key;
+    if (Utility::isLinux()) {
+        platformKey = QStringLiteral("user.") + platformKey;
+    }
+
+    auto result = setxattr(path.toUtf8().constData(), platformKey.toUtf8().constData(), value.constData(), value.size(), 0, 0);
+    if (result != 0) {
+        return QString::fromUtf8(strerror(errno));
+    }
+
+    return {};
+#elif defined(Q_OS_WIN)
+    QFile file(QStringLiteral("%1:%2").arg(path, key));
+    if (!file.open(QIODevice::WriteOnly)) {
+        return file.errorString();
+    }
+    auto bytesWritten = file.write(value);
+    if (bytesWritten != value.size()) {
+        return QStringLiteral("wrote %1 out of %2 bytes").arg(QString::number(bytesWritten), QString::number(value.size()));
+    }
+
+    return {};
+#else
+    return QStringLiteral("function not implemented");
+#endif // Q_OS_MAC || Q_OS_LINUX
+}
+
+bool FileSystem::Tags::remove(const QString &path, const QString &key)
+{
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+    QString platformKey = key;
+    if (Utility::isLinux()) {
+        platformKey = QStringLiteral("user.%1").arg(platformKey);
+    }
+
+    auto result = removexattr(path.toUtf8().constData(), platformKey.toUtf8().constData(), 0);
+
+    return result == 0;
+#elif defined(Q_OS_WIN)
+    return QFile::remove(QStringLiteral("%1:%2").arg(path, key));
+#else
+    return false;
+#endif // Q_OS_MAC || Q_OS_LINUX
 }
 
 

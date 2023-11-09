@@ -7,10 +7,11 @@
 #include <QtTest>
 #include <QTemporaryDir>
 
+#include "filesystem.h"
+#include "testutils/testutils.h"
+
 #include "common/filesystembase.h"
 #include "common/utility.h"
-
-#include "libsync/theme.h"
 
 using namespace OCC::Utility;
 
@@ -260,6 +261,47 @@ private slots:
         CHECK_NORMALIZE_ETAG("foo-gzip", "foo");
         CHECK_NORMALIZE_ETAG("\"foo\"-gzip", "foo");
         CHECK_NORMALIZE_ETAG("\"foo-gzip\"", "foo");
+    }
+
+    void testFileMetaData()
+    {
+        using namespace OCC::TestUtils;
+        using namespace OCC::FileSystem;
+
+        QTemporaryDir temp = createTempDir();
+        QFile tempFile(temp.filePath(QStringLiteral("testfile")));
+        QVERIFY(tempFile.open(QIODevice::WriteOnly));
+        QByteArray data(64, 'X');
+        QCOMPARE(tempFile.write(data), data.size());
+        tempFile.close();
+
+        const auto fn = tempFile.fileName();
+        const QString testKey = QStringLiteral("testKey");
+        const QByteArray testValue("testValue");
+
+        QVERIFY(!Tags::get(fn, testKey).has_value());
+        QVERIFY(Tags::set(fn, testKey, testValue));
+        QCOMPARE(Tags::get(fn, testKey).value(), testValue);
+        QVERIFY(Tags::remove(fn, testKey));
+        QVERIFY(!Tags::get(fn, testKey).has_value());
+    }
+
+    void testDirMetaData()
+    {
+        using namespace OCC::TestUtils;
+        using namespace OCC::FileSystem;
+
+        QTemporaryDir tempDir = createTempDir();
+
+        const auto fn = tempDir.path();
+        const QString testKey = QStringLiteral("testKey");
+        const QByteArray testValue("testValue");
+
+        QVERIFY(!Tags::get(fn, testKey).has_value());
+        QVERIFY(Tags::set(fn, testKey, testValue));
+        QCOMPARE(Tags::get(fn, testKey).value(), testValue);
+        QVERIFY(Tags::remove(fn, testKey));
+        QVERIFY(!Tags::get(fn, testKey).has_value());
     }
 };
 
