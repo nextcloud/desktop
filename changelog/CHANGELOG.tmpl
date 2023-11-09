@@ -1,7 +1,13 @@
+# Table of Contents
+
+{{ range . -}}
+  * [Changelog for {{ .Version }}](#changelog-for-owncloud-desktop-client-{{ .Version | replace "." ""}}-{{ .Date | lower -}})
+{{ end -}}
+  * [Changelog for 2.6.1 versions and below](#changelog-for-261-versions-and-below)
 {{ $allVersions := . }}
 {{- range $index, $changes := . }}{{ with $changes -}}
-Changelog for ownCloud Desktop Client [{{ .Version }}] ({{ .Date }})
-=======================================
+# Changelog for ownCloud Desktop Client [{{ .Version }}] ({{ .Date }})
+
 The following sections list the changes in ownCloud Desktop Client {{ .Version }} relevant to
 ownCloud admins and users.
 
@@ -21,14 +27,12 @@ ownCloud admins and users.
 [{{ .Version }}]: https://github.com/owncloud/client/compare/v2.6.1...v{{ .Version }}
 {{- end }}
 
-Summary
--------
+## Summary
 {{ range $entry := .Entries }}{{ with $entry }}
 * {{ .Type }} - {{ .Title }}: [#{{ .PrimaryID }}]({{ .PrimaryURL }})
 {{- end }}{{ end }}
 
-Details
--------
+## Details
 {{ range $entry := .Entries }}{{ with $entry }}
 * {{ .Type }} - {{ .Title }}: [#{{ .PrimaryID }}]({{ .PrimaryURL }})
 {{ range $par := .Paragraphs }}
@@ -47,8 +51,7 @@ Details
 {{ end }}{{ end -}}
 
 {{/* Start of old changelog */ -}}
-ChangeLog
-=========
+# Changelog for 2.6.1 versions and below
 version 2.6.1 (2020-01-17)
 (last updated on de0d330c002436454f3fe4929bd707e5f0425949)
 
