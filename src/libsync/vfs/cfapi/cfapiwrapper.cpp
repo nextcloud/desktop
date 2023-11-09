@@ -48,6 +48,30 @@ constexpr auto syncRootFlagsNoCfApiContextMenu = 2;
 
 constexpr auto syncRootManagerRegKey = R"(SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager)";
 
+DWORD sizeToDWORD(size_t size)
+{
+    return OCC::Utility::convertSizeToDWORD(size);
+}
+
+OCC::PinState cfPinStateToPinState(CF_PIN_STATE state)
+{
+    switch (state) {
+    case CF_PIN_STATE_UNSPECIFIED:
+        return OCC::PinState::Unspecified;
+    case CF_PIN_STATE_PINNED:
+        return OCC::PinState::AlwaysLocal;
+    case CF_PIN_STATE_UNPINNED:
+        return OCC::PinState::OnlineOnly;
+    case CF_PIN_STATE_INHERIT:
+        return OCC::PinState::Inherited;
+    case CF_PIN_STATE_EXCLUDED:
+        return OCC::PinState::Excluded;
+    default:
+        Q_UNREACHABLE();
+        return OCC::PinState::Inherited;
+    }
+}
+
 void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 currentBlockLength, qint64 totalLength)
 {
 
@@ -237,6 +261,53 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         sendTransferError();
     }
 }
+
+enum class CfApiUpdateMetadataType {
+    OnlyBasicMetadata,
+    AllMetadata,
+};
+
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> updatePlaceholderState(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath, CfApiUpdateMetadataType updateType)
+{
+    if (updateType == CfApiUpdateMetadataType::AllMetadata && modtime <= 0) {
+            return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(path).arg(modtime)};
+        }
+
+        const auto info = replacesPath.isEmpty() ? OCC::CfApiWrapper::findPlaceholderInfo(path)
+                                                 : OCC::CfApiWrapper::findPlaceholderInfo(replacesPath);
+        if (!info) {
+            return { "Can't update non existing placeholder info" };
+        }
+
+        const auto previousPinState = cfPinStateToPinState(info->PinState);
+        const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
+        const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
+
+        CF_FS_METADATA metadata;
+        metadata.FileSize.QuadPart = size;
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.CreationTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastWriteTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
+        OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
+        metadata.BasicInfo.FileAttributes = 0;
+
+        qCInfo(lcCfApiWrapper) << "updatePlaceholderState" << path << modtime;
+        const qint64 result = CfUpdatePlaceholder(OCC::CfApiWrapper::handleForPath(path).get(), updateType == CfApiUpdateMetadataType::AllMetadata ? &metadata : nullptr,
+                                                  fileIdentity.data(), sizeToDWORD(fileIdentitySize),
+                                                  nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+
+        if (result != S_OK) {
+            qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
+            return { "Couldn't update placeholder info" };
+        }
+
+               // Pin state tends to be lost on updates, so restore it every time
+        if (!setPinState(path, previousPinState, OCC::CfApiWrapper::NoRecurse)) {
+            return { "Couldn't restore pin state" };
+        }
+
+        return OCC::Vfs::ConvertToPlaceholderResult::Ok;
+}
 }
 
 void CALLBACK cfApiCancelFetchData(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS * /*callbackParameters*/)
@@ -262,11 +333,6 @@ CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {
     CF_CALLBACK_REGISTRATION_END
 };
 
-DWORD sizeToDWORD(size_t size)
-{
-    return OCC::Utility::convertSizeToDWORD(size);
-}
-
 void deletePlaceholderInfo(CF_PLACEHOLDER_BASIC_INFO *info)
 {
     auto byte = reinterpret_cast<char *>(info);
@@ -279,25 +345,6 @@ std::wstring pathForHandle(const OCC::CfApiWrapper::FileHandle &handle)
     const qint64 result = GetFinalPathNameByHandle(handle.get(), buffer, MAX_PATH, VOLUME_NAME_DOS);
     Q_ASSERT(result < MAX_PATH);
     return std::wstring(buffer);
-}
-
-OCC::PinState cfPinStateToPinState(CF_PIN_STATE state)
-{
-    switch (state) {
-    case CF_PIN_STATE_UNSPECIFIED:
-        return OCC::PinState::Unspecified;
-    case CF_PIN_STATE_PINNED:
-        return OCC::PinState::AlwaysLocal;
-    case CF_PIN_STATE_UNPINNED:
-        return OCC::PinState::OnlineOnly;
-    case CF_PIN_STATE_INHERIT:
-        return OCC::PinState::Inherited;
-    case CF_PIN_STATE_EXCLUDED:
-        return OCC::PinState::Excluded;
-    default:
-        Q_UNREACHABLE();
-        return OCC::PinState::Inherited;
-    }
 }
 
 CF_PIN_STATE pinStateToCfPinState(OCC::PinState state)
@@ -750,44 +797,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
 
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
-
-    if (modtime <= 0) {
-        return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(path).arg(modtime)};
-    }
-
-    const auto info = replacesPath.isEmpty() ? findPlaceholderInfo(path)
-                                             : findPlaceholderInfo(replacesPath);
-    if (!info) {
-        return { "Can't update non existing placeholder info" };
-    }
-
-    const auto previousPinState = cfPinStateToPinState(info->PinState);
-    const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
-    const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
-
-    CF_FS_METADATA metadata;
-    metadata.FileSize.QuadPart = size;
-    OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.CreationTime);
-    OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastWriteTime);
-    OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.LastAccessTime);
-    OCC::Utility::UnixTimeToLargeIntegerFiletime(modtime, &metadata.BasicInfo.ChangeTime);
-    metadata.BasicInfo.FileAttributes = 0;
-
-    const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(), &metadata,
-                                              fileIdentity.data(), sizeToDWORD(fileIdentitySize),
-                                              nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
-
-    if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
-        return { "Couldn't update placeholder info" };
-    }
-
-    // Pin state tends to be lost on updates, so restore it every time
-    if (!setPinState(path, previousPinState, NoRecurse)) {
-        return { "Couldn't restore pin state" };
-    }
-
-    return OCC::Vfs::ConvertToPlaceholderResult::Ok;
+    return updatePlaceholderState(path, modtime, size, fileId, replacesPath, CfApiUpdateMetadataType::AllMetadata);
 }
 
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::dehydratePlaceholder(const QString &path, time_t modtime, qint64 size, const QByteArray &fileId)
@@ -861,4 +871,9 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
         Q_ASSERT(stateResult);
         return stateResult;
     }
+}
+
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderMarkInSync(const QString &path, const QByteArray &fileId, const QString &replacesPath)
+{
+    return updatePlaceholderState(path, {}, {}, fileId, replacesPath, CfApiUpdateMetadataType::OnlyBasicMetadata);
 }
