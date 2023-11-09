@@ -164,20 +164,6 @@ Folder::Folder(const FolderDefinition &definition,
 
         // Potentially upgrade suffix vfs to windows vfs
         OC_ENFORCE(_vfs);
-        if (_definition.virtualFilesMode == Vfs::WithSuffix
-            && _definition.upgradeVfsMode) {
-            if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
-                if (auto winvfs = VfsPluginManager::instance().createVfsFromPlugin(Vfs::WindowsCfApi)) {
-                    // Wipe the existing suffix files from fs and journal
-                    _vfs->wipeDehydratedVirtualFiles();
-
-                    // Then switch to winvfs mode
-                    _vfs.reset(winvfs.release());
-                    _definition.virtualFilesMode = Vfs::WindowsCfApi;
-                }
-            }
-            saveToSettings();
-        }
         // Initialize the vfs plugin
         startVfs();
     }
