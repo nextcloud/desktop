@@ -1,20 +1,50 @@
-Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
-=======================================
+# Table of Contents
+
+* [Changelog for unreleased](#changelog-for-owncloud-desktop-client-unreleased-unreleased)
+* [Changelog for 5.1.0](#changelog-for-owncloud-desktop-client-510-2023-11-02)
+* [Changelog for 5.0.0](#changelog-for-owncloud-desktop-client-500-2023-10-05)
+* [Changelog for 4.2.0](#changelog-for-owncloud-desktop-client-420-2023-08-07)
+* [Changelog for 4.1.0](#changelog-for-owncloud-desktop-client-410-2023-06-15)
+* [Changelog for 4.0.0](#changelog-for-owncloud-desktop-client-400-2023-05-11)
+* [Changelog for 3.2.1](#changelog-for-owncloud-desktop-client-321-2023-03-07)
+* [Changelog for 3.2.0](#changelog-for-owncloud-desktop-client-320-2023-02-15)
+* [Changelog for 3.1.0](#changelog-for-owncloud-desktop-client-310-2023-01-25)
+* [Changelog for 3.0.0](#changelog-for-owncloud-desktop-client-300-2022-11-30)
+* [Changelog for 2.11.1](#changelog-for-owncloud-desktop-client-2111-2022-08-31)
+* [Changelog for 2.11.0](#changelog-for-owncloud-desktop-client-2110-2022-08-18)
+* [Changelog for 2.10.1](#changelog-for-owncloud-desktop-client-2101-2022-04-05)
+* [Changelog for 2.10.0](#changelog-for-owncloud-desktop-client-2100-2022-01-17)
+* [Changelog for 2.9.2](#changelog-for-owncloud-desktop-client-292-2021-11-24)
+* [Changelog for 2.9.1](#changelog-for-owncloud-desktop-client-291-2021-10-13)
+* [Changelog for 2.9.0](#changelog-for-owncloud-desktop-client-290-2021-09-08)
+* [Changelog for 2.8.2](#changelog-for-owncloud-desktop-client-282-2021-05-28)
+* [Changelog for 2.8.1](#changelog-for-owncloud-desktop-client-281-2021-05-21)
+* [Changelog for 2.8.0](#changelog-for-owncloud-desktop-client-280-2021-05-06)
+* [Changelog for 2.7.6](#changelog-for-owncloud-desktop-client-276-2021-02-04)
+* [Changelog for 2.7.5](#changelog-for-owncloud-desktop-client-275-2021-01-28)
+* [Changelog for 2.7.4](#changelog-for-owncloud-desktop-client-274-2020-12-21)
+* [Changelog for 2.7.3](#changelog-for-owncloud-desktop-client-273-2020-12-11)
+* [Changelog for 2.7.2](#changelog-for-owncloud-desktop-client-272-2020-12-02)
+* [Changelog for 2.7.1](#changelog-for-owncloud-desktop-client-271-2020-11-18)
+* [Changelog for 2.7.0](#changelog-for-owncloud-desktop-client-270-2020-11-13)
+* [Changelog for 2.6.3](#changelog-for-owncloud-desktop-client-263-2020-06-10)
+* [Changelog for 2.6.2](#changelog-for-owncloud-desktop-client-262-2020-02-21)
+* [Changelog for 2.6.1 versions and below](#changelog-for-261-versions-and-below)
+# Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
+
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
 [unreleased]: https://github.com/owncloud/client/compare/v5.1.0...master
 
-Summary
--------
+## Summary
 
 * Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 
-Details
--------
+## Details
 
 * Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
 
@@ -50,23 +80,21 @@ Details
 
    https://github.com/owncloud/client/issues/11275
 
-Changelog for ownCloud Desktop Client [5.1.0] (2023-11-02)
-=======================================
+# Changelog for ownCloud Desktop Client [5.1.0] (2023-11-02)
+
 The following sections list the changes in ownCloud Desktop Client 5.1.0 relevant to
 ownCloud admins and users.
 
 [5.1.0]: https://github.com/owncloud/client/compare/v5.0.0...v5.1.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
 * Bugfix - Fix crash on start-up when starting shell integration: [#11280](https://github.com/owncloud/client/issues/11280)
 * Bugfix - Properly schedule the sync after an account was added: [#11308](https://github.com/owncloud/client/issues/11308)
 * Bugfix - Don't start credentials save jobs during shutdown: [#11313](https://github.com/owncloud/client/pull/11313)
 
-Details
--------
+## Details
 
 * Bugfix - Crash when accepting a notification: [#11226](https://github.com/owncloud/client/issues/11226)
 
@@ -98,15 +126,14 @@ Details
 
    https://github.com/owncloud/client/pull/11313
 
-Changelog for ownCloud Desktop Client [5.0.0] (2023-10-05)
-=======================================
+# Changelog for ownCloud Desktop Client [5.0.0] (2023-10-05)
+
 The following sections list the changes in ownCloud Desktop Client 5.0.0 relevant to
 ownCloud admins and users.
 
 [5.0.0]: https://github.com/owncloud/client/compare/v4.2.0...v5.0.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
 * Bugfix - VFS Placeholders can now be replaced with folders: [#10223](https://github.com/owncloud/client/issues/10223)
@@ -146,8 +173,7 @@ Summary
 * Enhancement - Persist filter settings for Not Synced tab: [#10928](https://github.com/owncloud/client/pull/10928)
 * Enhancement - `--cmd` argument added to the GUI client: [#10976](https://github.com/owncloud/client/issues/10976)
 
-Details
--------
+## Details
 
 * Bugfix - Avoid duplicate notifications when selective sync is enabled: [#5682](https://github.com/owncloud/enterprise/issues/5682)
 
@@ -410,21 +436,19 @@ Details
 
    https://github.com/owncloud/client/issues/10976
 
-Changelog for ownCloud Desktop Client [4.2.0] (2023-08-07)
-=======================================
+# Changelog for ownCloud Desktop Client [4.2.0] (2023-08-07)
+
 The following sections list the changes in ownCloud Desktop Client 4.2.0 relevant to
 ownCloud admins and users.
 
 [4.2.0]: https://github.com/owncloud/client/compare/v4.1.0...v4.2.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 * Bugfix - Missing mtime in ocis uploads: [#10950](https://github.com/owncloud/client/issues/10950)
 
-Details
--------
+## Details
 
 * Bugfix - Wrong davUser in cmd client: [#10946](https://github.com/owncloud/client/issues/10946)
 
@@ -440,15 +464,14 @@ Details
 
    https://github.com/owncloud/client/issues/10950
 
-Changelog for ownCloud Desktop Client [4.1.0] (2023-06-15)
-=======================================
+# Changelog for ownCloud Desktop Client [4.1.0] (2023-06-15)
+
 The following sections list the changes in ownCloud Desktop Client 4.1.0 relevant to
 ownCloud admins and users.
 
 [4.1.0]: https://github.com/owncloud/client/compare/v4.0.0...v4.1.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
 * Bugfix - Show systray status when a sync error occurred: [#10834](https://github.com/owncloud/client/issues/10834)
@@ -456,8 +479,7 @@ Summary
 * Bugfix - Use correct user name with basic auth and LDAP: [#10856](https://github.com/owncloud/client/issues/10856)
 * Enhancement - Allow users to call commandline client from AppImage: [#10888](https://github.com/owncloud/client/issues/10888)
 
-Details
--------
+## Details
 
 * Bugfix - Follow same site redirects in the Wizard: [#5743](https://github.com/owncloud/enterprise/issues/5743)
 
@@ -493,15 +515,14 @@ Details
 
    https://github.com/owncloud/client/issues/10888
 
-Changelog for ownCloud Desktop Client [4.0.0] (2023-05-11)
-=======================================
+# Changelog for ownCloud Desktop Client [4.0.0] (2023-05-11)
+
 The following sections list the changes in ownCloud Desktop Client 4.0.0 relevant to
 ownCloud admins and users.
 
 [4.0.0]: https://github.com/owncloud/client/compare/v3.2.1...v4.0.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 * Bugfix - Fix computation of sync status when multiple folders are synced: [#9270](https://github.com/owncloud/client/issues/9270)
@@ -537,8 +558,7 @@ Summary
 * Enhancement - More user friendly error handling in the cmd client: [#10637](https://github.com/owncloud/client/pull/10637)
 * Enhancement - Don't invalidate oauth refresh token on ConnectionRefusedError: [#10654](https://github.com/owncloud/client/issues/10654)
 
-Details
--------
+## Details
 
 * Bugfix - Display sync date in system tray context menu when files where ignored: [#8953](https://github.com/owncloud/client/issues/8953)
 
@@ -749,22 +769,20 @@ Details
 
    https://github.com/owncloud/client/issues/10654
 
-Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
-=======================================
+# Changelog for ownCloud Desktop Client [3.2.1] (2023-03-07)
+
 The following sections list the changes in ownCloud Desktop Client 3.2.1 relevant to
 ownCloud admins and users.
 
 [3.2.1]: https://github.com/owncloud/client/compare/v3.2.0...v3.2.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
 * Bugfix - Fix crash in Linux AppImage updater: [#10552](https://github.com/owncloud/client/issues/10552)
 * Bugfix - Fix encoding issue with basic authentication: [#10564](https://github.com/owncloud/client/issues/10564)
 
-Details
--------
+## Details
 
 * Bugfix - Handle hide VirtualFiles options as disable VirtualFiles: [#5612](https://github.com/owncloud/enterprise/issues/5612)
 
@@ -785,15 +803,14 @@ Details
 
    https://github.com/owncloud/client/issues/10564
 
-Changelog for ownCloud Desktop Client [3.2.0] (2023-02-15)
-=======================================
+# Changelog for ownCloud Desktop Client [3.2.0] (2023-02-15)
+
 The following sections list the changes in ownCloud Desktop Client 3.2.0 relevant to
 ownCloud admins and users.
 
 [3.2.0]: https://github.com/owncloud/client/compare/v3.1.0...v3.2.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
 * Bugfix - Only hide non VFS settings when enforced and on Windows: [#10456](https://github.com/owncloud/client/issues/10456)
@@ -802,8 +819,7 @@ Summary
 * Bugfix - Fix generation of Windows sidebar entry when VFS is disabled: [#10481](https://github.com/owncloud/client/pull/10481)
 * Bugfix - Empty credentials for signed out accounts: [#10500](https://github.com/owncloud/client/issues/10500)
 
-Details
--------
+## Details
 
 * Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
 
@@ -837,15 +853,14 @@ Details
 
    https://github.com/owncloud/client/issues/10500
 
-Changelog for ownCloud Desktop Client [3.1.0] (2023-01-25)
-=======================================
+# Changelog for ownCloud Desktop Client [3.1.0] (2023-01-25)
+
 The following sections list the changes in ownCloud Desktop Client 3.1.0 relevant to
 ownCloud admins and users.
 
 [3.1.0]: https://github.com/owncloud/client/compare/v3.0.0...v3.1.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix the display of the version string for released builds: [#10329](https://github.com/owncloud/client/pull/10329)
 * Bugfix - Only clear cookies if enabled in theme, clear cookies before OAuth2: [#10338](https://github.com/owncloud/client/pull/10338)
@@ -857,8 +872,7 @@ Summary
 * Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
 * Enhancement - (Re)introduce "sync hidden files" parameter in owncloudcmd: [#10390](https://github.com/owncloud/client/issues/10390)
 
-Details
--------
+## Details
 
 * Bugfix - Fix the display of the version string for released builds: [#10329](https://github.com/owncloud/client/pull/10329)
 
@@ -912,15 +926,14 @@ Details
 
    https://github.com/owncloud/client/issues/10390
 
-Changelog for ownCloud Desktop Client [3.0.0] (2022-11-30)
-=======================================
+# Changelog for ownCloud Desktop Client [3.0.0] (2022-11-30)
+
 The following sections list the changes in ownCloud Desktop Client 3.0.0 relevant to
 ownCloud admins and users.
 
 [3.0.0]: https://github.com/owncloud/client/compare/v2.11.1...v3.0.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Windows VFS fixed some failing downloads: [#49](https://github.com/owncloud/client-desktop-vfs-win/pull/49)
 * Bugfix - Don't trigger ignore list when files are locked on the server: [#5382](https://github.com/owncloud/enterprise/issues/5382)
@@ -974,8 +987,7 @@ Summary
 * Enhancement - Estimate duration of network requests in httplogger: [#10142](https://github.com/owncloud/client/pull/10142)
 * Enhancement - Tweak logging format: [#10310](https://github.com/owncloud/client/pull/10310)
 
-Details
--------
+## Details
 
 * Bugfix - Windows VFS fixed some failing downloads: [#49](https://github.com/owncloud/client-desktop-vfs-win/pull/49)
 
@@ -1320,20 +1332,18 @@ Details
 
    https://github.com/owncloud/client/pull/10310
 
-Changelog for ownCloud Desktop Client [2.11.1] (2022-08-31)
-=======================================
+# Changelog for ownCloud Desktop Client [2.11.1] (2022-08-31)
+
 The following sections list the changes in ownCloud Desktop Client 2.11.1 relevant to
 ownCloud admins and users.
 
 [2.11.1]: https://github.com/owncloud/client/compare/v2.11.0...v2.11.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix configuration of selective sync from account settings: [#10058](https://github.com/owncloud/client/pull/10058)
 
-Details
--------
+## Details
 
 * Bugfix - Fix configuration of selective sync from account settings: [#10058](https://github.com/owncloud/client/pull/10058)
 
@@ -1343,15 +1353,14 @@ Details
    https://github.com/owncloud/client/pull/10058
    https://github.com/owncloud/client/pull/10065
 
-Changelog for ownCloud Desktop Client [2.11.0] (2022-08-18)
-=======================================
+# Changelog for ownCloud Desktop Client [2.11.0] (2022-08-18)
+
 The following sections list the changes in ownCloud Desktop Client 2.11.0 relevant to
 ownCloud admins and users.
 
 [2.11.0]: https://github.com/owncloud/client/compare/v2.10.1...v2.11.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Windows VFS: Keep file attributes and pin state: [#34](https://github.com/owncloud/client-desktop-vfs-win/pull/34)
 * Bugfix - Compare usernames case insensitive: [#5174](https://github.com/owncloud/enterprise/issues/5174)
@@ -1365,8 +1374,7 @@ Summary
 * Enhancement - Run vfs downloads with a high priority: [#9836](https://github.com/owncloud/client/pull/9836)
 * Enhancement - Don't abort sync if a user requests a file: [#9956](https://github.com/owncloud/client/pull/9956)
 
-Details
--------
+## Details
 
 * Bugfix - Windows VFS: Keep file attributes and pin state: [#34](https://github.com/owncloud/client-desktop-vfs-win/pull/34)
 
@@ -1444,15 +1452,14 @@ Details
    https://github.com/owncloud/client/issues/9832
    https://github.com/owncloud/client/pull/9956
 
-Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
-=======================================
+# Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
+
 The following sections list the changes in ownCloud Desktop Client 2.10.1 relevant to
 ownCloud admins and users.
 
 [2.10.1]: https://github.com/owncloud/client/compare/v2.10.0...v2.10.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Bugfix - Possible crash when downloading a virtual file on Windows: [#21](https://github.com/owncloud/client-desktop-vfs-win/pull/21)
@@ -1487,8 +1494,7 @@ Summary
 * Enhancement - Retry update after 10 minutes: [#9522](https://github.com/owncloud/client/issues/9522)
 * Enhancement - Added branding parameter to disallow duplicated folder sync pairs: [#9523](https://github.com/owncloud/client/issues/9523)
 
-Details
--------
+## Details
 
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 
@@ -1710,15 +1716,14 @@ Details
 
    https://github.com/owncloud/client/issues/9523
 
-Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
-=======================================
+# Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
+
 The following sections list the changes in ownCloud Desktop Client 2.10.0 relevant to
 ownCloud admins and users.
 
 [2.10.0]: https://github.com/owncloud/client/compare/v2.9.2...v2.10.0
 
-Summary
--------
+## Summary
 
 * Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
 * Bugfix - Issues with long file path: [#4896](https://github.com/owncloud/enterprise/issues/4896)
@@ -1742,8 +1747,7 @@ Summary
 * Enhancement - Also ignore local reapeating errors for a period of time: [#9208](https://github.com/owncloud/client/issues/9208)
 * Enhancement - Remove the availability menu from the ui: [#9291](https://github.com/owncloud/client/pull/9291)
 
-Details
--------
+## Details
 
 * Bugfix - We fixed a possible crash: [#13](https://github.com/owncloud/client-desktop-vfs-win/pull/13)
 
@@ -1902,15 +1906,14 @@ Details
 
    https://github.com/owncloud/client/pull/9291
 
-Changelog for ownCloud Desktop Client [2.9.2] (2021-11-24)
-=======================================
+# Changelog for ownCloud Desktop Client [2.9.2] (2021-11-24)
+
 The following sections list the changes in ownCloud Desktop Client 2.9.2 relevant to
 ownCloud admins and users.
 
 [2.9.2]: https://github.com/owncloud/client/compare/v2.9.1...v2.9.2
 
-Summary
--------
+## Summary
 
 * Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 * Bugfix - Disable vfs option is ignored: [#9159](https://github.com/owncloud/client/issues/9159)
@@ -1919,8 +1922,7 @@ Summary
 * Enhancement - Add branding option to disable icons in the file explorer: [#9167](https://github.com/owncloud/client/issues/9167)
 * Enhancement - Branding option to disable warning for multiple sync_journal.db's: [#9216](https://github.com/owncloud/client/pull/9216)
 
-Details
--------
+## Details
 
 * Bugfix - Properly handle Windows log off: [#8979](https://github.com/owncloud/client/issues/8979)
 
@@ -1971,15 +1973,14 @@ Details
 
    https://github.com/owncloud/client/pull/9216
 
-Changelog for ownCloud Desktop Client [2.9.1] (2021-10-13)
-=======================================
+# Changelog for ownCloud Desktop Client [2.9.1] (2021-10-13)
+
 The following sections list the changes in ownCloud Desktop Client 2.9.1 relevant to
 ownCloud admins and users.
 
 [2.9.1]: https://github.com/owncloud/client/compare/v2.9.0...v2.9.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Mac multiple dialogs block all input: [#8421](https://github.com/owncloud/client/issues/8421)
 * Bugfix - Enforce rtl layout with rtl languages: [#8806](https://github.com/owncloud/client/issues/8806)
@@ -1998,8 +1999,7 @@ Summary
 * Bugfix - Downgrades could trigger deletion of virtual files: [#9114](https://github.com/owncloud/client/issues/9114)
 * Enhancement - Display the error type in the issue protocol to allow sorting: [#9010](https://github.com/owncloud/client/pull/9010)
 
-Details
--------
+## Details
 
 * Bugfix - Mac multiple dialogs block all input: [#8421](https://github.com/owncloud/client/issues/8421)
 
@@ -2125,15 +2125,14 @@ Details
    https://github.com/owncloud/client/issues/9000
    https://github.com/owncloud/client/pull/9010
 
-Changelog for ownCloud Desktop Client [2.9.0] (2021-09-08)
-=======================================
+# Changelog for ownCloud Desktop Client [2.9.0] (2021-09-08)
+
 The following sections list the changes in ownCloud Desktop Client 2.9.0 relevant to
 ownCloud admins and users.
 
 [2.9.0]: https://github.com/owncloud/client/compare/v2.8.2...v2.9.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Settings migration from v2.4: [#4597](https://github.com/owncloud/enterprise/issues/4597)
 * Bugfix - VFS support for folders in the drive root: [#4639](https://github.com/owncloud/enterprise/issues/4639)
@@ -2180,8 +2179,7 @@ Summary
 * Enhancement - Retry sync on `502 Bad Gateway`: [#8811](https://github.com/owncloud/client/issues/8811)
 * Enhancement - Display the information state in case we encountered ignored errors: [#8858](https://github.com/owncloud/client/pull/8858)
 
-Details
--------
+## Details
 
 * Bugfix - Settings migration from v2.4: [#4597](https://github.com/owncloud/enterprise/issues/4597)
 
@@ -2518,21 +2516,19 @@ Details
 
    https://github.com/owncloud/client/pull/8858
 
-Changelog for ownCloud Desktop Client [2.8.2] (2021-05-28)
-=======================================
+# Changelog for ownCloud Desktop Client [2.8.2] (2021-05-28)
+
 The following sections list the changes in ownCloud Desktop Client 2.8.2 relevant to
 ownCloud admins and users.
 
 [2.8.2]: https://github.com/owncloud/client/compare/v2.8.1...v2.8.2
 
-Summary
--------
+## Summary
 
 * Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
 * Bugfix - We fixed a potential crash in the socket api: [#8664](https://github.com/owncloud/client/pull/8664)
 
-Details
--------
+## Details
 
 * Bugfix - Correctly detect network drives: [#8272](https://github.com/owncloud/client/issues/8272)
 
@@ -2547,21 +2543,19 @@ Details
 
    https://github.com/owncloud/client/pull/8664
 
-Changelog for ownCloud Desktop Client [2.8.1] (2021-05-21)
-=======================================
+# Changelog for ownCloud Desktop Client [2.8.1] (2021-05-21)
+
 The following sections list the changes in ownCloud Desktop Client 2.8.1 relevant to
 ownCloud admins and users.
 
 [2.8.1]: https://github.com/owncloud/client/compare/v2.8.0...v2.8.1
 
-Summary
--------
+## Summary
 
 * Bugfix - We fixed an issue with the assignment of tags: [#8633](https://github.com/owncloud/client/pull/8633/)
 * Enhancement - Prevent user from setting up a VFS sync to the root of a drive: [#8615](https://github.com/owncloud/client/pull/8615)
 
-Details
--------
+## Details
 
 * Bugfix - We fixed an issue with the assignment of tags: [#8633](https://github.com/owncloud/client/pull/8633/)
 
@@ -2576,15 +2570,14 @@ Details
 
    https://github.com/owncloud/client/pull/8615
 
-Changelog for ownCloud Desktop Client [2.8.0] (2021-05-06)
-=======================================
+# Changelog for ownCloud Desktop Client [2.8.0] (2021-05-06)
+
 The following sections list the changes in ownCloud Desktop Client 2.8.0 relevant to
 ownCloud admins and users.
 
 [2.8.0]: https://github.com/owncloud/client/compare/v2.7.6...v2.8.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
 * Bugfix - Moves in folder sync connections where executed as a delete and upload: [#7838](https://github.com/owncloud/client/issues/7838)
@@ -2595,8 +2588,7 @@ Summary
 * Enhancement - Add an icon to the Windows system tray notification: [#8539](https://github.com/owncloud/client/pull/8539)
 * Enhancement - Encode the log file as UTF-8: [#8550](https://github.com/owncloud/client/pull/8550)
 
-Details
--------
+## Details
 
 * Bugfix - Fix issues with long path: [#4405](https://github.com/owncloud/enterprise/issues/4405)
 
@@ -2656,21 +2648,19 @@ Details
 
    https://github.com/owncloud/client/pull/8550
 
-Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.6] (2021-02-04)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.6 relevant to
 ownCloud admins and users.
 
 [2.7.6]: https://github.com/owncloud/client/compare/v2.7.5...v2.7.6
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix missing sidebar icons on Mac with branded builds: [#4387](https://github.com/owncloud/enterprise/issues/4387)
 * Bugfix - Case sensitive comparison of checksum algorithm: [#8371](https://github.com/owncloud/client/pull/8371)
 
-Details
--------
+## Details
 
 * Bugfix - Fix missing sidebar icons on Mac with branded builds: [#4387](https://github.com/owncloud/enterprise/issues/4387)
 
@@ -2686,15 +2676,14 @@ Details
    https://github.com/owncloud/client/pull/8371
    https://github.com/owncloud/client/pull/8376
 
-Changelog for ownCloud Desktop Client [2.7.5] (2021-01-28)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.5] (2021-01-28)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.5 relevant to
 ownCloud admins and users.
 
 [2.7.5]: https://github.com/owncloud/client/compare/v2.7.4...v2.7.5
 
-Summary
--------
+## Summary
 
 * Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
 * Bugfix - Mac tray icon is scaled wrong: [#8149](https://github.com/owncloud/client/issues/8149)
@@ -2704,8 +2693,7 @@ Summary
 * Bugfix - Fix wrong option provided to OIDC: [#8390](https://github.com/owncloud/client/issues/8390)
 * Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 
-Details
--------
+## Details
 
 * Bugfix - Support dark theme with branded client and vanilla icons: [#4363](https://github.com/owncloud/enterprise/issues/4363)
 
@@ -2751,23 +2739,21 @@ Details
 
    https://github.com/owncloud/client/issues/8349
 
-Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.4 relevant to
 ownCloud admins and users.
 
 [2.7.4]: https://github.com/owncloud/client/compare/v2.7.3...v2.7.4
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix crash when a download is cancelled: [#4329](https://github.com/owncloud/enterprise/issues/4329)
 * Bugfix - Update Windows launch on start entry: [#7672](https://github.com/owncloud/client/issues/7672)
 * Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
 * Bugfix - Properly display parent Window when displaying a dialog: [#8313](https://github.com/owncloud/client/issues/8313)
 
-Details
--------
+## Details
 
 * Bugfix - Fix crash when a download is cancelled: [#4329](https://github.com/owncloud/enterprise/issues/4329)
 
@@ -2794,20 +2780,18 @@ Details
 
    https://github.com/owncloud/client/issues/8313
 
-Changelog for ownCloud Desktop Client [2.7.3] (2020-12-11)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.3] (2020-12-11)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.3 relevant to
 ownCloud admins and users.
 
 [2.7.3]: https://github.com/owncloud/client/compare/v2.7.2...v2.7.3
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix handling of errors with the Windows Cloud Filter API: [#8294](https://github.com/owncloud/client/issues/8294)
 
-Details
--------
+## Details
 
 * Bugfix - Fix handling of errors with the Windows Cloud Filter API: [#8294](https://github.com/owncloud/client/issues/8294)
 
@@ -2817,23 +2801,21 @@ Details
 
    https://github.com/owncloud/client/issues/8294
 
-Changelog for ownCloud Desktop Client [2.7.2] (2020-12-02)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.2] (2020-12-02)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.2 relevant to
 ownCloud admins and users.
 
 [2.7.2]: https://github.com/owncloud/client/compare/v2.7.1...v2.7.2
 
-Summary
--------
+## Summary
 
 * Bugfix - Correctly detect Windows 10 taskbar theme: [#8244](https://github.com/owncloud/client/issues/8244)
 * Bugfix - Sync small plaintext files with Windows VFS: [#8248](https://github.com/owncloud/client/issues/8248)
 * Bugfix - Update "Sync hidden files" button: [#8258](https://github.com/owncloud/client/issues/8258)
 * Bugfix - Pause sync when displaying remove all dialog: [#8263](https://github.com/owncloud/client/issues/8263)
 
-Details
--------
+## Details
 
 * Bugfix - Correctly detect Windows 10 taskbar theme: [#8244](https://github.com/owncloud/client/issues/8244)
 
@@ -2860,21 +2842,19 @@ Details
 
    https://github.com/owncloud/client/issues/8263
 
-Changelog for ownCloud Desktop Client [2.7.1] (2020-11-18)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.1] (2020-11-18)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.1 relevant to
 ownCloud admins and users.
 
 [2.7.1]: https://github.com/owncloud/client/compare/v2.7.0...v2.7.1
 
-Summary
--------
+## Summary
 
 * Bugfix - Fix client forgetting VirtualFiles mode: [#8229](https://github.com/owncloud/client/pull/8229)
 * Bugfix - Don't follow redirects on .well-known/openid-configuration: [#8232](https://github.com/owncloud/client/pull/8232)
 
-Details
--------
+## Details
 
 * Bugfix - Fix client forgetting VirtualFiles mode: [#8229](https://github.com/owncloud/client/pull/8229)
 
@@ -2890,15 +2870,14 @@ Details
    https://github.com/owncloud/openidconnect/issues/20
    https://github.com/owncloud/client/pull/8232
 
-Changelog for ownCloud Desktop Client [2.7.0] (2020-11-13)
-=======================================
+# Changelog for ownCloud Desktop Client [2.7.0] (2020-11-13)
+
 The following sections list the changes in ownCloud Desktop Client 2.7.0 relevant to
 ownCloud admins and users.
 
 [2.7.0]: https://github.com/owncloud/client/compare/v2.6.3...v2.7.0
 
-Summary
--------
+## Summary
 
 * Bugfix - Legacy config migration reverted files to online only: [#7779](https://github.com/owncloud/client/issues/7779)
 * Bugfix - Some check boxes in the sharing dialog are disabled: [#7877](https://github.com/owncloud/client/issues/7877)
@@ -2939,8 +2918,7 @@ Summary
 * Change - Remove update channels from the ownCloud client: [#8127](https://github.com/owncloud/client/issues/8127)
 * Change - Display the users avatar in the activity list: [#8169](https://github.com/owncloud/client/issues/8169)
 
-Details
--------
+## Details
 
 * Bugfix - Legacy config migration reverted files to online only: [#7779](https://github.com/owncloud/client/issues/7779)
 
@@ -3208,15 +3186,14 @@ Details
 
    https://github.com/owncloud/client/issues/8169
 
-Changelog for ownCloud Desktop Client [2.6.3] (2020-06-10)
-=======================================
+# Changelog for ownCloud Desktop Client [2.6.3] (2020-06-10)
+
 The following sections list the changes in ownCloud Desktop Client 2.6.3 relevant to
 ownCloud admins and users.
 
 [2.6.3]: https://github.com/owncloud/client/compare/v2.6.2...v2.6.3
 
-Summary
--------
+## Summary
 
 * Bugfix - Client sometimes does not show up when started by a user: [#7018](https://github.com/owncloud/client/issues/7018)
 * Bugfix - Fix several wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
@@ -3241,8 +3218,7 @@ Summary
 * Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
 * Change - Wizard is hidden behind the browser: [#7856](https://github.com/owncloud/client/issues/7856)
 
-Details
--------
+## Details
 
 * Bugfix - Client sometimes does not show up when started by a user: [#7018](https://github.com/owncloud/client/issues/7018)
 
@@ -3382,27 +3358,24 @@ Details
 
    https://github.com/owncloud/client/issues/7856
 
-Changelog for ownCloud Desktop Client [2.6.2] (2020-02-21)
-=======================================
+# Changelog for ownCloud Desktop Client [2.6.2] (2020-02-21)
+
 The following sections list the changes in ownCloud Desktop Client 2.6.2 relevant to
 ownCloud admins and users.
 
 [2.6.2]: https://github.com/owncloud/client/compare/v2.6.1...v2.6.2
 
-Summary
--------
+## Summary
 
 * Change - Add branding option to disable experimental features: [#7755](https://github.com/owncloud/client/issues/7755)
 
-Details
--------
+## Details
 
 * Change - Add branding option to disable experimental features: [#7755](https://github.com/owncloud/client/issues/7755)
 
    https://github.com/owncloud/client/issues/7755
 
-ChangeLog
-=========
+# Changelog for 2.6.1 versions and below
 version 2.6.1 (2020-01-17)
 (last updated on de0d330c002436454f3fe4929bd707e5f0425949)
 
