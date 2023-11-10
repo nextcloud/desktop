@@ -5,6 +5,7 @@
 #include "theme.h"
 
 #include "common/asserts.h"
+#include "common/chronoelapsedtimer.h"
 
 #include <QCborValue>
 #include <QLoggingCategory>
@@ -71,26 +72,17 @@ QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
 
     auto timer = new QTimer(writeJob);
     timer->setInterval(tiemoutC);
-    timer->setSingleShot(true);
 
-    auto timedOut = std::make_unique<bool>(false);
-    connect(timer, &QTimer::timeout, writeJob, [writeJob, timedOut = timedOut.get()] {
-        *timedOut = true;
-        Q_EMIT writeJob->finished(writeJob);
-        writeJob->deleteLater();
-    });
-    connect(writeJob, &QKeychain::WritePasswordJob::finished, this, [writeJob, timer, key, timedOut = std::move(timedOut), this] {
-        timer->stop();
+    Utility::ChronoElapsedTimer elapsedTimer;
+    connect(timer, &QTimer::timeout, writeJob,
+        [writeJob, elapsedTimer] { qCWarning(lcCredentialsManager) << "set" << writeJob->key() << "has not yet finished." << elapsedTimer.duration(); });
+    connect(writeJob, &QKeychain::WritePasswordJob::finished, this, [writeJob, key, elapsedTimer, this] {
         if (writeJob->error() == QKeychain::NoError) {
-            if (*timedOut.get()) {
-                qCInfo(lcCredentialsManager) << "set" << writeJob->key() << "timed out";
-            } else {
-                qCInfo(lcCredentialsManager) << "added" << writeJob->key();
-                // just a list, the values don't matter
-                credentialsList().setValue(key, true);
-            }
+            qCInfo(lcCredentialsManager) << "added" << writeJob->key() << "after" << elapsedTimer.duration();
+            // just a list, the values don't matter
+            credentialsList().setValue(key, true);
         } else {
-            qCWarning(lcCredentialsManager) << "Failed to set:" << writeJob->key() << writeJob->errorString();
+            qCWarning(lcCredentialsManager) << "Failed to set:" << writeJob->key() << writeJob->errorString() << "after" << elapsedTimer.duration();
         }
     });
     writeJob->setBinaryData(QCborValue::fromVariant(data).toCbor());
