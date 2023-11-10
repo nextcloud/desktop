@@ -1,0 +1,11 @@
+Bugfix: Fix crash when keychain job takes longer than expected
+
+In 5.1.1, we introduced a timeout for keychain jobs that killed them when their execution time exceeded 5 seconds and
+log this to allow debugging of problems related to secrets handling.
+
+Apparently, there are valid cases in which these jobs can take longer than the expected timeout, e.g., when the user
+needs to unlock their keychain first or configure it otherwise.
+
+We now let the jobs run indefinitely and log every 5 seconds whether the job is still running.
+
+https://github.com/owncloud/client/pull/11361
