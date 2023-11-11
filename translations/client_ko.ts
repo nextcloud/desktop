@@ -883,7 +883,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="229"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="221"/>
         <source>Failed to parse credentials %1</source>
         <translation>%1 인증 정보 해석 실패</translation>
     </message>
