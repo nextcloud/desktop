@@ -1046,7 +1046,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>Precisase autenticación</translation>
+        <translation>Precísase da autenticación</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -2708,7 +2708,7 @@ Teña en conta que isto só selecciona de que grupo se toman as anovacións e qu
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="798"/>
         <source>Password for share required</source>
-        <translation>Precisase un contrasinal para compartir</translation>
+        <translation>Precísase dun contrasinal para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="799"/>
@@ -3592,7 +3592,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation>Precisase un contrasinal para compartir</translation>
+        <translation>Precísase dun contrasinal para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
@@ -5723,7 +5723,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation>Precisase un contrasinal para a nova compartición</translation>
+        <translation>Precísase dun contrasinal para a nova compartición</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="118"/>
