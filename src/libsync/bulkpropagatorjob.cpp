@@ -210,6 +210,7 @@ void BulkPropagatorJob::triggerUpload()
                                                             0,
                                                             std::numeric_limits<qint64>::max(),
                                                             &propagator()->_bandwidthManager);
+            singleFile._headers["Content-Length"] = QByteArray::number(device->size());
         } else {
             device = std::make_unique<UploadDevice>(singleFile._localPath,
                                                      0,
