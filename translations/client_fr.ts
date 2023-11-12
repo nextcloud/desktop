@@ -1016,7 +1016,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="457"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Importation héritée</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="458"/>
@@ -5166,7 +5166,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
         <source>Error downloading %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur au téléchargement %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
