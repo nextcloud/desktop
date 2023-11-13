@@ -715,8 +715,10 @@ if (APPLE)
 
     if (BUILD_FILE_PROVIDER_MODULE)
         target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
-    else()
+    elseif(NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET OR CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 10.14)
         target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+    else()
+        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras)
     endif()
 endif()
 
