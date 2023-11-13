@@ -521,6 +521,10 @@ void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemV
             return false;
         }
 
+        if (item->isDirectory()) {
+            return false;
+        }
+
         // remove only children of previousFolderPath, not previousFolderPath itself such that parent always remains in the vector
         return item->_originalFile.startsWith(previousFolderPath);
     });
@@ -566,9 +570,31 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
 
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
     adjustDeletedFoldersWithNewChildren(items);
+    qCInfo(lcPropagator) << "BEGIN ITEMS CLEANUP";
+    for (const auto &item : items) {
+        qCInfo(lcPropagator) << "item->_originalFile:"
+                             << item->_originalFile
+                             << "item->_renameTarget"
+                             << item->_renameTarget
+                             << "item->_direction"
+                             << item->_direction;
+    }
 
     // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
-    cleanupLocallyMovedFoldersFromNestedItems(items);
+    bool isCleanup = true;
+    if (isCleanup) {
+        cleanupLocallyMovedFoldersFromNestedItems(items);
+    }
+
+    qCInfo(lcPropagator) << "END ITEMS CLEANUP";
+    for (const auto &item : items) {
+        qCInfo(lcPropagator) << "item->_originalFile:"
+                             << item->_originalFile
+                             << "item->_renameTarget"
+                             << item->_renameTarget
+                             << "item->_direction"
+                             << item->_direction;
+    }
 
     resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
