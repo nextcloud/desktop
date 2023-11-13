@@ -1,13 +1,13 @@
-#include "QtCore/qurl.h"
+#include <QLoggingCategory>
+#include <QString>
+#include <QUrl>
+
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "config.h"
 #include "systray.h"
 #include "tray/talkreply.h"
-#include <QString>
-#include <QWindow>
-#include <QLoggingCategory>
 
 #import <Cocoa/Cocoa.h>
 #import <UserNotifications/UserNotifications.h>
@@ -76,7 +76,7 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
     willPresentNotification:(UNNotification *)notification
     withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
-#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 110000
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_11_0
         completionHandler(UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBanner);
 #else
         completionHandler(UNNotificationPresentationOptionSound + UNNotificationPresentationOptionAlert);
@@ -110,20 +110,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 /********************* Methods accessible to C++ Systray *********************/
 
 namespace OCC {
-
-double menuBarThickness()
-{
-    NSMenu * const mainMenu = [[NSApplication sharedApplication] mainMenu];
-
-    if (mainMenu == nil) {
-        // Return this educated guess if something goes wrong.
-        // As of macOS 12.4 this will always return 22, even on notched Macbooks.
-        qCWarning(lcMacSystray) << "Got nil for main menu. Going with reasonable menu bar height guess.";
-        return NSStatusBar.systemStatusBar.thickness;
-    }
-
-    return mainMenu.menuBarHeight;
-}
 
 // TODO: Get this to actually check for permissions
 bool canOsXSendUserNotification()
@@ -264,21 +250,6 @@ void sendOsXTalkNotification(const QString &title, const QString &message, const
     UNNotificationRequest * const request = [UNNotificationRequest requestWithIdentifier:@"NCTalkMessageNotification" content:content trigger:trigger];
 
     [center addNotificationRequest:request withCompletionHandler:nil];
-}
-
-void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
-{
-    NSView * const nativeView = (NSView *)window->winId();
-    NSWindow * const nativeWindow = (NSWindow *)(nativeView.window);
-    [nativeWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle |
-                  NSWindowCollectionBehaviorTransient];
-    [nativeWindow setLevel:NSMainMenuWindowLevel];
-}
-
-bool osXInDarkMode()
-{
-    NSString * const osxMode = [NSUserDefaults.standardUserDefaults stringForKey:@"AppleInterfaceStyle"];
-    return [osxMode containsString:@"Dark"];
 }
 
 } // OCC namespace
