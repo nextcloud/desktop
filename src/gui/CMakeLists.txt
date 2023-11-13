@@ -282,7 +282,7 @@ endif()
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
-    list(APPEND client_SRCS systray.mm)
+    list(APPEND client_SRCS systray.mm systray_mac_common.mm)
 
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
