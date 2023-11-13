@@ -1,6 +1,23 @@
+/*
+ * Copyright (C) 2023 by Claudio Cambra <claudio.cambra@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 #include <QLoggingCategory>
 #include <QString>
 #include <QUrl>
+
+#import <Cocoa/Cocoa.h>
+#import <UserNotifications/UserNotifications.h>
 
 #include "account.h"
 #include "accountstate.h"
@@ -9,10 +26,7 @@
 #include "systray.h"
 #include "tray/talkreply.h"
 
-#import <Cocoa/Cocoa.h>
-#import <UserNotifications/UserNotifications.h>
-
-Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
+Q_LOGGING_CATEGORY(lcMacSystrayUserNotifications, "nextcloud.gui.macsystrayusernotifications")
 
 /************************* Private utility functions *************************/
 
@@ -21,16 +35,16 @@ namespace {
 void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* content)
 {
     if (!response || !content) {
-        qCWarning(lcMacSystray()) << "Invalid notification response or content."
-                                  << "Can't send talk reply.";
+        qCWarning(lcMacSystrayUserNotifications) << "Invalid notification response or content."
+                                                 << "Can't send talk reply.";
         return;
     }
 
     UNTextInputNotificationResponse * const textInputResponse = (UNTextInputNotificationResponse*)response;
 
     if (!textInputResponse) {
-        qCWarning(lcMacSystray()) << "Notification response was not a text input response."
-                                  << "Can't send talk reply.";
+        qCWarning(lcMacSystrayUserNotifications) << "Notification response was not a text input response."
+                                                 << "Can't send talk reply.";
         return;
     }
 
@@ -47,16 +61,16 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
     const auto accountState = OCC::AccountManager::instance()->accountFromUserId(qAccount);
 
     if (!accountState) {
-        qCWarning(lcMacSystray()) << "Could not find account matching" << qAccount
-                                  << "Can't send talk reply.";
+        qCWarning(lcMacSystrayUserNotifications) << "Could not find account matching" << qAccount
+                                                 << "Can't send talk reply.";
         return;
     }
 
-    qCDebug(lcMacSystray()) << "Sending talk reply from macOS notification."
-                            << "Reply is:" << qReply
-                            << "Replying to:" << qReplyTo
-                            << "Token:" << qToken
-                            << "Account:" << qAccount;
+    qCDebug(lcMacSystrayUserNotifications) << "Sending talk reply from macOS notification."
+                                           << "Reply is:" << qReply
+                                           << "Replying to:" << qReplyTo
+                                           << "Token:" << qToken
+                                           << "Account:" << qAccount;
 
     // OCC::TalkReply deletes itself once it's done, fire and forget
     const auto talkReply = new OCC::TalkReply(accountState.data(), OCC::Systray::instance());
@@ -87,13 +101,16 @@ void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* cont
 didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void (^)(void))completionHandler
 {
-    qCDebug(lcMacSystray()) << "Received notification with category identifier:" << response.notification.request.content.categoryIdentifier
-                            << "and action identifier" << response.actionIdentifier;
+    qCDebug(lcMacSystrayUserNotifications) << "Received notification with category identifier:"
+                                           << response.notification.request.content.categoryIdentifier
+                                           << "and action identifier"
+                                           << response.actionIdentifier;
+
     UNNotificationContent * const content = response.notification.request.content;
     if ([content.categoryIdentifier isEqualToString:@"UPDATE"]) {
 
         if ([response.actionIdentifier isEqualToString:@"DOWNLOAD_ACTION"] || [response.actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier]) {
-            qCDebug(lcMacSystray()) << "Opening update download url in browser.";
+            qCDebug(lcMacSystrayUserNotifications) << "Opening update download url in browser.";
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[content.userInfo objectForKey:@"webUrl"]]];
         }
     } else if ([content.categoryIdentifier isEqualToString:@"TALK_MESSAGE"]) {
@@ -167,12 +184,12 @@ void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOpt
     [center requestAuthorizationWithOptions:(authOptions) completionHandler:^(BOOL granted, NSError * _Nullable error) {
         // Enable or disable features based on authorization.
         if (granted) {
-            qCDebug(lcMacSystray) << "Authorization for notifications has been granted, can display notifications.";
+            qCDebug(lcMacSystrayUserNotifications) << "Authorization for notifications has been granted, can display notifications.";
         } else {
-            qCDebug(lcMacSystray) << "Authorization for notifications not granted.";
+            qCDebug(lcMacSystrayUserNotifications) << "Authorization for notifications not granted.";
             if (error) {
                 const auto errorDescription = QString::fromNSString(error.localizedDescription);
-                qCDebug(lcMacSystray) << "Error from notification center: " << errorDescription;
+                qCDebug(lcMacSystrayUserNotifications) << "Error from notification center: " << errorDescription;
             }
         }
     }];
