@@ -33,6 +33,7 @@
 #include <QFile>
 #include <QLibrary>
 #include <QSettings>
+#include <QTemporaryFile>
 
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
@@ -430,6 +431,15 @@ void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSe
     hundredNSecs->HighPart = ll >>32;
 }
 
+bool Utility::canCreateFileInPath(const QString &path)
+{
+    Q_ASSERT(!path.isEmpty());
+    const auto pathWithSlash = !path.endsWith(QLatin1Char('/'))
+        ? path + QLatin1Char('/')
+        : path;
+    QTemporaryFile testFile(pathWithSlash + QStringLiteral("~$write-test-file-XXXXXX"));
+    return testFile.open();
+}
 
 QString Utility::formatWinError(long errorCode)
 {
