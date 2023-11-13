@@ -40,6 +40,7 @@ public:
 };
 
 #ifdef Q_OS_MACOS
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14
 enum MacNotificationAuthorizationOptions {
     Default = 0,
     Provisional
@@ -52,6 +53,7 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
 void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState);
+#endif
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
 #endif
