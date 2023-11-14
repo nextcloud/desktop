@@ -34,21 +34,6 @@ using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcVfs, "sync.vfs", QtInfoMsg)
 
-namespace {
-QString modeToPluginName(Vfs::Mode mode)
-{
-    switch (mode) {
-    case Vfs::Off:
-        return QStringLiteral("off");
-    case Vfs::WithSuffix:
-        return QStringLiteral("suffix");
-    case Vfs::WindowsCfApi:
-        return QStringLiteral("win");
-    default:
-        Q_UNREACHABLE();
-    }
-}
-}
 
 Vfs::Vfs(QObject* parent)
     : QObject(parent)
@@ -65,6 +50,7 @@ Vfs::~Vfs() = default;
 Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
 {
     // Note: Strings are used for config and must be stable
+    // keep in sync with: QString Utility::enumToString(Vfs::Mode mode)
     if (str == QLatin1String("off")) {
         return Off;
     } else if (str == QLatin1String("suffix")) {
@@ -73,6 +59,22 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
         return WindowsCfApi;
     }
     return {};
+}
+
+template <>
+QString Utility::enumToString(Vfs::Mode mode)
+{
+    // Note: Strings are used for config and must be stable
+    // keep in sync with: Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
+    switch (mode) {
+    case Vfs::Mode::WithSuffix:
+        return QStringLiteral("suffix");
+    case Vfs::Mode::WindowsCfApi:
+        return QStringLiteral("wincfapi");
+    case Vfs::Mode::Off:
+        return QStringLiteral("off");
+    }
+    Q_UNREACHABLE();
 }
 
 Result<void, QString> Vfs::checkAvailability(const QString &path, Vfs::Mode mode)
@@ -191,7 +193,7 @@ bool OCC::VfsPluginManager::isVfsPluginAvailable(Vfs::Mode mode) const
         }
     }
     const bool out = [mode] {
-        const QString name = modeToPluginName(mode);
+        const QString name = Utility::enumToString(mode);
         if (!OC_ENSURE_NOT(name.isEmpty())) {
             return false;
         }
@@ -245,7 +247,7 @@ Vfs::Mode OCC::VfsPluginManager::bestAvailableVfsMode() const
 
 std::unique_ptr<Vfs> OCC::VfsPluginManager::createVfsFromPlugin(Vfs::Mode mode) const
 {
-    auto name = modeToPluginName(mode);
+    auto name = Utility::enumToString(mode);
     if (name.isEmpty())
         return nullptr;
     auto pluginPath = pluginFileName(QStringLiteral("vfs"), name);
@@ -284,21 +286,6 @@ const VfsPluginManager &VfsPluginManager::instance()
         _instance = new VfsPluginManager();
     }
     return *_instance;
-}
-
-template <>
-QString Utility::enumToString(Vfs::Mode mode)
-{
-    // Note: Strings are used for config and must be stable
-    switch (mode) {
-    case Vfs::Mode::WithSuffix:
-        return QStringLiteral("suffix");
-    case Vfs::Mode::WindowsCfApi:
-        return QStringLiteral("wincfapi");
-    case Vfs::Mode::Off:
-        return QStringLiteral("off");
-    }
-    Q_UNREACHABLE();
 }
 
 VfsSetupParams::VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl, bool groupInSidebar, SyncEngine *syncEngine)
