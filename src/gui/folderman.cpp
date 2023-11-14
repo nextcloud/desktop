@@ -1223,7 +1223,7 @@ Folder *FolderMan::addFolderInternal(
         || _folderMap.contains(folderDefinition.alias)
         || _additionalBlockedFolderAliases.contains(folderDefinition.alias)) {
         // There is already a folder configured with this name and folder names need to be unique
-        folderDefinition.alias = alias + QString::number(++count);
+        folderDefinition.alias = QString::number(alias.toInt() + (++count));
     }
 
     auto folder = new Folder(folderDefinition, accountState, std::move(vfs), this);
