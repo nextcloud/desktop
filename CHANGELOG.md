@@ -1,6 +1,8 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-desktop-client-unreleased-unreleased)
+* [Changelog for 5.1.2](#changelog-for-owncloud-desktop-client-512-2023-11-10)
+* [Changelog for 5.1.1](#changelog-for-owncloud-desktop-client-511-2023-11-09)
 * [Changelog for 5.1.0](#changelog-for-owncloud-desktop-client-510-2023-11-02)
 * [Changelog for 5.0.0](#changelog-for-owncloud-desktop-client-500-2023-10-05)
 * [Changelog for 4.2.0](#changelog-for-owncloud-desktop-client-420-2023-08-07)
@@ -35,24 +37,15 @@
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v5.1.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v5.1.2...master
 
 ## Summary
 
-* Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 
 ## Details
-
-* Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
-
-   When a user disabled the virtual files feature on Windows, all currently dehydrated files were
-   deleted accidentally. On the server those files where still available in the trash bin. This
-   regression was introduced in the previous release 5.0.0.
-
-   https://github.com/owncloud/client/issues/11331
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
@@ -79,6 +72,52 @@ ownCloud admins and users.
    always using the fusion style on Windows will result in the best experience for the users.
 
    https://github.com/owncloud/client/issues/11275
+
+# Changelog for ownCloud Desktop Client [5.1.2] (2023-11-10)
+
+The following sections list the changes in ownCloud Desktop Client 5.1.2 relevant to
+ownCloud admins and users.
+
+[5.1.2]: https://github.com/owncloud/client/compare/v5.1.1...v5.1.2
+
+## Summary
+
+* Bugfix - Fix crash when keychain job takes longer than expected: [#11361](https://github.com/owncloud/client/pull/11361)
+
+## Details
+
+* Bugfix - Fix crash when keychain job takes longer than expected: [#11361](https://github.com/owncloud/client/pull/11361)
+
+   In 5.1.1, we introduced a timeout for keychain jobs that killed them when their execution time
+   exceeded 5 seconds and log this to allow debugging of problems related to secrets handling.
+
+   Apparently, there are valid cases in which these jobs can take longer than the expected
+   timeout, e.g., when the user needs to unlock their keychain first or configure it otherwise.
+
+   We now let the jobs run indefinitely and log every 5 seconds whether the job is still running.
+
+   https://github.com/owncloud/client/pull/11361
+
+# Changelog for ownCloud Desktop Client [5.1.1] (2023-11-09)
+
+The following sections list the changes in ownCloud Desktop Client 5.1.1 relevant to
+ownCloud admins and users.
+
+[5.1.1]: https://github.com/owncloud/client/compare/v5.1.0...v5.1.1
+
+## Summary
+
+* Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
+
+## Details
+
+* Bugfix - Prevent permanent deletion of files when disabling VFS: [#11331](https://github.com/owncloud/client/issues/11331)
+
+   When a user disabled the virtual files feature on Windows, all currently dehydrated files were
+   deleted accidentally. On the server those files where still available in the trash bin. This
+   regression was introduced in the previous release 5.0.0.
+
+   https://github.com/owncloud/client/issues/11331
 
 # Changelog for ownCloud Desktop Client [5.1.0] (2023-11-02)
 
