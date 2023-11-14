@@ -73,7 +73,7 @@ __TODO__:
 
 * [ ] QA: [Smoke test](https://confluence.owncloud.com/display/OG/Manual+Tests#ManualTests-SmokeTest)
 * [ ] DEV: Publish the release in GitHub
-* [ ] QA: Update lines 4 and 5 of [install docs](https://github.com/owncloud/docs-client-desktop/blob/master/modules/ROOT/pages/installing.adoc) with the final build number
+* [ ] QA: Update lines 4 and 5 of [install docs](https://github.com/owncloud/docs-client-desktop/blob/master/modules/ROOT/pages/installing.adoc) with the final build number. Merge into master and backport to the respective branch
 * [ ] QA: Check that [documentation](https://doc.owncloud.com/desktop/next/) offers the new version
 
 ### [Marketing and Communication](https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
