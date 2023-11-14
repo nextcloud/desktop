@@ -383,12 +383,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>Import</source>
-        <translation type="unfinished"/>
+        <translation>Uvozi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="201"/>
         <source>Skip</source>
-        <translation type="unfinished"/>
+        <translation>Preskoči</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="255"/>
@@ -468,7 +468,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="116"/>
         <source>End-to-end Encryption</source>
-        <translation type="unfinished"/>
+        <translation>Celovito šifriranje E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="118"/>
@@ -664,7 +664,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemonika celostnega šifriranja</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
@@ -960,13 +960,13 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>novejše</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>starejše</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="184"/>
@@ -992,28 +992,28 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <location filename="../src/gui/application.cpp" line="451"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 računov</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="452"/>
         <source>1 account</source>
-        <translation type="unfinished"/>
+        <translation>1 račun</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="454"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
-        <translation type="unfinished"/>
+        <translation>%1 map</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="455"/>
         <source>1 folder</source>
-        <translation type="unfinished"/>
+        <translation>1 mapa</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="457"/>
         <source>Legacy import</source>
-        <translation type="unfinished"/>
+        <translation>Opuščeno uvažanje</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="458"/>
@@ -1125,7 +1125,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation>Datoteke ni mogoče preimenovati, ker datoteka z istim imenom na strežniku že obstaja. Prosimo izberite drugo ime.</translation>
+        <translation>Datoteke ni mogoče preimenovati, ker datoteka z istim imenom na strežniku že obstaja. Izbrati je treba drugo ime.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
@@ -1150,12 +1150,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje začetne presledne znake.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje pripete presledne znake.</translation>
     </message>
 </context>
 <context>
@@ -1252,22 +1252,22 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje začetne presledne znake.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje pripete presledne znake.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Uporabi neveljavno ime</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>V imenu datoteke so neveljavni znaki: %1</translation>
     </message>
 </context>
 <context>
@@ -1283,7 +1283,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1369"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Vnesite neposredno geslo za celovito šifriranje:&lt;br&gt;&lt;br&gt;Uporabniško ime: %2&lt;br&gt;Račun: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1377"/>
@@ -1516,12 +1516,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
-        <translation>Podana pot datoteke je neveljavna.</translation>
+        <translation>Podana pot datoteke ni veljavna.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <source>Could not find an account for local editing.</source>
-        <translation>Računa za lokalno urejanje ni bilo mogoče najti.</translation>
+        <translation>Računa za krajevno urejanje ni mogoče najti.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="93"/>
@@ -1533,12 +1533,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <location filename="../src/gui/editlocallyjob.cpp" line="557"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="577"/>
         <source>Could not start editing locally.</source>
-        <translation>Lokalnega urejanja ni bilo mogoče začeti. </translation>
+        <translation>Krajevnega urejanja ni bilo mogoče začeti. </translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="94"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation>Napaka pri preverjanju prošnje za lokalno urejanje.</translation>
+        <translation>Prišlo je do napake med preverjanjem zahteve za krajevno urejanje.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="121"/>
@@ -1596,18 +1596,18 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="588"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče odpreti %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="669"/>
         <source>File %1 already locked.</source>
-        <translation>Datoteka %1 je že zaklenjena</translation>
+        <translation>Datoteka %1 je že zaklenjena.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="670"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="681"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation>Datoteka bo zaklenjena za %1 min. Lahko pa jo ročno odklenete po končanem urejanju.</translation>
+        <translation>Datoteka bo zaklenjena za %1 min. Ročno jo je mogoče odkleniti po končanem urejanju.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="680"/>
@@ -1889,12 +1889,12 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1377"/>
         <source>Keep syncing</source>
-        <translation>Nadaljuj sinhronizacijo</translation>
+        <translation>Nadaljuj z usklajevanjem</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1385"/>
         <source>Stop syncing</source>
-        <translation>Zaustavi sinhronizacijo</translation>
+        <translation>Zaustavi usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1396"/>
@@ -1904,7 +1904,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1397"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation>Želite ustaviti sinhronizacijo te mape?</translation>
+        <translation>Ali želite zaustaviti usklajevanje te mape?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1294"/>
@@ -2458,7 +2458,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Vprašaj za potrditev pred sinhronizacijo novih map večjih od</translation>
+        <translation>Vprašaj za potrditev pred usklajevanjem novih map večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -2494,7 +2494,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation>Prikaži obvestila Klicov</translation>
+        <translation>Prikaži obvestila klicev</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
