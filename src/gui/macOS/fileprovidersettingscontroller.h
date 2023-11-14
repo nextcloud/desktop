@@ -49,6 +49,7 @@ public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
 
     void createEvictionWindowForAccount(const QString &userIdAtHost);
+    void createDebugArchive(const QString &userIdAtHost);
 
 signals:
     void vfsEnabledAccountsChanged();

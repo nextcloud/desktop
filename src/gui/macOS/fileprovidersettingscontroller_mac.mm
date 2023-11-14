@@ -14,10 +14,12 @@
 
 #include "fileprovidersettingscontroller.h"
 
+#include <QFileDialog>
 #include <QQmlApplicationEngine>
 
 #include "gui/systray.h"
 #include "gui/userinfo.h"
+#include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileprovideritemmetadata.h"
 #include "gui/macOS/fileprovidermaterialiseditemsmodel.h"
 
@@ -401,6 +403,20 @@ void FileProviderSettingsController::createEvictionWindowForAccount(const QStrin
     const auto dialog = qobject_cast<QQuickWindow *>(genericDialog);
     Q_ASSERT(dialog);
     dialog->show();
+}
+
+void FileProviderSettingsController::createDebugArchive(const QString &userIdAtHost)
+{
+    const auto filename = QFileDialog::getSaveFileName(nullptr,
+                                                       tr("Create Debug Archive"),
+                                                       {},
+                                                       tr("Zip Archives") + " (*.zip)");
+    if (filename.isEmpty()) {
+        return;
+    }
+
+    const auto message = QString(QStringLiteral("CREATE_DEBUG_ARCHIVE") + "~" + filename);
+    FileProvider::instance()->sendMessageToDomain(userIdAtHost, message);
 }
 
 } // namespace Mac
