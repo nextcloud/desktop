@@ -767,11 +767,11 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
 void Folder::setVirtualFilesEnabled(bool enabled)
 {
-    Vfs::Mode newMode = _definition.virtualFilesMode;
-    if (enabled && _definition.virtualFilesMode == Vfs::Off) {
-        newMode = bestAvailableVfsMode();
-    } else if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
+    auto newMode = _definition.virtualFilesMode;
+    if (!enabled) {
         newMode = Vfs::Off;
+    } else if (newMode == Vfs::Off) {
+        newMode = bestAvailableVfsMode();
     }
 
     if (newMode != _definition.virtualFilesMode) {
@@ -788,8 +788,8 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
         _definition.virtualFilesMode = newMode;
         startVfs();
+        _saveInFoldersWithPlaceholders = newMode != Vfs::Off;
         if (newMode != Vfs::Off) {
-            _saveInFoldersWithPlaceholders = true;
             switchToVirtualFiles();
         }
         saveToSettings();
