@@ -273,11 +273,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 // the error message might contain new lines, the delegate only expect multiple single line values
                 errors.append(legacyError.error().split(QLatin1Char('\n')));
             }
+            if (f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() == Vfs::Mode::WithSuffix) {
+                errors.append({
+                    tr("The suffix VFS plugin is deprecated and will be removed in the 7.0 release."),
+                    tr("Please use the context menu and select \"Disable virtual file support\" to  ensure future access to your synced files."),
+                    tr("You are going to lose access to your sync folder if you do not do so!"),
+                });
+            }
             return errors;
         }
-        case Columns::FolderInfoMsg:
-            return f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi ? QStringList(tr("Virtual file support is enabled."))
-                                                                                                          : QStringList();
         case Columns::SyncRunning:
             return f->syncResult().status() == SyncResult::SyncRunning;
         case Columns::HeaderRole: {

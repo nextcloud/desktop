@@ -46,7 +46,6 @@ public:
         FolderSecondPathRole,
         FolderConflictMsg,
         FolderErrorMsg,
-        FolderInfoMsg,
         FolderSyncPaused,
         FolderStatusIconRole,
         FolderAccountConnected,

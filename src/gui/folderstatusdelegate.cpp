@@ -56,7 +56,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     // this already includes the bottom margin
 
     // add some space for the message boxes.
-    for (auto column : { FolderStatusModel::Columns::FolderConflictMsg, FolderStatusModel::Columns::FolderErrorMsg, FolderStatusModel::Columns::FolderInfoMsg }) {
+    for (auto column : {FolderStatusModel::Columns::FolderConflictMsg, FolderStatusModel::Columns::FolderErrorMsg}) {
         auto msgs = index.siblingAtColumn(static_cast<int>(column)).data().toStringList();
         if (!msgs.isEmpty()) {
             h += _margin + 2 * _margin + msgs.count() * fm.height();
@@ -115,7 +115,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString aliasText = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::HeaderRole)).data());
     const QStringList conflictTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderConflictMsg)).data());
     const QStringList errorTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderErrorMsg)).data());
-    const QStringList infoTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderInfoMsg)).data());
     const QIcon spaceImage = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderImage)).data().value<QIcon>();
 
     const int overallPercent = qvariant_cast<int>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressOverallPercent)).data());
@@ -253,14 +252,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         pos = rect.bottom() + _margin;
     };
 
-    if (!conflictTexts.isEmpty())
+    if (!conflictTexts.isEmpty()) {
         drawTextBox(conflictTexts, QColor(0xba, 0xba, 0x4d));
-    if (!errorTexts.isEmpty())
+    }
+    if (!errorTexts.isEmpty()) {
         drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
-    if (!infoTexts.isEmpty())
-        drawTextBox(infoTexts, QColor(0x4d, 0x4d, 0xba));
-
-
+    }
     {
         // was saved before we fetched the data from the model
         painter->restore();
