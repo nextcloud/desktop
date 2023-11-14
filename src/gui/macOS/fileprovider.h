@@ -39,6 +39,9 @@ public:
 
     static bool fileProviderAvailable();
 
+public slots:
+    void sendMessageToDomain(const QString &domainIdentifier, const QString &message);
+
 private slots:
     void configureXPC();
 
