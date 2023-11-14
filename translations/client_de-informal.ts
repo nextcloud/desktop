@@ -1475,7 +1475,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation>Verwenden virtuelle Dateien anstatt die Dateien gleich herunter zu laden%1</translation>
+        <translation>Virtuelle Dateien verwenden anstatt die Dateien gleich herunter zu laden%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
@@ -4285,7 +4285,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="383"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation>%1 %2%7%8Qt Bibliotheken %3, %4%7verwenden das Virtual Files plugin: %5%7%6</translation>
+        <translation>%1 %2%7%8Qt Bibliotheken %3, %4%7Verwendete Erweiterung für virtuelle Dateien: %5%7%6</translation>
     </message>
 </context>
 <context>

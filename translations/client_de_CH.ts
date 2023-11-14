@@ -1475,7 +1475,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation>Verwenden virtuelle Dateien anstatt die Dateien gleich herunter zu laden%1</translation>
+        <translation>Virtuelle Dateien verwenden anstatt die Dateien gleich herunter zu laden%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="50"/>
