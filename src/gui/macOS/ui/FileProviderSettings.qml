@@ -144,5 +144,10 @@ Page {
                 value: generalActionsGrid.localUsedStorage / generalActionsGrid.remoteUsedStorage
             }
         }
+
+        CustomButton {
+            text: qsTr("Create debug archive")
+            onClicked: root.controller.createDebugArchive(root.accountUserIdAtHost)
+        }
     }
 }
