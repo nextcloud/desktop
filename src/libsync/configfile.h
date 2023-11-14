@@ -117,9 +117,6 @@ public:
      */
     void configureHttpLogging(std::optional<bool> enable = std::nullopt);
 
-    // Whether experimental UI options should be shown
-    bool showExperimentalOptions() const;
-
     // proxy settings
     void setProxyType(
         QNetworkProxy::ProxyType proxyType, const QString &host = QString(), int port = 0, bool needsAuth = false, const QString &user = QString());

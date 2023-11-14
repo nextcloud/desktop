@@ -27,19 +27,16 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
     // being pessimistic by default
     bool vfsIsAvailable = false;
     bool enableVfsByDefault = false;
-    bool vfsModeIsExperimental = false;
 
     switch (VfsPluginManager::instance().bestAvailableVfsMode()) {
     case Vfs::WindowsCfApi:
         vfsIsAvailable = true;
         enableVfsByDefault = true;
-        vfsModeIsExperimental = false;
         break;
     case Vfs::WithSuffix:
         // we ignore forceVirtualFilesOption if experimental features are disabled
-        vfsIsAvailable = Theme::instance()->enableExperimentalFeatures();
+        vfsIsAvailable = false;
         enableVfsByDefault = false;
-        vfsModeIsExperimental = true;
         break;
     default:
         break;
@@ -62,7 +59,7 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
         syncTargetDir = defaultSyncTargetDir;
     }
 
-    _page = new AccountConfiguredWizardPage(defaultSyncTargetDir, syncTargetDir, vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
+    _page = new AccountConfiguredWizardPage(defaultSyncTargetDir, syncTargetDir, vfsIsAvailable, enableVfsByDefault);
 }
 
 SetupWizardState AccountConfiguredSetupWizardState::state() const

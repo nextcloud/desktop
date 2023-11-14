@@ -32,12 +32,6 @@ public:
     QColor wizardHeaderTitleColor() const override;
     QIcon wizardHeaderLogo() const override;
     QIcon aboutIcon() const override;
-
-    // For owncloud-brandings *do* show the virtual files option.
-    bool showVirtualFilesOption() const override { return true; }
-    bool enableExperimentalFeatures() const override { return true; };
-
-private:
 };
 }
 #endif // OWNCLOUD_MIRALL_THEME_H

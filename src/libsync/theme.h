@@ -380,21 +380,13 @@ public:
     virtual QString versionSwitchOutput() const;
 
     /**
-     * @brief Whether to show the option to create folders using "virtual files".
+     * @brief Disables all vfs related options, if vfs is still wanted we recommend to set forceVirtualFilesOption
      *
-     * By default, this is the same as enableExperimentalFreatures()
+     * default: true
      */
     virtual bool showVirtualFilesOption() const;
 
     virtual bool forceVirtualFilesOption() const;
-
-    /**
-     * @brief Whether to show options considered as experimental.
-     *
-     * By default, the options are not shown unless experimental options are
-     * manually enabled in the configuration file.
-     */
-    virtual bool enableExperimentalFeatures() const;
 
     /**
      * Whether to clear cookies before checking status.php

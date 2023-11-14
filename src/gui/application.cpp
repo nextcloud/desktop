@@ -95,15 +95,6 @@ Application::Application(Platform *platform, const QString &displayLanguage, boo
         AbstractNetworkJob::httpTimeout = cfg.timeout();
     }
 
-    // Check vfs plugins
-    if (Theme::instance()->showVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::Off) {
-        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
-    }
-    if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi))
-        qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix))
-        qCInfo(lcApplication) << "VFS suffix plugin is available";
-
     qApp->setQuitOnLastWindowClosed(false);
 
     Theme::instance()->setSystrayUseMonoIcons(cfg.monoIcons());

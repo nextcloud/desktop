@@ -373,13 +373,13 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             if (Theme::instance()->showVirtualFilesOption()) {
                 if (folder->virtualFilesEnabled()) {
                     if (!Theme::instance()->forceVirtualFilesOption()) {
-                        menu->addAction(tr("Disable virtual file support..."), this, &AccountSettings::slotDisableVfsCurrentFolder);
+                        menu->addAction(tr("Disable virtual file support"), this, &AccountSettings::slotDisableVfsCurrentFolder);
                     }
                 } else {
                     const auto mode = VfsPluginManager::instance().bestAvailableVfsMode();
                     if (FolderMan::instance()->checkVfsAvailability(folder->path(), mode)) {
-                        if (mode == Vfs::WindowsCfApi || (Theme::instance()->enableExperimentalFeatures() && mode != Vfs::Off)) {
-                            ac = menu->addAction(tr("Enable virtual file support%1...").arg(mode == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
+                        if (mode == Vfs::WindowsCfApi) {
+                            ac = menu->addAction(tr("Enable virtual file support"));
                             connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
                         }
                     }

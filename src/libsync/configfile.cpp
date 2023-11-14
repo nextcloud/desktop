@@ -71,8 +71,10 @@ const QString minChunkSizeC() { return QStringLiteral("minChunkSize"); }
 const QString maxChunkSizeC() { return QStringLiteral("maxChunkSize"); }
 const QString targetChunkUploadDurationC() { return QStringLiteral("targetChunkUploadDuration"); }
 const QString automaticLogDirC() { return QStringLiteral("logToTemporaryLogDir"); }
-const QString numberOfLogsToKeepC() { return QStringLiteral("numberOfLogsToKeep"); }
-const QString showExperimentalOptionsC() { return QStringLiteral("showExperimentalOptions"); }
+const QString numberOfLogsToKeepC()
+{
+    return QStringLiteral("numberOfLogsToKeep");
+}
 
 // The key `clientVersion` stores the version *with* build number of the config file. It is named
 // this way, because before 5.0, only the version *without* build number was stored.
@@ -816,12 +818,6 @@ bool ConfigFile::logHttp() const
 {
     auto settings = makeQSettings();
     return settings.value(logHttpC(), false).toBool();
-}
-
-bool ConfigFile::showExperimentalOptions() const
-{
-    auto settings = makeQSettings();
-    return settings.value(showExperimentalOptionsC(), false).toBool();
 }
 
 QString ConfigFile::clientVersionWithBuildNumberString() const

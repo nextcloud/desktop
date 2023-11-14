@@ -578,17 +578,12 @@ QString Theme::versionSwitchOutput() const
 
 bool Theme::showVirtualFilesOption() const
 {
-    return enableExperimentalFeatures();
+    return true;
 }
 
 bool Theme::forceVirtualFilesOption() const
 {
     return false;
-}
-
-bool Theme::enableExperimentalFeatures() const
-{
-    return ConfigFile().showExperimentalOptions();
 }
 
 bool Theme::connectionValidatorClearCookies() const
