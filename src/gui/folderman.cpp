@@ -313,7 +313,9 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 
     if (!paused) {
         _disabledFolders.remove(f);
-        scheduler()->enqueueFolder(f);
+        if (f->canSync()) {
+            scheduler()->enqueueFolder(f);
+        }
     } else {
         _disabledFolders.insert(f);
     }
