@@ -210,7 +210,6 @@ void BulkPropagatorJob::triggerUpload()
                                                             0,
                                                             std::numeric_limits<qint64>::max(),
                                                             &propagator()->_bandwidthManager);
-            singleFile._headers["Content-Length"] = QByteArray::number(device->size());
         } else {
             device = std::make_unique<UploadDevice>(singleFile._localPath,
                                                      0,
@@ -234,7 +233,7 @@ void BulkPropagatorJob::triggerUpload()
         }
 
         singleFile._headers["X-File-Path"] = singleFile._remotePath.toUtf8();
-        singleFile._headers["X-File-Type"] = QString::number(singleFile._item->_type == ItemTypeSoftLink).toUtf8();
+        singleFile._headers["OC-File-Type"] = QString::number(singleFile._item->_type).toUtf8();
         uploadParametersData.push_back({std::move(device), singleFile._headers});
         timeout += singleFile._fileSize;
     }
@@ -282,12 +281,24 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
     const auto checksumType = uploadChecksumEnabled() ? "MD5" : "";
     computeChecksum->setChecksumType(checksumType);
 
-    connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
-        slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);
-    });
-    connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
+    if (item->_type == CSyncEnums::ItemTypeSoftLink) {
+        auto checksumDevice = QSharedPointer<SymLinkUploadDevice>::create(fileToUpload._path,
+                                                        0,
+                                                        std::numeric_limits<qint64>::max(),
+                                                        &propagator()->_bandwidthManager);
+        const auto contentChecksum = ComputeChecksum().computeNow(checksumDevice, checksumType);
+        item->_size = checksumDevice->size();
+        fileToUpload._size = checksumDevice->size();
+        slotStartUpload(item, fileToUpload, checksumType, contentChecksum);
+        computeChecksum->deleteLater();
+    } else {
+        connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
+            slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);
+        });
+        connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
 
-    computeChecksum->start(fileToUpload._path);
+        computeChecksum->start(fileToUpload._path);
+    }
 }
 
 void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
@@ -333,8 +344,10 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
         return;
     }
 
-    fileToUpload._size = FileSystem::getSize(fullFilePath);
-    item->_size = FileSystem::getSize(originalFilePath);
+    if (!item->isSymLink()) {
+        fileToUpload._size = FileSystem::getSize(fullFilePath);
+        item->_size = FileSystem::getSize(originalFilePath);
+    }
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
