@@ -500,33 +500,30 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
     }
 }
 
+QString adjustRenamedPathOne(QMap<QString, QString> &renamedDirectoriesIn, const QString &original)
+{
+    return OCC::adjustRenamedPath(renamedDirectoriesIn, original);
+}
+
 void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemVector &items)
 {
+
+    QMap<QString, QString> renamedDirectories;
+    for (const auto &item : items) {
+        if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+            renamedDirectories.insert(item->_file, item->_renameTarget);
+        }
+    }
+
+    if (renamedDirectories.isEmpty()) {
+        return;
+    }
+
     QString enclosingFolderOriginalPath;
     QString enclosingFolderRenamedTargetPath;
-    const auto eraseBeginIt = std::remove_if(std::begin(items), std::end(items), [&enclosingFolderOriginalPath, &enclosingFolderRenamedTargetPath](const SyncFileItemPtr &item) {
-        // we assume items is always sorted such that parent folder go before children
-        if (item->_instruction != CSYNC_INSTRUCTION_RENAME || item->_direction != SyncFileItem::Up) {
-            enclosingFolderOriginalPath.clear();
-            enclosingFolderRenamedTargetPath.clear();
-            return false;
-        }
-
-        if (item->isDirectory() && (enclosingFolderOriginalPath.isEmpty() || enclosingFolderRenamedTargetPath.isEmpty())
-            || (!item->_originalFile.startsWith(enclosingFolderOriginalPath) || !item->_renameTarget.startsWith(enclosingFolderRenamedTargetPath))) {
-            // if it is a directory and there was no previous directory set, do it now, same for a directory which is not a child of previous directory, assume
-            // starting a new hierarchy
-            enclosingFolderOriginalPath = item->_originalFile;
-            enclosingFolderRenamedTargetPath = item->_renameTarget;
-            return false;
-        }
-
-        if (enclosingFolderOriginalPath.isEmpty() || enclosingFolderRenamedTargetPath.isEmpty()) {
-            return false;
-        }
-
-        // remove only children of enclosingFolderOriginalPath, not enclosingFolderOriginalPath itself such that parent always remains in the vector
-        return item->_originalFile.startsWith(enclosingFolderOriginalPath) && item->_renameTarget.startsWith(enclosingFolderRenamedTargetPath);
+    const auto eraseBeginIt = std::remove_if(std::begin(items), std::end(items), [&renamedDirectories](const SyncFileItemPtr &item) {
+      QString origin = adjustRenamedPathOne(renamedDirectories, item->_file);
+      return origin == item->_renameTarget;
     });
     items.erase(eraseBeginIt, std::end(items));
 }
@@ -547,6 +544,12 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
      * Each directory is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)
      * When we enter a directory, we can create the directory job and push it on the stack. */
+
+    qCInfo(lcPropagator) << "BEGIN ITEMS SYNC";
+    for (const auto &item : items) {
+        qCInfo(lcPropagator) << "item->_originalFile:" << item->_originalFile << "item->_renameTarget" << item->_renameTarget << "item->_direction"
+                             << item->_direction << "item->_instruction:" << item->_instruction;
+    }
 
     const auto regex = syncOptions().fileRegex();
     if (regex.isValid()) {
@@ -577,7 +580,9 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                              << "item->_renameTarget"
                              << item->_renameTarget
                              << "item->_direction"
-                             << item->_direction;
+                             << item->_direction
+                             << "item->_instruction:"
+                             << item->_instruction;
     }
 
     // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
@@ -593,7 +598,9 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                              << "item->_renameTarget"
                              << item->_renameTarget
                              << "item->_direction"
-                             << item->_direction;
+                             << item->_direction
+                             << "item->_instruction:"
+                             << item->_instruction;
     }
 
     resetDelayedUploadTasks();
