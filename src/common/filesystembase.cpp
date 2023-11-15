@@ -312,13 +312,13 @@ bool FileSystem::fileExists(const QString &filename, const QFileInfo &fileInfo)
         return fileExistsWin(filename);
     }
 #endif
-    bool re = fileInfo.exists();
+    bool re = fileInfo.exists() || fileInfo.isSymLink();
     // if the filename is different from the filename in fileInfo, the fileInfo is
     // not valid. There needs to be one initialised here. Otherwise the incoming
     // fileInfo is re-used.
     if (fileInfo.filePath() != filename) {
         QFileInfo myFI(filename);
-        re = myFI.exists();
+        re = myFI.exists() || myFI.isSymLink();
     }
     return re;
 }
