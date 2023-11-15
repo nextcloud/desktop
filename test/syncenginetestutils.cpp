@@ -1328,7 +1328,6 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 
 void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 {
-    auto dirAbsPath = dir.path();
     for(const auto &child : templateFi.children) {
         if (child.isDir) {
             QDir subDir(dir);
