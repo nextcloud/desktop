@@ -502,31 +502,31 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
 
 void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemVector &items)
 {
-    QString previousFolderPath;
-    const auto eraseBeginIt = std::remove_if(std::begin(items), std::end(items), [&previousFolderPath](const SyncFileItemPtr &item) {
+    QString enclosingFolderOriginalPath;
+    QString enclosingFolderRenamedTargetPath;
+    const auto eraseBeginIt = std::remove_if(std::begin(items), std::end(items), [&enclosingFolderOriginalPath, &enclosingFolderRenamedTargetPath](const SyncFileItemPtr &item) {
         // we assume items is always sorted such that parent folder go before children
         if (item->_instruction != CSYNC_INSTRUCTION_RENAME || item->_direction != SyncFileItem::Up) {
-            previousFolderPath.clear();
+            enclosingFolderOriginalPath.clear();
+            enclosingFolderRenamedTargetPath.clear();
             return false;
         }
 
-        if (item->isDirectory() && (previousFolderPath.isEmpty() || !item->_originalFile.startsWith(previousFolderPath))) {
+        if (item->isDirectory() && (enclosingFolderOriginalPath.isEmpty() || enclosingFolderRenamedTargetPath.isEmpty())
+            || (!item->_originalFile.startsWith(enclosingFolderOriginalPath) || !item->_renameTarget.startsWith(enclosingFolderRenamedTargetPath))) {
             // if it is a directory and there was no previous directory set, do it now, same for a directory which is not a child of previous directory, assume
             // starting a new hierarchy
-            previousFolderPath = item->_originalFile;
+            enclosingFolderOriginalPath = item->_originalFile;
+            enclosingFolderRenamedTargetPath = item->_renameTarget;
             return false;
         }
 
-        if (previousFolderPath.isEmpty()) {
+        if (enclosingFolderOriginalPath.isEmpty() || enclosingFolderRenamedTargetPath.isEmpty()) {
             return false;
         }
 
-        if (item->isDirectory()) {
-            return false;
-        }
-
-        // remove only children of previousFolderPath, not previousFolderPath itself such that parent always remains in the vector
-        return item->_originalFile.startsWith(previousFolderPath);
+        // remove only children of enclosingFolderOriginalPath, not enclosingFolderOriginalPath itself such that parent always remains in the vector
+        return item->_originalFile.startsWith(enclosingFolderOriginalPath) && item->_renameTarget.startsWith(enclosingFolderRenamedTargetPath);
     });
     items.erase(eraseBeginIt, std::end(items));
 }
