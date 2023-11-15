@@ -255,28 +255,29 @@ void PropagateRemoteMove::finalize()
     // reopens the db successfully.
     // The db is only queried to transfer the content checksum from the old
     // to the new record. It is not a problem to skip it here.
+    QString origin = propagator()->adjustRenamedPath(_item->_originalFile);
     SyncJournalFileRecord oldRecord;
-    if (!propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord)) {
-        qCWarning(lcPropagateRemoteMove) << "Could not get file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
+    if (!propagator()->_journal->getFileRecord(origin, &oldRecord)) {
+        qCWarning(lcPropagateRemoteMove) << "could not get file from local DB" << origin;
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(origin), ErrorCategory::GenericError);
         return;
     }
     auto &vfs = propagator()->syncOptions()._vfs;
-    // TODO: vfs->pinState(_item->_originalFile); does not make sense as item is already gone from original location, do we need this?
-    auto pinState = vfs->pinState(_item->_originalFile);
+    // TODO: vfs->pinState(origin); does not make sense as item is already gone from original location, do we need this?
+    auto pinState = vfs->pinState(origin);
 
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
     if (FileSystem::fileExists(targetFile)) {
         // Delete old db data.
-        if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
-            qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << _item->_originalFile;
-            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
+        if (!propagator()->_journal->deleteFileRecord(origin)) {
+            qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << origin;
+            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(origin), ErrorCategory::GenericError);
             return;
         }
-        // TODO: vfs->setPinState(_item->_originalFile, PinState::Inherited) will always fail as item is already gone from original location, do we need this?
-        if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
-            qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << _item->_originalFile << "to inherited";
+        // TODO: vfs->setPinState(origin, PinState::Inherited) will always fail as item is already gone from original location, do we need this?
+        if (!vfs->setPinState(origin, PinState::Inherited)) {
+            qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << origin << "to inherited";
         }
     }
 
@@ -316,7 +317,6 @@ void PropagateRemoteMove::finalize()
     }
 
     if (_item->isDirectory()) {
-        QString origin = propagator()->adjustRenamedPath(_item->_file);
         if (!propagator()->_journal->updateParentForAllChildren(origin.toUtf8(), _item->_renameTarget.toUtf8())) {
             done(SyncFileItem::FatalError, tr("Failed to move folder: %1").arg(_item->_file), ErrorCategory::GenericError);
             return;
@@ -325,7 +325,7 @@ void PropagateRemoteMove::finalize()
         if (!propagator()->_journal->getFilesBelowPath(_item->_renameTarget.toUtf8(), [&](const SyncJournalFileRecord &rec) {
                 // not sure if this is needed, inode seems to never change for move/rename
                 auto newItem = SyncFileItem::fromSyncJournalFileRecord(rec);
-                newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, _item->_originalFile);
+                newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, origin);
                 newItem->_renameTarget = newItem->_file;
                 newItem->_instruction = CSYNC_INSTRUCTION_RENAME;
                 newItem->_direction = SyncFileItem::Up;
@@ -344,7 +344,7 @@ void PropagateRemoteMove::finalize()
                     }
                 }
                 auto &vfs = propagator()->syncOptions()._vfs;
-                // TODO: vfs->pinState(_item->_originalFile); does not make sense as item is already gone from original location, do we need this?
+                // TODO: vfs->pinState(origin); does not make sense as item is already gone from original location, do we need this?
                 auto pinState = vfs->pinState(newItem->_originalFile);
                 const auto targetFile = propagator()->fullLocalPath(newItem->_renameTarget);
 
@@ -353,7 +353,7 @@ void PropagateRemoteMove::finalize()
                     if (!propagator()->_journal->deleteFileRecord(newItem->_originalFile)) {
                         qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << newItem->_originalFile;
                     }
-                    // TODO: vfs->setPinState(_item->_originalFile, PinState::Inherited) will always fail as item is already gone from original location, do we
+                    // TODO: vfs->setPinState(origin, PinState::Inherited) will always fail as item is already gone from original location, do we
                     // need this?
                     if (!vfs->setPinState(newItem->_originalFile, PinState::Inherited)) {
                         qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << newItem->_originalFile << "to inherited";

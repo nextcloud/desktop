@@ -1063,7 +1063,6 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     return {};
 }
 
-<<<<<<< HEAD
 bool SyncJournalDb::getRootE2eFolderRecord(const QString &remoteFolderPath, SyncJournalFileRecord *rec)
 {
     Q_ASSERT(rec);
@@ -1111,27 +1110,12 @@ bool SyncJournalDb::listAllE2eeFoldersWithEncryptionStatusLessThan(const int sta
         return false;
     const auto query = _queryManager.get(PreparedSqlQueryManager::ListAllTopLevelE2eeFoldersStatusLessThanQuery,
                                          QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE type == 2 AND isE2eEncrypted >= ?1 AND isE2eEncrypted < ?2 ORDER BY path||'/' ASC"),
-=======
-bool SyncJournalDb::updateParentForAllChildren(const QByteArray &oldParentPath, const QByteArray &newParentPath)
-{
-    qCInfo(lcDb) << "Moving files from path" << oldParentPath << "to path" << newParentPath;
-
-    if (!checkConnect()) {
-        qCWarning(lcDb) << "Failed to connect database.";
-        return false;
-    }
-
-    const auto query = _queryManager.get(PreparedSqlQueryManager::MoveFilesInPathQuery,
-                                         QByteArrayLiteral("UPDATE metadata"
-                                                           " SET path = REPLACE(path, ?1, ?2), phash = path_hash(REPLACE(path, ?1, ?2)), pathlen = path_length(REPLACE(path, ?1, ?2))"
-                                                           "  WHERE " IS_PREFIX_PATH_OF("?1", "path")),
->>>>>>> 6e3bb76cc (On folder move execute only one UPDATE query for all nested items.)
                                          _db);
     if (!query) {
         qCDebug(lcDb) << "database error:" << query->error();
         return false;
     }
-<<<<<<< HEAD
+
     query->bindValue(1, SyncJournalFileRecord::EncryptionStatus::Encrypted);
     query->bindValue(2, status);
 
@@ -1187,17 +1171,33 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
         pathComponents.removeLast();
     }
     return true;
-=======
-    query->bindValue(1, oldParentPath);
+}
+
+    bool SyncJournalDb::updateParentForAllChildren(const QByteArray &oldParentPath, const QByteArray &newParentPath)
+    {
+        qCInfo(lcDb) << "Moving files from path" << oldParentPath << "to path" << newParentPath;
+
+        if (!checkConnect()) {
+            qCWarning(lcDb) << "Failed to connect database.";
+            return false;
+        }
+
+        const auto query = _queryManager.get(PreparedSqlQueryManager::MoveFilesInPathQuery,
+                                             QByteArrayLiteral("UPDATE metadata"
+                                                               " SET path = REPLACE(path, ?1, ?2), phash = path_hash(REPLACE(path, ?1, ?2)), pathlen = path_length(REPLACE(path, ?1, ?2))"
+                                                               "  WHERE " IS_PREFIX_PATH_OF("?1", "path")),
+                                             _db);
+        if (!query) {
+            qCDebug(lcDb) << "database error:" << query->error();
+            return false;
+        }
+
+        query->bindValue(1, oldParentPath);
     query->bindValue(2, newParentPath);
-<<<<<<< HEAD
-    return query->exec();
->>>>>>> 6e3bb76cc (On folder move execute only one UPDATE query for all nested items.)
-=======
-    auto res = query->exec();
-    auto numRows = query->numRowsAffected();
-    return res;
->>>>>>> eb7234f4d (Iteration.)
+
+        auto res = query->exec();
+        auto numRows = query->numRowsAffected();
+        return res;
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)

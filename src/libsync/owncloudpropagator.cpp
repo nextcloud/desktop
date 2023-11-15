@@ -510,7 +510,7 @@ void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemV
 
     QMap<QString, QString> renamedDirectories;
     for (const auto &item : items) {
-        if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+        if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_RENAME && item->_instruction == SyncFileItem::Up) {
             renamedDirectories.insert(item->_file, item->_renameTarget);
         }
     }
