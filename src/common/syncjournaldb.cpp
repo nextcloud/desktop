@@ -1190,8 +1190,14 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
 =======
     query->bindValue(1, oldParentPath);
     query->bindValue(2, newParentPath);
+<<<<<<< HEAD
     return query->exec();
 >>>>>>> 6e3bb76cc (On folder move execute only one UPDATE query for all nested items.)
+=======
+    auto res = query->exec();
+    auto numRows = query->numRowsAffected();
+    return res;
+>>>>>>> eb7234f4d (Iteration.)
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
