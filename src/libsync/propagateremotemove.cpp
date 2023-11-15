@@ -322,10 +322,9 @@ void PropagateRemoteMove::finalize()
             return;
         }
 
-        int a = 5;
-        a = 6;
-
         if (vfs->mode() != Vfs::Off && vfs->mode() != Vfs::WindowsCfApi) {
+            // the following slow code is only useful for VFS with suffix which is used for TestSyncVirtualFiles::testPinStateLocals test case
+            // TODO: Get rid of the TestSyncVirtualFiles::testPinStateLocals or change it, native Virtual Files (e.g. CfAPI do not need this code as pinstate is moved with corresponding placeholder)
             if (!propagator()->_journal->getFilesBelowPath(_item->_renameTarget.toUtf8(), [&](const SyncJournalFileRecord &rec) {
                     // not sure if this is needed, inode seems to never change for move/rename
                     auto newItem = SyncFileItem::fromSyncJournalFileRecord(rec);
@@ -379,7 +378,6 @@ void PropagateRemoteMove::finalize()
                 qCWarning(lcPropagateRemoteMove) << "Could not update inode for moved files in" << _item->_renameTarget;
             }
         }
-        a = 7;
     }
 
     propagator()->_journal->commit("Remote Rename");
