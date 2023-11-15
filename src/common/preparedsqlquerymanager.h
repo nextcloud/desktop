@@ -107,13 +107,9 @@ public:
         GetE2EeLockedFolderQuery,
         GetE2EeLockedFoldersQuery,
         DeleteE2EeLockedFolderQuery,
-<<<<<<< HEAD
         ListAllTopLevelE2eeFoldersStatusLessThanQuery,
-=======
         MoveFilesInPathQuery,
->>>>>>> 6e3bb76cc (On folder move execute only one UPDATE query for all nested items.)
-
-        PreparedQueryCount
+        PreparedQueryCount,
     };
     PreparedSqlQueryManager() = default;
     /**
