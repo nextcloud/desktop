@@ -506,7 +506,7 @@ void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemV
     QMap<QString, QString> renamedDirectories;
     for (const auto &item : items) {
         // TODO: for now, let's only process uploads (for downloads, we need to also adjust PropagateLocalRename such that correct DB records and pin states are set)
-        if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_RENAME && item->_instruction == SyncFileItem::Up) {
+        if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_RENAME && item->_direction == SyncFileItem::Up) {
             renamedDirectories.insert(item->_file, item->_renameTarget);
         }
     }

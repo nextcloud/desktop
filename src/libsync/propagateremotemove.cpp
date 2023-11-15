@@ -322,58 +322,64 @@ void PropagateRemoteMove::finalize()
             return;
         }
 
-        if (!propagator()->_journal->getFilesBelowPath(_item->_renameTarget.toUtf8(), [&](const SyncJournalFileRecord &rec) {
-                // not sure if this is needed, inode seems to never change for move/rename
-                auto newItem = SyncFileItem::fromSyncJournalFileRecord(rec);
-                newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, origin);
-                newItem->_renameTarget = newItem->_file;
-                newItem->_instruction = CSYNC_INSTRUCTION_RENAME;
-                newItem->_direction = SyncFileItem::Up;
-                const auto fsPath = propagator()->fullLocalPath(newItem->_renameTarget);
-                quint64 inode = rec._inode;
-                if (!FileSystem::getInode(fsPath, &inode)) {
-                    qCWarning(lcPropagateRemoteMove) << "Could not get inode for moved file" << fsPath;
-                    return;
-                }
-                if (inode != rec._inode) {
-                    auto newRec = rec;
-                    newRec._inode = inode;
-                    if (!propagator()->_journal->setFileRecord(newRec)) {
-                        qCWarning(lcPropagateRemoteMove) << "Could not update inode for moved file" << newRec.path();
+        int a = 5;
+        a = 6;
+
+        if (vfs->mode() != Vfs::Off && vfs->mode() != Vfs::WindowsCfApi) {
+            if (!propagator()->_journal->getFilesBelowPath(_item->_renameTarget.toUtf8(), [&](const SyncJournalFileRecord &rec) {
+                    // not sure if this is needed, inode seems to never change for move/rename
+                    auto newItem = SyncFileItem::fromSyncJournalFileRecord(rec);
+                    newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, origin);
+                    newItem->_renameTarget = newItem->_file;
+                    newItem->_instruction = CSYNC_INSTRUCTION_RENAME;
+                    newItem->_direction = SyncFileItem::Up;
+                    const auto fsPath = propagator()->fullLocalPath(newItem->_renameTarget);
+                    quint64 inode = rec._inode;
+                    if (!FileSystem::getInode(fsPath, &inode)) {
+                        qCWarning(lcPropagateRemoteMove) << "Could not get inode for moved file" << fsPath;
                         return;
                     }
-                }
-                auto &vfs = propagator()->syncOptions()._vfs;
-                // TODO: vfs->pinState(origin); does not make sense as item is already gone from original location, do we need this?
-                auto pinState = vfs->pinState(newItem->_originalFile);
-                const auto targetFile = propagator()->fullLocalPath(newItem->_renameTarget);
+                    if (inode != rec._inode) {
+                        auto newRec = rec;
+                        newRec._inode = inode;
+                        if (!propagator()->_journal->setFileRecord(newRec)) {
+                            qCWarning(lcPropagateRemoteMove) << "Could not update inode for moved file" << newRec.path();
+                            return;
+                        }
+                    }
+                    auto &vfs = propagator()->syncOptions()._vfs;
+                    // TODO: vfs->pinState(origin); does not make sense as item is already gone from original location, do we need this?
+                    auto pinState = vfs->pinState(newItem->_originalFile);
+                    const auto targetFile = propagator()->fullLocalPath(newItem->_renameTarget);
 
-                if (QFileInfo::exists(targetFile)) {
-                    // Delete old db data.
-                    if (!propagator()->_journal->deleteFileRecord(newItem->_originalFile)) {
-                        qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << newItem->_originalFile;
+                    if (QFileInfo::exists(targetFile)) {
+                        // Delete old db data.
+                        if (!propagator()->_journal->deleteFileRecord(newItem->_originalFile)) {
+                            qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << newItem->_originalFile;
+                        }
+                        // TODO: vfs->setPinState(origin, PinState::Inherited) will always fail as item is already gone from original location, do we
+                        // need this?
+                        if (!vfs->setPinState(newItem->_originalFile, PinState::Inherited)) {
+                            qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << newItem->_originalFile << "to inherited";
+                        }
                     }
-                    // TODO: vfs->setPinState(origin, PinState::Inherited) will always fail as item is already gone from original location, do we
-                    // need this?
-                    if (!vfs->setPinState(newItem->_originalFile, PinState::Inherited)) {
-                        qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << newItem->_originalFile << "to inherited";
+                    const auto result = propagator()->updateMetadata(*newItem);
+                    if (!result) {
+                        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
+                        return;
+                    } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
+                        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem->_file), ErrorCategory::GenericError);
+                        return;
                     }
-                }
-                const auto result = propagator()->updateMetadata(*newItem);
-                if (!result) {
-                    done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
-                    return;
-                } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-                    done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem->_file), ErrorCategory::GenericError);
-                    return;
-                }
-                if (pinState && *pinState != PinState::Inherited && !vfs->setPinState(newItem->_renameTarget, *pinState)) {
-                    done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);
-                    return;
-                }
-            })) {
-            qCWarning(lcPropagateRemoteMove) << "Could not update inode for moved files in" << _item->_renameTarget;
+                    if (pinState && *pinState != PinState::Inherited && !vfs->setPinState(newItem->_renameTarget, *pinState)) {
+                        done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);
+                        return;
+                    }
+                })) {
+                qCWarning(lcPropagateRemoteMove) << "Could not update inode for moved files in" << _item->_renameTarget;
+            }
         }
+        a = 7;
     }
 
     propagator()->_journal->commit("Remote Rename");
