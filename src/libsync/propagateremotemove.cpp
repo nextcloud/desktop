@@ -326,7 +326,7 @@ void PropagateRemoteMove::finalize()
             // the following slow code is only useful for VFS with suffix which is used for TestSyncVirtualFiles::testPinStateLocals test case
             // TODO: Get rid of the TestSyncVirtualFiles::testPinStateLocals or change it, native Virtual Files (e.g. CfAPI do not need this code as pinstate is moved with corresponding placeholder)
             if (!propagator()->_journal->getFilesBelowPath(_item->_renameTarget.toUtf8(), [&](const SyncJournalFileRecord &rec) {
-                    // not sure if this is needed, inode seems to never change for move/rename
+                    // TODO: not sure if this is needed, inode seems to never change for move/rename
                     auto newItem = SyncFileItem::fromSyncJournalFileRecord(rec);
                     newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, origin);
                     newItem->_renameTarget = newItem->_file;
