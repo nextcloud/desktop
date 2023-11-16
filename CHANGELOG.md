@@ -44,6 +44,7 @@ ownCloud admins and users.
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
+* Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
 ## Details
 
@@ -72,6 +73,12 @@ ownCloud admins and users.
    always using the fusion style on Windows will result in the best experience for the users.
 
    https://github.com/owncloud/client/issues/11275
+
+* Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
+
+   When starting a new sync we now also include the recent change events in the discovery.
+
+   https://github.com/owncloud/client/pull/11347
 
 # Changelog for ownCloud Desktop Client [5.1.2] (2023-11-10)
 
