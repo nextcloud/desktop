@@ -163,6 +163,8 @@ private:
 
     std::vector<BulkUploadItem> _filesToUpload;
 
+    qint64 _sentTotal = 0;
+
     SyncFileItem::Status _finalStatus = SyncFileItem::Status::NoStatus;
 };
 
