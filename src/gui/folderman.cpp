@@ -13,12 +13,14 @@
  */
 
 #include "folderman.h"
+
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
 #include "common/asserts.h"
 #include "configfile.h"
 #include "folder.h"
+#include "guiutility.h"
 #include "libsync/syncengine.h"
 #include "lockwatcher.h"
 #include "scheduling/syncscheduler.h"
@@ -718,6 +720,21 @@ static QString canonicalPath(const QString &path)
     return selFile.canonicalFilePath();
 }
 
+static QString checkPathForSyncRootMarkingRecursive(const QString &path)
+{
+    auto existingTag = Utility::getDirectorySyncRootMarking(path);
+    if (!existingTag.isEmpty()) {
+        return FolderMan::tr("Folder '%1' is already in use by application %2!").arg(path, existingTag);
+    }
+
+    QString parent = QFileInfo(path).path();
+    if (parent == path) { // root dir, stop recursing
+        return {};
+    }
+
+    return checkPathForSyncRootMarkingRecursive(parent);
+}
+
 QString FolderMan::checkPathValidityRecursive(const QString &path)
 {
     if (path.isEmpty()) {
@@ -740,8 +757,9 @@ QString FolderMan::checkPathValidityRecursive(const QString &path)
 
     if (!selFile.exists()) {
         const QString parentPath = selFile.path();
-        if (parentPath != path)
+        if (parentPath != path) {
             return checkPathValidityRecursive(parentPath);
+        }
         return FolderMan::tr("The selected path does not exist!");
     }
 
@@ -752,7 +770,8 @@ QString FolderMan::checkPathValidityRecursive(const QString &path)
     if (!selFile.isWritable()) {
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
-    return QString();
+
+    return checkPathForSyncRootMarkingRecursive(path);
 }
 
 QString FolderMan::checkPathValidityForNewFolder(const QString &path) const

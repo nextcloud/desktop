@@ -14,9 +14,9 @@
 
 #include "accountmanager.h"
 #include "account.h"
-#include "common/asserts.h"
 #include "configfile.h"
 #include "creds/credentialmanager.h"
+#include "guiutility.h"
 #include <cookiejar.h>
 #include <creds/httpcredentialsgui.h>
 #include <theme.h>
@@ -343,6 +343,10 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     // The argument keeps a strong reference to the AccountState, so we can safely remove other
     // AccountStatePtr occurrences:
     _accounts.erase(it);
+
+    if (account->account()->hasDefaultSyncRoot()) {
+        Utility::unmarkDirectoryAsSyncRoot(account->account()->defaultSyncRoot());
+    }
 
     // Forget account credentials, cookies
     account->account()->credentials()->forgetSensitiveData();

@@ -14,7 +14,7 @@
 
 #include "setupwizardaccountbuilder.h"
 
-#include "gui/accountmanager.h"
+#include "gui/guiutility.h"
 #include "networkjobs/fetchuserinfojobfactory.h"
 
 #include <QDir>
@@ -141,6 +141,7 @@ AccountPtr SetupWizardAccountBuilder::build()
         if (!QFileInfo::exists(_defaultSyncTargetDir)) {
             OC_ASSERT(QDir().mkpath(_defaultSyncTargetDir));
         }
+        Utility::markDirectoryAsSyncRoot(_defaultSyncTargetDir);
     }
 
     return newAccountPtr;

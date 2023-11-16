@@ -51,6 +51,10 @@ namespace Utility {
 
     QString socketApiSocketPath();
 
+    void markDirectoryAsSyncRoot(const QString &path);
+    QString getDirectorySyncRootMarking(const QString &path);
+    void unmarkDirectoryAsSyncRoot(const QString &path);
+
 } // namespace Utility
 } // namespace OCC
 

@@ -157,7 +157,7 @@ namespace FileSystem {
     /**
      * Returns the file system used at the given path.
      */
-    QString fileSystemForPath(const QString &path);
+    QString OCSYNC_EXPORT fileSystemForPath(const QString &path);
 #endif
 
     /**

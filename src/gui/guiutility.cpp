@@ -27,10 +27,18 @@
 #include "theme.h"
 
 #include "common/asserts.h"
+#include "libsync/filesystem.h"
 
 namespace OCC {
 Q_LOGGING_CATEGORY(lcGuiUtility, "gui.utility", QtInfoMsg)
 }
+
+namespace {
+const QString dirTag()
+{
+    return QStringLiteral("com.owncloud.spaces.app");
+}
+} // anonymous namespace
 
 using namespace OCC;
 
@@ -84,4 +92,35 @@ QString Utility::vfsPinActionText()
 QString Utility::vfsFreeSpaceActionText()
 {
     return QCoreApplication::translate("utility", "Free up local space");
+}
+
+void Utility::markDirectoryAsSyncRoot(const QString &path)
+{
+    Q_ASSERT(getDirectorySyncRootMarking(path).isEmpty());
+
+    auto result = FileSystem::Tags::set(path, dirTag(), Theme::instance()->orgDomainName().toUtf8());
+    if (!result) {
+        qCWarning(lcGuiUtility) << QStringLiteral("Failed to set tag on '%1': %2").arg(path, result.error())
+#ifdef Q_OS_WIN
+                                << QStringLiteral("(filesystem %1)").arg(FileSystem::fileSystemForPath(path))
+#endif // Q_OS_WIN
+            ;
+    }
+}
+
+QString Utility::getDirectorySyncRootMarking(const QString &path)
+{
+    auto existingValue = FileSystem::Tags::get(path, dirTag());
+    if (existingValue.has_value()) {
+        return QString::fromUtf8(existingValue.value());
+    }
+
+    return {};
+}
+
+void Utility::unmarkDirectoryAsSyncRoot(const QString &path)
+{
+    if (!FileSystem::Tags::remove(path, dirTag())) {
+        qCWarning(lcGuiUtility) << "Failed to remove tag on" << path;
+    }
 }

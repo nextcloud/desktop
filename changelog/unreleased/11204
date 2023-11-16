@@ -1,0 +1,7 @@
+Enhancement: Prevent same default sync folder for multiple accounts with Spaces
+
+This is done by tagging the sync folder by an extended attribute
+(Linux/macoS) or an alternative data stream (Windows).
+
+https://github.com/owncloud/client/issues/11204
+https://github.com/owncloud/client/pull/11364

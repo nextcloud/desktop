@@ -16,6 +16,7 @@
 
 #include "accountconfiguredsetupwizardstate.h"
 #include "gui/folderman.h"
+#include "libsync/filesystem.h"
 #include "pages/accountconfiguredwizardpage.h"
 #include "theme.h"
 
