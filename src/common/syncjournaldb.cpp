@@ -1173,31 +1173,32 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
     return true;
 }
 
-    bool SyncJournalDb::updateParentForAllChildren(const QByteArray &oldParentPath, const QByteArray &newParentPath)
-    {
-        qCInfo(lcDb) << "Moving files from path" << oldParentPath << "to path" << newParentPath;
+bool SyncJournalDb::updateParentForAllChildren(const QByteArray &oldParentPath, const QByteArray &newParentPath)
+{
+    qCInfo(lcDb) << "Moving files from path" << oldParentPath << "to path" << newParentPath;
 
-        if (!checkConnect()) {
-            qCWarning(lcDb) << "Failed to connect database.";
-            return false;
-        }
+    if (!checkConnect()) {
+        qCWarning(lcDb) << "Failed to connect database.";
+        return false;
+    }
 
-        const auto query = _queryManager.get(PreparedSqlQueryManager::MoveFilesInPathQuery,
-                                             QByteArrayLiteral("UPDATE metadata"
-                                                               " SET path = REPLACE(path, ?1, ?2), phash = path_hash(REPLACE(path, ?1, ?2)), pathlen = path_length(REPLACE(path, ?1, ?2))"
-                                                               "  WHERE " IS_PREFIX_PATH_OF("?1", "path")),
-                                             _db);
-        if (!query) {
-            qCDebug(lcDb) << "database error:" << query->error();
-            return false;
-        }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::MoveFilesInPathQuery,
+                                         QByteArrayLiteral("UPDATE metadata"
+                                                           " SET path = REPLACE(path, ?1, ?2), phash = path_hash(REPLACE(path, ?1, ?2)), pathlen = path_length(REPLACE(path, ?1, ?2))"
+                                                           "  WHERE " IS_PREFIX_PATH_OF("?1", "path")),
+                                         _db);
+    if (!query) {
+        qCDebug(lcDb) << "database error:" << query->error();
+        return false;
+    }
 
-        query->bindValue(1, oldParentPath);
+    query->bindValue(1, oldParentPath);
     query->bindValue(2, newParentPath);
 
-        auto res = query->exec();
-        auto numRows = query->numRowsAffected();
-        return res;
+    const auto res = query->exec();
+    const auto numRows = query->numRowsAffected();
+
+    return res && numRows;
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)

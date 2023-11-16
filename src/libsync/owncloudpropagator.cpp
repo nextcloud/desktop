@@ -581,10 +581,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     }
 
     // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
-    bool isCleanup = true;
-    if (isCleanup) {
-        cleanupLocallyMovedFoldersFromNestedItems(items);
-    }
+    cleanupLocallyMovedFoldersFromNestedItems(items);
 
     qCInfo(lcPropagator) << "END ITEMS CLEANUP";
     for (const auto &item : items) {
