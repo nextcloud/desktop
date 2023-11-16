@@ -446,10 +446,11 @@ void BulkPropagatorJob::slotUploadProgress(SyncFileItemPtr item, qint64 sent, qi
     // resetting progress due to the sent being zero by ignoring it.
     // finishedSignal() is bound to be emitted soon anyway.
     // See https://bugreports.qt.io/browse/QTBUG-44782.
+    _sentTotal += sent;
     if (sent == 0 && total == 0) {
         return;
     }
-    propagator()->reportProgress(*item, sent - total);
+    propagator()->reportProgress(*item, _sentTotal);
 }
 
 void BulkPropagatorJob::slotJobDestroyed(QObject *job)
