@@ -41,12 +41,19 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
 ## Details
+
+* Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
+
+   We fixed a bug that caused the application to crash instead of just aborting the current sync.
+
+   https://github.com/owncloud/client/issues/11379
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
