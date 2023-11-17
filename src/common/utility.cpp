@@ -127,15 +127,10 @@ static QLatin1String platform()
 QByteArray Utility::userAgentString()
 {
     return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
-        .arg(platform(),
-            OCC::Version::displayString(),
+        .arg(platform(), OCC::Version::displayString(),
             // accessing the theme to fetch the string is rather difficult
             // since this is only needed server-side to identify clients, the app name (as of 2.9, the short name) is good enough
-            qApp->applicationName(),
-            QSysInfo::productType(),
-            QSysInfo::kernelVersion(),
-            QSysInfo::buildCpuArchitecture(),
-            QSysInfo::currentCpuArchitecture())
+            qApp->applicationName(), QSysInfo::productType(), QSysInfo::kernelVersion(), QSysInfo::buildCpuArchitecture(), Utility::currentCpuArch())
         .toLatin1();
 }
 
@@ -621,6 +616,13 @@ QString Utility::formatRFC1123Date(const QDateTime &date)
 {
     return date.toUTC().toString(RFC1123PatternC());
 }
+
+#ifndef Q_OS_MAC
+QString Utility::currentCpuArch()
+{
+    return QSysInfo::currentCpuArchitecture();
+}
+#endif
 
 } // namespace OCC
 

@@ -32,6 +32,8 @@
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSUserDefaults.h>
 
+#include <sys/sysctl.h>
+
 namespace OCC {
 
 void Utility::setupFavLink(const QString &folder)
@@ -254,5 +256,24 @@ bool Utility::hasDarkSystray()
     return false;
 }
 #endif
+
+QString Utility::currentCpuArch()
+{
+    static const QString rv = []() {
+        int ret = 0;
+        size_t size = sizeof(ret);
+
+        // ret will be 1 if the process is translated (most likely with rosetta2)
+        if (sysctlbyname("sysctl.proc_translated", &ret, &size, nullptr, 0) != -1) {
+            if (errno != ENOENT) {
+                return QStringLiteral("arm64");
+            }
+        }
+
+        return QSysInfo::currentCpuArchitecture();
+    }();
+
+    return rv;
+}
 
 } // namespace OCC

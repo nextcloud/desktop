@@ -323,6 +323,9 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
     OCSYNC_EXPORT QDateTime parseRFC1123Date(const QString &date);
     OCSYNC_EXPORT QString formatRFC1123Date(const QDateTime &date);
+
+    // replacement for QSysInfo::currentCpuArchitecture() that respects macOS's rosetta2
+    OCSYNC_EXPORT QString currentCpuArch();
 } // Utility namespace
 /** @} */ // \addtogroup
 

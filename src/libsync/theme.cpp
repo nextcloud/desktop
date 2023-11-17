@@ -374,7 +374,8 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
             gitUrl = gitSHA1(format) + br;
         }
     }
-    QStringList sysInfo = {QStringLiteral("OS: %1-%2").arg(QSysInfo::productType(), QSysInfo::kernelVersion())};
+    QStringList sysInfo = {QStringLiteral("OS: %1-%2 (build arch: %3, CPU arch: %4)")
+                               .arg(QSysInfo::productType(), QSysInfo::kernelVersion(), QSysInfo::buildCpuArchitecture(), Utility::currentCpuArch())};
     // may be called by both GUI and CLI, but we can display QPA only for the former
     if (auto guiApp = qobject_cast<QGuiApplication *>(qApp)) {
         sysInfo << QStringLiteral("QPA: %1").arg(guiApp->platformName());

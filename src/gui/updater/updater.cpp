@@ -87,7 +87,7 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("platform"), platform);
     query.addQueryItem(QStringLiteral("oem"), theme->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
-    query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
+    query.addQueryItem(QStringLiteral("currentArch"), Utility::currentCpuArch());
 
     // client updater server is now aware of packaging format
     // TODO: add packaging string for other supported platforms, too
