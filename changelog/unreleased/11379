@@ -1,0 +1,5 @@
+Bugfix: Fix crash on unhandled status code on rename check
+
+We fixed a bug that caused the application to crash instead of just aborting the current sync.
+
+https://github.com/owncloud/client/issues/11379
