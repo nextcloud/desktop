@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Activity</source>
-        <translation>Дія</translation>
+        <translation>Дії</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="238"/>
@@ -898,7 +898,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="510"/>
         <source>Fetching activities …</source>
-        <translation>Отримую діяльності...</translation>
+        <translation>Отримую події...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="566"/>
@@ -1049,7 +1049,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>Потрібно авторизуватися</translation>
+        <translation>Потрібна авторизація</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -4410,7 +4410,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1134"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1363"/>
         <source>Activity</source>
-        <translation>Дія</translation>
+        <translation>Дії</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1136"/>
