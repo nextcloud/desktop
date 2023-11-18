@@ -2332,6 +2332,11 @@ for additional privileges during the process.</translation>
         <translation>server reported no %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="628"/>
+        <source>Error while handling a rename, unahndled status code: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation>SelectiveSync: Ignored because its path is deselected</translation>
