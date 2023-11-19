@@ -2334,7 +2334,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while handling a rename, unahndled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Gabim teksa trajtohej një riemërtim, kod gjendjeje i patrajtuar: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
