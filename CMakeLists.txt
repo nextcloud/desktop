@@ -214,6 +214,7 @@ if(BUILD_CLIENT)
     find_package(OpenSSL 1.1 REQUIRED )
 
    find_package(ZLIB REQUIRED)
+   find_package(SQLite3 3.9.0 REQUIRED)
 
    if(NOT WIN32 AND NOT APPLE)
       find_package(PkgConfig REQUIRED)
