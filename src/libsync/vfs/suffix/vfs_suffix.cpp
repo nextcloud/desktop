@@ -80,6 +80,7 @@ Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t 
         return {tr("Error updating metadata due to invalid modification time")};
     }
 
+    qCDebug(lcVfsSuffix()) << "setModTime" << filePath << modtime;
     FileSystem::setModTime(filePath, modtime);
     return {};
 }
@@ -108,6 +109,7 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
 
     file.write(" ");
     file.close();
+    qCDebug(lcVfsSuffix()) << "setModTime" << fn << item._modtime;
     FileSystem::setModTime(fn, item._modtime);
     return {};
 }
