@@ -606,6 +606,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         }
         if (_item->_modtime != _item->_previousModtime) {
             Q_ASSERT(_item->_modtime > 0);
+            qCDebug(lcPropagateDownload()) << "setModTime" << fn << _item->_modtime;
             FileSystem::setModTime(fn, _item->_modtime);
             emit propagator()->touchedFile(fn);
         }
@@ -1162,6 +1163,7 @@ void PropagateDownloadFile::downloadFinished()
     if (_item->_modtime <= 0) {
         qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
     }
+    qCDebug(lcPropagateDownload()) << "setModTime" << _tmpFile.fileName() << _item->_modtime;
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)

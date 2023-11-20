@@ -1378,6 +1378,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
             }
 
+            qCDebug(lcPropagator()) << "setModTime" << propagator()->fullLocalPath(_item->destination()) << _item->_modtime;
             FileSystem::setModTime(propagator()->fullLocalPath(_item->destination()), _item->_modtime);
         }
 
