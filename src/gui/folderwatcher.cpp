@@ -146,6 +146,7 @@ void FolderWatcher::startNotificationTestWhenReady()
     auto path = _testNotificationPath;
     if (QFile::exists(path)) {
         auto mtime = FileSystem::getModTime(path);
+        qCDebug(lcFolderWatcher()) << "setModTime" << path << (mtime + 1);
         FileSystem::setModTime(path, mtime + 1);
     } else {
         QFile f(path);

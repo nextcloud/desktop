@@ -779,6 +779,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
         cloudEntry.FsMetadata.FileSize.QuadPart = 0;
     }
 
+    qCDebug(lcCfApiWrapper) << "CfCreatePlaceholders" << path << modtime;
     const qint64 result = CfCreatePlaceholders(localBasePath.data(), &cloudEntry, 1, CF_CREATE_FLAG_NONE, nullptr);
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't create placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
