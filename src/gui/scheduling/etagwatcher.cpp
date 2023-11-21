@@ -29,7 +29,7 @@ namespace {
 constexpr auto pollTimeoutC = 30s;
 }
 
-Q_LOGGING_CATEGORY(lcEtagWatcher, "scheduler.etagwatcher", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEtagWatcher, "gui.scheduler.etagwatcher", QtInfoMsg)
 
 ETagWatcher::ETagWatcher(FolderMan *folderMan, QObject *parent)
     : QObject(parent)

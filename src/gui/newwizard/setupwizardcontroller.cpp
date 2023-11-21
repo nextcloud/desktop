@@ -53,7 +53,7 @@ QList<SetupWizardState> getNavigationEntries()
 
 namespace OCC::Wizard {
 
-Q_LOGGING_CATEGORY(lcSetupWizardController, "setupwizard.controller")
+Q_LOGGING_CATEGORY(lcSetupWizardController, "gui.setupwizard.controller")
 
 SetupWizardController::SetupWizardController(SettingsDialog *parent)
     : QObject(parent)

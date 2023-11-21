@@ -29,7 +29,7 @@ QString replaceCssColors(const QString &stylesheet)
 
 namespace OCC::Wizard {
 
-Q_LOGGING_CATEGORY(lcSetupWizardWindow, "setupwizard.window")
+Q_LOGGING_CATEGORY(lcSetupWizardWindow, "gui.setupwizard.window")
 
 SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     : QDialog(parent)

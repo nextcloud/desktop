@@ -47,7 +47,7 @@ struct
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPlatform, "platform.windows")
+Q_LOGGING_CATEGORY(lcPlatform, "sync.platform.windows")
 
 WinPlatform::WinPlatform()
 {

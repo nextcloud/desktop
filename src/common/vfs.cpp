@@ -178,7 +178,7 @@ void Vfs::wipeDehydratedVirtualFiles()
     // But hydrated placeholders may still be around.
 }
 
-Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPlugin, "sync.plugins", QtInfoMsg)
 
 OCC::VfsPluginManager *OCC::VfsPluginManager::_instance = nullptr;
 

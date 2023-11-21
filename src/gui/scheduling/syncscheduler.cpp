@@ -23,7 +23,7 @@ using namespace std::chrono_literals;
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcSyncScheduler, "scheduler.syncscheduler", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSyncScheduler, "gui.scheduler.syncscheduler", QtInfoMsg)
 
 class FolderPriorityQueue
 {

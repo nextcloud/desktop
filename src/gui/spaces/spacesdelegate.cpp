@@ -30,7 +30,7 @@
 
 using namespace OCC::Spaces;
 
-Q_LOGGING_CATEGORY(lcSpacesDelegate, "spaces.delegate")
+Q_LOGGING_CATEGORY(lcSpacesDelegate, "gui.spaces.delegate")
 
 void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
