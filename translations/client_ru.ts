@@ -2533,7 +2533,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation type="unfinished"/>
+        <translation>Показывать синхронизируемые папки в панели навигации &amp;Проводника</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="301"/>
@@ -2559,7 +2559,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Информация</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -2569,12 +2569,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="245"/>
         <source>Desktop client x.x.x</source>
-        <translation type="unfinished"/>
+        <translation>Клиент для ПК x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>Update channel</source>
-        <translation type="unfinished"/>
+        <translation>Канал обновлений</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
@@ -2601,12 +2601,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="323"/>
         <source>&amp;Automatically check for updates</source>
-        <translation type="unfinished"/>
+        <translation>Проверять наличие о&amp;бновлений</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="339"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Проверить сейчас</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="363"/>
@@ -2616,7 +2616,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="370"/>
         <source>Legal Notice</source>
-        <translation type="unfinished"/>
+        <translation>Официальное уведомление</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -2631,22 +2631,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="420"/>
         <source>Use &amp;monochrome icons</source>
-        <translation type="unfinished"/>
+        <translation>Использовать чё&amp;рно-белые значки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="427"/>
         <source>&amp;Launch on system startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Запускать при входе в систему</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="434"/>
         <source>Show server &amp;notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показывать &amp;уведомления, полученные с сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="441"/>
         <source>Show call notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показывать уведомления о вызовах</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="144"/>
@@ -3069,7 +3069,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="48"/>
         <source>No proxy</source>
-        <translation type="unfinished"/>
+        <translation>Не использовать прокси-сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
@@ -3084,7 +3084,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="84"/>
         <source>Manually specify proxy</source>
-        <translation type="unfinished"/>
+        <translation>Настроить прокси-сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -4954,7 +4954,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="570"/>
         <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 клиент для ПК %2&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="557"/>
@@ -5138,7 +5138,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка загрузки</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
@@ -5158,7 +5158,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
         <source>More details</source>
-        <translation type="unfinished"/>
+        <translation>Подробнее</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
@@ -5659,7 +5659,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="346"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow upload and editing</source>
-        <translation>Позволить загрузку и редактирование</translation>
+        <translation>Разрешить загрузку и редактирование файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="379"/>
@@ -5669,7 +5669,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="414"/>
         <source>File drop (upload only)</source>
-        <translation>Скинуть файл (только загрузка)</translation>
+        <translation>Хранилище (только приём файлов)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="453"/>
