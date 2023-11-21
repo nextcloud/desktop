@@ -55,6 +55,7 @@ class AbstractCredentials;
 class Account;
 using AccountPtr = QSharedPointer<Account>;
 class AccessManager;
+class ClientStatusReporting;
 class SimpleNetworkJob;
 class PushNotifications;
 class UserStatusConnector;
@@ -305,6 +306,10 @@ public:
     [[nodiscard]] PushNotifications *pushNotifications() const;
     void setPushNotificationsReconnectInterval(int interval);
 
+    void trySetupClientStatusReporting();
+
+    void reportClientStatus(const int status);
+
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
     void setLockFileState(const QString &serverRelativePath,
@@ -438,6 +443,8 @@ private:
     QString _lastDirectEditingETag;
 
     PushNotifications *_pushNotifications = nullptr;
+
+    QScopedPointer<ClientStatusReporting> _clientStatusReporting;
 
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
 
