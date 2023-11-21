@@ -17,8 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef UTILITY_H
-#define UTILITY_H
+#pragma once
 
 #include "ocsynclib.h"
 
@@ -374,7 +373,5 @@ constexpr bool Utility::isBSD()
 #endif
 }
 } // OCC namespace
-
-#endif // UTILITY_H
 
 OCSYNC_EXPORT QDebug operator<<(QDebug debug, std::chrono::nanoseconds in);
