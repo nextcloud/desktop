@@ -121,10 +121,10 @@ set(client_SRCS
     navigationpanehelper.cpp
     networksettings.h
     networksettings.cpp
+    "${CMAKE_SOURCE_DIR}/src/libsync/ocsjob.h"
+    "${CMAKE_SOURCE_DIR}/src/libsync/ocsjob.cpp"
     ocsnavigationappsjob.h
     ocsnavigationappsjob.cpp
-    ocsjob.h
-    ocsjob.cpp
     ocssharejob.h
     ocssharejob.cpp
     ocsshareejob.h
