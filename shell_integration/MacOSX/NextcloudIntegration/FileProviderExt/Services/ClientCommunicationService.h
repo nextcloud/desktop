@@ -12,14 +12,14 @@
  * for more details.
  */
 
-
 #import <FileProvider/FileProvider.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class FileProviderExtension;
+@protocol ClientCommunicationProtocol;
 
-@interface ClientCommunicationService : NSObject<NSFileProviderServiceSource>
+@interface ClientCommunicationService : NSObject<NSFileProviderServiceSource, ClientCommunicationProtocol>
 
 @property (readonly) NSXPCListener *listener;
 @property (readonly) FileProviderExtension *extension;

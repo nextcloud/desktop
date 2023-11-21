@@ -14,6 +14,7 @@
 
 #import "ClientCommunicationService.h"
 
+#import "ClientCommunicationProtocol.h"
 #import "FileProviderExt-Swift.h"
 
 @implementation ClientCommunicationService
@@ -34,6 +35,26 @@
 - (nullable NSXPCListenerEndpoint *)makeListenerEndpointAndReturnError:(NSError * *)error
 {
     return self.listener.endpoint;
+}
+
+- (BOOL)listener:(NSXPCListener *)listener
+shouldAcceptNewConnection:(NSXPCConnection *)newConnection
+{
+    return YES;
+}
+
+- (void)configureAccountWithUser:(NSString *)user
+                       serverUrl:(NSString *)serverUrl
+                        password:(NSString *)password
+{
+    [self.extension setupDomainAccountWithUser:user
+                                     serverUrl:serverUrl
+                                      password:password];
+}
+
+- (void)removeAccountConfig
+{
+    [self.extension removeAccountConfig];
 }
 
 @end
