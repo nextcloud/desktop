@@ -148,6 +148,7 @@
 		5318AD9829BF58D000CBB71C /* NKError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NKError+Extensions.swift"; sourceTree = "<group>"; };
 		5350E4E02B0C459600F276CB /* ClientCommunicationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationService.h; sourceTree = "<group>"; };
 		5350E4E12B0C459600F276CB /* ClientCommunicationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClientCommunicationService.m; sourceTree = "<group>"; };
+		5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientCommunicationProtocol.h; sourceTree = "<group>"; };
 		5352B36529DC14970011CE03 /* NextcloudFilesDatabaseManager+Directories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudFilesDatabaseManager+Directories.swift"; sourceTree = "<group>"; };
 		5352B36729DC17D60011CE03 /* NextcloudFilesDatabaseManager+LocalFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NextcloudFilesDatabaseManager+LocalFiles.swift"; sourceTree = "<group>"; };
 		5352B36B29DC44B50011CE03 /* FileProviderExtension+Thumbnailing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileProviderExtension+Thumbnailing.swift"; sourceTree = "<group>"; };
@@ -246,6 +247,7 @@
 			children = (
 				5350E4E02B0C459600F276CB /* ClientCommunicationService.h */,
 				5350E4E12B0C459600F276CB /* ClientCommunicationService.m */,
+				5350E4E72B0C514400F276CB /* ClientCommunicationProtocol.h */,
 			);
 			path = Services;
 			sourceTree = "<group>";
