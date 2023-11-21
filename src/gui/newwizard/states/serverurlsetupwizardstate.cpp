@@ -30,7 +30,7 @@ const QStringList supportedUrlSchemesC({ defaultUrlSchemeC, QStringLiteral("http
 
 namespace OCC::Wizard {
 
-Q_LOGGING_CATEGORY(lcSetupWizardServerUrlState, "setupwizard.states.serverurl");
+Q_LOGGING_CATEGORY(lcSetupWizardServerUrlState, "gui.setupwizard.states.serverurl");
 
 ServerUrlSetupWizardState::ServerUrlSetupWizardState(SetupWizardContext *context)
     : AbstractSetupWizardState(context)

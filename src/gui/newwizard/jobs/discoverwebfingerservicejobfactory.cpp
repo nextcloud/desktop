@@ -24,7 +24,7 @@
 
 namespace OCC::Wizard::Jobs {
 
-Q_LOGGING_CATEGORY(lcDiscoverWebFingerService, "jobs.discoverwebfinger");
+Q_LOGGING_CATEGORY(lcDiscoverWebFingerService, "gui.jobs.discoverwebfinger");
 
 CoreJob *DiscoverWebFingerServiceJobFactory::startJob(const QUrl &url, QObject *parent)
 {

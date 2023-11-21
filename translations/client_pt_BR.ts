@@ -2330,6 +2330,11 @@ for additional privileges during the process.</source>
         <translation>servidor relatou não %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="628"/>
+        <source>Error while handling a rename, unahndled status code: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation>SelectiveSync: ignorado porque seu caminho está desmarcado</translation>

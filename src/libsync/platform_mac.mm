@@ -29,7 +29,7 @@ namespace OCC {
 
 void migrateLaunchOnStartup();
 
-Q_LOGGING_CATEGORY(lcPlatform, "platform.macos")
+Q_LOGGING_CATEGORY(lcPlatform, "sync.platform.macos")
 } // OCC namespace
 
 @interface OwnAppDelegate : NSObject <NSApplicationDelegate>

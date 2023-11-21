@@ -25,7 +25,7 @@
 #include <QNetworkReply>
 
 namespace {
-Q_LOGGING_CATEGORY(lcResolveUrl, "wizard.resolveurl")
+Q_LOGGING_CATEGORY(lcResolveUrl, "gui.wizard.resolveurl")
 
 // used to signalize that the request was aborted intentionally by the sslErrorHandler
 const char abortedBySslErrorHandlerC[] = "aborted-by-ssl-error-handler";
