@@ -360,62 +360,6 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
     return QObject::tr("Some time ago");
 }
 
-/* --------------------------------------------------------------------------- */
-
-static const char STOPWATCH_END_TAG[] = "_STOPWATCH_END";
-
-void Utility::StopWatch::start()
-{
-    _startTime = QDateTime::currentDateTimeUtc();
-    _timer.start();
-}
-
-quint64 Utility::StopWatch::stop()
-{
-    addLapTime(QLatin1String(STOPWATCH_END_TAG));
-    quint64 duration = _timer.elapsed();
-    _timer.invalidate();
-    return duration;
-}
-
-void Utility::StopWatch::reset()
-{
-    _timer.invalidate();
-    _startTime.setMSecsSinceEpoch(0);
-    _lapTimes.clear();
-}
-
-quint64 Utility::StopWatch::addLapTime(const QString &lapName)
-{
-    if (!_timer.isValid()) {
-        start();
-    }
-    quint64 re = _timer.elapsed();
-    _lapTimes[lapName] = re;
-    return re;
-}
-
-QDateTime Utility::StopWatch::startTime() const
-{
-    return _startTime;
-}
-
-QDateTime Utility::StopWatch::timeOfLap(const QString &lapName) const
-{
-    quint64 t = durationOfLap(lapName);
-    if (t) {
-        QDateTime re(_startTime);
-        return re.addMSecs(t);
-    }
-
-    return QDateTime();
-}
-
-quint64 Utility::StopWatch::durationOfLap(const QString &lapName) const
-{
-    return _lapTimes.value(lapName, 0);
-}
-
 void Utility::sortFilenames(QStringList &fileNames)
 {
     QCollator collator;

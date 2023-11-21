@@ -183,25 +183,6 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
      */
     OCSYNC_EXPORT QString timeAgoInWords(const QDateTime &dt, const QDateTime &from = QDateTime());
 
-    class OCSYNC_EXPORT StopWatch
-    {
-    private:
-        QMap<QString, quint64> _lapTimes;
-        QDateTime _startTime;
-        QElapsedTimer _timer;
-
-    public:
-        void start();
-        quint64 stop();
-        quint64 addLapTime(const QString &lapName);
-        void reset();
-
-        // out helpers, return the measured times.
-        QDateTime startTime() const;
-        QDateTime timeOfLap(const QString &lapName) const;
-        quint64 durationOfLap(const QString &lapName) const;
-    };
-
     /**
      * @brief Sort a QStringList in a way that's appropriate for filenames
      */

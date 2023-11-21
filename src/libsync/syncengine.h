@@ -17,6 +17,7 @@
 
 #include "accountfwd.h"
 #include "common/checksums.h"
+#include "common/chronoelapsedtimer.h"
 #include "common/utility.h"
 #include "discoveryphase.h"
 #include "progressdispatcher.h"
@@ -95,7 +96,6 @@ public:
     bool reloadExcludes();
     void clearManualExcludes();
 
-    Utility::StopWatch &stopWatch() { return _stopWatch; }
     SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
 
     /* Returns whether another sync is needed to complete the sync */
@@ -251,7 +251,7 @@ private:
 
     std::unique_ptr<class ExcludedFiles> _excludedFiles;
     QScopedPointer<SyncFileStatusTracker> _syncFileStatusTracker;
-    Utility::StopWatch _stopWatch;
+    Utility::ChronoElapsedTimer _duration;
 
     /**
      * Instead of downloading files from the server, upload the files to the server

@@ -328,6 +328,7 @@ void SyncEngine::startSync()
         OC_ASSERT(false);
         return;
     }
+    _duration.reset();
 
     _syncRunning = true;
     _anotherSyncNeeded = AnotherSyncNeeded::NoFollowUpSync;
@@ -415,9 +416,7 @@ void SyncEngine::startSync()
         return;
     }
 
-    _stopWatch.start();
-
-    qCInfo(lcEngine) << "#### Discovery start ####################################################";
+    qCInfo(lcEngine) << "#### Discovery start ####################################################" << _duration.duration();
     qCInfo(lcEngine) << "Server" << account()->capabilities().status().versionString()
                      << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
     _progressInfo->_status = ProgressInfo::Discovery;
@@ -509,7 +508,7 @@ void SyncEngine::slotDiscoveryFinished()
         return;
     }
 
-    qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Discovery Finished")) << "ms";
+    qCInfo(lcEngine) << "#### Discovery end ####################################################" << _duration.duration();
 
     // Sanity check
     if (!_journal->open()) {
@@ -576,14 +575,14 @@ void SyncEngine::slotDiscoveryFinished()
             erase_if(_syncItems, [&names](const SyncFileItemPtr &i) { return !names.contains(QStringView{i->_file}); });
         }
 
-        qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
+        qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) ####################################################" << _duration.duration();
 
         _localDiscoveryPaths.clear();
 
         // To announce the beginning of the sync
         emit aboutToPropagate(_syncItems);
 
-        qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate OK)")) << "ms";
+        qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) ####################################################" << _duration.duration();
 
         // it's important to do this before ProgressInfo::start(), to announce start of new sync
         _progressInfo->_status = ProgressInfo::Propagation;
@@ -632,7 +631,8 @@ void SyncEngine::slotDiscoveryFinished()
 
         _propagator->start(std::move(_syncItems));
 
-        qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
+
+        qCInfo(lcEngine) << "#### Post-Reconcile end ####################################################" << _duration.duration();
     };
 
     if (!_hasNoneFiles && _hasRemoveFile) {
@@ -721,8 +721,8 @@ void SyncEngine::slotPropagationFinished(bool success)
 
 void SyncEngine::finalize(bool success)
 {
-    qCInfo(lcEngine) << "Sync run took " << _stopWatch.addLapTime(QStringLiteral("Sync Finished")) << "ms";
-    _stopWatch.stop();
+    qCInfo(lcEngine) << "Sync run took" << _duration.duration();
+    _duration.stop();
 
     if (_discoveryPhase) {
         _discoveryPhase.release()->deleteLater();
