@@ -14,15 +14,15 @@
 
 #include "capabilities.h"
 
-#include <QVariantMap>
 #include <QDebug>
+#include <QVariantMap>
 
 using namespace std::chrono;
 
 namespace OCC {
 
 
-Capabilities::Capabilities(const QVariantMap &capabilities)
+Capabilities::Capabilities(const QUrl &url, const QVariantMap &capabilities)
     : _capabilities(capabilities)
     , _fileSharingCapabilities(_capabilities.value(QStringLiteral("files_sharing")).toMap())
     , _fileSharingPublicCapabilities(_fileSharingCapabilities.value(QStringLiteral("public"), {}).toMap())
@@ -30,7 +30,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
     , _spaces(_capabilities.value(QStringLiteral("spaces")).toMap())
     , _status(_capabilities.value(QStringLiteral("core")).toMap().value(QStringLiteral("status")).toMap())
     , _appProviders(AppProviders::findVersion(
-          _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("app_providers")).toList(), QVersionNumber({1, 1, 0})))
+          url, _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("app_providers")).toList(), QVersionNumber({1, 1, 0})))
     , _filesSharing(_fileSharingCapabilities)
     , _migration(_capabilities.value(QStringLiteral("migration")).toMap())
 {
@@ -313,28 +313,28 @@ bool SpaceSupport::isValid() const
     return !version.isNull();
 }
 
-Capabilities::AppProviders::AppProviders(const QVariantMap &appProviders)
+Capabilities::AppProviders::AppProviders(const QUrl &baseUrl, const QVariantMap &appProviders)
     : enabled(appProviders.value(QStringLiteral("enabled")).toBool())
     , version(QVersionNumber::fromString(appProviders.value(QStringLiteral("version")).toString()))
-    , appsUrl(appProviders.value(QStringLiteral("apps_url")).toString())
-    , openUrl(appProviders.value(QStringLiteral("open_url")).toString())
-    , newUrl(appProviders.value(QStringLiteral("new_url")).toString())
-    , openWebUrl(appProviders.value(QStringLiteral("open_web_url")).toString())
+    , appsUrl(baseUrl.resolved(appProviders.value(QStringLiteral("apps_url")).toUrl()))
+    , openUrl(baseUrl.resolved(appProviders.value(QStringLiteral("open_url")).toUrl()))
+    , newUrl(baseUrl.resolved(appProviders.value(QStringLiteral("new_url")).toUrl()))
+    , openWebUrl(baseUrl.resolved(appProviders.value(QStringLiteral("open_web_url")).toUrl()))
 {
 }
+
 
 const Capabilities::AppProviders &Capabilities::appProviders() const
 {
     return _appProviders;
 }
 
-Capabilities::AppProviders Capabilities::AppProviders::findVersion(const QVariantList &list, const QVersionNumber &v)
+Capabilities::AppProviders Capabilities::AppProviders::findVersion(const QUrl &baseUrl, const QVariantList &list, const QVersionNumber &v)
 {
     auto it = std::find_if(list.cbegin(), list.cend(), [&v](const auto &it) {
         return QVersionNumber::fromString(it.toMap().value(QStringLiteral("version")).toString()) == v;
     });
-    return it != list.cend() ? Capabilities::AppProviders { it->toMap() }
-                             : Capabilities::AppProviders();
+    return it != list.cend() ? Capabilities::AppProviders{baseUrl, it->toMap()} : Capabilities::AppProviders{};
 }
 
 const FilesSharing &Capabilities::filesSharing() const

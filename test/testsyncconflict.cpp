@@ -134,7 +134,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(true)});
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QMap<QByteArray, QString> conflictMap;
@@ -194,7 +194,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(true)});
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QMap<QByteArray, QString> conflictMap;
@@ -269,7 +269,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(true)});
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // With no headers from the server
@@ -321,7 +321,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(true)});
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Make conflict records
@@ -352,7 +352,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(false));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(false)});
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Create two conflicts
@@ -478,7 +478,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(true)});
         ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
@@ -563,7 +563,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), uploadConflictFilesCapabilities(true)});
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // 1) a NEW/NEW conflict

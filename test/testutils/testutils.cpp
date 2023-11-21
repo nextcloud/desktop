@@ -35,7 +35,7 @@ namespace TestUtils {
         acc->setCredentials(cred);
         acc->setUrl(QUrl(QStringLiteral("http://localhost/owncloud")));
         acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString(QUuid::WithoutBraces));
-        acc->setCapabilities(OCC::TestUtils::testCapabilities());
+        acc->setCapabilities({acc->url(), OCC::TestUtils::testCapabilities()});
         return {OCC::AccountManager::instance()->addAccount(acc).get(), &TestUtilsPrivate::accountStateDeleter};
     }
 

@@ -56,7 +56,7 @@ void FetchServerSettingsJob::start()
             if (auto reply = job->reply()) {
                 _account->setHttp2Supported(reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
             }
-            _account->setCapabilities(caps.toVariantMap());
+            _account->setCapabilities({_account->url(), caps.toVariantMap()});
             if (checkServerInfo()) {
                 auto *userJob = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), SimpleNetworkJob::UrlQuery{}, QNetworkRequest{}, this);
                 job->setAuthenticationJob(isAuthJob());
@@ -98,7 +98,7 @@ void FetchServerSettingsJob::runAsyncUpdates()
     };
 
     if (_account->capabilities().appProviders().enabled) {
-        auto *jsonJob = new JsonJob(_account, _account->url(), _account->capabilities().appProviders().appsUrl, "GET");
+        auto *jsonJob = new JsonJob(_account, _account->capabilities().appProviders().appsUrl, {}, "GET");
         connect(jsonJob, &JsonJob::finishedSignal, this, [jsonJob, this] { _account->setAppProvider(AppProvider{jsonJob->data()}); });
         jsonJob->start();
     }

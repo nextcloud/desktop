@@ -1,0 +1,8 @@
+Bugfix: Fix url resolution for app provider
+
+We fixed a bug in the url resolution for the app provider.
+If owncloud is installed to a non root directory we computed a wrong url for the app provider urls.
+This could trigger a connection validation in the client, which intern triggered a request to the app provider.
+Reulting in an endless loop rendering the client unusable.
+
+https://github.com/owncloud/client/issues/11296

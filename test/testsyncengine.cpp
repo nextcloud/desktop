@@ -151,7 +151,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo {}, vfsMode, filesAreDehydrated);
-        fakeFolder.account()->setCapabilities(TestUtils::testCapabilities(CheckSums::Algorithm::SHA1));
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), TestUtils::testCapabilities(CheckSums::Algorithm::SHA1)});
         fakeFolder.localModifier().insert(QStringLiteral("a1.eml"), 64_b, 'A');
         fakeFolder.localModifier().insert(QStringLiteral("a2.eml"), 64_b, 'A');
         fakeFolder.localModifier().insert(QStringLiteral("a3.eml"), 64_b, 'A');
@@ -713,7 +713,7 @@ private slots:
             cap[QStringLiteral("dav")] = dav;
             return cap;
         };
-        fakeFolder.syncEngine().account()->setCapabilities(invalidFilenameRegexCapabilities(QStringLiteral("my[fgh]ile")));
+        fakeFolder.syncEngine().account()->setCapabilities({fakeFolder.account()->url(), invalidFilenameRegexCapabilities(QStringLiteral("my[fgh]ile"))});
         fakeFolder.localModifier().insert(QStringLiteral("C/myfile.txt"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("C/myfile.txt")));
@@ -763,7 +763,7 @@ private slots:
         auto cap = TestUtils::testCapabilities();
         // unset chunking v1
         cap.remove(QStringLiteral("dav"));
-        fakeFolder.account()->setCapabilities(cap);
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), cap});
 
         auto counter = std::make_unique<OperationCounter>();
         fakeFolder.setServerOverride([counter = counter.get(), fakeFolder = &fakeFolder](

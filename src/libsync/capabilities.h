@@ -144,19 +144,19 @@ public:
                 }
         */
         AppProviders() = default;
-        static AppProviders findVersion(const QVariantList &list, const QVersionNumber &v);
-        AppProviders(const QVariantMap &appProviders);
+        static AppProviders findVersion(const QUrl &baseUrl, const QVariantList &list, const QVersionNumber &v);
+        AppProviders(const QUrl &baseUrl, const QVariantMap &appProviders);
 
         bool enabled = false;
         QVersionNumber version;
-        QString appsUrl;
-        QString openUrl;
-        QString newUrl;
-        QString openWebUrl;
+        QUrl appsUrl;
+        QUrl openUrl;
+        QUrl newUrl;
+        QUrl openWebUrl;
     };
 
 
-    Capabilities(const QVariantMap &capabilities);
+    Capabilities(const QUrl &url, const QVariantMap &capabilities);
 
     bool shareAPI() const;
     bool sharePublicLink() const;

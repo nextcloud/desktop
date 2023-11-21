@@ -485,7 +485,7 @@ int main(int argc, char **argv)
                                     .value(QStringLiteral("capabilities"))
                                     .toObject();
                     qDebug() << "Server capabilities" << caps;
-                    ctx.account->setCapabilities(caps.toVariantMap());
+                    ctx.account->setCapabilities({ctx.account->url(), caps.toVariantMap()});
 
                     switch (ctx.account->serverSupportLevel()) {
                     case Account::ServerSupportLevel::Supported:
