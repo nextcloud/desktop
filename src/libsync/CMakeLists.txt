@@ -24,6 +24,7 @@ set(libsync_SRCS
     capabilities.cpp
     clientproxy.h
     clientproxy.cpp
+    clientstatusreporting.cpp
     cookiejar.h
     cookiejar.cpp
     discovery.h
@@ -53,6 +54,10 @@ set(libsync_SRCS
     owncloudpropagator.cpp
     nextcloudtheme.h
     nextcloudtheme.cpp
+    ocsjob.h
+    ocsjob.cpp
+    ocsclientstatusreportingjob.h
+    ocsclientstatusreportingjob.cpp
     abstractpropagateremotedeleteencrypted.h
     abstractpropagateremotedeleteencrypted.cpp
     deletejob.h
@@ -171,7 +176,7 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
-find_package(Qt5 REQUIRED COMPONENTS WebSockets Xml)
+find_package(Qt5 REQUIRED COMPONENTS WebSockets Xml Sql)
 
 add_library(nextcloudsync SHARED ${libsync_SRCS})
 add_library(Nextcloud::sync ALIAS nextcloudsync)
@@ -186,6 +191,7 @@ target_link_libraries(nextcloudsync
   Qt5::Network
   Qt5::WebSockets
   Qt5::Xml
+  Qt5::Sql
 )
 
 if (NOT TOKEN_AUTH_ONLY)
