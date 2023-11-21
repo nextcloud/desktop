@@ -640,8 +640,14 @@ void ownCloudGui::updateContextMenu()
 
     if (_app->debugMode()) {
         auto *crashMenu = _contextMenu->addMenu(QStringLiteral("Debug actions"));
-        crashMenu->addAction(QStringLiteral("Crash now - Div by zero"), _app, [] { Utility::crash(); });
-        crashMenu->addAction(QStringLiteral("Crash now - ENFORCE()"), _app, [] { OC_ENFORCE(1 == 0); });
+        crashMenu->addAction(QStringLiteral("Crash if asserts enabled - OC_ENSURE"), _app, [] {
+            if (OC_ENSURE(false)) {
+                Q_UNREACHABLE();
+            }
+        });
+        crashMenu->addAction(QStringLiteral("Crash if asserts enabled - Q_ASSERT"), _app, [] { Q_ASSERT(false); });
+        crashMenu->addAction(QStringLiteral("Crash now - Utility::crash()"), _app, [] { Utility::crash(); });
+        crashMenu->addAction(QStringLiteral("Crash now - OC_ENFORCE()"), _app, [] { OC_ENFORCE(false); });
         crashMenu->addAction(QStringLiteral("Crash now - qFatal"), _app, [] { qFatal("la Qt fatale"); });
     }
 
