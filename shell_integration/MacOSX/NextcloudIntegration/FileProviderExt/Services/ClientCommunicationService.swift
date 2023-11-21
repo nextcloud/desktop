@@ -32,6 +32,11 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
     func listener(_ listener: NSXPCListener, 
                   shouldAcceptNewConnection newConnection: NSXPCConnection)
     -> Bool {
+        let clientCommProtocol = ClientCommunicationProtocol.self
+        let clientCommInterface = NSXPCInterface(with: clientCommProtocol)
+        newConnection.exportedInterface = clientCommInterface
+        newConnection.exportedObject = self
+        newConnection.resume()
         return true
     }
 
