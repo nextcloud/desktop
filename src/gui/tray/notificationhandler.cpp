@@ -56,7 +56,7 @@ bool ServerNotificationHandler::startFetchNotifications()
 void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode)
 {
     if (statusCode == successStatusCode) {
-        qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
+        qCInfo(lcServerNotification) << "New Notification ETag Response Header received " << value;
         auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
         account->setNotificationsEtagResponseHeader(value);
     }
@@ -72,7 +72,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     }
 
     if (statusCode == notModifiedStatusCode) {
-        qCWarning(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
+        qCInfo(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
         deleteLater();
         emit jobFinished();
         return;
