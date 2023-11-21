@@ -17,9 +17,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FileProviderExtension;
+
 @interface ClientCommunicationService : NSObject<NSFileProviderServiceSource>
 
 @property (readonly) NSXPCListener *listener;
+@property (readonly) FileProviderExtension *extension;
+
+- (instancetype)initWithFileProviderExtension:(FileProviderExtension *)extension;
 
 @end
 

@@ -19,7 +19,7 @@ import NextcloudKit
 import OSLog
 
 extension FileProviderExtension {
-    func sendFileProviderDomainIdentifier() {
+    @objc func sendFileProviderDomainIdentifier() {
         let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
         let argument = domain.identifier.rawValue
         let message = command + ":" + argument + "\n"
@@ -75,7 +75,7 @@ extension FileProviderExtension {
         signalEnumeratorAfterAccountSetup()
     }
 
-    func removeAccountConfig() {
+    @objc func removeAccountConfig() {
         Logger.fileProviderExtension.info(
             "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
         )

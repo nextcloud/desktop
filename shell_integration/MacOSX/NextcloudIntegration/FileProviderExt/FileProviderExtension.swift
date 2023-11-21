@@ -17,7 +17,7 @@ import NCDesktopClientSocketKit
 import NextcloudKit
 import OSLog
 
-class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
+@objc class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
     let domain: NSFileProviderDomain
     let ncKit = NextcloudKit()
     let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String

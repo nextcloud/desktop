@@ -14,16 +14,19 @@
 
 #import "ClientCommunicationService.h"
 
+#import "FileProviderExt-Swift.h"
+
 @implementation ClientCommunicationService
 
 @synthesize serviceName = _serviceName;
 
-- (instancetype)init
+- (instancetype)initWithFileProviderExtension:(FileProviderExtension *)extension
 {
     self = [super init];
     if (self) {
         _serviceName = @"com.nextcloud.desktopclient.ClientCommunicationService";
         _listener = NSXPCListener.anonymousListener;
+        _extension = extension;
     }
     return self;
 }
