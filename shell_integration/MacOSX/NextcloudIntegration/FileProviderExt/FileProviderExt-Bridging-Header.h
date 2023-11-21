@@ -12,20 +12,9 @@
  * for more details.
  */
 
-#import <FileProvider/FileProvider.h>
+#ifndef FileProviderExt_Bridging_Header_h
+#define FileProviderExt_Bridging_Header_h
 
-NS_ASSUME_NONNULL_BEGIN
+#import "Services/ClientCommunicationProtocol.h"
 
-@class FileProviderExtension;
-@protocol ClientCommunicationProtocol;
-
-@interface ClientCommunicationService : NSObject<NSFileProviderServiceSource, ClientCommunicationProtocol>
-
-@property (readonly) NSXPCListener *listener;
-@property (readonly) FileProviderExtension *extension;
-
-- (instancetype)initWithFileProviderExtension:(FileProviderExtension *)extension;
-
-@end
-
-NS_ASSUME_NONNULL_END
+#endif /* FileProviderExt_Bridging_Header_h */

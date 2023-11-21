@@ -15,6 +15,8 @@
 #ifndef ClientCommunicationProtocol_h
 #define ClientCommunicationProtocol_h
 
+#import <Foundation/Foundation.h>
+
 @protocol ClientCommunicationProtocol
 
 - (void)configureAccountWithUser:(NSString *)user
