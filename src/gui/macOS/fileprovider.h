@@ -18,6 +18,7 @@
 
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersocketserver.h"
+#include "fileproviderxpc.h"
 
 namespace OCC {
 
@@ -41,6 +42,7 @@ public:
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
     std::unique_ptr<FileProviderSocketServer> _socketServer;
+    std::unique_ptr<FileProviderXPC> _xpc;
 
     static FileProvider *_instance;
     explicit FileProvider(QObject * const parent = nullptr);

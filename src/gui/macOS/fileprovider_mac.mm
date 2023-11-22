@@ -56,6 +56,14 @@ FileProvider::FileProvider(QObject * const parent)
     if (_socketServer) {
         qCDebug(lcMacFileProvider) << "Initialised file provider socket server.";
     }
+
+    _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
+    if (_xpc) {
+        qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
+        _xpc->start();
+    } else {
+        qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
+    }
 }
 
 FileProvider *FileProvider::instance()

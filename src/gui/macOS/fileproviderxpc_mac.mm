@@ -12,11 +12,18 @@
  * for more details.
  */
 
-#pragma once
-
 #include "fileproviderxpc.h"
 
 #include <QLoggingCategory>
+
+#import <FileProvider/FileProvider.h>
+
+#import "ClientCommunicationProtocol.h"
+
+namespace {
+    static const auto clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
+    static NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
+}
 
 namespace OCC {
 
@@ -27,6 +34,76 @@ Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", Qt
 FileProviderXPC::FileProviderXPC(QObject *parent)
     : QObject{parent}
 {
+}
+
+void FileProviderXPC::start()
+{
+    qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
+    // Set up connections for each domain
+    [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error){
+        if (error != nil) {
+            qCWarning(lcFileProviderXPC) << "Error getting domains" << error;
+            return;
+        }
+
+        for (NSFileProviderDomain *const domain in domains) {
+            qCDebug(lcFileProviderXPC) << "Got domain" << domain.identifier;
+
+            NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+
+            [manager getUserVisibleURLForItemIdentifier:NSFileProviderRootContainerItemIdentifier
+                                      completionHandler:^(NSURL *const url, NSError *const error){
+                if (error != nil) {
+                    qCWarning(lcFileProviderXPC) << "Error getting user visible url" << error;
+                    return;
+                }
+
+                qCDebug(lcFileProviderXPC) << "Got user visible url" << url;
+                [NSFileManager.defaultManager getFileProviderServicesForItemAtURL:url
+                                                                completionHandler:^(NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services, NSError *const error){
+                    if (error != nil) {
+                        qCWarning(lcFileProviderXPC) << "Error getting file provider services" << error;
+                        return;
+                    }
+
+                    NSArray<NSFileProviderServiceName> *const serviceNamesArray = services.allKeys;
+                    for (NSFileProviderServiceName serviceName in serviceNamesArray) {
+                        qCDebug(lcFileProviderXPC) << "Got service" << serviceName;
+
+                        if (![serviceName isEqualToString:nsClientCommunicationServiceName]) {
+                            continue;
+                        }
+
+                        NSFileProviderService *const service = services[serviceName];
+                        [service getFileProviderConnectionWithCompletionHandler:^(NSXPCConnection *const connection, NSError *const error){
+                            if (error != nil) {
+                                qCWarning(lcFileProviderXPC) << "Error getting file provider connection" << error;
+                                return;
+                            }
+
+                            qCDebug(lcFileProviderXPC) << "Got file provider connection" << connection;
+
+                            if (connection == nil) {
+                                qCWarning(lcFileProviderXPC) << "Connection is nil";
+                                return;
+                            }
+
+                            connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
+                            [connection resume];
+                            const id<ClientCommunicationProtocol> clientCommService = (id<ClientCommunicationProtocol>)[connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
+                                qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
+                            }];
+
+                            if (clientCommService == nil) {
+                                qCWarning(lcFileProviderXPC) << "Client communication service is nil";
+                                return;
+                            }
+                        }];
+                    }
+                }];
+            }];
+        }
+    }];
 }
 
 } // namespace OCC

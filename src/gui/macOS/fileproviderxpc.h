@@ -26,6 +26,9 @@ class FileProviderXPC : public QObject
 
 public:
     explicit FileProviderXPC(QObject *parent = nullptr);
+
+public slots:
+    void start();
 };
 
 }
