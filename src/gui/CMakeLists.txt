@@ -286,6 +286,9 @@ IF( APPLE )
 
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
+            # Symlinks to files in shell_integration/MacOSX/NextcloudIntegration/
+            macOS/ClientCommunicationProtocol.h
+            # End of symlink files
             macOS/fileprovider.h
             macOS/fileprovider_mac.mm
             macOS/fileproviderdomainmanager.h
