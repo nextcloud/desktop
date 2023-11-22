@@ -41,7 +41,7 @@ void FileProviderXPC::start()
     qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
 
     dispatch_group_t group = dispatch_group_create();
-    __block NSArray<NSFileProviderDomain *> *fpDomains = nil;
+    __block NSMutableArray<NSFileProviderManager *> *managers = NSMutableArray.array;
 
     dispatch_group_enter(group);
 
@@ -53,24 +53,27 @@ void FileProviderXPC::start()
             return;
         }
 
-        fpDomains = domains;
+        for (NSFileProviderDomain *const domain in domains) {
+            qCInfo(lcFileProviderXPC) << "Got domain" << domain.identifier;
+            NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+            [managers addObject:manager];
+        }
+
         dispatch_group_leave(group);
     }];
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 
-    if (fpDomains == nil || fpDomains.count == 0) {
+    if (managers.count == 0) {
         qCWarning(lcFileProviderXPC) << "No domains found";
         return;
     }
 
     __block NSMutableArray<NSURL *> *urls = NSMutableArray.array;
 
-    for (NSFileProviderDomain *const domain in fpDomains) {
-        qCDebug(lcFileProviderXPC) << "Got domain" << domain.identifier;
-        dispatch_group_enter(group);
+    for (NSFileProviderManager *const manager in managers) {
 
-        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+        dispatch_group_enter(group);
 
         [manager getUserVisibleURLForItemIdentifier:NSFileProviderRootContainerItemIdentifier
                                   completionHandler:^(NSURL *const url, NSError *const error){
@@ -106,6 +109,10 @@ void FileProviderXPC::start()
                 return;
             }
 
+            qCInfo(lcFileProviderXPC) << "Got file provider services for"
+                                      << url.absoluteString
+                                      << "has number of services:"
+                                      << services.count;
             [fpServices addObject:services];
             dispatch_group_leave(group);
         }];
@@ -122,7 +129,7 @@ void FileProviderXPC::start()
         NSArray<NSFileProviderServiceName> *const serviceNamesArray = services.allKeys;
 
         for (NSFileProviderServiceName serviceName in serviceNamesArray) {
-            qCDebug(lcFileProviderXPC) << "Got service" << serviceName;
+            qCInfo(lcFileProviderXPC) << "Got service" << serviceName;
 
             if (![serviceName isEqualToString:nsClientCommunicationServiceName]) {
                 continue;
@@ -138,7 +145,7 @@ void FileProviderXPC::start()
                     return;
                 }
 
-                qCDebug(lcFileProviderXPC) << "Got file provider connection" << connection;
+                qCInfo(lcFileProviderXPC) << "Got file provider connection" << connection;
 
                 if (connection == nil) {
                     qCWarning(lcFileProviderXPC) << "Connection is nil";
