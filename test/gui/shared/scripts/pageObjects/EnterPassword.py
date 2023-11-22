@@ -44,9 +44,20 @@ class EnterPassword:
         authorize_via_webui(username, password)
 
     @staticmethod
-    def reLogin(username, password):
+    def oauthReLogin(username, password):
+        # wait 500ms for copy button to fully load
+        squish.snooze(1 / 2)
+        squish.clickButton(
+            squish.waitForObject(EnterPassword.COPY_URL_TO_CLIPBOARD_BUTTON)
+        )
+        authorize_via_webui(username, password, "oauth")
+
+    @staticmethod
+    def reLogin(username, password, oauth=False):
         if get_config('ocis'):
             EnterPassword.oidcReLogin(username, password)
+        elif oauth:
+            EnterPassword.oauthReLogin(username, password)
         else:
             EnterPassword.enterPassword(password)
 

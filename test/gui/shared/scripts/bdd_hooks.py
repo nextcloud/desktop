@@ -21,6 +21,7 @@ import os
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from helpers.SpaceHelper import delete_project_spaces
+from helpers.SetupClientHelper import wait_until_app_killed
 from helpers.ConfigHelper import (
     init_config,
     get_config,
@@ -116,27 +117,6 @@ def scenarioFailed():
     )
 
 
-def isAppKilled(pid):
-    if os.path.isdir('/proc/{}'.format(pid)):
-        # process is still running
-        # wait 100ms before checking again
-        snooze(0.1)
-        return False
-    return True
-
-
-def waitUntilAppIsKilled(pid=0):
-    timeout = get_config('minSyncTimeout') * 1000
-    killed = waitFor(
-        lambda: isAppKilled(pid),
-        timeout,
-    )
-    if not killed:
-        test.log(
-            "Application was not terminated within {} milliseconds".format(timeout)
-        )
-
-
 # runs after every scenario
 # Order: 1
 # cleanup spaces
@@ -157,7 +137,6 @@ def hook(context):
 
     # capture a screenshot if there is error or test failure in the current scenario execution
     if scenarioFailed() and os.getenv('CI'):
-
         import gi
 
         gi.require_version('Gtk', '3.0')
@@ -183,7 +162,7 @@ def hook(context):
         # get pid before detaching
         pid = ctx.pid
         ctx.detach()
-        waitUntilAppIsKilled(pid)
+        wait_until_app_killed(pid)
 
     # delete local files/folders
     for filename in os.listdir(get_config('clientRootSyncPath')):
