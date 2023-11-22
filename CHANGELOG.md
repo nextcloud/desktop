@@ -41,6 +41,7 @@ ownCloud admins and users.
 
 ## Summary
 
+* Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
 * Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
@@ -48,6 +49,16 @@ ownCloud admins and users.
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
 ## Details
+
+* Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
+
+   We fixed a bug in the url resolution for the app provider. If owncloud is
+   installed to a non root directory we computed a wrong url for the app provider
+   urls. This could trigger a connection validation in the client, which intern
+   triggered a request to the app provider. Reulting in an endless loop rendering
+   the client unusable.
+
+   https://github.com/owncloud/client/issues/11296
 
 * Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
 
