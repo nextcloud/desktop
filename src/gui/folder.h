@@ -287,8 +287,6 @@ public:
     auto lastSyncTime() const { return QDateTime::currentDateTime().addMSecs(-msecSinceLastSync().count()); }
     std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }
     std::chrono::milliseconds msecLastSyncDuration() const { return _lastSyncDuration; }
-    int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
-    int consecutiveFailingSyncs() const { return _consecutiveFailingSyncs; }
 
     /// Saves the folder data in the account's settings.
     void saveToSettings() const;
@@ -483,15 +481,15 @@ private:
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;
     QElapsedTimer _timeSinceLastFullLocalDiscovery;
-    std::chrono::milliseconds _lastSyncDuration;
+    std::chrono::milliseconds _lastSyncDuration = {};
 
     /// The number of syncs that failed in a row.
     /// Reset when a sync is successful.
-    int _consecutiveFailingSyncs;
+    int _consecutiveFailingSyncs = 0;
 
     /// The number of requested follow-up syncs.
     /// Reset when no follow-up is requested.
-    int _consecutiveFollowUpSyncs;
+    int _consecutiveFollowUpSyncs = 0;
 
     mutable SyncJournalDb _journal;
 

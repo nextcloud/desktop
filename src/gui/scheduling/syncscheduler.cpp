@@ -177,30 +177,6 @@ void SyncScheduler::startNext()
             _currentSync, &Folder::syncFinished, this,
             [this](const SyncResult &result) {
                 qCInfo(lcSyncScheduler) << "Sync finished for" << _currentSync->path() << "with status" << result.status();
-                if (result.status() != SyncResult::Success) {
-                    auto reschedule = [this]() {
-                        QTimer::singleShot(SyncEngine::minimumFileAgeForUpload, this, [folder = _currentSync, this] {
-                            if (folder->canSync()) {
-                                enqueueFolder(folder);
-                            } else {
-                                qCInfo(lcSyncScheduler) << "Cannot schedule sync for" << folder->path();
-                            }
-                        });
-                    };
-
-                    // Retry a couple of times after failure; or regularly if requested
-                    if (_currentSync->consecutiveFailingSyncs() > 0) {
-                        if (_currentSync->consecutiveFailingSyncs() < 3) {
-                            qCInfo(lcSyncScheduler) << "Sync failed, rescheduling sync for" << _currentSync->path();
-                            reschedule();
-                        } else {
-                            qCInfo(lcSyncScheduler) << "Sync for" << _currentSync->path() << "failed 3 times, not rescheduling";
-                        }
-                    } else if (_currentSync->syncEngine().isAnotherSyncNeeded() == AnotherSyncNeeded::DelayedFollowUp) {
-                        qCInfo(lcSyncScheduler) << "Delayed follow-up needed, rescheduling sync for" << _currentSync->path();
-                        reschedule();
-                    }
-                }
                 _currentSync = nullptr;
                 startNext();
             },
