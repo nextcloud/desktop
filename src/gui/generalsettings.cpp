@@ -634,7 +634,7 @@ void GeneralSettings::slotCreateDebugArchive()
         QMessageBox::information(
             this,
             tr("Debug Archive Created"),
-            tr("Debug archive is created at %1").arg(filename)
+            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(filename)
         );
     }
 }
