@@ -1,5 +1,5 @@
 Change: Deprecate suffix VFS
 
-We decided to deprecate the suffix VFS implementations and to prepare it for removal in 7.0.
+We decided to deprecate the suffix VFS implementations and thus prepare its removal in 7.0.
 
 https://github.com/owncloud/client/issues/11325
