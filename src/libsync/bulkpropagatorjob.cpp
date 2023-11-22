@@ -398,6 +398,12 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     // the file id should only be empty for new files up- or downloaded
     computeFileId(singleFile._item, fileReply);
 
+    if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(singleFile._item->destination(), &oldRecord) && oldRecord.isValid()) {
+        if (oldRecord._etag != singleFile._item->_etag) {
+            singleFile._item->updateLockStateFromDbRecord(oldRecord);
+        }
+    }
+
     singleFile._item->_etag = etag;
     singleFile._item->_fileId = getHeaderFromJsonReply(fileReply, "fileid");
     singleFile._item->_remotePerm = RemotePermissions::fromServerString(getHeaderFromJsonReply(fileReply, "permissions"));

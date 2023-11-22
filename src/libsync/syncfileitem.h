@@ -236,6 +236,8 @@ public:
 
     [[nodiscard]] bool isEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
 
+    void updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRecord);
+
     // Variables useful for everybody
 
     /** The syncfolder-relative filesystem path that the operation is about
