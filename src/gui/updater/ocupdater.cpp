@@ -497,6 +497,13 @@ bool NSISUpdater::handleStartup()
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFileName = settings.value(updateAvailableC).toString();
+
+    QString updateTargetVersion = settings.value(updateTargetVersionC).toString();
+    if (updateTargetVersion.startsWith("4.") && clientVersion().startsWith("3.1")) {
+        wipeUpdateData();
+        return false;
+    }
+
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
         qCInfo(lcUpdater) << "An updater file is available";
