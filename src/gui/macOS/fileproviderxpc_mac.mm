@@ -39,71 +39,132 @@ FileProviderXPC::FileProviderXPC(QObject *parent)
 void FileProviderXPC::start()
 {
     qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
+
+    dispatch_group_t group = dispatch_group_create();
+    __block NSArray<NSFileProviderDomain *> *fpDomains = nil;
+
+    dispatch_group_enter(group);
+
     // Set up connections for each domain
     [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error){
         if (error != nil) {
             qCWarning(lcFileProviderXPC) << "Error getting domains" << error;
+            dispatch_group_leave(group);
             return;
         }
 
-        for (NSFileProviderDomain *const domain in domains) {
-            qCDebug(lcFileProviderXPC) << "Got domain" << domain.identifier;
+        fpDomains = domains;
+        dispatch_group_leave(group);
+    }];
 
-            NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 
-            [manager getUserVisibleURLForItemIdentifier:NSFileProviderRootContainerItemIdentifier
-                                      completionHandler:^(NSURL *const url, NSError *const error){
+    if (fpDomains == nil || fpDomains.count == 0) {
+        qCWarning(lcFileProviderXPC) << "No domains found";
+        return;
+    }
+
+    __block NSMutableArray<NSURL *> *urls = NSMutableArray.array;
+
+    for (NSFileProviderDomain *const domain in fpDomains) {
+        qCDebug(lcFileProviderXPC) << "Got domain" << domain.identifier;
+        dispatch_group_enter(group);
+
+        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+
+        [manager getUserVisibleURLForItemIdentifier:NSFileProviderRootContainerItemIdentifier
+                                  completionHandler:^(NSURL *const url, NSError *const error){
+            if (error != nil) {
+                qCWarning(lcFileProviderXPC) << "Error getting user visible url" << error;
+                dispatch_group_leave(group);
+                return;
+            }
+
+            qCDebug(lcFileProviderXPC) << "Got user visible url" << url;
+            [urls addObject:url];
+            dispatch_group_leave(group);
+        }];
+    }
+
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+
+    if (urls.count == 0) {
+        qCWarning(lcFileProviderXPC) << "No urls found";
+        return;
+    }
+
+    NSMutableArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *const fpServices = NSMutableArray.array;
+
+    for (NSURL *const url in urls) {
+        dispatch_group_enter(group);
+
+        [NSFileManager.defaultManager getFileProviderServicesForItemAtURL:url
+                                                        completionHandler:^(NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services, NSError *const error){
+            if (error != nil) {
+                qCWarning(lcFileProviderXPC) << "Error getting file provider services" << error;
+                dispatch_group_leave(group);
+                return;
+            }
+
+            [fpServices addObject:services];
+            dispatch_group_leave(group);
+        }];
+    }
+
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+
+    if (fpServices.count == 0) {
+        qCWarning(lcFileProviderXPC) << "No file provider services found";
+        return;
+    }
+
+    for (NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services in fpServices) {
+        NSArray<NSFileProviderServiceName> *const serviceNamesArray = services.allKeys;
+
+        for (NSFileProviderServiceName serviceName in serviceNamesArray) {
+            qCDebug(lcFileProviderXPC) << "Got service" << serviceName;
+
+            if (![serviceName isEqualToString:nsClientCommunicationServiceName]) {
+                continue;
+            }
+
+            NSFileProviderService *const service = services[serviceName];
+            dispatch_group_enter(group);
+
+            [service getFileProviderConnectionWithCompletionHandler:^(NSXPCConnection *const connection, NSError *const error){
                 if (error != nil) {
-                    qCWarning(lcFileProviderXPC) << "Error getting user visible url" << error;
+                    qCWarning(lcFileProviderXPC) << "Error getting file provider connection" << error;
+                    dispatch_group_leave(group);
                     return;
                 }
 
-                qCDebug(lcFileProviderXPC) << "Got user visible url" << url;
-                [NSFileManager.defaultManager getFileProviderServicesForItemAtURL:url
-                                                                completionHandler:^(NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services, NSError *const error){
-                    if (error != nil) {
-                        qCWarning(lcFileProviderXPC) << "Error getting file provider services" << error;
-                        return;
-                    }
+                qCDebug(lcFileProviderXPC) << "Got file provider connection" << connection;
 
-                    NSArray<NSFileProviderServiceName> *const serviceNamesArray = services.allKeys;
-                    for (NSFileProviderServiceName serviceName in serviceNamesArray) {
-                        qCDebug(lcFileProviderXPC) << "Got service" << serviceName;
+                if (connection == nil) {
+                    qCWarning(lcFileProviderXPC) << "Connection is nil";
+                    dispatch_group_leave(group);
+                    return;
+                }
 
-                        if (![serviceName isEqualToString:nsClientCommunicationServiceName]) {
-                            continue;
-                        }
-
-                        NSFileProviderService *const service = services[serviceName];
-                        [service getFileProviderConnectionWithCompletionHandler:^(NSXPCConnection *const connection, NSError *const error){
-                            if (error != nil) {
-                                qCWarning(lcFileProviderXPC) << "Error getting file provider connection" << error;
-                                return;
-                            }
-
-                            qCDebug(lcFileProviderXPC) << "Got file provider connection" << connection;
-
-                            if (connection == nil) {
-                                qCWarning(lcFileProviderXPC) << "Connection is nil";
-                                return;
-                            }
-
-                            connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
-                            [connection resume];
-                            const id<ClientCommunicationProtocol> clientCommService = (id<ClientCommunicationProtocol>)[connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
-                                qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
-                            }];
-
-                            if (clientCommService == nil) {
-                                qCWarning(lcFileProviderXPC) << "Client communication service is nil";
-                                return;
-                            }
-                        }];
-                    }
+                connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
+                [connection resume];
+                const id<ClientCommunicationProtocol> clientCommService = (id<ClientCommunicationProtocol>)[connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
+                    qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
+                    dispatch_group_leave(group);
                 }];
+
+                if (clientCommService == nil) {
+                    qCWarning(lcFileProviderXPC) << "Client communication service is nil";
+                    dispatch_group_leave(group);
+                    return;
+                }
+
+                dispatch_group_leave(group);
             }];
         }
-    }];
+    }
+
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 }
 
 } // namespace OCC
