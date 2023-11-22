@@ -52,7 +52,7 @@ private slots:
         auto cap = TestUtils::testCapabilities();
         cap[QStringLiteral("migration")] = QVariantMap{{QStringLiteral("space_migration"),
             QVariantMap{{QStringLiteral("enabled"), true}, {QStringLiteral("endpoint"), QStringLiteral("migration/spaces")}}}};
-        fakeFolder.account()->setCapabilities(cap);
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), cap});
 
 
         const QUrl personalUrl(

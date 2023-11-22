@@ -58,6 +58,5 @@ def step(context, user, file_name, space_name, content):
     regexp=True,
 )
 def step(context, user, space_name, resource_name):
-    print(user, space_name, resource_name)
     exists = resource_exists(space_name, resource_name, user)
     test.compare(exists, True, "Resource exists")

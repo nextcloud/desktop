@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
-import squish
-from os import makedirs
+import squish, test
+from os import makedirs, path
 from os.path import exists, join
 from helpers.SpaceHelper import get_space_id
 from helpers.ConfigHelper import get_config, set_config
@@ -20,7 +20,13 @@ def substituteInLineCodes(value):
 
 
 def getClientDetails(context):
-    clientDetails = {'server': '', 'user': '', 'password': '', 'sync_folder': ''}
+    clientDetails = {
+        'server': '',
+        'user': '',
+        'password': '',
+        'sync_folder': '',
+        'oauth': False,
+    }
     for row in context.table[0:]:
         row[1] = substituteInLineCodes(row[1])
         if row[0] == 'server':
@@ -152,3 +158,24 @@ def setUpClient(username, displayName, space="Personal"):
 
     startClient()
     listenSyncStatusForItem(syncPath)
+
+
+def is_app_killed(pid):
+    if path.isdir('/proc/{}'.format(pid)):
+        # process is still running
+        # wait 100ms before checking again
+        squish.snooze(0.1)
+        return False
+    return True
+
+
+def wait_until_app_killed(pid=0):
+    timeout = 5 * 1000
+    killed = squish.waitFor(
+        lambda: is_app_killed(pid),
+        timeout,
+    )
+    if not killed:
+        test.log(
+            "Application was not terminated within {} milliseconds".format(timeout)
+        )

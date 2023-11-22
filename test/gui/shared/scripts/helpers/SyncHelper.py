@@ -51,6 +51,13 @@ SYNC_PATTERNS = {
     # default sync patterns for the initial sync (after adding account)
     # the pattern can be of TWO types depending on the available resources (files/folders)
     'initial': [
+        # when adding account via New Account wizard
+        [
+            SYNC_STATUS['REGISTER'],
+            SYNC_STATUS['UPDATE'],
+            SYNC_STATUS['UPDATE'],
+            SYNC_STATUS['UPDATE'],
+        ],
         # when syncing empty account (hidden files are ignored)
         [SYNC_STATUS['UPDATE'], SYNC_STATUS['OK']],
         # when syncing an account that has some files/folders

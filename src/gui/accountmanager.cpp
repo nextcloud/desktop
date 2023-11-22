@@ -285,7 +285,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     acc->_davUser = settings.value(davUserC()).toString();
     acc->_displayName = settings.value(davUserDisplyNameC()).toString();
-    acc->setCapabilities(settings.value(capabilitesC()).value<QVariantMap>());
+    acc->setCapabilities({acc->url(), settings.value(capabilitesC()).value<QVariantMap>()});
     acc->setDefaultSyncRoot(settings.value(defaultSyncRootC()).toString());
 
     // We want to only restore settings for that auth type and the user value

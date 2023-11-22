@@ -52,7 +52,7 @@ private slots:
             cap[QStringLiteral("dav")] = dav;
             return cap;
         };
-        fakeFolder.syncEngine().account()->setCapabilities(httpErrorCodesThatResetFailingChunkedUploadsCapabilities({ 500 }));
+        fakeFolder.syncEngine().account()->setCapabilities({fakeFolder.account()->url(), httpErrorCodesThatResetFailingChunkedUploadsCapabilities({500})});
 
         const auto size = 100_mb; // 100 MB
         fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);

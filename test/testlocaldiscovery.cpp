@@ -226,7 +226,7 @@ private slots:
         auto cap = TestUtils::testCapabilities();
         cap.insert(
             {{QStringLiteral("files"), QVariantMap{{QStringLiteral("blacklisted_files"), QVariantList{QStringLiteral(".foo"), QStringLiteral("bar")}}}}});
-        fakeFolder.account()->setCapabilities(cap);
+        fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), cap});
         fakeFolder.localModifier().insert(QStringLiteral("C/.foo"));
         fakeFolder.localModifier().insert(QStringLiteral("C/bar"));
         fakeFolder.localModifier().insert(QStringLiteral("C/moo"));

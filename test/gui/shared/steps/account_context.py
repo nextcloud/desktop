@@ -65,6 +65,11 @@ def step(context):
     startClient()
 
 
+@When('the user starts the client')
+def step(context):
+    startClient()
+
+
 @When('the user opens the add-account dialog')
 def step(context):
     Toolbar.openNewAccountSetup()
@@ -74,6 +79,8 @@ def step(context):
 def step(context):
     account_details = getClientDetails(context)
     AccountConnectionWizard.addAccount(account_details)
+    # wait for files to sync
+    waitForInitialSyncToComplete(getResourcePath('/', account_details["user"]))
 
 
 @Given('the user has entered the following account information:')
@@ -117,6 +124,16 @@ def step(context, username):
     waitForInitialSyncToComplete(getResourcePath('/', username))
 
 
+@When('user "|any|" logs in to the client-UI with oauth2')
+def step(context, username):
+    AccountSetting.login()
+    password = getPasswordForUser(username)
+    EnterPassword.reLogin(username, password, True)
+
+    # wait for files to sync
+    waitForInitialSyncToComplete(getResourcePath('/', username))
+
+
 @When('user "|any|" opens login dialog')
 def step(context, username):
     AccountSetting.login()
@@ -131,11 +148,8 @@ def step(context, username, password):
 def step(context, username):
     displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
-    test.compare(
-        AccountSetting.waitUntilAccountIsConnected(displayname, server),
-        True,
-        "User '%s' is connected" % username,
-    )
+    AccountSetting.waitUntilAccountIsConnected(displayname, server)
+    AccountSetting.wait_until_sync_folder_is_configured()
 
 
 @When('the user removes the connection for user "|any|" and host |any|')
@@ -230,14 +244,13 @@ def step(context):
     test.compare(True, AccountSetting.isLogDialogVisible(), "Log dialog is opened")
 
 
-@When('the user adds the following account with oauth2 enabled:')
+@When('the user adds the following oauth2 account:')
 def step(context):
     account_details = getClientDetails(context)
-    AccountConnectionWizard.addServer(account_details['server'])
-    AccountConnectionWizard.oauthLogin(
-        account_details['user'], account_details['password']
-    )
-    AccountConnectionWizard.nextStep()
+    account_details.update({'oauth': True})
+    AccountConnectionWizard.addAccount(account_details)
+    # wait for files to sync
+    waitForInitialSyncToComplete(getResourcePath('/', account_details["user"]))
 
 
 @When('the user cancels the sync connection wizard')
@@ -253,3 +266,8 @@ def step(context):
 @When('user "|any|" logs out from the login required dialog')
 def step(context, username):
     AccountSetting.logoutFromLoginRequiredDialog()
+
+
+@When("the user quits the client")
+def step(context):
+    Toolbar.quit_owncloud()
