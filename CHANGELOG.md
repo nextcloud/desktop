@@ -46,6 +46,7 @@ ownCloud admins and users.
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
+* Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
 ## Details
@@ -93,6 +94,13 @@ ownCloud admins and users.
    will result in the best experience for the users.
 
    https://github.com/owncloud/client/issues/11275
+
+* Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
+
+   We decided to deprecate the suffix VFS implementations and thus prepare its
+   removal in 7.0.
+
+   https://github.com/owncloud/client/issues/11325
 
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
