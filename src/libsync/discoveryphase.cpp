@@ -442,6 +442,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         QString value = it.value();
         if (property == QLatin1String("resourcetype")) {
             result.isDirectory = value.contains(QLatin1String("collection"));
+            result.isSymLink = value.contains(QLatin1String("symlink"));
         } else if (property == QLatin1String("getlastmodified")) {
             const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
             Q_ASSERT(date.isValid());

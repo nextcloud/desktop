@@ -711,7 +711,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             _discoveryData->checkSelectiveSyncExistingFolder(path._server);
         }
 
-        if (serverEntry.isDirectory != dbEntry.isDirectory()) {
+        if (serverEntry.isSymLink != dbEntry.isSymLink() || serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
             // needs to delete the other entity first.
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
