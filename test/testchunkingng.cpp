@@ -330,8 +330,10 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    // Check what happens when we abort during the final MOVE and the
-    // the final MOVE is short enough for the abort-delay to help
+    // Check what happens when we abort during the final MOVE.
+    // The move succeeds on the server but as we abort it we won't realize in time.
+    // This means that the current sync fails, as it is aborted, but the MOVE was still performed on the server.
+    // Resulting in the local state being the same as the remote state.
     void testLateAbortRecoverable()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
@@ -344,6 +346,7 @@ private slots:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray() == "MOVE") {
                 QTimer::singleShot(50ms, &parent, [&]() { fakeFolder.syncEngine().abort(); });
+                // while the response is delayed, the move is performed in the constructor, thus it happens immediately
                 return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
             }
             return nullptr;
@@ -351,11 +354,23 @@ private slots:
 
         // Test 1: NEW file aborted
         fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);
+        // the sync will be aborted and thus fail
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+        // the move was still performed
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // update the meta data after the aborted sync
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Test 2: modified file upload aborted
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
+        // the sync will be aborted and thus fail
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+        // the move was still performed
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // update the meta data after the aborted sync
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
