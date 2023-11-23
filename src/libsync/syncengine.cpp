@@ -857,18 +857,19 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
 
 void SyncEngine::abort()
 {
-    if (_propagator)
-        qCInfo(lcEngine) << "Aborting sync";
-
+    bool aborting = false;
     if (_propagator) {
+        aborting = true;
         // If we're already in the propagation phase, aborting that is sufficient
         _propagator->abort();
     } else if (_discoveryPhase) {
+        aborting = true;
         // Delete the discovery and all child jobs after ensuring
         // it can't finish and start the propagator
         disconnect(_discoveryPhase.get(), nullptr, this, nullptr);
-        _discoveryPhase.release()->deleteLater();
-
+    }
+    if (aborting) {
+        qCInfo(lcEngine) << "Aborting sync";
         if (!_goingDown) {
             Q_EMIT syncError(tr("Aborted"));
         }

@@ -1,0 +1,5 @@
+Bugfix: Schedule syncs after an abort
+
+We fixed a bug where the client stopped scheduling syncs after a sync was aborted.
+
+https://github.com/owncloud/client/pull/11396
