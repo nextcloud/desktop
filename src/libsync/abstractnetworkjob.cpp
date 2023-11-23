@@ -196,7 +196,11 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
 void AbstractNetworkJob::adoptRequest(QPointer<QNetworkReply> reply)
 {
     std::swap(_reply, reply);
-    delete reply;
+    if (reply) {
+        reply->disconnect();
+        reply->abort();
+        reply->deleteLater();
+    }
 
     _request = _reply->request();
 
@@ -301,8 +305,12 @@ AbstractNetworkJob::~AbstractNetworkJob()
     if (!_finished && !_aborted && !_timedout) {
         qCCritical(lcNetworkJob) << "Deleting running job" << this;
     }
-    delete _reply;
-    _reply = nullptr;
+    if (_reply) {
+        _reply->disconnect();
+        _reply->abort();
+        _reply->deleteLater();
+        _reply.clear();
+    }
 }
 
 void AbstractNetworkJob::start()
