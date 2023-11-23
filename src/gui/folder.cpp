@@ -601,6 +601,7 @@ void Folder::startVfs()
         _vfsIsReady = false;
     });
 
+    slotNextSyncFullLocalDiscovery();
     _vfs->start(vfsParams);
 }
 
@@ -635,7 +636,10 @@ int Folder::slotWipeErrorBlacklist()
 
 void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason reason)
 {
-    Q_ASSERT(isReady());
+    if (!isReady()) {
+        // we might be switching backend
+        return;
+    }
     bool needSync = false;
     for (const auto &path : paths) {
         Q_ASSERT(FileSystem::isChildPathOf(path, this->path()));
@@ -759,41 +763,59 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
     if (newMode != _definition.virtualFilesMode) {
         // This is tested in TestSyncVirtualFiles::testWipeVirtualSuffixFiles, so for changes here, have them reflected in that test.
-        if (isSyncRunning()) {
-            slotTerminateSync();
-        }
         const bool isPaused = _definition.paused;
         if (!isPaused) {
             setSyncPaused(true);
         }
+        auto finalizeVfsSwitch = [newMode, enabled, isPaused, this] {
+            // Wipe selective sync blacklist
+            bool ok = false;
+            const auto oldBlacklist = journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+            journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
-        // Wipe the dehydrated files from the DB, they will get downloaded on the next sync. We need to do this, otherwise the files
-        // are in the DB but not on disk, so the client assumes they are deleted, and removes them from the remote.
-        _vfs->wipeDehydratedVirtualFiles();
+            // Wipe the dehydrated files from the DB, they will get downloaded on the next sync. We need to do this, otherwise the files
+            // are in the DB but not on disk, so the client assumes they are deleted, and removes them from the remote.
+            _vfs->wipeDehydratedVirtualFiles();
 
-        // Tear down the VFS
-        _vfs->stop();
-        _vfs->unregisterFolder();
+            // Tear down the VFS
+            _vfsIsReady = false;
+            _vfs->stop();
+            _vfs->unregisterFolder();
 
-        disconnect(_vfs.data(), nullptr, this, nullptr);
-        disconnect(&_engine->syncFileStatusTracker(), nullptr, _vfs.data(), nullptr);
+            disconnect(_vfs.data(), nullptr, this, nullptr);
+            disconnect(&_engine->syncFileStatusTracker(), nullptr, _vfs.data(), nullptr);
 
-        _vfsIsReady = false;
-        _vfs.reset(VfsPluginManager::instance().createVfsFromPlugin(newMode).release());
+            // _vfs is a shared pointer...
+            _vfs.reset(VfsPluginManager::instance().createVfsFromPlugin(newMode).release());
 
-        // Restart VFS.
-        _definition.virtualFilesMode = newMode;
-        startVfs();
-        if (!isPaused) {
-            setSyncPaused(isPaused);
+            // Restart VFS.
+            _definition.virtualFilesMode = newMode;
+            if (enabled) {
+                connect(_vfs.data(), &Vfs::started, this, [oldBlacklist, this] {
+                    for (const auto &entry : oldBlacklist) {
+                        journalDb()->schedulePathForRemoteDiscovery(entry);
+                        std::ignore = vfs().setPinState(entry, PinState::OnlineOnly);
+                    }
+                });
+            }
+            saveToSettings();
+            if (!isPaused) {
+                setSyncPaused(isPaused);
+            }
+            startVfs();
+        };
+        if (isSyncRunning()) {
+            connect(this, &Folder::syncFinished, this, finalizeVfsSwitch, Qt::SingleShotConnection);
+            slotTerminateSync();
+        } else {
+            finalizeVfsSwitch();
         }
-        saveToSettings();
     }
 }
 
 bool Folder::supportsSelectiveSync() const
 {
-    return !virtualFilesEnabled() && !isVfsOnOffSwitchPending();
+    return !virtualFilesEnabled() && isReady();
 }
 
 bool Folder::isDeployed() const
@@ -1257,7 +1279,7 @@ void Folder::registerFolderWatcher()
 
 bool Folder::virtualFilesEnabled() const
 {
-    return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
+    return _definition.virtualFilesMode != Vfs::Off;
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction direction)

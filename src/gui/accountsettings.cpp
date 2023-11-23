@@ -503,45 +503,16 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         if (!folder) {
             return;
         }
+        qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
 
-        // It is unsafe to switch on vfs while a sync is running - wait if necessary.
-        auto connection = std::make_shared<QMetaObject::Connection>();
-        auto switchVfsOn = [folder, connection, this]() {
-            if (*connection)
-                QObject::disconnect(*connection);
+        // Change the folder vfs mode and load the plugin
+        folder->setVirtualFilesEnabled(true);
 
-            qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
+        // don't schedule the folder, it might not be ready yet.
+        // it will schedule its self once set up
 
-            // Wipe selective sync blacklist
-            bool ok = false;
-            const auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
-
-            // Change the folder vfs mode and load the plugin
-            folder->setVirtualFilesEnabled(true);
-            folder->setVfsOnOffSwitchPending(false);
-
-            for (const auto &entry : oldBlacklist) {
-                folder->journalDb()->schedulePathForRemoteDiscovery(entry);
-                std::ignore = folder->vfs().setPinState(entry, PinState::OnlineOnly);
-            }
-            folder->slotNextSyncFullLocalDiscovery();
-
-            // don't schedule the folder, it might not be ready yet.
-            // it will schedule its self once set up
-
-            ui->_folderList->doItemsLayout();
-            ui->selectiveSyncStatus->setVisible(false);
-        };
-
-        if (folder->isSyncRunning()) {
-            *connection = connect(folder, &Folder::syncFinished, this, switchVfsOn);
-            folder->setVfsOnOffSwitchPending(true);
-            folder->slotTerminateSync();
-            ui->_folderList->doItemsLayout();
-        } else {
-            switchVfsOn();
-        }
+        ui->_folderList->doItemsLayout();
+        ui->selectiveSyncStatus->setVisible(false);
     });
 
     // no need to show the message box on Windows
@@ -575,33 +546,16 @@ void AccountSettings::slotDisableVfsCurrentFolder()
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
         msgBox->deleteLater();
-        if (msgBox->clickedButton() != acceptButton|| !folder)
+        if (msgBox->clickedButton() != acceptButton || !folder) {
             return;
-
-        // It is unsafe to switch off vfs while a sync is running - wait if necessary.
-        auto connection = std::make_shared<QMetaObject::Connection>();
-        auto switchVfsOff = [folder, connection, this]() {
-            if (*connection)
-                QObject::disconnect(*connection);
-
-            qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
-
-            // Also wipes virtual files, schedules remote discovery
-            folder->setVirtualFilesEnabled(false);
-            folder->setVfsOnOffSwitchPending(false);
-            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
-
-            ui->_folderList->doItemsLayout();
-        };
-
-        if (folder->isSyncRunning()) {
-            *connection = connect(folder, &Folder::syncFinished, this, switchVfsOff);
-            folder->setVfsOnOffSwitchPending(true);
-            folder->slotTerminateSync();
-            ui->_folderList->doItemsLayout();
-        } else {
-            switchVfsOff();
         }
+
+        qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
+
+        // Also wipes virtual files, schedules remote discovery
+        folder->setVirtualFilesEnabled(false);
+
+        ui->_folderList->doItemsLayout();
     });
     msgBox->open();
 }
