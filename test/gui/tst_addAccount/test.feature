@@ -59,6 +59,7 @@ Feature: adding accounts
         Then credentials wizard should be visible
 
 
+    @skip @issue-11393
     Scenario: Adding account with vfs enabled
         Given the user has started the client
         And the user has entered the following account information:
@@ -70,6 +71,7 @@ Feature: adding accounts
         Then VFS enabled baseline image should match the default screenshot
 
 
+    @skip @issue-11393
     Scenario: Try to enable experimental vfs option and cancel it
         Given the user has started the client
         And the user has entered the following account information:

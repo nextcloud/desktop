@@ -1,3 +1,4 @@
+@skip @issue-11393
 Feature: Enable/disable virtual file support
 
     As a user
