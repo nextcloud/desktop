@@ -625,7 +625,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                         item, path, item->isDirectory(), item->instruction() == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
                     return;
                 }
-                Q_EMIT _discoveryData->fatalError(tr("Error while handling a rename, unahndled status code: %1").arg(job->httpStatusCode()));
+                Q_EMIT _discoveryData->fatalError(tr("Error while doing a rename, unhandled status code: %1").arg(job->httpStatusCode()));
             });
             job->start();
             done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
