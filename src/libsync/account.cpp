@@ -17,7 +17,6 @@
 #include "accountfwd.h"
 #include "capabilities.h"
 #include "clientsideencryptionjobs.h"
-#include "clientstatusreporting.h"
 #include "configfile.h"
 #include "cookiejar.h"
 #include "creds/abstractcredentials.h"
@@ -296,10 +295,10 @@ void Account::trySetupClientStatusReporting()
     }
 }
 
-void Account::reportClientStatus(const int status)
+void Account::reportClientStatus(const ClientStatusReporting::Status status)
 {
     if (_clientStatusReporting) {
-        _clientStatusReporting->reportClientStatus(static_cast<ClientStatusReporting::Status>(status));
+        _clientStatusReporting->reportClientStatus(status);
     }
 }
 
