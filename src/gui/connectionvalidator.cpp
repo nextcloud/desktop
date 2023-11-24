@@ -47,6 +47,12 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(account)
 {
+    // TODO: 6.0 abort validator on 5min timeout
+    auto timer = new QTimer(this);
+    timer->setInterval(30s);
+    connect(timer, &QTimer::timeout, this,
+        [this] { qCInfo(lcConnectionValidator) << "ConnectionValidator" << _account->displayName() << "still running after" << _duration.duration(); });
+    timer->start();
 }
 
 void ConnectionValidator::setClearCookies(bool clearCookies)
@@ -235,7 +241,7 @@ void ConnectionValidator::slotAuthSuccess()
         connect(fetchSetting, &FetchServerSettingsJob::unknownServerDetected, unsupportedServerError);
         connect(fetchSetting, &FetchServerSettingsJob::unsupportedServerDetected, [unsupportedServerError, this] {
             unsupportedServerError();
-            Q_EMIT reportResult(ServerVersionMismatch);
+            reportResult(ServerVersionMismatch);
         });
 
         connect(fetchSetting, &FetchServerSettingsJob::finishedSignal, this, [this] { reportResult(Connected); });
@@ -248,9 +254,12 @@ void ConnectionValidator::slotAuthSuccess()
 
 void ConnectionValidator::reportResult(Status status)
 {
-    qCDebug(lcConnectionValidator) << status;
-    emit connectionResult(status, _errors);
-    deleteLater();
+    if (OC_ENSURE(!_finished)) {
+        _finished = true;
+        qCDebug(lcConnectionValidator) << status << _duration.duration();
+        emit connectionResult(status, _errors);
+        deleteLater();
+    }
 }
 
 } // namespace OCC

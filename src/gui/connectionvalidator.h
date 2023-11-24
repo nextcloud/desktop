@@ -15,13 +15,15 @@
 #ifndef CONNECTIONVALIDATOR_H
 #define CONNECTIONVALIDATOR_H
 
-#include "accountfwd.h"
-#include "owncloudlib.h"
+#include "common/chronoelapsedtimer.h"
+#include "gui/guiutility.h"
+#include "libsync/accountfwd.h"
 
 #include <QNetworkReply>
 #include <QObject>
 #include <QStringList>
 #include <QVariantMap>
+
 #include <chrono>
 
 namespace OCC {
@@ -143,6 +145,9 @@ private:
     QStringList _errors;
     AccountPtr _account;
     bool _clearCookies = false;
+
+    Utility::ChronoElapsedTimer _duration;
+    bool _finished = false;
 
     ConnectionValidator::ValidationMode _mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
 };

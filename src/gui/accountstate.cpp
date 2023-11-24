@@ -305,7 +305,7 @@ void AccountState::checkConnectivity(bool blockJobs)
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
-    qCWarning(lcAccountState) << "checkConnectivity blocking:" << blockJobs;
+    qCInfo(lcAccountState) << "checkConnectivity blocking:" << blockJobs << account()->displayName();
     if (_state != Connected) {
         setState(Connecting);
     }
@@ -314,13 +314,15 @@ void AccountState::checkConnectivity(bool blockJobs)
         return;
     }
 
+
     if (_connectionValidator && blockJobs && !_queueGuard.queue()->isBlocked()) {
         // abort already running non blocking validator
         _connectionValidator->deleteLater();
         _connectionValidator.clear();
     }
     if (_connectionValidator) {
-        qCWarning(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayName();
+        qCWarning(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayName()
+                                  << "Queue is blocked:" << _queueGuard.queue()->isBlocked();
         return;
     }
 

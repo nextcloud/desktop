@@ -63,21 +63,21 @@ bool CoreJob::success() const
 
 void CoreJob::setResult(const QVariant &result)
 {
-    assertNotFinished();
+    if (OC_ENSURE(assertNotFinished())) {
+        _success = true;
+        _result = result;
 
-    _success = true;
-    _result = result;
-
-    Q_EMIT finished();
+        Q_EMIT finished();
+    }
 }
 
 void CoreJob::setError(const QString &errorMessage)
 {
-    assertNotFinished();
+    if (OC_ENSURE(assertNotFinished())) {
+        _errorMessage = errorMessage;
 
-    _errorMessage = errorMessage;
-
-    Q_EMIT finished();
+        Q_EMIT finished();
+    }
 }
 
 CoreJob::CoreJob(QNetworkReply *reply, QObject *parent)
@@ -87,8 +87,9 @@ CoreJob::CoreJob(QNetworkReply *reply, QObject *parent)
     _reply->setParent(this);
 }
 
-void CoreJob::assertNotFinished()
+bool CoreJob::assertNotFinished() const
 {
-    Q_ASSERT(_result.isNull());
-    Q_ASSERT(_errorMessage.isEmpty());
+    OC_ASSERT(_result.isNull());
+    OC_ASSERT(_errorMessage.isEmpty());
+    return _result.isNull() && _errorMessage.isEmpty();
 }
