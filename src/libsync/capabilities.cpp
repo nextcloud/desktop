@@ -198,6 +198,15 @@ bool Capabilities::hasActivities() const
     return _capabilities.contains("activity");
 }
 
+bool Capabilities::isClientStatusReportingEnabled() const
+{
+    if (!_capabilities.contains(QStringLiteral("security_guard"))) {
+        return false;
+    }
+    const auto securityGuardCaps = _capabilities[QStringLiteral("security_guard")].toMap();
+    return securityGuardCaps.contains(QStringLiteral("diagnostics")) && securityGuardCaps[QStringLiteral("diagnostics")].toBool();
+}
+
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
     QList<QByteArray> list;
