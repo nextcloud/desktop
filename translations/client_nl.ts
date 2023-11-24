@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="81"/>
         <source>Preparing the account</source>
-        <translation type="unfinished"/>
+        <translation>Het account wordt voorbereid</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="173"/>
@@ -850,32 +850,32 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="67"/>
         <source>No ownCloud account configured</source>
         <translation>Geen ownCloud-account geconfigureerd</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Werk de server bij naar de nieuwste versie en herstart het programma.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Authenticatiefout: Gebruikersnaam of wachtwoord onjuist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="128"/>
         <source>timeout</source>
         <translation>time-out</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="216"/>
         <source>The provided credentials are not correct</source>
         <translation>De verstrekte inloggegevens zijn niet juist</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>The configured server for this client is too old.</source>
         <translation>De voor dit programma ingestelde server is te oud</translation>
     </message>
@@ -981,7 +981,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld d
     <message>
         <location filename="../src/gui/folder.cpp" line="187"/>
         <source>The path &apos;%1&apos; is too long. Please enable long paths in the Windows settings or choose a different folder.</source>
-        <translation type="unfinished"/>
+        <translation>Het pad &apos;%1&apos; is te lang. Schakel ondersteuning voor lange paden aan in de Windows instellingen, of kies een andere folder.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="222"/>
@@ -1313,7 +1313,7 @@ Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voe
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1147"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>Staat in de wachtrij</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1061"/>
@@ -1696,7 +1696,7 @@ Let op dat dit alleen selecteert uit welke pool upgrades worden gehaald, en dat 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Please enter your password to log in to the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Geef het wachtwoord in voor het account %1</translation>
     </message>
 </context>
 <context>
@@ -2334,7 +2334,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
-        <translation type="unfinished"/>
+        <translation>SelectiveSync: genegeerd omdat het pad gedeselecteerd is.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -2354,7 +2354,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while doing a rename, unhandled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Er is een fout opgetreden bij het veranderen van de naam, niet afgehandelde status code: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
@@ -2701,7 +2701,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="119"/>
         <source>Checksum computation failed</source>
-        <translation type="unfinished"/>
+        <translation>Checksum berekening heeft gefaald</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="225"/>
@@ -3771,7 +3771,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardcontroller.cpp" line="201"/>
         <source>Failed to retrieve user information from server</source>
-        <translation type="unfinished"/>
+        <translation>Het ophalen van gebruikersinformatie van de server heeft gefaald</translation>
     </message>
 </context>
 <context>
@@ -3884,7 +3884,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Hervat synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="658"/>
@@ -4382,7 +4382,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, local copy was backed up as conflict file</source>
-        <translation type="unfinished"/>
+        <translation>De versie van de server is gedownload en de lokale versie is hernoemd als een conflict bestand</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
@@ -4474,7 +4474,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="210"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version</source>
-        <translation type="unfinished"/>
+        <translation>Enkele instellingen zijn geconfigureerd in een nieuwere versie van de applicatie en gebruiken functionaliteit die niet beschikbaar zijn in deze versie van de applicatie</translation>
     </message>
 </context>
 </TS>
