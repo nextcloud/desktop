@@ -45,11 +45,10 @@ public:
     explicit ClientStatusReporting(Account *account, QObject *parent = nullptr);
     ~ClientStatusReporting() = default;
 
+private:
+    void init();
     void reportClientStatus(const Status status);
 
-    void init();
-
-private:
     [[nodiscard]] Result<void, QString> setClientStatusReportingRecord(const ClientStatusReportingRecord &record);
     [[nodiscard]] QVector<ClientStatusReportingRecord> getClientStatusReportingRecords() const;
     [[nodiscard]] bool deleteClientStatusReportingRecords();
@@ -69,5 +68,6 @@ private:
     bool _isInitialized = false;
     QTimer _clientStatusReportingSendTimer;
     mutable QRecursiveMutex _mutex;
+    friend class Account;
 };
 }

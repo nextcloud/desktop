@@ -52,10 +52,10 @@ void ClientStatusReporting::init()
     const auto databaseId = QStringLiteral("%1@%2").arg(_account->davUser(), _account->url().toString());
     const auto databaseIdHash = QCryptographicHash::hash(databaseId.toUtf8(), QCryptographicHash::Md5);
 
-    const QString journalPath = ConfigFile().configPath() + QStringLiteral(".userdata_%1.db").arg(QString::fromLatin1(databaseIdHash.left(6).toHex()));
+    const QString dbPath = ConfigFile().configPath() + QStringLiteral(".userdata_%1.db").arg(QString::fromLatin1(databaseIdHash.left(6).toHex()));
 
     _database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
-    _database.setDatabaseName(journalPath);
+    _database.setDatabaseName(dbPath);
 
     if (!_database.open()) {
         qCDebug(lcClientStatusReporting) << "Could not setup client reporting, database connection error.";
@@ -66,7 +66,7 @@ void ClientStatusReporting::init()
     const auto prepareResult = query.prepare(
         "CREATE TABLE IF NOT EXISTS clientstatusreporting("
         "nHash INTEGER(8) PRIMARY KEY,"
-        "status INTEGER(8))"
+        "status INTEGER(8),"
         "name VARCHAR(4096),"
         "count INTEGER,"
         "lastOccurrence INTEGER(8))");
@@ -94,7 +94,7 @@ void ClientStatusReporting::init()
 
     auto records = getClientStatusReportingRecords();
 
-    auto resDelete = deleteClientStatusReportingRecords();
+   // auto resDelete = deleteClientStatusReportingRecords();
 
     records = getClientStatusReportingRecords();
 
@@ -156,7 +156,7 @@ Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(cons
     QSqlQuery query;
 
     const auto prepareResult = query.prepare(
-        "INSERT OR REPLACE INTO clientstatusreporting (nHash, name, count, lastOccurrence) VALUES(:nHash, :name, :status, :count, :lastOccurrence) ON CONFLICT(nHash) "
+        "INSERT OR REPLACE INTO clientstatusreporting (nHash, name, status, count, lastOccurrence) VALUES(:nHash, :name, :status, :count, :lastOccurrence) ON CONFLICT(nHash) "
         "DO UPDATE SET count = count + 1, lastOccurrence = :lastOccurrence;");
     query.bindValue(":nHash", recordCopy._nameHash);
     query.bindValue(":name", recordCopy._name);
@@ -203,7 +203,7 @@ void ClientStatusReporting::sendReportToServer()
         return;
     }
 
-    const auto lastSentReportTime = setLastSentReportTimestamp(0);
+    const auto lastSentReportTime = getLastSentReportTimestamp();
     if (QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
         return;
     }
