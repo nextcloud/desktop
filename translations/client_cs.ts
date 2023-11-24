@@ -2312,11 +2312,6 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>server nenareportoval žádné %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="628"/>
-        <source>Error while handling a rename, unahndled status code: %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation type="unfinished"/>
@@ -2335,6 +2330,11 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <location filename="../src/libsync/discovery.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat podadresáře do tohoto adresáře</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="628"/>
+        <source>Error while doing a rename, unhandled status code: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>

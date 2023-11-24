@@ -2317,11 +2317,6 @@ for additional privileges during the process.</source>
         <translation>שרת שמדווח ב- %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="628"/>
-        <source>Error while handling a rename, unahndled status code: %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation type="unfinished"/>
@@ -2340,6 +2335,11 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/discovery.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>אסור כיוון שאין לך הרשאות להוספת תיקיית משנה לתיקייה זו</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="628"/>
+        <source>Error while doing a rename, unhandled status code: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
