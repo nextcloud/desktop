@@ -284,7 +284,16 @@ void Account::setPushNotificationsReconnectInterval(int interval)
 
 void Account::trySetupClientStatusReporting()
 {
-    _clientStatusReporting.reset(new ClientStatusReporting(this));
+    if (_capabilities.isClientStatusReportingEnabled()) {
+        if (!_clientStatusReporting) {
+            _clientStatusReporting.reset(new ClientStatusReporting(this));
+        }
+        return;
+    }
+
+    if (!_clientStatusReporting) {
+        _clientStatusReporting.reset();
+    }
 }
 
 void Account::reportClientStatus(const int status)

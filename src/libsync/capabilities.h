@@ -97,6 +97,8 @@ public:
     /// return true if the activity app is enabled
     [[nodiscard]] bool hasActivities() const;
 
+    [[nodiscard]] bool isClientStatusReportingEnabled() const;
+
     /**
      * Returns the checksum types the server understands.
      *
