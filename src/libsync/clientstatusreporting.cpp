@@ -22,8 +22,10 @@
 namespace
 {
 constexpr auto lastSentReportTimestamp = "lastClientStatusReportSentTime";
-constexpr auto repordSendIntervalMs = 24 * 60 * 60 * 1000;
-constexpr int clientStatusReportingSendTimerInterval = 1000 * 60 * 2;
+//constexpr auto repordSendIntervalMs = 24 * 60 * 60 * 1000;
+//constexpr int clientStatusReportingSendTimerInterval = 1000 * 60 * 2;
+constexpr auto repordSendIntervalMs = 2000;
+constexpr int clientStatusReportingSendTimerInterval = 5000;
 }
 
 namespace OCC
@@ -209,50 +211,55 @@ void ClientStatusReporting::sendReportToServer()
     }
 
     const auto records = getClientStatusReportingRecords();
-    if (!records.isEmpty()) {
-        // send to server ->
-
-        QVariantMap report;
-
-        QVariantMap syncConflicts;
-        QVariantMap problems;
-
-        for (const auto &record : records) {
-            const auto categoryKey = classifyStatus(static_cast<Status>(record._status));
-
-            if (categoryKey.isEmpty()) {
-                qCDebug(lcClientStatusReporting) << "Could not classify status:";
-                continue;
-            }
-
-            if (categoryKey == QStringLiteral("sync_conflicts")) {
-                const auto initialCount = syncConflicts[QStringLiteral("count")].toInt();
-                syncConflicts[QStringLiteral("count")] = initialCount + record._numOccurences;
-                syncConflicts[QStringLiteral("oldest")] = record._lastOccurence;
-                report[categoryKey] = syncConflicts;
-            } else if (categoryKey == QStringLiteral("problems")) {
-                problems[record._name] = QVariantMap {
-                    {QStringLiteral("count"), record._numOccurences},
-                    {QStringLiteral("oldest"), record._lastOccurence}
-                };
-                report[categoryKey] = problems;
-            }
-        }
-
-        if (report.isEmpty()) {
-            qCDebug(lcClientStatusReporting) << "Report is empty.";
-            return;
-        }
-
-        const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
-        clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
-        clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
-        connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json) {
-            const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
-            slotSendReportToserverFinished();
-        });
-        clientStatusReportingJob->start();
+    if (records.isEmpty()) {
+        return;
     }
+
+    QVariantMap report;
+
+    report[QStringLiteral("sync_conflicts")] = QVariantMap{};
+    report[QStringLiteral("problems")] = QVariantMap{};
+    report[QStringLiteral("virus_detected")] = QVariantMap{};
+    report[QStringLiteral ("e2e_errors")] = QVariantMap{};
+
+    QVariantMap syncConflicts;
+    QVariantMap problems;
+
+    for (const auto &record : records) {
+        const auto categoryKey = classifyStatus(static_cast<Status>(record._status));
+
+        if (categoryKey.isEmpty()) {
+            qCDebug(lcClientStatusReporting) << "Could not classify status:";
+            continue;
+        }
+
+        if (categoryKey == QStringLiteral("sync_conflicts")) {
+            const auto initialCount = syncConflicts[QStringLiteral("count")].toInt();
+            syncConflicts[QStringLiteral("count")] = initialCount + record._numOccurences;
+            syncConflicts[QStringLiteral("oldest")] = record._lastOccurence;
+            report[categoryKey] = syncConflicts;
+        } else if (categoryKey == QStringLiteral("problems")) {
+            problems[record._name] = QVariantMap{{QStringLiteral("count"), record._numOccurences}, {QStringLiteral("oldest"), record._lastOccurence}};
+            report[categoryKey] = problems;
+        }
+    }
+
+    if (report.isEmpty()) {
+        qCDebug(lcClientStatusReporting) << "Failed to generate report. Report is empty.";
+        return;
+    }
+
+    const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
+    clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
+    clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
+    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json, int statusCode) {
+        if (statusCode == 200 || statusCode == 204) {
+            const auto data = json.object().value("ocs").toObject().value("data").toObject();
+            const auto dataMap = data.toVariantMap();
+            slotSendReportToserverFinished();
+        }
+    });
+    clientStatusReportingJob->start();
 }
 
 void ClientStatusReporting::slotSendReportToserverFinished()
@@ -306,10 +313,30 @@ QByteArray ClientStatusReporting::statusStringFromNumber(const Status status)
     }
 
     switch (status) {
-    case DownloadError_ConflictInvalidCharacters:
-        return QByteArrayLiteral("DownloadError.CONFLICT_INVALID_CHARACTERS");
+    case DownloadError_Cannot_Create_File:
+        return QByteArrayLiteral("DownloadError.CANNOT_CREATE_FILE");
+    case DownloadError_Conflict:
+        return QByteArrayLiteral("DownloadError.CONFLICT");
     case DownloadError_ConflictCaseClash:
         return QByteArrayLiteral("DownloadError.CONFLICT_CASECLASH");
+    case DownloadError_ConflictInvalidCharacters:
+        return QByteArrayLiteral("DownloadError.CONFLICT_INVALID_CHARACTERS");
+    case DownloadError_No_Free_Space:
+        return QByteArrayLiteral("DownloadError.NO_FREE_SPACE");
+    case DownloadError_ServerError:
+        return QByteArrayLiteral("DownloadError.SERVER_ERROR");
+    case DownloadError_Virtual_File_Hydration_Failure:
+        return QByteArrayLiteral("DownloadError.VIRTUAL_FILE_HYDRATION_FAILURE ");
+    case UploadError_Conflict:
+        return QByteArrayLiteral("UploadError.CONFLICT");
+    case UploadError_ConflictCaseClash:
+        return QByteArrayLiteral("UploadError.CONFLICT_CASECLASH");
+    case UploadError_ConflictInvalidCharacters:
+        return QByteArrayLiteral("UploadError.CONFLICT_INVALID_CHARACTERS");
+    case UploadError_No_Free_Space:
+        return QByteArrayLiteral("UploadError.NO_FREE_SPACE");
+    case UploadError_No_Write_Permissions:
+        return QByteArrayLiteral("UploadError.NO_WRITE_PERMISSIONS");
     case UploadError_ServerError:
         return QByteArrayLiteral("UploadError.SERVER_ERROR");
     case Count:
@@ -327,10 +354,19 @@ QString ClientStatusReporting::classifyStatus(const Status status)
     }
 
     switch (status) {
-    case DownloadError_ConflictInvalidCharacters:
-        return QStringLiteral("sync_conflicts");
+    case DownloadError_Conflict:
     case DownloadError_ConflictCaseClash:
+    case DownloadError_ConflictInvalidCharacters:
+    case UploadError_Conflict:
+    case UploadError_ConflictCaseClash:
+    case UploadError_ConflictInvalidCharacters:
         return QStringLiteral("sync_conflicts");
+    case DownloadError_Cannot_Create_File:
+    case DownloadError_No_Free_Space:
+    case DownloadError_ServerError:
+    case DownloadError_Virtual_File_Hydration_Failure:
+    case UploadError_No_Free_Space:
+    case UploadError_No_Write_Permissions:
     case UploadError_ServerError:
         return QByteArrayLiteral("problems");
     case Count:

@@ -943,7 +943,7 @@ JsonApiJob::JsonApiJob(const AccountPtr &account, const QString &path, QObject *
 
 void JsonApiJob::setBody(const QJsonDocument &body)
 {
-    SimpleApiJob::setBody(body.toJson());
+    SimpleApiJob::setBody(body.toJson(QJsonDocument::JsonFormat::Compact));
     qCDebug(lcJsonApiJob) << "Set body for request:" << SimpleApiJob::body();
     if (!SimpleApiJob::body().isEmpty()) {
         request().setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
