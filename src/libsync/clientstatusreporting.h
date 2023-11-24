@@ -20,6 +20,7 @@
 #include <QObject>
 #include <QHash>
 #include <QByteArray>
+#include <qstring.h>
 #include <QTimer>
 #include <QtSql>
 #include <QPair>
@@ -61,6 +62,7 @@ private slots:
 
 private:
     static QByteArray statusStringFromNumber(const Status status);
+    static QString classifyStatus(const Status status);
     Account *_account = nullptr;
     QHash<int, QPair<QByteArray, qint64>> _statusNamesAndHashes;
     QSqlDatabase _database;
