@@ -229,6 +229,30 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
 
     _item->_status = statusArg;
 
+    if (_item->_status == SyncFileItem::Status::Conflict)  {
+        if (_item->_direction == SyncFileItem::Direction::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_Conflict);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_Conflict);
+        }
+    } else if (_item->_status == SyncFileItem::Status::FileNameClash) {
+        if (_item->_direction == SyncFileItem::Direction::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ConflictInvalidCharacters);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
+        }
+    } else if (_item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
+        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ConflictInvalidCharacters);
+    } else if (_item->_status == SyncFileItem::Status::FileNameInvalid) {
+        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
+    } else if (_item->_httpErrorCode != 0 && _item->_httpErrorCode != 200) {
+        if (_item->_direction == SyncFileItem::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ServerError);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ServerError);
+        }
+    }
+
     if (_item->_isRestoration) {
         if (_item->_status == SyncFileItem::Success
             || _item->_status == SyncFileItem::Conflict) {
@@ -917,6 +941,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     }
 
     _journal->setConflictRecord(conflictRecord);
+    account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_Conflict);
 
     // Create a new upload job if the new conflict file should be uploaded
     if (account()->capabilities().uploadConflictFiles()) {
@@ -989,6 +1014,7 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
     }
 
     _journal->setCaseConflictRecord(conflictRecord);
+    account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictCaseClash);
 
     // Need a new sync to detect the created copy of the conflicting file
     _anotherSyncNeeded = true;
