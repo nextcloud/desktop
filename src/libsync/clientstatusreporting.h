@@ -36,8 +36,18 @@ class OWNCLOUDSYNC_EXPORT ClientStatusReporting : public QObject
     Q_OBJECT
 public:
     enum Status {
-        DownloadError_ConflictInvalidCharacters = 0,
+        DownloadError_Cannot_Create_File = 0,
+        DownloadError_Conflict,
         DownloadError_ConflictCaseClash,
+        DownloadError_ConflictInvalidCharacters,
+        DownloadError_No_Free_Space,
+        DownloadError_ServerError,
+        DownloadError_Virtual_File_Hydration_Failure,
+        UploadError_Conflict,
+        UploadError_ConflictCaseClash,
+        UploadError_ConflictInvalidCharacters,
+        UploadError_No_Free_Space,
+        UploadError_No_Write_Permissions,
         UploadError_ServerError,
         Count,
     };

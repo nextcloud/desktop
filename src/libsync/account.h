@@ -33,6 +33,7 @@
 
 #include "capabilities.h"
 #include "clientsideencryption.h"
+#include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "syncfileitem.h"
 
@@ -55,7 +56,6 @@ class AbstractCredentials;
 class Account;
 using AccountPtr = QSharedPointer<Account>;
 class AccessManager;
-class ClientStatusReporting;
 class SimpleNetworkJob;
 class PushNotifications;
 class UserStatusConnector;
@@ -308,7 +308,7 @@ public:
 
     void trySetupClientStatusReporting();
 
-    void reportClientStatus(const int status);
+    void reportClientStatus(const ClientStatusReporting::Status status);
 
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 

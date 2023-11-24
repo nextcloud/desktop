@@ -1280,8 +1280,9 @@ void PropagateDownloadFile::downloadFinished()
 
     // Maybe what we downloaded was a conflict file? If so, set a conflict record.
     // (the data was prepared in slotGetFinished above)
-    if (_conflictRecord.isValid())
+    if (_conflictRecord.isValid()) {
         propagator()->_journal->setConflictRecord(_conflictRecord);
+    }
 
     if (vfs && vfs->mode() == Vfs::WithSuffix) {
         // If the virtual file used to have a different name and db
