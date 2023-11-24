@@ -4726,7 +4726,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
         <source>Expiration Date: %1</source>
-        <translation>Son kullanım tarihi: %1</translation>
+        <translation>Geçerlilik sonu tarihi: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="219"/>
@@ -5692,7 +5692,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="649"/>
         <source>Set expiration date</source>
-        <translation>Son kullanma tarihini ayarla</translation>
+        <translation>Geçerlilik sonu tarihini ayarla</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="757"/>
