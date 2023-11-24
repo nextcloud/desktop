@@ -367,6 +367,11 @@ void AccountState::checkConnectivity(bool blockJobs)
                     _account->addApprovedCerts(certs);
                     _tlsDialog.clear();
                     _waitingForNewCredentials = false;
+                    // force a new _connectionValidator
+                    if (_connectionValidator) {
+                        _connectionValidator->deleteLater();
+                        _connectionValidator.clear();
+                    }
                     checkConnectivity(blockJobs);
                 });
                 connect(_tlsDialog, &TlsErrorDialog::rejected, this, [certs, this]() {
