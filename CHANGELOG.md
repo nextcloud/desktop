@@ -43,6 +43,7 @@ ownCloud admins and users.
 
 * Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
 * Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
+* Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
@@ -67,6 +68,13 @@ ownCloud admins and users.
    current sync.
 
    https://github.com/owncloud/client/issues/11379
+
+* Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
+
+   We fixed a bug where the client stopped scheduling syncs after a sync was
+   aborted.
+
+   https://github.com/owncloud/client/pull/11396
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
