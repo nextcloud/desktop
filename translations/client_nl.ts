@@ -2332,11 +2332,6 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>Server vermeldde geen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="628"/>
-        <source>Error while handling a rename, unahndled status code: %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation type="unfinished"/>
@@ -2355,6 +2350,11 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <location filename="../src/libsync/discovery.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niet toegestaan, omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="628"/>
+        <source>Error while doing a rename, unhandled status code: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>

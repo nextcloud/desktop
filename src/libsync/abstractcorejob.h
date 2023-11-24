@@ -77,7 +77,7 @@ Q_SIGNALS:
 
 private:
     // job result/error should be set only once, because that emits the "finished" signal
-    void assertNotFinished();
+    [[nodiscard]] bool assertNotFinished() const;
 
     bool _success = false;
 

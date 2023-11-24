@@ -2332,11 +2332,6 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>shërbyesi s’raportoi %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="628"/>
-        <source>Error while handling a rename, unahndled status code: %1</source>
-        <translation>Gabim teksa trajtohej një riemërtim, kod gjendjeje i patrajtuar: %1</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="1183"/>
         <source>SelectiveSync: Ignored because its path is deselected</source>
         <translation>SelectiveSync: U shpërfill, pasi shtegu i vet qe shpërzgjedhur</translation>
@@ -2355,6 +2350,11 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <location filename="../src/libsync/discovery.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>S’lejohet, ngaqë s’keni leje për shtim nëndosjesh te ajo dosje</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="628"/>
+        <source>Error while doing a rename, unhandled status code: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>
