@@ -66,6 +66,7 @@ void ClientStatusReporting::init()
     const auto prepareResult = query.prepare(
         "CREATE TABLE IF NOT EXISTS clientstatusreporting("
         "nHash INTEGER(8) PRIMARY KEY,"
+        "status INTEGER(8))"
         "name VARCHAR(4096),"
         "count INTEGER,"
         "lastOccurrence INTEGER(8))");
@@ -118,6 +119,7 @@ QVector<ClientStatusReportingRecord> ClientStatusReporting::getClientStatusRepor
     while (query.next()) {
         ClientStatusReportingRecord record;
         record._nameHash = query.value(query.record().indexOf("nHash")).toLongLong();
+        record._status = query.value(query.record().indexOf("status")).toLongLong();
         record._name = query.value(query.record().indexOf("name")).toByteArray();
         record._numOccurences = query.value(query.record().indexOf("count")).toLongLong();
         record._lastOccurence = query.value(query.record().indexOf("lastOccurrence")).toLongLong();
@@ -154,10 +156,11 @@ Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(cons
     QSqlQuery query;
 
     const auto prepareResult = query.prepare(
-        "INSERT OR REPLACE INTO clientstatusreporting (nHash, name, count, lastOccurrence) VALUES(:nHash, :name, :count, :lastOccurrence) ON CONFLICT(nHash) "
+        "INSERT OR REPLACE INTO clientstatusreporting (nHash, name, count, lastOccurrence) VALUES(:nHash, :name, :status, :count, :lastOccurrence) ON CONFLICT(nHash) "
         "DO UPDATE SET count = count + 1, lastOccurrence = :lastOccurrence;");
     query.bindValue(":nHash", recordCopy._nameHash);
     query.bindValue(":name", recordCopy._name);
+    query.bindValue(":status", recordCopy._status);
     query.bindValue(":count", 1);
     query.bindValue(":lastOccurrence", recordCopy._lastOccurence);
 
@@ -184,6 +187,7 @@ void ClientStatusReporting::reportClientStatus(const Status status)
 
     ClientStatusReportingRecord record;
     record._name = _statusNamesAndHashes[status].first;
+    record._status = status;
     record._nameHash = _statusNamesAndHashes[status].second;
     record._lastOccurence = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
     const auto result = setClientStatusReportingRecord(record);
@@ -207,8 +211,41 @@ void ClientStatusReporting::sendReportToServer()
     const auto records = getClientStatusReportingRecords();
     if (!records.isEmpty()) {
         // send to server ->
+
+        QVariantMap report;
+
+        QVariantMap syncConflicts;
+        QVariantMap problems;
+
+        for (const auto &record : records) {
+            const auto categoryKey = classifyStatus(static_cast<Status>(record._status));
+
+            if (categoryKey.isEmpty()) {
+                qCDebug(lcClientStatusReporting) << "Could not classify status:";
+                continue;
+            }
+
+            if (categoryKey == QStringLiteral("sync_conflicts")) {
+                const auto initialCount = syncConflicts[QStringLiteral("count")].toInt();
+                syncConflicts[QStringLiteral("count")] = initialCount + record._numOccurences;
+                syncConflicts[QStringLiteral("oldest")] = record._lastOccurence;
+                report[categoryKey] = syncConflicts;
+            } else if (categoryKey == QStringLiteral("problems")) {
+                problems[record._name] = QVariantMap {
+                    {QStringLiteral("count"), record._numOccurences},
+                    {QStringLiteral("oldest"), record._lastOccurence}
+                };
+                report[categoryKey] = problems;
+            }
+        }
+
+        if (report.isEmpty()) {
+            qCDebug(lcClientStatusReporting) << "Report is empty.";
+            return;
+        }
+
         const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
-        clientStatusReportingJob->setBody({});
+        clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
         clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
         connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json) {
             const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
@@ -275,6 +312,27 @@ QByteArray ClientStatusReporting::statusStringFromNumber(const Status status)
         return QByteArrayLiteral("DownloadError.CONFLICT_CASECLASH");
     case UploadError_ServerError:
         return QByteArrayLiteral("UploadError.SERVER_ERROR");
+    case Count:
+        return {};
+    };
+    return {};
+}
+
+QString ClientStatusReporting::classifyStatus(const Status status)
+{
+    Q_ASSERT(status >= 0 && status < Count);
+    if (status < 0 || status >= Status::Count) {
+        qCWarning(lcClientStatusReporting) << "Invalid status:" << status;
+        return {};
+    }
+
+    switch (status) {
+    case DownloadError_ConflictInvalidCharacters:
+        return QStringLiteral("sync_conflicts");
+    case DownloadError_ConflictCaseClash:
+        return QStringLiteral("sync_conflicts");
+    case UploadError_ServerError:
+        return QByteArrayLiteral("problems");
     case Count:
         return {};
     };

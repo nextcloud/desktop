@@ -25,6 +25,7 @@ namespace OCC
  */
 struct OCSYNC_EXPORT ClientStatusReportingRecord {
     QByteArray _name;
+    int _status = -1;
     quint64 _nameHash = 0;
     quint64 _numOccurences = 1;
     quint64 _lastOccurence = 0;
