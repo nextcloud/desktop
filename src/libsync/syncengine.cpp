@@ -686,6 +686,8 @@ void SyncEngine::startSync()
     }
 
     if (singleItemDiscoveryOptions().isValid() && singleItemDiscoveryOptions().discoveryDirItem) {
+        const auto databaseFingerprint = _journal->dataFingerprint();
+        _discoveryPhase->_dataFingerprint = databaseFingerprint;
         ProcessDirectoryJob::PathTuple path = {};
         path._local = path._original = path._server = path._target = singleItemDiscoveryOptions().discoveryPath;
 
