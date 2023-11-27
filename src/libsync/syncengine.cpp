@@ -552,7 +552,6 @@ void SyncEngine::startSync()
                                  .arg(
                                      Utility::octetsToString(freeBytes),
                                      Utility::octetsToString(minFree)), ErrorCategory::GenericError);
-            account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_No_Free_Space);
             finalize(false);
             return;
         } else {
@@ -1263,6 +1262,7 @@ void SyncEngine::slotSummaryError(const QString &message)
 
 void SyncEngine::slotInsufficientLocalStorage()
 {
+    account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_No_Free_Space);
     slotSummaryError(
         tr("Disk space is low: Downloads that would reduce free space "
            "below %1 were skipped.")
@@ -1271,8 +1271,8 @@ void SyncEngine::slotInsufficientLocalStorage()
 
 void SyncEngine::slotInsufficientRemoteStorage()
 {
-    auto msg = tr("There is insufficient space available on the server for some uploads.");
     account()->reportClientStatus(ClientStatusReporting::Status::UploadError_No_Free_Space);
+    auto msg = tr("There is insufficient space available on the server for some uploads.");
     if (_uniqueErrors.contains(msg))
         return;
 
