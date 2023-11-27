@@ -1,37 +1,8 @@
 #include "symlinkuploaddevice.h"
 
+#include "filesystem.h"
+
 #include <QFileInfo>
-#include <unistd.h>
-
-namespace {
-// Helper function to read raw symlink target;
-// QFileInfo::readSymLink() only available in Qt 6.6 or newer
-// and QFileInfo::symLinkTarget() will transform path to absolute path
-// which might break relative symlinks for cross-device synchronization
-QString readRawSymlink(const QString& path)
-{
-#if defined(Q_OS_UNIX) || defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    QByteArray buffer(255, '\0');
-    ssize_t readLength{};
-
-    auto tryReadlink = [&path, &buffer]() {
-        return readlink(path.toUtf8().data(), buffer.data(), buffer.size());
-    };
-    while ((readLength = tryReadlink()) >= static_cast<ssize_t>(buffer.size())) {
-        buffer.resize(buffer.size() + 100);
-    }
-
-    if (readLength > 0)
-    {
-        buffer[static_cast<unsigned int>(readLength)] = '\0';
-        return QString(buffer);
-    }
-#else
-    Q_UNUSED(path);
-#endif
-    return QString();
-}
-}
 
 namespace OCC {
 SymLinkUploadDevice::SymLinkUploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm)
@@ -44,13 +15,12 @@ bool SymLinkUploadDevice::open(QIODevice::OpenMode mode)
     if (mode & QIODevice::WriteOnly)
         return false;
 
-    auto symlinkContent = readRawSymlink(_file.fileName());
-    if (symlinkContent.isEmpty()) {
+    _symlinkContent = FileSystem::readlink(_file.fileName());
+    if (_symlinkContent.isEmpty()) {
         setErrorString("Unable to read symlink '" + _file.fileName() + "'");
         return false;
     }
 
-    _symlinkContent = symlinkContent.toUtf8();
     _size = qBound(0ll, _size, _symlinkContent.size() - _start);
     _read = 0;
 
