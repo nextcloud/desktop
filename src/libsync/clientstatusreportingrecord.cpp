@@ -19,6 +19,6 @@ namespace OCC
 
 bool ClientStatusReportingRecord::isValid() const
 {
-    return _status >= 0 && !_name.isEmpty() && _nameHash > 0 && _lastOccurence > 0;
+    return _status >= 0 && !_name.isEmpty() && _lastOccurence > 0;
 }
 }

@@ -148,13 +148,11 @@ signals:
 private slots:
     bool finished() override;
 
-protected:
-    QByteArray _verb;
-    QNetworkRequest _request;
-
 private:
-    QVector<int> _passStatusCodes;
+    QByteArray _verb;
     QHash<QString, QString> _params;
+    QVector<int> _passStatusCodes;
+    QNetworkRequest _request;
 };
 }
 
