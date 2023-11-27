@@ -12,16 +12,17 @@
  * for more details.
  */
 #include "clientstatusreporting.h"
-#include "creds/abstractcredentials.h"
+
 #include "account.h"
-#include "common/clientstatusreportingrecord.h"
-#include "common/syncjournaldb.h"
+#include "clientstatusreportingrecord.h"
 #include <configfile.h>
+#include "common/c_jhash.h"
 #include <networkjobs.h>
 
 namespace
 {
 constexpr auto lastSentReportTimestamp = "lastClientStatusReportSentTime";
+constexpr auto statusNamesHash = "statusNamesHash";
 }
 
 namespace OCC
@@ -29,8 +30,8 @@ namespace OCC
 Q_LOGGING_CATEGORY(lcClientStatusReporting, "nextcloud.sync.clientstatusreporting", QtInfoMsg)
 
 ClientStatusReporting::ClientStatusReporting(Account *account, QObject *parent)
-    : _account(account)
-    , QObject(parent)
+    : QObject(parent)
+    , _account(account)
 {
     init();
 }
@@ -44,18 +45,18 @@ ClientStatusReporting::~ClientStatusReporting()
 
 void ClientStatusReporting::init()
 {
+    Q_ASSERT(!_isInitialized);
     if (_isInitialized) {
         qCDebug(lcClientStatusReporting) << "Double call to init";
         return;
     }
 
-    for (int i = 0; i < ClientStatusReporting::Count; ++i) {
+    for (int i = 0; i < ClientStatusReporting::Status::Count; ++i) {
         const auto statusString = statusStringFromNumber(static_cast<Status>(i));
-        _statusNamesAndHashes[i] = {statusString, SyncJournalDb::getPHash(statusString)};
+        _statusNamesAndHashes[i] = {statusString, c_jhash64((uint8_t *)statusString.data(), statusString.size(), 0)};
     }
 
     const auto dbPath = makeDbPath();
-
     _database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
     _database.setDatabaseName(dbPath);
 
@@ -65,22 +66,41 @@ void ClientStatusReporting::init()
     }
 
     QSqlQuery query;
-    const auto prepareResult = query.prepare(
+    const auto prepareResult = query.prepare(QStringLiteral(
         "CREATE TABLE IF NOT EXISTS clientstatusreporting("
-        "nHash INTEGER(8) PRIMARY KEY,"
+        "name VARCHAR(4096) PRIMARY KEY,"
         "status INTEGER(8),"
-        "name VARCHAR(4096),"
         "count INTEGER,"
-        "lastOccurrence INTEGER(8))");
+        "lastOccurrence INTEGER(8))"));
     if (!prepareResult || !query.exec()) {
         qCDebug(lcClientStatusReporting) << "Could not setup client clientstatusreporting table:" << query.lastError().text();
         return;
     }
 
-    if (!query.prepare("CREATE TABLE IF NOT EXISTS keyvalue(key VARCHAR(4096), value VARCHAR(4096), PRIMARY KEY(key))") || !query.exec()) {
+    if (!query.prepare(QStringLiteral("CREATE INDEX IF NOT EXISTS name ON clientstatusreporting(name);")) || !query.exec()) {
+        qCDebug(lcClientStatusReporting) << "Could not create index on clientstatusreporting table:" << query.lastError().text();
+        return;
+    }
+
+    if (!query.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS keyvalue(key VARCHAR(4096), value VARCHAR(4096), PRIMARY KEY(key))")) || !query.exec()) {
         qCDebug(lcClientStatusReporting) << "Could not setup client keyvalue table:" << query.lastError().text();
         return;
     }
+
+    // prevent issues in case enum gets changed in future, hash its value and clean the db in case there was a change
+    QByteArray statusNamesContatenated;
+    for (int i = 0; i < ClientStatusReporting::Status::Count; ++i) {
+        statusNamesContatenated += statusStringFromNumber(static_cast<Status>(i));
+    }
+    statusNamesContatenated += QByteArray::number(ClientStatusReporting::Status::Count);
+    const auto statusNamesHashCurrent = QCryptographicHash::hash(statusNamesContatenated, QCryptographicHash::Md5).toHex();
+    const auto statusNamesHashFromDb = getStatusNamesHash();
+
+    if (statusNamesHashCurrent != statusNamesHashFromDb) {
+        deleteClientStatusReportingRecords();
+        setStatusNamesHash(statusNamesHashCurrent);
+    }
+    //
 
     _clientStatusReportingSendTimer.setInterval(clientStatusReportingTrySendTimerInterval);
     connect(&_clientStatusReportingSendTimer, &QTimer::timeout, this, &ClientStatusReporting::sendReportToServer);
@@ -96,40 +116,31 @@ QVector<ClientStatusReportingRecord> ClientStatusReporting::getClientStatusRepor
     QMutexLocker locker(&_mutex);
 
     QSqlQuery query;
-    const auto prepareResult = query.prepare("SELECT * FROM clientstatusreporting");
-
-    if (!prepareResult || !query.exec()) {
-        const auto errorMessage = query.lastError().text();
-        qCDebug(lcClientStatusReporting) << "Could not get records from clientstatusreporting:" << errorMessage;
+    if (!query.prepare(QStringLiteral("SELECT * FROM clientstatusreporting")) || !query.exec()) {
+        qCDebug(lcClientStatusReporting) << "Could not get records from clientstatusreporting:" << query.lastError().text();
         return records;
     }
 
     while (query.next()) {
         ClientStatusReportingRecord record;
-        record._nameHash = query.value(query.record().indexOf("nHash")).toLongLong();
-        record._status = query.value(query.record().indexOf("status")).toLongLong();
-        record._name = query.value(query.record().indexOf("name")).toByteArray();
-        record._numOccurences = query.value(query.record().indexOf("count")).toLongLong();
-        record._lastOccurence = query.value(query.record().indexOf("lastOccurrence")).toLongLong();
+        record._status = query.value(query.record().indexOf(QStringLiteral("status"))).toLongLong();
+        record._name = query.value(query.record().indexOf(QStringLiteral("name"))).toByteArray();
+        record._numOccurences = query.value(query.record().indexOf(QStringLiteral("count"))).toLongLong();
+        record._lastOccurence = query.value(query.record().indexOf(QStringLiteral("lastOccurrence"))).toLongLong();
         records.push_back(record);
     }
     return records;
 }
 
-bool ClientStatusReporting::deleteClientStatusReportingRecords()
+void ClientStatusReporting::deleteClientStatusReportingRecords() const
 {
     QSqlQuery query;
-    const auto prepareResult = query.prepare("DELETE FROM clientstatusreporting");
-
-    if (!prepareResult || !query.exec()) {
-        const auto errorMessage = query.lastError().text();
-        qCDebug(lcClientStatusReporting) << "Could not get records from clientstatusreporting:" << errorMessage;
-        return false;
+    if (!query.prepare(QStringLiteral("DELETE FROM clientstatusreporting")) || !query.exec()) {
+        qCDebug(lcClientStatusReporting) << "Could not delete records from clientstatusreporting:" << query.lastError().text();
     }
-    return true;
 }
 
-Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(const ClientStatusReportingRecord &record)
+Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(const ClientStatusReportingRecord &record) const
 {
     Q_ASSERT(record.isValid());
     if (!record.isValid()) {
@@ -144,13 +155,12 @@ Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(cons
     QSqlQuery query;
 
     const auto prepareResult = query.prepare(
-        "INSERT OR REPLACE INTO clientstatusreporting (nHash, name, status, count, lastOccurrence) VALUES(:nHash, :name, :status, :count, :lastOccurrence) ON CONFLICT(nHash) "
-        "DO UPDATE SET count = count + 1, lastOccurrence = :lastOccurrence;");
-    query.bindValue(":nHash", recordCopy._nameHash);
-    query.bindValue(":name", recordCopy._name);
-    query.bindValue(":status", recordCopy._status);
-    query.bindValue(":count", 1);
-    query.bindValue(":lastOccurrence", recordCopy._lastOccurence);
+        QStringLiteral("INSERT OR REPLACE INTO clientstatusreporting (name, status, count, lastOccurrence) VALUES(:name, :status, :count, :lastOccurrence) ON CONFLICT(name) "
+        "DO UPDATE SET count = count + 1, lastOccurrence = :lastOccurrence;"));
+    query.bindValue(QStringLiteral(":name"), recordCopy._name);
+    query.bindValue(QStringLiteral(":status"), recordCopy._status);
+    query.bindValue(QStringLiteral(":count"), 1);
+    query.bindValue(QStringLiteral(":lastOccurrence"), recordCopy._lastOccurence);
 
     if (!prepareResult || !query.exec()) {
         const auto errorMessage = query.lastError().text();
@@ -161,10 +171,10 @@ Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(cons
     return {};
 }
 
-void ClientStatusReporting::reportClientStatus(const Status status)
+void ClientStatusReporting::reportClientStatus(const Status status) const
 {
     if (!_isInitialized) {
-        qCWarning(lcClientStatusReporting) << "Could not report status. Status reporting is not initialized";
+        qCDebug(lcClientStatusReporting) << "Could not report status. Status reporting is not initialized";
         return;
     }
     Q_ASSERT(status >= 0 && status < Count);
@@ -176,7 +186,6 @@ void ClientStatusReporting::reportClientStatus(const Status status)
     ClientStatusReportingRecord record;
     record._name = _statusNamesAndHashes[status].first;
     record._status = status;
-    record._nameHash = _statusNamesAndHashes[status].second;
     record._lastOccurence = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
     const auto result = setClientStatusReportingRecord(record);
     if (!result.isValid()) {
@@ -207,8 +216,8 @@ void ClientStatusReporting::sendReportToServer()
     clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
     connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json, int statusCode) {
         if (statusCode == 0 || statusCode == 200 || statusCode == 201 || statusCode == 204) {
-            const auto metaFromJson = json.object().value("ocs").toObject().value("meta").toObject();
-            const auto codeFromJson = metaFromJson.value("statuscode").toInt();
+            const auto metaFromJson = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("meta")).toObject();
+            const auto codeFromJson = metaFromJson.value(QStringLiteral("statuscode")).toInt();
             if (codeFromJson == 0 || codeFromJson == 200 || codeFromJson == 201 || codeFromJson == 204) {
                 reportToServerSentSuccessfully();
                 return;
@@ -221,9 +230,7 @@ void ClientStatusReporting::sendReportToServer()
 
 void ClientStatusReporting::reportToServerSentSuccessfully()
 {
-    if (!deleteClientStatusReportingRecords()) {
-        qCDebug(lcClientStatusReporting) << "Error deleting client status report.";
-    }
+    deleteClientStatusReportingRecords();
     setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
 }
 
@@ -238,12 +245,12 @@ QString ClientStatusReporting::makeDbPath() const
     return ConfigFile().configPath() + QStringLiteral(".userdata_%1.db").arg(QString::fromLatin1(databaseIdHash.left(6).toHex()));
 }
 
-qulonglong ClientStatusReporting::getLastSentReportTimestamp() const
+quint64 ClientStatusReporting::getLastSentReportTimestamp() const
 {
     QMutexLocker locker(&_mutex);
     QSqlQuery query;
-    const auto prepareResult = query.prepare("SELECT value FROM keyvalue WHERE key = (:key)");
-    query.bindValue(":key", lastSentReportTimestamp);
+    const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
+    query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
     if (!prepareResult || !query.exec()) {
         qCDebug(lcClientStatusReporting) << "Could not get last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
         return 0;
@@ -252,9 +259,37 @@ qulonglong ClientStatusReporting::getLastSentReportTimestamp() const
         qCDebug(lcClientStatusReporting) << "Could not get last sent report timestamp from keyvalue table:" << query.lastError().text();
         return 0;
     }
+    return query.value(query.record().indexOf(QStringLiteral("value"))).toULongLong();
+}
 
-    int valueIndex = query.record().indexOf("value");
-    return query.value(valueIndex).toULongLong();
+void ClientStatusReporting::setStatusNamesHash(const QByteArray &hash) const
+{
+    QMutexLocker locker(&_mutex);
+    QSqlQuery query;
+    const auto prepareResult = query.prepare(QStringLiteral("INSERT OR REPLACE INTO keyvalue (key, value) VALUES(:key, :value);"));
+    query.bindValue(QStringLiteral(":key"), statusNamesHash);
+    query.bindValue(QStringLiteral(":value"), hash);
+    if (!prepareResult || !query.exec()) {
+        qCDebug(lcClientStatusReporting) << "Could not set status names hash.";
+        return;
+    }
+}
+
+QByteArray ClientStatusReporting::getStatusNamesHash() const
+{
+    QMutexLocker locker(&_mutex);
+    QSqlQuery query;
+    const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
+    query.bindValue(QStringLiteral(":key"), statusNamesHash);
+    if (!prepareResult || !query.exec()) {
+        qCDebug(lcClientStatusReporting) << "Could not get status names hash. No such record:" << statusNamesHash;
+        return {};
+    }
+    if (!query.next()) {
+        qCDebug(lcClientStatusReporting) << "Could not get status names hash:" << query.lastError().text();
+        return {};
+    }
+    return query.value(query.record().indexOf(QStringLiteral("value"))).toByteArray();
 }
 
 QVariantMap ClientStatusReporting::prepareReport() const
@@ -294,13 +329,13 @@ QVariantMap ClientStatusReporting::prepareReport() const
     return report;
 }
 
-void ClientStatusReporting::setLastSentReportTimestamp(const qulonglong timestamp)
+void ClientStatusReporting::setLastSentReportTimestamp(const quint64 timestamp) const
 {
     QMutexLocker locker(&_mutex);
     QSqlQuery query;
-    const auto prepareResult = query.prepare("INSERT OR REPLACE INTO keyvalue (key, value) VALUES(:key, :value);");
-    query.bindValue(":key", lastSentReportTimestamp);
-    query.bindValue(":value", timestamp);
+    const auto prepareResult = query.prepare(QStringLiteral("INSERT OR REPLACE INTO keyvalue (key, value) VALUES(:key, :value);"));
+    query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
+    query.bindValue(QStringLiteral(":value"), timestamp);
     if (!prepareResult || !query.exec()) {
         qCDebug(lcClientStatusReporting) << "Could not set last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
         return;
@@ -346,7 +381,7 @@ QByteArray ClientStatusReporting::statusStringFromNumber(const Status status)
     return {};
 }
 
-QString ClientStatusReporting::classifyStatus(const Status status)
+QByteArray ClientStatusReporting::classifyStatus(const Status status)
 {
     Q_ASSERT(status >= 0 && status < Count);
     if (status < 0 || status >= Status::Count) {
@@ -360,7 +395,7 @@ QString ClientStatusReporting::classifyStatus(const Status status)
     case DownloadError_ConflictInvalidCharacters:
     case UploadError_Conflict:
     case UploadError_ConflictInvalidCharacters:
-        return QStringLiteral("sync_conflicts");
+        return QByteArrayLiteral("sync_conflicts");
     case DownloadError_Cannot_Create_File:
     case DownloadError_No_Free_Space:
     case DownloadError_ServerError:
@@ -375,6 +410,6 @@ QString ClientStatusReporting::classifyStatus(const Status status)
     return {};
 }
 int ClientStatusReporting::clientStatusReportingTrySendTimerInterval = 1000 * 60 * 2; // check if the time has come, every 2 minutes
-int ClientStatusReporting::repordSendIntervalMs = 24 * 60 * 60 * 1000; // once every 24 hours
+quint64 ClientStatusReporting::repordSendIntervalMs = 24 * 60 * 60 * 1000; // once every 24 hours
 QString ClientStatusReporting::dbPathForTesting;
 }

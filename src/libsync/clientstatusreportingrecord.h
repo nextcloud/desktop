@@ -12,7 +12,7 @@
  * for more details.
  */
 #pragma once
-#include "ocsynclib.h"
+#include "owncloudlib.h"
 
 #include <QtGlobal>
 #include <QByteArray>
@@ -23,10 +23,10 @@ namespace OCC
  * @brief The ClientStatusReportingRecord class
  * @ingroup libsync
  */
-struct OCSYNC_EXPORT ClientStatusReportingRecord {
+
+struct OWNCLOUDSYNC_EXPORT ClientStatusReportingRecord {
     QByteArray _name;
     int _status = -1;
-    quint64 _nameHash = 0;
     quint64 _numOccurences = 1;
     quint64 _lastOccurence = 0;
 
