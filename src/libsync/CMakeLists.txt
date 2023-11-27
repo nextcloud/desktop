@@ -24,7 +24,10 @@ set(libsync_SRCS
     capabilities.cpp
     clientproxy.h
     clientproxy.cpp
+    clientstatusreporting.h
     clientstatusreporting.cpp
+    clientstatusreportingrecord.h
+    clientstatusreportingrecord.cpp
     cookiejar.h
     cookiejar.cpp
     discovery.h
@@ -54,10 +57,6 @@ set(libsync_SRCS
     owncloudpropagator.cpp
     nextcloudtheme.h
     nextcloudtheme.cpp
-    ocsjob.h
-    ocsjob.cpp
-    ocsclientstatusreportingjob.h
-    ocsclientstatusreportingjob.cpp
     abstractpropagateremotedeleteencrypted.h
     abstractpropagateremotedeleteencrypted.cpp
     deletejob.h
