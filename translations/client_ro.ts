@@ -1770,7 +1770,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 și %n alte fișier(e) a fost șters. </numerusform><numerusform>%1 și %n alte fișier(e) au fost șterse. </numerusform><numerusform>%1 și %n alte fișiere au fost șterse. </numerusform></translation>
+        <translation><numerusform>%1 și %n alte fișier(e) a fost șters. </numerusform><numerusform>%1 și %n alte fișier(e) au fost șterse. </numerusform><numerusform>Au fost șterse %1 și alte %n fișier(e).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="430"/>
@@ -1781,7 +1781,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 și un alt fișier a fost adăugat. </numerusform><numerusform>%1 și %n alte fișiere au fost adăugate. </numerusform><numerusform>%1 și %n de alte fișiere au fost adăugate. </numerusform></translation>
+        <translation><numerusform>A fost adăugat %1 și alte %n fișier(e).</numerusform><numerusform>Au fost adăugate %1 și alte %n fișier(e).</numerusform><numerusform>Au fost adăugate %1 și alte %n fișier(e).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="437"/>
@@ -1792,7 +1792,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 și %n alt fișier a fost actualizat. </numerusform><numerusform>%1 și %n alte fișiere au fost actualizate. </numerusform><numerusform>%1 și %n de alte fișiere au fost actualizate. </numerusform></translation>
+        <translation><numerusform>%1 și alte %n fișier(e) au fost actualizatr.</numerusform><numerusform>%1 și alte %n fișier(e) au fost actualizate. </numerusform><numerusform>%1 și alte %n fișier(e) au fost actualizate. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -1803,7 +1803,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 a fost redenumit în %2 și un alt fișier a fost redenumit.</numerusform><numerusform>%1 a fost redenumit în %2 și %n alte fișiere au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și %n de alte fișiere au fost redenumite.</numerusform></translation>
+        <translation><numerusform>%1 a fost redenumit în %2 și alte %n fișier(e) au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și alte %n fișier(e) au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și alte %n fișier(e) au fost redenumite.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
@@ -1814,7 +1814,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 a fost mostat în %2 și %n ale fișiee a fost mutat.</numerusform><numerusform>%1 a fost mostat în %2 și %n alte fișiere au fost mutate.</numerusform><numerusform>%1 a fost mostat în %2 și %n de alte fișiere au fost mutate.</numerusform></translation>
+        <translation><numerusform>%1 a fost mutat în %2 și alte %n fișier(e) au fost mutate.</numerusform><numerusform>%1 a fost mutat în %2 și alte %n fișier(e) au fost mutate.</numerusform><numerusform>%1 a fost mutat în %2 și alte %n fișier(e) au fost mutate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -1824,7 +1824,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 are și %n alt fișier are conflicte de sincronizare.</numerusform><numerusform>%1 are și %n alte fișiere au conflicte de sincronizare.</numerusform><numerusform>%1 are și %n de alte fișiere au conflicte de sincronizare.</numerusform></translation>
+        <translation><numerusform>%1 are și alte %n fișier(e) au conflicte de sincronizare.</numerusform><numerusform>%1 are și alte %n fișier(e) au conflicte de sincronizare.</numerusform><numerusform>%1 are și alte %n fișier(e) au conflicte de sincronizare.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
@@ -1834,7 +1834,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 și %n alt fișier nu au putut fi sincronizat datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform><numerusform>%1 și %n alte fișiere nu au putut fi sincronizate datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform><numerusform>%1 și %n de alte fișiere nu au putut fi sincronizate datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform></translation>
+        <translation><numerusform>%1 și alte %n fișier(e) nu au putut fi sincronizate datorită unor erori. Verificați logurile pentru mai multe detalii.</numerusform><numerusform>%1 și alte %n fișier(e) nu au putut fi sincronizate datorită unor erori. Verificați logurile pentru mai multe detalii.</numerusform><numerusform>%1 și alte %n fișier(e) nu au putut fi sincronizate datorită unor erori. Verificați logurile pentru mai multe detalii.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
@@ -1844,7 +1844,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 și %n alt fișier este în acest moment blocat.</numerusform><numerusform>%1 și %n alte fișiere sunt în acest moment blocate.</numerusform><numerusform>%1 și %n de alte fișiere sunt în acest moment blocate.</numerusform></translation>
+        <translation><numerusform>%1 și alte %n fișier(e) sunt în acest moment blocate.</numerusform><numerusform>%1 și alte %n fișier(e) sunt în acest moment blocate.</numerusform><numerusform>%1 și alte %n fișier(e) sunt în acest moment blocate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
@@ -1865,7 +1865,8 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Un nou fisier mai mare de %1 MB a fost adăugat: %2.</translation>
+        <translation>Un nou fișier mai mare de %1 MB a fost adăugat: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1228"/>
@@ -2265,7 +2266,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Se așteaptă pentru %n alt dosar ...</numerusform><numerusform>Se așteaptă pentru %n alte dosare ...</numerusform><numerusform>Se așteaptă pentru %n de alte dosare ...</numerusform></translation>
+        <translation><numerusform>Se așteaptă pentru alte %n dosar(e) ...</numerusform><numerusform>Se așteaptă pentru alte %n dosar(e) ...</numerusform><numerusform>Se așteaptă pentru alte %n dosar(e) ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
