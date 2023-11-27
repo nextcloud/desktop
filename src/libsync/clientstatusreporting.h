@@ -26,6 +26,8 @@
 #include <QPair>
 #include <QRecursiveMutex>
 
+class TestClientStatusReporting;
+
 namespace OCC {
 
 class Account;
@@ -36,24 +38,23 @@ class OWNCLOUDSYNC_EXPORT ClientStatusReporting : public QObject
     Q_OBJECT
 public:
     enum Status {
-        DownloadError_Cannot_Create_File = 0,
-        DownloadError_Conflict,
-        DownloadError_ConflictCaseClash,
-        DownloadError_ConflictInvalidCharacters,
-        DownloadError_No_Free_Space,
-        DownloadError_ServerError,
-        DownloadError_Virtual_File_Hydration_Failure,
-        UploadError_Conflict,
-        UploadError_ConflictCaseClash,
-        UploadError_ConflictInvalidCharacters,
-        UploadError_No_Free_Space,
-        UploadError_No_Write_Permissions,
-        UploadError_ServerError,
-        Count,
+        DownloadError_Cannot_Create_File = 100,
+        DownloadError_Conflict = 101,
+        DownloadError_ConflictCaseClash = 102,
+        DownloadError_ConflictInvalidCharacters = 103,
+        DownloadError_No_Free_Space = 104,
+        DownloadError_ServerError = 105,
+        DownloadError_Virtual_File_Hydration_Failure = 106,
+        UploadError_Conflict = 107,
+        UploadError_ConflictInvalidCharacters = 108,
+        UploadError_No_Free_Space = 109,
+        UploadError_No_Write_Permissions = 110,
+        UploadError_ServerError = 111,
+        Count = UploadError_ServerError + 1,
     };
 
     explicit ClientStatusReporting(Account *account, QObject *parent = nullptr);
-    ~ClientStatusReporting() = default;
+    ~ClientStatusReporting();
 
 private:
     void init();
@@ -62,22 +63,32 @@ private:
     [[nodiscard]] Result<void, QString> setClientStatusReportingRecord(const ClientStatusReportingRecord &record);
     [[nodiscard]] QVector<ClientStatusReportingRecord> getClientStatusReportingRecords() const;
     [[nodiscard]] bool deleteClientStatusReportingRecords();
-    [[nodiscard]] bool setLastSentReportTimestamp(const qulonglong timestamp);
+    void setLastSentReportTimestamp(const qulonglong timestamp);
     [[nodiscard]] qulonglong getLastSentReportTimestamp() const;
+    [[nodiscard]] QVariantMap prepareReport() const;
+    void reportToServerSentSuccessfully();
+    [[nodiscard]] QString makeDbPath() const;
 
 private slots:
     void sendReportToServer();
-    void slotSendReportToserverFinished();
 
 private:
     static QByteArray statusStringFromNumber(const Status status);
     static QString classifyStatus(const Status status);
+
+    static int clientStatusReportingTrySendTimerInterval;
+    static int repordSendIntervalMs;
+
+    static QString dbPathForTesting;
+
     Account *_account = nullptr;
     QHash<int, QPair<QByteArray, qint64>> _statusNamesAndHashes;
     QSqlDatabase _database;
     bool _isInitialized = false;
     QTimer _clientStatusReportingSendTimer;
     mutable QRecursiveMutex _mutex;
+
     friend class Account;
+    friend class TestClientStatusReporting;
 };
 }
