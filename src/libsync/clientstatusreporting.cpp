@@ -22,10 +22,6 @@
 namespace
 {
 constexpr auto lastSentReportTimestamp = "lastClientStatusReportSentTime";
-//constexpr auto repordSendIntervalMs = 24 * 60 * 60 * 1000;
-//constexpr int clientStatusReportingSendTimerInterval = 1000 * 60 * 2;
-constexpr auto repordSendIntervalMs = 2000;
-constexpr int clientStatusReportingSendTimerInterval = 5000;
 }
 
 namespace OCC
@@ -37,6 +33,13 @@ ClientStatusReporting::ClientStatusReporting(Account *account, QObject *parent)
     , QObject(parent)
 {
     init();
+}
+
+ClientStatusReporting::~ClientStatusReporting()
+{
+    if (_database.isOpen()) {
+        _database.close();
+    }
 }
 
 void ClientStatusReporting::init()
@@ -51,10 +54,7 @@ void ClientStatusReporting::init()
         _statusNamesAndHashes[i] = {statusString, SyncJournalDb::getPHash(statusString)};
     }
 
-    const auto databaseId = QStringLiteral("%1@%2").arg(_account->davUser(), _account->url().toString());
-    const auto databaseIdHash = QCryptographicHash::hash(databaseId.toUtf8(), QCryptographicHash::Md5);
-
-    const QString dbPath = ConfigFile().configPath() + QStringLiteral(".userdata_%1.db").arg(QString::fromLatin1(databaseIdHash.left(6).toHex()));
+    const auto dbPath = makeDbPath();
 
     _database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
     _database.setDatabaseName(dbPath);
@@ -82,25 +82,11 @@ void ClientStatusReporting::init()
         return;
     }
 
-    _clientStatusReportingSendTimer.setInterval(clientStatusReportingSendTimerInterval);
+    _clientStatusReportingSendTimer.setInterval(clientStatusReportingTrySendTimerInterval);
     connect(&_clientStatusReportingSendTimer, &QTimer::timeout, this, &ClientStatusReporting::sendReportToServer);
     _clientStatusReportingSendTimer.start();
 
     _isInitialized = true;
-
-    reportClientStatus(Status::DownloadError_ConflictCaseClash);
-    reportClientStatus(Status::DownloadError_ConflictInvalidCharacters);
-    reportClientStatus(Status::UploadError_ServerError);
-    reportClientStatus(Status::UploadError_ServerError);
-    setLastSentReportTimestamp(QDateTime::currentDateTime().toMSecsSinceEpoch());
-
-    auto records = getClientStatusReportingRecords();
-
-   // auto resDelete = deleteClientStatusReportingRecords();
-
-    records = getClientStatusReportingRecords();
-
-    auto res = getLastSentReportTimestamp();
 }
 
 QVector<ClientStatusReportingRecord> ClientStatusReporting::getClientStatusReportingRecords() const
@@ -147,7 +133,7 @@ Result<void, QString> ClientStatusReporting::setClientStatusReportingRecord(cons
 {
     Q_ASSERT(record.isValid());
     if (!record.isValid()) {
-        qCWarning(lcClientStatusReporting) << "Failed to set ClientStatusReportingRecord";
+        qCDebug(lcClientStatusReporting) << "Failed to set ClientStatusReportingRecord";
         return {QStringLiteral("Invalid parameter")};
     }
 
@@ -183,7 +169,7 @@ void ClientStatusReporting::reportClientStatus(const Status status)
     }
     Q_ASSERT(status >= 0 && status < Count);
     if (status < 0 || status >= Status::Count) {
-        qCWarning(lcClientStatusReporting) << "Trying to report invalid status:" << status;
+        qCDebug(lcClientStatusReporting) << "Trying to report invalid status:" << status;
         return;
     }
 
@@ -194,7 +180,7 @@ void ClientStatusReporting::reportClientStatus(const Status status)
     record._lastOccurence = QDateTime::currentDateTimeUtc().toMSecsSinceEpoch();
     const auto result = setClientStatusReportingRecord(record);
     if (!result.isValid()) {
-        qCWarning(lcClientStatusReporting) << "Could not report client status:" << result.error();
+        qCDebug(lcClientStatusReporting) << "Could not report client status:" << result.error();
     }
 }
 
@@ -210,17 +196,79 @@ void ClientStatusReporting::sendReportToServer()
         return;
     }
 
-    const auto records = getClientStatusReportingRecords();
-    if (records.isEmpty()) {
+    const auto report = prepareReport();
+    if (report.isEmpty()) {
+        qCDebug(lcClientStatusReporting) << "Failed to generate report. Report is empty.";
         return;
     }
 
-    QVariantMap report;
+    const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
+    clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
+    clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
+    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json, int statusCode) {
+        if (statusCode == 0 || statusCode == 200 || statusCode == 201 || statusCode == 204) {
+            const auto metaFromJson = json.object().value("ocs").toObject().value("meta").toObject();
+            const auto codeFromJson = metaFromJson.value("statuscode").toInt();
+            if (codeFromJson == 0 || codeFromJson == 200 || codeFromJson == 201 || codeFromJson == 204) {
+                reportToServerSentSuccessfully();
+                return;
+            }
+            qCDebug(lcClientStatusReporting) << "Received error when sending client report statusCode:" << statusCode << "codeFromJson:" << codeFromJson;
+        }
+    });
+    clientStatusReportingJob->start();
+}
 
+void ClientStatusReporting::reportToServerSentSuccessfully()
+{
+    if (!deleteClientStatusReportingRecords()) {
+        qCDebug(lcClientStatusReporting) << "Error deleting client status report.";
+    }
+    setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
+}
+
+QString ClientStatusReporting::makeDbPath() const
+{
+    if (!dbPathForTesting.isEmpty()) {
+        return dbPathForTesting;
+    }
+    const auto databaseId = QStringLiteral("%1@%2").arg(_account->davUser(), _account->url().toString());
+    const auto databaseIdHash = QCryptographicHash::hash(databaseId.toUtf8(), QCryptographicHash::Md5);
+
+    return ConfigFile().configPath() + QStringLiteral(".userdata_%1.db").arg(QString::fromLatin1(databaseIdHash.left(6).toHex()));
+}
+
+qulonglong ClientStatusReporting::getLastSentReportTimestamp() const
+{
+    QMutexLocker locker(&_mutex);
+    QSqlQuery query;
+    const auto prepareResult = query.prepare("SELECT value FROM keyvalue WHERE key = (:key)");
+    query.bindValue(":key", lastSentReportTimestamp);
+    if (!prepareResult || !query.exec()) {
+        qCDebug(lcClientStatusReporting) << "Could not get last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
+        return 0;
+    }
+    if (!query.next()) {
+        qCDebug(lcClientStatusReporting) << "Could not get last sent report timestamp from keyvalue table:" << query.lastError().text();
+        return 0;
+    }
+
+    int valueIndex = query.record().indexOf("value");
+    return query.value(valueIndex).toULongLong();
+}
+
+QVariantMap ClientStatusReporting::prepareReport() const
+{
+    const auto records = getClientStatusReportingRecords();
+    if (records.isEmpty()) {
+        return {};
+    }
+
+    QVariantMap report;
     report[QStringLiteral("sync_conflicts")] = QVariantMap{};
     report[QStringLiteral("problems")] = QVariantMap{};
     report[QStringLiteral("virus_detected")] = QVariantMap{};
-    report[QStringLiteral ("e2e_errors")] = QVariantMap{};
+    report[QStringLiteral("e2e_errors")] = QVariantMap{};
 
     QVariantMap syncConflicts;
     QVariantMap problems;
@@ -243,53 +291,10 @@ void ClientStatusReporting::sendReportToServer()
             report[categoryKey] = problems;
         }
     }
-
-    if (report.isEmpty()) {
-        qCDebug(lcClientStatusReporting) << "Failed to generate report. Report is empty.";
-        return;
-    }
-
-    const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
-    clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
-    clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
-    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json, int statusCode) {
-        if (statusCode == 200 || statusCode == 204) {
-            const auto data = json.object().value("ocs").toObject().value("data").toObject();
-            const auto dataMap = data.toVariantMap();
-            slotSendReportToserverFinished();
-        }
-    });
-    clientStatusReportingJob->start();
+    return report;
 }
 
-void ClientStatusReporting::slotSendReportToserverFinished()
-{
-    if (!deleteClientStatusReportingRecords()) {
-        qCWarning(lcClientStatusReporting) << "Error deleting client status report.";
-    }
-    setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
-}
-
-qulonglong ClientStatusReporting::getLastSentReportTimestamp() const
-{
-    QMutexLocker locker(&_mutex);
-    QSqlQuery query;
-    const auto prepareResult = query.prepare("SELECT value FROM keyvalue WHERE key = (:key)");
-    query.bindValue(":key", lastSentReportTimestamp);
-    if (!prepareResult || !query.exec()) {
-        qCDebug(lcClientStatusReporting) << "Could not get last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
-        return 0;
-    }
-    if (!query.next()) {
-        qCDebug(lcClientStatusReporting) << "Could not get last sent report timestamp from keyvalue table:" << query.lastError().text();
-        return 0;
-    }
-
-    int valueIndex = query.record().indexOf("value");
-    return query.value(valueIndex).toULongLong();
-}
-
-bool ClientStatusReporting::setLastSentReportTimestamp(const qulonglong timestamp)
+void ClientStatusReporting::setLastSentReportTimestamp(const qulonglong timestamp)
 {
     QMutexLocker locker(&_mutex);
     QSqlQuery query;
@@ -298,17 +303,15 @@ bool ClientStatusReporting::setLastSentReportTimestamp(const qulonglong timestam
     query.bindValue(":value", timestamp);
     if (!prepareResult || !query.exec()) {
         qCDebug(lcClientStatusReporting) << "Could not set last sent report timestamp from keyvalue table. No such record:" << lastSentReportTimestamp;
-        return false;
+        return;
     }
-
-    return true;
 }
 
 QByteArray ClientStatusReporting::statusStringFromNumber(const Status status)
 {
     Q_ASSERT(status >= 0 && status < Count);
     if (status < 0 || status >= Status::Count) {
-        qCWarning(lcClientStatusReporting) << "Invalid status:" << status;
+        qCDebug(lcClientStatusReporting) << "Invalid status:" << status;
         return {};
     }
 
@@ -328,8 +331,6 @@ QByteArray ClientStatusReporting::statusStringFromNumber(const Status status)
     case DownloadError_Virtual_File_Hydration_Failure:
         return QByteArrayLiteral("DownloadError.VIRTUAL_FILE_HYDRATION_FAILURE ");
     case UploadError_Conflict:
-        return QByteArrayLiteral("UploadError.CONFLICT");
-    case UploadError_ConflictCaseClash:
         return QByteArrayLiteral("UploadError.CONFLICT_CASECLASH");
     case UploadError_ConflictInvalidCharacters:
         return QByteArrayLiteral("UploadError.CONFLICT_INVALID_CHARACTERS");
@@ -349,7 +350,7 @@ QString ClientStatusReporting::classifyStatus(const Status status)
 {
     Q_ASSERT(status >= 0 && status < Count);
     if (status < 0 || status >= Status::Count) {
-        qCWarning(lcClientStatusReporting) << "Invalid status:" << status;
+        qCDebug(lcClientStatusReporting) << "Invalid status:" << status;
         return {};
     }
 
@@ -358,7 +359,6 @@ QString ClientStatusReporting::classifyStatus(const Status status)
     case DownloadError_ConflictCaseClash:
     case DownloadError_ConflictInvalidCharacters:
     case UploadError_Conflict:
-    case UploadError_ConflictCaseClash:
     case UploadError_ConflictInvalidCharacters:
         return QStringLiteral("sync_conflicts");
     case DownloadError_Cannot_Create_File:
@@ -374,4 +374,7 @@ QString ClientStatusReporting::classifyStatus(const Status status)
     };
     return {};
 }
+int ClientStatusReporting::clientStatusReportingTrySendTimerInterval = 1000 * 60 * 2; // check if the time has come, every 2 minutes
+int ClientStatusReporting::repordSendIntervalMs = 24 * 60 * 60 * 1000; // once every 24 hours
+QString ClientStatusReporting::dbPathForTesting;
 }

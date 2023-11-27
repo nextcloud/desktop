@@ -229,29 +229,7 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
 
     _item->_status = statusArg;
 
-    if (_item->_status == SyncFileItem::Status::Conflict)  {
-        if (_item->_direction == SyncFileItem::Direction::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_Conflict);
-        } else {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_Conflict);
-        }
-    } else if (_item->_status == SyncFileItem::Status::FileNameClash) {
-        if (_item->_direction == SyncFileItem::Direction::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ConflictInvalidCharacters);
-        } else {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
-        }
-    } else if (_item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
-        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ConflictInvalidCharacters);
-    } else if (_item->_status == SyncFileItem::Status::FileNameInvalid) {
-        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
-    } else if (_item->_httpErrorCode != 0 && _item->_httpErrorCode != 200) {
-        if (_item->_direction == SyncFileItem::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ServerError);
-        } else {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ServerError);
-        }
-    }
+    reportClientStatuses();
 
     if (_item->_isRestoration) {
         if (_item->_status == SyncFileItem::Success
@@ -358,6 +336,33 @@ bool PropagateItemJob::hasEncryptedAncestor() const
     }
 
     return false;
+}
+
+void PropagateItemJob::reportClientStatuses()
+{
+    if (_item->_status == SyncFileItem::Status::Conflict) {
+        if (_item->_direction == SyncFileItem::Direction::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_Conflict);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_Conflict);
+        }
+    } else if (_item->_status == SyncFileItem::Status::FileNameClash) {
+        if (_item->_direction == SyncFileItem::Direction::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ConflictInvalidCharacters);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
+        }
+    } else if (_item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
+        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ConflictInvalidCharacters);
+    } else if (_item->_status == SyncFileItem::Status::FileNameInvalid) {
+        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
+    } else if (_item->_httpErrorCode != 0 && _item->_httpErrorCode != 200 && _item->_httpErrorCode != 201 && _item->_httpErrorCode != 204) {
+        if (_item->_direction == SyncFileItem::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ServerError);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ServerError);
+        }
+    }
 }
 
 // ================================================================================
