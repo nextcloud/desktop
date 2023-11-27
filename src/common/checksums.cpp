@@ -218,6 +218,17 @@ QByteArray ComputeChecksum::computeNow(const QString &filePath, const QByteArray
     return checksumCalculator.calculate();
 }
 
+QByteArray ComputeChecksum::computeNow(QSharedPointer<QIODevice> fileDevice, const QByteArray &checksumType)
+{
+    if (!checksumComputationEnabled()) {
+        qCWarning(lcChecksums) << "Checksum computation disabled by environment variable";
+        return QByteArray();
+    }
+
+    ChecksumCalculator checksumCalculator(fileDevice, checksumType);
+    return checksumCalculator.calculate();
+}
+
 void ComputeChecksum::slotCalculationDone()
 {
     QByteArray checksum = _watcher.future().result();

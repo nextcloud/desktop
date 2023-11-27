@@ -282,15 +282,15 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
     computeChecksum->setChecksumType(checksumType);
 
     if (item->_type == CSyncEnums::ItemTypeSoftLink) {
+        computeChecksum->deleteLater();
         auto checksumDevice = QSharedPointer<SymLinkUploadDevice>::create(fileToUpload._path,
-                                                        0,
-                                                        std::numeric_limits<qint64>::max(),
-                                                        &propagator()->_bandwidthManager);
-        const auto contentChecksum = ComputeChecksum().computeNow(checksumDevice, checksumType);
+                                                      0,
+                                                      std::numeric_limits<qint64>::max(),
+                                                      &propagator()->_bandwidthManager);
+        const auto contentChecksum = ComputeChecksum::computeNow(checksumDevice, checksumType);
         item->_size = checksumDevice->size();
         fileToUpload._size = checksumDevice->size();
         slotStartUpload(item, fileToUpload, checksumType, contentChecksum);
-        computeChecksum->deleteLater();
     } else {
         connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
             slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);

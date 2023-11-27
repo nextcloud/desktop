@@ -12,6 +12,7 @@
  * for more details.
  */
 #include "checksumcalculator.h"
+#include "checksumconsts.h"
 
 #include <zlib.h>
 
@@ -48,7 +49,12 @@ static QCryptographicHash::Algorithm algorithmTypeToQCryptoHashAlgorithm(Checksu
 }
 
 ChecksumCalculator::ChecksumCalculator(const QString &filePath, const QByteArray &checksumTypeName)
-    : _device(new QFile(filePath))
+    : ChecksumCalculator(QSharedPointer<QIODevice>(new QFile(filePath)), checksumTypeName)
+{
+}
+
+ChecksumCalculator::ChecksumCalculator(QSharedPointer<QIODevice> fileDevice, const QByteArray &checksumTypeName)
+    : _device(fileDevice)
 {
     if (checksumTypeName == checkSumMD5C) {
         _algorithmType = AlgorithmType::MD5;
