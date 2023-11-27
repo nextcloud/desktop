@@ -64,8 +64,7 @@ constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
 constexpr auto isSkipE2eeMetadataChecksumValidationAllowedInClientVersion = MIRALL_VERSION_MAJOR == 3 && MIRALL_VERSION_MINOR == 8;
 }
 
-namespace OCC
-{
+namespace OCC {
 Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
 const char app_password[] = "_app-password";
 
@@ -88,7 +87,7 @@ AccountPtr Account::create()
     return acc;
 }
 
-ClientSideEncryption *Account::e2e()
+ClientSideEncryption* Account::e2e()
 {
     // Qt expects everything in the connect to be a pointer, so return a pointer.
     return &_e2e;
@@ -268,10 +267,14 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (proxy.type() != QNetworkProxy::DefaultProxy) {
         _am->setProxy(proxy);
     }
-    connect(_am.data(), &QNetworkAccessManager::sslErrors, this, &Account::slotHandleSslErrors);
-    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &Account::proxyAuthenticationRequired);
-    connect(_credentials.data(), &AbstractCredentials::fetched, this, &Account::slotCredentialsFetched);
-    connect(_credentials.data(), &AbstractCredentials::asked, this, &Account::slotCredentialsAsked);
+    connect(_am.data(), &QNetworkAccessManager::sslErrors,
+        this, &Account::slotHandleSslErrors);
+    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
+        this, &Account::proxyAuthenticationRequired);
+    connect(_credentials.data(), &AbstractCredentials::fetched,
+        this, &Account::slotCredentialsFetched);
+    connect(_credentials.data(), &AbstractCredentials::asked,
+        this, &Account::slotCredentialsAsked);
 
     trySetupPushNotifications();
 }
