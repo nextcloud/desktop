@@ -4667,7 +4667,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="138"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>Non se pode conectar de xeito seguro con &lt;i&gt;%1&lt;/i&gt;:</translation>
+        <translation>Non é posíbel conectar de xeito seguro con &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
