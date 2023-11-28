@@ -288,8 +288,6 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
                                                       std::numeric_limits<qint64>::max(),
                                                       &propagator()->_bandwidthManager);
         const auto contentChecksum = ComputeChecksum::computeNow(checksumDevice, checksumType);
-        item->_size = checksumDevice->size();
-        fileToUpload._size = checksumDevice->size();
         slotStartUpload(item, fileToUpload, checksumType, contentChecksum);
     } else {
         connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
@@ -344,10 +342,8 @@ void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
         return;
     }
 
-    if (!item->isSymLink()) {
-        fileToUpload._size = FileSystem::getSize(fullFilePath);
-        item->_size = FileSystem::getSize(originalFilePath);
-    }
+    fileToUpload._size = FileSystem::getSize(fullFilePath);
+    item->_size = FileSystem::getSize(originalFilePath);
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
