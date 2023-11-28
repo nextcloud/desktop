@@ -52,9 +52,9 @@ void markForDehydration(FakeFolder &folder, const QString &path)
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
-QSharedPointer<Vfs> setupVfs(FakeFolder &folder)
+QSharedPointer<Vfs> setupVfs(FakeFolder &folder, Vfs::Mode vfsMode = Vfs::WithSuffix)
 {
-    auto suffixVfs = QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(Vfs::WithSuffix).release());
+    auto suffixVfs = QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(vfsMode).release());
     folder.switchToVfs(suffixVfs);
 
     // Using this directly doesn't recursively unpin everything and instead leaves
@@ -860,12 +860,36 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState(), expectedRemoteState);
     }
 
-    void testWipeVirtualSuffixFiles()
+    void testSwitchOffVFS_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+
+        if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix)) {
+            QTest::newRow("Vfs::withSuffix") << Vfs::WithSuffix;
+        }
+
+        if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
+        } else if (Utility::isWindows()) {
+            qWarning("Skipping Vfs::WindowsCfApi, plugin is unavailables");
+        }
+    }
+
+    void testSwitchOffVFS()
     {
         // This tests the procedure done in Folder::setVirtualFilesEnabled. For changes here, make sure they are reflected in that method.
 
+        QFETCH(Vfs::Mode, vfsMode);
+        auto fileName = [vfsMode](const QString &fn) -> QString {
+            if (vfsMode == Vfs::WithSuffix) {
+                return fn + Theme::instance()->appDotVirtualFileSuffix();
+            }
+
+            return fn;
+        };
+
         FakeFolder fakeFolder{ FileInfo{} };
-        setupVfs(fakeFolder);
+        setupVfs(fakeFolder, vfsMode);
 
         // Create a suffix-vfs baseline
         fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
@@ -882,27 +906,35 @@ private slots:
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("f1") + Theme::instance()->appDotVirtualFileSuffix()));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(fakeFolder.currentLocalState().find(fileName(QStringLiteral("f1"))));
+        QVERIFY(fakeFolder.currentLocalState().find(fileName(QStringLiteral("A/a1"))));
+        QVERIFY(fakeFolder.currentLocalState().find(fileName(QStringLiteral("A/a3"))));
+        QVERIFY(fakeFolder.currentLocalState().find(fileName(QStringLiteral("A/B/b1"))));
 
         // Make local changes to a3
-        fakeFolder.localModifier().remove(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix());
-        fakeFolder.localModifier().insert(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix(), 100_b);
+        fakeFolder.localModifier().remove(fileName(QStringLiteral("A/a3")));
+        fakeFolder.localModifier().insert(fileName(QStringLiteral("A/a3")), 100_b);
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // Now wipe the virtuals
         fakeFolder.syncEngine().syncOptions()._vfs->wipeDehydratedVirtualFiles();
 
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("f1") + Theme::instance()->appDotVirtualFileSuffix()));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/a1") + Theme::instance()->appDotVirtualFileSuffix()));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix()));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("A/B/b1") + Theme::instance()->appDotVirtualFileSuffix()));
+        QVERIFY(!fakeFolder.currentLocalState().find(fileName(QStringLiteral("f1"))));
+        QVERIFY(!fakeFolder.currentLocalState().find(fileName(QStringLiteral("A/a1"))));
+        QVERIFY(fakeFolder.currentLocalState().find(fileName(QStringLiteral("A/a3"))));
+        QVERIFY(!fakeFolder.currentLocalState().find(fileName(QStringLiteral("A/B/b1"))));
 
         fakeFolder.switchToVfs(QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(Vfs::Off).release()));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
-        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("A/a3") + Theme::instance()->appDotVirtualFileSuffix())); // regular upload
+
+        if (vfsMode == Vfs::WithSuffix) {
+            // An invalid placeholder was created (one with a suffix, but bigger than 0 bytes), so that will not be synced to the server.
+            QVERIFY(!fakeFolder.currentRemoteState().find(fileName(QStringLiteral("A/a3"))));
+        } else {
+            // After the initial sync, "A/a3" was a dehydrated placeholder. Because of the modifications to "A/a3" above, it should now be a file,
+            // and it should not be wiped when the placeholders were removed due to the VFS switch.
+            QVERIFY(!fakeFolder.currentRemoteState().find(fileName(QStringLiteral("A/a3")))->isDehydratedPlaceholder);
+        }
         QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
     }
 
