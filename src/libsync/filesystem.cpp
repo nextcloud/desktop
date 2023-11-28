@@ -31,6 +31,11 @@ namespace OCC {
 bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
 {
     // compare two files with given filename and return true if they have the same content
+    auto symlinkTargetFile1 = readlink(fn1);
+    auto symlinkTargetFile2 = readlink(fn2);
+    if (!symlinkTargetFile1.isEmpty() && symlinkTargetFile1 == symlinkTargetFile2) {
+        return true;
+    }
     QFile f1(fn1);
     QFile f2(fn2);
     if (!f1.open(QIODevice::ReadOnly) || !f2.open(QIODevice::ReadOnly)) {
