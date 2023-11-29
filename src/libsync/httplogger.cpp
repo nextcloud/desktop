@@ -51,9 +51,10 @@ struct HttpContext
     const QString id;
 
     OCC::Utility::ChronoElapsedTimer timer;
+    bool send = false;
 };
 
-void logHttp(const QByteArray &verb, HttpContext *ctx, QJsonObject &&header, QIODevice *device)
+void logHttp(const QByteArray &verb, HttpContext *ctx, QJsonObject &&header, QIODevice *device, bool cached = false)
 {
     static const bool redact = !qEnvironmentVariableIsSet("OWNCLOUD_HTTPLOGGER_NO_REDACT");
     const auto reply = qobject_cast<QNetworkReply *>(device);
@@ -81,6 +82,9 @@ void logHttp(const QByteArray &verb, HttpContext *ctx, QJsonObject &&header, QIO
             replyInfo.insert(QStringLiteral("error"), reply->errorString());
         }
         info.insert(QStringLiteral("reply"), replyInfo);
+    } else {
+        // request
+        info.insert(QStringLiteral("cached"), cached);
     }
 
     QJsonObject body = {{QStringLiteral("length"), contentLength}};
@@ -124,7 +128,7 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     auto ctx = std::make_unique<HttpContext>(reply->request());
 
     // device should still exist, lets still use a qpointer to ensure we have valid data
-    const auto logSend = [ctx = ctx.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
+    const auto logSend = [ctx = ctx.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device](bool cached = false) {
         Q_ASSERT(!deviceRaw || device);
         ctx->timer.reset();
 
@@ -133,7 +137,7 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
         for (const auto &key : request.rawHeaderList()) {
             header[QString::fromUtf8(key)] = QString::fromUtf8(request.rawHeader(key));
         }
-        logHttp(requestVerb(operation, request), ctx, std::move(header), device);
+        logHttp(requestVerb(operation, request), ctx, std::move(header), device, cached);
     };
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend);
@@ -143,6 +147,9 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
 
     QObject::connect(reply, &QNetworkReply::finished, reply, [reply, ctx = std::move(ctx), logSend] {
         ctx->timer.stop();
+        if (!ctx->send) {
+            logSend(true);
+        }
         QJsonObject header;
         for (const auto &[key, value] : reply->rawHeaderPairs()) {
             header[QString::fromUtf8(key)] = QString::fromUtf8(value);
