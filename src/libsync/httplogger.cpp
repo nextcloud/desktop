@@ -33,19 +33,27 @@ Q_LOGGING_CATEGORY(lcNetworkHttp, "sync.httplogger", QtWarningMsg)
 
 const qint64 PeekSize = 1024 * 1024;
 
-const QByteArray XRequestId()
-{
-    return QByteArrayLiteral("X-Request-ID");
-}
-
 bool isTextBody(const QString &s)
 {
     static const QRegularExpression regexp(QStringLiteral("^(text/.*?|(application/(xml|.*?json|x-www-form-urlencoded)(;|$)))"));
     return regexp.match(s).hasMatch();
 }
 
-void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, QJsonObject &&header, QIODevice *device,
-    const nanoseconds &duration = {})
+struct HttpContext
+{
+    HttpContext(const QNetworkRequest &request)
+        : url(request.url().toString())
+        , id(QString::fromUtf8(request.rawHeader(QByteArrayLiteral("X-Request-ID"))))
+    {
+    }
+
+    const QString url;
+    const QString id;
+
+    OCC::Utility::ChronoElapsedTimer timer;
+};
+
+void logHttp(const QByteArray &verb, HttpContext *ctx, QJsonObject &&header, QIODevice *device)
 {
     static const bool redact = !qEnvironmentVariableIsSet("OWNCLOUD_HTTPLOGGER_NO_REDACT");
     const auto reply = qobject_cast<QNetworkReply *>(device);
@@ -57,16 +65,15 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
         header.insert(authKey, auth.startsWith(QStringLiteral("Bearer ")) ? QStringLiteral("Bearer [redacted]") : QStringLiteral("Basic [redacted]"));
     }
 
-    QJsonObject info{{QStringLiteral("method"), QString::fromUtf8(verb)}, {QStringLiteral("id"), QString::fromUtf8(id)}, {QStringLiteral("url"), url}};
+    QJsonObject info{{QStringLiteral("method"), QString::fromUtf8(verb)}, {QStringLiteral("id"), ctx->id}, {QStringLiteral("url"), ctx->url}};
 
     if (reply) {
-        QString durationString;
-        QDebug(&durationString).nospace() << duration;
+        // respond
         QJsonObject replyInfo{{QStringLiteral("status"), reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()},
             {QStringLiteral("cached"), reply->attribute(QNetworkRequest::SourceIsFromCacheAttribute).toBool()},
             // downcast to int, this is json
-            {QStringLiteral("duration"), static_cast<int>(duration_cast<milliseconds>(duration).count())}, //
-            {QStringLiteral("durationString"), durationString},
+            {QStringLiteral("duration"), static_cast<int>(duration_cast<milliseconds>(ctx->timer.duration()).count())}, //
+            {QStringLiteral("durationString"), QDebug::toString(ctx->timer.duration())},
             {QStringLiteral("version"),
                 QStringLiteral("HTTP %1").arg(
                     reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool() ? QStringLiteral("1.1") : QStringLiteral("2"))}};
@@ -78,6 +85,7 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
 
     QJsonObject body = {{QStringLiteral("length"), contentLength}};
     if (contentLength > 0) {
+        const QString contentType = header.value(QStringLiteral("Content-Type")).toString();
         if (isTextBody(contentType)) {
             if (!device->isOpen()) {
                 Q_ASSERT(dynamic_cast<QBuffer *>(device));
@@ -96,7 +104,7 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
         }
     }
 
-    qCInfo(lcNetworkHttp).noquote() << (reply ? "RESPONSE" : "REQUEST") << id
+    qCInfo(lcNetworkHttp).noquote() << (reply ? "RESPONSE" : "REQUEST") << ctx->id
                                     << QJsonDocument{QJsonObject{{reply ? QStringLiteral("response") : QStringLiteral("request"),
                                                          QJsonObject{{QStringLiteral("info"), info}, {QStringLiteral("header"), header},
                                                              {QStringLiteral("body"), body}}}}}
@@ -112,20 +120,20 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     if (!lcNetworkHttp().isInfoEnabled()) {
         return;
     }
-    auto timer = std::make_unique<Utility::ChronoElapsedTimer>();
+
+    auto ctx = std::make_unique<HttpContext>(reply->request());
 
     // device should still exist, lets still use a qpointer to ensure we have valid data
-    const auto logSend = [timer = timer.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
+    const auto logSend = [ctx = ctx.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device] {
         Q_ASSERT(!deviceRaw || device);
-        timer->reset();
+        ctx->timer.reset();
 
         const auto request = reply->request();
         QJsonObject header;
         for (const auto &key : request.rawHeaderList()) {
             header[QString::fromUtf8(key)] = QString::fromUtf8(request.rawHeader(key));
         }
-        logHttp(requestVerb(operation, request), request.url().toString(), request.rawHeader(XRequestId()),
-            request.header(QNetworkRequest::ContentTypeHeader).toString(), std::move(header), device);
+        logHttp(requestVerb(operation, request), ctx, std::move(header), device);
     };
 #if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
     QObject::connect(reply, &QNetworkReply::requestSent, reply, logSend);
@@ -133,13 +141,13 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     logSend();
 #endif
 
-    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer = std::move(timer)] {
+    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, ctx = std::move(ctx), logSend] {
+        ctx->timer.stop();
         QJsonObject header;
         for (const auto &[key, value] : reply->rawHeaderPairs()) {
             header[QString::fromUtf8(key)] = QString::fromUtf8(value);
         }
-        logHttp(requestVerb(*reply), reply->url().toString(), reply->request().rawHeader(XRequestId()),
-            reply->header(QNetworkRequest::ContentTypeHeader).toString(), std::move(header), reply, timer->duration());
+        logHttp(requestVerb(*reply), ctx.get(), std::move(header), reply);
     });
 }
 
