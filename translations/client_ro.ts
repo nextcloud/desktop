@@ -4862,7 +4862,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Deschide dialogul principal</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
@@ -5183,12 +5183,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Ați fost deconectat din contul %1 la %2. Este necesară reautentificarea.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Autentificați-vă cu contul: %1</translation>
     </message>
 </context>
 <context>
@@ -5201,7 +5201,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Autentificare</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -6404,7 +6404,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Cont greșit&lt;/h1&gt;&lt;p&gt;V-ați autentificat cu contul &lt;em&gt;%1&lt;/em&gt;, dar este trebuia să utilizați contul &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Deconectați-vă din contul %3 în alt tab, apoi &lt;a href=&apos;%4&apos;&gt;faceți click aici&lt;/a&gt; și autentificați-vă cu %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
