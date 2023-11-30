@@ -717,6 +717,7 @@ void SyncEngine::startSync()
             singleItemDiscoveryOptions().discoveryDirItem,
             localQueryMode,
             _journal->keyValueStoreGetInt("last_sync", 0),
+            _syncOptions._synchronizeSymlinks,
             _discoveryPhase.data()
         );
     } else {
@@ -724,6 +725,7 @@ void SyncEngine::startSync()
             _discoveryPhase.data(),
             PinState::AlwaysLocal,
             _journal->keyValueStoreGetInt("last_sync", 0),
+            _syncOptions._synchronizeSymlinks,
             _discoveryPhase.data()
         );
     }

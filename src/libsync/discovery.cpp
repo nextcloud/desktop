@@ -39,16 +39,17 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDisco, "nextcloud.sync.discovery", QtInfoMsg)
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, qint64 lastSyncTimestamp, QObject *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, qint64 lastSyncTimestamp, bool synchronizeSymlinks, QObject *parent)
     : QObject(parent)
     , _lastSyncTimestamp(lastSyncTimestamp)
     , _discoveryData(data)
+    , _synchronizeSymlinks(synchronizeSymlinks)
 {
     qCDebug(lcDisco) << data;
     computePinState(basePinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, ProcessDirectoryJob *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, bool synchronizeSymlinks, ProcessDirectoryJob *parent)
     : QObject(parent)
     , _dirItem(dirItem)
     , _lastSyncTimestamp(lastSyncTimestamp)
@@ -56,18 +57,20 @@ ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileIt
     , _queryLocal(queryLocal)
     , _discoveryData(parent->_discoveryData)
     , _currentFolder(path)
+    , _synchronizeSymlinks(synchronizeSymlinks)
 {
     qCDebug(lcDisco) << path._server << queryServer << path._local << queryLocal << lastSyncTimestamp;
     computePinState(parent->_pinState);
 }
 
-ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent)
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, bool synchronizeSymlinks, QObject *parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _lastSyncTimestamp(lastSyncTimestamp)
         , _queryLocal(queryLocal)
         , _discoveryData(data)
         , _currentFolder(path)
+        , _synchronizeSymlinks(synchronizeSymlinks)
 {
     computePinState(basePinState);
 }
@@ -306,7 +309,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         }
     }
 
-    if (excluded == CSYNC_NOT_EXCLUDED) {
+    bool isSymlink = entries.localEntry.isSymLink || entries.serverEntry.isSymLink;
+    // All not excluded files except for symlinks if symlink synchronization is disabled
+    if (excluded == CSYNC_NOT_EXCLUDED && (!isSymlink || (_synchronizeSymlinks && isSymlink))) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
         emit _discoveryData->silentlyExcluded(path);
@@ -326,7 +331,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         return true;
     }
 
-    if (entries.localEntry.isSymLink) {
+    if (isSymlink && !_synchronizeSymlinks) {
+        item->_errorString = tr("Symbolic links synchronization is not enabled.");
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
@@ -1653,7 +1659,7 @@ void ProcessDirectoryJob::processFileFinalize(
     }
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer,
-            _lastSyncTimestamp, this);
+            _lastSyncTimestamp, _synchronizeSymlinks, this);
         job->setInsideEncryptedTree(isInsideEncryptedTree() || item->isEncrypted());
         if (removed) {
             job->setParent(_discoveryData);
@@ -1697,7 +1703,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     qCInfo(lcDisco) << "Discovered (blacklisted) " << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
-        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, _lastSyncTimestamp, this);
+        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, _lastSyncTimestamp, _synchronizeSymlinks, this);
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {

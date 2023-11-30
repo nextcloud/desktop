@@ -1096,6 +1096,7 @@ SyncOptions Folder::initializeSyncOptions() const
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
+    opt._synchronizeSymlinks = cfgFile.synchronizeSymlinks();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
     opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;

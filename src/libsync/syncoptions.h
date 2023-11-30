@@ -42,6 +42,9 @@ public:
     /** If a confirmation should be asked for external storages */
     bool _confirmExternalStorage = false;
 
+    /** If symlinks should be synchronized to the server as symlinks */
+    bool _synchronizeSymlinks = false;
+
     /** If remotely deleted files are needed to move to trash */
     bool _moveFilesToTrash = false;
 
