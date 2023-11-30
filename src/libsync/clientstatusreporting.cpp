@@ -23,6 +23,11 @@ namespace
 {
 constexpr auto lastSentReportTimestamp = "lastClientStatusReportSentTime";
 constexpr auto statusNamesHash = "statusNamesHash";
+
+constexpr auto statusReportCategoryE2eErrors = "e2e_errors";
+constexpr auto statusReportCategoryProblems = "problems";
+constexpr auto statusReportCategorySyncConflicts = "sync_conflicts";
+constexpr auto statusReportCategoryVirus = "virus_detected";
 }
 
 namespace OCC
@@ -300,13 +305,15 @@ QVariantMap ClientStatusReporting::prepareReport() const
     }
 
     QVariantMap report;
-    report[QStringLiteral("sync_conflicts")] = QVariantMap{};
-    report[QStringLiteral("problems")] = QVariantMap{};
-    report[QStringLiteral("virus_detected")] = QVariantMap{};
-    report[QStringLiteral("e2e_errors")] = QVariantMap{};
+    report[statusReportCategorySyncConflicts] = QVariantMap{};
+    report[statusReportCategoryProblems] = QVariantMap{};
+    report[statusReportCategoryVirus] = QVariantMap{};
+    report[statusReportCategoryE2eErrors] = QVariantMap{};
 
-    QVariantMap syncConflicts;
+    QVariantMap e2eeErrors;
     QVariantMap problems;
+    QVariantMap syncConflicts;
+    QVariantMap virusDetectedErrors;
 
     for (const auto &record : records) {
         const auto categoryKey = classifyStatus(static_cast<Status>(record._status));
@@ -315,15 +322,25 @@ QVariantMap ClientStatusReporting::prepareReport() const
             qCDebug(lcClientStatusReporting) << "Could not classify status:";
             continue;
         }
-
-        if (categoryKey == QStringLiteral("sync_conflicts")) {
+    
+        if (categoryKey == statusReportCategoryE2eErrors) {
+            const auto initialCount = e2eeErrors[QStringLiteral("count")].toInt();
+            e2eeErrors[QStringLiteral("count")] = initialCount + record._numOccurences;
+            e2eeErrors[QStringLiteral("oldest")] = record._lastOccurence;
+            report[categoryKey] = e2eeErrors;
+        } else if (categoryKey == statusReportCategoryProblems) {
+            problems[record._name] = QVariantMap{{QStringLiteral("count"), record._numOccurences}, {QStringLiteral("oldest"), record._lastOccurence}};
+            report[categoryKey] = problems;
+        } else if (categoryKey == statusReportCategorySyncConflicts) {
             const auto initialCount = syncConflicts[QStringLiteral("count")].toInt();
             syncConflicts[QStringLiteral("count")] = initialCount + record._numOccurences;
             syncConflicts[QStringLiteral("oldest")] = record._lastOccurence;
             report[categoryKey] = syncConflicts;
-        } else if (categoryKey == QStringLiteral("problems")) {
-            problems[record._name] = QVariantMap{{QStringLiteral("count"), record._numOccurences}, {QStringLiteral("oldest"), record._lastOccurence}};
-            report[categoryKey] = problems;
+        } else if (categoryKey == statusReportCategoryVirus) {
+            const auto initialCount = virusDetectedErrors[QStringLiteral("count")].toInt();
+            virusDetectedErrors[QStringLiteral("count")] = initialCount + record._numOccurences;
+            virusDetectedErrors[QStringLiteral("oldest")] = record._lastOccurence;
+            report[categoryKey] = virusDetectedErrors;
         }
     }
     return report;
@@ -352,29 +369,33 @@ QByteArray ClientStatusReporting::statusStringFromNumber(const Status status)
 
     switch (status) {
     case DownloadError_Cannot_Create_File:
-        return QByteArrayLiteral("DownloadError.CANNOT_CREATE_FILE");
+        return QByteArrayLiteral("DownloadResult.CANNOT_CREATE_FILE");
     case DownloadError_Conflict:
-        return QByteArrayLiteral("DownloadError.CONFLICT");
+        return QByteArrayLiteral("DownloadResult.CONFLICT");
     case DownloadError_ConflictCaseClash:
-        return QByteArrayLiteral("DownloadError.CONFLICT_CASECLASH");
+        return QByteArrayLiteral("DownloadResult.CONFLICT_CASECLASH");
     case DownloadError_ConflictInvalidCharacters:
-        return QByteArrayLiteral("DownloadError.CONFLICT_INVALID_CHARACTERS");
+        return QByteArrayLiteral("DownloadResult.CONFLICT_INVALID_CHARACTERS");
     case DownloadError_No_Free_Space:
-        return QByteArrayLiteral("DownloadError.NO_FREE_SPACE");
+        return QByteArrayLiteral("DownloadResult.NO_FREE_SPACE");
     case DownloadError_ServerError:
-        return QByteArrayLiteral("DownloadError.SERVER_ERROR");
+        return QByteArrayLiteral("DownloadResult.SERVER_ERROR");
     case DownloadError_Virtual_File_Hydration_Failure:
-        return QByteArrayLiteral("DownloadError.VIRTUAL_FILE_HYDRATION_FAILURE ");
+        return QByteArrayLiteral("DownloadResult.VIRTUAL_FILE_HYDRATION_FAILURE");
+    case E2EeError_GeneralError:
+        return QByteArrayLiteral("E2EeError.General");
     case UploadError_Conflict:
-        return QByteArrayLiteral("UploadError.CONFLICT_CASECLASH");
+        return QByteArrayLiteral("UploadResult.CONFLICT_CASECLASH");
     case UploadError_ConflictInvalidCharacters:
-        return QByteArrayLiteral("UploadError.CONFLICT_INVALID_CHARACTERS");
+        return QByteArrayLiteral("UploadResult.CONFLICT_INVALID_CHARACTERS");
     case UploadError_No_Free_Space:
-        return QByteArrayLiteral("UploadError.NO_FREE_SPACE");
+        return QByteArrayLiteral("UploadResult.NO_FREE_SPACE");
     case UploadError_No_Write_Permissions:
-        return QByteArrayLiteral("UploadError.NO_WRITE_PERMISSIONS");
+        return QByteArrayLiteral("UploadResult.NO_WRITE_PERMISSIONS");
     case UploadError_ServerError:
-        return QByteArrayLiteral("UploadError.SERVER_ERROR");
+        return QByteArrayLiteral("UploadResult.SERVER_ERROR");
+    case UploadError_Virus_Detected:
+        return QByteArrayLiteral("UploadResult.VIRUS_DETECTED");
     case Count:
         return {};
     };
@@ -395,7 +416,7 @@ QByteArray ClientStatusReporting::classifyStatus(const Status status)
     case DownloadError_ConflictInvalidCharacters:
     case UploadError_Conflict:
     case UploadError_ConflictInvalidCharacters:
-        return QByteArrayLiteral("sync_conflicts");
+        return statusReportCategorySyncConflicts;
     case DownloadError_Cannot_Create_File:
     case DownloadError_No_Free_Space:
     case DownloadError_ServerError:
@@ -403,7 +424,11 @@ QByteArray ClientStatusReporting::classifyStatus(const Status status)
     case UploadError_No_Free_Space:
     case UploadError_No_Write_Permissions:
     case UploadError_ServerError:
-        return QByteArrayLiteral("problems");
+        return statusReportCategoryProblems;
+    case UploadError_Virus_Detected:
+        return statusReportCategoryVirus;
+    case E2EeError_GeneralError:
+        return statusReportCategoryE2eErrors;
     case Count:
         return {};
     };
