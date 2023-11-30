@@ -358,7 +358,15 @@ void PropagateItemJob::reportClientStatuses()
         propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ConflictInvalidCharacters);
     } else if (_item->_httpErrorCode != 0 && _item->_httpErrorCode != 200 && _item->_httpErrorCode != 201 && _item->_httpErrorCode != 204) {
         if (_item->_direction == SyncFileItem::Up) {
-            propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ServerError);
+            const auto isCodeBadReqOrUnsupportedMediaType = (_item->_httpErrorCode == 400 || _item->_httpErrorCode == 415);
+            const auto isExceptionInfoPresent = !_item->_errorExceptionName.isEmpty() && !_item->_errorExceptionMessage.isEmpty();
+            if (isCodeBadReqOrUnsupportedMediaType && isExceptionInfoPresent
+                && _item->_errorExceptionName.contains(QStringLiteral("UnsupportedMediaType"))
+                && _item->_errorExceptionMessage.contains(QStringLiteral("virus"), Qt::CaseInsensitive)) {
+                propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_Virus_Detected);
+            } else {
+                propagator()->account()->reportClientStatus(ClientStatusReporting::Status::UploadError_ServerError);
+            }
         } else {
             propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_ServerError);
         }

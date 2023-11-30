@@ -218,6 +218,9 @@ void PropagateUploadFileV1::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
+        const auto exceptionParsed = getExceptionFromReply(job->reply());
+        _item->_errorExceptionName = exceptionParsed.first;
+        _item->_errorExceptionMessage = exceptionParsed.second;
         return;
     }
 
