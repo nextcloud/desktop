@@ -464,7 +464,7 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
     qCInfo(lcCfApi) << "Hydration job finished" << job->requestId() << job->folderPath() << job->status();
     emit hydrationRequestFinished(job->requestId());
     if (!job->errorString().isEmpty()) {
-        params().account->reportClientStatus(ClientStatusReporting::Status::DownloadError_Virtual_File_Hydration_Failure);
+        params().account->reportClientStatus(ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure);
         emit failureHydrating(job->errorCode(), job->statusCode(), job->errorString(), job->folderPath());
     }
 }

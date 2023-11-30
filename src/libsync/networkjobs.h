@@ -30,6 +30,13 @@ class QDomDocument;
 
 namespace OCC {
 
+constexpr auto HttpErrorCodeNone = 0;
+constexpr auto HttpErrorCodeSuccess = 200;
+constexpr auto HttpErrorCodeSuccessCreated = 201;
+constexpr auto HttpErrorCodeSuccessNoContent = 204;
+constexpr auto HttpErrorCodeBadRequest = 400;
+constexpr auto HttpErrorCodeUnsupportedMediaType = 415;
+
 struct HttpError
 {
     int code; // HTTP error code

@@ -308,7 +308,7 @@ public:
 
     void trySetupClientStatusReporting();
 
-    void reportClientStatus(const ClientStatusReporting::Status status);
+    void reportClientStatus(const ClientStatusReportingStatus status) const;
 
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
@@ -444,7 +444,7 @@ private:
 
     PushNotifications *_pushNotifications = nullptr;
 
-    QScopedPointer<ClientStatusReporting> _clientStatusReporting;
+    std::unique_ptr<ClientStatusReporting> _clientStatusReporting;
 
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
 
