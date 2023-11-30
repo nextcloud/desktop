@@ -286,19 +286,17 @@ void Account::setPushNotificationsReconnectInterval(int interval)
 
 void Account::trySetupClientStatusReporting()
 {
-    if (_capabilities.isClientStatusReportingEnabled()) {
-        if (!_clientStatusReporting) {
-            _clientStatusReporting.reset(new ClientStatusReporting(this));
-        }
+    if (!_capabilities.isClientStatusReportingEnabled()) {
+        _clientStatusReporting.reset();
         return;
     }
 
     if (!_clientStatusReporting) {
-        _clientStatusReporting.reset();
+        _clientStatusReporting = std::make_unique<ClientStatusReporting>(this);
     }
 }
 
-void Account::reportClientStatus(const ClientStatusReporting::Status status)
+void Account::reportClientStatus(const ClientStatusReportingStatus status) const
 {
     if (_clientStatusReporting) {
         _clientStatusReporting->reportClientStatus(status);

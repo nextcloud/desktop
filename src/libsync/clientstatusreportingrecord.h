@@ -30,6 +30,9 @@ struct OWNCLOUDSYNC_EXPORT ClientStatusReportingRecord {
     quint64 _numOccurences = 1;
     quint64 _lastOccurence = 0;
 
-    [[nodiscard]] bool isValid() const;
+    [[nodiscard]] inline bool isValid() const
+    {
+        return _status >= 0 && !_name.isEmpty() && _lastOccurence > 0;
+    }
 };
 }

@@ -675,7 +675,7 @@ void PropagateDownloadFile::startDownload()
     if (_tmpFile.exists())
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
-        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_Cannot_Create_File);
+        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Cannot_Create_File);
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
         done(SyncFileItem::NormalError, _tmpFile.errorString(), ErrorCategory::GenericError);
         return;
@@ -1260,7 +1260,7 @@ void PropagateDownloadFile::downloadFinished()
     emit propagator()->touchedFile(filename);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), filename, &error)) {
-        propagator()->account()->reportClientStatus(ClientStatusReporting::Status::DownloadError_Cannot_Create_File);
+        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Cannot_Create_File);
         qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(filename);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
