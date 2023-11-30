@@ -287,6 +287,8 @@ public:
     quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
+    QString _errorExceptionName; // Contains a server exception string only in case of error
+    QString _errorExceptionMessage; // Contains a server exception message string only in case of error
     QByteArray _responseTimeStamp;
     QByteArray _requestId; // X-Request-Id of the failed request
     quint32 _affectedItems = 1; // the number of affected items by the operation on this item.

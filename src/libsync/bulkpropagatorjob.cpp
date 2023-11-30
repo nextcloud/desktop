@@ -366,6 +366,9 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     singleFile._item->_requestId = job->requestId();
     if (singleFile._item->_httpErrorCode != 200) {
         commonErrorHandling(singleFile._item, fileReply[QStringLiteral("message")].toString());
+        const auto exceptionParsed = getExceptionFromReply(job->reply());
+        singleFile._item->_errorExceptionName = exceptionParsed.first;
+        singleFile._item->_errorExceptionMessage = exceptionParsed.second;
         return;
     }
 
