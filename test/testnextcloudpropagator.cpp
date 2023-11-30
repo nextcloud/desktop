@@ -9,6 +9,7 @@
 
 #include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
+#include "syncenginetestutils.h"
 
 using namespace OCC;
 namespace OCC {
@@ -75,6 +76,28 @@ private slots:
         foreach (const auto& test, tests) {
             QCOMPARE(parseEtag(test.first), QByteArray(test.second));
         }
+    }
+
+    void testParseException()
+    {
+        QNetworkRequest request;
+        request.setUrl(QStringLiteral("http://cloud.example.de/"));
+        const auto body = QByteArrayLiteral(
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
+            "<s:exception>Sabre\\Exception\\UnsupportedMediaType</s:exception>\n"
+            "<s:message>Virus detected!</s:message>\n"
+            "</d:error>");
+        const auto reply = new FakeErrorReply(QNetworkAccessManager::PutOperation,
+                                              request,
+                                              this,
+                                              415, body);
+        const auto exceptionParsed = OCC::getExceptionFromReply(reply);
+        // verify parsing succeeded
+        QVERIFY(!exceptionParsed.first.isEmpty());
+        QVERIFY(!exceptionParsed.second.isEmpty());
+        // verify buffer is not changed
+        QCOMPARE(reply->readAll().size(), body.size());
     }
 };
 
