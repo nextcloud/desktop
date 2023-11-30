@@ -601,7 +601,7 @@ Por favor, autentique usando seu navegador.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="848"/>
         <source>You need to be connected to add a Space.</source>
-        <translation type="unfinished"/>
+        <translation>Você precisa estar conectado para adicionar um espaço.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
@@ -850,32 +850,32 @@ Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer p
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="67"/>
         <source>No ownCloud account configured</source>
         <translation>Nenhuma conta ownCloud configurada</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Por favor, atualize para o último servidor e reinicie o cliente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Erro de autenticação. Ou nome de usuário ou senha está errada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="128"/>
         <source>timeout</source>
         <translation>tempo limite</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="216"/>
         <source>The provided credentials are not correct</source>
         <translation>As credenciais fornecidas não estão corretas</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>The configured server for this client is too old.</source>
         <translation>O servidor configurado para este cliente é muito antigo.</translation>
     </message>
@@ -2352,7 +2352,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while doing a rename, unhandled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao renomear, código de status não tratado:%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>

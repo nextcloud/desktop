@@ -850,32 +850,32 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="67"/>
         <source>No ownCloud account configured</source>
         <translation>Hiçbir ownCloud hesabı yapılandırılmamış</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Lütfen en son sunucuya güncelleyin veya istemciyi yeniden başlatın</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Giriş hatası: Kullanıcı adı veya parola hatalı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="128"/>
         <source>timeout</source>
         <translation>zaman aşımı</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="216"/>
         <source>The provided credentials are not correct</source>
         <translation>Sağlanan kimlik bilgileri doğru değil</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>The configured server for this client is too old.</source>
         <translation>Bu istemci için yapılandırılmış sunucu çok eski.</translation>
     </message>

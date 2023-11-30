@@ -850,32 +850,32 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="67"/>
         <source>No ownCloud account configured</source>
         <translation>Ühtegi ownCloud kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Palun uuenda server viimasele versioonile ning taaskäivita klient.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentimise viga: kasutajanimi või parool on vale</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="128"/>
         <source>timeout</source>
         <translation>aegumine</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="216"/>
         <source>The provided credentials are not correct</source>
         <translation>Sisestatud kasutajatunnused pole õiged</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>The configured server for this client is too old.</source>
         <translation>Selle kliendi jaoks seadistatud server on liiga vana.</translation>
     </message>
@@ -2352,7 +2352,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="628"/>
         <source>Error while doing a rename, unhandled status code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Viga ümbernimetamisel, staatuse kood: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1221"/>

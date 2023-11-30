@@ -850,32 +850,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="67"/>
         <source>No ownCloud account configured</source>
         <translation>Няма конфигуриран ownCloud профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Моля, актуализирайте сървъра до последната версия и рестартирайте клиента</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Грешка в удостоверяването: Потребителското име или парола са грешни.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="128"/>
         <source>timeout</source>
         <translation>изчакване</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="216"/>
         <source>The provided credentials are not correct</source>
         <translation>Предоставените идентификационни данни са неправилни</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>The configured server for this client is too old.</source>
         <translation>Конфигурираният сървър за този клиент е твърде стар.</translation>
     </message>

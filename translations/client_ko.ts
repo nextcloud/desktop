@@ -850,32 +850,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="67"/>
         <source>No ownCloud account configured</source>
         <translation>ownCloud 계정이 설정되지 않았음</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>최신 서버로 업데이트한 다음 클라이언트를 다시 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>인증 오류: 사용자 이름이나 암호가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="128"/>
         <source>timeout</source>
         <translation>시간 제한</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="216"/>
         <source>The provided credentials are not correct</source>
         <translation>지정한 인증 정보가 올바르지 않음</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="239"/>
         <source>The configured server for this client is too old.</source>
         <translation>이 클라이언트에 대해 구성된 서버가 너무 오래되었습니다.</translation>
     </message>
