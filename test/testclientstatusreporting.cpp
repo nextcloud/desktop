@@ -88,13 +88,28 @@ private slots:
             account->reportClientStatus(OCC::ClientStatusReporting::Status::UploadError_No_Write_Permissions);
             account->reportClientStatus(OCC::ClientStatusReporting::Status::UploadError_No_Write_Permissions);
             account->reportClientStatus(OCC::ClientStatusReporting::Status::UploadError_No_Write_Permissions);
+
+            // 3 occurances of UploadError_Virus_Detected
+            account->reportClientStatus(OCC::ClientStatusReporting::Status::UploadError_Virus_Detected);
+            account->reportClientStatus(OCC::ClientStatusReporting::Status::UploadError_Virus_Detected);
+            account->reportClientStatus(OCC::ClientStatusReporting::Status::UploadError_Virus_Detected);
+
+            // 2 occurances of E2EeError_GeneralError
+            account->reportClientStatus(OCC::ClientStatusReporting::Status::E2EeError_GeneralError);
+            account->reportClientStatus(OCC::ClientStatusReporting::Status::E2EeError_GeneralError);
             QTest::qWait(OCC::ClientStatusReporting::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReporting::repordSendIntervalMs);
 
             QVERIFY(!bodyReceivedAndParsed.isEmpty());
 
-            // we must have "virus_detected" and "e2e_errors" keys present (as required by server)
-            QVERIFY(bodyReceivedAndParsed.contains("virus_detected"));
-            QVERIFY(bodyReceivedAndParsed.contains("e2e_errors"));
+            // we must have 2 e2ee errors
+            const auto virusDetectedErrorsReceived = bodyReceivedAndParsed.value("virus_detected").toMap();
+            QVERIFY(!virusDetectedErrorsReceived.isEmpty());
+            QVERIFY(virusDetectedErrorsReceived.size(), 3);
+
+            // we must have 2 e2ee errors
+            const auto e2eeErrorsReceived = bodyReceivedAndParsed.value("e2e_errors").toMap();
+            QVERIFY(!e2eeErrorsReceived.isEmpty());
+            QVERIFY(e2eeErrorsReceived.size(), 2);
 
             // we must have 5 conflicts
             const auto conflictsReceived = bodyReceivedAndParsed.value("sync_conflicts").toMap();

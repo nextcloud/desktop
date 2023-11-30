@@ -43,11 +43,13 @@ public:
         DownloadError_No_Free_Space,
         DownloadError_ServerError,
         DownloadError_Virtual_File_Hydration_Failure,
+        E2EeError_GeneralError,
         UploadError_Conflict,
         UploadError_ConflictInvalidCharacters,
         UploadError_No_Free_Space,
         UploadError_No_Write_Permissions,
         UploadError_ServerError,
+        UploadError_Virus_Detected,
         Count,
     };
 
