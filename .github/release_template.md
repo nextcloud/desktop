@@ -75,6 +75,7 @@ __TODO__:
 * [ ] DEV: Publish the release in GitHub
 * [ ] QA: Update lines 4 and 5 of [install docs](https://github.com/owncloud/docs-client-desktop/blob/master/modules/ROOT/pages/installing.adoc) with the final build number. Merge into master and backport to the respective branch
 * [ ] QA: Check that [documentation](https://doc.owncloud.com/desktop/next/) offers the new version
+* [ ] DEV: Merge version branch into master
 
 ### [Marketing and Communication](https://confluence.owncloud.com/display/OG/Marketing+and+Communication)
    
