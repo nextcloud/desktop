@@ -26,8 +26,13 @@ set(libsync_SRCS
     clientproxy.cpp
     clientstatusreporting.h
     clientstatusreporting.cpp
+    clientstatusreportingcommon.h
+    clientstatusreportingcommon.cpp
+    clientstatusreportingdatabase.h
+    clientstatusreportingdatabase.cpp
+    clientstatusreportingnetwork.h
+    clientstatusreportingnetwork.cpp
     clientstatusreportingrecord.h
-    clientstatusreportingrecord.cpp
     cookiejar.h
     cookiejar.cpp
     discovery.h
