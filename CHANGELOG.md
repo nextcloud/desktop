@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-desktop-client-unreleased-unreleased)
+* [Changelog for 5.2.0](#changelog-for-owncloud-desktop-client-520-2023-11-27)
 * [Changelog for 5.1.2](#changelog-for-owncloud-desktop-client-512-2023-11-10)
 * [Changelog for 5.1.1](#changelog-for-owncloud-desktop-client-511-2023-11-09)
 * [Changelog for 5.1.0](#changelog-for-owncloud-desktop-client-510-2023-11-02)
@@ -37,12 +38,10 @@
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v5.1.2...master
+[unreleased]: https://github.com/owncloud/client/compare/v5.2.0...master
 
 ## Summary
 
-* Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
-* Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
@@ -51,23 +50,6 @@ ownCloud admins and users.
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
 ## Details
-
-* Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
-
-   We fixed a bug in the url resolution for the app provider. If owncloud is
-   installed to a non root directory we computed a wrong url for the app provider
-   urls. This could trigger a connection validation in the client, which intern
-   triggered a request to the app provider. Reulting in an endless loop rendering
-   the client unusable.
-
-   https://github.com/owncloud/client/issues/11296
-
-* Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
-
-   We fixed a bug that caused the application to crash instead of just aborting the
-   current sync.
-
-   https://github.com/owncloud/client/issues/11379
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 
@@ -116,6 +98,37 @@ ownCloud admins and users.
    discovery.
 
    https://github.com/owncloud/client/pull/11347
+
+# Changelog for ownCloud Desktop Client [5.2.0] (2023-11-27)
+
+The following sections list the changes in ownCloud Desktop Client 5.2.0 relevant to
+ownCloud admins and users.
+
+[5.2.0]: https://github.com/owncloud/client/compare/v5.1.2...v5.2.0
+
+## Summary
+
+* Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
+* Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
+
+## Details
+
+* Bugfix - Fix url resolution for app provider: [#11296](https://github.com/owncloud/client/issues/11296)
+
+   We fixed a bug in the url resolution for the app provider. If owncloud is
+   installed to a non root directory we computed a wrong url for the app provider
+   urls. This could trigger a connection validation in the client, which intern
+   triggered a request to the app provider. Reulting in an endless loop rendering
+   the client unusable.
+
+   https://github.com/owncloud/client/issues/11296
+
+* Bugfix - Fix crash on unhandled status code on rename check: [#11379](https://github.com/owncloud/client/issues/11379)
+
+   We fixed a bug that caused the application to crash instead of just aborting the
+   current sync.
+
+   https://github.com/owncloud/client/issues/11379
 
 # Changelog for ownCloud Desktop Client [5.1.2] (2023-11-10)
 
