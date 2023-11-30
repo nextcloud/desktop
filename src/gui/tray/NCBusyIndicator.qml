@@ -42,7 +42,7 @@ BusyIndicator {
 
         RotationAnimator {
             target: contentImage
-            running: root.running
+            running: false
             onRunningChanged: contentImage.rotation = 0
             from: 0
             to: 360
