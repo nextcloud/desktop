@@ -290,6 +290,7 @@ public:
     /// Saves the folder data in the account's settings.
     void saveToSettings() const;
     /// Removes the folder from the account's settings.
+    static void removeFromSettings(QSettings *settings, const QString &id);
     void removeFromSettings() const;
 
     /**

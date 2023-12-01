@@ -793,12 +793,6 @@ bool Folder::isDeployed() const
 
 void Folder::saveToSettings() const
 {
-    // Remove first to make sure we don't get duplicates
-    removeFromSettings();
-
-    auto settings = _accountState->settings();
-    settings->beginGroup(QStringLiteral("Folders"));
-
     auto definitionToSave = _definition;
 
     // migration
@@ -813,27 +807,31 @@ void Folder::saveToSettings() const
     // we save the dav url nevertheless to have it available during startup
     definitionToSave.setWebDavUrl(webDavUrl());
 
-    // Note: Each of these groups might have a "version" tag, but that's
-    //       currently unused.
-    settings->beginGroup(QString::fromUtf8(definitionToSave.id()));
-    FolderDefinition::save(*settings, definitionToSave);
+    // keep the scope of the interaction with the settings limited to prevent possible loss of settings
+    [definitionToSave, settings = _accountState->settings(), id = QString::fromUtf8(definitionToSave.id())] {
+        // Remove first to make sure we don't get duplicates
+        removeFromSettings(settings.get(), id);
 
-    settings->sync();
-    qCInfo(lcFolder) << "Saved folder" << definitionToSave.localPath() << "to settings, status" << settings->status();
+        settings->beginGroup(QStringLiteral("Folders/%1").arg(id));
+        // Note: Each of these groups might have a "version" tag, but that's
+        //       currently unused.
+        FolderDefinition::save(*settings.get(), definitionToSave);
+
+        settings->sync();
+        qCInfo(lcFolder) << "Saved folder" << definitionToSave.localPath() << "to settings, status" << settings->status();
+    }();
+}
+
+void Folder::removeFromSettings(QSettings *settings, const QString &id)
+{
+    settings->remove(QStringLiteral("Folders/%1").arg(id));
+    settings->remove(QStringLiteral("Multifolders/%1").arg(id));
+    settings->remove(QStringLiteral("FoldersWithPlaceholders/%1").arg(id));
 }
 
 void Folder::removeFromSettings() const
 {
-    auto settings = _accountState->settings();
-    const QString id = QString::fromUtf8(_definition.id());
-    settings->beginGroup(QStringLiteral("Folders"));
-    settings->remove(id);
-    settings->endGroup();
-    settings->beginGroup(QStringLiteral("Multifolders"));
-    settings->remove(id);
-    settings->endGroup();
-    settings->beginGroup(QStringLiteral("FoldersWithPlaceholders"));
-    settings->remove(id);
+    Folder::removeFromSettings(_accountState->settings().get(), QString::fromUtf8(_definition.id()));
 }
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
