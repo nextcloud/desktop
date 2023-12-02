@@ -16,12 +16,13 @@
 
 #include "ocsynclib.h"
 #include "config.h"
+#include "checksumconsts.h"
 
 #include <QObject>
 #include <QByteArray>
 #include <QFutureWatcher>
 #include <QMutex>
-#include <QSharedPointer>
+#include <QScopedPointer>
 
 class QCryptographicHash;
 
@@ -41,14 +42,13 @@ public:
     };
 
     ChecksumCalculator(const QString &filePath, const QByteArray &checksumTypeName);
-    ChecksumCalculator(QSharedPointer<QIODevice> fileDevice, const QByteArray &checksumTypeName);
     ~ChecksumCalculator();
     [[nodiscard]] QByteArray calculate();
 
 private:
     void initChecksumAlgorithm();
     bool addChunk(const QByteArray &chunk, const qint64 size);
-    QSharedPointer<QIODevice> _device;
+    QScopedPointer<QIODevice> _device;
     QScopedPointer<QCryptographicHash> _cryptographicHash;
     unsigned int _adlerHash = 0;
     bool _isInitialized = false;

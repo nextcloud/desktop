@@ -281,22 +281,12 @@ void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
     const auto checksumType = uploadChecksumEnabled() ? "MD5" : "";
     computeChecksum->setChecksumType(checksumType);
 
-    if (item->_type == CSyncEnums::ItemTypeSoftLink) {
-        computeChecksum->deleteLater();
-        auto checksumDevice = QSharedPointer<SymLinkUploadDevice>::create(fileToUpload._path,
-                                                      0,
-                                                      std::numeric_limits<qint64>::max(),
-                                                      &propagator()->_bandwidthManager);
-        const auto contentChecksum = ComputeChecksum::computeNow(checksumDevice, checksumType);
-        slotStartUpload(item, fileToUpload, checksumType, contentChecksum);
-    } else {
-        connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
-            slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);
-        });
-        connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
+    connect(computeChecksum, &ComputeChecksum::done, this, [this, item, fileToUpload] (const QByteArray &contentChecksumType, const QByteArray &contentChecksum) {
+        slotStartUpload(item, fileToUpload, contentChecksumType, contentChecksum);
+    });
+    connect(computeChecksum, &ComputeChecksum::done, computeChecksum, &QObject::deleteLater);
 
-        computeChecksum->start(fileToUpload._path);
-    }
+    computeChecksum->start(fileToUpload._path);
 }
 
 void BulkPropagatorJob::slotStartUpload(SyncFileItemPtr item,
