@@ -6025,32 +6025,32 @@ O servidor respondeu co erro: %2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="335"/>
         <source>%n year(s)</source>
-        <translation><numerusform>vai %n ano</numerusform><numerusform>hai %n anos</numerusform></translation>
+        <translation><numerusform>Hai %n ano</numerusform><numerusform>Hai %n anos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="336"/>
         <source>%n month(s)</source>
-        <translation><numerusform>vai %n mes</numerusform><numerusform>hai %n meses</numerusform></translation>
+        <translation><numerusform>Hai %n mes</numerusform><numerusform>Hai %n meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation><numerusform>vai %n día</numerusform><numerusform>hai %n días</numerusform></translation>
+        <translation><numerusform>Hai %n día</numerusform><numerusform>Hai %n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>vai %n hora</numerusform><numerusform>hai %n horas</numerusform></translation>
+        <translation><numerusform>Hai %n hora</numerusform><numerusform>Hai %n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>vai %n minuto</numerusform><numerusform>hai %n minutos</numerusform></translation>
+        <translation><numerusform>Hai %n minuto</numerusform><numerusform>Hai %n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
         <source>%n second(s)</source>
-        <translation><numerusform>vai %n segundo</numerusform><numerusform>hai %n segundos</numerusform></translation>
+        <translation><numerusform>Hai %n segundo</numerusform><numerusform>Hai %n segundos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="364"/>
