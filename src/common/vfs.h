@@ -13,16 +13,16 @@
  */
 #pragma once
 
+#include "ocsynclib.h"
+#include "result.h"
+#include "syncfilestatus.h"
+#include "pinstate.h"
+
 #include <QObject>
 #include <QScopedPointer>
 #include <QSharedPointer>
 
 #include <memory>
-
-#include "ocsynclib.h"
-#include "result.h"
-#include "syncfilestatus.h"
-#include "pinstate.h"
 
 using csync_file_stat_t = struct csync_file_stat_s;
 
