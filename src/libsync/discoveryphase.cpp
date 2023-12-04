@@ -16,6 +16,7 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "discovery.h"
+#include "filesystem.h"
 #include "helpers.h"
 #include "progressdispatcher.h"
 
@@ -335,7 +336,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
             continue;
         }
         i.modtime = dirent->modtime;
-        i.size = dirent->size;
+        i.size = FileSystem::getSize(localPath + '/' + dirent->path);
         i.inode = dirent->inode;
         i.isDirectory = dirent->type == ItemTypeDirectory;
         i.isHidden = dirent->is_hidden;
