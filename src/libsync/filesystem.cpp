@@ -15,7 +15,6 @@
 #include "filesystem.h"
 
 #include "common/utility.h"
-#include <filesystem>
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
@@ -139,15 +138,6 @@ qint64 FileSystem::getSize(const QString &filename)
         return readlink(filename).size();
     }
     return info.size();
-}
-
-QByteArray FileSystem::readlink(const QString &filename)
-{
-    if (!QFileInfo(filename).isSymLink()) {
-        return QByteArray();
-    }
-    auto symlinkContent = std::filesystem::read_symlink(filename.toStdString()).u8string();
-    return QByteArray(symlinkContent.data());
 }
 
 // Code inspired from Qt5's QDir::removeRecursively

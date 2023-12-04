@@ -20,6 +20,8 @@
 #include "utility.h"
 #include "common/asserts.h"
 
+#include <filesystem>
+
 #include <QDateTime>
 #include <QDir>
 #include <QUrl>
@@ -125,6 +127,15 @@ bool FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
 
     setFileReadOnly(filename, readonly);
     return true;
+}
+
+QByteArray FileSystem::readlink(const QString &filename)
+{
+    if (!QFileInfo(filename).isSymLink()) {
+        return QByteArray();
+    }
+    auto symlinkContent = std::filesystem::read_symlink(filename.toStdString()).u8string();
+    return QByteArray(symlinkContent.data());
 }
 
 bool FileSystem::rename(const QString &originFileName,

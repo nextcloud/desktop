@@ -69,16 +69,6 @@ namespace FileSystem {
     bool OWNCLOUDSYNC_EXPORT getInode(const QString &filename, quint64 *inode);
 
     /**
-     * @brief Return raw content of symlink at given path.
-     *
-     * If the file is not a symlink or does not exist, the returned string will be empty.
-     * In Qt6.6+, QFileInfo::readSymLink() can be used instead.
-     * QFileInfo::symLinkTarget() can *not* be used because it transforms the target to an
-     * absolute path which might break relative symlinks for cross-device synchronization.
-     */
-    QByteArray OWNCLOUDSYNC_EXPORT readlink(const QString &filename);
-
-    /**
      * @brief Check if \a fileName has changed given previous size and mtime
      *
      * Nonexisting files are covered through mtime: they have an mtime of -1.
