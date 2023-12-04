@@ -134,7 +134,7 @@ QByteArray FileSystem::readlink(const QString &filename)
     if (!QFileInfo(filename).isSymLink()) {
         return QByteArray();
     }
-    auto symlinkContent = std::filesystem::read_symlink(filename.toStdString()).u8string();
+    auto symlinkContent = std::filesystem::read_symlink(filename.toStdString()).string();
     return QByteArray(symlinkContent.data());
 }
 
