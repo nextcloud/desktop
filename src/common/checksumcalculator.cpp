@@ -147,7 +147,9 @@ QScopedPointer<QIODevice> ChecksumCalculator::openFile(const QString &filePath)
 {
     if (QFileInfo(filePath).isSymLink()) {
         auto symlinkContent = FileSystem::readlink(filePath);
-        return QScopedPointer<QIODevice>(new QBuffer(&symlinkContent));
+        QScopedPointer<QBuffer> symlinkDevice(new QBuffer());
+        symlinkDevice->setData(symlinkContent);
+        return QScopedPointer<QIODevice>(symlinkDevice.take());
     } else {
         return QScopedPointer<QIODevice>(new QFile(filePath));
     }
