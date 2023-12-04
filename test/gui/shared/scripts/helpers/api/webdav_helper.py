@@ -64,3 +64,9 @@ def create_file(user, file_name, contents):
     assert (
         response.status_code == 201
     ), f"Could not create file '{file_name}' for user {user}"
+
+
+def delete_resource(user, resource):
+    url = get_resource_path(user, resource)
+    response = request.delete(url, user=user)
+    assert response.status_code == 204, f"Could not delete folder '{resource}'"

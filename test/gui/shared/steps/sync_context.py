@@ -202,3 +202,13 @@ def step(context):
 @Then('the about dialog should be opened')
 def step(context):
     Settings.wait_for_about_dialog_to_be_visible()
+
+
+@When('the user adds the folder sync connection')
+def step(context):
+    SyncConnectionWizard.addSyncConnection()
+
+
+@When("user unselects all the remote folders")
+def step(context):
+    SyncConnectionWizard.deselectAllRemoteFolders()
