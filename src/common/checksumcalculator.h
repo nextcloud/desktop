@@ -46,6 +46,7 @@ public:
     [[nodiscard]] QByteArray calculate();
 
 private:
+    static QScopedPointer<QIODevice> openFile(const QString &filePath);
     void initChecksumAlgorithm();
     bool addChunk(const QByteArray &chunk, const qint64 size);
     QScopedPointer<QIODevice> _device;
