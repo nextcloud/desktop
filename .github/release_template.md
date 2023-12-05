@@ -87,6 +87,7 @@ __TODO__:
 ### Infrastructure Check
 
 * [ ] QA/DEV: Update [stable channel](https://confluence.owncloud.com/display/OG/Online+Updater%2C+Crash+reporter%2C+Transifex#OnlineUpdater,Crashreporter,Transifex-UpdatetheUpdater) in the owncloud hosted auto updater
+* [ ] QA: Check the linux download pages whether the URLs are correct (e.g. contain stable, not testing)
 * [ ] QA: Ensure that the [client release template](https://github.com/owncloud/client/blob/master/.github/release_template.md) is up to date
 
 ### A Few Days After the Release
