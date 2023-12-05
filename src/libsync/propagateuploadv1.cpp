@@ -323,6 +323,12 @@ void PropagateUploadFileV1::slotPutFinished()
         _item->_fileId = fid;
     }
 
+    if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
+        if (oldRecord._etag != _item->_etag) {
+            _item->updateLockStateFromDbRecord(oldRecord);
+        }
+    }
+
     _item->_etag = etag;
 
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {

@@ -528,8 +528,14 @@ void PropagateUploadFileNG::slotMoveJobFinished()
         _item->_fileId = fid;
     }
 
+    if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
+        if (oldRecord._etag != _item->_etag) {
+            _item->updateLockStateFromDbRecord(oldRecord);
+        }
+    }
+
     _item->_etag = getEtagFromReply(job->reply());
-    ;
+
     if (_item->_etag.isEmpty()) {
         qCWarning(lcPropagateUploadNG) << "Server did not return an ETAG" << _item->_file;
         abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
