@@ -31,7 +31,7 @@ set_package_properties(Qt5Concurrent PROPERTIES
 )
 
 find_package(Qt5WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
-if(APPLE)
+if(NOT BUILD_WITH_WEBENGINE)
     set_package_properties(Qt5WebEngineWidgets PROPERTIES
         DESCRIPTION "Qt5 WebEngineWidgets component."
         TYPE RECOMMENDED
@@ -44,7 +44,7 @@ else()
 endif()
 
 find_package(Qt5WebEngine ${REQUIRED_QT_VERSION} CONFIG QUIET)
-if(APPLE)
+if(NOT BUILD_WITH_WEBENGINE)
     set_package_properties(Qt5WebEngine PROPERTIES
         DESCRIPTION "Qt5 WebEngine component."
         TYPE RECOMMENDED
@@ -56,7 +56,7 @@ else()
     )
 endif()
 
-if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
+if(BUILD_WITH_WEBENGINE AND Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   add_compile_definitions(WITH_WEBENGINE=1)
 endif()
 
