@@ -103,6 +103,14 @@ QUrlQuery Updater::getQueryParams()
         query.addQueryItem(QStringLiteral("channel"), channel);
     }
 
+    // requested by #11328
+    // we use the names Qt gives us instead of inventing our own labels
+    // see https://doc.qt.io/qt-6/qsysinfo.html#productVersion
+    query.addQueryItem(QStringLiteral("kernelType"), QSysInfo::kernelType());
+    query.addQueryItem(QStringLiteral("kernelVersion"), QSysInfo::kernelVersion());
+    query.addQueryItem(QStringLiteral("productType"), QSysInfo::productType());
+    query.addQueryItem(QStringLiteral("productVersion"), QSysInfo::productVersion());
+
     return query;
 }
 
