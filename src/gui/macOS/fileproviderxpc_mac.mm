@@ -125,6 +125,8 @@ void FileProviderXPC::start()
         return;
     }
 
+    NSMutableArray<NSXPCConnection *> *const connections = NSMutableArray.array;
+
     for (NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *const services in fpServices) {
         NSArray<NSFileProviderServiceName> *const serviceNamesArray = services.allKeys;
 
@@ -153,25 +155,38 @@ void FileProviderXPC::start()
                     return;
                 }
 
-                connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
-                [connection resume];
-                const id<ClientCommunicationProtocol> clientCommService = (id<ClientCommunicationProtocol>)[connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
-                    qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
-                    dispatch_group_leave(group);
-                }];
-
-                if (clientCommService == nil) {
-                    qCWarning(lcFileProviderXPC) << "Client communication service is nil";
-                    dispatch_group_leave(group);
-                    return;
-                }
-
+                [connection retain];
+                [connections addObject:connection];
                 dispatch_group_leave(group);
             }];
         }
     }
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+
+    for (NSXPCConnection * const connection in connections) {
+        Q_ASSERT(connection != nil);
+        connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
+        connection.interruptionHandler = ^{
+            qCInfo(lcFileProviderXPC) << "File provider connection interrupted";
+        };
+        connection.invalidationHandler = ^{
+            qCInfo(lcFileProviderXPC) << "File provider connection invalidated";
+        };
+        [connection resume];
+
+        const id remoteServiceObject = [connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
+            qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
+        }];
+
+        NSObject<ClientCommunicationProtocol> *const clientCommService = (NSObject<ClientCommunicationProtocol> *)remoteServiceObject;
+        if (clientCommService == nil) {
+            qCWarning(lcFileProviderXPC) << "Client communication service is nil";
+            continue;
+        }
+
+        [clientCommService retain];
+    }
 }
 
 } // namespace OCC
