@@ -171,3 +171,13 @@ def step(context, user, file_content, file_name):
 @When("the user clicks on the settings tab")
 def step(context):
     Toolbar.open_settings_tab()
+
+
+@When('user "|any|" uploads file with content "|any|" to "|any|" in the server')
+def step(context, user, file_content, file_name):
+    webdav.create_file(user, file_name, file_content)
+
+
+@When('user "|any|" deletes the folder "|any|" in the server')
+def step(context, user, folder_name):
+    webdav.delete_resource(user, folder_name)

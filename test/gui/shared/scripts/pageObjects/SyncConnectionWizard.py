@@ -107,8 +107,7 @@ class SyncConnectionWizard:
         SyncConnectionWizard.nextStep()
 
     @staticmethod
-    def selectFoldersToSync(folders):
-        # first deselect all
+    def deselectAllRemoteFolders():
         squish.mouseClick(
             squish.waitForObject(SyncConnectionWizard.SELECTIVE_SYNC_ROOT_FOLDER),
             11,
@@ -116,16 +115,45 @@ class SyncConnectionWizard:
             squish.Qt.NoModifier,
             squish.Qt.LeftButton,
         )
+
+    @staticmethod
+    def selectFoldersToSync(folders):
+        # first deselect all
+        SyncConnectionWizard.deselectAllRemoteFolders()
         for folder in folders:
-            # added a new key 'text' to dictionary SYNC_DIALOG_FOLDER_TREE
-            SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE['text'] = folder
-            squish.mouseClick(
-                squish.waitForObject(SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE),
-                11,
-                11,
-                squish.Qt.NoModifier,
-                squish.Qt.LeftButton,
-            )
+            folder_levels = folder.strip("/").split("/")
+            parent_selector = None
+            for sub_folder in folder_levels:
+                if not parent_selector:
+                    SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE['text'] = sub_folder
+                    parent_selector = SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE
+                    selector = parent_selector
+                else:
+                    selector = {
+                        "column": '0',
+                        "container": parent_selector,
+                        "text": sub_folder,
+                        "type": 'QModelIndex',
+                    }
+                if (
+                    len(folder_levels) == 1
+                    or folder_levels.index(sub_folder) == len(folder_levels) - 1
+                ):
+                    squish.mouseClick(
+                        squish.waitForObject(selector),
+                        11,
+                        11,
+                        squish.Qt.NoModifier,
+                        squish.Qt.LeftButton,
+                    )
+                else:
+                    squish.doubleClick(
+                        squish.waitForObject(selector),
+                        65,
+                        7,
+                        squish.Qt.NoModifier,
+                        squish.Qt.LeftButton,
+                    )
 
     @staticmethod
     def sortBy(headerText):

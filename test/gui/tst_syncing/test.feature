@@ -58,6 +58,8 @@ Feature: Syncing files
     Scenario: Sync all is selected by default
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created folder "large-folder" in the server
+        And user "Alice" has uploaded file with content "test content" to "testFile.txt" in the server
+        And user "Alice" has uploaded file with content "lorem content" to "lorem.txt" in the server
         And the user has started the client
         And the user has entered the following account information:
             | server   | %local_server% |
@@ -67,6 +69,13 @@ Feature: Syncing files
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         Then the sync all checkbox should be checked
+        When user unselects all the remote folders
+        And the user adds the folder sync connection
+        And the user waits for the files to sync
+        Then the file "testFile.txt" should exist on the file system
+        And the file "lorem.txt" should exist on the file system
+        But the folder "simple-folder" should not exist on the file system
+        And the folder "large-folder" should not exist on the file system
 
     @skipOnOCIS
     Scenario: Sync only one folder from the server
@@ -85,6 +94,20 @@ Feature: Syncing files
             | simple-folder |
         Then the folder "simple-folder" should exist on the file system
         But the folder "large-folder" should not exist on the file system
+        When user "Alice" uploads file with content "some content" to "simple-folder/lorem.txt" in the server
+        And user "Alice" uploads file with content "ownCloud" to "large-folder/lorem.txt" in the server
+        And user "Alice" creates a file "simple-folder/localFile.txt" with the following content inside the sync folder
+            """
+            test content
+            """
+        And the user waits for the files to sync
+        Then the file "simple-folder/lorem.txt" should exist on the file system
+        And the file "large-folder/lorem.txt" should not exist on the file system
+        And as "Alice" file "simple-folder/localFile.txt" should exist in the server
+        When the user deletes the folder "simple-folder"
+        And the user waits for the files to sync
+        Then as "Alice" folder "simple-folder" should not exist in the server
+
 
     @issue-9733 @skipOnOCIS
     Scenario: sort folders list by name and size
@@ -390,6 +413,10 @@ Feature: Syncing files
     @skipOnOCIS
     Scenario: sync remote folder to a local sync folder having special characters
         Given user "Alice" has created folder "~`!@#$^&()-_=+{[}];',)" in the server
+        And user "Alice" has created folder "simple-folder" in the server
+        And user "Alice" has created folder "test-folder" in the server
+        And user "Alice" has created folder "test-folder/sub-folder1" in the server
+        And user "Alice" has created folder "test-folder/sub-folder2" in the server
         And user "Alice" has created folder "~test%" in the server
         And the user has created a folder "~`!@#$^&()-_=+{[}];',)PRN%" in temp folder
         And the user has started the client
@@ -401,7 +428,15 @@ Feature: Syncing files
         And the user sets the temp folder "~`!@#$^&()-_=+{[}];',)PRN%" as local sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user selects the following folders to sync:
-            | folder                 |
-            | ~`!@#$^&()-_=+{[}];',) |
+            | folder                  |
+            | ~`!@#$^&()-_=+{[}];',)  |
+            | simple-folder           |
+            | test-folder/sub-folder2 |
         Then the folder "~`!@#$^&()-_=+{[}];',)" should exist on the file system
+        And the folder "simple-folder" should exist on the file system
         But the folder "~test%" should not exist on the file system
+        When user "Alice" deletes the folder "simple-folder" in the server
+        And the user waits for the files to sync
+        Then the folder "simple-folder" should not exist on the file system
+        And the folder "test-folder/sub-folder2" should exist on the file system
+        And the folder "test-folder/sub-folder1" should not exist on the file system
