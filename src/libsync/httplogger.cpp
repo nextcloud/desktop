@@ -130,6 +130,8 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     // device should still exist, lets still use a qpointer to ensure we have valid data
     const auto logSend = [ctx = ctx.get(), operation, reply, device = QPointer<QIODevice>(device), deviceRaw = device](bool cached = false) {
         Q_ASSERT(!deviceRaw || device);
+        Q_ASSERT(!ctx->send);
+        ctx->send = true;
         ctx->timer.reset();
 
         const auto request = reply->request();
