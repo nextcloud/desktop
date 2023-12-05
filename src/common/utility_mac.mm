@@ -260,17 +260,35 @@ bool Utility::hasDarkSystray()
 QString Utility::currentCpuArch()
 {
     static const QString rv = []() {
-        int ret = 0;
-        size_t size = sizeof(ret);
+        int procTranslated = 0;
+        size_t size = sizeof(procTranslated);
 
-        // ret will be 1 if the process is translated (most likely with rosetta2)
-        if (sysctlbyname("sysctl.proc_translated", &ret, &size, nullptr, 0) != -1) {
-            if (errno != ENOENT) {
+        const auto rv = sysctlbyname("sysctl.proc_translated", &procTranslated, &size, nullptr, 0);
+
+        // should be backed up if not evaluated immediately
+        const auto error = errno;
+
+        qCDebug(lcUtility) << "proc_translated:" << procTranslated;
+        qCDebug(lcUtility) << "error:" << strerror(error);
+
+        if (rv != -1) {
+            if (procTranslated == 1) {
+                qCInfo(lcUtility) << "process translated with rosetta2";
                 return QStringLiteral("arm64");
+            } else {
+                qCInfo(lcUtility) << "process not translated";
+            }
+        } else {
+            if (error == ENOENT) {
+                qCDebug(lcUtility) << "not running on Apple Silicon";
+            } else {
+                qCDebug(lcUtility) << "unknown error trying to detect whether proc is translated";
             }
         }
 
-        return QSysInfo::currentCpuArchitecture();
+        const auto qtArch = QSysInfo::currentCpuArchitecture();
+        qCDebug(lcUtility) << "CPU arch reported by Qt:" << qtArch;
+        return qtArch;
     }();
 
     return rv;
