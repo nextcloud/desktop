@@ -33,22 +33,26 @@ jobs:
               os: windows-latest
               fetch-depth: 0
               container:
+              useSonarCloud: ${{ github.event_name != 'pull_request' }}
             # TODO: align the target with the name
             - name: macos-clang-x86_64
               target: macos-64-clang
               os: macos-latest
               fetch-depth: 1
               container:
+              useSonarCloud:
             - name: macos-clang-x86_64-debug
               target: macos-64-clang-debug
               os: macos-latest
               fetch-depth: 1
               container:
+              useSonarCloud:
             - name: linux-gcc-x86_64
               target: linux-64-gcc
               os: ubuntu-latest
               container: owncloudci/appimage-build:sles15-amd64
               fetch-depth: 1
+              useSonarCloud:
 
     name: ${{ matrix.name }}
 
@@ -101,6 +105,7 @@ jobs:
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --install-deps owncloud/owncloud-client
 
     - name: Build
+      if: ${{ !matrix.useSonarCloud }}
       run: |
         if ("${{ matrix.target }}" -eq "macos-64-clang-debug" ) {
             # https://api.kde.org/ecm/module/ECMEnableSanitizers.html
@@ -108,24 +113,20 @@ jobs:
             # clang: error: unsupported option '-fsanitize=leak' for target 'x86_64-apple-darwin21.6.0'
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --set args="-DECM_ENABLE_SANITIZERS='address;undefined'" owncloud/owncloud-client
         }
-        if ("${{ matrix.target }}" -eq "windows-cl-msvc2022-x86_64") {
-            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --configure owncloud/owncloud-client
-            $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
-            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --build
-            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --install --qmerge owncloud/owncloud-client
-        } else {
-            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" owncloud/owncloud-client
-        }
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" owncloud/owncloud-client
+
+    - name: Build for SonarCloud
+      if: ${{ matrix.useSonarCloud }}
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --configure owncloud/owncloud-client
+        $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --build
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --install --qmerge owncloud/owncloud-client
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --analyze
 
     - name: Run tests
       run: |
         & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --test owncloud/owncloud-client
-
-    - name: Sonarcloud
-      if: ${{ matrix.target == 'windows-cl-msvc2022-x86_64' }}
-      run: |
-        $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
-        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --analyze
 
     - name: Clang tidy
       if: github.event_name != 'pull_request'
