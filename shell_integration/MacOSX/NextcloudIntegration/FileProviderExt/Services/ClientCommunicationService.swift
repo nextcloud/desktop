@@ -14,6 +14,7 @@
 
 import Foundation
 import FileProvider
+import OSLog
 
 class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, ClientCommunicationProtocol {
     let listener = NSXPCListener.anonymous()
@@ -40,9 +41,18 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         return true
     }
 
+    //MARK: - Protocol methods
+
+    func getExtensionAccountId(completionHandler: @escaping (String?, Error?) -> Void) {
+        let accountUserId = self.fpExtension.domain.identifier.rawValue
+        Logger.desktopClientConnection.info("Sending extension account ID \(accountUserId)")
+        completionHandler(accountUserId, nil)
+    }
+
     func configureAccount(withUser user: String, 
                           serverUrl: String,
                           password: String) {
+        Logger.desktopClientConnection.info("Received configure account information over client communication service")
         self.fpExtension.setupDomainAccount(user: user,
                                             serverUrl: serverUrl,
                                             password: password)

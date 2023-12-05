@@ -19,6 +19,7 @@
 
 @protocol ClientCommunicationProtocol
 
+- (void)getExtensionAccountIdWithCompletionHandler:(void(^)(NSString *extensionAccountId, NSError *error))completionHandler;
 - (void)configureAccountWithUser:(NSString *)user
                        serverUrl:(NSString *)serverUrl
                         password:(NSString *)password;
