@@ -1381,12 +1381,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     // Check local permission if we are allowed to put move the file here
     // Technically we should use the permissions from the server, but we'll assume it is the same
-    auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-    if (!movePerms.sourceOk || !movePerms.destinationOk) {
+    const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
+    const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+    if (!movePerms.sourceOk || !movePerms.destinationOk || isExternalStorage) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
                         << "source:" << movePerms.sourceOk
                         << ", target:" << movePerms.destinationOk
-                        << ", targetNew:" << movePerms.destinationNewOk;
+                        << ", targetNew:" << movePerms.destinationNewOk
+                        << ", isExternalStorage:" << isExternalStorage;
 
         // If we can create the destination, do that.
         // Permission errors on the destination will be handled by checkPermissions later.
@@ -1395,8 +1397,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
-        if (movePerms.destinationNewOk)
+        // In case of external storage mounted folders we are never allowed to move/delete them
+        if (movePerms.destinationNewOk && !isExternalStorage) {
             return;
+        }
 
         // Here we know the new location can't be uploaded: must prevent the source delete.
         // Two cases: either the source item was already processed or not.
