@@ -75,6 +75,7 @@ Result<void, QString> VfsXAttr::updateMetadata(const QString &filePath, time_t m
         return {tr("Error updating metadata due to invalid modification time")};
     }
 
+    qCDebug(lcVfsXAttr()) << "setModTime" << filePath << modtime;
     FileSystem::setModTime(filePath, modtime);
     return {};
 }
@@ -98,6 +99,7 @@ Result<void, QString> VfsXAttr::createPlaceholder(const SyncFileItem &item)
 
     file.write(" ");
     file.close();
+    qCDebug(lcVfsXAttr()) << "setModTime" << path << item._modtime;
     FileSystem::setModTime(path, item._modtime);
     return xattr::addNextcloudPlaceholderAttributes(path);
 }
@@ -122,7 +124,10 @@ Result<void, QString> VfsXAttr::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsXAttr::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsXAttr::convertToPlaceholder(const QString &,
+                                                                                const SyncFileItem &,
+                                                                                const QString &,
+                                                                                UpdateMetadataTypes)
 {
     // Nothing necessary
     return {ConvertToPlaceholderResult::Ok};
