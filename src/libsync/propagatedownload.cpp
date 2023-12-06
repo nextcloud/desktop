@@ -33,6 +33,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <cmath>
+#include <optional>
 
 #ifdef Q_OS_UNIX
 #include <unistd.h>
@@ -290,12 +291,29 @@ qint64 GETFileJob::writeToDevice(const QByteArray &data)
     return _device->write(data);
 }
 
+bool GETFileJob::writeSymlink(const QString &symlinkTarget)
+{
+    auto file_device = qobject_cast<QFile*>(_device);
+    if (!file_device) {
+        qCWarning(lcGetJob) << "Unable to create symlink on given device!";
+        return false;
+    }
+    file_device->close();
+    FileSystem::remove(file_device->fileName());
+    if (!QFile::link(symlinkTarget, file_device->fileName())) {
+        qCWarning(lcGetJob) << "Error creating symlink '" << file_device->fileName() << '\'';
+        return false;
+    }
+    return true;
+}
+
 void GETFileJob::slotReadyRead()
 {
     if (!reply())
         return;
     int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
+    std::optional<QString> symlinkTarget;
 
     while (reply()->bytesAvailable() > 0 && _saveBodyToFile) {
         if (_bandwidthChoked) {
@@ -323,11 +341,11 @@ void GETFileJob::slotReadyRead()
 
         if (reply()->hasRawHeader("OC-File-Type") &&
             reply()->rawHeader("OC-File-Type").toInt() == ItemTypeSoftLink) {
-            // TODO: handle non-Unix OS
-            auto file_device = static_cast<QFile*>(_device);
-            file_device->close();
-            FileSystem::remove(file_device->fileName());
-            QFile::link(QString(buffer), file_device->fileName());
+            if (symlinkTarget) {
+                *symlinkTarget += buffer;
+            } else {
+                symlinkTarget = buffer;
+            }
         } else {
             const qint64 writtenBytes = writeToDevice(QByteArray::fromRawData(buffer.constData(), readBytes));
             if (writtenBytes != readBytes) {
@@ -338,6 +356,11 @@ void GETFileJob::slotReadyRead()
                 return;
             }
         }
+    }
+
+    if (symlinkTarget && !writeSymlink(*symlinkTarget)) {
+        reply()->abort();
+        return;
     }
 
     if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
