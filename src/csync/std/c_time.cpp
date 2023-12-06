@@ -25,8 +25,8 @@
 #include <QFile>
 
 #ifdef HAVE_UTIMES
-int c_utimes(const QString &uri, const struct timeval *times) {
-    int ret = utimes(QFile::encodeName(uri).constData(), times);
+int c_utimes(const QString &uri, const struct timespec *times) {
+    int ret = utimensat(AT_FDCWD, QFile::encodeName(uri).constData(), times, AT_SYMLINK_NOFOLLOW);
     return ret;
 }
 #else // HAVE_UTIMES
@@ -39,15 +39,15 @@ int c_utimes(const QString &uri, const struct timeval *times) {
 #define CSYNC_SECONDS_SINCE_1601 11644473600LL
 #define CSYNC_USEC_IN_SEC            1000000LL
 //after Microsoft KB167296
-static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
+static void UnixTimevalToFileTime(struct timespec t, LPFILETIME pft)
 {
     LONGLONG ll = 0;
-    ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC*10) + t.tv_usec*10 + CSYNC_SECONDS_SINCE_1601*CSYNC_USEC_IN_SEC*10;
+    ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC*10) + t.tv_nsec/100 + CSYNC_SECONDS_SINCE_1601*CSYNC_USEC_IN_SEC*10;
     pft->dwLowDateTime = (DWORD)ll;
     pft->dwHighDateTime = ll >> 32;
 }
 
-int c_utimes(const QString &uri, const struct timeval *times) {
+int c_utimes(const QString &uri, const struct timespec *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile = nullptr;
