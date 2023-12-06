@@ -993,10 +993,13 @@ void ConfigFile::setMoveToTrash(bool isChecked)
     setValue(moveToTrashC, isChecked);
 }
 
-bool ConfigFile::forceLoginV2() const {
+bool ConfigFile::forceLoginV2() const
+{
     return getValue(forceLoginV2C, QString(), false).toBool();
 }
-void ConfigFile::setForceLoginV2(bool isChecked) {
+
+void ConfigFile::setForceLoginV2(bool isChecked)
+{
     setValue(forceLoginV2C, isChecked);
 }
 

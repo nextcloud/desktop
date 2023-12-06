@@ -65,8 +65,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
 #ifdef WITH_WEBENGINE
-    if(!useFlow2())
-      setPage(WizardCommon::Page_WebView, _webViewPage);
+    if (!useFlow2()) {
+        setPage(WizardCommon::Page_WebView, _webViewPage);
+    }
 #endif // WITH_WEBENGINE
 
     connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
@@ -79,8 +80,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_flow2CredsPage, &Flow2AuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #ifdef WITH_WEBENGINE
-    if(!useFlow2())
-      connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+    if (!useFlow2()) {
+        connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+    }
 #endif // WITH_WEBENGINE
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
@@ -237,8 +239,9 @@ void OwncloudWizard::successfulStep()
 
 #ifdef WITH_WEBENGINE
     case WizardCommon::Page_WebView:
-        if(!this->useFlow2())
-          _webViewPage->setConnected();
+        if (!this->useFlow2()) {
+            _webViewPage->setConnected();
+        }
         break;
 #endif // WITH_WEBENGINE
 
@@ -280,9 +283,9 @@ void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 #ifdef WITH_WEBENGINE
     } else if (type == DetermineAuthTypeJob::WebViewFlow) {
         if(this->useFlow2()) {
-          _credentialsPage = _flow2CredsPage;
+            _credentialsPage = _flow2CredsPage;
         } else {
-          _credentialsPage = _webViewPage;
+            _credentialsPage = _webViewPage;
         }
 #endif // WITH_WEBENGINE
     } else { // try Basic auth even for "Unknown"
