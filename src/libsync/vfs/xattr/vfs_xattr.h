@@ -42,7 +42,10 @@ public:
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
-    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile) override;
+    Result<ConvertToPlaceholderResult, QString> convertToPlaceholder(const QString &filename,
+                                                                     const SyncFileItem &item,
+                                                                     const QString &replacesFile,
+                                                                     UpdateMetadataTypes updateType) override;
 
     bool needsMetadataUpdate(const SyncFileItem &item) override;
     bool isDehydratedPlaceholder(const QString &filePath) override;

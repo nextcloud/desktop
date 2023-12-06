@@ -479,7 +479,7 @@ void BulkPropagatorJob::adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fil
 void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
 {
     // Update the database entry
-    const auto result = propagator()->updateMetadata(*oneFile._item);
+    const auto result = propagator()->updateMetadata(*oneFile._item, Vfs::UpdateMetadataType::DatabaseMetadata);
     if (!result) {
         done(oneFile._item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
         return;

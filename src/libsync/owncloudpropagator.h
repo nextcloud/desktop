@@ -27,12 +27,14 @@
 
 #include "accountfwd.h"
 #include "bandwidthmanager.h"
-#include "common/syncjournaldb.h"
-#include "common/utility.h"
 #include "csync.h"
 #include "progressdispatcher.h"
 #include "syncfileitem.h"
 #include "syncoptions.h"
+
+#include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "common/vfs.h"
 
 #include <deque>
 
@@ -592,7 +594,7 @@ public:
      *
      * Will also trigger a Vfs::convertToPlaceholder.
      */
-    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item);
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, Vfs::UpdateMetadataTypes updateType = Vfs::AllMetadata);
 
     /** Update the database for an item.
      *
@@ -601,8 +603,11 @@ public:
      *
      * Will also trigger a Vfs::convertToPlaceholder.
      */
-    static Result<Vfs::ConvertToPlaceholderResult, QString> staticUpdateMetadata(const SyncFileItem &item, const QString localDir,
-                                                                                 Vfs *vfs, SyncJournalDb * const journal);
+    static Result<Vfs::ConvertToPlaceholderResult, QString> staticUpdateMetadata(const SyncFileItem &item,
+                                                                                 const QString localDir,
+                                                                                 Vfs *vfs,
+                                                                                 SyncJournalDb * const journal,
+                                                                                 Vfs::UpdateMetadataTypes updateType);
 
     Q_REQUIRED_RESULT bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
 

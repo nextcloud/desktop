@@ -800,7 +800,7 @@ void PropagateUploadFileCommon::finalize()
         quotaIt.value() -= _fileToUpload._size;
 
     // Update the database entry
-    const auto result = propagator()->updateMetadata(*_item);
+    const auto result = propagator()->updateMetadata(*_item, Vfs::DatabaseMetadata);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
         return;
