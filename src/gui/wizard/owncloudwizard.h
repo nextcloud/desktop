@@ -21,6 +21,7 @@
 #include <QSslKey>
 #include <QSslCertificate>
 
+#include "libsync/configfile.h"
 #include "networkjobs.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "accountfwd.h"
@@ -87,6 +88,7 @@ public:
     QSslKey _clientSslKey; // key extracted from pkcs12
     QSslCertificate _clientSslCertificate; // cert extracted from pkcs12
     QList<QSslCertificate> _clientSslCaCertificates;
+    bool useFlow2() { return _useFlow2; };
 
 public slots:
     void setAuthType(OCC::DetermineAuthTypeJob::AuthType type);
@@ -130,6 +132,8 @@ private:
     QStringList _setupLog;
 
     bool _registration = false;
+
+    bool _useFlow2 = ConfigFile().forceLoginV2();
 
     friend class OwncloudSetupWizard;
 };

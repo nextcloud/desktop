@@ -65,7 +65,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
 #ifdef WITH_WEBENGINE
-    setPage(WizardCommon::Page_WebView, _webViewPage);
+    if(!useFlow2())
+      setPage(WizardCommon::Page_WebView, _webViewPage);
 #endif // WITH_WEBENGINE
 
     connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
@@ -78,7 +79,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_flow2CredsPage, &Flow2AuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #ifdef WITH_WEBENGINE
-    connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+    if(!useFlow2())
+      connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #endif // WITH_WEBENGINE
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
@@ -235,7 +237,8 @@ void OwncloudWizard::successfulStep()
 
 #ifdef WITH_WEBENGINE
     case WizardCommon::Page_WebView:
-        _webViewPage->setConnected();
+        if(!this->useFlow2())
+          _webViewPage->setConnected();
         break;
 #endif // WITH_WEBENGINE
 
@@ -276,7 +279,11 @@ void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
         _credentialsPage = _flow2CredsPage;
 #ifdef WITH_WEBENGINE
     } else if (type == DetermineAuthTypeJob::WebViewFlow) {
-        _credentialsPage = _webViewPage;
+        if(this->useFlow2()) {
+          _credentialsPage = _flow2CredsPage;
+        } else {
+          _credentialsPage = _webViewPage;
+        }
 #endif // WITH_WEBENGINE
     } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;

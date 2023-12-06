@@ -44,6 +44,7 @@
 
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
+#include "configfile.h"
 
 namespace OCC {
 
@@ -1011,7 +1012,9 @@ bool JsonApiJob::finished()
 DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(account)
+
 {
+  useFlow2 = ConfigFile().forceLoginV2();
 }
 
 void DetermineAuthTypeJob::start()
@@ -1077,7 +1080,11 @@ void DetermineAuthTypeJob::start()
                 if (flow != QJsonValue::Undefined) {
                     if (flow.toInt() == 1) {
 #ifdef WITH_WEBENGINE
-                        _resultOldFlow = WebViewFlow;
+                      if(!this->useFlow2) {
+                          _resultOldFlow = WebViewFlow;
+                      } else {
+                        qCWarning(lcDetermineAuthTypeJob) << "Server only supports flow1, but this client was configured to only use flow2";
+                      }
 #else // WITH_WEBENGINE
                         qCWarning(lcDetermineAuthTypeJob) << "Server does only support flow1, but this client was compiled without support for flow1";
 #endif // WITH_WEBENGINE
@@ -1111,6 +1118,8 @@ void DetermineAuthTypeJob::checkAllDone()
     // WebViewFlow > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
+        if(useFlow2)
+          result = LoginFlowV2;
     }
 #endif // WITH_WEBENGINE
 
@@ -1123,6 +1132,8 @@ void DetermineAuthTypeJob::checkAllDone()
     // If we determined that we need the webview flow (GS for example) then we switch to that
     if (_resultOldFlow == WebViewFlow) {
         result = WebViewFlow;
+        if(useFlow2)
+          result = LoginFlowV2;
     }
 #endif // WITH_WEBENGINE
 

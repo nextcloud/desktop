@@ -549,6 +549,7 @@ private:
     bool _getDone = false;
     bool _propfindDone = false;
     bool _oldFlowDone = false;
+    bool useFlow2 = false;
 };
 
 /**
