@@ -193,6 +193,11 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
     return _advancedSetupPage->selectiveSyncBlacklist();
 }
 
+bool OwncloudWizard::useFlow2() const
+{
+    return _useFlow2;
+}
+
 bool OwncloudWizard::useVirtualFileSync() const
 {
     return _advancedSetupPage->useVirtualFileSync();

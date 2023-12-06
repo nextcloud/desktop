@@ -65,6 +65,7 @@ public:
     [[nodiscard]] QString ocUrl() const;
     [[nodiscard]] QString localFolder() const;
     [[nodiscard]] QStringList selectiveSyncBlacklist() const;
+    [[nodiscard]] bool useFlow2() const;
     [[nodiscard]] bool useVirtualFileSync() const;
     [[nodiscard]] bool isConfirmBigFolderChecked() const;
 
@@ -88,7 +89,6 @@ public:
     QSslKey _clientSslKey; // key extracted from pkcs12
     QSslCertificate _clientSslCertificate; // cert extracted from pkcs12
     QList<QSslCertificate> _clientSslCaCertificates;
-    bool useFlow2() { return _useFlow2; };
 
 public slots:
     void setAuthType(OCC::DetermineAuthTypeJob::AuthType type);
