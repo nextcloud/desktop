@@ -364,9 +364,13 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         } //fall through
     case CSYNC_INSTRUCTION_SYNC:
         if (item->_direction != SyncFileItem::Up) {
-            auto job = new PropagateDownloadFile(this, item);
-            job->setDeleteExistingFolder(deleteExisting);
-            return job;
+            if (item->_type != ItemTypeSoftLink || _syncOptions._synchronizeSymlinks) {
+                auto job = new PropagateDownloadFile(this, item);
+                job->setDeleteExistingFolder(deleteExisting);
+                return job;
+            } else {
+                return nullptr;
+            }
         } else {
             if (deleteExisting || !isDelayedUploadItem(item)) {
                 auto job = createUploadJob(item, deleteExisting);
