@@ -4,7 +4,7 @@
 <dict>
         <key>NSPrincipalClass</key>
         <string>NSApplication</string>
-	<key>CFBundleDevelopmentRegion</key>
+        <key>CFBundleDevelopmentRegion</key>
         <string>English</string>
         <key>CFBundleExecutable</key>
         <string>${APPLICATION_EXECUTABLE}</string>
@@ -30,6 +30,8 @@
         <false/>
         <key>SUPublicDSAKeyFile</key>
         <string>dsa_pub.pem</string>
+        <key>SUPublicEDKey</key>
+        <string>F9ZGRXJE7XbQb2Kt36hwaBO4rYjkXYHiNS5hd+MkyKY=</string>
 
 <key>UTExportedTypeDeclarations</key>
 <array>
