@@ -32,6 +32,8 @@
         <string>dsa_pub.pem</string>
         <key>SUPublicEDKey</key>
         <string>F9ZGRXJE7XbQb2Kt36hwaBO4rYjkXYHiNS5hd+MkyKY=</string>
+        <key>SUAllowsAutomaticUpdates</key>
+        <string>NO</string>
 
 <key>UTExportedTypeDeclarations</key>
 <array>
