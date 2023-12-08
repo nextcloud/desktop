@@ -236,7 +236,30 @@ void ConfigFile::setShowInExplorerNavigationPane(bool show)
     settings.setValue(QLatin1String(showInExplorerNavigationPaneC), show);
     settings.sync();
 }
+bool ConfigFile::scaleForHighDPIDisplay() const
+{
+    const bool defaultValue =
+#ifdef Q_OS_WIN
+    #if QTLEGACY
+        (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10);
+    #else
+        QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10;
+    #endif
+    //TODO need to check for platform windows:dpiawareness
+#else
+        false
+#endif
+        ;
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(scaleForHighDPIDisplayC), defaultValue).toBool();
+}
 
+void ConfigFile::setScaleForHighDPIDisplay(bool scale)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(scaleForHighDPIDisplayC), scale);
+    settings.sync();
+}
 int ConfigFile::timeout() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
