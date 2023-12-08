@@ -62,7 +62,7 @@ auto RFC1123PatternC()
 }
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcUtility, "sync.utility")
+Q_LOGGING_CATEGORY(lcUtility, "sync.utility", QtMsgType::QtInfoMsg)
 
 QString Utility::formatFingerprint(const QByteArray &fmhash, bool colonSeparated)
 {
