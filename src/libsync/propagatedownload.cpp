@@ -1220,12 +1220,12 @@ void PropagateDownloadFile::downloadFinished()
 
     auto previousFileExists = FileSystem::fileExists(filename) && _item->_instruction != CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
     if (previousFileExists) {
-        // Preserve the existing file permissions.
-        auto previousPermissions = FileSystem::getPermissions(filename);
-        if (previousPermissions != FileSystem::getPermissions(_tmpFile.fileName())) {
-            _tmpFile.setPermissions(previousPermissions);
+        // Preserve the existing file permissions (except it was a symlink)
+        const auto existingFile = QFileInfo{filename};
+        if (!existingFile.isSymLink() && existingFile.permissions() != _tmpFile.permissions()) {
+            _tmpFile.setPermissions(existingFile.permissions());
         }
-        preserveGroupOwnership(_tmpFile.fileName(), QFileInfo(filename));
+        preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
         const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, filename);

@@ -14,8 +14,6 @@
 
 #include "filesystem.h"
 
-#include <filesystem>
-
 #include "common/utility.h"
 #include <QFile>
 #include <QFileInfo>
@@ -140,31 +138,6 @@ qint64 FileSystem::getSize(const QString &filename)
         return readlink(filename).size();
     }
     return info.size();
-}
-
-QFile::Permissions FileSystem::getPermissions(const QString &filename)
-{
-    using qtStdFilePermissionsMapping = std::pair<QFile::Permission, std::filesystem::perms>;
-    constexpr std::array<qtStdFilePermissionsMapping, 9> qtStdFilePermissionsMappings = {
-        std::make_pair(QFileDevice::ReadOwner, std::filesystem::perms::owner_read),
-        {QFileDevice::WriteOwner, std::filesystem::perms::owner_write},
-        {QFileDevice::ExeOwner, std::filesystem::perms::owner_exec},
-        {QFileDevice::ReadGroup, std::filesystem::perms::group_read},
-        {QFileDevice::WriteGroup, std::filesystem::perms::group_write},
-        {QFileDevice::ExeGroup, std::filesystem::perms::group_exec},
-        {QFileDevice::ReadOther, std::filesystem::perms::others_read},
-        {QFileDevice::WriteOther, std::filesystem::perms::others_write},
-        {QFileDevice::ExeOther, std::filesystem::perms::others_exec}};
-
-    auto fileStatus = std::filesystem::symlink_status(filename.toStdString());
-    auto permissions = fileStatus.permissions();
-
-    QFile::Permissions resultPermissions;
-    for (auto [qtPermissionFlag, stdPermissionFlag] : qtStdFilePermissionsMappings) {
-        auto isPermissionSet = (permissions & stdPermissionFlag) != std::filesystem::perms::none;
-        resultPermissions.setFlag(qtPermissionFlag, isPermissionSet);
-    }
-    return resultPermissions;
 }
 
 // Code inspired from Qt5's QDir::removeRecursively
