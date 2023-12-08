@@ -64,6 +64,13 @@ namespace FileSystem {
     qint64 OWNCLOUDSYNC_EXPORT getSize(const QString &filename);
 
     /**
+     * @brief Get permissions for a file
+     *
+     * If the file is a symlink, the permissions for the symlink are returned.
+     */
+    QFile::Permissions OWNCLOUDSYNC_EXPORT getPermissions(const QString &filename);
+
+    /**
      * @brief Retrieve a file inode with csync
      */
     bool OWNCLOUDSYNC_EXPORT getInode(const QString &filename, quint64 *inode);

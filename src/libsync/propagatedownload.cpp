@@ -1108,7 +1108,8 @@ namespace { // Anonymous namespace for the recall feature
     static void preserveGroupOwnership(const QString &fileName, const QFileInfo &fi)
     {
 #ifdef Q_OS_UNIX
-        int chownErr = chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
+        int chownErr = fchownat(AT_FDCWD, fileName.toLocal8Bit().constData(), -1,
+                                fi.groupId(), AT_SYMLINK_NOFOLLOW);
         if (chownErr) {
             // TODO: Consider further error handling!
             qCWarning(lcPropagateDownload) << QString("preserveGroupOwnership: chown error %1: setting group %2 failed on file %3").arg(chownErr).arg(fi.groupId()).arg(fileName);
@@ -1220,11 +1221,11 @@ void PropagateDownloadFile::downloadFinished()
     auto previousFileExists = FileSystem::fileExists(filename) && _item->_instruction != CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
     if (previousFileExists) {
         // Preserve the existing file permissions.
-        const auto existingFile = QFileInfo{filename};
-        if (existingFile.permissions() != _tmpFile.permissions()) {
-            _tmpFile.setPermissions(existingFile.permissions());
+        auto previousPermissions = FileSystem::getPermissions(filename);
+        if (previousPermissions != FileSystem::getPermissions(_tmpFile.fileName())) {
+            _tmpFile.setPermissions(previousPermissions);
         }
-        preserveGroupOwnership(_tmpFile.fileName(), existingFile);
+        preserveGroupOwnership(_tmpFile.fileName(), QFileInfo(filename));
 
         // Make the file a hydrated placeholder if possible
         const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, filename);
