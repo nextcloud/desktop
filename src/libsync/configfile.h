@@ -166,6 +166,9 @@ public:
     [[nodiscard]] bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
+    [[nodiscard]] bool scaleForHighDPIDisplay() const;
+    void setScaleForHighDPIDisplay(bool scale);
+
     [[nodiscard]] int timeout() const;
     [[nodiscard]] qint64 chunkSize() const;
     [[nodiscard]] qint64 maxChunkSize() const;
