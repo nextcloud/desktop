@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="77"/>
         <source>Server version</source>
-        <translation>Zerbitzariaren bertsioa</translation>
+        <translation>Zerbitzariko bertsioa</translation>
     </message>
 </context>
 <context>
@@ -5591,7 +5591,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="81"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation>Aukeratu bertsio lokala, zerbitzariaren bertsioa edo biak mantendu nahi badituzu. Biak aukeratzen badituzu, fitxategi lokalari zenbaki bat esleituko zaio izenean.</translation>
+        <translation>Aukeratu bertsio lokala, zerbitzariko bertsioa edo biak mantendu nahi dituzun. Biak aukeratzen badituzu, fitxategi lokalari zenbaki bat esleituko zaio izenean.</translation>
     </message>
     <message>
         <location filename="../src/gui/ResolveConflictsDialog.qml" line="97"/>
@@ -6217,7 +6217,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Zerbitzariaren bertsioa deskargatu da, tokiko fitxategi aldatua kopiatu da gatazka-kasuen fitxategian</translation>
+        <translation>Zerbitzariko bertsioa deskargatu da, tokiko fitxategi aldatua kopiatu da gatazka-kasuen fitxategian</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
