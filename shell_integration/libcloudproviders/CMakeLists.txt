@@ -34,5 +34,8 @@ IF (Qt5DBus_FOUND)
     set(LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH "/${DBUS_PREFIX}/${DBUS_VENDOR}/${DBUS_APPLICATION_NAME}")
 
     dbus_add_activation_service(org.freedesktop.CloudProviders.service.in)
-    libcloudproviders_add_config(org.freedesktop.CloudProviders.ini.in)
+    # The .ini file has been replaced by a declaration in the .desktop file in 0.3.3+
+    if (${CLOUDPROVIDERS_VERSION} VERSION_LESS "0.3.3")
+        libcloudproviders_add_config(org.freedesktop.CloudProviders.ini.in)
+    endif ()
 ENDIF ()
