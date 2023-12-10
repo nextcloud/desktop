@@ -16,6 +16,7 @@
 #include "ui_conflictdialog.h"
 
 #include "conflictsolver.h"
+#include "filesystem.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -132,9 +133,10 @@ void ConflictDialog::updateWidgets()
         const auto fileUrl = QUrl::fromLocalFile(filename).toString();
         linkLabel->setText(QStringLiteral("<a href='%1'>%2</a>").arg(fileUrl).arg(linkText));
 
-        const auto info = QFileInfo(filename);
-        mtimeLabel->setText(info.lastModified().toString());
-        sizeLabel->setText(locale().formattedDataSize(info.size()));
+        const auto lastModified = QDateTime::fromTime_t(FileSystem::getModTime(filename));
+        const auto fileSize = FileSystem::getSize(filename);
+        mtimeLabel->setText(lastModified.toString());
+        sizeLabel->setText(locale().formattedDataSize(fileSize));
 
         const auto mime = mimeDb.mimeTypeForFile(filename);
         if (QIcon::hasThemeIcon(mime.iconName())) {
