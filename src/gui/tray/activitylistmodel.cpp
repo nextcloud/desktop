@@ -613,7 +613,7 @@ void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
     bool duplicate = false;
     if (_listOfIgnoredFiles.size() == 0) {
         _notificationIgnoredFiles = newActivity;
-        _notificationIgnoredFiles._subject = tr("Files from the ignore list as well as symbolic links are not synced.");
+        _notificationIgnoredFiles._subject = tr("Files from the ignore list are not synced.");
         addEntriesToActivityList({_notificationIgnoredFiles});
         _listOfIgnoredFiles.append(newActivity);
         return;
