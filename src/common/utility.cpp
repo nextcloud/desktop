@@ -58,6 +58,14 @@
 #include "utility_unix.cpp"
 #endif
 
+namespace {
+constexpr auto bytes = 1024;
+constexpr auto kilobytes = bytes;
+constexpr auto megabytes = bytes * kilobytes;
+constexpr qint64 gigabytes = bytes * megabytes;
+constexpr qint64 terabytes = bytes * gigabytes;
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUtility, "nextcloud.sync.utility", QtInfoMsg)
@@ -114,46 +122,40 @@ void Utility::removeFavLink(const QString &folder)
     removeFavLink_private(folder);
 }
 
-QString Utility::octetsToString(qint64 octets)
+QString Utility::octetsToString(const qint64 octets)
 {
-#define THE_FACTOR 1024
-    static const qint64 kb = THE_FACTOR;
-    static const qint64 mb = THE_FACTOR * kb;
-    static const qint64 gb = THE_FACTOR * mb;
-    static const qint64 tb = THE_FACTOR * gb;
+    auto unitName = QCoreApplication::translate("Utility", "%L1 B");
+    qreal dataSize = octets;
 
-    QString s;
-    qreal value = octets;
+    // Display decimals when value < TB and unit < 10
+    auto showDecimals = true;
 
-    // Whether we care about decimals: only for GB/MB and only
-    // if it's less than 10 units.
-    bool round = true;
-
-    if (octets >= tb) {
-        s = QCoreApplication::translate("Utility", "%L1 TB");
-        value /= tb;
-    } else if (octets >= gb) {
-        s = QCoreApplication::translate("Utility", "%L1 GB");
-        value /= gb;
-        round = false;
-    } else if (octets >= mb) {
-        s = QCoreApplication::translate("Utility", "%L1 MB");
-        value /= mb;
-        round = false;
-    } else if (octets >= kb) {
-        s = QCoreApplication::translate("Utility", "%L1 KB");
-        value /= kb;
-    } else {
-        s = QCoreApplication::translate("Utility", "%L1 B");
+    if (octets >= terabytes) {
+        unitName = QCoreApplication::translate("Utility", "%L1 TB");
+        dataSize /= terabytes;
+        showDecimals = false;
+    } else if (octets >= gigabytes) {
+        unitName = QCoreApplication::translate("Utility", "%L1 GB");
+        dataSize /= gigabytes;
+        showDecimals = false;
+    } else if (octets >= megabytes) {
+        unitName = QCoreApplication::translate("Utility", "%L1 MB");
+        dataSize /= megabytes;
+        showDecimals = false;
+    } else if (octets >= kilobytes) {
+        unitName = QCoreApplication::translate("Utility", "%L1 KB");
+        dataSize /= kilobytes;
     }
 
-    if (value > 9.95)
-        round = true;
+    if (dataSize > 9.95) {
+        showDecimals = true;
+    }
 
-    if (round)
-        return s.arg(qRound(value));
+    if (showDecimals) {
+        return unitName.arg(qRound(dataSize));
+    }
 
-    return s.arg(value, 0, 'g', 2);
+    return unitName.arg(dataSize, 0, 'g', 2);
 }
 
 // Qtified version of get_platforms() in csync_owncloud.c
