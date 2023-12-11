@@ -37,10 +37,12 @@ private slots:
         QLocale::setDefault(QLocale("en"));
         QCOMPARE(octetsToString(999) , QString("999 B"));
         QCOMPARE(octetsToString(1024) , QString("1 KB"));
+        QCOMPARE(octetsToString(1110) , QString("1 KB"));
         QCOMPARE(octetsToString(1364) , QString("1 KB"));
 
         QCOMPARE(octetsToString(9110) , QString("9 KB"));
         QCOMPARE(octetsToString(9910) , QString("10 KB"));
+        QCOMPARE(octetsToString(9999) , QString("10 KB"));
         QCOMPARE(octetsToString(10240) , QString("10 KB"));
 
         QCOMPARE(octetsToString(123456) , QString("121 KB"));
@@ -54,6 +56,8 @@ private slots:
         QCOMPARE(octetsToString(1024), QString("1 KB"));
         QCOMPARE(octetsToString(1024*1024), QString("1 MB"));
         QCOMPARE(octetsToString(1024LL*1024*1024), QString("1 GB"));
+        QCOMPARE(octetsToString(1024LL*1024*1024*1024), QString("1 TB"));
+        QCOMPARE(octetsToString(1024LL*1024*1024*1024 * 5), QString("5 TB"));
     }
 
     void testLaunchOnStartup()
