@@ -22,26 +22,25 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
     let fpExtension: FileProviderExtension
 
     init(fpExtension: FileProviderExtension) {
+        Logger.desktopClientConnection.debug("Instantiating client communication service")
         self.fpExtension = fpExtension
         super.init()
     }
 
     func makeListenerEndpoint() throws -> NSXPCListenerEndpoint {
+        listener.delegate = self
+        listener.resume()
         return listener.endpoint
     }
 
-    func listener(_ listener: NSXPCListener, 
-                  shouldAcceptNewConnection newConnection: NSXPCConnection)
-    -> Bool {
-        let clientCommProtocol = ClientCommunicationProtocol.self
-        let clientCommInterface = NSXPCInterface(with: clientCommProtocol)
-        newConnection.exportedInterface = clientCommInterface
+    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
+        newConnection.exportedInterface = NSXPCInterface(with: ClientCommunicationProtocol.self)
         newConnection.exportedObject = self
         newConnection.resume()
         return true
     }
 
-    //MARK: - Protocol methods
+    //MARK: - Client Communication Protocol methods
 
     func getExtensionAccountId(completionHandler: @escaping (String?, Error?) -> Void) {
         let accountUserId = self.fpExtension.domain.identifier.rawValue
