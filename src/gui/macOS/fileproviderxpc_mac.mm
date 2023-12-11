@@ -179,6 +179,11 @@ void FileProviderXPC::start()
             qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
         }];
 
+        if (![remoteServiceObject conformsToProtocol:@protocol(ClientCommunicationProtocol)]) {
+            qCWarning(lcFileProviderXPC) << "Remote service object does not conform to protocol";
+            continue;
+        }
+
         NSObject<ClientCommunicationProtocol> *const clientCommService = (NSObject<ClientCommunicationProtocol> *)remoteServiceObject;
         if (clientCommService == nil) {
             qCWarning(lcFileProviderXPC) << "Client communication service is nil";
