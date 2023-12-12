@@ -44,7 +44,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func getExtensionAccountId(completionHandler: @escaping (String?, Error?) -> Void) {
         let accountUserId = self.fpExtension.domain.identifier.rawValue
-        Logger.desktopClientConnection.info("Sending extension account ID \(accountUserId)")
+        Logger.desktopClientConnection.info("Sending extension account ID \(accountUserId, privacy: .public)")
         completionHandler(accountUserId, nil)
     }
 
