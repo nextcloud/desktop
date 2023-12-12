@@ -164,6 +164,8 @@ void FileProviderXPC::start()
 
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 
+    NSMutableDictionary<NSString *, NSObject<ClientCommunicationProtocol>*> *const clientCommServices = NSMutableDictionary.dictionary;
+
     for (NSXPCConnection * const connection in connections) {
         Q_ASSERT(connection != nil);
         connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
@@ -191,6 +193,29 @@ void FileProviderXPC::start()
         }
 
         [clientCommService retain];
+        __block NSString *extensionNcAccount = @"";
+        dispatch_group_enter(group);
+        [clientCommService getExtensionAccountIdWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
+            if (error != nil) {
+                qCWarning(lcFileProviderXPC) << "Error getting extension account id" << error;
+                dispatch_group_leave(group);
+                return;
+            }
+
+            extensionNcAccount = [NSString stringWithString:extensionAccountId];
+            [extensionNcAccount retain];
+            dispatch_group_leave(group);
+        }];
+
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER); // Do not edit the NSDictionary concurrently
+
+        if (extensionNcAccount == nil) {
+            qCWarning(lcFileProviderXPC) << "Extension account id is nil";
+            continue;
+        }
+        qCInfo(lcFileProviderXPC) << "Got extension account id" << extensionNcAccount.UTF8String;
+        [clientCommServices setObject:clientCommService forKey:extensionNcAccount];
+    }
     }
 }
 
