@@ -5,7 +5,11 @@ from pageObjects.SharingDialog import SharingDialog
 
 from helpers.SetupClientHelper import getResourcePath, substituteInLineCodes
 from helpers.FilesHelper import sanitizePath
-from helpers.SyncHelper import getSocketConnection
+from helpers.SyncHelper import (
+    getSocketConnection,
+    waitForFileOrFolderToHaveSyncStatus,
+    SYNC_STATUS,
+)
 from helpers.ConfigHelper import get_config
 
 
@@ -52,6 +56,10 @@ def createPublicShareWithRole(resource, role):
 
 
 def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0):
+    # wait for client to the view
+    waitForFileOrFolderToHaveSyncStatus(
+        getResourcePath(), "FOLDER", SYNC_STATUS["UPDATE"]
+    )
     openSharingDialog(resource)
 
     checkCollaboratorAndPremissions(receiver, permissions, receiverCount)
@@ -62,7 +70,7 @@ def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0)
 def checkCollaboratorAndPremissions(receiver, permissions, receiverCount=0):
     permissionsList = permissions.split(',')
 
-    # findAllObjects: This functionfinds and returns a list of object references identified by the symbolic or real (multi-property) name objectName.
+    # findAllObjects: This function finds and returns a list of object references identified by the symbolic or real (multi-property) name objectName.
     sharedWithObj = SharingDialog.getCollaborators()
 
     #     we use sharedWithObj list from above while verifying if users are listed or not.
@@ -195,6 +203,10 @@ def step(context, resource, password):
 
 @Then('the expiration date of the last public link of file "|any|" should be "|any|"')
 def step(context, resource, expiryDate):
+    # wait for client to the view
+    waitForFileOrFolderToHaveSyncStatus(
+        getResourcePath(), "FOLDER", SYNC_STATUS["UPDATE"]
+    )
     openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
 
@@ -333,6 +345,10 @@ def step(context, publicLinkName, password):
     'the following users should be listed in as collaborators for file "|any|" on the client-UI'
 )
 def step(context, resource):
+    # wait for client to the view
+    waitForFileOrFolderToHaveSyncStatus(
+        getResourcePath(), "FOLDER", SYNC_STATUS["UPDATE"]
+    )
     openSharingDialog(resource)
     #     Here we are trying to verify if the user added in when step are listed in the client-UI or not
     #     We now have a variable name receiverCount which is used in collaboratorShouldBeListed function call

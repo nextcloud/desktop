@@ -5,7 +5,7 @@ from pageObjects.Activity import Activity
 from pageObjects.Settings import Settings
 
 from helpers.SetupClientHelper import getResourcePath
-from helpers.ConfigHelper import get_config
+from helpers.ConfigHelper import get_config, isWindows
 from helpers.SyncHelper import (
     waitForFileOrFolderToSync,
     waitForFileOrFolderToHaveSyncError,
@@ -50,6 +50,9 @@ def step(context, username, type, resource):
 @When("the user enables virtual file support")
 def step(context):
     SyncConnection.enableVFS()
+    # TODO: remove snooze with proper wait
+    # let the client re-sync
+    snooze(get_config("minSyncTimeout"))
 
 
 @Then('the "|any|" button should be available')
@@ -58,18 +61,12 @@ def step(context, item):
     SyncConnection.hasMenuItem(item)
 
 
-@Given("the user has enabled virtual file support")
-def step(context):
-    SyncConnection.enableVFS()
-    if get_config('ocis'):
-        test.vp("VP_VFS_enabled_oCIS")
-    else:
-        test.vp("VP_VFS_enabled")
-
-
 @When("the user disables virtual file support")
 def step(context):
     SyncConnection.disableVFS()
+    # TODO: remove snooze with proper wait
+    # let the client re-sync
+    snooze(get_config("minSyncTimeout"))
 
 
 @When('the user clicks on the activity tab')
@@ -138,22 +135,6 @@ def step(context):
         rowIndex += 1
 
 
-@Then('VFS enabled baseline image should match the default screenshot')
-def step(context):
-    if get_config('ocis'):
-        test.vp("VP_VFS_enabled_oCIS")
-    else:
-        test.vp("VP_VFS_enabled")
-
-
-@Then('VFS enabled baseline image should not match the default screenshot')
-def step(context):
-    if get_config('ocis'):
-        test.xvp("VP_VFS_enabled_oCIS")
-    else:
-        test.xvp("VP_VFS_enabled")
-
-
 @When('the user sets the sync path in sync connection wizard')
 def step(context):
     SyncConnectionWizard.setSyncPathInSyncConnectionWizard()
@@ -212,3 +193,10 @@ def step(context):
 @When("user unselects all the remote folders")
 def step(context):
     SyncConnectionWizard.deselectAllRemoteFolders()
+
+
+@When("the user |word| VFS support for Windows")
+def step(context, action):
+    if isWindows():
+        action = action.rstrip("s")
+        SyncConnectionWizard.enableOrDisableVfsSupport(action)

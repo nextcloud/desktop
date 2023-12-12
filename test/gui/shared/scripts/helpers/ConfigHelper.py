@@ -1,4 +1,5 @@
 import os
+import platform
 import builtins
 from tempfile import gettempdir
 from configparser import ConfigParser
@@ -22,6 +23,32 @@ def get_config_from_env_file(env):
     if env in envs:
         return envs[env]
     raise Exception('Environment "%s" not found in envs.txt' % env)
+
+
+def isWindows():
+    return platform.system() == "Windows"
+
+
+def isLinux():
+    return platform.system() == "Linux"
+
+
+def getWinUserHome():
+    return os.environ.get("UserProfile")
+
+
+def getClientRootPath():
+    if isWindows():
+        return os.path.join(getWinUserHome(), 'owncloudtest')
+    return os.path.join(gettempdir(), 'owncloudtest')
+
+
+def getConfigHome():
+    if isWindows():
+        # There is no way to set custom config path in windows
+        # TODO: set to different path if option is available
+        return os.path.join(getWinUserHome(), "AppData", "Roaming", "ownCloud")
+    return os.path.join(get_config_from_env_file("XDG_CONFIG_HOME"), "ownCloud")
 
 
 # map environment variables to config keys
@@ -49,12 +76,10 @@ CONFIG = {
     'lowestSyncTimeout': 1,
     'middlewareUrl': 'http://localhost:3000/',
     'clientLogFile': '-',
-    'clientRootSyncPath': '/tmp/client-bdd/',
-    'tempFolderPath': gettempdir() + '/client-bdd/temp/',
-    'clientConfigDir': os.path.join(
-        get_config_from_env_file("XDG_CONFIG_HOME"), "ownCloud"
-    ),
-    'guiTestReportDir': os.path.abspath('../reports/'),
+    'clientRootSyncPath': getClientRootPath(),
+    'tempFolderPath': os.path.join(getClientRootPath(), 'temp'),
+    'clientConfigDir': getConfigHome(),
+    'guiTestReportDir': os.path.abspath('../reports'),
     'ocis': False,
     'custom_lib': os.path.abspath('../shared/scripts/custom_lib'),
 }
@@ -96,15 +121,24 @@ def init_config():
         if key == 'maxSyncTimeout' or key == 'minSyncTimeout':
             CONFIG[key] = builtins.int(value)
         elif (
+            key == 'localBackendUrl'
+            or key == 'middlewareUrl'
+            or key == 'secureLocalBackendUrl'
+        ):
+            # make sure there is always one trailing slash
+            CONFIG[key] = value.rstrip('/') + '/'
+        elif (
             key == 'clientRootSyncPath'
             or key == 'tempFolderPath'
             or key == 'clientConfigDir'
             or key == 'guiTestReportDir'
-            or key == 'localBackendUrl'
-            or key == 'middlewareUrl'
         ):
             # make sure there is always one trailing slash
-            CONFIG[key] = value.rstrip('/') + '/'
+            if isWindows():
+                value = value.replace('/', '\\')
+                CONFIG[key] = value.rstrip('\\') + '\\'
+            else:
+                CONFIG[key] = value.rstrip('/') + '/'
 
 
 def get_config(key=None):

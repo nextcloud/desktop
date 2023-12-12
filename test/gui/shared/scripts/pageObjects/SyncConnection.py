@@ -16,12 +16,6 @@ class SyncConnection:
         "window": names.settings_OCC_SettingsDialog,
         "visible": 1,
     }
-    ENABLE_VFS_CONFIRMATION_BUTTON = {
-        "text": "Enable experimental placeholder mode",
-        "type": "QPushButton",
-        "visible": 1,
-        "window": names.enable_experimental_feature_QMessageBox,
-    }
     DISABLE_VFS_CONFIRMATION_BUTTON = {
         "text": "Disable support",
         "type": "QPushButton",
@@ -56,10 +50,7 @@ class SyncConnection:
 
     @staticmethod
     def enableVFS():
-        SyncConnection.performAction("Enable virtual file support (experimental)...")
-        squish.clickButton(
-            squish.waitForObject(SyncConnection.ENABLE_VFS_CONFIRMATION_BUTTON)
-        )
+        SyncConnection.performAction("Enable virtual file support...")
 
     @staticmethod
     def disableVFS():

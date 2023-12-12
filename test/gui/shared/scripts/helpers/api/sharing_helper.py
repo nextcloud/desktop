@@ -1,7 +1,7 @@
 import json
-from os import path
 from types import MappingProxyType
 from helpers.ConfigHelper import get_config
+from helpers.api.utils import url_join
 import helpers.api.HttpHelper as request
 import helpers.api.Provisioning as provisioning
 
@@ -13,7 +13,7 @@ share_types = MappingProxyType(
 
 def get_share_url():
     return provisioning.format_json(
-        path.join(
+        url_join(
             get_config('localBackendUrl'),
             'ocs',
             'v2.php',
@@ -27,7 +27,7 @@ def get_share_url():
 
 
 def get_public_endpoint():
-    return path.join(get_config('localBackendUrl'), 'remote.php', 'dav', 'public-files')
+    return url_join(get_config('localBackendUrl'), 'remote.php', 'dav', 'public-files')
 
 
 def get_public_link_shares(user):
@@ -67,7 +67,7 @@ def download_last_public_link_resource(user, resource, public_link_password=None
         )
 
     api_url = provisioning.format_json(
-        path.join(get_public_endpoint(), share["token"], resource)
+        url_join(get_public_endpoint(), share["token"], resource)
     )
 
     response = request.get(api_url, user='public', password=public_link_password)

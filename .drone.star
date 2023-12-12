@@ -170,7 +170,7 @@ def unit_test_pipeline(ctx):
     }]
 
 def gui_test_pipeline(ctx):
-    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false  --tags ~@skip" % dir["guiTestReport"]
+    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false  --tags ~@skip --tags ~@skipOnLinux" % dir["guiTestReport"]
     pipelines = []
     for server, params in config["gui-tests"]["servers"].items():
         if params.get("skip", False):

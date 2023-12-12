@@ -3,6 +3,15 @@ import subprocess
 import squish
 
 
+def getClipboardText():
+    try:
+        return squish.getClipboardText()
+    except:
+        # Retry after 2 seconds
+        squish.snooze(2)
+        return squish.getClipboardText()
+
+
 def authorize_via_webui(username, password, login_type="oidc"):
     script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -12,7 +21,7 @@ def authorize_via_webui(username, password, login_type="oidc"):
     envs = {
         'OC_USERNAME': username.strip('"'),
         'OC_PASSWORD': password.strip('"'),
-        'OC_AUTH_URL': squish.getClipboardText(),
+        'OC_AUTH_URL': getClipboardText(),
     }
     proc = subprocess.run(
         "pnpm run %s-login" % login_type,

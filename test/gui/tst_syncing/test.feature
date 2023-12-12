@@ -68,6 +68,7 @@ Feature: Syncing files
         When the user selects manual sync folder option in advanced section
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
+        And the user disables VFS support for Windows
         Then the sync all checkbox should be checked
         When user unselects all the remote folders
         And the user adds the folder sync connection
@@ -89,6 +90,7 @@ Feature: Syncing files
         When the user selects manual sync folder option in advanced section
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
+        And the user disables VFS support for Windows
         And the user selects the following folders to sync:
             | folder        |
             | simple-folder |
@@ -124,6 +126,7 @@ Feature: Syncing files
         When the user selects manual sync folder option in advanced section
         And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
+        And the user disables VFS support for Windows
         # folders are sorted by name in ascending order by default
         Then the folders should be in the following order:
             | folder    |
@@ -162,7 +165,16 @@ Feature: Syncing files
             | foldername                                                               |
             | "myFolder"                                                               |
             | "really long folder name with some spaces and special char such as $%ñ&" |
-            | "folder with space at end "                                              |
+
+    @skipOnWindows
+    Scenario Outline: Syncing a folder having space at the end
+        Given user "Alice" has set up a client with default settings
+        When user "Alice" creates a folder <foldername> inside the sync folder
+        And the user waits for folder <foldername> to be synced
+        Then as "Alice" folder <foldername> should exist in the server
+        Examples:
+            | foldername                  |
+            | "folder with space at end " |
 
 
     Scenario: Many subfolders can be synced
@@ -237,7 +249,7 @@ Feature: Syncing files
         And as "Alice" folder "Folder1/subFolder1" should exist in the server
         And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist in the server
 
-
+    @skipOnWindows
     Scenario: Filenames that are rejected by the server are reported
         Given user "Alice" has created folder "Folder1" in the server
         And user "Alice" has set up a client with default settings
@@ -250,8 +262,8 @@ Feature: Syncing files
         Then the file "Folder1/a\\a.txt" should exist on the file system
         And the file "Folder1/a\\a.txt" should be blacklisted
 
-
-    Scenario Outline: Verify one empty folder with a length longer than the allowed limit will not be synced
+    @skipOnWindows
+    Scenario Outline: Sync long nested folder
         Given user "Alice" has created folder "<foldername>" in the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "<foldername>/<foldername>" inside the sync folder
@@ -267,7 +279,7 @@ Feature: Syncing files
             | foldername                                                      |
             | An empty folder which name is obviously more than 59 characters |
 
-
+    @skipOnWindows
     Scenario: Invalid system names are synced in linux
         Given user "Alice" has created folder "CON" in the server
         And user "Alice" has created folder "test%" in the server
@@ -282,6 +294,18 @@ Feature: Syncing files
         And as "Alice" folder "test%" should exist in the server
         And as "Alice" file "/PRN" should exist in the server
         And as "Alice" file "/foo%" should exist in the server
+
+    @skipOnLinux
+    Scenario: Sync invalid system names in windows
+        Given user "Alice" has created folder "CON" in the server
+        And user "Alice" has created folder "test%" in the server
+        And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
+        And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
+        And user "Alice" has set up a client with default settings
+        Then the folder "test%" should exist on the file system
+        And the file "foo%" should exist on the file system
+        But the folder "CON" should not exist on the file system
+        And the file "PRN" should not exist on the file system
 
 
     Scenario: various types of files can be synced from server to client
@@ -427,6 +451,7 @@ Feature: Syncing files
         When the user selects manual sync folder option in advanced section
         And the user sets the temp folder "~`!@#$^&()-_=+{[}];',)PRN%" as local sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
+        And the user disables VFS support for Windows
         And the user selects the following folders to sync:
             | folder                  |
             | ~`!@#$^&()-_=+{[}];',)  |

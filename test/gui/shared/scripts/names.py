@@ -44,7 +44,6 @@ add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchroniz
 deselect_remote_folders_you_do_not_wish_to_synchronize_ownCloud_QModelIndex = {"column": 0, "container": add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget, "text": "ownCloud", "type": "QModelIndex"}
 loginRequiredDialog_OCC_LoginRequiredDialog = {"name": "LoginRequiredDialog", "type": "OCC::LoginRequiredDialog", "visible": 1}
 loginRequiredDialog_contentWidget_QStackedWidget = {"name": "contentWidget", "type": "QStackedWidget", "visible": 1, "window": loginRequiredDialog_OCC_LoginRequiredDialog}
-enable_experimental_feature_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Enable experimental feature?"}
 o_folderList_ownCloud_QModelIndex = {"column": 0, "container": stack_folderList_QTreeView, "text": "ownCloud", "type": "QModelIndex"}
 contentWidget_contentWidget_QStackedWidget = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "contentWidget", "type": "QStackedWidget", "visible": 1}
 o_folderList_Personal_QModelIndex = {"column": 0, "container": stack_folderList_QTreeView, "text": "Personal", "type": "QModelIndex"}

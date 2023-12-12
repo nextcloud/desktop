@@ -88,12 +88,27 @@ class PublicLinkDialog:
         "visible": 1,
     }
 
+    DATE_FORMATS = [
+        "%m/%d/%Y",
+        "%d/%m/%Y",
+        "%Y-%m-%d",
+        "%d-%m-%Y",
+        "%Y/%m/%d",
+        "%m/%d/%y",
+        "%d/%m/%y",
+    ]
     # to store current default public link expiry date
     defaultExpiryDate = ''
 
     @staticmethod
     def parseDate(date):
-        return str(datetime.strptime(date, '%m/%d/%y')).split(' ')[0]
+        for format in PublicLinkDialog.DATE_FORMATS:
+            try:
+                date = str(datetime.strptime(date, format)).split(' ')[0]
+                break
+            except:
+                pass
+        return date
 
     @staticmethod
     def setDefaultExpiryDate(defaultDate):

@@ -10,13 +10,15 @@ from pageObjects.AccountSetting import AccountSetting
 
 from helpers.SetupClientHelper import getResourcePath
 from helpers.SyncHelper import waitForClientToBeReady
-from helpers.ConfigHelper import get_config
+from helpers.ConfigHelper import get_config, isWindows
 from helpers.FilesHelper import (
     buildConflictedRegex,
     sanitizePath,
     can_read,
     can_write,
     read_file_content,
+    is_empty_sync_folder,
+    get_size_in_bytes,
 )
 from helpers.SetupClientHelper import (
     getTempResourcePath,
@@ -58,8 +60,9 @@ def createFileWithSize(filename, filesize, isTempFolder=False):
         file = join(get_config('tempFolderPath'), filename)
     else:
         file = getResourcePath(filename)
-    cmd = "truncate -s {filesize} {file}".format(filesize=filesize, file=file)
-    os.system(cmd)
+    with open(file, "wb") as f:
+        f.seek(get_size_in_bytes(filesize) - 1)
+        f.write(b'\0')
 
 
 def writeFile(resource, content):
@@ -241,16 +244,9 @@ def step(context, itemType, resource):
     else:
         raise Exception("No such item type for resource")
 
-    isSyncFolderEmpty = True
-    for item in os.listdir(getResourcePath()):
-        # do not count the hidden files as they are ignored by the client
-        if not item.startswith("."):
-            isSyncFolderEmpty = False
-            break
-
     # if the sync folder is empty after deleting file,
     # a dialog will popup asking to confirm "Remove all files"
-    if isSyncFolderEmpty:
+    if is_empty_sync_folder(getResourcePath()):
         try:
             AccountSetting.confirmRemoveAllFiles()
         except:

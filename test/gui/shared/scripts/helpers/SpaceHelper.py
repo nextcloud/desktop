@@ -3,6 +3,7 @@ from urllib import parse
 from os import path
 
 from helpers.ConfigHelper import get_config
+from helpers.api.utils import url_join
 import helpers.api.HttpHelper as request
 
 created_spaces = {}
@@ -11,15 +12,15 @@ space_role = ['manager', 'editor', 'viewer']
 
 
 def get_space_endpint():
-    return path.join(get_config('localBackendUrl'), 'graph', 'v1.0', 'drives')
+    return url_join(get_config('localBackendUrl'), 'graph', 'v1.0', 'drives')
 
 
 def get_dav_endpint():
-    return path.join(get_config('localBackendUrl'), 'dav', 'spaces')
+    return url_join(get_config('localBackendUrl'), 'dav', 'spaces')
 
 
 def get_share_endpint():
-    return path.join(
+    return url_join(
         get_config('localBackendUrl'),
         'ocs/v2.php/apps',
         'files_sharing/api/v1/shares',
@@ -85,7 +86,7 @@ def delete_project_spaces():
 
 
 def disable_project_space(space_id):
-    url = path.join(get_space_endpint(), space_id)
+    url = url_join(get_space_endpint(), space_id)
     response = request.delete(url)
     if response.status_code != 204:
         raise Exception(
@@ -95,7 +96,7 @@ def disable_project_space(space_id):
 
 
 def delete_project_space(space_id):
-    url = path.join(get_space_endpint(), space_id)
+    url = url_join(get_space_endpint(), space_id)
     response = request.delete(url, {"Purge": "T"})
     if response.status_code != 204:
         raise Exception(
@@ -106,7 +107,7 @@ def delete_project_space(space_id):
 
 def create_space_folder(space_name, folder_name):
     space_id = get_space_id(space_name)
-    url = path.join(get_dav_endpint(), space_id, folder_name)
+    url = url_join(get_dav_endpint(), space_id, folder_name)
     response = request.mkcol(url)
     if response.status_code != 201:
         raise Exception(
@@ -118,7 +119,7 @@ def create_space_folder(space_name, folder_name):
 
 def create_space_file(space_name, file_name, content):
     space_id = get_space_id(space_name)
-    url = path.join(get_dav_endpint(), space_id, file_name)
+    url = url_join(get_dav_endpint(), space_id, file_name)
     response = request.put(url, content)
     if response.status_code != 201 and response.status_code != 204:
         raise Exception(
@@ -156,7 +157,7 @@ def add_user_to_space(user, space_name, role):
 
 def get_file_content(space_name, file_name, user=None):
     space_id = get_space_id(space_name, user)
-    url = path.join(get_dav_endpint(), space_id, file_name)
+    url = url_join(get_dav_endpint(), space_id, file_name)
     response = request.get(url=url, user=user)
     if response.status_code != 200:
         raise Exception(
@@ -169,7 +170,7 @@ def get_file_content(space_name, file_name, user=None):
 
 def resource_exists(space_name, resource, user=None):
     space_id = get_space_id(space_name, user)
-    url = path.join(get_dav_endpint(), space_id, resource)
+    url = url_join(get_dav_endpint(), space_id, resource)
     response = request.get(url=url, user=user)
     if response.status_code == 200:
         return True
