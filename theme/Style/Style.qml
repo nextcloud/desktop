@@ -83,6 +83,10 @@ QtObject {
     property int accountDropDownCaretSize: 20
     property int accountDropDownCaretMargin: 8
 
+    property int trayFoldersMenuButtonStateIndicatorBottomOffset: 5
+    property double trayFoldersMenuButtonDropDownCaretIconSizeFraction: 0.3
+    property double trayFoldersMenuButtonMainIconSizeFraction: 1.0 - trayFoldersMenuButtonDropDownCaretIconSizeFraction
+
     property int addAccountButtonHeight: 50
 
     property int headerButtonIconSize: 32
