@@ -1,21 +1,19 @@
-import urllib.parse
+from urllib.parse import quote
 import helpers.api.HttpHelper as request
+from helpers.api.utils import url_join
 from helpers.ConfigHelper import get_config
-from os import path
 import xml.etree.ElementTree as ET
 
 
 def get_webdav_url():
-    return path.join(get_config('localBackendUrl'), "remote.php", "dav", 'files')
+    return url_join(get_config('localBackendUrl'), "remote.php/dav/files")
 
 
 def get_resource_path(user, resource):
-    resource = resource.strip('/')
-    encoded_resource_path = [
-        urllib.parse.quote(path, safe='') for path in resource.split('/')
-    ]
+    resource = resource.strip('/').replace("\\", "/")
+    encoded_resource_path = [quote(path, safe='') for path in resource.split('/')]
     encoded_resource_path = '/'.join(encoded_resource_path)
-    url = path.join(get_webdav_url(), user, encoded_resource_path)
+    url = url_join(get_webdav_url(), user, encoded_resource_path)
     return url
 
 

@@ -3,9 +3,13 @@ import subprocess
 import glob
 import re
 from datetime import datetime
+from helpers.ConfigHelper import isWindows
 
 
 def getCoredumps():
+    # TODO: find a way to use coredump in windows
+    if isWindows():
+        return False
     # read coredump location
     with open("/proc/sys/kernel/core_pattern", "r") as f:
         coredumpPath = f.read().strip("\n")

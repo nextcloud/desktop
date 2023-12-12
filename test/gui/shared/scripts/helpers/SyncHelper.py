@@ -6,27 +6,30 @@ import urllib
 from squish import waitFor, snooze
 
 from helpers.FilesHelper import sanitizePath
-from helpers.ConfigHelper import get_config
+from helpers.ConfigHelper import get_config, isLinux, isWindows
 
-# NOTE: 'syncstate.py' was removed from client
-# and is now available at https://github.com/owncloud/client-desktop-shell-integration-nautilus
-# check if 'syncstate.py' is available, if not, download it
-custom_lib = get_config('custom_lib')
-syncstate_lib_file = os.path.join(custom_lib, 'syncstate.py')
-os.makedirs(custom_lib, exist_ok=True)
 
-if not os.path.exists(syncstate_lib_file):
-    url = "https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py"
-    urllib.request.urlretrieve(url, os.path.join(custom_lib, 'syncstate.py'))
+if isLinux():
+    # NOTE: 'syncstate.py' was removed from client
+    # and is now available at https://github.com/owncloud/client-desktop-shell-integration-nautilus
+    # check if 'syncstate.py' is available, if not, download it
+    custom_lib = get_config('custom_lib')
+    syncstate_lib_file = os.path.join(custom_lib, 'syncstate.py')
+    os.makedirs(custom_lib, exist_ok=True)
 
-# the script needs to use the system wide python
-# to switch from the built-in interpreter
-#   see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
-# if the IDE fails to reference the script,
-#   add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
-sys.path.append(custom_lib)
-from syncstate import SocketConnect
+    if not os.path.exists(syncstate_lib_file):
+        url = "https://raw.github.com/owncloud/client-desktop-shell-integration-nautilus/master/src/syncstate.py"
+        urllib.request.urlretrieve(url, os.path.join(custom_lib, 'syncstate.py'))
 
+    # the script needs to use the system wide python
+    # to switch from the built-in interpreter
+    #   see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
+    # if the IDE fails to reference the script,
+    # add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
+    sys.path.append(custom_lib)
+    from syncstate import SocketConnect
+elif isWindows():
+    from helpers.WinPipeHelper import WinPipeConnect as SocketConnect
 
 # socket messages
 socket_messages = []
@@ -63,7 +66,23 @@ SYNC_PATTERNS = {
         # when syncing an account that has some files/folders
         [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
     ],
-    'synced': [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
+    'synced': [
+        [
+            SYNC_STATUS['SYNC'],
+            SYNC_STATUS['OK'],
+            SYNC_STATUS['OK'],
+            SYNC_STATUS['OK'],
+            SYNC_STATUS['UPDATE'],
+        ],
+        [
+            SYNC_STATUS['SYNC'],
+            SYNC_STATUS['UPDATE'],
+            SYNC_STATUS['OK'],
+            SYNC_STATUS['OK'],
+            SYNC_STATUS['OK'],
+            SYNC_STATUS['UPDATE'],
+        ],
+    ],
     'error': [SYNC_STATUS['ERROR']],
 }
 
@@ -111,7 +130,10 @@ def closeSocketConnection():
     socket_messages.clear()
     if socketConnect:
         socketConnect.connected = False
-        socketConnect._sock.close()
+        if isWindows():
+            socketConnect.close_conn()
+        elif isLinux():
+            socketConnect._sock.close()
 
 
 def getInitialSyncPatterns():
@@ -136,7 +158,7 @@ def generateSyncPatternFromMessages(messages):
         # E.g; from "STATUS:OK:/tmp/client-bdd/Alice/"
         # excludes ":/tmp/client-bdd/Alice/"
         # adds only "STATUS:OK" to the pattern list
-        match = re.search(":/.*", message)
+        match = re.search(":(/|[A-Z]{1}:\\\\).*", message)
         if match:
             (end, _) = match.span()
             # shared resources will have status like "STATUS:OK+SWM"
@@ -156,7 +178,9 @@ def filterSyncMessages(messages):
 def filterMessagesForItem(messages, item):
     filteredMsg = []
     for msg in messages:
-        if msg.rstrip('/').endswith(item.rstrip('/')):
+        msg = msg.rstrip('/').rstrip('\\')
+        item = item.rstrip('/').rstrip('\\')
+        if msg.endswith(item):
             filteredMsg.append(msg)
     return filteredMsg
 
@@ -166,6 +190,7 @@ def listenSyncStatusForItem(item, type='FOLDER'):
     if type != 'FILE' and type != 'FOLDER':
         raise Exception("type must be 'FILE' or 'FOLDER'")
     socketConnect = getSocketConnection()
+    item = item.rstrip('\\')
     socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + item + "\n")
 
 
@@ -246,7 +271,9 @@ def hasSyncStatus(itemName, status):
     sync_messages = readAndUpdateSocketMessages()
     sync_messages = filterMessagesForItem(sync_messages, itemName)
     for line in sync_messages:
-        if line.startswith(status) and line.rstrip('/').endswith(itemName.rstrip('/')):
+        line = line.rstrip('/').rstrip('\\')
+        itemName = itemName.rstrip('/').rstrip('\\')
+        if line.startswith(status) and line.endswith(itemName):
             return True
     return False
 

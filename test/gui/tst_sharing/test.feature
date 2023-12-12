@@ -58,15 +58,15 @@ Feature: Sharing
 
     Scenario: Share files/folders with special characters in their name
         Given user "Brian" has been created on the server with default attributes and without skeleton files
-        And user "Alice" has created folder "SampleFolder,With,$pecial?Characters" in the server
-        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/$ample1?.txt" in the server
+        And user "Alice" has created folder "SampleFolder,With,$pecial#Characters" in the server
+        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/$ample1#.txt" in the server
         And user "Alice" has set up a client with default settings
-        When the user adds "Brian Murphy" as collaborator of resource "SampleFolder,With,$pecial?Characters" with permissions "edit,share" using the client-UI
-        And the user adds "Brian Murphy" as collaborator of resource "$ample1?.txt" with permissions "edit,share" using the client-UI
-        Then user "Brian Murphy" should be listed in the collaborators list for file "SampleFolder,With,$pecial?Characters" with permissions "edit,share" on the client-UI
-        And user "Brian Murphy" should be listed in the collaborators list for file "$ample1?.txt" with permissions "edit,share" on the client-UI
-        And as "Brian" folder "SampleFolder,With,$pecial?Characters" should exist in the server
-        And as "Brian" file "$ample1?.txt" should exist in the server
+        When the user adds "Brian Murphy" as collaborator of resource "SampleFolder,With,$pecial#Characters" with permissions "edit,share" using the client-UI
+        And the user adds "Brian Murphy" as collaborator of resource "$ample1#.txt" with permissions "edit,share" using the client-UI
+        Then user "Brian Murphy" should be listed in the collaborators list for file "SampleFolder,With,$pecial#Characters" with permissions "edit,share" on the client-UI
+        And user "Brian Murphy" should be listed in the collaborators list for file "$ample1#.txt" with permissions "edit,share" on the client-UI
+        And as "Brian" folder "SampleFolder,With,$pecial#Characters" should exist in the server
+        And as "Brian" file "$ample1#.txt" should exist in the server
 
 
     Scenario: try to share a file/folder with a user to whom the file has already been shared
@@ -489,7 +489,7 @@ Feature: Sharing
         Then the expiration date of the last public link of file "textfile.txt" should be "%default%"
         And as user "Alice" the file "textfile.txt" should have a public link in the server
 
-    @issue-9321
+    @issue-9321 @skipOnWindows
     Scenario: simple sharing of file and folder by public link with expiration date
         Given user "Alice" has created folder "FOLDER" in the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" in the server
@@ -508,7 +508,7 @@ Feature: Sharing
         And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-12-30 |
 
-    @issue-9321
+    @issue-9321 @skipOnWindows
     Scenario: simple sharing of a file by public link with password and expiration date
         Given user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" in the server
         And user "Alice" has set up a client with default settings
@@ -521,7 +521,7 @@ Feature: Sharing
             | expireDate | 2031-10-14 |
         And the public should be able to download the file "textfile.txt" with password "pass123" from the last created public link by "Alice" in the server
 
-    @skip @issue-9321
+    @skip @issue-9321 @skipOnWindows
     Scenario: user changes the expiration date of an already existing public link for file using client-UI
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" in the server
         And user "Alice" has created a public link on the server with following settings
@@ -535,7 +535,7 @@ Feature: Sharing
         Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
 
-    @skip @issue-9321
+    @skip @issue-9321 @skipOnWindows
     Scenario: user changes the expiration date of an already existing public link for folder using client-UI
         Given user "Alice" has created folder "simple-folder" in the server
         And user "Alice" has created a public link on the server with following settings

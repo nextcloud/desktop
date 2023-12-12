@@ -1,7 +1,7 @@
-import os
 import requests
 from base64 import b64encode
 from helpers.ConfigHelper import get_config
+from helpers.api.utils import url_join
 
 createdUsers = {}
 
@@ -22,7 +22,7 @@ def getCreatedUsersFromMiddleware():
     createdUsers = {}
     try:
         res = requests.get(
-            os.path.join(get_config('middlewareUrl'), 'state'),
+            url_join(get_config('middlewareUrl'), 'state'),
             headers={"Content-Type": "application/json"},
         )
         createdUsers = res.json()['created_users']

@@ -16,7 +16,8 @@ Feature: adding accounts
             | user     | Alice          |
             | password | 1234           |
         When the user opens the advanced configuration
-        Then the download everything option should be selected by default
+        Then the download everything option should be selected by default for Linux
+        And the VFS option should be selected by default for Windows
         And the user should be able to choose the local download directory
 
 
@@ -58,30 +59,15 @@ Feature: adding accounts
         And the user accepts the certificate
         Then credentials wizard should be visible
 
-
-    @skip @issue-11393
-    Scenario: Adding account with vfs enabled
+    @skipOnLinux
+    Scenario: Adding account with vfs disabled
         Given the user has started the client
         And the user has entered the following account information:
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        When the user selects vfs option in advanced section
-        And the user confirms the enable experimental vfs option
-        Then VFS enabled baseline image should match the default screenshot
-
-
-    @skip @issue-11393
-    Scenario: Try to enable experimental vfs option and cancel it
-        Given the user has started the client
-        And the user has entered the following account information:
-            | server   | %local_server% |
-            | user     | Alice          |
-            | password | 1234           |
-        When the user selects vfs option in advanced section
-        And the user cancels the enable experimental vfs option
-        Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
-        And VFS enabled baseline image should not match the default screenshot
+        When the user selects download everything option in advanced section
+        Then the "Enable virtual file support..." button should be available
 
     @skipOnOC10
     Scenario: Add space manually from sync connection window

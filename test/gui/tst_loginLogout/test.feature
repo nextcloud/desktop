@@ -13,7 +13,7 @@ Feature:  Logout users
     Then user "Alice" should be signed out
 
 
-  Scenario: login after loggin out
+  Scenario: login after logging out
     Given user "Alice" has set up a client with default settings
     And user "Alice" has logged out of the client-UI
     When user "Alice" logs in to the client-UI

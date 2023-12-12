@@ -1,8 +1,8 @@
 import urllib.request
 import json
-from os import path
 from helpers.ConfigHelper import get_config
 from helpers.api.Provisioning import setup_app
+from helpers.api.utils import url_join
 import helpers.api.webdav_helper as webdav
 import helpers.api.sharing_helper as sharing_helper
 
@@ -15,7 +15,7 @@ def executeStepThroughMiddleware(context, step):
     params = json.dumps(body).encode('utf8')
 
     req = urllib.request.Request(
-        path.join(get_config('middlewareUrl'), 'execute'),
+        url_join(get_config('middlewareUrl'), 'execute'),
         data=params,
         headers={"Content-Type": "application/json"},
         method='POST',

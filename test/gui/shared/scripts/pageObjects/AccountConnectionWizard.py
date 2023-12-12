@@ -116,21 +116,7 @@ class AccountConnectionWizard:
         "type": "QRadioButton",
         "visible": 1,
     }
-    ENABLE_EXPERIMENTAL_FEATURE_BUTTON = {
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "text": "Enable experimental placeholder mode",
-        "type": "QPushButton",
-        "unnamed": 1,
-        "visible": 1,
-    }
-    STAY_SAFE_BUTTON = {
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "text": "Stay safe",
-        "type": "QPushButton",
-        "unnamed": 1,
-        "visible": 1,
-    }
-    CONF_SYNC_EVERYTHING_RADIO_BUTTON = {
+    SYNC_EVERYTHING_RADIO_BUTTON = {
         "container": names.advancedConfigGroupBox_syncModeGroupBox_QGroupBox,
         "name": "syncEverythingRadioButton",
         "type": "QRadioButton",
@@ -295,17 +281,9 @@ class AccountConnectionWizard:
         )
 
     @staticmethod
-    def confirmEnableExperimentalVFSOption():
+    def selectDownloadEverythingOption():
         squish.clickButton(
-            squish.waitForObject(
-                AccountConnectionWizard.ENABLE_EXPERIMENTAL_FEATURE_BUTTON
-            )
-        )
-
-    @staticmethod
-    def cancelEnableExperimentalVFSOption():
-        squish.clickButton(
-            squish.waitForObject(AccountConnectionWizard.STAY_SAFE_BUTTON)
+            squish.waitForObject(AccountConnectionWizard.SYNC_EVERYTHING_RADIO_BUTTON)
         )
 
     @staticmethod
@@ -359,7 +337,16 @@ class AccountConnectionWizard:
     def isSyncEverythingOptionChecked():
         return (
             squish.waitForObjectExists(
-                AccountConnectionWizard.CONF_SYNC_EVERYTHING_RADIO_BUTTON
+                AccountConnectionWizard.SYNC_EVERYTHING_RADIO_BUTTON
+            ).checked
+            == True
+        )
+
+    @staticmethod
+    def isVFSOptionChecked():
+        return (
+            squish.waitForObjectExists(
+                AccountConnectionWizard.VIRTUAL_FILE_RADIO_BUTTON
             ).checked
             == True
         )

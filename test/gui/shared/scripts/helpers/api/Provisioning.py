@@ -1,16 +1,22 @@
-from os import path
 import json
 
 import helpers.api.HttpHelper as request
+from helpers.api.utils import url_join
 from helpers.ConfigHelper import get_config
 
 
 def get_ocs_url():
-    return path.join(get_config('localBackendUrl'), 'ocs', "v2.php", 'cloud')
+    return url_join(get_config('localBackendUrl'), 'ocs', "v2.php", 'cloud')
 
 
 def format_json(url):
     return url + "?format=json"
+
+
+def assertHttpStatus(response, expected_code):
+    assert (
+        response.status_code == expected_code
+    ), f"Request failed with status code '{response.status_code}'"
 
 
 def checkSuccessOcsStatus(response):
@@ -25,14 +31,16 @@ def checkSuccessOcsStatus(response):
 
 
 def enable_app(app_name):
-    url = format_json(path.join(get_ocs_url(), "apps", app_name))
+    url = format_json(url_join(get_ocs_url(), "apps", app_name))
     response = request.post(url)
+    assertHttpStatus(response, 200)
     checkSuccessOcsStatus(response)
 
 
 def disable_app(app_name):
-    url = format_json(path.join(get_ocs_url(), "apps", app_name))
+    url = format_json(url_join(get_ocs_url(), "apps", app_name))
     response = request.delete(url)
+    assertHttpStatus(response, 200)
     checkSuccessOcsStatus(response)
 
 
