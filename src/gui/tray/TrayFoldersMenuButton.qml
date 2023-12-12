@@ -20,6 +20,8 @@ import Style 1.0
 HeaderButton {
     id: root
 
+    implicitWidth: contentItem.implicitWidth
+
     signal folderEntryTriggered(string fullFolderPath, bool isGroupFolder)
 
     required property var currentUser
@@ -55,87 +57,104 @@ HeaderButton {
         text: root.userHasGroupFolders ? qsTr("Open local or group folders") : qsTr("Open local folder")
     }
 
-    Image {
-        id: folderStateIndicator
-        visible: root.currentUser.hasLocalFolder
-        source: root.currentUser.isConnected ? Style.stateOnlineImageSource : Style.stateOfflineImageSource
-        cache: false
-
-        anchors.top: root.verticalCenter
-        anchors.left: root.horizontalCenter
-        sourceSize.width: Style.folderStateIndicatorSize
-        sourceSize.height: Style.folderStateIndicatorSize
-
-        Accessible.role: Accessible.Indicator
-        Accessible.name: root.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
-        z: 1
-
-        Rectangle {
-            id: folderStateIndicatorBackground
-            width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
-            height: width
-            anchors.centerIn: parent
-            color: Style.currentUserHeaderColor
-            radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-            z: -2
-        }
-
-        Rectangle {
-            id: folderStateIndicatorBackgroundMouseHover
-            width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
-            height: width
-            anchors.centerIn: parent
-            color: root.hovered ? Style.currentUserHeaderTextColor : "transparent"
-            opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
-            radius: width * Style.trayFolderStatusIndicatorRadiusFactor
-            z: -1
-        }
-    }
-
-    RowLayout {
-        id: openLocalFolderButtonRowLayout
+    contentItem: Item {
+        id: rootContent
 
         anchors.fill: parent
-        spacing: 0
 
-        Image {
-            id: openLocalFolderButtonIcon
-            cache: true
-            source: "image://svgimage-custom-color/folder.svg/" + Style.currentUserHeaderTextColor
+        Item {
+            id: contentContainer
+            anchors.centerIn: parent
 
-            sourceSize {
-                width: Style.headerButtonIconSize
-                height: Style.headerButtonIconSize
+            implicitWidth: openLocalFolderButtonCaretIconLoader.active ? openLocalFolderButtonIcon.width + openLocalFolderButtonCaretIconLoader.width : openLocalFolderButtonIcon.width
+            implicitHeight: openLocalFolderButtonIcon.height
+
+            Image {
+                id: folderStateIndicator
+                visible: root.currentUser.hasLocalFolder
+                source: root.currentUser.isConnected ? Style.stateOnlineImageSource : Style.stateOfflineImageSource
+                cache: false
+
+                anchors.bottom: openLocalFolderButtonIcon.bottom
+                anchors.bottomMargin: Style.trayFoldersMenuButtonStateIndicatorBottomOffset
+                anchors.right: openLocalFolderButtonIcon.right
+                sourceSize.width: Style.folderStateIndicatorSize
+                sourceSize.height: Style.folderStateIndicatorSize
+
+                Accessible.role: Accessible.Indicator
+                Accessible.name: root.currentUser.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                z: 1
+
+                Rectangle {
+                    id: folderStateIndicatorBackground
+                    width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+                    height: width
+                    anchors.centerIn: parent
+                    color: Style.currentUserHeaderColor
+                    radius: width * Style.trayFolderStatusIndicatorRadiusFactor
+                    z: -2
+                }
+
+                Rectangle {
+                    id: folderStateIndicatorBackgroundMouseHover
+                    width: Style.folderStateIndicatorSize + Style.trayFolderStatusIndicatorSizeOffset
+                    height: width
+                    anchors.centerIn: parent
+                    color: root.hovered ? Style.currentUserHeaderTextColor : "transparent"
+                    opacity: Style.trayFolderStatusIndicatorMouseHoverOpacityFactor
+                    radius: width * Style.trayFolderStatusIndicatorRadiusFactor
+                    z: -1
+                }
             }
 
-            verticalAlignment: Qt.AlignCenter
+            Image {
+                id: openLocalFolderButtonIcon
 
-            Accessible.role: Accessible.Graphic
-            Accessible.name: qsTr("Group folder button")
-            Layout.leftMargin: Style.trayHorizontalMargin
-        }
+                property int imageWidth: rootContent.width * Style.trayFoldersMenuButtonMainIconSizeFraction
+                property int imageHeight: rootContent.width * Style.trayFoldersMenuButtonMainIconSizeFraction
 
-        Loader {
-            id: openLocalFolderButtonCaretIconLoader
+                cache: true
 
-            active: root.userHasGroupFolders
-            visible: active
-
-            sourceComponent: ColorOverlay {
-                width: source.width
-                height: source.height
-                cached: true
-                color: Style.currentUserHeaderTextColor
-                source: Image {
-                    source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
-                    sourceSize.width: Style.accountDropDownCaretSize
-                    sourceSize.height: Style.accountDropDownCaretSize
-
-                    verticalAlignment: Qt.AlignCenter
-
-                    Layout.alignment: Qt.AlignRight
-                    Layout.margins: Style.accountDropDownCaretMargin
+                source: "image://svgimage-custom-color/folder.svg/" + Style.currentUserHeaderTextColor
+                sourceSize {
+                    width: imageWidth
+                    height: imageHeight
                 }
+
+                width: imageWidth
+                height: imageHeight
+
+                anchors.verticalCenter: parent
+            }
+
+
+            Loader {
+                id: openLocalFolderButtonCaretIconLoader
+
+                active: root.userHasGroupFolders
+                visible: active
+
+                anchors.left: openLocalFolderButtonIcon.right
+                anchors.verticalCenter: openLocalFolderButtonIcon.verticalCenter
+
+                property int imageWidth: rootContent.width * Style.trayFoldersMenuButtonDropDownCaretIconSizeFraction
+                property int imageHeight: rootContent.width * Style.trayFoldersMenuButtonDropDownCaretIconSizeFraction
+
+                sourceComponent: Image {
+                    id: openLocalFolderButtonCaretIcon
+
+                    cache: true
+
+                    source: "image://svgimage-custom-color/caret-down.svg/" + Style.currentUserHeaderTextColor
+                    sourceSize: {
+                        width: openLocalFolderButtonCaretIconLoader.imageWidth
+                        height: openLocalFolderButtonCaretIconLoader.imageHeight
+                    }
+                }
+
+                width: openLocalFolderButtonCaretIconLoader.imageWidth
+                height: openLocalFolderButtonCaretIconLoader.imageHeight
+
             }
         }
     }
