@@ -6141,6 +6141,11 @@ Servern svarade med fel: %2</translation>
         <translation>Kontobytare och inställningsmeny</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Öppna Nextcloud Talk i webbläsaren</translation>
@@ -6161,7 +6166,7 @@ Servern svarade med fel: %2</translation>
         <translation>Sammanlagda sökresultat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>Nya aktiviteter</translation>
     </message>

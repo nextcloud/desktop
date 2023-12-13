@@ -6137,6 +6137,11 @@ Server svarte med feil: %2</translation>
         <translation>Kontobytter og innstillingsmeny</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Åpne Nextcloud Talk i nettleseren</translation>
@@ -6157,7 +6162,7 @@ Server svarte med feil: %2</translation>
         <translation>Samlet søkeresultatliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation type="unfinished"/>
     </message>

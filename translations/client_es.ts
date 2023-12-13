@@ -6143,6 +6143,11 @@ El servidor respondió con el error: %2</translation>
         <translation>Cambiador de cuentas y menú de configuración</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir Nextcloud Talk en el navegador</translation>
@@ -6163,7 +6168,7 @@ El servidor respondió con el error: %2</translation>
         <translation>Unificar la lista de resultados de la búsqueda</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>Nuevas actividades</translation>
     </message>

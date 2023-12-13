@@ -6142,6 +6142,11 @@ Server replied with error: %2</source>
         <translation>帳戶切換器和設置選項單</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>瀏覽器中開啟 Nextclould Talk</translation>
@@ -6162,7 +6167,7 @@ Server replied with error: %2</source>
         <translation>統一搜索結果列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>新活動</translation>
     </message>

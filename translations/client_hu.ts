@@ -6137,6 +6137,11 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Fiókváltó és beállítások menü</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>A Nextcloud Beszélgetés alkalmazás megnyitása böngészőben</translation>
@@ -6157,7 +6162,7 @@ A kiszolgáló hibával válaszolt: %2</translation>
         <translation>Egyesített keresési találatlista</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>Új tevékenység</translation>
     </message>

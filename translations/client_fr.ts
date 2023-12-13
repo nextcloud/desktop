@@ -6140,6 +6140,11 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Sélecteur de compte et menu des paramètres</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Ouvrez Nextcloud Talk dans le navigateur</translation>
@@ -6160,7 +6165,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <translation>Liste de résultats de recherche unifiée</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>Nouvelles activités</translation>
     </message>

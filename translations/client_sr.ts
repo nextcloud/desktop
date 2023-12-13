@@ -6141,6 +6141,11 @@ Server replied with error: %2</source>
         <translation>Пребацивач налога и мени подешавања</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Отвори Nextcloud Talk у прегледачу</translation>
@@ -6161,7 +6166,7 @@ Server replied with error: %2</source>
         <translation>Обједињена листа резултата претраге</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>Нове активности</translation>
     </message>

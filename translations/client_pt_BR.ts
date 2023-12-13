@@ -6135,6 +6135,11 @@ Servidor respondeu com erro: %2</translation>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir o Nextcloud Talk no navegador</translation>
@@ -6155,7 +6160,7 @@ Servidor respondeu com erro: %2</translation>
         <translation>Lista unificada de resultados de pesquisa </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation>Novas atividades</translation>
     </message>
