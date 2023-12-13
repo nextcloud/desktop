@@ -41,7 +41,6 @@ Feature: adding accounts
         Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
         And the account with displayname "Brian Murphy" and host "%local_server_hostname%" should be displayed
 
-
     @skipOnOCIS
     Scenario: Adding account with wrong credentials
         Given the user has started the client
@@ -68,7 +67,6 @@ Feature: adding accounts
             | password | 1234           |
         When the user selects download everything option in advanced section
         Then the "Enable virtual file support..." button should be available
-
 
     @skipOnOC10
     Scenario: Add space manually from sync connection window

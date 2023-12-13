@@ -66,7 +66,7 @@ SYNC_PATTERNS = {
         # when syncing an account that has some files/folders
         [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
     ],
-    'synced': [
+    'root_synced': [
         [
             SYNC_STATUS['SYNC'],
             SYNC_STATUS['OK'],
@@ -83,6 +83,7 @@ SYNC_PATTERNS = {
             SYNC_STATUS['UPDATE'],
         ],
     ],
+    'single_synced': [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
     'error': [SYNC_STATUS['ERROR']],
 }
 
@@ -140,8 +141,15 @@ def getInitialSyncPatterns():
     return SYNC_PATTERNS['initial']
 
 
-def getSyncedPattern():
-    return SYNC_PATTERNS['synced']
+def getSyncedPattern(resource=''):
+    # get only the resource path
+    sync_path = get_config('currentUserSyncPath')
+    if get_config('ocis'):
+        sync_path = os.path.join(sync_path, get_config('syncConnectionName'))
+    resource = resource.replace(sync_path, "").strip('\\').strip('/')
+    if resource:
+        return SYNC_PATTERNS['single_synced']
+    return SYNC_PATTERNS['root_synced']
 
 
 # generate sync pattern from the socket messages
@@ -207,7 +215,7 @@ def waitForFileOrFolderToSync(resource, resourceType='FOLDER', patterns=None):
     timeout = get_config('maxSyncTimeout') * 1000
 
     if patterns is None:
-        patterns = getSyncedPattern()
+        patterns = getSyncedPattern(resource)
 
     synced = waitFor(
         lambda: hasSyncPattern(patterns, resource),
