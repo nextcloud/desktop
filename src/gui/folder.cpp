@@ -56,6 +56,10 @@
 using namespace std::chrono_literals;
 
 namespace {
+/* How oftern to retry a sync
+ * Either due to _engine->isAnotherSyncNeeded or a sync error
+ */
+constexpr int retrySyncLimitC = 3;
 
 /*
  * [Accounts]
@@ -1064,7 +1068,7 @@ void Folder::slotSyncFinished(bool success)
     _fileLog->finish();
     showSyncResultPopup();
 
-    const auto anotherSyncNeeded = _engine->isAnotherSyncNeeded();
+    auto anotherSyncNeeded = false;
 
     auto syncStatus = SyncResult::Status::Undefined;
 
@@ -1084,6 +1088,7 @@ void Folder::slotSyncFinished(bool success)
         _consecutiveFailingSyncs = 0;
     } else {
         _consecutiveFailingSyncs++;
+        anotherSyncNeeded |= _consecutiveFailingSyncs <= retrySyncLimitC;
         qCInfo(lcFolder) << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
@@ -1109,8 +1114,9 @@ void Folder::slotSyncFinished(bool success)
     _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.
-    if (anotherSyncNeeded) {
+    if (_engine->isAnotherSyncNeeded()) {
         _consecutiveFollowUpSyncs++;
+        anotherSyncNeeded |= _consecutiveFollowUpSyncs <= retrySyncLimitC;
         qCInfo(lcFolder) << "another sync was requested by the finished sync, this has"
                          << "happened" << _consecutiveFollowUpSyncs << "times";
     } else {
@@ -1118,7 +1124,7 @@ void Folder::slotSyncFinished(bool success)
     }
 
     // Maybe force a follow-up sync to take place, but only a couple of times.
-    if (anotherSyncNeeded && _consecutiveFollowUpSyncs <= 3) {
+    if (anotherSyncNeeded) {
         // Sometimes another sync is requested because a local file is still
         // changing, so wait at least a small amount of time before syncing
         // the folder again.
