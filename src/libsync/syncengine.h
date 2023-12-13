@@ -44,19 +44,6 @@ class SyncJournalDb;
 class OwncloudPropagator;
 class ProcessDirectoryJob;
 
-
-// work around for only having one namespace OCC, and this enum not beeing in a QObject
-namespace AnotherSyncNeededPrivate {
-    OWNCLOUDSYNC_EXPORT Q_NAMESPACE;
-    enum class AnotherSyncNeeded {
-        NoFollowUpSync,
-        ImmediateFollowUp, // schedule this again immediately (limited amount of times)
-        DelayedFollowUp // regularly schedule this folder again (around 1/minute, unlimited)
-    };
-    Q_ENUM_NS(AnotherSyncNeeded);
-}
-using AnotherSyncNeededPrivate::AnotherSyncNeeded;
-
 /**
  * @brief The SyncEngine class
  * @ingroup libsync
@@ -99,7 +86,7 @@ public:
     SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
 
     /* Returns whether another sync is needed to complete the sync */
-    AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+    bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
@@ -273,7 +260,7 @@ private:
 
     std::optional<SyncOptions> _syncOptions;
 
-    AnotherSyncNeeded _anotherSyncNeeded;
+    bool _anotherSyncNeeded = false;
 
     QElapsedTimer _lastUpdateProgressCallbackCall;
 

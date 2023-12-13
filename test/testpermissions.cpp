@@ -480,7 +480,7 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, QStringLiteral("zallowed/file"), CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, QStringLiteral("zallowed/sub2"), CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, QStringLiteral("zallowed/sub2/file"), CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), AnotherSyncNeeded::ImmediateFollowUp);
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), true);
 
         // A follow-up sync will restore allowed/file and allowed/sub2 and maintain the nocreatedir/file errors
         completeSpy.clear();

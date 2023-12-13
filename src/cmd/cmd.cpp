@@ -150,7 +150,7 @@ void sync(const SyncCTX &ctx)
             qWarning() << "Failed to sync";
             exit(EXIT_FAILURE);
         } else {
-            if (engine->isAnotherSyncNeeded() != AnotherSyncNeeded::NoFollowUpSync) {
+            if (engine->isAnotherSyncNeeded()) {
                 if (*restartCount < ctx.options.restartTimes) {
                     (*restartCount)++;
                     qDebug() << "Restarting Sync, because another sync is needed" << *restartCount;

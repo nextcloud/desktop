@@ -442,7 +442,7 @@ private slots:
 
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         // There was a precondition failed error, this means wen need to sync again
-        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), AnotherSyncNeeded::ImmediateFollowUp);
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), true);
 
         QCOMPARE(fakeFolder.uploadState().children.count(), 1); // We did not clean the chunks at this point
 
@@ -498,7 +498,7 @@ private slots:
         QThread::sleep(1);
 
         // There should be a followup sync
-        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), AnotherSyncNeeded::ImmediateFollowUp);
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), true);
 
         QCOMPARE(fakeFolder.uploadState().children.count(), 1); // We did not clean the chunks at this point
         auto chunkingId = fakeFolder.uploadState().children.first().name;
@@ -679,7 +679,7 @@ private slots:
         QCOMPARE(counter.nPUT, 0);
         QCOMPARE(counter.nMOVE, 1);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), AnotherSyncNeeded::NoFollowUpSync);
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), false);
     }
 };
 

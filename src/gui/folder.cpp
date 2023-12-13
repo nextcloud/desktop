@@ -1064,7 +1064,7 @@ void Folder::slotSyncFinished(bool success)
     _fileLog->finish();
     showSyncResultPopup();
 
-    auto anotherSyncNeeded = _engine->isAnotherSyncNeeded();
+    const auto anotherSyncNeeded = _engine->isAnotherSyncNeeded();
 
     auto syncStatus = SyncResult::Status::Undefined;
 
@@ -1109,7 +1109,7 @@ void Folder::slotSyncFinished(bool success)
     _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.
-    if (anotherSyncNeeded == AnotherSyncNeeded::ImmediateFollowUp) {
+    if (anotherSyncNeeded) {
         _consecutiveFollowUpSyncs++;
         qCInfo(lcFolder) << "another sync was requested by the finished sync, this has"
                          << "happened" << _consecutiveFollowUpSyncs << "times";
@@ -1118,7 +1118,7 @@ void Folder::slotSyncFinished(bool success)
     }
 
     // Maybe force a follow-up sync to take place, but only a couple of times.
-    if (anotherSyncNeeded == AnotherSyncNeeded::ImmediateFollowUp && _consecutiveFollowUpSyncs <= 3) {
+    if (anotherSyncNeeded && _consecutiveFollowUpSyncs <= 3) {
         // Sometimes another sync is requested because a local file is still
         // changing, so wait at least a small amount of time before syncing
         // the folder again.
