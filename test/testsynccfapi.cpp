@@ -1384,6 +1384,32 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A", CSYNC_INSTRUCTION_NONE));
     }
+
+    void testRemoteTypeChangeExistingLocalMustGetRemoved()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        // test file change to directory on remote
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().insert("a/TESTFILE");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/TESTFILE");
+        fakeFolder.remoteModifier().mkdir("a/TESTFILE");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+
+        // test directory change to file on remote
+        fakeFolder.remoteModifier().mkdir("a/TESTDIR");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/TESTDIR");
+        fakeFolder.remoteModifier().insert("a/TESTDIR");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)
