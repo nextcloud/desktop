@@ -352,6 +352,11 @@ public:
     virtual QPair<QString, QString> oauthOverrideAuthUrl() const;
 
     /**
+     * List of ports to use for the local redirect server
+     */
+    virtual QVector<quint16> oauthPorts() const;
+
+    /**
      * Returns the required opeidconnect scopes
      */
     virtual QString openIdConnectScopes() const;
