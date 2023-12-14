@@ -556,6 +556,12 @@ QPair<QString, QString> Theme::oauthOverrideAuthUrl() const
     return {};
 }
 
+QVector<quint16> Theme::oauthPorts() const
+{
+    // zero means a random port
+    return {0};
+}
+
 QString Theme::openIdConnectScopes() const
 {
     return QStringLiteral("openid offline_access email profile");

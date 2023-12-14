@@ -1,0 +1,5 @@
+Enhancement: Add support to provide a list of ports for the OAuth process
+
+We added a branding option that enables us to specify a list of ports that are used for the local server during the OAuth process.
+
+https://github.com/owncloud/client/issues/11276
