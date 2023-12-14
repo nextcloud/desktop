@@ -106,7 +106,8 @@
         <location filename="../src/gui/main.cpp" line="98"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 versioon %2&lt;byte value=&quot;xd&quot;/&gt;
+Failide sünkroniseerimise töölaua rakendus.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="106"/>
@@ -117,12 +118,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="125"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>Alusta nähtava peamise aknaga või kui see juba töötab, too see esiplaanile. Vaikimisi käivitub klient taustal.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="127"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Lõpeta käimasolev instants.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="129"/>
@@ -132,37 +133,37 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="131"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kirjuta iga sünkroniseerimise logi väljund kataloogis uude faili.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="132"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>Tühjenda logifail pärast iga kirjutamist.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="133"/>
         <source>Output debug-level messages in the log.</source>
-        <translation type="unfinished"/>
+        <translation>Väljasta silumisteated logisse.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="134"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Luba silumisrežiim.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="135"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>Edasta kõik argumendid cmd kliendile. See argument peab olema esimene.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="138"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>Avatav virtuaalse failisüsteemi fail (valikuline).</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="155"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile ja --logdir välistavad üksteist.</translation>
     </message>
 </context>
 <context>
@@ -582,12 +583,12 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="376"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Keela virtuaalse faili tugi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="382"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Luba virtuaalse faili tugi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
@@ -1281,17 +1282,17 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>Suffix VFS plugin on aegunud ja eemaldatakse versioonist 7.0.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</source>
-        <translation type="unfinished"/>
+        <translation>Palun kasutage kontekstimenüüd ja valige &quot;Keela virtuaalse faili tugi&quot; et tagada tulevikus juurdepääs teie sünkroonitud failidele.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
         <source>You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>Te kaotate juurdepääsu oma sünkroonimiskaustale, kui te seda ei tee!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="355"/>
@@ -1523,7 +1524,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="48"/>
         <source>Use virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Kasuta virtuaalseid faile sisu kohese allalaadimise asemel</translation>
     </message>
 </context>
 <context>
@@ -1584,7 +1585,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
-        <translation type="unfinished"/>
+        <translation>Liiguta kaugelt kustutatud failid kohalikku prügikasti, selle asemel et neid kustutada.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -2557,7 +2558,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>Ei suutnud liigutada &apos;%1&apos; prügikasti</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -3566,12 +3567,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.cpp" line="36"/>
         <source>Restart later</source>
-        <translation type="unfinished"/>
+        <translation>Taaskäivita hiljem</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.cpp" line="38"/>
         <source>Restart now</source>
-        <translation type="unfinished"/>
+        <translation>Taaskäivita kohe</translation>
     </message>
 </context>
 <context>
@@ -4239,12 +4240,12 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.ui" line="20"/>
         <source>Application restart required</source>
-        <translation type="unfinished"/>
+        <translation>Rakenduse taaskäivitamine on nõutud</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Update installed successfully&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restart the application to finish installing the update.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Uuendus on edukalt paigaldatud&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Uuenduse paigaldamise lõpetamiseks taaskäivita rakendus.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

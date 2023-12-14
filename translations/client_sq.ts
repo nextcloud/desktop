@@ -106,7 +106,8 @@
         <location filename="../src/gui/main.cpp" line="98"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 version %2&lt;byte value=&quot;xd&quot;/&gt;
+Mjet njëkohësimi kartelash për desktop.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="106"/>
@@ -117,7 +118,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="125"/>
         <source>Start with the main window visible, or if it is already running, bring it to the front. By default, the client launches in the background.</source>
-        <translation type="unfinished"/>
+        <translation>Niseni me dritaren kryesore të dukshme, ose, nëse është tashmë duke xhiruar, silleni përpara dritareve të tjera. Si parazgjedhje, klienti niset në prapaskenë.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="127"/>
@@ -132,32 +133,32 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="131"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Shkruaje çdo përfundim regjistrimi njëkohësimesh në një kartelë të re në dosje.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="132"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>Zbraze kartelën regjistër pas çdo shkrimi.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="133"/>
         <source>Output debug-level messages in the log.</source>
-        <translation type="unfinished"/>
+        <translation>Kaloji te regjistri mesazhet debug-level.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="134"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Aktivizo mënyrën diagnostikim.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="135"/>
         <source>Forward all arguments to the cmd client. This argument must be the first.</source>
-        <translation type="unfinished"/>
+        <translation>Përcilli krejt argumentet te klienti cmd. Ky argument duhet të jetë i pari.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="138"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>Kartelë sistemi virtual kartelash për t’u hapur (opsionale).</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="155"/>
@@ -582,12 +583,12 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="376"/>
         <source>Disable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Çaktivizo mbulim për kartela virtuale</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="382"/>
         <source>Enable virtual file support</source>
-        <translation type="unfinished"/>
+        <translation>Aktivizo mbulim kartelash virtuale</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="689"/>
@@ -1282,17 +1283,17 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="278"/>
         <source>The suffix VFS plugin is deprecated and will be removed in the 7.0 release.</source>
-        <translation type="unfinished"/>
+        <translation>Prapashtesa VFS për shtojca është nxjerrë nga përdorimi dhe do të hiqet në hedhjen 7.0 në qarkullim.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Please use the context menu and select &quot;Disable virtual file support&quot; to  ensure future access to your synced files.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, përdorni menunë e kontekstit dhe përzgjidhni “Çaktivizo mbulim kartelash virtuale”, që të garantohet hyrje në të ardhmen në kartelat tuaja të njëkohësuara.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="280"/>
         <source>You are going to lose access to your sync folder if you do not do so!</source>
-        <translation type="unfinished"/>
+        <translation>Nëse nuk e bëni, do të humbni hyrje te dosjet tuaja të njëkohësuara!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="355"/>
@@ -1524,7 +1525,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizardselectivesync.cpp" line="48"/>
         <source>Use virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Përdorni kartela virtuale, në vend se të shkarkoni lëndë menjëherë</translation>
     </message>
 </context>
 <context>
@@ -1585,7 +1586,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
         <source>Move remotely deleted files to the local trash bin instead of deleting them</source>
-        <translation type="unfinished"/>
+        <translation>Shpjeri kartelat e fshira te koshi lokal i hedhurinave, në vend se t’i fshish</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -2559,7 +2560,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not move &apos;%1&apos; to the trash bin</source>
-        <translation type="unfinished"/>
+        <translation>S’u kalua dot “%1” te koshi i hedhurinave</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -3568,12 +3569,12 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.cpp" line="36"/>
         <source>Restart later</source>
-        <translation type="unfinished"/>
+        <translation>Riniseni më vonë</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.cpp" line="38"/>
         <source>Restart now</source>
-        <translation type="unfinished"/>
+        <translation>Riniseni tani</translation>
     </message>
 </context>
 <context>
@@ -4241,12 +4242,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.ui" line="20"/>
         <source>Application restart required</source>
-        <translation type="unfinished"/>
+        <translation>Lypset rinisje aplikacioni</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatefinisheddialog.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Update installed successfully&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Restart the application to finish installing the update.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Përditësimi u instalua me sukses&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Rinisni aplikacionin që të përfundohet instalimi i përditësimit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

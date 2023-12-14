@@ -106,7 +106,8 @@
         <location filename="../src/gui/main.cpp" line="98"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 අනුවාදය %2
+ගොනු සමමුහුර්ත කිරීමේ ඩෙස්ක්ටොප් උපයෝගීතාව.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="106"/>
@@ -132,22 +133,22 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="131"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>එක් එක් සමමුහුර්ත ලොග් ප්‍රතිදානය ෆෝල්ඩරයේ නව ගොනුවක ලියන්න.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="132"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>සෑම ලිවීමකටම පසු ලොග් ගොනුව ෆ්ලෂ් කරන්න.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="133"/>
         <source>Output debug-level messages in the log.</source>
-        <translation type="unfinished"/>
+        <translation>ලොගයේ නිදොස් මට්ටමේ පණිවිඩ ප්‍රතිදානය කරන්න.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="134"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>නිදොස් කිරීමේ මාදිලිය සබල කරන්න.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="135"/>
@@ -157,7 +158,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="138"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>විවෘත කළ යුතු අතථ්‍ය ගොනු පද්ධති ගොනුව (විකල්ප).</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="155"/>

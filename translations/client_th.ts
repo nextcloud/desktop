@@ -133,12 +133,12 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="131"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>เขียน Log output ของการประสานข้อมูลแต่ละรายการไปยังไฟล์ใหม่ในโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="132"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>ล้างไฟล์บันทึกหลังจากเขียนทุกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="133"/>
@@ -148,7 +148,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="134"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>เปิดใช้งานโหมดแก้ไขข้อบกพร่อง</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="135"/>
@@ -158,7 +158,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="138"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>เปิดไฟล์ ระบบไฟล์เสมือน (ทางเลือก)</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="155"/>
