@@ -6142,7 +6142,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Lokalen oder Gruppenordner öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>

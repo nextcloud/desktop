@@ -6144,7 +6144,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>打開近端或群組資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
