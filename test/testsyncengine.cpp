@@ -89,7 +89,8 @@ class TestSyncEngine : public QObject
 private slots:
     void initTestCase()
     {
-        OCC::Logger::instance()->setLogDebug(true);
+        Logger::instance()->setLogFlush(true);
+        Logger::instance()->setLogDebug(true);
     }
 
     void testFileDownload() {
