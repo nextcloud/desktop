@@ -66,6 +66,7 @@ public:
     [[nodiscard]] bool chunkingNg() const;
     [[nodiscard]] bool bulkUpload() const;
     [[nodiscard]] bool filesLockAvailable() const;
+    [[nodiscard]] bool filesLockTypeAvailable() const;
     [[nodiscard]] bool userStatus() const;
     [[nodiscard]] bool userStatusSupportsEmoji() const;
     [[nodiscard]] QColor serverColor() const;

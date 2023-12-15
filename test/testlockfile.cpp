@@ -40,7 +40,8 @@ private slots:
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
                                                &fakeFolder.syncJournal(),
-                                               OCC::SyncFileItem::LockStatus::LockedItem);
+                                               OCC::SyncFileItem::LockStatus::LockedItem,
+                                               OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QVERIFY(lockFileSuccessSpy.wait());
         QCOMPARE(lockFileErrorSpy.count(), 0);
@@ -85,7 +86,8 @@ private slots:
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
                                                &fakeFolder.syncJournal(),
-                                               OCC::SyncFileItem::LockStatus::LockedItem);
+                                               OCC::SyncFileItem::LockStatus::LockedItem,
+                                               OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QVERIFY(lockFileErrorSpy.wait());
         QCOMPARE(lockFileSuccessSpy.count(), 0);
@@ -109,7 +111,8 @@ private slots:
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
                                                &fakeFolder.syncJournal(),
-                                               OCC::SyncFileItem::LockStatus::LockedItem);
+                                               OCC::SyncFileItem::LockStatus::LockedItem,
+                                               OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QVERIFY(lockFileSuccessSpy.wait());
         QCOMPARE(lockFileErrorSpy.count(), 0);
@@ -136,7 +139,8 @@ private slots:
                                                QStringLiteral("/"),
                                                fakeFolder.localPath(),
                                                &fakeFolder.syncJournal(),
-                                               OCC::SyncFileItem::LockStatus::LockedItem);
+                                               OCC::SyncFileItem::LockStatus::LockedItem,
+                                               OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QVERIFY(lockFileSuccessSpy.wait());
         QCOMPARE(lockFileErrorSpy.count(), 0);
@@ -160,7 +164,8 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
-                                        OCC::SyncFileItem::LockStatus::LockedItem);
+                                        OCC::SyncFileItem::LockStatus::LockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -198,7 +203,8 @@ private slots:
                                                 QStringLiteral("/") + testFileName,
                                                 QStringLiteral("/"),
                                                 fakeFolder.localPath(),
-                                                OCC::SyncFileItem::LockStatus::LockedItem);
+                                                OCC::SyncFileItem::LockStatus::LockedItem,
+                                                OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy lockFileJobSuccess(lockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy lockFileJobFailure(lockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -215,7 +221,8 @@ private slots:
                                                   QStringLiteral("/") + testFileName,
                                                   QStringLiteral("/"),
                                                   fakeFolder.localPath(),
-                                                  OCC::SyncFileItem::LockStatus::UnlockedItem);
+                                                  OCC::SyncFileItem::LockStatus::UnlockedItem,
+                                                  OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy unlockFileJobSuccess(unlockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy unlockFileJobFailure(unlockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -274,7 +281,8 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
-                                        OCC::SyncFileItem::LockStatus::LockedItem);
+                                        OCC::SyncFileItem::LockStatus::LockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -327,7 +335,8 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
-                                        OCC::SyncFileItem::LockStatus::LockedItem);
+                                        OCC::SyncFileItem::LockStatus::LockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -380,7 +389,8 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
-                                        OCC::SyncFileItem::LockStatus::UnlockedItem);
+                                        OCC::SyncFileItem::LockStatus::UnlockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -431,7 +441,8 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
-                                        OCC::SyncFileItem::LockStatus::UnlockedItem);
+                                        OCC::SyncFileItem::LockStatus::UnlockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);
@@ -469,7 +480,8 @@ private slots:
                                                 QStringLiteral("/") + testFileName,
                                                 QStringLiteral("/"),
                                                 fakeFolder.localPath(),
-                                                OCC::SyncFileItem::LockStatus::LockedItem);
+                                                OCC::SyncFileItem::LockStatus::LockedItem,
+                                                OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy lockFileJobSuccess(lockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy lockFileJobFailure(lockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -486,7 +498,8 @@ private slots:
                                                   QStringLiteral("/") + testFileName,
                                                   QStringLiteral("/"),
                                                   fakeFolder.localPath(),
-                                                  OCC::SyncFileItem::LockStatus::UnlockedItem);
+                                                  OCC::SyncFileItem::LockStatus::UnlockedItem,
+                                                  OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy unlockFileJobSuccess(unlockFileJob, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy unlockFileJobFailure(unlockFileJob, &OCC::LockFileJob::finishedWithError);
@@ -539,7 +552,8 @@ private slots:
                                         QStringLiteral("/") + testFileName,
                                         QStringLiteral("/"),
                                         fakeFolder.localPath(),
-                                        OCC::SyncFileItem::LockStatus::UnlockedItem);
+                                        OCC::SyncFileItem::LockStatus::UnlockedItem,
+                                        OCC::SyncFileItem::LockOwnerType::UserLock);
 
         QSignalSpy jobSuccess(job, &OCC::LockFileJob::finishedWithoutError);
         QSignalSpy jobFailure(job, &OCC::LockFileJob::finishedWithError);

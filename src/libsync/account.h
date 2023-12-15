@@ -316,7 +316,8 @@ public:
                           const QString &remoteSyncPathWithTrailingSlash,
                           const QString &localSyncPath,
                           SyncJournalDb * const journal,
-                          const SyncFileItem::LockStatus lockStatus);
+                          const SyncFileItem::LockStatus lockStatus,
+                          const SyncFileItem::LockOwnerType lockOwnerType);
 
     SyncFileItem::LockStatus fileLockStatus(SyncJournalDb * const journal,
                                             const QString &folderRelativePath) const;
