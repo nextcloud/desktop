@@ -650,7 +650,8 @@ void EditLocallyJob::lockFile()
                                                                 _folderForFile->remotePathTrailingSlash(),
                                                                 _folderForFile->path(),
                                                                 _folderForFile->journalDb(),
-                                                                SyncFileItem::LockStatus::LockedItem);
+                                                                SyncFileItem::LockStatus::LockedItem,
+                                                                SyncFileItem::LockOwnerType::TokenLock);
 }
 
 void EditLocallyJob::disconnectFolderSignals()
