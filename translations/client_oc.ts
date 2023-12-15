@@ -2583,7 +2583,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="339"/>
         <source>Check Now</source>
-        <translation type="unfinished"/>
+        <translation>Verificar ara</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="363"/>

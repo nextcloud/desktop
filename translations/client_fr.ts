@@ -2453,7 +2453,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
         <source>Advanced</source>
-        <translation>Avancé</translation>
+        <translation>Avancés</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -2551,7 +2551,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="469"/>
         <source>Create Debug Archive</source>
-        <translation>Création de l&apos;archive de déboggage</translation>
+        <translation>Créer l&apos;archive de débogage</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
@@ -2816,8 +2816,7 @@ Notez que cela ne permet seulement que de sélectionner où sont récupérées l
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Les fichiers ou dossiers correspondant à un motif ne seront pas synchronisés.
-
-Les éléments ayant l&apos;option &quot;Autoriser la suppression&quot; pourront être supprimés afin de ne pas bloquer la suppression d&apos;un dossier. C&apos;est utile pour les méta-données.</translation>
+Les éléments ayant l&apos;option « Autoriser la suppression » pourront être supprimés pour ne pas bloquer la suppression d&apos;un dossier. Utile pour les méta-données.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -3072,7 +3071,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/networksettings.ui" line="48"/>
         <source>No proxy</source>
-        <translation>Aucun serveur mandataire</translation>
+        <translation>Aucun serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
@@ -3087,7 +3086,7 @@ Notez que l&apos;utilisation de toute option de ligne de commande de journalisat
     <message>
         <location filename="../src/gui/networksettings.ui" line="84"/>
         <source>Manually specify proxy</source>
-        <translation>Specifier manuellement le serveur mandataire</translation>
+        <translation>Spécifier manuellement le serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -4272,7 +4271,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation>%1 Paramètres</translation>
+        <translation>Paramètres %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
@@ -5820,7 +5819,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
         <source>Open local folder &quot;%1&quot;</source>
-        <translation>Ouvrir le dossier local &quot;%1&quot;</translation>
+        <translation>Ouvrir le dossier local « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="184"/>
@@ -6097,7 +6096,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/Window.qml" line="288"/>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Pause sync for all</source>
-        <translation>Suspendre toutes les synchronisations</translation>
+        <translation>Suspendre toutes les synchros</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="380"/>
@@ -6142,7 +6141,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir des dossiers locaux ou de groupe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>

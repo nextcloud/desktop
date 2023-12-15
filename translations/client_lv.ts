@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="251"/>
         <source>Log out</source>
-        <translation>Iziet</translation>
+        <translation>Izrakstīties</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
