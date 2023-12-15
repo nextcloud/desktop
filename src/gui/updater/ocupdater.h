@@ -23,8 +23,8 @@
 #include <QUrl>
 #include <QVersionNumber>
 
-#include "settingsdialog.h"
-#include "updater/updatefinisheddialog.h"
+#include "application.h"
+#include "updater/updatedownloadeddialog.h"
 #include "updater/updateinfo.h"
 #include "updater/updater.h"
 
@@ -73,7 +73,8 @@ class UpdaterScheduler : public QObject
 {
     Q_OBJECT
 public:
-    explicit UpdaterScheduler(SettingsDialog *settingsDialog, QObject *parent = nullptr);
+    // must pass app explicitly (as we're instantiated from Application's ctor, we cannot use ocApp())
+    explicit UpdaterScheduler(Application *app, QObject *parent = nullptr);
 
 signals:
     /**
@@ -90,9 +91,7 @@ private:
     QTimer _updateCheckTimer; /** Timer for the regular update check. */
 
     // make sure we are going to show only one of them at once
-    QPointer<UpdateFinishedDialog> _updateFinishedDialog = nullptr;
-
-    SettingsDialog *_settingsDialog;
+    QPointer<UpdateDownloadedDialog> _updateDownloadedDialog = nullptr;
 };
 
 /**
@@ -129,12 +128,11 @@ public:
 
 signals:
     void downloadStateChanged();
-    void newUpdateAvailable(const QString &header, const QString &message);
 
-    /**
-     * Request restart of the entire application. Used when updating in the background to make the user use the new version after the update has finished.
-     */
-    void requestRestart();
+    // it is up to the scheduler how to display either of these
+    // while in one case a system native notification may be adequate, the other may require a sophisticated dialog with action buttons
+    void updateAvailableThroughSystem();
+    void updateDownloaded();
 
     /**
      * Schedule retry of update check in the future. For use when an update failed previously due to a (temporary) problem which might be resolved in a reasonable amount of time.

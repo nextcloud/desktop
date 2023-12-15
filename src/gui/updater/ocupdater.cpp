@@ -19,6 +19,8 @@
 #include "configfile.h"
 #include "theme.h"
 
+#include "settingsdialog.h"
+#include "updatedownloadeddialog.h"
 #include "updater/ocupdater.h"
 #include "updater/updater_private.h"
 
@@ -34,36 +36,33 @@ using namespace std::chrono_literals;
 
 namespace OCC {
 
-UpdaterScheduler::UpdaterScheduler(SettingsDialog *settingsDialog, QObject *parent)
+UpdaterScheduler::UpdaterScheduler(Application *app, QObject *parent)
     : QObject(parent)
-    , _settingsDialog(settingsDialog)
 {
     connect(&_updateCheckTimer, &QTimer::timeout,
         this, &UpdaterScheduler::slotTimerFired);
 
     // Note: the sparkle-updater is not an OCUpdater
-    if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
-        connect(updater, &OCUpdater::newUpdateAvailable,
-            this, &UpdaterScheduler::updaterAnnouncement);
+    if (auto *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+        connect(updater, &OCUpdater::updateAvailableThroughSystem, app,
+            [app, updater]() { app->gui()->slotShowTrayMessage(tr("Update available"), updater->statusString()); });
 
-        connect(updater, &OCUpdater::requestRestart, this, [this]() {
+        connect(updater, &OCUpdater::updateDownloaded, this, [app, updater, this]() {
             // prevent dialog from being displayed twice (rather unlikely, but it won't hurt)
-            if (_updateFinishedDialog == nullptr) {
-                _updateFinishedDialog = new UpdateFinishedDialog(_settingsDialog);
-                _updateFinishedDialog->setAttribute(Qt::WA_DeleteOnClose);
-                _updateFinishedDialog->show();
-                ownCloudGui::raiseDialog(_updateFinishedDialog);
+            if (_updateDownloadedDialog == nullptr) {
+                _updateDownloadedDialog = new UpdateDownloadedDialog(app->gui()->settingsDialog(), updater->statusString());
+                _updateDownloadedDialog->setAttribute(Qt::WA_DeleteOnClose);
+                _updateDownloadedDialog->show();
+                ownCloudGui::raiseDialog(_updateDownloadedDialog);
 
-                connect(_updateFinishedDialog, &UpdateFinishedDialog::accepted, this, []() {
-                    if (OC_ENSURE(Utility::isLinux())) {
-                        // restart:
-                        qCInfo(lcUpdater) << "Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
-                        QTimer::singleShot(0, qApp->quit);
-                        QStringList args = qApp->arguments();
-                        QString prg = args.takeFirst();
+                connect(_updateDownloadedDialog, &UpdateDownloadedDialog::accepted, this, []() {
+                    // restart:
+                    qCInfo(lcUpdater) << "Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
+                    QTimer::singleShot(0, qApp->quit);
+                    QStringList args = qApp->arguments();
+                    QString prg = args.takeFirst();
 
-                        QProcess::startDetached(prg, args);
-                    }
+                    QProcess::startDetached(prg, args);
                 });
             }
         });
@@ -171,7 +170,11 @@ QString OCUpdater::statusString() const
     case Downloading:
         return tr("Downloading %1. Please wait...").arg(updateVersion);
     case DownloadComplete:
-        return tr("%1 available. Restart application to start the update.").arg(updateVersion);
+        if (Utility::runningInAppImage()) {
+            return tr("%1 installed successfully. Restart the application to finish installing the update.").arg(updateVersion);
+        } else {
+            return tr("%1 available. Restart application to start the update.").arg(updateVersion);
+        }
     case DownloadFailed:
         return tr("Could not download update. Please click <a href='%1'>here</a> to download the update manually.").arg(_updateInfo.web());
     case DownloadTimedOut:
@@ -209,9 +212,12 @@ void OCUpdater::setDownloadState(DownloadState state)
 
     // show the notification if the download is complete (on every check)
     // or once for system based updates.
-    if (_state == OCUpdater::DownloadComplete || (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem
-                                                     && _state == OCUpdater::UpdateOnlyAvailableThroughSystem)) {
-        emit newUpdateAvailable(tr("Update Check"), statusString());
+    if (_state == OCUpdater::DownloadComplete) {
+        emit updateDownloaded();
+    }
+
+    if (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem && _state == OCUpdater::UpdateOnlyAvailableThroughSystem) {
+        emit updateAvailableThroughSystem();
     }
 }
 
@@ -593,7 +599,8 @@ void PassiveUpdateNotifier::backgroundCheckForUpdate()
         qCDebug(lcUpdater) << "initial mtime:" << _initialAppMTime << "current mtime:" << currentMTime;
         if (currentMTime != _initialAppMTime) {
             qCInfo(lcUpdater) << "Binary mtime changed since application started, requesting restart";
-            emit requestRestart();
+            setDownloadState(DownloadState::DownloadComplete);
+            emit updateDownloaded();
         }
     }
 

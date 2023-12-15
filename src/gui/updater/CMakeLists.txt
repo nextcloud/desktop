@@ -14,9 +14,9 @@ target_sources(owncloudCore PRIVATE
     updateinfo.h
     updater.cpp
     updater.h
-    updatefinisheddialog.cpp
-    updatefinisheddialog.h
-    updatefinisheddialog.ui
+    updatedownloadeddialog.cpp
+    updatedownloadeddialog.h
+    updatedownloadeddialog.ui
 )
 
 if(SPARKLE_FOUND)

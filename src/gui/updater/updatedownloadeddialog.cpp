@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Fabian Müller <fmueller@owncloud.com>
+ * Copyright (C) 2023 by Fabian Müller <fmueller@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,20 +12,25 @@
  * for more details.
  */
 
-#include "updatefinisheddialog.h"
-#include "common/asserts.h"
-#include "ui_updatefinisheddialog.h"
+#include "updatedownloadeddialog.h"
+#include "theme.h"
+#include "ui_updatedownloadeddialog.h"
 
 #include <QDialogButtonBox>
 #include <QPushButton>
 
 namespace OCC {
 
-UpdateFinishedDialog::UpdateFinishedDialog(QWidget *parent)
+UpdateDownloadedDialog::UpdateDownloadedDialog(QWidget *parent, const QString &statusMessage)
     : QDialog(parent)
-    , _ui(new Ui::UpdateFinishedDialog)
+    , _ui(new ::Ui::UpdateDownloadedDialog)
 {
     _ui->setupUi(this);
+
+    _ui->iconLabel->setPixmap(Theme::instance()->aboutIcon().pixmap(96, 96));
+    _ui->iconLabel->setText(QString());
+
+    _ui->descriptionLabel->setText(statusMessage);
 
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -39,9 +44,9 @@ UpdateFinishedDialog::UpdateFinishedDialog(QWidget *parent)
     yesButton->setDefault(true);
 }
 
-UpdateFinishedDialog::~UpdateFinishedDialog()
+UpdateDownloadedDialog::~UpdateDownloadedDialog()
 {
     delete _ui;
 }
 
-} // OCC
+}

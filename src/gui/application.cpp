@@ -114,9 +114,9 @@ Application::Application(Platform *platform, const QString &displayLanguage, boo
 
 #ifdef WITH_AUTO_UPDATER
     // Update checks
-    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(_gui->settingsDialog(), this);
-    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement, _gui.data(),
-        [this](const QString &title, const QString &msg) { _gui->slotShowTrayMessage(title, msg); });
+    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this, this);
+    // the updater scheduler takes care of connecting its GUI bits to other components
+    (void)updaterScheduler;
 #endif
 
     // Cleanup at Quit.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Fabian Müller <fmueller@owncloud.com>
+ * Copyright (C) 2023 by Fabian Müller <fmueller@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,22 @@
 
 #include <QDialog>
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
-class UpdateFinishedDialog;
+class UpdateDownloadedDialog;
 }
-QT_END_NAMESPACE
 
 namespace OCC {
 
-class UpdateFinishedDialog : public QDialog
+class UpdateDownloadedDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit UpdateFinishedDialog(QWidget *parent = nullptr);
-    ~UpdateFinishedDialog() override;
+    explicit UpdateDownloadedDialog(QWidget *parent, const QString &statusMessage);
+    ~UpdateDownloadedDialog() override;
 
 private:
-    ::Ui::UpdateFinishedDialog *_ui;
+    ::Ui::UpdateDownloadedDialog *_ui;
 };
 
-} // OCC
+}

@@ -1,0 +1,8 @@
+Enhancement: Ask user to restart application when update is available on Windows
+
+Instead of a tray message, we now display a modal dialog on Windows to inform
+the user about a downloaded update. Also, we now can prompt the user to
+restart the application and apply the update immediately, adding a bit of user
+comfort.
+
+https://github.com/owncloud/client/pull/11442
