@@ -378,7 +378,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Ensure it's a placeholder file on disk
             if (item->_type == ItemTypeFile && _syncOptions._vfs->mode() != Vfs::Off) {
-                const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
+                const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item, {}, Vfs::UpdateMetadataType::DatabaseMetadata);
                 if (!result) {
                     item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -411,7 +411,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
-            } else if (modificationHappened || prev._modtime != item->_modtime) {
+            } else if (prev._modtime != item->_modtime) {
                 if (!FileSystem::setModTime(filePath, item->_modtime)) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
                     item->_errorString = tr("Could not update file metadata: %1").arg(filePath);
