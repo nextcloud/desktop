@@ -127,7 +127,7 @@ private slots:
 
         earlyTS = earlyTS.addSecs(-6);
         s = timeAgoInWords(earlyTS, laterTS );
-        QCOMPARE(s, QLatin1String("Less than a minute ago"));
+        QCOMPARE(s, QLatin1String("less than a minute ago"));
     }
 
     void testFsCasePreserving()

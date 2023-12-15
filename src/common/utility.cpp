@@ -328,36 +328,32 @@ void Utility::crash()
 
 QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
 {
-    QDateTime now = QDateTime::currentDateTimeUtc();
-
-    if (from.isValid()) {
-        now = from;
-    }
+    const QDateTime now = from.isValid() ? from : QDateTime::currentDateTimeUtc();
 
     if (dt.daysTo(now) > 0) {
-        int dtn = dt.daysTo(now);
-        return QObject::tr("%n day(s) ago", "", dtn);
-    } else {
-        qint64 secs = dt.secsTo(now);
-        if (secs < 0) {
-            return QObject::tr("in the future");
-        }
-        if (floor(secs / 3600.0) > 0) {
-            int hours = floor(secs / 3600.0);
-            return (QObject::tr("%n hour(s) ago", "", hours));
+        return QObject::tr("%n day(s) ago", "", dt.daysTo(now));
+    }
+
+    const qint64 secs = dt.secsTo(now);
+    if (secs < 0) {
+        return QObject::tr("in the future");
+    }
+
+    if (floor(secs / 3600.0) > 0) {
+        const int hours = floor(secs / 3600.0);
+        return (QObject::tr("%n hour(s) ago", "", hours));
+    }
+
+    const int minutes = qRound(secs / 60.0);
+    if (minutes == 0) {
+        if (secs < 5) {
+            return QObject::tr("now");
         } else {
-            int minutes = qRound(secs / 60.0);
-            if (minutes == 0) {
-                if (secs < 5) {
-                    return QObject::tr("now");
-                } else {
-                    return QObject::tr("Less than a minute ago");
-                }
-            }
-            return (QObject::tr("%n minute(s) ago", "", minutes));
+            return QObject::tr("less than a minute ago");
         }
     }
-    return QObject::tr("Some time ago");
+
+    return (QObject::tr("%n minute(s) ago", "", minutes));
 }
 
 void Utility::sortFilenames(QStringList &fileNames)
