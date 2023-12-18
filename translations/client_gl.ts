@@ -6143,7 +6143,7 @@ O servidor respondeu co erro: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Abrir cartafoles locais ou de grupo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>

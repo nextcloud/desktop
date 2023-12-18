@@ -3710,7 +3710,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="608"/>
         <source>file id</source>
-        <translation>dosya kodu</translation>
+        <translation>dosya kimliği</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="612"/>
@@ -4147,7 +4147,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="500"/>
         <source>Missing File ID from server</source>
-        <translation>Sunucudan Dosya Kodu alınamadı</translation>
+        <translation>Sunucudan dosya kimliği alınamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="514"/>
@@ -6142,7 +6142,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Yerel ya da grup klasörlerini aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
