@@ -528,7 +528,6 @@ QString Utility::appImageLocation()
     return value;
 #else
     Q_UNREACHABLE();
-    return QString();
 #endif
 }
 
