@@ -1,8 +1,14 @@
-import squish
+import squish, object, names
 from helpers.SetupClientHelper import wait_until_app_killed
 
 
 class Toolbar:
+    TOOLBAR = {
+        "name": "toolBar",
+        "type": "QToolBar",
+        "visible": 1,
+        "window": names.settings_OCC_SettingsDialog,
+    }
     QUIT_CONFIRMATION_DIALOG = {
         "type": "QMessageBox",
         "unnamed": 1,
@@ -16,6 +22,8 @@ class Toolbar:
         "visible": 1,
         "window": QUIT_CONFIRMATION_DIALOG,
     }
+
+    TOOLBAR_ITEMS = ["Add account", "Activity", "Settings", "Quit ownCloud"]
 
     @staticmethod
     def getItemSelector(item_name):
@@ -61,3 +69,15 @@ class Toolbar:
             pid = ctx.pid
             ctx.detach()
             wait_until_app_killed(pid)
+
+    @staticmethod
+    def get_accounts():
+        accounts = []
+        children_obj = object.children(squish.waitForObject(Toolbar.TOOLBAR))
+        for obj in children_obj:
+            if hasattr(obj, "objectName") and str(obj.objectName).startswith(
+                "settingsdialog_toolbutton"
+            ):
+                if not obj.text in Toolbar.TOOLBAR_ITEMS:
+                    accounts.append(str(obj.text))
+        return accounts
