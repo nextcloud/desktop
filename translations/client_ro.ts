@@ -362,10 +362,32 @@ Should an account import be attempted?</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="195"/>
+        <source>%1 accounts were detected from a legacy desktop client.
+Should the accounts be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="197"/>
+        <source>1 account was detected from a legacy desktop client.
+Should the account be imported?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="186"/>
         <location filename="../src/gui/accountmanager.cpp" line="254"/>
         <location filename="../src/gui/accountmanager.cpp" line="262"/>
         <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <source>Import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="201"/>
+        <source>Skip</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -965,6 +987,40 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Continue</source>
         <translation>Continuare</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="451"/>
+        <source>%1 accounts</source>
+        <comment>number of accounts imported</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="452"/>
+        <source>1 account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="454"/>
+        <source>%1 folders</source>
+        <comment>number of folders imported</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="455"/>
+        <source>1 folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="457"/>
+        <source>Legacy import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="458"/>
+        <source>Imported %1 and %2 from a legacy desktop client.
+%3</source>
+        <comment>number of accounts and folders imported. list of users.</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="394"/>
@@ -1714,7 +1770,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 și %n alte fișier(e) a fost șters. </numerusform><numerusform>%1 și %n alte fișier(e) au fost șterse. </numerusform><numerusform>%1 și %n alte fișiere au fost șterse. </numerusform></translation>
+        <translation><numerusform>%1 și %n alte fișier(e) a fost șters. </numerusform><numerusform>%1 și %n alte fișier(e) au fost șterse. </numerusform><numerusform>Au fost șterse %1 și alte %n fișier(e).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="430"/>
@@ -1725,7 +1781,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 și un alt fișier a fost adăugat. </numerusform><numerusform>%1 și %n alte fișiere au fost adăugate. </numerusform><numerusform>%1 și %n de alte fișiere au fost adăugate. </numerusform></translation>
+        <translation><numerusform>A fost adăugat %1 și alte %n fișier(e).</numerusform><numerusform>Au fost adăugate %1 și alte %n fișier(e).</numerusform><numerusform>Au fost adăugate %1 și alte %n fișier(e).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="437"/>
@@ -1736,7 +1792,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 și %n alt fișier a fost actualizat. </numerusform><numerusform>%1 și %n alte fișiere au fost actualizate. </numerusform><numerusform>%1 și %n de alte fișiere au fost actualizate. </numerusform></translation>
+        <translation><numerusform>%1 și alte %n fișier(e) au fost actualizatr.</numerusform><numerusform>%1 și alte %n fișier(e) au fost actualizate. </numerusform><numerusform>%1 și alte %n fișier(e) au fost actualizate. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -1747,7 +1803,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 a fost redenumit în %2 și un alt fișier a fost redenumit.</numerusform><numerusform>%1 a fost redenumit în %2 și %n alte fișiere au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și %n de alte fișiere au fost redenumite.</numerusform></translation>
+        <translation><numerusform>%1 a fost redenumit în %2 și alte %n fișier(e) au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și alte %n fișier(e) au fost redenumite.</numerusform><numerusform>%1 a fost redenumit în %2 și alte %n fișier(e) au fost redenumite.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
@@ -1758,7 +1814,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 a fost mostat în %2 și %n ale fișiee a fost mutat.</numerusform><numerusform>%1 a fost mostat în %2 și %n alte fișiere au fost mutate.</numerusform><numerusform>%1 a fost mostat în %2 și %n de alte fișiere au fost mutate.</numerusform></translation>
+        <translation><numerusform>%1 a fost mutat în %2 și alte %n fișier(e) au fost mutate.</numerusform><numerusform>%1 a fost mutat în %2 și alte %n fișier(e) au fost mutate.</numerusform><numerusform>%1 a fost mutat în %2 și alte %n fișier(e) au fost mutate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -1768,7 +1824,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 are și %n alt fișier are conflicte de sincronizare.</numerusform><numerusform>%1 are și %n alte fișiere au conflicte de sincronizare.</numerusform><numerusform>%1 are și %n de alte fișiere au conflicte de sincronizare.</numerusform></translation>
+        <translation><numerusform>%1 are și alte %n fișier(e) au conflicte de sincronizare.</numerusform><numerusform>%1 are și alte %n fișier(e) au conflicte de sincronizare.</numerusform><numerusform>%1 are și alte %n fișier(e) au conflicte de sincronizare.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
@@ -1778,7 +1834,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 și %n alt fișier nu au putut fi sincronizat datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform><numerusform>%1 și %n alte fișiere nu au putut fi sincronizate datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform><numerusform>%1 și %n de alte fișiere nu au putut fi sincronizate datorită unor erori. Vă rugăm verificați fisierele log pentru mai multe detalii.</numerusform></translation>
+        <translation><numerusform>%1 și alte %n fișier(e) nu au putut fi sincronizate datorită unor erori. Verificați logurile pentru mai multe detalii.</numerusform><numerusform>%1 și alte %n fișier(e) nu au putut fi sincronizate datorită unor erori. Verificați logurile pentru mai multe detalii.</numerusform><numerusform>%1 și alte %n fișier(e) nu au putut fi sincronizate datorită unor erori. Verificați logurile pentru mai multe detalii.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
@@ -1788,7 +1844,7 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 și %n alt fișier este în acest moment blocat.</numerusform><numerusform>%1 și %n alte fișiere sunt în acest moment blocate.</numerusform><numerusform>%1 și %n de alte fișiere sunt în acest moment blocate.</numerusform></translation>
+        <translation><numerusform>%1 și alte %n fișier(e) sunt în acest moment blocate.</numerusform><numerusform>%1 și alte %n fișier(e) sunt în acest moment blocate.</numerusform><numerusform>%1 și alte %n fișier(e) sunt în acest moment blocate.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
@@ -1809,7 +1865,8 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1225"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Un nou fisier mai mare de %1 MB a fost adăugat: %2.</translation>
+        <translation>Un nou fișier mai mare de %1 MB a fost adăugat: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1228"/>
@@ -1824,28 +1881,28 @@ Aceasta poate fi o problemă cu librariile OpenSSL.</translation>
         <translation>Vă rugăm să selectați în setări dacă doriți să descărcați acest fișier.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1364"/>
+        <location filename="../src/gui/folder.cpp" line="1366"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1375"/>
+        <location filename="../src/gui/folder.cpp" line="1377"/>
         <source>Keep syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1383"/>
+        <location filename="../src/gui/folder.cpp" line="1385"/>
         <source>Stop syncing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1394"/>
+        <location filename="../src/gui/folder.cpp" line="1396"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1395"/>
+        <location filename="../src/gui/folder.cpp" line="1397"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation type="unfinished"/>
     </message>
@@ -1871,6 +1928,11 @@ This means that the synchronization client might not upload local changes immedi
 Acest lucru înseamnă că aplicația de sincronizare  ar putea să nu încarce schimbările locale imediat dar va scana doar schimbările locale și va încărca aceste schimbări în anumte ocazii (timpul predefinit este o data la 2 ore).
 
 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1518"/>
+        <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1411"/>
@@ -2204,7 +2266,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1193"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Se așteaptă pentru %n alt dosar ...</numerusform><numerusform>Se așteaptă pentru %n alte dosare ...</numerusform><numerusform>Se așteaptă pentru %n de alte dosare ...</numerusform></translation>
+        <translation><numerusform>Se așteaptă pentru alte %n dosar(e) ...</numerusform><numerusform>Se așteaptă pentru alte %n dosar(e) ...</numerusform><numerusform>Se așteaptă pentru alte %n dosar(e) ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1199"/>
@@ -2381,10 +2443,20 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="221"/>
+        <source>Advanced</source>
+        <translation>Avansat</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
         <translation>Despre</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="33"/>
+        <source>Ask for confirmation before synchronizing new folders larger than</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
@@ -2392,14 +2464,10 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Aviz juridic</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="66"/>
-        <source>General Settings</source>
-        <translation>Setări Generale</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="72"/>
-        <source>For System Tray</source>
-        <translation>Pentru System Tray</translation>
+        <location filename="../src/gui/generalsettings.ui" line="249"/>
+        <source>MB</source>
+        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
@@ -2418,6 +2486,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <source>Notify when synchronised folders grow larger than specified limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
         <translation>Afișează notificările de apeluri</translation>
     </message>
@@ -2432,9 +2505,70 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&amp;Verificarea automată a actualizărilor</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>Automatically disable synchronisation of folders that overcome limit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>&amp;Channel</source>
         <translation>&amp;Canal</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="273"/>
+        <source>Ask for confirmation before synchronizing external storages</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <source>Move removed files to trash</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="301"/>
+        <source>S&amp;how crash reporter</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
+        <source>Edit &amp;Ignored Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.cpp" line="469"/>
+        <source>Create Debug Archive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="198"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Verifică pentru actualizare acum</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <source>Info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Ask for confirmation before synchronizing folders larger than</source>
+        <translation>Cereți o confirmare înainte de a sincroniza foldere mai mari de</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="245"/>
+        <source>Desktop client x.x.x</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <source>Update channel</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
@@ -2454,70 +2588,58 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&amp;Restart &amp;&amp; Actualizare</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="198"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Verifică pentru actualizare acum</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="221"/>
-        <source>Advanced</source>
-        <translation>Avansat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Cereți o confirmare înainte de a sincroniza foldere mai mari de</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="234"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="249"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="297"/>
-        <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="324"/>
-        <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="273"/>
-        <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="348"/>
-        <source>Move removed files to trash</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="284"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="301"/>
-        <source>S&amp;how crash reporter</source>
+        <location filename="../src/gui/generalsettings.ui" line="323"/>
+        <source>&amp;Automatically check for updates</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="312"/>
-        <source>Edit &amp;Ignored Files</source>
+        <location filename="../src/gui/generalsettings.ui" line="339"/>
+        <source>Check Now</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="469"/>
-        <source>Create Debug Archive</source>
+        <location filename="../src/gui/generalsettings.ui" line="363"/>
+        <source>Usage Documentation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="370"/>
+        <source>Legal Notice</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="66"/>
+        <source>General Settings</source>
+        <translation>Setări Generale</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="72"/>
+        <source>For System Tray</source>
+        <translation>Pentru System Tray</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="420"/>
+        <source>Use &amp;monochrome icons</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="427"/>
+        <source>&amp;Launch on system startup</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="434"/>
+        <source>Show server &amp;notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="441"/>
+        <source>Show call notifications</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2931,6 +3053,11 @@ Note that using any logging command line options will override this setting.</so
         <translation>Fără Proxy</translation>
     </message>
     <message>
+        <location filename="../src/gui/networksettings.ui" line="48"/>
+        <source>No proxy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/networksettings.ui" line="49"/>
         <source>Use system proxy</source>
         <translation>Folosește proxy-ul de sistem</translation>
@@ -2939,6 +3066,11 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="59"/>
         <source>Specify proxy manually as</source>
         <translation>Specifică proxy manual ca</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="84"/>
+        <source>Manually specify proxy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -2961,22 +3093,10 @@ Note that using any logging command line options will override this setting.</so
         <translation>Viteza de descărcare</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="203"/>
-        <location filename="../src/gui/networksettings.ui" line="282"/>
-        <source>Limit to</source>
-        <translation>Limitat la</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="210"/>
         <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>No limit</source>
         <translation>Fără limită</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="248"/>
-        <location filename="../src/gui/networksettings.ui" line="327"/>
-        <source>KBytes/s</source>
-        <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="257"/>
@@ -2989,6 +3109,18 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>Limit automatically</source>
         <translation>Limitează automat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="203"/>
+        <location filename="../src/gui/networksettings.ui" line="282"/>
+        <source>Limit to</source>
+        <translation>Limitat la</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="248"/>
+        <location filename="../src/gui/networksettings.ui" line="327"/>
+        <source>KBytes/s</source>
+        <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="276"/>
@@ -4730,7 +4862,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Deschide dialogul principal</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
@@ -4778,8 +4910,25 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
+        <location filename="../src/libsync/theme.cpp" line="553"/>
+        <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
+        <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/theme.cpp" line="554"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
+        <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="561"/>
+        <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="570"/>
+        <source>&lt;p&gt;%1 desktop client %2&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
     </message>
@@ -4787,11 +4936,6 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="557"/>
         <location filename="../src/libsync/theme.cpp" line="572"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="561"/>
-        <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4966,6 +5110,44 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>OCC::VfsDownloadErrorDialog</name>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
+        <source>Download error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
+        <source>Error downloading</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
+        <source>could not be downloaded</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
+        <source>&gt; More details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.ui" line="68"/>
+        <source>More details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="26"/>
+        <source>Error downloading %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="27"/>
+        <source>%1 could not be downloaded.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::VfsSuffix</name>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
@@ -5001,12 +5183,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Ați fost deconectat din contul %1 la %2. Este necesară reautentificarea.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Autentificați-vă cu contul: %1</translation>
     </message>
 </context>
 <context>
@@ -5019,7 +5201,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Autentificare</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -5931,6 +6113,11 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open local or group folders</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation type="unfinished"/>
@@ -5951,7 +6138,7 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="883"/>
+        <location filename="../src/gui/tray/Window.qml" line="894"/>
         <source>New activities</source>
         <translation type="unfinished"/>
     </message>
@@ -5970,7 +6157,7 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
-    <name>nextcloudTheme::about()</name>
+    <name>nextcloudTheme::aboutInfo()</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="533"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
@@ -6222,7 +6409,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Cont greșit&lt;/h1&gt;&lt;p&gt;V-ați autentificat cu contul &lt;em&gt;%1&lt;/em&gt;, dar este trebuia să utilizați contul &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Deconectați-vă din contul %3 în alt tab, apoi &lt;a href=&apos;%4&apos;&gt;faceți click aici&lt;/a&gt; și autentificați-vă cu %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6287,6 +6474,14 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
         <translation>Copiză link</translation>
+    </message>
+</context>
+<context>
+    <name>nextcloudTheme::about()</name>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="533"/>
+        <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

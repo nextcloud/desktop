@@ -229,6 +229,8 @@ void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString 
 
     _item->_status = statusArg;
 
+    reportClientStatuses();
+
     if (_item->_isRestoration) {
         if (_item->_status == SyncFileItem::Success
             || _item->_status == SyncFileItem::Conflict) {
@@ -334,6 +336,42 @@ bool PropagateItemJob::hasEncryptedAncestor() const
     }
 
     return false;
+}
+
+void PropagateItemJob::reportClientStatuses()
+{
+    if (_item->_status == SyncFileItem::Status::Conflict) {
+        if (_item->_direction == SyncFileItem::Direction::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_Conflict);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
+        }
+    } else if (_item->_status == SyncFileItem::Status::FileNameClash) {
+        if (_item->_direction == SyncFileItem::Direction::Up) {
+            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
+        }
+    } else if (_item->_status == SyncFileItem::Status::FileNameInvalidOnServer) {
+        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ConflictInvalidCharacters);
+    } else if (_item->_status == SyncFileItem::Status::FileNameInvalid) {
+        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictInvalidCharacters);
+    } else if (_item->_httpErrorCode != HttpErrorCodeNone && _item->_httpErrorCode != HttpErrorCodeSuccess && _item->_httpErrorCode != HttpErrorCodeSuccessCreated
+               && _item->_httpErrorCode != HttpErrorCodeSuccessNoContent) {
+        if (_item->_direction == SyncFileItem::Up) {
+            const auto isCodeBadReqOrUnsupportedMediaType = (_item->_httpErrorCode == HttpErrorCodeBadRequest || _item->_httpErrorCode == HttpErrorCodeUnsupportedMediaType);
+            const auto isExceptionInfoPresent = !_item->_errorExceptionName.isEmpty() && !_item->_errorExceptionMessage.isEmpty();
+            if (isCodeBadReqOrUnsupportedMediaType && isExceptionInfoPresent
+                && _item->_errorExceptionName.contains(QStringLiteral("UnsupportedMediaType"))
+                && _item->_errorExceptionMessage.contains(QStringLiteral("virus"), Qt::CaseInsensitive)) {
+                propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_Virus_Detected);
+            } else {
+                propagator()->account()->reportClientStatus(ClientStatusReportingStatus::UploadError_ServerError);
+            }
+        } else {
+            propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ServerError);
+        }
+    }
 }
 
 // ================================================================================
@@ -918,6 +956,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     }
 
     _journal->setConflictRecord(conflictRecord);
+    account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
 
     // Create a new upload job if the new conflict file should be uploaded
     if (account()->capabilities().uploadConflictFiles()) {
@@ -990,6 +1029,7 @@ OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFil
     }
 
     _journal->setCaseConflictRecord(conflictRecord);
+    account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_ConflictCaseClash);
 
     // Need a new sync to detect the created copy of the conflicting file
     _anotherSyncNeeded = true;
@@ -1002,16 +1042,19 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
     return OCC::adjustRenamedPath(_renamedDirectories, original);
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item)
+Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetadata(const SyncFileItem &item, Vfs::UpdateMetadataTypes updateType)
 {
-    return OwncloudPropagator::staticUpdateMetadata(item, _localDir, syncOptions()._vfs.data(), _journal);
+    return OwncloudPropagator::staticUpdateMetadata(item, _localDir, syncOptions()._vfs.data(), _journal, updateType);
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdateMetadata(const SyncFileItem &item, const QString localDir,
-                                                                                          Vfs *vfs, SyncJournalDb *const journal)
+Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdateMetadata(const SyncFileItem &item,
+                                                                                          const QString localDir,
+                                                                                          Vfs *vfs,
+                                                                                          SyncJournalDb *const journal,
+                                                                                          Vfs::UpdateMetadataTypes updateType)
 {
     const QString fsPath = localDir + item.destination();
-    const auto result = vfs->convertToPlaceholder(fsPath, item);
+    const auto result = vfs->convertToPlaceholder(fsPath, item, {}, updateType);
     if (!result) {
         return result.error();
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
@@ -1376,6 +1419,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
             }
 
+            qCDebug(lcPropagator()) << "setModTime" << propagator()->fullLocalPath(_item->destination()) << _item->_modtime;
             FileSystem::setModTime(propagator()->fullLocalPath(_item->destination()), _item->_modtime);
         }
 
@@ -1583,7 +1627,7 @@ void CleanupPollsJob::slotPollFinished()
     } else if (job->_item->_status != SyncFileItem::Success) {
         qCWarning(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
-        if (!OwncloudPropagator::staticUpdateMetadata(*job->_item, _localPath, _vfs.data(), _journal)) {
+        if (!OwncloudPropagator::staticUpdateMetadata(*job->_item, _localPath, _vfs.data(), _journal, Vfs::AllMetadata)) {
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");

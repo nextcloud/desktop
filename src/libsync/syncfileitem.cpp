@@ -81,8 +81,10 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
 
     // Some types should never be written to the database when propagation completes
     rec._type = _type;
-    if (rec._type == ItemTypeVirtualFileDownload)
+    if (rec._type == ItemTypeVirtualFileDownload) {
         rec._type = ItemTypeFile;
+        qCInfo(lcFileItem) << "Changing item type from ItemTypeVirtualFileDownload to normal file to avoid wrong record type in database" << rec._path;
+    }
     if (rec._type == ItemTypeVirtualFileDehydration)
         rec._type = ItemTypeVirtualFile;
 
@@ -214,6 +216,17 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     item->_instruction = CSYNC_INSTRUCTION_NONE;
 
     return item;
+}
+
+void SyncFileItem::updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRecord)
+{
+    _locked = dbRecord._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
+    _lockOwnerId = dbRecord._lockstate._lockOwnerId;
+    _lockOwnerDisplayName = dbRecord._lockstate._lockOwnerDisplayName;
+    _lockOwnerType = static_cast<LockOwnerType>(dbRecord._lockstate._lockOwnerType);
+    _lockEditorApp = dbRecord._lockstate._lockEditorApp;
+    _lockTime = dbRecord._lockstate._lockTime;
+    _lockTimeout = dbRecord._lockstate._lockTimeout;
 }
 
 }

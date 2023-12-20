@@ -236,6 +236,8 @@ public:
 
     [[nodiscard]] bool isEncrypted() const { return _e2eEncryptionStatus != EncryptionStatus::NotEncrypted; }
 
+    void updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRecord);
+
     // Variables useful for everybody
 
     /** The syncfolder-relative filesystem path that the operation is about
@@ -285,6 +287,8 @@ public:
     quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
+    QString _errorExceptionName; // Contains a server exception string only in case of error
+    QString _errorExceptionMessage; // Contains a server exception message string only in case of error
     QByteArray _responseTimeStamp;
     QByteArray _requestId; // X-Request-Id of the failed request
     qint64 _requestBodySize = -1; // the number of bytes sent. -1 if unknown.

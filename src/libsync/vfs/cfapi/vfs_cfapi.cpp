@@ -222,7 +222,7 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
     }
 }
 
-Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
+Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile, UpdateMetadataTypes updateType)
 {
     const auto localPath = QDir::toNativeSeparators(filename);
 
@@ -238,7 +238,11 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
     if (cfapi::findPlaceholderInfo(localPath)) {
-        return cfapi::updatePlaceholderInfo(localPath, item._modtime, item._size, item._fileId, replacesPath);
+        if (updateType & Vfs::UpdateMetadataType::FileMetadata) {
+            return cfapi::updatePlaceholderInfo(localPath, item._modtime, item._size, item._fileId, replacesPath);
+        } else {
+            return cfapi::updatePlaceholderMarkInSync(localPath, item._fileId, replacesPath);
+        }
     } else {
         return cfapi::convertToPlaceholder(localPath, item._modtime, item._size, item._fileId, replacesPath);
     }
@@ -396,8 +400,19 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
         return;
     }
 
+    bool isNotVirtualFileFailure = false;
     if (!record.isVirtualFile()) {
-        qCInfo(lcCfApi) << "Couldn't hydrate, the file is not virtual";
+        if (isDehydratedPlaceholder(path)) {
+            qCWarning(lcCfApi) << "Hydration requested for a placeholder file not marked as virtual in local DB. Attempting to fix it...";
+            record._type = ItemTypeVirtualFileDownload;
+            isNotVirtualFileFailure = !journal->setFileRecord(record);
+        } else {
+            isNotVirtualFileFailure = true;
+        }
+    }
+
+    if (isNotVirtualFileFailure) {
+        qCWarning(lcCfApi) << "Couldn't hydrate, the file is not virtual";
         emit hydrationRequestFailed(requestId);
         return;
     }
@@ -448,6 +463,10 @@ void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
     Q_ASSERT(d->hydrationJobs.contains(job));
     qCInfo(lcCfApi) << "Hydration job finished" << job->requestId() << job->folderPath() << job->status();
     emit hydrationRequestFinished(job->requestId());
+    if (!job->errorString().isEmpty()) {
+        params().account->reportClientStatus(ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure);
+        emit failureHydrating(job->errorCode(), job->statusCode(), job->errorString(), job->folderPath());
+    }
 }
 
 int VfsCfApi::finalizeHydrationJob(const QString &requestId)

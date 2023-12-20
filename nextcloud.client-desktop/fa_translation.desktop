@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[fa]=@APPLICATION_ICON_NAME@
 Name[fa]=@اسم_ اپلیکیشن @ دسکتاپ
 Comment[fa]=@ APPLICATION_NAME @ مشتری هماهنگ سازی دسکتاپ
 GenericName[fa]=همگام سازی پوشه
+Icon[fa]=@APPLICATION_ICON_NAME@

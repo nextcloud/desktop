@@ -82,8 +82,9 @@ public:
      * Version 2: introduction of metadata_parent hash in 2.6.0
      *            (version remains readable by 2.5.1)
      * Version 3: introduction of new windows vfs mode in 2.6.0
+     * Version 5: available in oC client 4.0.0 and 4.2.0
      */
-    static int maxSettingsVersion() { return 3; }
+    static int maxSettingsVersion() { return 5; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
@@ -447,6 +448,9 @@ private slots:
 
     /** Unblocks normal sync operation */
     void slotHydrationDone();
+
+    /* Hydration failed, perform required steps to notify user */
+    void slotHydrationFailed(int errorCode, int statusCode, const QString &errorString, const QString &fileName);
 
     void slotCapabilitiesChanged();
 

@@ -1,31 +1,28 @@
 name: macOS Build and Test
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: macOS Build and Test
     runs-on: macos-latest
     env:
       CRAFT_TARGET: macos-64-clang
       CRAFT_MASTER_LOCATION: ${{ github.workspace }}/CraftMaster
       CRAFT_MASTER_CONFIG: ${{ github.workspace }}/craftmaster.ini
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
       - name: Restore cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/cache
           key: macos-latest-${{ env.CRAFT_TARGET }}
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
 

@@ -76,7 +76,7 @@ private:
 - (BOOL)backgroundUpdateChecksAllowed
 {
     BOOL allowUpdateCheck = OCC::ConfigFile().skipUpdateCheck() ? NO : YES;
-    qCDebug(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
+    qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
     return allowUpdateCheck;
 }
 
@@ -95,7 +95,7 @@ private:
 
 - (void)notifyStateChange:(const OCC::SparkleUpdater::State)state displayStatus:(const QString&)statusString
 {
-    qCDebug(OCC::lcUpdater) << statusString;
+    qCInfo(OCC::lcUpdater) << statusString;
     _owner->statusChanged(state, statusString);
 }
 
@@ -293,7 +293,7 @@ bool SparkleUpdater::autoUpdaterAllowed()
 
 void SparkleUpdater::checkForUpdate()
 {
-    qCDebug(OCC::lcUpdater) << "Checking for updates.";
+    qCInfo(OCC::lcUpdater) << "Checking for updates.";
     if (autoUpdaterAllowed()) {
         [_interface->updater checkForUpdates: NSApp];
     }
@@ -302,10 +302,10 @@ void SparkleUpdater::checkForUpdate()
 void SparkleUpdater::backgroundCheckForUpdate()
 {
     if (autoUpdaterAllowed() && !ConfigFile().skipUpdateCheck()) {
-        qCDebug(OCC::lcUpdater) << "launching background check";
+        qCInfo(OCC::lcUpdater) << "launching background check";
         [_interface->updater checkForUpdatesInBackground];
     } else {
-        qCDebug(OCC::lcUpdater) << "not launching background check, auto updater not allowed or update check skipped in config";
+        qCInfo(OCC::lcUpdater) << "not launching background check, auto updater not allowed or update check skipped in config";
     }
 }
 

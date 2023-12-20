@@ -136,6 +136,8 @@ many relevant logs as possible. Log output can help  with tracking down
 problems and, if you report a bug, log output can help to resolve an issue more
 quickly.
 
+  .. warning:: Log files contain sensitive information. You may wish to redact sensitive details or to only share limited excerpts.
+
 Obtaining the Client Log File
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

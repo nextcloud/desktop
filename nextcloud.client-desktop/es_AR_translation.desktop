@@ -12,7 +12,7 @@ MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_
 Actions=Quit;
 
 # Translations
-
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
 
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit
@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[es_AR]=@APPLICATION_ICON_NAME@
 Name[es_AR]=@APPLICATION_NAME@ Desktop
 Comment[es_AR]=Cliente de sincronización de escritorio @APPLICATION_NAME@
 GenericName[es_AR]=Sincronización de carpetas
+Icon[es_AR]=@APPLICATION_ICON_NAME@

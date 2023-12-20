@@ -314,6 +314,7 @@ void SyncEngine::conflictRecordMaintenance()
             }
 
             _journal->setConflictRecord(record);
+            account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Conflict);
         }
     }
 }
@@ -378,7 +379,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Ensure it's a placeholder file on disk
             if (item->_type == ItemTypeFile && _syncOptions._vfs->mode() != Vfs::Off) {
-                const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
+                const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item, {}, Vfs::UpdateMetadataType::DatabaseMetadata);
                 if (!result) {
                     item->_status = SyncFileItem::Status::NormalError;
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -411,7 +412,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item, ErrorCategory::GenericError);
                     return;
                 }
-            } else if (modificationHappened || prev._modtime != item->_modtime) {
+            } else if (prev._modtime != item->_modtime) {
                 if (!FileSystem::setModTime(filePath, item->_modtime)) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
                     item->_errorString = tr("Could not update file metadata: %1").arg(filePath);
@@ -686,6 +687,8 @@ void SyncEngine::startSync()
     }
 
     if (singleItemDiscoveryOptions().isValid() && singleItemDiscoveryOptions().discoveryDirItem) {
+        const auto databaseFingerprint = _journal->dataFingerprint();
+        _discoveryPhase->_dataFingerprint = databaseFingerprint;
         ProcessDirectoryJob::PathTuple path = {};
         path._local = path._original = path._server = path._target = singleItemDiscoveryOptions().discoveryPath;
 
@@ -811,7 +814,7 @@ void SyncEngine::slotDiscoveryFinished()
         }
 
         if (_discoveryPhase->_hasDownloadRemovedItems && _discoveryPhase->_hasUploadErrorItems) {
-            for (const auto &item : _syncItems) {
+            for (const auto &item : qAsConst(_syncItems)) {
                 if (item->_instruction == CSYNC_INSTRUCTION_ERROR && item->_direction == SyncFileItem::Up) {
                     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 }
@@ -919,7 +922,7 @@ void SyncEngine::slotDiscoveryFinished()
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error, const ErrorCategory errorCategory)
 {
-    syncError(error, errorCategory);
+    emit syncError(error, errorCategory);
     finalize(false);
 }
 
@@ -947,13 +950,13 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item, const ErrorCateg
     emit itemCompleted(item, category);
 }
 
-void SyncEngine::slotPropagationFinished(bool success)
+void SyncEngine::slotPropagationFinished(OCC::SyncFileItem::Status status)
 {
     if (_propagator->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
-    if (success && _discoveryPhase) {
+    if ((status == SyncFileItem::Success || status == SyncFileItem::BlacklistedError) && _discoveryPhase) {
         _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
     }
 
@@ -970,7 +973,7 @@ void SyncEngine::slotPropagationFinished(bool success)
     _progressInfo->_status = ProgressInfo::Done;
     emit transmissionProgress(*_progressInfo);
 
-    finalize(success);
+    finalize(status == SyncFileItem::Success);
 }
 
 void SyncEngine::finalize(bool success)
@@ -1036,8 +1039,9 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
     */
 
     for (const auto &syncItem : qAsConst(syncItems)) {
-        if (syncItem->_direction != SyncFileItem::Down)
+        if (syncItem->_direction != SyncFileItem::Down || syncItem->_isSelectiveSync) {
             continue;
+        }
 
         switch (syncItem->_instruction) {
         case CSYNC_INSTRUCTION_SYNC:
@@ -1258,6 +1262,7 @@ void SyncEngine::slotSummaryError(const QString &message)
 
 void SyncEngine::slotInsufficientLocalStorage()
 {
+    account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_No_Free_Space);
     slotSummaryError(
         tr("Disk space is low: Downloads that would reduce free space "
            "below %1 were skipped.")
@@ -1266,6 +1271,7 @@ void SyncEngine::slotInsufficientLocalStorage()
 
 void SyncEngine::slotInsufficientRemoteStorage()
 {
+    account()->reportClientStatus(ClientStatusReportingStatus::UploadError_No_Free_Space);
     auto msg = tr("There is insufficient space available on the server for some uploads.");
     if (_uniqueErrors.contains(msg))
         return;

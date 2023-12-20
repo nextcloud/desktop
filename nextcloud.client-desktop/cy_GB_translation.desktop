@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[cy_GB]=@APPLICATION_ICON_NAME@
 Name[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
 Comment[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
 GenericName[cy_GB]=Cydweddu Ffolder
+Icon[cy_GB]=@APPLICATION_ICON_NAME@

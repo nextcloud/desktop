@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[nl]=@APPLICATION_ICON_NAME@
 Name[nl]=@APPLICATION_NAME@ Desktop
 Comment[nl]=@APPLICATION_NAME@ desktopsynchronisatieclient
 GenericName[nl]=Map synchronisatie
+Icon[nl]=@APPLICATION_ICON_NAME@

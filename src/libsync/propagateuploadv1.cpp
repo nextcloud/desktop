@@ -219,6 +219,9 @@ void PropagateUploadFileV1::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
+        const auto exceptionParsed = getExceptionFromReply(job->reply());
+        _item->_errorExceptionName = exceptionParsed.first;
+        _item->_errorExceptionMessage = exceptionParsed.second;
         return;
     }
 
@@ -322,6 +325,12 @@ void PropagateUploadFileV1::slotPutFinished()
             qCWarning(lcPropagateUploadV1) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
+    }
+
+    if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
+        if (oldRecord._etag != _item->_etag) {
+            _item->updateLockStateFromDbRecord(oldRecord);
+        }
     }
 
     _item->_etag = etag;

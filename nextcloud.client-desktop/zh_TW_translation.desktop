@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[zh_TW]=@APPLICATION_ICON_NAME@
 Name[zh_TW]=@APPLICATION_NAME@ 桌面版
 Comment[zh_TW]=@APPLICATION_NAME@ 桌面同步客戶端
 GenericName[zh_TW]=資料夾同步
+Icon[zh_TW]=@APPLICATION_ICON_NAME@

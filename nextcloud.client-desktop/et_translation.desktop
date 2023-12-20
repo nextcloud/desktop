@@ -12,7 +12,7 @@ MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_
 Actions=Quit;
 
 # Translations
-
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
 
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit
@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[et_EE]=@APPLICATION_ICON_NAME@
 Name[et_EE]=@APPLICATION_NAME@ Desktop
 Comment[et_EE]=@APPLICATION_NAME@ töölaua sünkroniseerimise klient
 GenericName[et_EE]=Kausta Sünkroonimine
+Icon[et_EE]=@APPLICATION_ICON_NAME@

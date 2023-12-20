@@ -112,6 +112,9 @@ bool PollJob::finished()
         _item->_requestId = requestId();
         _item->_status = classifyError(err, _item->_httpErrorCode);
         _item->_errorString = errorString();
+        const auto exceptionParsed = getExceptionFromReply(reply());
+        _item->_errorExceptionName = exceptionParsed.first;
+        _item->_errorExceptionMessage = exceptionParsed.second;
 
         if (_item->_status == SyncFileItem::FatalError || _item->_httpErrorCode >= 400) {
             if (_item->_status != SyncFileItem::FatalError
@@ -152,6 +155,13 @@ bool PollJob::finished()
     if (status == QLatin1String("finished")) {
         _item->_status = SyncFileItem::Success;
         _item->_fileId = json["fileId"].toString().toUtf8();
+
+        if (SyncJournalFileRecord oldRecord; _journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
+            if (oldRecord._etag != _item->_etag) {
+                _item->updateLockStateFromDbRecord(oldRecord);
+            }
+        }
+
         _item->_etag = parseEtag(json["ETag"].toString().toUtf8());
     } else { // error
         _item->_status = classifyError(QNetworkReply::UnknownContentError, _item->_httpErrorCode);
@@ -836,7 +846,7 @@ void PropagateUploadFileCommon::finalize()
         quotaIt.value() -= _fileToUpload._size;
 
     // Update the database entry
-    const auto result = propagator()->updateMetadata(*_item);
+    const auto result = propagator()->updateMetadata(*_item, Vfs::DatabaseMetadata);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
         return;

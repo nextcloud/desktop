@@ -321,6 +321,8 @@ public:
     bool _hasUploadErrorItems = false;
     bool _hasDownloadRemovedItems = false;
 
+    bool _noCaseConflictRecordsInDb = false;
+
 signals:
     void fatalError(const QString &errorString, const OCC::ErrorCategory errorCategory);
     void itemDiscovered(const OCC::SyncFileItemPtr &item);

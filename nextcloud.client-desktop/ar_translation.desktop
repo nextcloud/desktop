@@ -12,7 +12,7 @@ MimeType=application/vnd.@APPLICATION_EXECUTABLE@;x-scheme-handler/@APPLICATION_
 Actions=Quit;
 
 # Translations
-
+@LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS@
 
 [Desktop Action Quit]
 Exec=@APPLICATION_EXECUTABLE@ --quit
@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[ar]=@APPLICATION_ICON_NAME@
 Name[ar]=@APPLICATION_NAME@ Desktop
 Comment[ar]=@APPLICATION_NAME@ desktop synchronization client
 GenericName[ar]=مزامنة المجلد
+Icon[ar]=@APPLICATION_ICON_NAME@

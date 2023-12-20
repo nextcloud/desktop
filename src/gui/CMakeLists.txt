@@ -44,6 +44,7 @@ set(client_UI_SRCS
     passwordinputdialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
+    vfsdownloaderrordialog.ui
     wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
@@ -158,6 +159,8 @@ set(client_SRCS
     thumbnailjob.cpp
     userinfo.h
     userinfo.cpp
+    vfsdownloaderrordialog.h
+    vfsdownloaderrordialog.cpp
     accountstate.h
     accountstate.cpp
     addcertificatedialog.h

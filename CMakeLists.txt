@@ -214,6 +214,7 @@ if(BUILD_CLIENT)
     find_package(OpenSSL 1.1 REQUIRED )
 
    find_package(ZLIB REQUIRED)
+   find_package(SQLite3 3.9.0 REQUIRED)
 
    if(NOT WIN32 AND NOT APPLE)
       find_package(PkgConfig REQUIRED)
@@ -225,6 +226,12 @@ if(BUILD_CLIENT)
         pkg_check_modules(GLIB2 REQUIRED glib-2.0 IMPORTED_TARGET)
       endif()
    endif()
+endif()
+
+if (APPLE)
+    option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" OFF)
+else ()
+    option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" ON)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)

@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[th_TH]=@APPLICATION_ICON_NAME@
 Name[th_TH]=@APPLICATION_NAME@ เดสก์ท็อป
 Comment[th_TH]=ไคลเอ็นต์ซิงโครไนซ์ @APPLICATION_NAME@ บนเดสก์ท็อป
 GenericName[th_TH]=ซิงค์โฟลเดอร์
+Icon[th_TH]=@APPLICATION_ICON_NAME@

@@ -7,13 +7,13 @@ jobs:
     stale:
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/stale@v3
+            -   uses: actions/stale@v9
                 with:
                     operations-per-run: 1500
                     days-before-stale: 28
                     days-before-close: 14
                     days-before-pr-close: -1
-                    only-labels: 'bug'
+                    only-labels: 'bug,need info'
                     exempt-issue-labels: 'approved'
                     stale-issue-message: 'This bug report did not receive an update in the last 4 weeks.
                                         Please take a look again and update the issue with new details,

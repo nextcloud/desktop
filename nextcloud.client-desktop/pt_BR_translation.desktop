@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[pt_BR]=@APPLICATION_ICON_NAME@
 Name[pt_BR]=@APPLICATION_NAME@ Desktop
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização desktop
 GenericName[pt_BR]=Sincronizar pasta
+Icon[pt_BR]=@APPLICATION_ICON_NAME@

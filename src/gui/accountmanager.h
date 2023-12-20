@@ -101,7 +101,7 @@ public slots:
     void save(bool saveCredentials = true);
 
     /// Delete the AccountState
-    void deleteAccount(AccountState *account);
+    void deleteAccount(OCC::AccountState *account);
 
     /// Remove all accounts
     void shutdown();

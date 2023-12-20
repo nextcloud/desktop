@@ -34,6 +34,7 @@
 
 #include "capabilities.h"
 #include "clientsideencryption.h"
+#include "clientstatusreporting.h"
 #include "common/utility.h"
 #include "syncfileitem.h"
 
@@ -324,6 +325,10 @@ public:
     [[nodiscard]] PushNotifications *pushNotifications() const;
     void setPushNotificationsReconnectInterval(int interval);
 
+    void trySetupClientStatusReporting();
+
+    void reportClientStatus(const ClientStatusReportingStatus status) const;
+
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
     void setLockFileState(const QString &serverRelativePath,
@@ -459,6 +464,8 @@ private:
     QString _lastDirectEditingETag;
 
     PushNotifications *_pushNotifications = nullptr;
+
+    std::unique_ptr<ClientStatusReporting> _clientStatusReporting;
 
     std::shared_ptr<UserStatusConnector> _userStatusConnector;
 

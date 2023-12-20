@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[he]=@APPLICATION_ICON_NAME@
 Name[he]=@APPLICATION_NAME@ לשולחן העבודה
 Comment[he]=@APPLICATION_NAME@ לקוח סנכרון לשולחן העבודה
 GenericName[he]=סנכרון תיקיות
+Icon[he]=@APPLICATION_ICON_NAME@

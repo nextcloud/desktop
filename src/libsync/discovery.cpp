@@ -76,6 +76,8 @@ void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
+    _discoveryData->_noCaseConflictRecordsInDb = _discoveryData->_statedb->caseClashConflictRecordPaths().isEmpty();
+
     if (_queryServer == NormalQuery) {
         _serverJob = startAsyncServerQuery();
     } else {
@@ -496,6 +498,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
+        qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
     }
 
     // The item shall only have this type if the db request for the virtual download
@@ -505,8 +508,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_type = ItemTypeVirtualFile;
     // Similarly db entries with a dehydration request denote a regular file
     // until the request is processed.
-    if (item->_type == ItemTypeVirtualFileDehydration)
+    if (item->_type == ItemTypeVirtualFileDehydration) {
         item->_type = ItemTypeFile;
+        qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
+    }
 
     // VFS suffixed files on the server are ignored
     if (isVfsWithSuffix()) {
@@ -799,7 +804,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_modtime = serverEntry.modtime;
     item->_size = serverEntry.size;
 
-    const auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
+    const auto conflictRecord = _discoveryData->_noCaseConflictRecordsInDb
+        ? ConflictRecord{} :
+        _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
     if (conflictRecord.isValid() && QString::fromUtf8(conflictRecord.path).contains(QStringLiteral("(case clash from"))) {
         qCInfo(lcDisco) << "should ignore" << item->_file << "has already a case clash conflict record" << conflictRecord.path;
 
@@ -976,19 +983,21 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
 
+    const auto isTypeChange = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+
     qCDebug(lcDisco) << "File" << item->_file << "- servermodified:" << serverModified
                      << "noServerEntry:" << noServerEntry;
 
     // Decay server modifications to UPDATE_METADATA if the local virtual exists
     bool hasLocalVirtual = localEntry.isVirtualFile || (_queryLocal == ParentNotChanged && dbEntry.isVirtualFile());
     bool virtualFileDownload = item->_type == ItemTypeVirtualFileDownload;
-    if (serverModified && !virtualFileDownload && hasLocalVirtual) {
+    if (serverModified && !isTypeChange && !virtualFileDownload && hasLocalVirtual) {
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         serverModified = false;
         item->_type = ItemTypeVirtualFile;
     }
 
-    if (dbEntry.isVirtualFile() && (!localEntry.isValid() || localEntry.isVirtualFile) && !virtualFileDownload) {
+    if (dbEntry.isVirtualFile() && (!localEntry.isValid() || localEntry.isVirtualFile) && !virtualFileDownload && !isTypeChange) {
         item->_type = ItemTypeVirtualFile;
     }
 
@@ -1019,9 +1028,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Not modified locally (ParentNotChanged)
             if (noServerEntry) {
                 // not on the server: Removed on the server, delete locally
-#if !defined QT_NO_DEBUG
                 qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
-#endif
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
@@ -1376,12 +1383,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     // Check local permission if we are allowed to put move the file here
     // Technically we should use the permissions from the server, but we'll assume it is the same
-    auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-    if (!movePerms.sourceOk || !movePerms.destinationOk) {
+    const auto isExternalStorage = base._remotePerm.hasPermission(RemotePermissions::IsMounted);
+    const auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+    if (!movePerms.sourceOk || !movePerms.destinationOk || isExternalStorage) {
         qCInfo(lcDisco) << "Move without permission to rename base file, "
                         << "source:" << movePerms.sourceOk
                         << ", target:" << movePerms.destinationOk
-                        << ", targetNew:" << movePerms.destinationNewOk;
+                        << ", targetNew:" << movePerms.destinationNewOk
+                        << ", isExternalStorage:" << isExternalStorage;
 
         // If we can create the destination, do that.
         // Permission errors on the destination will be handled by checkPermissions later.
@@ -1390,8 +1399,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
-        if (movePerms.destinationNewOk)
+        // In case of external storage mounted folders we are never allowed to move/delete them
+        if (movePerms.destinationNewOk && !isExternalStorage) {
             return;
+        }
 
         // Here we know the new location can't be uploaded: must prevent the source delete.
         // Two cases: either the source item was already processed or not.
@@ -1439,8 +1450,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // but it complicates handling a lot and will happen rarely.
         if (item->_type == ItemTypeVirtualFileDownload)
             item->_type = ItemTypeVirtualFile;
-        if (item->_type == ItemTypeVirtualFileDehydration)
+        if (item->_type == ItemTypeVirtualFileDehydration) {
             item->_type = ItemTypeFile;
+            qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
+        }
 
         qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
     };
@@ -1612,7 +1625,16 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_direction = _dirItem->_direction;
     }
 
-    qCDebug(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
+    {
+        const auto discoveredItemLog = QStringLiteral("%1 %2 %3 %4").arg(item->_file).arg(item->_instruction).arg(item->_direction).arg(item->_type);
+        const auto isImportantInstruction = item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_IGNORE
+            && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
+        if (isImportantInstruction) {
+            qCInfo(lcDisco) << discoveredItemLog;
+        } else {
+            qCDebug(lcDisco) << discoveredItemLog;
+        }
+    }
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -1693,11 +1715,13 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             // No permissions set
             return true;
         } else if (item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+            _discoveryData->_account->reportClientStatus(ClientStatusReportingStatus::UploadError_No_Write_Permissions);
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
+            _discoveryData->_account->reportClientStatus(ClientStatusReportingStatus::UploadError_No_Write_Permissions);
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");

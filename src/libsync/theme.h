@@ -337,6 +337,11 @@ public:
     [[nodiscard]] QString gitSHA1() const;
 
     /**
+     * About info text
+     */
+    [[nodiscard]] QString aboutInfo() const;
+
+    /**
      * About dialog contents
      */
     [[nodiscard]] QString about() const;

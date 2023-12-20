@@ -606,6 +606,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
         }
         if (_item->_modtime != _item->_previousModtime) {
             Q_ASSERT(_item->_modtime > 0);
+            qCDebug(lcPropagateDownload()) << "setModTime" << fn << _item->_modtime;
             FileSystem::setModTime(fn, _item->_modtime);
             emit propagator()->touchedFile(fn);
         }
@@ -674,6 +675,7 @@ void PropagateDownloadFile::startDownload()
     if (_tmpFile.exists())
         FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
     if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
+        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Cannot_Create_File);
         qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
         done(SyncFileItem::NormalError, _tmpFile.errorString(), ErrorCategory::GenericError);
         return;
@@ -1162,6 +1164,7 @@ void PropagateDownloadFile::downloadFinished()
     if (_item->_modtime <= 0) {
         qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
     }
+    qCDebug(lcPropagateDownload()) << "setModTime" << _tmpFile.fileName() << _item->_modtime;
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
@@ -1257,6 +1260,7 @@ void PropagateDownloadFile::downloadFinished()
     emit propagator()->touchedFile(filename);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), filename, &error)) {
+        propagator()->account()->reportClientStatus(ClientStatusReportingStatus::DownloadError_Cannot_Create_File);
         qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(filename);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly

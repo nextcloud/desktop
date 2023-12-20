@@ -90,7 +90,8 @@ class TestSyncEngine : public QObject
 private slots:
     void initTestCase()
     {
-        OCC::Logger::instance()->setLogDebug(true);
+        Logger::instance()->setLogFlush(true);
+        Logger::instance()->setLogDebug(true);
     }
 
     void testFileDownload() {
@@ -1821,6 +1822,30 @@ private slots:
         fakeFolder.remoteModifier().insert("A/abcdęfg.txt");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/abcdęfg.txt"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testRemoteTypeChangeExistingLocalMustGetRemoved()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // test file change to directory on remote
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().insert("a/TESTFILE");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/TESTFILE");
+        fakeFolder.remoteModifier().mkdir("a/TESTFILE");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // test directory change to file on remote
+        fakeFolder.remoteModifier().mkdir("a/TESTDIR");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("a/TESTDIR");
+        fakeFolder.remoteModifier().insert("a/TESTDIR");
+        QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };

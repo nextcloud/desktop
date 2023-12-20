@@ -27,12 +27,14 @@
 
 #include "accountfwd.h"
 #include "bandwidthmanager.h"
-#include "common/syncjournaldb.h"
-#include "common/utility.h"
 #include "csync.h"
 #include "progressdispatcher.h"
 #include "syncfileitem.h"
 #include "syncoptions.h"
+
+#include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "common/vfs.h"
 
 #include <deque>
 
@@ -192,6 +194,8 @@ protected slots:
     void slotRestoreJobFinished(SyncFileItem::Status status);
 
 private:
+    void reportClientStatuses();
+
     QScopedPointer<PropagateItemJob> _restoreJob;
     JobParallelism _parallelism = FullParallelism;
 
@@ -592,7 +596,7 @@ public:
      *
      * Will also trigger a Vfs::convertToPlaceholder.
      */
-    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item);
+    Result<Vfs::ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, Vfs::UpdateMetadataTypes updateType = Vfs::AllMetadata);
 
     /** Update the database for an item.
      *
@@ -601,8 +605,11 @@ public:
      *
      * Will also trigger a Vfs::convertToPlaceholder.
      */
-    static Result<Vfs::ConvertToPlaceholderResult, QString> staticUpdateMetadata(const SyncFileItem &item, const QString localDir,
-                                                                                 Vfs *vfs, SyncJournalDb * const journal);
+    static Result<Vfs::ConvertToPlaceholderResult, QString> staticUpdateMetadata(const SyncFileItem &item,
+                                                                                 const QString localDir,
+                                                                                 Vfs *vfs,
+                                                                                 SyncJournalDb * const journal,
+                                                                                 Vfs::UpdateMetadataTypes updateType);
 
     Q_REQUIRED_RESULT bool isDelayedUploadItem(const SyncFileItemPtr &item) const;
 
@@ -633,8 +640,9 @@ private slots:
     /** Emit the finished signal and make sure it is only emitted once */
     void emitFinished(OCC::SyncFileItem::Status status)
     {
-        if (!_finishedEmited)
-            emit finished(status == SyncFileItem::Success);
+        if (!_finishedEmited) {
+            emit finished(status);
+        }
         _abortRequested = false;
         _finishedEmited = true;
     }
@@ -643,9 +651,9 @@ private slots:
 
 signals:
     void newItem(const OCC::SyncFileItemPtr &);
-    void itemCompleted(const SyncFileItemPtr &item, OCC::ErrorCategory category);
+    void itemCompleted(const OCC::SyncFileItemPtr &item, OCC::ErrorCategory category);
     void progress(const OCC::SyncFileItem &, qint64 bytes);
-    void finished(bool success);
+    void finished(OCC::SyncFileItem::Status status);
 
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName);
@@ -724,7 +732,7 @@ public:
     void start();
 signals:
     void finished();
-    void aborted(const QString &error, const ErrorCategory errorCategory);
+    void aborted(const QString &error, const OCC::ErrorCategory errorCategory);
 private slots:
     void slotPollFinished();
 };

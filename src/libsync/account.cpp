@@ -284,6 +284,25 @@ void Account::setPushNotificationsReconnectInterval(int interval)
     _pushNotificationsReconnectTimer.setInterval(interval);
 }
 
+void Account::trySetupClientStatusReporting()
+{
+    if (!_capabilities.isClientStatusReportingEnabled()) {
+        _clientStatusReporting.reset();
+        return;
+    }
+
+    if (!_clientStatusReporting) {
+        _clientStatusReporting = std::make_unique<ClientStatusReporting>(this);
+    }
+}
+
+void Account::reportClientStatus(const ClientStatusReportingStatus status) const
+{
+    if (_clientStatusReporting) {
+        _clientStatusReporting->reportClientStatus(status);
+    }
+}
+
 void Account::trySetupPushNotifications()
 {
     // Stop the timer to prevent parallel setup attempts
@@ -669,6 +688,8 @@ void Account::setCapabilities(const QVariantMap &caps)
 
     setupUserStatusConnector();
     trySetupPushNotifications();
+
+    trySetupClientStatusReporting();
 }
 
 void Account::setupUserStatusConnector()

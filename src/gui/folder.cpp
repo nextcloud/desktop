@@ -38,6 +38,7 @@
 #include "common/vfs.h"
 #include "creds/abstractcredentials.h"
 #include "settingsdialog.h"
+#include "vfsdownloaderrordialog.h"
 
 #include <QTimer>
 #include <QUrl>
@@ -507,6 +508,7 @@ void Folder::startVfs()
 
     connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
     connect(_vfs.data(), &Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+    connect(_vfs.data(), &Vfs::failureHydrating, this, &Folder::slotHydrationFailed);
 
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
             _vfs.data(), &Vfs::fileStatusChanged);
@@ -766,11 +768,11 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
 void Folder::setVirtualFilesEnabled(bool enabled)
 {
-    Vfs::Mode newMode = _definition.virtualFilesMode;
-    if (enabled && _definition.virtualFilesMode == Vfs::Off) {
-        newMode = bestAvailableVfsMode();
-    } else if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
+    auto newMode = _definition.virtualFilesMode;
+    if (!enabled) {
         newMode = Vfs::Off;
+    } else if (newMode == Vfs::Off) {
+        newMode = bestAvailableVfsMode();
     }
 
     if (newMode != _definition.virtualFilesMode) {
@@ -787,8 +789,8 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 
         _definition.virtualFilesMode = newMode;
         startVfs();
+        _saveInFoldersWithPlaceholders = newMode != Vfs::Off;
         if (newMode != Vfs::Off) {
-            _saveInFoldersWithPlaceholders = true;
             switchToVirtualFiles();
         }
         saveToSettings();
@@ -1508,6 +1510,22 @@ void Folder::slotHydrationDone()
     _syncResult.setStatus(SyncResult::Success);
     emit syncFinished(_syncResult);
     emit syncStateChange();
+}
+
+void Folder::slotHydrationFailed(int errorCode, int statusCode, const QString &errorString, const QString &fileName)
+{
+    _syncResult.setStatus(SyncResult::Error);
+    const auto errorMessageDetails = tr("Virtual file download failed with code \"%1\", status \"%2\" and error message \"%3\"")
+        .arg(errorCode)
+        .arg(statusCode)
+        .arg(errorString);
+    _syncResult.appendErrorString(errorMessageDetails);
+
+    const auto errorMessageBox = new VfsDownloadErrorDialog(fileName, errorMessageDetails);
+    errorMessageBox->setAttribute(Qt::WA_DeleteOnClose);
+    errorMessageBox->show();
+    errorMessageBox->activateWindow();
+    errorMessageBox->raise();
 }
 
 void Folder::slotCapabilitiesChanged()

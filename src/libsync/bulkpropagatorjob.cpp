@@ -366,6 +366,9 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     singleFile._item->_requestId = job->requestId();
     if (singleFile._item->_httpErrorCode != 200) {
         commonErrorHandling(singleFile._item, fileReply[QStringLiteral("message")].toString());
+        const auto exceptionParsed = getExceptionFromReply(job->reply());
+        singleFile._item->_errorExceptionName = exceptionParsed.first;
+        singleFile._item->_errorExceptionMessage = exceptionParsed.second;
         return;
     }
 
@@ -397,6 +400,12 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
 
     // the file id should only be empty for new files up- or downloaded
     computeFileId(singleFile._item, fileReply);
+
+    if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(singleFile._item->destination(), &oldRecord) && oldRecord.isValid()) {
+        if (oldRecord._etag != singleFile._item->_etag) {
+            singleFile._item->updateLockStateFromDbRecord(oldRecord);
+        }
+    }
 
     singleFile._item->_etag = etag;
     singleFile._item->_fileId = getHeaderFromJsonReply(fileReply, "fileid");
@@ -446,10 +455,11 @@ void BulkPropagatorJob::slotUploadProgress(SyncFileItemPtr item, qint64 sent, qi
     // resetting progress due to the sent being zero by ignoring it.
     // finishedSignal() is bound to be emitted soon anyway.
     // See https://bugreports.qt.io/browse/QTBUG-44782.
+    _sentTotal += sent;
     if (sent == 0 && total == 0) {
         return;
     }
-    propagator()->reportProgress(*item, sent - total);
+    propagator()->reportProgress(*item, _sentTotal);
 }
 
 void BulkPropagatorJob::slotJobDestroyed(QObject *job)
@@ -472,7 +482,7 @@ void BulkPropagatorJob::adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fil
 void BulkPropagatorJob::finalizeOneFile(const BulkUploadItem &oneFile)
 {
     // Update the database entry
-    const auto result = propagator()->updateMetadata(*oneFile._item);
+    const auto result = propagator()->updateMetadata(*oneFile._item, Vfs::UpdateMetadataType::DatabaseMetadata);
     if (!result) {
         done(oneFile._item, SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
         return;

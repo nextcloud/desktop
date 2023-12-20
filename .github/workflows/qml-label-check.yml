@@ -1,16 +1,13 @@
 name: QML Label component check
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: QML Label component check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Run label component count
         run: |
           MATCHESRESULT=$(find . -iname "*.qml" | xargs grep -r -e "^\s*Label\s*[{]" | wc -l | sed "s/ //g")
@@ -18,7 +15,7 @@ jobs:
           echo "EXPECTED_MATCHES=1" >> $GITHUB_ENV
       - name: Check label component use count
         if: env.MATCHES != env.EXPECTED_MATCHES
-        uses: actions/github-script@v3
+        uses: actions/github-script@v7
         with:
           script: |
               core.setFailed('Using QML Labels! Make sure to use EnforcedPlainTextLabel instead!')

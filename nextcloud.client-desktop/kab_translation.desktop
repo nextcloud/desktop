@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[kab]=@APPLICATION_ICON_NAME@
 Name[kab]=@APPLICATION_NAME@ Desktop
 Comment[kab]=@APPLICATION_NAME@ amsaɣ n umtawi n tnarit
 GenericName[kab]=Akaram n umtawi
+Icon[kab]=@APPLICATION_ICON_NAME@

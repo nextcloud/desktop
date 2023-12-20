@@ -364,7 +364,7 @@ int FolderMan::setupFoldersMigration()
     for (const auto &fileName : dirFiles) {
         for (const auto &accountState : legacyAccounts) {
             const auto fullFilePath = dir.filePath(fileName);
-            setupFolderFromOldConfigFile(fullFilePath, accountState.data());
+            setupLegacyFolder(fullFilePath, accountState.data());
         }
     }
 
@@ -481,7 +481,7 @@ QString FolderMan::unescapeAlias(const QString &alias)
     return a;
 }
 
-void FolderMan::setupFolderFromOldConfigFile(const QString &fileNamePath, AccountState *accountState)
+void FolderMan::setupLegacyFolder(const QString &fileNamePath, AccountState *accountState)
 {
     qCInfo(lcFolderMan) << "  ` -> setting up:" << fileNamePath;
     QString escapedFileNamePath(fileNamePath);
@@ -1223,7 +1223,7 @@ Folder *FolderMan::addFolderInternal(
         || _folderMap.contains(folderDefinition.alias)
         || _additionalBlockedFolderAliases.contains(folderDefinition.alias)) {
         // There is already a folder configured with this name and folder names need to be unique
-        folderDefinition.alias = alias + QString::number(++count);
+        folderDefinition.alias = QString::number(alias.toInt() + (++count));
     }
 
     auto folder = new Folder(folderDefinition, accountState, std::move(vfs), this);
@@ -1701,10 +1701,20 @@ static QString checkPathValidityRecursive(const QString &path)
         return FolderMan::tr("The selected path is not a folder!");
     }
 
+    #ifdef Q_OS_WIN
+    if (!selFile.isWritable()) {
+        // isWritable() doesn't cover all NTFS permissions
+        // try creating and removing a test file, and make sure it is excluded from sync
+        if (!Utility::canCreateFileInPath(path)) {
+            return FolderMan::tr("You have no permission to write to the selected folder!");
+        }
+    }
+    #else
     if (!selFile.isWritable()) {
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
-    return QString();
+    #endif
+    return {};
 }
 
 // QFileInfo::canonicalPath returns an empty string if the file does not exist.

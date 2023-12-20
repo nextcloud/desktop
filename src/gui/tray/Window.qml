@@ -622,12 +622,18 @@ ApplicationWindow {
                     visible: currentUser.hasLocalFolder
                     currentUser: UserModel.currentUser
 
-                    Layout.preferredWidth:  Style.iconButtonWidth * Style.trayFolderListButtonWidthScaleFactor
-                    Layout.alignment: Qt.AlignHCenter
 
                     onClicked: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
 
                     onFolderEntryTriggered: isGroupFolder ? UserModel.openCurrentAccountFolderFromTrayInfo(fullFolderPath) : UserModel.openCurrentAccountLocalFolder()
+
+                    Accessible.role: Accessible.Graphic
+                    Accessible.name: qsTr("Open local or group folders")
+                    Accessible.onPressAction: openLocalFolderButton.userHasGroupFolders ? openLocalFolderButton.toggleMenuOpen() : UserModel.openCurrentAccountLocalFolder()
+
+                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
                 }
 
                 HeaderButton {
@@ -641,6 +647,11 @@ ApplicationWindow {
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open Nextcloud Talk in browser")
                     Accessible.onPressAction: trayWindowTalkButton.clicked()
+
+                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
+
                 }
 
                 HeaderButton {
