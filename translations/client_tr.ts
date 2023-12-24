@@ -1632,7 +1632,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/libsync/encryptfolderjob.cpp" line="90"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Şifreleme için üst veri üretilemedi. Klasörün kilidi açılıyor.
+        <translation>Şifreleme için üst veri oluşturulamadı. Klasörün kilidi açılıyor.
 Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     </message>
 </context>
