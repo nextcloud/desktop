@@ -101,23 +101,12 @@ NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *man
     return urls.copy;
 }
 
-} // namespace XPCUtils
-
-FileProviderXPC::FileProviderXPC(QObject *parent)
-    : QObject{parent}
+NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServicesAtUrls(NSArray<NSURL *> *urls)
 {
-}
-
-void FileProviderXPC::start()
-{
-    qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
-
-    const auto managers = XPCUtils::getDomainManagers();
-    const auto domainUrls = XPCUtils::getDomainUrlsForManagers(managers);
     dispatch_group_t group = dispatch_group_create();
     NSMutableArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *const fpServices = NSMutableArray.array;
 
-    for (NSURL *const url in domainUrls) {
+    for (NSURL *const url in urls) {
         dispatch_group_enter(group);
 
         [NSFileManager.defaultManager getFileProviderServicesForItemAtURL:url
@@ -141,8 +130,26 @@ void FileProviderXPC::start()
 
     if (fpServices.count == 0) {
         qCWarning(lcFileProviderXPC) << "No file provider services found";
-        return;
     }
+
+    return fpServices.copy;
+}
+
+} // namespace XPCUtils
+
+FileProviderXPC::FileProviderXPC(QObject *parent)
+    : QObject{parent}
+{
+}
+
+void FileProviderXPC::start()
+{
+    qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
+
+    const auto managers = XPCUtils::getDomainManagers();
+    const auto domainUrls = XPCUtils::getDomainUrlsForManagers(managers);
+    const auto fpServices = XPCUtils::getFileProviderServicesAtUrls(domainUrls);
+    dispatch_group_t group = dispatch_group_create();
 
     NSMutableArray<NSXPCConnection *> *const connections = NSMutableArray.array;
 
