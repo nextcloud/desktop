@@ -70,7 +70,7 @@ void OwncloudDolphinPluginHelper::tryConnect()
     }
     
     QString socketPath = QStandardPaths::locate(QStandardPaths::RuntimeLocation,
-                                                APPLICATION_SHORTNAME,
+                                                QStringLiteral(APPLICATION_SHORTNAME),
                                                 QStandardPaths::LocateDirectory);
     if(socketPath.isEmpty())
         return;

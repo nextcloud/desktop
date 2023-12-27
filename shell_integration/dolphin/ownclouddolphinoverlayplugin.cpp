@@ -66,16 +66,16 @@ private:
             return r;
 
         if (status.startsWith("OK"))
-            r << "vcs-normal";
+            r << QStringLiteral("vcs-normal");
         if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << "vcs-update-required";
+            r << QStringLiteral("vcs-update-required");
         if (status.startsWith("IGNORE") || status.startsWith("WARN"))
-            r << "vcs-locally-modified-unstaged";
+            r << QStringLiteral("vcs-locally-modified-unstaged");
         if (status.startsWith("ERROR"))
-            r << "vcs-conflicting";
+            r << QStringLiteral("vcs-conflicting");
 
         if (status.contains("+SWM"))
-            r << "document-share";
+            r << QStringLiteral("document-share");
 
         return r;
     }
