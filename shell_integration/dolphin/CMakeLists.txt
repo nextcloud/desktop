@@ -41,8 +41,7 @@ target_link_libraries(${OWNCLOUDDOLPHINOVERLAYPLUGIN} KF5::CoreAddons KF5::KIOCo
 
 #---ACTION PLUGIN---
 set(OWNCLOUDDOLPHINACTIONPLUGIN ${APPLICATION_EXECUTABLE}dolphinactionplugin)
-configure_file(ownclouddolphinactionplugin.desktop.in ${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop ESCAPE_QUOTES @ONLY)
+configure_file(ownclouddolphinactionplugin.json.in ${OWNCLOUDDOLPHINACTIONPLUGIN}.json ESCAPE_QUOTES @ONLY)
 kcoreaddons_add_plugin(${OWNCLOUDDOLPHINACTIONPLUGIN} INSTALL_NAMESPACE "kf5/kfileitemaction"
                        SOURCES ownclouddolphinactionplugin.cpp)
 target_link_libraries(${OWNCLOUDDOLPHINACTIONPLUGIN} KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets ${OWNCLOUDDOLPHINHELPER})
-kcoreaddons_desktop_to_json(${OWNCLOUDDOLPHINACTIONPLUGIN} ${CMAKE_CURRENT_BINARY_DIR}/${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop)

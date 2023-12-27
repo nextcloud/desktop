@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Service
-Name=@APPLICATION_NAME@Action
-ServiceTypes=KFileItemAction/Plugin
-MimeType=application/octet-stream;inode/directory;
-X-KDE-Library=@APPLICATION_EXECUTABLE@dolphinactionplugin
