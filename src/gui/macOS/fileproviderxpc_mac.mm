@@ -16,6 +16,8 @@
 
 #include <QLoggingCategory>
 
+#include "gui/accountmanager.h"
+
 #import <FileProvider/FileProvider.h>
 
 #import "ClientCommunicationProtocol.h"
@@ -216,6 +218,32 @@ void FileProviderXPC::start()
         qCInfo(lcFileProviderXPC) << "Got extension account id" << extensionNcAccount.UTF8String;
         [clientCommServices setObject:clientCommService forKey:extensionNcAccount];
     }
+
+    for (NSString *const extensionNcAccount in clientCommServices) {
+        qCInfo(lcFileProviderXPC) << "Sending message to client communication service";
+
+        const auto qExtensionNcAccount = QString::fromNSString(extensionNcAccount);
+        const auto accountManager = AccountManager::instance();
+
+        Q_ASSERT(accountManager);
+
+        const auto accountState = accountManager->accountFromUserId(qExtensionNcAccount);
+        if (!accountState) {
+            qCWarning(lcFileProviderXPC) << "Account state is null for received account"
+                                         << qExtensionNcAccount;
+            return;
+        }
+
+        const auto account = accountState->account();
+        const auto credentials = account->credentials();
+        NSString *const user = credentials->user().toNSString();
+        NSString *const serverUrl = account->url().toString().toNSString();
+        NSString *const password = credentials->password().toNSString();
+
+        NSObject<ClientCommunicationProtocol> *const clientCommService = [clientCommServices objectForKey:extensionNcAccount];
+        [clientCommService configureAccountWithUser:user
+                                          serverUrl:serverUrl
+                                           password:password];
     }
 }
 
