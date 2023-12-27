@@ -6141,7 +6141,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít místní nebo skupinové složky</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
