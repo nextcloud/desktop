@@ -33,15 +33,11 @@ namespace Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", QtInfoMsg)
 
-FileProviderXPC::FileProviderXPC(QObject *parent)
-    : QObject{parent}
+namespace XPCUtils
 {
-}
 
-void FileProviderXPC::start()
+NSArray<NSFileProviderManager *> *getDomainManagers()
 {
-    qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
-
     dispatch_group_t group = dispatch_group_create();
     __block NSMutableArray<NSFileProviderManager *> *managers = NSMutableArray.array;
 
@@ -68,9 +64,24 @@ void FileProviderXPC::start()
 
     if (managers.count == 0) {
         qCWarning(lcFileProviderXPC) << "No domains found";
-        return;
     }
 
+    return managers.copy;
+}
+
+} // namespace XPCUtils
+
+FileProviderXPC::FileProviderXPC(QObject *parent)
+    : QObject{parent}
+{
+}
+
+void FileProviderXPC::start()
+{
+    qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
+
+    const auto managers = XPCUtils::getDomainManagers();
+    dispatch_group_t group = dispatch_group_create();
     __block NSMutableArray<NSURL *> *urls = NSMutableArray.array;
 
     for (NSFileProviderManager *const manager in managers) {
