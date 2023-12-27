@@ -112,6 +112,6 @@ void OwncloudDolphinPluginHelper::slotReadyRead()
                 return;
             }
         }
-        emit commandRecieved(line);
+        Q_EMIT commandRecieved(line);
     }
 }

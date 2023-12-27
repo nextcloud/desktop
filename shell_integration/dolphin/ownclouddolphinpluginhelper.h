@@ -52,7 +52,7 @@ public:
 
     QByteArray version() { return _version; }
 
-signals:
+Q_SIGNALS:
     void commandRecieved(const QByteArray &cmd);
 
 protected:

@@ -98,7 +98,7 @@ private:
             return;
         status = tokens[1];
 
-        emit overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
+        Q_EMIT overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
     }
 };
 
