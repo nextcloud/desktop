@@ -20,7 +20,7 @@
 #include <KOverlayIconPlugin>
 #include <KPluginFactory>
 #include <QtNetwork/QLocalSocket>
-#include <KIOCore/kfileitem.h>
+#include <KFileItem>
 #include <QDir>
 #include <QTimer>
 #include "ownclouddolphinpluginhelper.h"

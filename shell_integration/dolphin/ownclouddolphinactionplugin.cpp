@@ -17,17 +17,16 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA               *
  ******************************************************************************/
 
-#include <KCoreAddons/KPluginFactory>
-#include <KCoreAddons/KPluginLoader>
-#include <KIOWidgets/kabstractfileitemactionplugin.h>
+#include <KPluginFactory>
+#include <KAbstractFileItemActionPlugin>
 #include <QtNetwork/QLocalSocket>
-#include <KIOCore/kfileitem.h>
-#include <KIOCore/KFileItemListProperties>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenu>
-#include <QtCore/QDir>
-#include <QtCore/QTimer>
-#include <QtCore/QEventLoop>
+#include <KFileItem>
+#include <KFileItemListProperties>
+#include <QAction>
+#include <QMenu>
+#include <QDir>
+#include <QTimer>
+#include <QEventLoop>
 #include "ownclouddolphinpluginhelper.h"
 
 class OwncloudDolphinPluginAction : public KAbstractFileItemActionPlugin
