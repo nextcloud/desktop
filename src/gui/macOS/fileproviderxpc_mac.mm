@@ -32,7 +32,7 @@ FileProviderXPC::FileProviderXPC(QObject *parent)
 {
 }
 
-void FileProviderXPC::start()
+void FileProviderXPC::connectToExtensions()
 {
     qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
 
@@ -40,6 +40,11 @@ void FileProviderXPC::start()
     const auto domainUrls = FileProviderXPCUtils::getDomainUrlsForManagers(managers);
     const auto fpServices = FileProviderXPCUtils::getFileProviderServicesAtUrls(domainUrls);
     const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
+    processConnections(connections);
+}
+
+void FileProviderXPC::processConnections(NSArray *const connections)
+{
     dispatch_group_t group = dispatch_group_create();
 
     NSMutableDictionary<NSString *, NSObject<ClientCommunicationProtocol>*> *const clientCommServices = NSMutableDictionary.dictionary;
@@ -95,7 +100,12 @@ void FileProviderXPC::start()
         [clientCommServices setObject:clientCommService forKey:extensionNcAccount];
     }
 
-    for (NSString *const extensionNcAccount in clientCommServices) {
+    _clientCommServices = clientCommServices.copy;
+}
+
+void FileProviderXPC::configureExtensions()
+{
+    for (NSString *const extensionNcAccount in _clientCommServices) {
         qCInfo(lcFileProviderXPC) << "Sending message to client communication service";
 
         const auto qExtensionNcAccount = QString::fromNSString(extensionNcAccount);
@@ -116,7 +126,7 @@ void FileProviderXPC::start()
         NSString *const serverUrl = account->url().toString().toNSString();
         NSString *const password = credentials->password().toNSString();
 
-        NSObject<ClientCommunicationProtocol> *const clientCommService = [clientCommServices objectForKey:extensionNcAccount];
+        NSObject<ClientCommunicationProtocol> *const clientCommService = [_clientCommServices objectForKey:extensionNcAccount];
         [clientCommService configureAccountWithUser:user
                                           serverUrl:serverUrl
                                            password:password];

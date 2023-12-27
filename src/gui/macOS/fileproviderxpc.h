@@ -16,6 +16,8 @@
 
 #include <QObject>
 
+#import <Foundation/Foundation.h>
+
 namespace OCC {
 
 namespace Mac {
@@ -28,7 +30,14 @@ public:
     explicit FileProviderXPC(QObject *parent = nullptr);
 
 public slots:
-    void start();
+    void connectToExtensions();
+    void configureExtensions();
+
+private:
+    void setupConnections();
+    void processConnections(NSArray *const services);
+    
+    NSArray *_clientCommServices;
 };
 
 }

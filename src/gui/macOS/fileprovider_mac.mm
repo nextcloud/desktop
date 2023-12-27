@@ -60,7 +60,8 @@ FileProvider::FileProvider(QObject * const parent)
     _xpc = std::make_unique<FileProviderXPC>(new FileProviderXPC(this));
     if (_xpc) {
         qCInfo(lcMacFileProvider) << "Initialised file provider XPC.";
-        _xpc->start();
+        _xpc->connectToExtensions();
+        _xpc->configureExtensions();
     } else {
         qCWarning(lcMacFileProvider) << "Could not initialise file provider XPC.";
     }
