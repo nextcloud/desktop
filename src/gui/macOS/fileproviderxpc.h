@@ -36,8 +36,8 @@ public slots:
 private:
     void setupConnections();
     void processConnections(NSArray *const services);
-    
-    NSArray *_clientCommServices;
+
+    NSDictionary *_clientCommServices;
 };
 
 }
