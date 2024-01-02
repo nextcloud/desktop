@@ -17,6 +17,8 @@
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
 
+#import "ClientCommunicationProtocol.h"
+
 namespace OCC {
 namespace Mac {
 namespace FileProviderXPCUtils {
@@ -27,6 +29,7 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices);
 void configureFileProviderConnection(NSXPCConnection *connection);
 NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol);
+NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *clientCommService);
 
 }
 }

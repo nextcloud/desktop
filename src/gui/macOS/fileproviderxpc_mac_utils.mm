@@ -18,8 +18,6 @@
 
 #include "gui/accountmanager.h"
 
-#import "ClientCommunicationProtocol.h"
-
 namespace {
 
 const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
@@ -207,8 +205,24 @@ NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *co
     return remoteServiceObject;
 }
 
-}
-
+NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *const clientCommService)
+{
+    Q_ASSERT(clientCommService != nil);
+    __block NSString *extensionNcAccount;
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    [clientCommService getExtensionAccountIdWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
+        if (error != nil) {
+            qCWarning(lcFileProviderXPCUtils) << "Error getting extension account id" << error;
+            dispatch_group_leave(group);
+            return;
+        }
+        extensionNcAccount = [NSString stringWithString:extensionAccountId];
+        [extensionNcAccount retain];
+        dispatch_group_leave(group);
+    }];
+    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    return extensionNcAccount;
 }
 
 } // namespace FileProviderXPCUtils

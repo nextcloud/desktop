@@ -35,7 +35,6 @@ FileProviderXPC::FileProviderXPC(QObject *parent)
 void FileProviderXPC::connectToExtensions()
 {
     qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
-
     const auto managers = FileProviderXPCUtils::getDomainManagers();
     const auto domainUrls = FileProviderXPCUtils::getDomainUrlsForManagers(managers);
     const auto fpServices = FileProviderXPCUtils::getFileProviderServicesAtUrls(domainUrls);
@@ -45,8 +44,6 @@ void FileProviderXPC::connectToExtensions()
 
 void FileProviderXPC::processConnections(NSArray *const connections)
 {
-    dispatch_group_t group = dispatch_group_create();
-
     NSMutableDictionary<NSString *, NSObject<ClientCommunicationProtocol>*> *const clientCommServices = NSMutableDictionary.dictionary;
 
     for (NSXPCConnection * const connection in connections) {
@@ -59,24 +56,9 @@ void FileProviderXPC::processConnections(NSArray *const connections)
             qCWarning(lcFileProviderXPC) << "Client communication service is nil";
             continue;
         }
-
         [clientCommService retain];
-        __block NSString *extensionNcAccount = @"";
-        dispatch_group_enter(group);
-        [clientCommService getExtensionAccountIdWithCompletionHandler:^(NSString *const extensionAccountId, NSError *const error){
-            if (error != nil) {
-                qCWarning(lcFileProviderXPC) << "Error getting extension account id" << error;
-                dispatch_group_leave(group);
-                return;
-            }
 
-            extensionNcAccount = [NSString stringWithString:extensionAccountId];
-            [extensionNcAccount retain];
-            dispatch_group_leave(group);
-        }];
-
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER); // Do not edit the NSDictionary concurrently
-
+        const auto extensionNcAccount = FileProviderXPCUtils::getExtensionAccountId(clientCommService);
         if (extensionNcAccount == nil) {
             qCWarning(lcFileProviderXPC) << "Extension account id is nil";
             continue;
