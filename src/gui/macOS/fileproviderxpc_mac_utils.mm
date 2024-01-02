@@ -22,8 +22,8 @@
 
 namespace {
 
-static const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
-static NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
+const char *const clientCommunicationServiceName = "com.nextcloud.desktopclient.ClientCommunicationService";
+NSString *const nsClientCommunicationServiceName = [NSString stringWithUTF8String:clientCommunicationServiceName];
 
 }
 
