@@ -18,7 +18,23 @@ import NCDesktopClientSocketKit
 import NextcloudKit
 import OSLog
 
-extension FileProviderExtension {
+extension FileProviderExtension: NSFileProviderServicing {
+    func supportedServiceSources(
+        for itemIdentifier: NSFileProviderItemIdentifier,
+        completionHandler: @escaping ([NSFileProviderServiceSource]?, Error?) -> Void
+    ) -> Progress {
+        Logger.desktopClientConnection.debug("Serving supported service sources")
+        let clientCommService = ClientCommunicationService(fpExtension: self)
+        let services = [clientCommService]
+        completionHandler(services, nil)
+        let progress = Progress()
+        progress.cancellationHandler = {
+            let error = NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)
+            completionHandler(nil, error)
+        }
+        return progress
+    }
+
     @objc func sendFileProviderDomainIdentifier() {
         let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
         let argument = domain.identifier.rawValue
