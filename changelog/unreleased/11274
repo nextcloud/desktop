@@ -1,0 +1,5 @@
+Bugfix: Client stuck in reconnecting
+
+We fixed a bug where the client got stuck while reconnecting to the server.
+
+https://github.com/owncloud/client/issues/11274
