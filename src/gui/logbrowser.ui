@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="warningLabel">
+      <widget class="QLabel" name="warningIcon">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -40,7 +40,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../client.qrc">:/client/resources/light/warning.svg</pixmap>
+        <pixmap resource="../resources/client.qrc">:/client/resources/light/warning.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -50,7 +50,7 @@
      <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -192,7 +192,7 @@ Note that using any logging command line options will override the settings.</st
   </layout>
  </widget>
  <resources>
-  <include location="../../client.qrc"/>
+  <include location="../resources/client.qrc"/>
  </resources>
  <connections/>
 </ui>

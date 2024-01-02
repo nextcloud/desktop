@@ -554,22 +554,18 @@ void AccountSettings::slotDisableVfsCurrentFolder()
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
-    const QString errStyle = QStringLiteral("color:#ffffff; background-color:#bb4d4d;padding:5px;"
-                                            "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
-                                            "border-radius:5px;");
     if (errors.isEmpty()) {
         ui->connectLabel->setText(message);
         ui->connectLabel->setToolTip(QString());
-        ui->connectLabel->setStyleSheet(QString());
     } else {
         errors.prepend(message);
         const QString msg = errors.join(QLatin1String("\n"));
         qCDebug(lcAccountSettings) << msg;
         ui->connectLabel->setText(msg);
         ui->connectLabel->setToolTip(QString());
-        ui->connectLabel->setStyleSheet(errStyle);
     }
     ui->accountStatus->setVisible(!message.isEmpty());
+    ui->warningLabel->setVisible(!errors.isEmpty());
 }
 
 void AccountSettings::slotEnableCurrentFolder(bool terminate)

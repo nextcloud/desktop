@@ -40,7 +40,8 @@ FolderWizardRemotePath::FolderWizardRemotePath(FolderWizardPrivate *parent)
 
 {
     _ui->setupUi(this);
-    _ui->warnFrame->hide();
+    _ui->warningIcon->setPixmap(Resources::getCoreIcon(QStringLiteral("warning")).pixmap(_ui->warningIcon->size()));
+    _ui->warningFrame->hide(); // This is `show()`n in `FolderWizardRemotePath::showWarn`
 
     _ui->folderTreeWidget->setSortingEnabled(true);
     _ui->folderTreeWidget->sortByColumn(0, Qt::AscendingOrder);
@@ -361,10 +362,9 @@ void FolderWizardRemotePath::initializePage()
 void FolderWizardRemotePath::showWarn(const QString &msg) const
 {
     if (msg.isEmpty()) {
-        _ui->warnFrame->hide();
-
+        _ui->warningFrame->hide();
     } else {
-        _ui->warnFrame->show();
-        _ui->warnLabel->setText(msg);
+        _ui->warningFrame->show();
+        _ui->warningLabel->setText(QStringLiteral("<b>%1</b>").arg(msg));
     }
 }

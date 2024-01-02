@@ -47,7 +47,7 @@ LogBrowser::LogBrowser(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->warningLabel->setPixmap(Resources::getCoreIcon(QStringLiteral("warning")).pixmap(ui->warningLabel->size()));
+    ui->warningIcon->setPixmap(Resources::getCoreIcon(QStringLiteral("warning")).pixmap(ui->warningIcon->size()));
     ui->locationLabel->setText(Logger::instance()->temporaryFolderLogDirPath());
 
     ui->enableLoggingButton->setChecked(ConfigFile().automaticLogDir());
