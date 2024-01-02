@@ -89,6 +89,8 @@ void FileProviderXPC::authenticateExtension(const QString &extensionAccountId) c
         return;
     }
 
+    connect(accountState.data(), &AccountState::stateChanged, this, &FileProviderXPC::slotAccountStateChanged, Qt::UniqueConnection);
+
     const auto account = accountState->account();
     const auto credentials = account->credentials();
     NSString *const user = credentials->user().toNSString();
@@ -108,6 +110,33 @@ void FileProviderXPC::unauthenticateExtension(const QString &extensionAccountId)
     NSString *const nsExtensionAccountId = extensionAccountId.toNSString();
     NSObject<ClientCommunicationProtocol> *const clientCommService = [_clientCommServices objectForKey:nsExtensionAccountId];
     [clientCommService removeAccountConfig];
+}
+
+void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) const
+{
+    const auto sender = dynamic_cast<AccountState*>(QObject::sender());
+    Q_ASSERT(sender);
+    const auto extensionAccountId = sender->account()->userIdAtHostWithPort();
+
+    switch(state) {
+    case AccountState::Disconnected:
+    case AccountState::ConfigurationError:
+    case AccountState::NetworkError:
+    case AccountState::ServiceUnavailable:
+    case AccountState::MaintenanceMode:
+        // Do nothing, File Provider will by itself figure out connection issue
+        break;
+    case AccountState::SignedOut:
+    case AccountState::AskingCredentials:
+    case AccountState::RedirectDetected:
+        // Notify File Provider that it should show the not authenticated message
+        unauthenticateExtension(extensionAccountId);
+        break;
+    case AccountState::Connected:
+        // Provide credentials
+        authenticateExtension(extensionAccountId);
+        break;
+    }
 }
 
 } // namespace OCC

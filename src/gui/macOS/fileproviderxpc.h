@@ -37,6 +37,9 @@ public slots:
     void authenticateExtension(const QString &extensionAccountId) const;
     void unauthenticateExtension(const QString &extensionAccountId) const;
 
+private slots:
+    void slotAccountStateChanged(AccountState::State state) const;
+
 private:
     void setupConnections();
     void processConnections(NSArray *const services);
