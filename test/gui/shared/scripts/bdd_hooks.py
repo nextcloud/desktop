@@ -18,6 +18,7 @@
 import shutil
 import urllib.request
 import os
+from urllib.parse import urlparse
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from helpers.SpaceHelper import delete_project_spaces
@@ -32,6 +33,9 @@ from helpers.ConfigHelper import (
 )
 from helpers.api.utils import url_join
 from datetime import datetime
+from pageObjects.Toolbar import Toolbar
+from pageObjects.AccountSetting import AccountSetting
+from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 
 # this will reset in every test suite
 previousFailResultCount = 0
@@ -166,28 +170,8 @@ def hook(context):
 
         pb.savev(os.path.join(directory, filename), "png", [], [])
 
-    # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
-    for ctx in applicationContextList():
-        # get pid before detaching
-        pid = ctx.pid
-        ctx.detach()
-        wait_until_app_killed(pid)
-
-    # clean up config files
-    for config_file in os.listdir(get_config('clientConfigDir')):
-        os.unlink(os.path.join(get_config('clientConfigDir'), config_file))
-
-    # delete local files/folders
-    for filename in os.listdir(get_config('clientRootSyncPath')):
-        test.log("Deleting: " + filename)
-        file_path = os.path.join(get_config('clientRootSyncPath'), filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            test.log(f'Failed to delete{file_path}. Reason: {e}.')
+    # teardown accounts and configs
+    teardown_client()
 
     # search coredumps after every test scenario
     # CI pipeline might fail although all tests are passing
@@ -216,3 +200,56 @@ def hook(context):
 
     previousFailResultCount = test.resultCount("fails")
     previousErrorResultCount = test.resultCount("errors")
+
+
+def teardown_client():
+    # Cleanup user accounts from UI for Windows platform
+    # It is not needed for Linux so skipping it in order to save CI time
+    if isWindows():
+        # remove account from UI
+        # In Windows, removing only config and sync folders won't help
+        # so to work around that, remove the account connection
+        close_open_dialogs()
+        server_host = urlparse(get_config('localBackendUrl')).netloc
+        accounts = Toolbar.get_accounts()
+        for account in accounts:
+            displayname = account.split('\n')[0]
+            Toolbar.openAccount(displayname, server_host)
+            AccountSetting.removeAccountConnection()
+        if accounts:
+            waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
+
+    # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
+    for ctx in applicationContextList():
+        # get pid before detaching
+        pid = ctx.pid
+        ctx.detach()
+        wait_until_app_killed(pid)
+
+    # clean up config files
+    shutil.rmtree(get_config('clientConfigDir'))
+
+    # delete test files/folders
+    for entry in os.scandir(get_config('clientRootSyncPath')):
+        test.log("Deleting: " + entry.name)
+        try:
+            if entry.is_file() or entry.is_symlink():
+                os.unlink(entry.path)
+            elif entry.is_dir():
+                shutil.rmtree(entry.path)
+        except Exception as e:
+            test.log(f'Failed to delete{entry.name}. Reason: {e}.')
+
+
+def close_open_dialogs():
+    # close the current active dailog if it's not a main client window
+    while True:
+        active_window = QApplication.activeModalWidget()
+        if str(active_window) == "<null>":
+            break
+        test.log(f"Closing '{active_window.objectName}' window")
+        closed = active_window.close()
+        if not closed:
+            confirm_dialog = QApplication.activeModalWidget()
+            if confirm_dialog.visible:
+                clickButton(waitForObject(AccountSetting.CONFIRMATION_YES_BUTTON))

@@ -36,7 +36,7 @@ Feature: move file and folder
         And user "Alice" moves folder "test-folder2" to "folder1/folder2/folder3/folder4/folder5" in the sync folder
         And user "Alice" moves file "testFile.txt" to "folder1/folder2/folder3/folder4/folder5" in the sync folder
         And the user waits for the files to sync
-        Then as "Alice" file "folder1/folder2/folder3/folder4/folder5/testFile.txt" should exist in the server
+        Then as "Alice" the file "folder1/folder2/folder3/folder4/folder5/testFile.txt" should have the content "ownCloud test" in the server
         And as "Alice" folder "folder1/folder2/folder3/folder4/folder5/test-folder1" should exist in the server
         And as "Alice" folder "folder1/folder2/folder3/folder4/folder5/test-folder2" should exist in the server
         And as "Alice" file "testFile.txt" should not exist in the server
@@ -50,7 +50,7 @@ Feature: move file and folder
         When the user renames a file "textfile.txt" to "lorem.txt"
         And the user renames a folder "folder1" to "FOLDER"
         And the user waits for the files to sync
-        Then as "Alice" file "lorem.txt" should exist in the server
+        Then as "Alice" the file "lorem.txt" should have the content "test file 1" in the server
         And as "Alice" folder "FOLDER" should exist in the server
         But as "Alice" file "textfile.txt" should not exist in the server
         And as "Alice" folder "folder1" should not exist in the server

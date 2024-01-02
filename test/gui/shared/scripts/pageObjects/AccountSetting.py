@@ -53,6 +53,7 @@ class AccountSetting:
         "type": "QWidget",
         "visible": 0,
     }
+    CONFIRMATION_YES_BUTTON = {"text": "Yes", "type": "QPushButton", "visible": 1}
 
     @staticmethod
     def accountAction(action):
