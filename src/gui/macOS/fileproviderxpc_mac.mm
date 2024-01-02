@@ -74,7 +74,6 @@ void FileProviderXPC::authenticateExtension(const QString &extensionAccountId) c
 void FileProviderXPC::unauthenticateExtension(const QString &extensionAccountId) const
 {
     qCInfo(lcFileProviderXPC) << "Unauthenticating extension" << extensionAccountId;
-    NSString *const nsExtensionAccountId = extensionAccountId.toNSString();
     const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
     [clientCommService removeAccountConfig];
 }
