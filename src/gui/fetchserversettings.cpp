@@ -45,7 +45,7 @@ void FetchServerSettingsJob::start()
     job->setAuthenticationJob(isAuthJob());
     job->setTimeout(timeoutC);
 
-    QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
+    connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
         auto caps =
             job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
         qCInfo(lcfetchserversettings) << "Server capabilities" << caps;
@@ -61,7 +61,7 @@ void FetchServerSettingsJob::start()
                 auto *userJob = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), SimpleNetworkJob::UrlQuery{}, QNetworkRequest{}, this);
                 userJob->setAuthenticationJob(isAuthJob());
                 userJob->setTimeout(timeoutC);
-                QObject::connect(userJob, &JsonApiJob::finishedSignal, this, [userJob, this] {
+                connect(userJob, &JsonApiJob::finishedSignal, this, [userJob, this] {
                     const auto userData = userJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
                     const QString user = userData.value(QStringLiteral("id")).toString();
                     if (!user.isEmpty()) {
