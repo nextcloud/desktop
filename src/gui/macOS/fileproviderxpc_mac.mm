@@ -17,6 +17,7 @@
 #include <QLoggingCategory>
 
 #include "gui/accountmanager.h"
+#include "gui/macOS/fileproviderdomainmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
 namespace OCC::Mac {
@@ -48,9 +49,7 @@ void FileProviderXPC::configureExtensions()
 
 void FileProviderXPC::authenticateExtension(const QString &extensionAccountId) const
 {
-    const auto accountManager = AccountManager::instance();
-    Q_ASSERT(accountManager);
-    const auto accountState = accountManager->accountFromUserId(extensionAccountId);
+    const auto accountState = FileProviderDomainManager::accountStateFromFileProviderDomainIdentifier(extensionAccountId);
     if (!accountState) {
         qCWarning(lcFileProviderXPC) << "Account state is null for received account"
                                      << extensionAccountId;
