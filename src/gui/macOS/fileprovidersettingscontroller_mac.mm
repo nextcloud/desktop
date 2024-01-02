@@ -409,8 +409,8 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
 {
     const auto filename = QFileDialog::getSaveFileName(nullptr,
                                                        tr("Create Debug Archive"),
-                                                       {},
-                                                       tr("Zip Archives") + " (*.zip)");
+                                                       QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation),
+                                                       tr("Text files") + " (*.txt)");
     if (filename.isEmpty()) {
         return;
     }

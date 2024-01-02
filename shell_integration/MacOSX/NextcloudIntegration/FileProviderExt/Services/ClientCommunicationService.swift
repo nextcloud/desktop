@@ -63,7 +63,7 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
 
     func createDebugArchive(at url: URL!) {
         if #available(macOSApplicationExtension 12.0, *) {
-            Logger.createDebugArchive(saveFolderUrl: url)
+            Logger.createDebugArchive(saveFileURL: url)
         }
     }
 }
