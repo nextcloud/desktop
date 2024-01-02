@@ -190,8 +190,29 @@ void configureFileProviderConnection(NSXPCConnection *const connection)
     [connection resume];
 }
 
+NSObject *getRemoteServiceObject(NSXPCConnection *const connection, Protocol *const protocol)
+{
+    Q_ASSERT(connection != nil);
+    Q_ASSERT(protocol != nil);
+    const id remoteServiceObject = [connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
+        qCWarning(lcFileProviderXPCUtils) << "Error getting remote object proxy" << error;
+    }];
+    if (remoteServiceObject == nil) {
+        return nil;
+    }
+    if (![remoteServiceObject conformsToProtocol:@protocol(ClientCommunicationProtocol)]) {
+        qCWarning(lcFileProviderXPCUtils) << "Remote service object does not conform to protocol";
+        return nil;
+    }
+    return remoteServiceObject;
 }
 
 }
 
 }
+
+} // namespace FileProviderXPCUtils
+
+} // namespace Mac
+
+} // namespace OCC

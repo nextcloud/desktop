@@ -26,6 +26,7 @@ NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *man
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServicesAtUrls(NSArray<NSURL *> *urls);
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices);
 void configureFileProviderConnection(NSXPCConnection *connection);
+NSObject *getRemoteServiceObject(NSXPCConnection *connection, Protocol *protocol);
 
 }
 }

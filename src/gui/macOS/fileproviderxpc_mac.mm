@@ -54,16 +54,7 @@ void FileProviderXPC::processConnections(NSArray *const connections)
         connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
         FileProviderXPCUtils::configureFileProviderConnection(connection);
 
-        const id remoteServiceObject = [connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
-            qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;
-        }];
-
-        if (![remoteServiceObject conformsToProtocol:@protocol(ClientCommunicationProtocol)]) {
-            qCWarning(lcFileProviderXPC) << "Remote service object does not conform to protocol";
-            continue;
-        }
-
-        NSObject<ClientCommunicationProtocol> *const clientCommService = (NSObject<ClientCommunicationProtocol> *)remoteServiceObject;
+        const auto clientCommService = FileProviderXPCUtils::getRemoteServiceObject(connection, remoteObjectInterfaceProtocol);
         if (clientCommService == nil) {
             qCWarning(lcFileProviderXPC) << "Client communication service is nil";
             continue;
