@@ -82,9 +82,9 @@ Q_LOGGING_CATEGORY(lcMacFileProviderDomainManager, "nextcloud.gui.macfileprovide
 
 namespace Mac {
 
-class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::MacImplementation {
-
-  public:
+class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::MacImplementation
+{
+public:
     MacImplementation() = default;
     ~MacImplementation() = default;
 
@@ -139,7 +139,10 @@ class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::MacImplementation {
 
                     } else {
                         qCInfo(lcMacFileProviderDomainManager) << "Found existing file provider domain with no known configured account:"
-                                                               << domain.displayName;
+                                                               << domain.displayName
+                                                               << accountState
+                                                               << (accountState ? "NON-NULL ACCOUNTSTATE" : "NULL")
+                                                               << (accountState && accountState->account() ? domainDisplayNameForAccount(accountState->account()) : "NULL");
                         [NSFileProviderManager removeDomain:domain completionHandler:^(NSError * const error) {
                             if (error) {
                                 qCWarning(lcMacFileProviderDomainManager) << "Error removing file provider domain: "
@@ -390,7 +393,8 @@ class API_AVAILABLE(macos(11.0)) FileProviderDomainManager::MacImplementation {
         }
     }
 
-    QStringList configuredDomainIds() const {
+    QStringList configuredDomainIds() const
+    {
         return _registeredDomains.keys();
     }
 
