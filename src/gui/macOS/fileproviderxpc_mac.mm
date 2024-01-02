@@ -19,9 +19,7 @@
 #include "gui/accountmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
-namespace OCC {
-
-namespace Mac {
+namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", QtInfoMsg)
 
@@ -139,6 +137,4 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     }
 }
 
-} // namespace OCC
-
-} // namespace Mac
+} // namespace OCC::Mac

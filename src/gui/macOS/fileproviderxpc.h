@@ -12,17 +12,15 @@
  * for more details.
  */
 
-#pragma once
-
 #include <QObject>
 
 #import <Foundation/Foundation.h>
 
 #import "ClientCommunicationProtocol.h"
 
-namespace OCC {
+#pragma once
 
-namespace Mac {
+namespace OCC::Mac {
 
 class FileProviderXPC : public QObject
 {
@@ -47,6 +45,4 @@ private:
     NSDictionary<NSString *, NSObject<ClientCommunicationProtocol> *_clientCommServices;
 };
 
-}
-
-}
+} // namespace OCC::Mac
