@@ -51,7 +51,7 @@ void FileProviderXPC::processConnections(NSArray *const connections)
         connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
         FileProviderXPCUtils::configureFileProviderConnection(connection);
 
-        const auto clientCommService = FileProviderXPCUtils::getRemoteServiceObject(connection, remoteObjectInterfaceProtocol);
+        const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)FileProviderXPCUtils::getRemoteServiceObject(connection, remoteObjectInterfaceProtocol);
         if (clientCommService == nil) {
             qCWarning(lcFileProviderXPC) << "Client communication service is nil";
             continue;
