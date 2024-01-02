@@ -19,8 +19,6 @@
 #include "gui/accountmanager.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
-#import "ClientCommunicationProtocol.h"
-
 namespace OCC {
 
 namespace Mac {

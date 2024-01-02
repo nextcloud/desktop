@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ClientCommunicationProtocol.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -38,7 +40,7 @@ private:
     void setupConnections();
     void processConnections(NSArray *const services);
 
-    NSDictionary *_clientCommServices;
+    NSDictionary<NSString *, NSObject<ClientCommunicationProtocol> *_clientCommServices;
 };
 
 }
