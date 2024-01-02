@@ -414,9 +414,7 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
     if (filename.isEmpty()) {
         return;
     }
-
-    const auto message = QString(QStringLiteral("CREATE_DEBUG_ARCHIVE") + "~" + filename);
-    FileProvider::instance()->sendMessageToDomain(userIdAtHost, message);
+    FileProvider::instance()->createDebugArchiveForDomain(userIdAtHost, filename);
 }
 
 } // namespace Mac

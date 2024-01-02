@@ -102,5 +102,11 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
         break;
     }
 }
+void FileProviderXPC::createDebugArchiveForExtension(const QString &extensionAccountId, const QString &filename) const
+{
+    const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)_clientCommServices.value(extensionAccountId);
+    NSURL *const fileURL = [NSURL fileURLWithPath:filename.toNSString()];
+    [clientCommService createDebugArchiveAtURL:fileURL];
+}
 
 } // namespace OCC::Mac

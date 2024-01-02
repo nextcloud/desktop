@@ -18,7 +18,7 @@
 #include <QLoggingCategory>
 
 #include "libsync/configfile.h"
-#include "gui/macOS/fileprovidersocketcontroller.h"
+#include "gui/macOS/fileproviderxpc.h"
 
 #import <Foundation/Foundation.h>
 
@@ -97,15 +97,9 @@ void FileProvider::configureXPC()
     }
 }
 
-void FileProvider::sendMessageToDomain(const QString &domainIdentifier, const QString &message)
+void FileProvider::createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const
 {
-    const auto domainSocketController = _socketServer->socketControllerForDomain(domainIdentifier);
-    if (!domainSocketController) {
-        qCWarning(lcMacFileProvider) << "Could not find socket controller for domain identifier" << domainIdentifier;
-        return;
-    }
-
-    domainSocketController->sendMessage(message);
+    _xpc->createDebugArchiveForExtension(domainIdentifier, filename);
 }
 
 } // namespace Mac

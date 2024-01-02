@@ -40,7 +40,7 @@ public:
     static bool fileProviderAvailable();
 
 public slots:
-    void sendMessageToDomain(const QString &domainIdentifier, const QString &message);
+    void createDebugArchiveForDomain(const QString &domainIdentifier, const QString &filename) const;
 
 private slots:
     void configureXPC();
