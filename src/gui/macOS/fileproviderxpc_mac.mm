@@ -81,9 +81,9 @@ void FileProviderXPC::unauthenticateExtension(const QString &extensionAccountId)
 
 void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) const
 {
-    const auto sender = dynamic_cast<AccountState*>(QObject::sender());
-    Q_ASSERT(sender);
-    const auto extensionAccountId = sender->account()->userIdAtHostWithPort();
+    const auto slotSender = dynamic_cast<AccountState*>(sender());
+    Q_ASSERT(slotSender);
+    const auto extensionAccountId = slotSender->account()->userIdAtHostWithPort();
 
     switch(state) {
     case AccountState::Disconnected:
