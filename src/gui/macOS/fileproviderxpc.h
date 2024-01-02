@@ -32,6 +32,7 @@ public:
 public slots:
     void connectToExtensions();
     void configureExtensions();
+    void unauthenticateExtension(const QString &extensionAccountId);
 
 private:
     void setupConnections();

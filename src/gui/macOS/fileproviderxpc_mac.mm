@@ -100,6 +100,14 @@ void FileProviderXPC::configureExtensions()
     }
 }
 
+void FileProviderXPC::unauthenticateExtension(const QString &extensionAccountId)
+{
+    qCInfo(lcFileProviderXPC) << "Unauthenticating extension" << extensionAccountId;
+    NSString *const nsExtensionAccountId = extensionAccountId.toNSString();
+    NSObject<ClientCommunicationProtocol> *const clientCommService = [_clientCommServices objectForKey:nsExtensionAccountId];
+    [clientCommService removeAccountConfig];
+}
+
 } // namespace OCC
 
 } // namespace Mac
