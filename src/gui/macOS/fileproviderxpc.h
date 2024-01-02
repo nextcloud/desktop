@@ -13,10 +13,9 @@
  */
 
 #include <QObject>
+#include <QHash>
 
-#import <Foundation/Foundation.h>
-
-#import "ClientCommunicationProtocol.h"
+#include "accountstate.h"
 
 #pragma once
 
@@ -39,10 +38,7 @@ private slots:
     void slotAccountStateChanged(AccountState::State state) const;
 
 private:
-    void setupConnections();
-    void processConnections(NSArray *const services);
-
-    NSDictionary<NSString *, NSObject<ClientCommunicationProtocol> *_clientCommServices;
+    QHash<QString, void*> _clientCommServices;
 };
 
 } // namespace OCC::Mac

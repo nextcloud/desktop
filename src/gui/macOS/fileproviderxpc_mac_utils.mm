@@ -219,4 +219,32 @@ NSString *getExtensionAccountId(NSObject<ClientCommunicationProtocol> *const cli
     return extensionNcAccount;
 }
 
+QHash<QString, void*> processClientCommunicationConnections(NSArray *const connections)
+{
+    QHash<QString, void*> clientCommServices;
+
+    for (NSXPCConnection * const connection in connections) {
+        const auto remoteObjectInterfaceProtocol = @protocol(ClientCommunicationProtocol);
+        connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
+        configureFileProviderConnection(connection);
+
+        const auto clientCommService = (NSObject<ClientCommunicationProtocol> *)getRemoteServiceObject(connection, remoteObjectInterfaceProtocol);
+        if (clientCommService == nil) {
+            qCWarning(lcFileProviderXPCUtils) << "Client communication service is nil";
+            continue;
+        }
+        [clientCommService retain];
+
+        const auto extensionNcAccount = getExtensionAccountId(clientCommService);
+        if (extensionNcAccount == nil) {
+            qCWarning(lcFileProviderXPCUtils) << "Extension account id is nil";
+            continue;
+        }
+        qCInfo(lcFileProviderXPCUtils) << "Got extension account id" << extensionNcAccount.UTF8String;
+        clientCommServices.insert(QString::fromNSString(extensionNcAccount), clientCommService);
+    }
+
+    return clientCommServices;
+}
+
 } // namespace OCC::Mac::FileProviderXPCUtils
