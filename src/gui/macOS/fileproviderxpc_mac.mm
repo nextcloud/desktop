@@ -50,15 +50,9 @@ void FileProviderXPC::processConnections(NSArray *const connections)
     NSMutableDictionary<NSString *, NSObject<ClientCommunicationProtocol>*> *const clientCommServices = NSMutableDictionary.dictionary;
 
     for (NSXPCConnection * const connection in connections) {
-        Q_ASSERT(connection != nil);
-        connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(ClientCommunicationProtocol)];
-        connection.interruptionHandler = ^{
-            qCInfo(lcFileProviderXPC) << "File provider connection interrupted";
-        };
-        connection.invalidationHandler = ^{
-            qCInfo(lcFileProviderXPC) << "File provider connection invalidated";
-        };
-        [connection resume];
+        const auto remoteObjectInterfaceProtocol = @protocol(ClientCommunicationProtocol);
+        connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
+        FileProviderXPCUtils::configureFileProviderConnection(connection);
 
         const id remoteServiceObject = [connection remoteObjectProxyWithErrorHandler:^(NSError *const error){
             qCWarning(lcFileProviderXPC) << "Error getting remote object proxy" << error;

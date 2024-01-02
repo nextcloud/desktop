@@ -178,6 +178,18 @@ NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<N
     return connections.copy;
 }
 
+void configureFileProviderConnection(NSXPCConnection *const connection)
+{
+    Q_ASSERT(connection != nil);
+    connection.interruptionHandler = ^{
+        qCInfo(lcFileProviderXPCUtils) << "File provider connection interrupted";
+    };
+    connection.invalidationHandler = ^{
+        qCInfo(lcFileProviderXPCUtils) << "File provider connection invalidated";
+    };
+    [connection resume];
+}
+
 }
 
 }
