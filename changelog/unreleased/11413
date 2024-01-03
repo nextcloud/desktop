@@ -1,0 +1,7 @@
+Enhancement: Improved reliability for persisting settings
+
+We improved the reliability of saving accounts.
+This might fix an issue where sync connections were lost at random.
+
+https://github.com/owncloud/client/pull/11413
+https://github.com/owncloud/client/issues/11411
