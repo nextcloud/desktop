@@ -24,7 +24,7 @@
                        serverUrl:(NSString *)serverUrl
                         password:(NSString *)password;
 - (void)removeAccountConfig;
-- (void)createDebugArchiveAtURL:(NSURL *)url;
+- (void)createDebugLogStringWithCompletionHandler:(void(^)(NSString *debugLogString, NSError *error))completionHandler;
 
 @end
 

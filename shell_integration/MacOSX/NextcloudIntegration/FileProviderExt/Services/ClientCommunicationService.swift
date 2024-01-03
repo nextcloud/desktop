@@ -61,9 +61,20 @@ class ClientCommunicationService: NSObject, NSFileProviderServiceSource, NSXPCLi
         self.fpExtension.removeAccountConfig()
     }
 
-    func createDebugArchive(at url: URL!) {
+    func createDebugLogString(completionHandler: ((String?, Error?) -> Void)!) {
         if #available(macOSApplicationExtension 12.0, *) {
-            Logger.createDebugArchive(saveFileURL: url)
+            let (logs, error) = Logger.logEntries()
+            guard error == nil else {
+                Logger.logger.error("Cannot create debug archive, received error: \(error, privacy: .public)")
+                completionHandler(nil, error)
+                return
+            }
+            guard let logs = logs else {
+                Logger.logger.error("Canot create debug archive with nil logs.")
+                completionHandler(nil, nil)
+                return
+            }
+            completionHandler(logs.joined(separator: "\n"), nil)
         }
     }
 }

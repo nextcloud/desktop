@@ -31,42 +31,22 @@ extension Logger {
     static let logger = Logger(subsystem: subsystem, category: "logger")
 
     @available(macOSApplicationExtension 12.0, *)
-    static func logEntries(interval: TimeInterval = -3600) -> Array<String>? {
+    static func logEntries(interval: TimeInterval = -3600) -> (Array<String>?, Error?) {
         do {
             let logStore = try OSLogStore(scope: .currentProcessIdentifier)
             let timeDate = Date().addingTimeInterval(interval)
             let logPosition = logStore.position(date: timeDate)
             let entries = try logStore.getEntries(at: logPosition)
 
-            return entries
+            return (entries
                 .compactMap { $0 as? OSLogEntryLog }
                 .filter { $0.subsystem == Logger.subsystem }
-                .map { $0.composedMessage }
+                .map { $0.composedMessage }, nil)
 
         } catch let error {
             Logger.logger.error("Could not acquire os log store: \(error)");
-            return nil
-        }
-    }
-
-    @available(macOSApplicationExtension 12.0, *)
-    static func createDebugArchive(saveFileURL: URL) {
-        let saveFilePath = saveFileURL.path
-
-        Logger.logger.info("Creating debug file at path \(saveFilePath, privacy: .public)")
-
-        guard FileManager.default.createFile(atPath: saveFilePath, contents: nil) else {
-            Logger.logger.error("Could not create log file")
-            return
-        }
-
-        guard let logs = Logger.logEntries() else {
-            Logger.logger.error("Cannot create debug archive without any logs.")
-            return
-        }
-
-        for logString in logs {
-            try? logString.write(to: saveFileURL, atomically: true, encoding: .utf8)
+            return (nil, error)
         }
     }
 }
+
