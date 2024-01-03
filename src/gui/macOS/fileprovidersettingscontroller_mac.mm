@@ -153,29 +153,12 @@ public:
     {
         // Return cached value as we fetch asynchronously on initialisation of this class.
         // We will then emit a signal when the new value is found.
-        NSNumber *const storageUsage = [_storageUsage objectForKey:userIdAtHost.toNSString()];
-        if (storageUsage == nil) {
-            return 0;
-        }
-        return storageUsage.unsignedLongLongValue;
+        return _storageUsage.value(userIdAtHost);
     }
 
     [[nodiscard]] QVector<FileProviderItemMetadata> materialisedItemsForAccount(const QString &userIdAtHost) const
     {
-        const auto materialisedItems = [_materialisedFiles objectForKey:userIdAtHost.toNSString()];
-        if (materialisedItems == nil) {
-            return {};
-        }
-
-        QVector<FileProviderItemMetadata> qMaterialisedItems;
-        qMaterialisedItems.reserve(materialisedItems.count);
-
-        for (const id<NSFileProviderItem> item in materialisedItems) {
-            const auto itemMetadata = FileProviderItemMetadata::fromNSFileProviderItem(item, userIdAtHost);
-            qMaterialisedItems.append(itemMetadata);
-        }
-
-        return qMaterialisedItems;
+        return _materialisedFiles.value(userIdAtHost);
     }
 
 private:
@@ -186,7 +169,7 @@ private:
 
     void fetchMaterialisedFilesStorageUsage()
     {
-        qCDebug(lcFileProviderSettingsController) << "Fetching materialised files storage usage";
+        qCInfo(lcFileProviderSettingsController) << "Fetching materialised files storage usage";
 
         [NSFileProviderManager getDomainsWithCompletionHandler: ^(NSArray<NSFileProviderDomain *> *const domains, NSError *const error) {
             if (error != nil) {
@@ -196,7 +179,7 @@ private:
 
                 // HACK: Sometimes the system is not in a state where it wants to give us access to
                 //       the file provider domains. We will try again in 2 seconds and hope it works
-                __block const auto thisQobject = (QObject*)this;
+                const auto thisQobject = (QObject*)this;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [NSTimer scheduledTimerWithTimeInterval:2 repeats:NO block:^(NSTimer *const timer) {
                         Q_UNUSED(timer)
@@ -207,7 +190,7 @@ private:
             }
 
             for (NSFileProviderDomain *const domain in domains) {
-                qCDebug(lcFileProviderSettingsController) << "Checking storage use for domain:" << domain.identifier;
+                qCInfo(lcFileProviderSettingsController) << "Checking storage use for domain:" << domain.identifier;
 
                 NSFileProviderManager *const managerForDomain = [NSFileProviderManager managerForDomain:domain];
                 if (managerForDomain == nil) {
@@ -219,10 +202,12 @@ private:
 
                 const id<NSFileProviderEnumerator> enumerator = [managerForDomain enumeratorForMaterializedItems];
                 Q_ASSERT(enumerator != nil);
+                [enumerator retain];
 
-                __block FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
-
+                FileProviderStorageUseEnumerationObserver *const storageUseObserver = [[FileProviderStorageUseEnumerationObserver alloc] init];
+                [storageUseObserver retain];
                 storageUseObserver.enumerationFinishedHandler = ^(NSError *const error) {
+                    qCInfo(lcFileProviderSettingsController) << "Enumeration finished for" << domain.identifier;
                     if (error != nil) {
                         qCWarning(lcFileProviderSettingsController) << "Error while enumerating storage use" << error.localizedDescription;
                         [storageUseObserver release];
@@ -230,50 +215,46 @@ private:
                         return;
                     }
 
-                    const NSUInteger usage = storageUseObserver.usage;
-                    NSSet<id<NSFileProviderItem>> *const items = storageUseObserver.materialisedItems;
+                    const auto items = storageUseObserver.materialisedItems;
                     Q_ASSERT(items != nil);
 
                     // Remember that OCC::Account::userIdAtHost == domain.identifier for us
-                    NSMutableDictionary<NSString *, NSNumber *> *const mutableStorageDictCopy = _storageUsage.mutableCopy;
-                    NSMutableDictionary<NSString *, NSSet<id<NSFileProviderItem>> *> *const mutableFilesDictCopy = _materialisedFiles.mutableCopy;
-
-                    qCDebug(lcFileProviderSettingsController) << "Local storage use for"
-                                                              << domain.identifier
-                                                              << usage;
-
-                    [mutableStorageDictCopy setObject:@(usage) forKey:domain.identifier];
-                    [mutableFilesDictCopy setObject:items forKey:domain.identifier];
-
-                    _storageUsage = mutableStorageDictCopy.copy;
-                    _materialisedFiles = mutableFilesDictCopy.copy;
-
                     const auto qDomainIdentifier = QString::fromNSString(domain.identifier);
+                    QVector<FileProviderItemMetadata> qMaterialisedItems;
+                    qMaterialisedItems.reserve(items.count);
+                    for (const id<NSFileProviderItem> item in items) {
+                        const auto itemMetadata = FileProviderItemMetadata::fromNSFileProviderItem(item, qDomainIdentifier);
+                        const auto storageUsage = _storageUsage.value(qDomainIdentifier) + itemMetadata.documentSize();
+                        qCDebug(lcFileProviderSettingsController) << "Adding item" << itemMetadata.identifier()
+                                                                  << "with size" << itemMetadata.documentSize()
+                                                                  << "to storage usage for account" << qDomainIdentifier
+                                                                  << "with total size" << storageUsage;
+                        qMaterialisedItems.append(itemMetadata);
+                        _storageUsage.insert(qDomainIdentifier, storageUsage);
+                    }
+                    _materialisedFiles.insert(qDomainIdentifier, qMaterialisedItems);
+
                     emit q->localStorageUsageForAccountChanged(qDomainIdentifier);
                     emit q->materialisedItemsForAccountChanged(qDomainIdentifier);
 
                     [storageUseObserver release];
                     [enumerator release];
                 };
-
                 [enumerator enumerateItemsForObserver:storageUseObserver startingAtPage:NSFileProviderInitialPageSortedByName];
-
-                [storageUseObserver retain];
-                [enumerator retain];
             }
         }];
     }
 
     void initialCheck()
     {
-        qCDebug(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
+        qCInfo(lcFileProviderSettingsController) << "Running initial checks for file provider settings controller.";
 
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
         if (vfsEnabledAccounts != nil) {
             return;
         }
 
-        qCDebug(lcFileProviderSettingsController) << "Initial check for file provider settings found nil enabled vfs accounts array."
+        qCInfo(lcFileProviderSettingsController) << "Initial check for file provider settings found nil enabled vfs accounts array."
                                                   << "Enabling all accounts on initial setup.";
 
         [[maybe_unused]] const auto result = enableVfsForAllAccounts();
@@ -282,8 +263,8 @@ private:
     FileProviderSettingsController *q = nullptr;
     NSUserDefaults *_userDefaults = NSUserDefaults.standardUserDefaults;
     NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
-    NSDictionary <NSString *, NSNumber *> *_storageUsage = @{};
-    NSDictionary <NSString *, NSSet<id<NSFileProviderItem>> *> *_materialisedFiles = @{};
+    QHash<QString, QVector<FileProviderItemMetadata>> _materialisedFiles;
+    QHash<QString, unsigned long long> _storageUsage;
 };
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
