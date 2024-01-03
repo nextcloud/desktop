@@ -50,6 +50,7 @@ ownCloud admins and users.
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
+* Enhancement - Improved reliability for persisting settings: [#11413](https://github.com/owncloud/client/pull/11413)
 
 ## Details
 
@@ -113,6 +114,14 @@ ownCloud admins and users.
    discovery.
 
    https://github.com/owncloud/client/pull/11347
+
+* Enhancement - Improved reliability for persisting settings: [#11413](https://github.com/owncloud/client/pull/11413)
+
+   We improved the reliability of saving accounts. This might fix an issue where
+   sync connections were lost at random.
+
+   https://github.com/owncloud/client/issues/11411
+   https://github.com/owncloud/client/pull/11413
 
 # Changelog for ownCloud Desktop Client [5.2.0] (2023-11-27)
 
