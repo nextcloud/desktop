@@ -61,7 +61,7 @@ public:
         VfsAccountsEnabledChanged,
     };
 
-    MacImplementation(FileProviderSettingsController *const parent)
+    explicit MacImplementation(FileProviderSettingsController *const parent)
     {
         q = parent;
         initialCheck();
