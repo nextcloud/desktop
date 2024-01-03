@@ -20,7 +20,6 @@ typedef void(^UsageEnumerationFinishedHandler)(NSError *const error);
 @interface FileProviderStorageUseEnumerationObserver : NSObject<NSFileProviderEnumerationObserver>
 
 @property (readwrite, strong) UsageEnumerationFinishedHandler enumerationFinishedHandler;
-@property (readonly) NSUInteger usage;
 @property (readonly) NSSet<id<NSFileProviderItem>> *materialisedItems;
 
 @end

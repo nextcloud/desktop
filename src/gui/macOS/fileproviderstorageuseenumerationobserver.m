@@ -14,14 +14,12 @@
 
 #import "fileproviderstorageuseenumerationobserver.h"
 
-
 @implementation FileProviderStorageUseEnumerationObserver
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        _usage = 0ULL;
         _materialisedItems = [NSSet set];
     }
     return self;
@@ -35,8 +33,6 @@
     for (const id<NSFileProviderItem> item in updatedItems) {
         NSLog(@"StorageUseEnumerationObserver: Enumerating %@ with size %llu",
               item.filename, item.documentSize.unsignedLongLongValue);
-
-        _usage += item.documentSize.unsignedLongLongValue;
         [existingItems addObject:item];
     }
 
