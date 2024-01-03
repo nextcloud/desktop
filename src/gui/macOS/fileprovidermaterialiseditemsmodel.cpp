@@ -103,19 +103,7 @@ QVariant FileProviderMaterialisedItemsModel::data(const QModelIndex &index, int 
     case FileTypeStringRole:
         return item.fileTypeString();
     case FileSizeStringRole:
-    {
-        const auto docSize = item.documentSize();
-        if (docSize > 0) {
-            return _locale.formattedDataSize(item.documentSize());
-        }
-
-        // If the document size is 0, we can try to get the size of the file
-        // directly from its path. These are all materialised files anyway
-        // so the size will be properly represented
-        const auto path = item.userVisiblePath();
-        const auto fileInfo = QFileInfo(path);
-        return _locale.formattedDataSize(fileInfo.size());
-    }
+        return _locale.formattedDataSize(item.documentSize());
     }
     return {};
 }
