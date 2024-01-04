@@ -433,6 +433,12 @@ public:
 
 
     /**
+     * Whether or not to enable move-to-trash instead of deleting files that are gone from the server.
+     * Default: true
+     */
+    virtual bool enableMoveToTrash() const;
+
+    /**
      * Whether to enable the special code for cernbox
      * This includes:
      * - spaces migration

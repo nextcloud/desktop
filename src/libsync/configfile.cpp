@@ -723,7 +723,11 @@ void ConfigFile::setConfirmExternalStorage(bool isChecked)
 
 bool ConfigFile::moveToTrash() const
 {
-    return getValue(moveToTrashC(), QString(), false).toBool();
+    if (Theme::instance()->enableMoveToTrash()) {
+        return getValue(moveToTrashC(), QString(), false).toBool();
+    }
+
+    return false;
 }
 
 void ConfigFile::setMoveToTrash(bool isChecked)

@@ -622,6 +622,11 @@ QVector<std::tuple<QString, QString, QUrl>> Theme::urlButtons() const
     return {};
 }
 
+bool Theme::enableMoveToTrash() const
+{
+    return true;
+}
+
 bool Theme::enableCernBranding() const
 {
     return false;
