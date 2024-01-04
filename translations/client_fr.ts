@@ -5004,7 +5004,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
         <location filename="../src/gui/tray/usermodel.cpp" line="697"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="838"/>
         <source>Resolve conflict</source>
-        <translation>Conflit résolu</translation>
+        <translation>Résoudre le conflit</translation>
     </message>
 </context>
 <context>
