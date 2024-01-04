@@ -1,6 +1,7 @@
 # Table of Contents
 
 * [Changelog for unreleased](#changelog-for-owncloud-desktop-client-unreleased-unreleased)
+* [Changelog for 5.2.1](#changelog-for-owncloud-desktop-client-521-2024-01-04)
 * [Changelog for 5.2.0](#changelog-for-owncloud-desktop-client-520-2023-11-27)
 * [Changelog for 5.1.2](#changelog-for-owncloud-desktop-client-512-2023-11-10)
 * [Changelog for 5.1.1](#changelog-for-owncloud-desktop-client-511-2023-11-09)
@@ -38,11 +39,10 @@
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v5.2.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v5.2.1...master
 
 ## Summary
 
-* Bugfix - Client stuck in reconnecting: [#11274](https://github.com/owncloud/client/issues/11274)
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
@@ -50,15 +50,8 @@ ownCloud admins and users.
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
-* Enhancement - Improved reliability for persisting settings: [#11413](https://github.com/owncloud/client/pull/11413)
 
 ## Details
-
-* Bugfix - Client stuck in reconnecting: [#11274](https://github.com/owncloud/client/issues/11274)
-
-   We fixed a bug where the client got stuck while reconnecting to the server.
-
-   https://github.com/owncloud/client/issues/11274
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 
@@ -114,6 +107,26 @@ ownCloud admins and users.
    discovery.
 
    https://github.com/owncloud/client/pull/11347
+
+# Changelog for ownCloud Desktop Client [5.2.1] (2024-01-04)
+
+The following sections list the changes in ownCloud Desktop Client 5.2.1 relevant to
+ownCloud admins and users.
+
+[5.2.1]: https://github.com/owncloud/client/compare/v5.2.0...v5.2.1
+
+## Summary
+
+* Bugfix - Client stuck in reconnecting: [#11274](https://github.com/owncloud/client/issues/11274)
+* Enhancement - Improved reliability for persisting settings: [#11413](https://github.com/owncloud/client/pull/11413)
+
+## Details
+
+* Bugfix - Client stuck in reconnecting: [#11274](https://github.com/owncloud/client/issues/11274)
+
+   We fixed a bug where the client got stuck while reconnecting to the server.
+
+   https://github.com/owncloud/client/issues/11274
 
 * Enhancement - Improved reliability for persisting settings: [#11413](https://github.com/owncloud/client/pull/11413)
 
