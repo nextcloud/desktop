@@ -26,7 +26,6 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.cpp
     application.cpp
-    askexperimentalvirtualfilesfeaturemessagebox.cpp
     fetchserversettings.cpp
     clientproxy.cpp
     commonstrings.cpp

@@ -49,7 +49,6 @@
 #include <QToolTip>
 #include <QTreeView>
 
-#include "askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "gui/models/models.h"
 #include "loginrequireddialog.h"
 #include "oauthloginwidget.h"
@@ -495,12 +494,10 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 {
     QPointer<Folder> folder = selectedFolder();
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || !folder)
+    if (!selected.isValid() || !folder) {
         return;
-
-    auto messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(ocApp()->gui()->settingsDialog());
-
-    connect(messageBox, &AskExperimentalVirtualFilesFeatureMessageBox::accepted, this, [this, folder]() {
+    }
+    if (OC_ENSURE(VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi)) {
         if (!folder) {
             return;
         }
@@ -514,15 +511,6 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 
         ui->_folderList->doItemsLayout();
         ui->selectiveSyncStatus->setVisible(false);
-    });
-
-    // no need to show the message box on Windows
-    // as a little shortcut, we just re-use the message box's accept handler
-    if (VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        Q_EMIT messageBox->accepted();
-    } else {
-        messageBox->show();
-        ocApp()->gui()->raiseDialog(messageBox);
     }
 }
 

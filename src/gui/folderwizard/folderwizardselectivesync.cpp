@@ -22,7 +22,6 @@
 #include "folderwizard_p.h"
 
 #include "gui/application.h"
-#include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "gui/selectivesyncwidget.h"
 
 #include "libsync/theme.h"
@@ -89,21 +88,8 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
-        auto *messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(ocApp()->gui()->settingsDialog());
-
-        messageBox->setAttribute(Qt::WA_DeleteOnClose);
-
-        connect(messageBox, &AskExperimentalVirtualFilesFeatureMessageBox::rejected, this, [this]() {
+        if (OC_ENSURE(VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi)) {
             _virtualFilesCheckBox->setChecked(false);
-        });
-
-        // no need to show the message box on Windows
-        // as a little shortcut, we just re-use the message box's accept handler
-        if (VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-            Q_EMIT messageBox->accepted();
-        } else {
-            messageBox->show();
-            ocApp()->gui()->raiseDialog(messageBox);
         }
     }
 }
