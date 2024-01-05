@@ -48,6 +48,7 @@ ownCloud admins and users.
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
+* Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
@@ -93,6 +94,14 @@ ownCloud admins and users.
    removal in 7.0.
 
    https://github.com/owncloud/client/issues/11325
+
+* Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
+
+   This is done by tagging the sync folder by an extended attribute (Linux/macoS)
+   or an alternative data stream (Windows).
+
+   https://github.com/owncloud/client/issues/11204
+   https://github.com/owncloud/client/pull/11364
 
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 
