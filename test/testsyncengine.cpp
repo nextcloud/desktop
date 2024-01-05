@@ -152,10 +152,10 @@ private slots:
 
         FakeFolder fakeFolder(FileInfo {}, vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities({fakeFolder.account()->url(), TestUtils::testCapabilities(CheckSums::Algorithm::SHA1)});
-        fakeFolder.localModifier().insert(QStringLiteral("a1.eml"), 64_b, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("a2.eml"), 64_b, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("a3.eml"), 64_b, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("b3.txt"), 64_b, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("a1.eml"), 64_B, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("a2.eml"), 64_B, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("a3.eml"), 64_B, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("b3.txt"), 64_B, 'A');
         // Upload and calculate the checksums
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
@@ -177,9 +177,9 @@ private slots:
 
         ItemCompletedSpy completeSpy(fakeFolder);
         // Touch the file without changing the content, shouldn't upload
-        fakeFolder.localModifier().setContents(QStringLiteral("a1.eml"), 64_b, 'A');
+        fakeFolder.localModifier().setContents(QStringLiteral("a1.eml"), 64_B, 'A');
         // Change the content/size
-        fakeFolder.localModifier().setContents(QStringLiteral("a2.eml"), 64_b, 'B');
+        fakeFolder.localModifier().setContents(QStringLiteral("a2.eml"), 64_B, 'B');
         fakeFolder.localModifier().appendByte(QStringLiteral("a3.eml"), 'X');
         fakeFolder.localModifier().appendByte(QStringLiteral("b3.txt"), 'X');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -563,22 +563,22 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().insert(QStringLiteral("A/big"), 800_b);
+        fakeFolder.localModifier().insert(QStringLiteral("A/big"), 800_B);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nPUT, 1);
         QCOMPARE(n507, 0);
 
         nPUT = 0;
-        fakeFolder.localModifier().insert(QStringLiteral("A/big1"), 500_b); // ok
-        fakeFolder.localModifier().insert(QStringLiteral("A/big2"), 1200_b); // 507 (quota guess now 1199)
-        fakeFolder.localModifier().insert(QStringLiteral("A/big3"), 1200_b); // skipped
-        fakeFolder.localModifier().insert(QStringLiteral("A/big4"), 1500_b); // skipped
-        fakeFolder.localModifier().insert(QStringLiteral("A/big5"), 1100_b); // 507 (quota guess now 1099)
-        fakeFolder.localModifier().insert(QStringLiteral("A/big6"), 900_b); // ok (quota guess now 199)
-        fakeFolder.localModifier().insert(QStringLiteral("A/big7"), 200_b); // skipped
-        fakeFolder.localModifier().insert(QStringLiteral("A/big8"), 199_b); // ok (quota guess now 0)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big1"), 500_B); // ok
+        fakeFolder.localModifier().insert(QStringLiteral("A/big2"), 1200_B); // 507 (quota guess now 1199)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big3"), 1200_B); // skipped
+        fakeFolder.localModifier().insert(QStringLiteral("A/big4"), 1500_B); // skipped
+        fakeFolder.localModifier().insert(QStringLiteral("A/big5"), 1100_B); // 507 (quota guess now 1099)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big6"), 900_B); // ok (quota guess now 199)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big7"), 200_B); // skipped
+        fakeFolder.localModifier().insert(QStringLiteral("A/big8"), 199_B); // ok (quota guess now 0)
 
-        fakeFolder.localModifier().insert(QStringLiteral("B/big8"), 1150_b); // 507
+        fakeFolder.localModifier().insert(QStringLiteral("B/big8"), 1150_B); // 507
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nPUT, 6);
         QCOMPARE(n507, 3);
@@ -775,7 +775,7 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().insert(QStringLiteral("file"), 1_mb, 'W');
+        fakeFolder.localModifier().insert(QStringLiteral("file"), 1_MiB, 'W');
         // wait until the sync engine is ready
         // wait a second and abort
         connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, &fakeFolder.syncEngine(),

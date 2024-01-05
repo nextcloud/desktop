@@ -71,7 +71,7 @@ public:
 class FileModifier
 {
 public:
-    static constexpr auto DefaultFileSize = 64_b;
+    static constexpr auto DefaultFileSize = 64_B;
     static constexpr char DefaultContentChar = 'X';
 
     virtual ~FileModifier() { }

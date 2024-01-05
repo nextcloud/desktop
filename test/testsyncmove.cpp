@@ -262,7 +262,7 @@ private slots:
         }
 
         fakeFolder.localModifier().insert(
-            QStringLiteral("C/c3"), 13_b, 'E'); // 13, because c1 (and c2) have a size of 24 bytes, so this file is clearly different
+            QStringLiteral("C/c3"), 13_B, 'E'); // 13, because c1 (and c2) have a size of 24 bytes, so this file is clearly different
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
@@ -487,9 +487,9 @@ private slots:
 
         // Create new on one side, move to new on the other
         {
-            local.insert(QStringLiteral("A/a1N"), 13_b);
+            local.insert(QStringLiteral("A/a1N"), 13_B);
             remote.rename(QStringLiteral("A/a1mt"), QStringLiteral("A/a1N"));
-            remote.insert(QStringLiteral("B/b1N"), 13_b);
+            remote.insert(QStringLiteral("B/b1N"), 13_B);
             local.rename(QStringLiteral("B/b1mt"), QStringLiteral("B/b1N"));
             ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.applyLocalModificationsAndSync());

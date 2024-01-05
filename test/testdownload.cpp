@@ -19,7 +19,7 @@
 using namespace std::chrono_literals;
 using namespace OCC;
 
-static constexpr auto stopAfter = 3_mb;
+static constexpr auto stopAfter = 3_MiB;
 
 /** A FakeGetReply that sends max 'fakeSize' bytes, but whose ContentLength has the corect size */
 class BrokenFakeGetReply : public FakeGetReply
@@ -91,7 +91,7 @@ private slots:
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
-        auto size = 30_mb;
+        auto size = 30_MiB;
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"), size);
 
         // First, download only the first 3 MB of the file
@@ -149,7 +149,7 @@ private slots:
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
-        constexpr auto size = 30_mb;
+        constexpr auto size = 30_MiB;
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"), size);
 
         // First, download only the first 3 MB of the file
@@ -193,7 +193,7 @@ private slots:
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
-        const auto size = 3_mb + 500_kb;
+        const auto size = 3_MiB + 500_KiB;
         fakeFolder.remoteModifier().insert(QStringLiteral("A/broken"), size);
 
         QString serverMessage = QStringLiteral("The file was not downloaded because the tests wants so!");
@@ -265,7 +265,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/resendme"), 300_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/resendme"), 300_B);
 
         QString serverMessage = QStringLiteral("Needs to be resend on a new connection!");
         int resendActual = 0;

@@ -201,7 +201,7 @@ private slots:
 
         fakeFolder.localModifier().mkdir(QStringLiteral("A/newDir"));
         fakeFolder.localModifier().mkdir(QStringLiteral("A/newDir/subDir"));
-        fakeFolder.localModifier().insert(QStringLiteral("A/newDir/subDir/file"), 10_b);
+        fakeFolder.localModifier().insert(QStringLiteral("A/newDir/subDir/file"), 10_B);
 
         // Only "A" was modified according to the file system tracker
         fakeFolder.syncEngine().setLocalDiscoveryOptions(

@@ -187,25 +187,28 @@ namespace FileSystem {
     QString OCSYNC_EXPORT pathEscape(const QString &s);
 
     namespace SizeLiterals {
-        constexpr unsigned long long operator"" _b(unsigned long long sz)
+        constexpr auto BinaryBase = 1024;
+
+        constexpr unsigned long long operator"" _B(unsigned long long sz)
         {
             return sz;
         }
 
-        constexpr unsigned long long operator"" _kb(unsigned long long sz)
+        constexpr unsigned long long operator"" _KiB(unsigned long long sz)
         {
-            return operator"" _b(sz) * 1024;
+            return operator"" _B(sz) * BinaryBase;
         }
 
-        constexpr unsigned long long operator"" _mb(unsigned long long sz)
+        constexpr unsigned long long operator"" _MiB(unsigned long long sz)
         {
-            return operator"" _kb(sz) * 1024;
+            return operator"" _KiB(sz) * BinaryBase;
         }
 
-        constexpr unsigned long long operator"" _gb(unsigned long long sz)
+        constexpr unsigned long long operator"" _GiB(unsigned long long sz)
         {
-            return operator"" _mb(sz) * 1024;
+            return operator"" _MiB(sz) * BinaryBase;
         }
+
     }
 }
 

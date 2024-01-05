@@ -54,12 +54,12 @@ private slots:
 
         fakeFolder.remoteModifier().createDir(QStringLiteral("A/newBigDir"));
         fakeFolder.remoteModifier().createDir(QStringLiteral("A/newBigDir/subDir"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/newBigDir/subDir/bigFile"), options._newBigFolderSizeLimit + 10_b);
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/newBigDir/subDir/smallFile"), 10_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/newBigDir/subDir/bigFile"), options._newBigFolderSizeLimit + 10_B);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/newBigDir/subDir/smallFile"), 10_B);
 
         fakeFolder.remoteModifier().createDir(QStringLiteral("B/newSmallDir"));
         fakeFolder.remoteModifier().createDir(QStringLiteral("B/newSmallDir/subDir"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("B/newSmallDir/subDir/smallFile"), 10_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("B/newSmallDir/subDir/smallFile"), 10_B);
 
         // Because the test system don't do that automatically
         fakeFolder.remoteModifier().find(QStringLiteral("A/newBigDir"))->extraDavProperties = "<oc:size>20020</oc:size>";

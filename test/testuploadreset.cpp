@@ -54,7 +54,7 @@ private slots:
         };
         fakeFolder.syncEngine().account()->setCapabilities({fakeFolder.account()->url(), httpErrorCodesThatResetFailingChunkedUploadsCapabilities({500})});
 
-        const auto size = 100_mb; // 100 MB
+        const auto size = 100_MiB; // 100 MB
         fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);
         QDateTime modTime = QDateTime::currentDateTime();
         fakeFolder.localModifier().setModTime(QStringLiteral("A/a0"), modTime);

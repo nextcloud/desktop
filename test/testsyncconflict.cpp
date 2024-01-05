@@ -490,7 +490,7 @@ private slots:
         fakeFolder.localModifier().mkdir(QStringLiteral("Z"));
         fakeFolder.localModifier().mkdir(QStringLiteral("Z/subdir"));
         fakeFolder.localModifier().insert(QStringLiteral("Z/foo"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("Z"), 63_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("Z"), 63_B);
 
         // 2) local file becomes a dir; remote file changes
         fakeFolder.localModifier().remove(QStringLiteral("A/a1"));
@@ -501,7 +501,7 @@ private slots:
         // 3) local dir gets a new file; remote dir becomes a file
         fakeFolder.localModifier().insert(QStringLiteral("B/zzz"));
         fakeFolder.remoteModifier().remove(QStringLiteral("B"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("B"), 31_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("B"), 31_B);
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
@@ -574,7 +574,7 @@ private slots:
 
         // 2) local dir becomes file: remote dir adds file
         fakeFolder.localModifier().remove(QStringLiteral("A"));
-        fakeFolder.localModifier().insert(QStringLiteral("A"), 63_b);
+        fakeFolder.localModifier().insert(QStringLiteral("A"), 63_B);
         fakeFolder.remoteModifier().insert(QStringLiteral("A/bar"));
 
         // 3) local file changes; remote file becomes dir

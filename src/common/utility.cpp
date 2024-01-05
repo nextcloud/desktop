@@ -91,9 +91,9 @@ QString Utility::octetsToString(qint64 octets)
     // We do what macOS 10.8 and above do: 0 fraction digits for bytes and KB; 1 fraction digits for MB; 2 for GB and above.
     // See also https://developer.apple.com/documentation/foundation/nsbytecountformatter/1417887-adaptive
     int precision = 0;
-    if (quint64(octets) >= 1_gb) {
+    if (quint64(octets) >= 1_GiB) {
         precision = 2;
-    } else if (quint64(octets) >= 1_mb) {
+    } else if (quint64(octets) >= 1_MiB) {
         precision = 1;
     }
 
