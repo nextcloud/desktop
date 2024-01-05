@@ -378,7 +378,7 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
 void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
-    auto *lsColJob = new LsColJob(_account, _subPath, this);
+    auto *lsColJob = new LsColJob(_account, _subPath);
 
     QList<QByteArray> props;
     props << "resourcetype"
