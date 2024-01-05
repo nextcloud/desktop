@@ -614,7 +614,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         path += infoPath;
     }
 
-    auto *job = new LsColJob(_accountState->account(), path, this);
+    auto *job = new LsColJob(_accountState->account(), path);
     info->_fetchingJob = job;
     auto props = QList<QByteArray>() << "resourcetype"
                                      << "http://owncloud.org/ns:size"

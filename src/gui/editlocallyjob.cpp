@@ -206,7 +206,7 @@ void EditLocallyJob::fetchRemoteFileParentInfo()
         return;
     }
 
-    const auto job = new LsColJob(_accountState->account(), QDir::cleanPath(_folderForFile->remotePathTrailingSlash() + _relPathParent), this);
+    const auto job = new LsColJob(_accountState->account(), QDir::cleanPath(_folderForFile->remotePathTrailingSlash() + _relPathParent));
     const QList<QByteArray> props{QByteArrayLiteral("resourcetype"),
                                   QByteArrayLiteral("getlastmodified"),
                                   QByteArrayLiteral("getetag"),
