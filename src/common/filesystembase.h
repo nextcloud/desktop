@@ -188,6 +188,7 @@ namespace FileSystem {
 
     namespace SizeLiterals {
         constexpr auto BinaryBase = 1024;
+        constexpr auto DecimalBase = 1000;
 
         constexpr unsigned long long operator"" _B(unsigned long long sz)
         {
@@ -209,6 +210,20 @@ namespace FileSystem {
             return operator"" _MiB(sz) * BinaryBase;
         }
 
+        constexpr unsigned long long operator"" _kB(unsigned long long sz)
+        {
+            return operator"" _B(sz) * DecimalBase;
+        }
+
+        constexpr unsigned long long operator"" _MB(unsigned long long sz)
+        {
+            return operator"" _kB(sz) * DecimalBase;
+        }
+
+        constexpr unsigned long long operator"" _GB(unsigned long long sz)
+        {
+            return operator"" _MB(sz) * DecimalBase;
+        }
     }
 }
 
