@@ -989,34 +989,34 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <translation>Nadaljuj</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="451"/>
+        <location filename="../src/gui/application.cpp" line="455"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 računov</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="452"/>
+        <location filename="../src/gui/application.cpp" line="456"/>
         <source>1 account</source>
         <translation>1 račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="454"/>
+        <location filename="../src/gui/application.cpp" line="458"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 map</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="455"/>
+        <location filename="../src/gui/application.cpp" line="459"/>
         <source>1 folder</source>
         <translation>1 mapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="457"/>
+        <location filename="../src/gui/application.cpp" line="461"/>
         <source>Legacy import</source>
         <translation>Opuščeno uvažanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="458"/>
+        <location filename="../src/gui/application.cpp" line="462"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>

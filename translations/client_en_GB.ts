@@ -994,34 +994,34 @@ This action will abort any currently running synchronization.</translation>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="451"/>
+        <location filename="../src/gui/application.cpp" line="455"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 accounts</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="452"/>
+        <location filename="../src/gui/application.cpp" line="456"/>
         <source>1 account</source>
         <translation>1 account</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="454"/>
+        <location filename="../src/gui/application.cpp" line="458"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 folders</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="455"/>
+        <location filename="../src/gui/application.cpp" line="459"/>
         <source>1 folder</source>
         <translation>1 folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="457"/>
+        <location filename="../src/gui/application.cpp" line="461"/>
         <source>Legacy import</source>
         <translation>Legacy import</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="458"/>
+        <location filename="../src/gui/application.cpp" line="462"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>

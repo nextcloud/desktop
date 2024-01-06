@@ -989,34 +989,34 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Fortsæt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="451"/>
+        <location filename="../src/gui/application.cpp" line="455"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="452"/>
+        <location filename="../src/gui/application.cpp" line="456"/>
         <source>1 account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="454"/>
+        <location filename="../src/gui/application.cpp" line="458"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="455"/>
+        <location filename="../src/gui/application.cpp" line="459"/>
         <source>1 folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="457"/>
+        <location filename="../src/gui/application.cpp" line="461"/>
         <source>Legacy import</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="458"/>
+        <location filename="../src/gui/application.cpp" line="462"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
