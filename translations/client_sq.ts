@@ -593,27 +593,27 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Njëkohësim i ndalur nga përdoruesi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Lidhja Internet është me masë</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="636"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>Njëkohësimi është ndalur, ngaqë lidhja Internet është një lidhje me masë&lt;p&gt;Doni vërtet të detyrohet Njëkohësimi tani?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>Përdoruesi shkaktoi njëkohësim të detyruar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Njëkohësimi te %1 është ndërprerë për shkak lidhjeje internet me masë.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
@@ -1073,7 +1073,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message>
         <location filename="../src/gui/folder.cpp" line="809"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Po ndërrohet mënyrë VFS në dosjen “%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="971"/>
@@ -1173,12 +1173,12 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Llogari e shkëputur, ose e pezulluar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>Dosja është gati për t’u hequr</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1203,7 +1203,7 @@ Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëk
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>Dosja “%1” është tashmë në përdorim nga aplikacioni %2!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1322,7 +1322,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>U ndryshua listë përzgjedhëse njëkohësimi</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1380,7 +1380,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>Përdoruesi shkaktoi njëkohësim të gjithçkaje për dosje të njëkohësuar të përzgjedhshme</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -2037,7 +2037,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Ndale njëkohësimin, kur lidhja Internet është me masë</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2147,7 +2147,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/networksettings.cpp" line="196"/>
         <source>Querying metered connection status is not supported on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Në këtë platformë nuk mbulohet kërkimi i gjendjes së lidhjes me masë</translation>
     </message>
 </context>
 <context>
@@ -3504,7 +3504,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="874"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>U ndërpre për shkak të %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="892"/>
@@ -3525,7 +3525,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <location filename="../src/libsync/syncengine.cpp" line="87"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>dalje nga aplikacioni</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="402"/>
@@ -4056,7 +4056,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Përdoruesi ndali njëkohësimin për llogarinë “%1”</translation>
     </message>
 </context>
 <context>
