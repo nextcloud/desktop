@@ -56,8 +56,8 @@ public:
 public slots:
     void showFirstPage();
     void showIssuesList(OCC::AccountState *account);
-    void slotSwitchPage(QAction *action);
-    void slotAccountAvatarChanged();
+    virtual void slotSwitchPage(QAction *action);
+    virtual void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
 
 signals:
@@ -74,13 +74,14 @@ private slots:
     void accountAdded(OCC::AccountState *);
     void accountRemoved(OCC::AccountState *);
 
-private:
+protected:
+    Ui::SettingsDialog *const _ui;
+    QToolBar *_toolBar;
     void customizeStyle();
 
+private:
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
-
-    Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;
     // Maps the actions from the action group to the corresponding widgets
@@ -89,8 +90,6 @@ private:
     // Maps the action in the dialog to their according account. Needed in
     // case the account avatar changes
     QHash<Account *, QAction *> _actionForAccount;
-
-    QToolBar *_toolBar;
 
     ownCloudGui *_gui;
 };

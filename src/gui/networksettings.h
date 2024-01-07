@@ -48,12 +48,11 @@ private slots:
 
 protected:
     void showEvent(QShowEvent *event) override;
+    Ui::NetworkSettings *_ui;
 
 private:
     void loadProxySettings();
     void loadBWLimitSettings();
-
-    Ui::NetworkSettings *_ui;
 };
 
 

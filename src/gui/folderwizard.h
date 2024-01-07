@@ -170,7 +170,7 @@ public:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
-private:
+protected:
     FolderWizardLocalPath *_folderWizardSourcePage;
     FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
     FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;

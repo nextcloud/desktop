@@ -236,12 +236,11 @@ protected:
     [[nodiscard]] QVariant retrieveData(const QString &group, const QString &key) const;
     void removeData(const QString &group, const QString &key);
     [[nodiscard]] bool dataExists(const QString &group, const QString &key) const;
-
-private:
     [[nodiscard]] QVariant getValue(const QString &param, const QString &group = QString(),
-        const QVariant &defaultValue = QVariant()) const;
+    const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);
 
+private:
     [[nodiscard]] QString keychainProxyPasswordKey() const;
 
     using SharedCreds = QSharedPointer<AbstractCredentials>;

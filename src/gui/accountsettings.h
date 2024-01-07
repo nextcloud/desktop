@@ -128,6 +128,9 @@ private slots:
     void checkClientSideEncryptionState();
     void removeActionFromEncryptionMessage(const QString &actionId);
 
+protected:
+    Ui::AccountSettings *_ui;
+
 private:
     bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
@@ -136,8 +139,6 @@ private:
 
     /// Returns the alias of the selected folder, empty string if none
     [[nodiscard]] QString selectedFolderAlias() const;
-
-    Ui::AccountSettings *_ui;
 
     FolderStatusModel *_model;
     QUrl _OCUrl;
