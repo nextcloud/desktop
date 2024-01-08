@@ -113,7 +113,11 @@ namespace {
 #elif defined(Q_OS_MAC)
         return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
-        return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
+        if (qEnvironmentVariableIsSet("APPIMAGE")) {
+            return QApplication::applicationDirPath() + QLatin1String("/../share/" APPLICATION_EXECUTABLE "/i18n/");
+        } else {
+            return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
+        }
 #endif
     }
 }
@@ -961,8 +965,14 @@ void Application::setupTranslations()
     for (QString lang : qAsConst(uiLanguages)) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
-        const QString trPath = applicationTrPath();
+        const auto trPath = applicationTrPath();
+        const auto trFolder = QDir{trPath};
+        if (!trFolder.exists()) {
+            qCWarning(lcApplication()) << trPath << "folder containing translations is missing. Impossible to load translations";
+            break;
+        }
         const QString trFile = QLatin1String("client_") + lang;
+        qCDebug(lcApplication()) << "trying to load" << lang << "in" << trFile << "from" << trPath;
         if (translator->load(trFile, trPath) || lang.startsWith(QLatin1String("en"))) {
             // Permissive approach: Qt and keychain translations
             // may be missing, but Qt translations must be there in order
@@ -992,6 +1002,10 @@ void Application::setupTranslations()
             if (!qtkeychainTranslator->isEmpty())
                 installTranslator(qtkeychainTranslator);
             break;
+        } else {
+            qCWarning(lcApplication()) << "translation catalog failed to load";
+            const auto folderContent = trFolder.entryList();
+            qCDebug(lcApplication()) << "folder content" << folderContent.join(QStringLiteral(", "));
         }
         if (property("ui_lang").isNull()) {
             setProperty("ui_lang", "C");
