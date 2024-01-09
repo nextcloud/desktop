@@ -17,6 +17,8 @@
 #include <QObject>
 #include <QtQuickWidgets/QtQuickWidgets>
 
+#include "gui/macOS/fileproviderdomainsyncstatus.h"
+
 class QAbstractListModel;
 
 namespace OCC {

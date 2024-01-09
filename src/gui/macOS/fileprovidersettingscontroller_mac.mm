@@ -180,6 +180,19 @@ public:
         }];
     }
 
+private slots:
+    void updateDomainSyncStatuses()
+    {
+        qCInfo(lcFileProviderSettingsController) << "Updating domain sync statuses";
+        _fileProviderDomainSyncStatuses.clear();
+        const auto enabledAccounts = nsEnabledAccounts();
+        for (NSString *const domainIdentifier in enabledAccounts) {
+            const auto qDomainIdentifier = QString::fromNSString(domainIdentifier);
+            const auto syncStatus = new FileProviderDomainSyncStatus(qDomainIdentifier, q);
+            _fileProviderDomainSyncStatuses.insert(qDomainIdentifier, syncStatus);
+        }
+    }
+
 private:
     [[nodiscard]] NSArray<NSString *> *nsEnabledAccounts() const
     {
@@ -270,6 +283,8 @@ private:
 
         NSArray<NSString *> *const vfsEnabledAccounts = nsEnabledAccounts();
         if (vfsEnabledAccounts != nil) {
+            updateDomainSyncStatuses();
+            connect(q, &FileProviderSettingsController::vfsEnabledAccountsChanged, this, &MacImplementation::updateDomainSyncStatuses);
             return;
         }
 
@@ -284,6 +299,7 @@ private:
     NSString *_accountsKey = [NSString stringWithUTF8String:enabledAccountsSettingsKey];
     QHash<QString, QVector<FileProviderItemMetadata>> _materialisedFiles;
     QHash<QString, unsigned long long> _storageUsage;
+    QHash<QString, FileProviderDomainSyncStatus*> _fileProviderDomainSyncStatuses;
 };
 
 FileProviderSettingsController *FileProviderSettingsController::instance()
