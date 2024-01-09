@@ -22,6 +22,7 @@
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileprovideritemmetadata.h"
 #include "gui/macOS/fileprovidermaterialiseditemsmodel.h"
+#include "gui/macOS/fileproviderutils.h"
 
 // Objective-C imports
 #import <Foundation/Foundation.h>
@@ -159,6 +160,24 @@ public:
     [[nodiscard]] QVector<FileProviderItemMetadata> materialisedItemsForAccount(const QString &userIdAtHost) const
     {
         return _materialisedFiles.value(userIdAtHost);
+    }
+
+    void signalFileProviderDomain(const QString &userIdAtHost) const
+    {
+        qCInfo(lcFileProviderSettingsController) << "Signalling file provider domain" << userIdAtHost;
+        NSFileProviderDomain * const domain = FileProviderUtils::domainForIdentifier(userIdAtHost);
+        NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
+        [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier
+                                          completionHandler:^(NSError *const error) {
+            if (error != nil) {
+                qCWarning(lcFileProviderSettingsController) << "Could not signal file provider domain, error"
+                                                            << error.localizedDescription;
+                return;
+            }
+
+            qCInfo(lcFileProviderSettingsController) << "Successfully signalled file provider domain";
+            // TODO: Provide some feedback in the UI
+        }];
     }
 
 private:
@@ -384,6 +403,11 @@ void FileProviderSettingsController::createEvictionWindowForAccount(const QStrin
     const auto dialog = qobject_cast<QQuickWindow *>(genericDialog);
     Q_ASSERT(dialog);
     dialog->show();
+}
+
+void FileProviderSettingsController::signalFileProviderDomain(const QString &userIdAtHost)
+{
+    d->signalFileProviderDomain(userIdAtHost);
 }
 
 void FileProviderSettingsController::createDebugArchive(const QString &userIdAtHost)
