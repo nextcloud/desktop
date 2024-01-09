@@ -60,4 +60,140 @@ FileProviderDomainSyncStatus::FileProviderDomainSyncStatus(const QString &domain
 {
 }
 
+FileProviderDomainSyncStatus::~FileProviderDomainSyncStatus() = default;
+
+bool FileProviderDomainSyncStatus::syncing() const
+{
+    return downloading() || uploading();
+}
+
+bool FileProviderDomainSyncStatus::downloading() const
+{
+    return _downloading;
+}
+
+bool FileProviderDomainSyncStatus::uploading() const
+{
+    return _uploading;
+}
+
+double FileProviderDomainSyncStatus::fractionCompleted() const
+{
+    return (downloadFractionCompleted() + uploadFractionCompleted()) / 2;
+}
+
+double FileProviderDomainSyncStatus::downloadFractionCompleted() const
+{
+    return _downloadFractionCompleted;
+}
+
+double FileProviderDomainSyncStatus::uploadFractionCompleted() const
+{
+    return _uploadFractionCompleted;
+}
+
+int FileProviderDomainSyncStatus::downloadFileTotalCount() const
+{
+    return _downloadFileTotalCount;
+}
+
+int FileProviderDomainSyncStatus::downloadFileCompletedCount() const
+{
+    return _downloadFileCompletedCount;
+}
+
+int FileProviderDomainSyncStatus::uploadFileTotalCount() const
+{
+    return _uploadFileTotalCount;
+}
+
+int FileProviderDomainSyncStatus::uploadFileCompletedCount() const
+{
+    return _uploadFileCompletedCount;
+}
+
+void FileProviderDomainSyncStatus::setDownloading(const bool downloading)
+{
+    if (_downloading == downloading) {
+        return;
+    }
+
+    _downloading = downloading;
+    emit downloadingChanged(_downloading);
+    emit syncingChanged(syncing());
+}
+
+void FileProviderDomainSyncStatus::setUploading(const bool uploading)
+{
+    if (_uploading == uploading) {
+        return;
+    }
+
+    _uploading = uploading;
+    emit uploadingChanged(_uploading);
+    emit syncingChanged(syncing());
+}
+
+void FileProviderDomainSyncStatus::setDownloadFractionCompleted(const double fractionCompleted)
+{
+    if (_downloadFractionCompleted == fractionCompleted) {
+        return;
+    }
+
+    _downloadFractionCompleted = fractionCompleted;
+    emit downloadFractionCompletedChanged(_downloadFractionCompleted);
+    emit fractionCompletedChanged(fractionCompleted());
+}
+
+void FileProviderDomainSyncStatus::setUploadFractionCompleted(const double fractionCompleted)
+{
+    if (_uploadFractionCompleted == fractionCompleted) {
+        return;
+    }
+
+    _uploadFractionCompleted = fractionCompleted;
+    emit uploadFractionCompletedChanged(_uploadFractionCompleted);
+    emit fractionCompletedChanged(fractionCompleted());
+}
+
+void FileProviderDomainSyncStatus::setDownloadFileTotalCount(const int fileTotalCount)
+{
+    if (_downloadFileTotalCount == fileTotalCount) {
+        return;
+    }
+
+    _downloadFileTotalCount = fileTotalCount;
+    emit downloadFileTotalCountChanged(_downloadFileTotalCount);
+}
+
+void FileProviderDomainSyncStatus::setDownloadFileCompletedCount(const int fileCompletedCount)
+{
+    if (_downloadFileCompletedCount == fileCompletedCount) {
+        return;
+    }
+
+    _downloadFileCompletedCount = fileCompletedCount;
+    emit downloadFileCompletedCountChanged(_downloadFileCompletedCount);
+}
+
+void FileProviderDomainSyncStatus::setUploadFileTotalCount(const int fileTotalCount)
+{
+    if (_uploadFileTotalCount == fileTotalCount) {
+        return;
+    }
+
+    _uploadFileTotalCount = fileTotalCount;
+    emit uploadFileTotalCountChanged(_uploadFileTotalCount);
+}
+
+void FileProviderDomainSyncStatus::setUploadFileCompletedCount(const int fileCompletedCount)
+{
+    if (_uploadFileCompletedCount == fileCompletedCount) {
+        return;
+    }
+
+    _uploadFileCompletedCount = fileCompletedCount;
+    emit uploadFileCompletedCountChanged(_uploadFileCompletedCount);
+}
+
 } // OCC::Mac
