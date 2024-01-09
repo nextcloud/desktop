@@ -36,6 +36,7 @@ class FileProviderDomainSyncStatus : public QObject
 
 public:
     explicit FileProviderDomainSyncStatus(const QString &domainIdentifier, QObject *parent = nullptr);
+    ~FileProviderDomainSyncStatus() override;
 
     bool syncing() const;
     bool downloading() const;
