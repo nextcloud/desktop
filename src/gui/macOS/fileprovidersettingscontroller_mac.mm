@@ -180,6 +180,11 @@ public:
         }];
     }
 
+    [[nodiscard]] FileProviderDomainSyncStatus *domainSyncStatusForAccount(const QString &userIdAtHost) const
+    {
+        return _fileProviderDomainSyncStatuses.value(userIdAtHost);
+    }
+
 private slots:
     void updateDomainSyncStatuses()
     {
@@ -433,6 +438,11 @@ void FileProviderSettingsController::createDebugArchive(const QString &userIdAtH
         return;
     }
     FileProvider::instance()->createDebugArchiveForDomain(userIdAtHost, filename);
+}
+
+FileProviderDomainSyncStatus *FileProviderSettingsController::domainSyncStatusForAccount(const QString &userIdAtHost) const
+{
+    return d->domainSyncStatusForAccount(userIdAtHost);
 }
 
 } // namespace Mac

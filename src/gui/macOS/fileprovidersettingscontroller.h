@@ -46,6 +46,7 @@ public:
     [[nodiscard]] Q_INVOKABLE float remoteStorageUsageGbForAccount(const QString &userIdAtHost) const;
 
     [[nodiscard]] Q_INVOKABLE QAbstractListModel *materialisedItemsModelForAccount(const QString &userIdAtHost);
+    [[nodiscard]] Q_INVOKABLE FileProviderDomainSyncStatus *domainSyncStatusForAccount(const QString &userIdAtHost) const;
 
 public slots:
     void setVfsEnabledForAccount(const QString &userIdAtHost, const bool setEnabled);
