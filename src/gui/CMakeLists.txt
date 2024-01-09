@@ -294,7 +294,7 @@ IF( APPLE )
             macOS/fileproviderdomainmanager.h
             macOS/fileproviderdomainmanager_mac.mm
             macOS/fileproviderdomainsyncstatus.h
-            macOS/fileproviderdomainsyncstatus.cpp
+            macOS/fileproviderdomainsyncstatus_mac.mm
             macOS/fileprovideritemmetadata.h
             macOS/fileprovideritemmetadata.cpp
             macOS/fileprovideritemmetadata_mac.mm
@@ -315,7 +315,9 @@ IF( APPLE )
             macOS/fileproviderxpc.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
-            macOS/fileproviderxpc_mac_utils.mm)
+            macOS/fileproviderxpc_mac_utils.mm
+            macOS/progressobserver.h
+            macOS/progressobserver.m)
     endif()
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
