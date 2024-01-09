@@ -52,8 +52,7 @@ UpdaterScheduler::UpdaterScheduler(Application *app, QObject *parent)
             if (_updateDownloadedDialog == nullptr) {
                 _updateDownloadedDialog = new UpdateDownloadedDialog(app->gui()->settingsDialog(), updater->statusString());
                 _updateDownloadedDialog->setAttribute(Qt::WA_DeleteOnClose);
-                _updateDownloadedDialog->show();
-                ownCloudGui::raiseDialog(_updateDownloadedDialog);
+                ocApp()->gui()->settingsDialog()->addModalWidget(_updateDownloadedDialog);
 
                 connect(_updateDownloadedDialog, &UpdateDownloadedDialog::accepted, this, []() {
                     // restart:
@@ -472,9 +471,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     connect(getupdate, &QAbstractButton::clicked, this, &NSISUpdater::slotOpenUpdateUrl);
 
     layout->addWidget(bb);
-
-    msgBox->open();
-    ownCloudGui::raiseDialog(msgBox);
+    ocApp()->gui()->settingsDialog()->addModalWidget(msgBox);
 }
 
 void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)

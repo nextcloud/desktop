@@ -52,7 +52,12 @@ public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
     ~SettingsDialog() override;
 
-    QSize sizeHintForChild() const;
+    void addModalWidget(QWidget *w);
+
+    void requestModality(Account *account);
+    void ceaseModality(Account *account);
+
+    AccountSettings *accountSettings(Account *account);
 
     QWidget* currentPage();
 
@@ -91,7 +96,7 @@ private:
     QAction *_addAccountAction;
     QList<QAction *> _accountActions;
     ownCloudGui *_gui;
-
+    QList<Account *> _modalStack;
 };
 }
 

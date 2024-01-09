@@ -58,8 +58,6 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
         Q_EMIT navigationEntryClicked(clickedState);
     });
 
-    resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
-
     // different styles (e.g., 'Windows', 'Fusion') may require different approaches in the stylesheet
     // therefore we want to force a standard style on all platforms
     // this further makes sure the wizard (well, its contents) looks exactly the same on all platforms
@@ -127,7 +125,7 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     _ui->nextButton->setFocus();
 
     // bring to front if necessary
-    ownCloudGui::raiseDialog(this);
+    ownCloudGui::raise();
 
     connect(_currentPage, &AbstractSetupWizardPage::contentChanged, this, &SetupWizardWindow::slotUpdateNextButton);
 
@@ -160,8 +158,8 @@ void SetupWizardWindow::reject()
         // call the base implementation
         QDialog::reject();
     });
+    ownCloudGui::raise();
     messageBox->open();
-    ocApp()->gui()->raiseDialog(messageBox);
 }
 
 void SetupWizardWindow::slotReplaceContent(QWidget *newWidget)

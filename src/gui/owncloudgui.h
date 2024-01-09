@@ -62,7 +62,7 @@ public:
      * If raiseWidget is a dialog and not visible yet, ->open will be called.
      * For normal widgets we call showNormal.
      */
-    static void raiseDialog(QWidget *raiseWidget);
+    static void raise();
 
     /// Whether the tray menu is visible
     bool contextMenuVisible() const;

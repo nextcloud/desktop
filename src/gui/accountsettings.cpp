@@ -14,8 +14,8 @@
 
 
 #include "accountsettings.h"
-#include "scheduling/syncscheduler.h"
 #include "ui_accountsettings.h"
+
 
 #include "account.h"
 #include "accountmanager.h"
@@ -28,18 +28,22 @@
 #include "folderman.h"
 #include "folderstatusdelegate.h"
 #include "folderstatusmodel.h"
+#include "folderwizard/folderwizard.h"
+#include "gui/models/models.h"
 #include "guiutility.h"
+#include "loginrequireddialog.h"
+#include "oauthloginwidget.h"
 #include "quotainfo.h"
+#include "scheduling/syncscheduler.h"
 #include "settingsdialog.h"
 #include "theme.h"
 #include "tooltipupdater.h"
-
-#include "folderwizard/folderwizard.h"
 
 #include <QAction>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
+#include <QGroupBox>
 #include <QIcon>
 #include <QKeySequence>
 #include <QMessageBox>
@@ -49,9 +53,10 @@
 #include <QToolTip>
 #include <QTreeView>
 
-#include "gui/models/models.h"
-#include "loginrequireddialog.h"
-#include "oauthloginwidget.h"
+
+namespace {
+constexpr auto modalWidgetStretchedMarginC = 50;
+}
 
 namespace OCC {
 
@@ -421,17 +426,16 @@ void AccountSettings::slotAddFolder()
 {
     FolderMan::instance()->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(_accountState, ocApp()->gui()->settingsDialog());
+    FolderWizard *folderWizard = new FolderWizard(_accountState, this);
     folderWizard->setAttribute(Qt::WA_DeleteOnClose);
-    folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
 
     connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
     connect(folderWizard, &QDialog::rejected, this, [] {
         qCInfo(lcAccountSettings) << "Folder wizard cancelled";
         FolderMan::instance()->setSyncEnabled(true);
     });
-    folderWizard->open();
-    ocApp()->gui()->raiseDialog(folderWizard);
+
+    addModalWidget(folderWizard, AccountSettings::ModalWidgetSizePolicy::Expanding);
 }
 
 
@@ -486,7 +490,6 @@ void AccountSettings::slotRemoveCurrentFolder()
             }
         });
         messageBox->open();
-        ownCloudGui::raiseDialog(messageBox);
     }
 }
 
@@ -638,8 +641,8 @@ void AccountSettings::slotForceSyncCurrentFolder()
                 QMessageBox::Yes | QMessageBox::No, ocApp()->gui()->settingsDialog());
             messageBox->setAttribute(Qt::WA_DeleteOnClose);
             connect(messageBox, &QMessageBox::accepted, this, [this, selectedFolder] { doForceSyncCurrentFolder(selectedFolder); });
+            ownCloudGui::raise();
             messageBox->open();
-            ownCloudGui::raiseDialog(messageBox);
         } else {
             doForceSyncCurrentFolder(selectedFolder);
         }
@@ -805,7 +808,46 @@ void AccountSettings::slotLinkActivated(const QString &link)
 
 AccountSettings::~AccountSettings()
 {
+    _goingDown = true;
     delete ui;
+}
+
+void AccountSettings::addModalWidget(QWidget *widget, ModalWidgetSizePolicy sizePolicy)
+{
+    // create a widget filling the stacked widget
+    // this widget contains a wrapping group box with widget as content
+    auto *outerWidget = new QWidget;
+    auto *groupBox = new QGroupBox;
+
+    switch (sizePolicy) {
+    case ModalWidgetSizePolicy::Expanding: {
+        auto *outerLayout = new QHBoxLayout(outerWidget);
+        outerLayout->setContentsMargins(modalWidgetStretchedMarginC, modalWidgetStretchedMarginC, modalWidgetStretchedMarginC, modalWidgetStretchedMarginC);
+        outerLayout->addWidget(groupBox);
+        auto *layout = new QHBoxLayout(groupBox);
+        layout->addWidget(widget);
+    } break;
+    case ModalWidgetSizePolicy::Minimum: {
+        auto *outerLayout = new QGridLayout(outerWidget);
+        outerLayout->addWidget(groupBox, 0, 0, Qt::AlignCenter);
+        auto *layout = new QHBoxLayout(groupBox);
+        layout->addWidget(widget);
+    } break;
+    }
+    groupBox->setTitle(widget->windowTitle());
+
+    ui->stackedWidget->addWidget(outerWidget);
+    ui->stackedWidget->setCurrentWidget(outerWidget);
+
+    // the widget is supposed to behave like a dialog and we connect to its destuction
+    Q_ASSERT(widget->testAttribute(Qt::WA_DeleteOnClose));
+    connect(widget, &QWidget::destroyed, this, [this, outerWidget] {
+        outerWidget->deleteLater();
+        if (!_goingDown) {
+            ocApp()->gui()->settingsDialog()->ceaseModality(_accountState->account().get());
+        }
+    });
+    ocApp()->gui()->settingsDialog()->requestModality(_accountState->account().get());
 }
 
 void AccountSettings::refreshSelectiveSyncStatus()

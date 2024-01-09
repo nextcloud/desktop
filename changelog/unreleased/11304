@@ -1,0 +1,8 @@
+Enhancement: Use less modal dialogs
+
+As the rather high number of modal dialogs we used caused different issues on different platforms,
+we decided to use them less often and try other concepts.
+
+https://github.com/owncloud/client/issues/11304
+https://github.com/owncloud/client/issues/11032
+https://github.com/owncloud/client/issues/11208

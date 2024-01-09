@@ -17,6 +17,7 @@
 #include "account.h"
 #include "application.h"
 #include "common/asserts.h"
+#include "gui/accountsettings.h"
 #include "gui/loginrequireddialog/basicloginwidget.h"
 #include "gui/loginrequireddialog/loginrequireddialog.h"
 #include "gui/loginrequireddialog/oauthloginwidget.h"
@@ -133,13 +134,7 @@ void HttpCredentialsGui::showDialog()
         emit fetched();
     });
 
-    dialog->open();
-    ownCloudGui::raiseDialog(dialog);
-
-    QTimer::singleShot(0, contentWidget, [contentWidget]() {
-        contentWidget->setFocus(Qt::OtherFocusReason);
-    });
-
+    ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(dialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
     _loginRequiredDialog = dialog;
 }
 
@@ -186,12 +181,11 @@ void HttpCredentialsGui::restartOAuth()
 
         connect(this, &HttpCredentialsGui::oAuthErrorOccurred, _loginRequiredDialog, [contentWidget, this]() {
             Q_ASSERT(!ready());
-            ocApp()->gui()->raiseDialog(_loginRequiredDialog);
+            ownCloudGui::raise();
             contentWidget->showRetryFrame();
         });
 
-        _loginRequiredDialog->open();
-        ocApp()->gui()->raiseDialog(_loginRequiredDialog);
+        ocApp()->gui()->settingsDialog()->accountSettings(_account)->addModalWidget(_loginRequiredDialog, AccountSettings::ModalWidgetSizePolicy::Minimum);
     }
 
     _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));

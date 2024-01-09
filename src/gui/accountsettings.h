@@ -54,10 +54,15 @@ class AccountSettings : public QWidget
     Q_PROPERTY(AccountStatePtr accountState MEMBER _accountState)
 
 public:
+    enum class ModalWidgetSizePolicy { Minimum = QSizePolicy::Minimum, Expanding = QSizePolicy::Expanding };
+    Q_ENUM(ModalWidgetSizePolicy);
+
     explicit AccountSettings(const AccountStatePtr &accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
 
     AccountStatePtr accountsState() const { return _accountState; }
+
+    void addModalWidget(QWidget *widget, ModalWidgetSizePolicy sizePolicy);
 
 signals:
     void folderChanged();
@@ -103,6 +108,8 @@ private:
     AccountStatePtr _accountState;
     QAction *_toggleSignInOutAction;
     QAction *_toggleReconnect;
+    // are we already in the destructor
+    bool _goingDown = false;
 };
 
 } // namespace OCC

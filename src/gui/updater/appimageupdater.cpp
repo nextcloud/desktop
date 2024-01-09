@@ -184,8 +184,8 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
         appImageUpdaterShim->startUpdateInBackground();
     });
 
+    ownCloudGui::raise();
     dialog->open();
-    ownCloudGui::raiseDialog(dialog);
 }
 
 void AppImageUpdater::backgroundCheckForUpdate()

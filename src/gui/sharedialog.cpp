@@ -139,8 +139,6 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     connect(job, &PropfindJob::directoryListingIterated, this, &ShareDialog::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
-
-    resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
 }
 
 ShareDialog::~ShareDialog()
@@ -207,11 +205,6 @@ void ShareDialog::showSharingUi()
         if (_startPage == ShareDialogStartPage::PublicLinks)
             _ui->shareWidgets->setCurrentWidget(_linkWidget);
     }
-}
-
-QSize ShareDialog::minimumSizeHint() const
-{
-    return ocApp()->gui()->settingsDialog()->sizeHintForChild();
 }
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QPixmap &reply)

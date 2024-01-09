@@ -269,8 +269,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     QTimer::singleShot(0, this, &SettingsDialog::showFirstPage);
 
-    connect(_ui->hideButton, &QPushButton::clicked, this, &SettingsDialog::hide);
-
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence(QStringLiteral("F12")));
     connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
@@ -288,6 +286,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 #ifdef Q_OS_MAC
     setActivationPolicy(ActivationPolicy::Accessory);
 #endif
+
+    connect(_ui->dialogStack, &QStackedWidget::currentChanged, this, [this] {
+        auto *w = _ui->dialogStack->currentWidget();
+        if (!w->windowTitle().isEmpty()) {
+            setWindowTitle(tr("%1 - %2").arg(Theme::instance()->appNameGUI(), w->windowTitle()));
+        } else {
+            setWindowTitle(Theme::instance()->appNameGUI());
+        }
+    });
 }
 
 SettingsDialog::~SettingsDialog()
@@ -295,12 +302,48 @@ SettingsDialog::~SettingsDialog()
     delete _ui;
 }
 
-QSize SettingsDialog::sizeHintForChild() const
+void SettingsDialog::addModalWidget(QWidget *w)
 {
-    return ::minimumSizeHint(this) * 0.9;
+    ownCloudGui::raise();
+    if (_ui->dialogStack->indexOf(w) == -1) {
+        _ui->dialogStack->addWidget(w);
+        _ui->dialogStack->setCurrentWidget(w);
+    }
 }
 
-QWidget* SettingsDialog::currentPage()
+void SettingsDialog::requestModality(Account *account)
+{
+    _ui->toolBar->setEnabled(false);
+    if (_modalStack.isEmpty()) {
+        if (auto *action = _actionForAccount.value(account)) {
+            action->trigger();
+        }
+    }
+    _modalStack.append(account);
+    ownCloudGui::raise();
+}
+
+void SettingsDialog::ceaseModality(Account *account)
+{
+    if (_modalStack.contains(account)) {
+        _modalStack.removeOne(account);
+        if (!_modalStack.isEmpty()) {
+            if (auto *action = _actionForAccount.value(_modalStack.first())) {
+                action->trigger();
+            } else {
+                ceaseModality(account);
+            }
+        }
+    }
+    _ui->toolBar->setEnabled(_modalStack.isEmpty());
+}
+
+AccountSettings *SettingsDialog::accountSettings(Account *account)
+{
+    return qobject_cast<AccountSettings *>(_actionGroupWidgets.value(_actionForAccount.value(account, {}), {}));
+}
+
+QWidget *SettingsDialog::currentPage()
 {
     return _ui->stack->currentWidget();
 }
@@ -448,6 +491,9 @@ void SettingsDialog::slotAccountDisplayNameChanged()
 
 void SettingsDialog::accountRemoved(AccountStatePtr s)
 {
+    while (_modalStack.contains(s->account().data())) {
+        ceaseModality(s->account().get());
+    }
     if (!Theme::instance()->multiAccount()) {
         _ui->toolBar->insertAction(_activityAction, _addAccountAction);
     }
