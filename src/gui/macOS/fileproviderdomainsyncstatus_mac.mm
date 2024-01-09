@@ -20,6 +20,8 @@
 
 #import <FileProvider/FileProvider.h>
 
+#import "gui/macOS/progressobserver.h"
+
 namespace OCC::Mac
 {
 
@@ -39,19 +41,35 @@ public:
             return;
         }
 
-        _downloadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindDownloading];
-        _uploadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindUploading];
+        NSProgress *const downloadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindDownloading];
+        NSProgress *const uploadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindUploading];
+        _downloadProgressObserver = [[ProgressObserver alloc] initWithProgress:downloadProgress];
+        _uploadProgressObserver = [[ProgressObserver alloc] initWithProgress:uploadProgress];
+
+        _downloadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
+            qCDebug(lcMacFileProviderDomainSyncStatus) << "Download progress changed" << progress.localizedDescription;
+            q->setDownloading(!progress.paused && !progress.cancelled && !progress.finished);
+            q->setDownloadFractionCompleted(progress.fractionCompleted);
+            q->setDownloadFileTotalCount(progress.fileTotalCount.intValue);
+            q->setDownloadFileCompletedCount(progress.fileCompletedCount.intValue);
+        };
+        _uploadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
+            qCDebug(lcMacFileProviderDomainSyncStatus) << "Upload progress changed" << progress.localizedDescription;
+            q->setUploading(!progress.paused && !progress.cancelled && !progress.finished);
+            q->setUploadFractionCompleted(progress.fractionCompleted);
+            q->setUploadFileTotalCount(progress.fileTotalCount.intValue);
+            q->setUploadFileCompletedCount(progress.fileCompletedCount.intValue);
+        };
     }
 
     ~MacImplementation() = default;
 
 private:
-    NSFileProviderDomain *_domain;
-    NSFileProviderManager *_manager;
-    NSProgress *_downloadProgress;
-    NSProgress *_uploadProgress;
-    QTimer _timer;
-    FileProviderDomainSyncStatus *q;
+    NSFileProviderDomain *_domain = nil;
+    NSFileProviderManager *_manager = nil;
+    ProgressObserver *_downloadProgressObserver = nullptr;
+    ProgressObserver *_uploadProgressObserver = nullptr;
+    FileProviderDomainSyncStatus *q = nullptr;
 };
 
 FileProviderDomainSyncStatus::FileProviderDomainSyncStatus(const QString &domainIdentifier, QObject *parent)
