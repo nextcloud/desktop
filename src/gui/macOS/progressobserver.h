@@ -16,9 +16,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^ProgressKVOChangeHandler)(NSProgress *const progress);
+
 @interface ProgressObserver : NSObject
 
 @property (readonly) NSProgress *progress;
+@property (readwrite, atomic) ProgressKVOChangeHandler progressKVOChangeHandler;
 
 - (instancetype)initWithProgress:(NSProgress *)progress;
 
