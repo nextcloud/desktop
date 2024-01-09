@@ -60,10 +60,9 @@ signals:
 
 private:
     explicit FileProviderSettingsController(QObject *parent = nullptr);
-    ~FileProviderSettingsController() override;
 
     class MacImplementation;
-    std::unique_ptr<MacImplementation> d;
+    MacImplementation *d;
 
     QHash<QString, UserInfo*> _userInfos;
 };

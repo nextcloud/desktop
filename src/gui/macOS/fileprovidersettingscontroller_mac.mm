@@ -54,7 +54,7 @@ namespace Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderSettingsController, "nextcloud.gui.mac.fileprovider.settingscontroller")
 
-class FileProviderSettingsController::MacImplementation
+class FileProviderSettingsController::MacImplementation : public QObject
 {
 public:
     enum class VfsAccountsAction {
@@ -292,13 +292,10 @@ FileProviderSettingsController *FileProviderSettingsController::instance()
     return &controller;
 }
 
-FileProviderSettingsController::~FileProviderSettingsController() = default;
-
 FileProviderSettingsController::FileProviderSettingsController(QObject *parent)
     : QObject{parent}
+    , d(new FileProviderSettingsController::MacImplementation(this))
 {
-    d = std::make_unique<FileProviderSettingsController::MacImplementation>(this);
-
     const auto accManager = AccountManager::instance();
     const auto accountsList = accManager->accounts();
 
