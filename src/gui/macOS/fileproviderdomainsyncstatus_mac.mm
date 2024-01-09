@@ -28,7 +28,8 @@ Q_LOGGING_CATEGORY(lcMacFileProviderDomainSyncStatus, "nextcloud.gui.macfileprov
 class FileProviderDomainSyncStatus::MacImplementation
 {
 public:
-    explicit MacImplementation(const QString &domainIdentifier)
+    explicit MacImplementation(const QString &domainIdentifier, FileProviderDomainSyncStatus *parent = nullptr)
+        : q(parent)
     {
         _domain = FileProviderUtils::domainForIdentifier(domainIdentifier);
         _manager = [NSFileProviderManager managerForDomain:_domain];
@@ -43,11 +44,12 @@ public:
 private:
     NSFileProviderDomain *_domain;
     NSFileProviderManager *_manager;
+    FileProviderDomainSyncStatus *q;
 };
 
 FileProviderDomainSyncStatus::FileProviderDomainSyncStatus(const QString &domainIdentifier, QObject *parent)
     : QObject(parent)
-    , d(std::make_unique<MacImplementation>(domainIdentifier))
+    , d(std::make_unique<MacImplementation>(domainIdentifier, this))
 {
 }
 
