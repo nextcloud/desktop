@@ -145,6 +145,20 @@ Page {
             }
         }
 
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+            Layout.topMargin: Style.standardSpacing
+            text: qsTr("Advanced")
+            font.bold: true
+            font.pointSize: root.font.pointSize + 2
+            elide: Text.ElideRight
+        }
+
+        CustomButton {
+            text: qsTr("Signal file provider domain")
+            onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
+        }
+
         CustomButton {
             text: qsTr("Create debug archive")
             onClicked: root.controller.createDebugArchive(root.accountUserIdAtHost)
