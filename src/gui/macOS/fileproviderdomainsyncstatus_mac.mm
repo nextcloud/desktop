@@ -36,7 +36,11 @@ public:
 
         if (_manager == nil) {
             qCWarning(lcMacFileProviderDomainSyncStatus) << "Could not get manager for domain" << domainIdentifier;
+            return;
         }
+
+        _downloadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindDownloading];
+        _uploadProgress = [_manager globalProgressForKind:NSProgressFileOperationKindUploading];
     }
 
     ~MacImplementation() = default;
@@ -44,6 +48,9 @@ public:
 private:
     NSFileProviderDomain *_domain;
     NSFileProviderManager *_manager;
+    NSProgress *_downloadProgress;
+    NSProgress *_uploadProgress;
+    QTimer _timer;
     FileProviderDomainSyncStatus *q;
 };
 
