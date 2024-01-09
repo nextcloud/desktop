@@ -152,24 +152,24 @@ void FileProviderDomainSyncStatus::setUploading(const bool uploading)
     emit syncingChanged(syncing());
 }
 
-void FileProviderDomainSyncStatus::setDownloadFractionCompleted(const double fractionCompleted)
+void FileProviderDomainSyncStatus::setDownloadFractionCompleted(const double downloadFractionCompleted)
 {
-    if (_downloadFractionCompleted == fractionCompleted) {
+    if (_downloadFractionCompleted == downloadFractionCompleted) {
         return;
     }
 
-    _downloadFractionCompleted = fractionCompleted;
+    _downloadFractionCompleted = downloadFractionCompleted;
     emit downloadFractionCompletedChanged(_downloadFractionCompleted);
     emit fractionCompletedChanged(fractionCompleted());
 }
 
-void FileProviderDomainSyncStatus::setUploadFractionCompleted(const double fractionCompleted)
+void FileProviderDomainSyncStatus::setUploadFractionCompleted(const double uploadFractionCompleted)
 {
-    if (_uploadFractionCompleted == fractionCompleted) {
+    if (_uploadFractionCompleted == uploadFractionCompleted) {
         return;
     }
 
-    _uploadFractionCompleted = fractionCompleted;
+    _uploadFractionCompleted = uploadFractionCompleted;
     emit uploadFractionCompletedChanged(_uploadFractionCompleted);
     emit fractionCompletedChanged(fractionCompleted());
 }
