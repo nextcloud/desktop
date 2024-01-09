@@ -12,13 +12,23 @@
 * for more details.
 */
 
+#include <QObject>
+
 #pragma once
 
 namespace OCC::Mac
 {
 
-class FileProviderDomainSyncStatus
+class FileProviderDomainSyncStatus : public QObject
 {
+    Q_OBJECT
+
+public:
+    explicit FileProviderDomainSyncStatus(const QString &domainIdentifier, QObject *parent = nullptr);
+
+private:
+    class MacImplementation;
+    std::unique_ptr<MacImplementation> d;
 };
 
 } // OCC::Mac
