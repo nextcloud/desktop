@@ -593,27 +593,27 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>Sync paused by user</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine peatati kasutaja poolt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Internetiühendus on mahupõhine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="636"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine on peatatud, kuna interneti-ühendus on mahupõhine&lt;p&gt;Kas soovite tõesti sünkroniseerida?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>User triggered force sync</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja käivitas sunnitud sünkroniseerimise</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroonimine %1-ga on peatatud mahupõhise internetiühenduse tõttu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="709"/>
@@ -1073,7 +1073,7 @@ Uuendus toimub taustal ja kirjutab praeguse AppImage&apos;i faili üle. Uuendami
     <message>
         <location filename="../src/gui/folder.cpp" line="809"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>VFS režiimi vahetamine kaustas &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="971"/>
@@ -1172,12 +1172,12 @@ Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroniseeritakse 
     <message>
         <location filename="../src/gui/folderman.cpp" line="390"/>
         <source>Account disconnected or paused</source>
-        <translation type="unfinished"/>
+        <translation>Ühendus kontoga on katkenud või peatatud</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="605"/>
         <source>Folder is about to be removed</source>
-        <translation type="unfinished"/>
+        <translation>Kaust on eemaldamisel</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="629"/>
@@ -1202,7 +1202,7 @@ Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroniseeritakse 
     <message>
         <location filename="../src/gui/folderman.cpp" line="727"/>
         <source>Folder &apos;%1&apos; is already in use by application %2!</source>
-        <translation type="unfinished"/>
+        <translation>Kaust &apos;%1&apos; on juba rakenduse %2 poolt kasutusel!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="741"/>
@@ -1321,7 +1321,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
         <source>Selective sync list changed</source>
-        <translation type="unfinished"/>
+        <translation>Valikulise sünkroniseerimise loend on muutunud.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1379,7 +1379,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1222"/>
         <source>User triggered sync-all for selective synced folder</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja käivitas &quot;sünkroniseeri-kõik&quot; valikulise sünkroniseeritud kausta jaoks</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
@@ -2036,7 +2036,7 @@ Pange tähele, et mistahes logimise käsurea suvandite kasutamine tühistab sead
     <message>
         <location filename="../src/gui/networksettings.ui" line="20"/>
         <source>Pause synchronization when the Internet connection is metered</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroniseerimine, kui internetiühendus on mahupõhine</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="30"/>
@@ -2146,7 +2146,7 @@ Pange tähele, et mistahes logimise käsurea suvandite kasutamine tühistab sead
     <message>
         <location filename="../src/gui/networksettings.cpp" line="196"/>
         <source>Querying metered connection status is not supported on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Mahupõhise ühenduse oleku päringut ei toetata sellel platvormil</translation>
     </message>
 </context>
 <context>
@@ -3502,7 +3502,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="874"/>
         <source>Aborted due to %1</source>
-        <translation type="unfinished"/>
+        <translation>Katkestati %1 tõttu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="892"/>
@@ -3523,7 +3523,7 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/syncengine.cpp" line="87"/>
         <source>application exit</source>
         <comment>abort reason</comment>
-        <translation type="unfinished"/>
+        <translation>rakenduse lõpetamine</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="402"/>
@@ -4054,7 +4054,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>User paused sync for account &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kasutaja peatas konto &apos;%1&apos; sünkroniseerimise</translation>
     </message>
 </context>
 <context>
