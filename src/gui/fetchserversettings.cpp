@@ -57,11 +57,25 @@ void FetchServerSettingsJob::start()
                 _account->setHttp2Supported(reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
             }
             _account->setCapabilities({_account->url(), caps.toVariantMap()});
-            if (checkServerInfo()) {
-                auto *userJob = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), SimpleNetworkJob::UrlQuery{}, QNetworkRequest{}, this);
-                userJob->setAuthenticationJob(isAuthJob());
-                userJob->setTimeout(timeoutC);
-                connect(userJob, &JsonApiJob::finishedSignal, this, [userJob, this] {
+            // We cannot deal with servers < 10.0.0
+            switch (_account->serverSupportLevel()) {
+            case Account::ServerSupportLevel::Unknown:
+                [[fallthrough]];
+            case Account::ServerSupportLevel::Supported:
+                break;
+            case Account::ServerSupportLevel::Unsupported:
+                Q_EMIT finishedSignal(Result::UnsupportedServer);
+                return;
+            }
+            auto *userJob = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), SimpleNetworkJob::UrlQuery{}, QNetworkRequest{}, this);
+            userJob->setAuthenticationJob(isAuthJob());
+            userJob->setTimeout(timeoutC);
+            connect(userJob, &JsonApiJob::finishedSignal, this, [userJob, this] {
+                if (userJob->timedOut()) {
+                    Q_EMIT finishedSignal(Result::TimeOut);
+                } else if (userJob->httpStatusCode() == 401) {
+                    Q_EMIT finishedSignal(Result::InvalidCredentials);
+                } else if (userJob->ocsSuccess()) {
                     const auto userData = userJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
                     const QString user = userData.value(QStringLiteral("id")).toString();
                     if (!user.isEmpty()) {
@@ -72,9 +86,19 @@ void FetchServerSettingsJob::start()
                         _account->setDavDisplayName(displayName);
                     }
                     runAsyncUpdates();
-                    Q_EMIT finishedSignal();
-                });
-                userJob->start();
+                    Q_EMIT finishedSignal(Result::Success);
+                } else {
+                    Q_EMIT finishedSignal(Result::Undefined);
+                }
+            });
+            userJob->start();
+        } else {
+            if (job->timedOut()) {
+                Q_EMIT finishedSignal(Result::TimeOut);
+            } else if (job->httpStatusCode() == 401) {
+                Q_EMIT finishedSignal(Result::InvalidCredentials);
+            } else {
+                Q_EMIT finishedSignal(Result::Undefined);
             }
         }
     });
@@ -102,21 +126,6 @@ void FetchServerSettingsJob::runAsyncUpdates()
         connect(jsonJob, &JsonJob::finishedSignal, this, [jsonJob, this] { _account->setAppProvider(AppProvider{jsonJob->data()}); });
         jsonJob->start();
     }
-}
-bool FetchServerSettingsJob::checkServerInfo()
-{
-    // We cannot deal with servers < 10.0.0
-    switch (_account->serverSupportLevel()) {
-    case Account::ServerSupportLevel::Supported:
-        break;
-    case Account::ServerSupportLevel::Unknown:
-        Q_EMIT unknownServerDetected();
-        break;
-    case Account::ServerSupportLevel::Unsupported:
-        Q_EMIT unsupportedServerDetected();
-        return false;
-    }
-    return true;
 }
 
 bool FetchServerSettingsJob::isAuthJob() const
