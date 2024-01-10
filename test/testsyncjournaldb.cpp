@@ -32,6 +32,17 @@ public:
         return Utility::qDateTimeToTime_t(time);
     }
 
+private:
+    bool makeEntry(const QByteArray &path, ItemType type, const QByteArray &etag)
+    {
+        SyncJournalFileRecord record;
+        record._path = path;
+        record._type = type;
+        record._etag = etag;
+        record._remotePerm = RemotePermissions::fromDbValue("RW");
+        return _db.setFileRecord(record).isValid();
+    }
+
 private slots:
     void initTestCase()
     {
@@ -211,33 +222,25 @@ private slots:
     {
         auto invalidEtag = QByteArray("_invalid_");
         auto initialEtag = QByteArray("etag");
-        auto makeEntry = [&](const QByteArray &path, ItemType type) {
-            SyncJournalFileRecord record;
-            record._path = path;
-            record._type = type;
-            record._etag = initialEtag;
-            record._remotePerm = RemotePermissions::fromDbValue("RW");
-            QVERIFY(_db.setFileRecord(record));
-        };
         auto getEtag = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
             [[maybe_unused]] const auto result = _db.getFileRecord(path, &record);
             return record._etag;
         };
 
-        makeEntry("foodir", ItemTypeDirectory);
-        makeEntry("otherdir", ItemTypeDirectory);
-        makeEntry("foo%", ItemTypeDirectory); // wildcards don't apply
-        makeEntry("foodi_", ItemTypeDirectory); // wildcards don't apply
-        makeEntry("foodir/file", ItemTypeFile);
-        makeEntry("foodir/subdir", ItemTypeDirectory);
-        makeEntry("foodir/subdir/file", ItemTypeFile);
-        makeEntry("foodir/otherdir", ItemTypeDirectory);
-        makeEntry("fo", ItemTypeDirectory); // prefix, but does not match
-        makeEntry("foodir/sub", ItemTypeDirectory); // prefix, but does not match
-        makeEntry("foodir/subdir/subsubdir", ItemTypeDirectory);
-        makeEntry("foodir/subdir/subsubdir/file", ItemTypeFile);
-        makeEntry("foodir/subdir/otherdir", ItemTypeDirectory);
+        QVERIFY(makeEntry("foodir", ItemTypeDirectory, initialEtag));
+        QVERIFY(makeEntry("otherdir", ItemTypeDirectory, initialEtag));
+        QVERIFY(makeEntry("foo%", ItemTypeDirectory, initialEtag)); // wildcards don't apply
+        QVERIFY(makeEntry("foodi_", ItemTypeDirectory, initialEtag)); // wildcards don't apply
+        QVERIFY(makeEntry("foodir/file", ItemTypeFile, initialEtag));
+        QVERIFY(makeEntry("foodir/subdir", ItemTypeDirectory, initialEtag));
+        QVERIFY(makeEntry("foodir/subdir/file", ItemTypeFile, initialEtag));
+        QVERIFY(makeEntry("foodir/otherdir", ItemTypeDirectory, initialEtag));
+        QVERIFY(makeEntry("fo", ItemTypeDirectory, initialEtag)); // prefix, but does not match
+        QVERIFY(makeEntry("foodir/sub", ItemTypeDirectory, initialEtag)); // prefix, but does not match
+        QVERIFY(makeEntry("foodir/subdir/subsubdir", ItemTypeDirectory, initialEtag));
+        QVERIFY(makeEntry("foodir/subdir/subsubdir/file", ItemTypeFile, initialEtag));
+        QVERIFY(makeEntry("foodir/subdir/otherdir", ItemTypeDirectory, initialEtag));
 
         _db.schedulePathForRemoteDiscovery(QByteArray("foodir/subdir"));
 
@@ -261,21 +264,21 @@ private slots:
         // Indirect effects: setFileRecord() calls filter etags
         initialEtag = "etag2";
 
-        makeEntry("foodir", ItemTypeDirectory);
+        QVERIFY(makeEntry("foodir", ItemTypeDirectory, initialEtag));
         QCOMPARE(getEtag("foodir"), invalidEtag);
-        makeEntry("foodir/subdir", ItemTypeDirectory);
+        QVERIFY(makeEntry("foodir/subdir", ItemTypeDirectory, initialEtag));
         QCOMPARE(getEtag("foodir/subdir"), invalidEtag);
-        makeEntry("foodir/subdir/subsubdir", ItemTypeDirectory);
+        QVERIFY(makeEntry("foodir/subdir/subsubdir", ItemTypeDirectory, initialEtag));
         QCOMPARE(getEtag("foodir/subdir/subsubdir"), initialEtag);
-        makeEntry("fo", ItemTypeDirectory);
+        QVERIFY(makeEntry("fo", ItemTypeDirectory, initialEtag));
         QCOMPARE(getEtag("fo"), initialEtag);
-        makeEntry("foodir/sub", ItemTypeDirectory);
+        QVERIFY(makeEntry("foodir/sub", ItemTypeDirectory, initialEtag));
         QCOMPARE(getEtag("foodir/sub"), initialEtag);
     }
 
     void testRecursiveDelete()
     {
-        auto makeEntry = [&](const QByteArray &path) {
+        auto makeDummyEntry = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
             record._path = path;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
@@ -294,7 +297,7 @@ private slots:
             << "fo_"
             << "fo_/file";
         for (const auto& elem : std::as_const(elements)) {
-            makeEntry(elem);
+            makeDummyEntry(elem);
         }
 
         auto checkElements = [&]() {
@@ -455,6 +458,61 @@ private slots:
         QCOMPARE(getRaw("online"), PinState::Inherited);
         list = _db.internalPinStates().rawList();
         QCOMPARE(list->size(), 0);
+    }
+
+    void testUpdateParentForAllChildren()
+    {
+        const auto initialEtag = QByteArray("etag");
+
+        QVector<QPair<QByteArray, CSyncEnums::ItemType>> folder1Contents = {
+            {QByteArrayLiteral("common_parent"), ItemTypeDirectory},
+            {QByteArrayLiteral("common_parent/file"), ItemTypeFile},
+            {QByteArrayLiteral("common_parent/subdir"), ItemTypeDirectory},
+            {QByteArrayLiteral("common_parent/subdir/file"), ItemTypeFile},
+            {QByteArrayLiteral("common_parent/otherdir"), ItemTypeDirectory},
+        };
+        const auto folderContents1MovedParent = QByteArrayLiteral("common_parent_moved");
+        QVector<QPair<QByteArray, CSyncEnums::ItemType>> folder1ContentsMoved;
+        for (int i = 0; i < folder1Contents.size(); ++i) {
+            folder1ContentsMoved.push_back({folderContents1MovedParent + "/" + folder1Contents[i].first, folder1Contents[i].second});
+        }
+        for (const auto &folderItem : folder1Contents) {
+            QVERIFY(makeEntry(folderItem.first, folderItem.second, initialEtag));
+        }
+        QVERIFY(makeEntry(folder1ContentsMoved.first().first, folder1ContentsMoved.first().second, initialEtag));
+
+        QVector<QPair<QByteArray, CSyncEnums::ItemType>> folder2Contents = {
+            {QByteArrayLiteral("another_common_parent"), ItemTypeDirectory},
+            {QByteArrayLiteral("another_common_parent/sub"), ItemTypeDirectory},
+            {QByteArrayLiteral("another_common_parent/subdir/subsubdir"), ItemTypeDirectory},
+            {QByteArrayLiteral("another_common_parent/subdir/subsubdir/file"), ItemTypeFile},
+            {QByteArrayLiteral("another_common_parent/subdir/otherdir"), ItemTypeDirectory},
+        };
+        const auto folderContents2MovedParent = QByteArrayLiteral("another_common_parent_moved");
+        QVector<QPair<QByteArray, CSyncEnums::ItemType>> folder2ContentsMoved;
+        for (int i = 0; i < folder2Contents.size(); ++i) {
+            folder2ContentsMoved.push_back({folderContents2MovedParent + "/" + folder2Contents[i].first, folder2Contents[i].second});
+        }
+        for (const auto &folderItem : folder2Contents) {
+            QVERIFY(makeEntry(folderItem.first, folderItem.second, initialEtag));
+        }
+        QVERIFY(makeEntry(folder2ContentsMoved.first().first, folder2ContentsMoved.first().second, initialEtag));
+
+        // move a folder under new location, all children paths must get updated with one query
+        QVERIFY(_db.updateParentForAllChildren(folder1Contents.first().first, folder1ContentsMoved.first().first));
+        QVERIFY(_db.updateParentForAllChildren(folder2Contents.first().first, folder2ContentsMoved.first().first));
+
+        // verify all moved records exist under new paths
+        for (const auto &folderItemMoved : folder1ContentsMoved) {
+            SyncJournalFileRecord movedRecord;
+            QVERIFY(_db.getFileRecord(folderItemMoved.first, &movedRecord));
+            QVERIFY(movedRecord.isValid());
+        }
+        for (const auto &folderItem2Moved : folder2ContentsMoved) {
+            SyncJournalFileRecord movedRecord;
+            QVERIFY(_db.getFileRecord(folderItem2Moved.first, &movedRecord));
+            QVERIFY(movedRecord.isValid());
+        }
     }
 
 private:
