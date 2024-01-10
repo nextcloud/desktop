@@ -317,7 +317,7 @@ void PropagateRemoteMove::finalize()
     }
 
     if (_item->isDirectory()) {
-        if (!propagator()->_journal->updateParentForAllChildren(origin.toUtf8(), _item->_renameTarget.toUtf8())) {
+        if (!propagator()->_journal->relocateFolderToNewPathRecursively(origin.toUtf8(), _item->_renameTarget.toUtf8())) {
             done(SyncFileItem::FatalError, tr("Failed to move folder: %1").arg(_item->_file), ErrorCategory::GenericError);
             return;
         }
@@ -326,9 +326,9 @@ void PropagateRemoteMove::finalize()
             // the following slow code is only useful for VFS with suffix which is used for TestSyncVirtualFiles::testPinStateLocals test case
             // TODO: Get rid of the TestSyncVirtualFiles::testPinStateLocals or change it, native Virtual Files (e.g. CfAPI do not need this code as pinstate is moved with corresponding placeholder)
             if (!propagator()->_journal->getFilesBelowPath(_item->_renameTarget.toUtf8(), [&](const SyncJournalFileRecord &rec) {
-                    // TODO: not sure if this is needed, inode seems to never change for move/rename
+                    // not sure if this is needed, inode seems to never change for move/rename
                     auto newItem = SyncFileItem::fromSyncJournalFileRecord(rec);
-                    newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, origin);
+                    newItem->_originalFile = QString(newItem->_file).replace(_item->_renameTarget, _item->_originalFile);
                     newItem->_renameTarget = newItem->_file;
                     newItem->_instruction = CSYNC_INSTRUCTION_RENAME;
                     newItem->_direction = SyncFileItem::Up;
@@ -347,7 +347,7 @@ void PropagateRemoteMove::finalize()
                         }
                     }
                     auto &vfs = propagator()->syncOptions()._vfs;
-                    // TODO: vfs->pinState(origin); does not make sense as item is already gone from original location, do we need this?
+                    // TODO: vfs->pinState(_item->_originalFile); does not make sense as item is already gone from original location, do we need this?
                     auto pinState = vfs->pinState(newItem->_originalFile);
                     const auto targetFile = propagator()->fullLocalPath(newItem->_renameTarget);
 
@@ -356,7 +356,7 @@ void PropagateRemoteMove::finalize()
                         if (!propagator()->_journal->deleteFileRecord(newItem->_originalFile)) {
                             qCWarning(lcPropagateRemoteMove) << "could not delete file from local DB" << newItem->_originalFile;
                         }
-                        // TODO: vfs->setPinState(origin, PinState::Inherited) will always fail as item is already gone from original location, do we
+                        // TODO: vfs->setPinState(_item->_originalFile, PinState::Inherited) will always fail as item is already gone from original location, do we
                         // need this?
                         if (!vfs->setPinState(newItem->_originalFile, PinState::Inherited)) {
                             qCWarning(lcPropagateRemoteMove) << "Could not set pin state of" << newItem->_originalFile << "to inherited";

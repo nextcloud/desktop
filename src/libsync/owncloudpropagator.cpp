@@ -597,6 +597,9 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                              << item->_instruction;
     }
 
+    // when a folder is moved on the local device we only need to perform one MOVE on the server and then just update database, so we only keep unique moves (topmost moved folder items)
+    cleanupLocallyMovedFoldersFromNestedItems(items);
+
     resetDelayedUploadTasks();
     _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;

@@ -499,9 +499,8 @@ private slots:
         QVERIFY(makeEntry(folder2ContentsMoved.first().first, folder2ContentsMoved.first().second, initialEtag));
 
         // move a folder under new location, all children paths must get updated with one query
-        QVERIFY(_db.updateParentForAllChildren(folder1Contents.first().first, folder1ContentsMoved.first().first));
-        QVERIFY(_db.updateParentForAllChildren(folder2Contents.first().first, folder2ContentsMoved.first().first));
-
+        QVERIFY(_db.relocateFolderToNewPathRecursively(folder1Contents.first().first, folder1ContentsMoved.first().first));
+        QVERIFY(_db.relocateFolderToNewPathRecursively(folder2Contents.first().first, folder2ContentsMoved.first().first));
         // verify all moved records exist under new paths
         for (const auto &folderItemMoved : folder1ContentsMoved) {
             SyncJournalFileRecord movedRecord;
