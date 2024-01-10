@@ -501,7 +501,7 @@ void OwncloudPropagator::adjustDeletedFoldersWithNewChildren(SyncFileItemVector 
 }
 void OwncloudPropagator::cleanupLocallyMovedFoldersFromNestedItems(SyncFileItemVector &items)
 {
-    // TODO: this methid is not the fastest we could do, but, for now it works, maybe add a flag "_isAnyMultipleRenameUploads" in discovery
+    // TODO: this method is not the fastest we could do, but, for now it works, maybe add a flag "_isAnyMultipleRenameUploads" in discovery
     // so this could be skipped if no moves discovered?
     QMap<QString, QString> renamedDirectories;
     for (const auto &item : items) {
