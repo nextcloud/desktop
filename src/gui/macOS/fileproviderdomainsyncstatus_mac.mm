@@ -30,7 +30,7 @@ Q_LOGGING_CATEGORY(lcMacFileProviderDomainSyncStatus, "nextcloud.gui.macfileprov
 class FileProviderDomainSyncStatus::MacImplementation
 {
 public:
-    explicit MacImplementation(const QString &domainIdentifier, FileProviderDomainSyncStatus *parent = nullptr)
+    explicit MacImplementation(const QString &domainIdentifier, FileProviderDomainSyncStatus *parent)
         : q(parent)
     {
         _domain = FileProviderUtils::domainForIdentifier(domainIdentifier);
@@ -47,22 +47,40 @@ public:
         _uploadProgressObserver = [[ProgressObserver alloc] initWithProgress:uploadProgress];
 
         _downloadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
-            qCDebug(lcMacFileProviderDomainSyncStatus) << "Download progress changed" << progress.localizedDescription;
-            q->setDownloading(!progress.paused && !progress.cancelled && !progress.finished);
-            q->setDownloadFractionCompleted(progress.fractionCompleted);
-            q->setDownloadFileTotalCount(progress.fileTotalCount.intValue);
-            q->setDownloadFileCompletedCount(progress.fileCompletedCount.intValue);
+            updateDownload(progress);
         };
         _uploadProgressObserver.progressKVOChangeHandler = ^(NSProgress *const progress){
-            qCDebug(lcMacFileProviderDomainSyncStatus) << "Upload progress changed" << progress.localizedDescription;
-            q->setUploading(!progress.paused && !progress.cancelled && !progress.finished);
-            q->setUploadFractionCompleted(progress.fractionCompleted);
-            q->setUploadFileTotalCount(progress.fileTotalCount.intValue);
-            q->setUploadFileCompletedCount(progress.fileCompletedCount.intValue);
+            updateUpload(progress);
         };
     }
 
     ~MacImplementation() = default;
+
+    void updateDownload(NSProgress *const progress) const
+    {
+        qCInfo(lcMacFileProviderDomainSyncStatus) << "Download progress changed" << progress.localizedDescription;
+        if (progress == nil || q == nullptr) {
+            return;
+        }
+
+        q->setDownloading(!progress.paused && !progress.cancelled && !progress.finished);
+        q->setDownloadFractionCompleted(progress.fractionCompleted);
+        q->setDownloadFileTotalCount(progress.fileTotalCount.intValue);
+        q->setDownloadFileCompletedCount(progress.fileCompletedCount.intValue);
+    }
+
+    void updateUpload(NSProgress *const progress) const
+    {
+        qCInfo(lcMacFileProviderDomainSyncStatus) << "Upload progress changed" << progress.localizedDescription;
+        if (progress == nil || q == nullptr) {
+            return;
+        }
+
+        q->setUploading(!progress.paused && !progress.cancelled && !progress.finished);
+        q->setUploadFractionCompleted(progress.fractionCompleted);
+        q->setUploadFileTotalCount(progress.fileTotalCount.intValue);
+        q->setUploadFileCompletedCount(progress.fileCompletedCount.intValue);
+    }
 
 private:
     NSFileProviderDomain *_domain = nil;

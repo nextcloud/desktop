@@ -21,7 +21,7 @@ typedef void(^ProgressKVOChangeHandler)(NSProgress *const progress);
 @interface ProgressObserver : NSObject
 
 @property (readonly) NSProgress *progress;
-@property (readwrite, atomic) ProgressKVOChangeHandler progressKVOChangeHandler;
+@property (readwrite, copy) ProgressKVOChangeHandler progressKVOChangeHandler;
 
 - (instancetype)initWithProgress:(NSProgress *)progress;
 
