@@ -1115,7 +1115,6 @@ bool SyncJournalDb::listAllE2eeFoldersWithEncryptionStatusLessThan(const int sta
         qCDebug(lcDb) << "database error:" << query->error();
         return false;
     }
-
     query->bindValue(1, SyncJournalFileRecord::EncryptionStatus::Encrypted);
     query->bindValue(2, status);
 
@@ -1173,32 +1172,28 @@ bool SyncJournalDb::findEncryptedAncestorForRecord(const QString &filename, Sync
     return true;
 }
 
-bool SyncJournalDb::updateParentForAllChildren(const QByteArray &oldParentPath, const QByteArray &newParentPath)
+bool SyncJournalDb::relocateFolderToNewPathRecursively(const QByteArray &oldParentPath, const QByteArray &newParentPath)
 {
-    qCInfo(lcDb) << "Moving files from path" << oldParentPath << "to path" << newParentPath;
 
     if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
         return false;
     }
 
-    const auto query = _queryManager.get(PreparedSqlQueryManager::MoveFilesInPathQuery,
+    const auto query = _queryManager.get(PreparedSqlQueryManager::RelocateFolderToNewPathRecursivelyQuery,
                                          QByteArrayLiteral("UPDATE metadata"
                                                            " SET path = REPLACE(path, ?1, ?2), phash = path_hash(REPLACE(path, ?1, ?2)), pathlen = path_length(REPLACE(path, ?1, ?2))"
                                                            "  WHERE " IS_PREFIX_PATH_OF("?1", "path")),
                                          _db);
+
     if (!query) {
-        qCDebug(lcDb) << "database error:" << query->error();
         return false;
     }
 
     query->bindValue(1, oldParentPath);
     query->bindValue(2, newParentPath);
 
-    const auto res = query->exec();
-    const auto numRows = query->numRowsAffected();
-
-    return res && numRows;
+    return query->exec();
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
