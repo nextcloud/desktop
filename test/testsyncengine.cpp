@@ -95,6 +95,11 @@ private slots:
         Logger::instance()->setLogDebug(true);
     }
 
+    void init()
+    {
+        QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    }
+
     void testFileDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -845,12 +850,12 @@ private slots:
             QVERIFY(fakeFolder.syncOnce());
             QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
 
-            QTextCodec::setCodecForLocale(utf8Locale);
         }
         catch (const std::filesystem::filesystem_error &e)
         {
             qCritical() << e.what() << e.path1().c_str() << e.path2().c_str() << e.code().message().c_str();
         }
+        QTextCodec::setCodecForLocale(utf8Locale);
 #endif
     }
 

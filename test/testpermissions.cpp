@@ -12,6 +12,7 @@
 #include <QtTest>
 
 #include <filesystem>
+#include <iostream>
 
 using namespace OCC;
 
@@ -589,6 +590,156 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("forbidden-move-new/sub2/file2.txt"));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    static void demo_perms(std::filesystem::perms p)
+    {
+        using std::filesystem::perms;
+        auto show = [=](char op, perms perm)
+        {
+            std::cout << (perms::none == (perm & p) ? '-' : op);
+        };
+        show('r', perms::owner_read);
+        show('w', perms::owner_write);
+        show('x', perms::owner_exec);
+        show('r', perms::group_read);
+        show('w', perms::group_write);
+        show('x', perms::group_exec);
+        show('r', perms::others_read);
+        show('w', perms::others_write);
+        show('x', perms::others_exec);
+        std::cout << std::endl;
+    }
+
+    void testReadOnlyFolderIsReallyReadOnly()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("readOnlyFolder");
+
+        remote.find("readOnlyFolder")->permissions = RemotePermissions::fromServerString("M");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/readOnlyFolder")).toStdWString());
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
+    }
+
+    void testReadWriteFolderIsReallyReadWrite()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("readWriteFolder");
+
+        remote.find("readWriteFolder")->permissions = RemotePermissions::fromServerString("WDNVRSM");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/readWriteFolder")).toStdWString());
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_write);
+    }
+
+    void testChangePermissionsFolder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("testFolder");
+
+        remote.find("testFolder")->permissions = RemotePermissions::fromServerString("M");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString());
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(!static_cast<bool>(folderStatus.permissions() & std::filesystem::perms::owner_write));
+
+        remote.find("testFolder")->permissions = RemotePermissions::fromServerString("WDNVRSM");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString());
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_write);
+
+        remote.find("testFolder")->permissions = RemotePermissions::fromServerString("M");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        folderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString());
+        QVERIFY(folderStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(!static_cast<bool>(folderStatus.permissions() & std::filesystem::perms::owner_write));
+    }
+
+    void testChangePermissionsForFolderHierarchy()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        auto &remote = fakeFolder.remoteModifier();
+
+        remote.mkdir("testFolder");
+
+        remote.find("testFolder")->permissions = RemotePermissions::fromServerString("M");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        remote.mkdir("testFolder/subFolderReadWrite");
+        remote.mkdir("testFolder/subFolderReadOnly");
+
+        remote.find("testFolder/subFolderReadOnly")->permissions = RemotePermissions::fromServerString("m");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto testFolderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString());
+        QVERIFY(testFolderStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(!static_cast<bool>(testFolderStatus.permissions() & std::filesystem::perms::owner_write));
+        auto subFolderReadWriteStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadWrite")).toStdWString());
+        QVERIFY(subFolderReadWriteStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(subFolderReadWriteStatus.permissions() & std::filesystem::perms::owner_write);
+        auto subFolderReadOnlyStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadOnly")).toStdWString());
+        QVERIFY(subFolderReadOnlyStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(!static_cast<bool>(subFolderReadOnlyStatus.permissions() & std::filesystem::perms::owner_write));
+
+        remote.find("testFolder/subFolderReadOnly")->permissions = RemotePermissions::fromServerString("WDNVRSm");
+        remote.find("testFolder/subFolderReadWrite")->permissions = RemotePermissions::fromServerString("m");
+        remote.mkdir("testFolder/newSubFolder");
+        remote.create("testFolder/testFile", 12, '9');
+        remote.create("testFolder/testReadOnlyFile", 13, '8');
+        remote.find("testFolder/testReadOnlyFile")->permissions = RemotePermissions::fromServerString("m");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        subFolderReadWriteStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadWrite")).toStdWString());
+        QVERIFY(subFolderReadWriteStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(!static_cast<bool>(subFolderReadWriteStatus.permissions() & std::filesystem::perms::owner_write));
+        subFolderReadOnlyStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder/subFolderReadOnly")).toStdWString());
+        QVERIFY(subFolderReadOnlyStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(subFolderReadOnlyStatus.permissions() & std::filesystem::perms::owner_write);
+
+        remote.rename("testFolder/subFolderReadOnly", "testFolder/subFolderReadWriteNew");
+        remote.rename("testFolder/subFolderReadWrite", "testFolder/subFolderReadOnlyNew");
+        remote.rename("testFolder/testFile", "testFolder/testFileNew");
+        remote.rename("testFolder/testReadOnlyFile", "testFolder/testReadOnlyFileNew");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        testFolderStatus = std::filesystem::status(static_cast<QString>(fakeFolder.localPath() + QStringLiteral("/testFolder")).toStdWString());
+        QVERIFY(testFolderStatus.permissions() & std::filesystem::perms::owner_read);
+        QVERIFY(!static_cast<bool>(testFolderStatus.permissions() & std::filesystem::perms::owner_write));
     }
 };
 

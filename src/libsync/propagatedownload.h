@@ -23,6 +23,8 @@
 #include <QBuffer>
 #include <QFile>
 
+#include <filesystem>
+
 namespace OCC {
 class PropagateDownloadEncrypted;
 
@@ -260,5 +262,8 @@ private:
     QElapsedTimer _stopwatch;
 
     PropagateDownloadEncrypted *_downloadEncryptedHelper = nullptr;
+
+    std::filesystem::path _parentPath;
+    bool _needParentFolderRestorePermissions = false;
 };
 }

@@ -20,12 +20,13 @@
 
 #include "config.h"
 
+#include "csync/ocsynclib.h"
+
 #include <QString>
-#include <ctime>
 #include <QFileInfo>
 #include <QLoggingCategory>
 
-#include <csync/ocsynclib.h>
+#include <ctime>
 
 class QFile;
 
@@ -42,6 +43,10 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
  * @brief This file contains file system helper
  */
 namespace FileSystem {
+    enum class FolderPermissions {
+        ReadOnly,
+        ReadWrite,
+    };
 
     /**
      * @brief Mark the file as hidden  (only has effects on windows)
