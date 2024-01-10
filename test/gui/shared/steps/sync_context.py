@@ -4,7 +4,6 @@ from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
 from pageObjects.Settings import Settings
 
-from helpers.SetupClientHelper import getResourcePath
 from helpers.ConfigHelper import get_config, isWindows
 from helpers.SyncHelper import (
     waitForFileOrFolderToSync,
@@ -59,6 +58,16 @@ def step(context):
 def step(context, item):
     SyncConnection.openMenu()
     SyncConnection.hasMenuItem(item)
+
+
+@Then('the "|any|" button should not be available')
+def step(context, item):
+    SyncConnection.openMenu()
+    test.compare(
+        SyncConnection.menu_item_exists(item),
+        False,
+        f'Menu item "{item}" does not exist.',
+    )
 
 
 @When("the user disables virtual file support")
@@ -200,3 +209,9 @@ def step(context, action):
     if isWindows():
         action = action.rstrip("s")
         SyncConnectionWizard.enableOrDisableVfsSupport(action)
+
+
+@When('user unselects a folder "|any|" in selective sync')
+def step(context, folder_name):
+    SyncConnection.choose_what_to_sync()
+    SyncConnection.unselect_folder_in_selective_sync(folder_name)

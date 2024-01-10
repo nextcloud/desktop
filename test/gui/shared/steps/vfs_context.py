@@ -1,4 +1,4 @@
-from helpers.FilesHelper import get_file_size_on_disk
+from helpers.FilesHelper import get_file_size_on_disk, get_file_size
 
 
 @Then('the placeholder of file "|any|" should exist on the file system')
@@ -14,7 +14,7 @@ def step(context, file_name):
 def step(context, file_name):
     resource_path = getResourcePath(file_name)
     size_on_disk = get_file_size_on_disk(resource_path)
-    file_size = os.stat(resource_path).st_size
+    file_size = get_file_size(resource_path)
     test.compare(
         size_on_disk,
         file_size,
