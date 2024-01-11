@@ -44,6 +44,7 @@ ownCloud admins and users.
 ## Summary
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
+* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
@@ -61,6 +62,13 @@ ownCloud admins and users.
    aborted.
 
    https://github.com/owncloud/client/pull/11396
+
+* Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+
+   Properly handle errors during the update of the server settings. Due to an
+   unhandled result, the client could get stuck in a `reconnecting` state.
+
+   https://github.com/owncloud/client/pull/11467
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
