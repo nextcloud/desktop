@@ -25,31 +25,20 @@ class FetchServerSettingsJob : public QObject
 {
     Q_OBJECT
 public:
+    enum class Result { Success, TimeOut, InvalidCredentials, UnsupportedServer, Undefined };
+    Q_ENUM(Result);
     FetchServerSettingsJob(const AccountPtr &account, QObject *parent);
 
     void start();
 
 Q_SIGNALS:
-    /***
-     * The version of the server is unsupported
-     */
-    void unsupportedServerDetected();
-
-    /***
-     * We failed to detect the server version
-     */
-    void unknownServerDetected();
-
-    void finishedSignal();
+    void finishedSignal(Result);
 
 private:
     void runAsyncUpdates();
 
-    bool checkServerInfo();
-
     // returns whether the started jobs should be excluded from the retry queue
     bool isAuthJob() const;
-
 
     const AccountPtr _account;
 };

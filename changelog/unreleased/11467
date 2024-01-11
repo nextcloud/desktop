@@ -1,0 +1,6 @@
+Bugfix: Client stuck in `reconnecting`
+
+Properly handle errors during the update of the server settings.
+Due to an unhandled result, the client could get stuck in a `reconnecting` state.
+
+https://github.com/owncloud/client/pull/11467

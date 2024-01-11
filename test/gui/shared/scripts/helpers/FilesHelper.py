@@ -91,3 +91,7 @@ def get_file_size_on_disk(resource_path):
     raise Exception(
         "'get_file_size_on_disk' function is only supported for Windows OS."
     )
+
+
+def get_file_size(resource_path):
+    return os.stat(resource_path).st_size
