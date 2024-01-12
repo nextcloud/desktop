@@ -6143,7 +6143,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation>Відкрити каталоги на пристрої або групові каталоги</translation>
+        <translation>Перейти до каталогів на пристрої або групових каталогів</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
