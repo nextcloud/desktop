@@ -2496,7 +2496,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Сповіщати, коли каталоги, що синхронізуються, збільшуються у розмірі понад встановлене обмеженння.</translation>
+        <translation>Сповіщати, коли каталоги, що синхронізуються, збільшуються у розмірі понад встановлене обмеженння</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
@@ -2536,7 +2536,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="158"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation>Показувати каталоги для синхронізації на панелі &amp;Оглядача</translation>
+        <translation>Показувати каталоги для синхронізації на панелі &amp;файлового менеджера</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="301"/>
@@ -3231,7 +3231,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>У вас встановленно останню версію.</translation>
+        <translation>Відсутні оновлення. У вас встановлено останню версію</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="195"/>
@@ -4278,7 +4278,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
         <source>General</source>
-        <translation>Загалом</translation>
+        <translation>Загальні</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="129"/>
