@@ -27,6 +27,8 @@ GridLayout {
 
     required property var syncStatus
 
+    rows: syncStatus.syncing ? 2 : 1
+
     EnforcedPlainTextLabel {
         Layout.row: 0
         Layout.column: 1
@@ -41,7 +43,7 @@ GridLayout {
         property int size: Style.trayListItemIconSize * 0.6
 
         Layout.row: 0
-        Layout.rowSpan: 2
+        Layout.rowSpan: root.syncStatus.syncing ? 2 : 1
         Layout.column: 0
         Layout.preferredWidth: size
         Layout.preferredHeight: size
