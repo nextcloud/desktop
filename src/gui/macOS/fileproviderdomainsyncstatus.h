@@ -13,6 +13,7 @@
 */
 
 #include <QObject>
+#include <QQmlEngine>
 
 #pragma once
 
@@ -22,6 +23,8 @@ namespace OCC::Mac
 class FileProviderDomainSyncStatus : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("FileProviderDomainSyncStatus cannot be instantiated from QML")
     Q_PROPERTY(bool syncing READ syncing NOTIFY syncingChanged)
     Q_PROPERTY(bool downloading READ downloading NOTIFY downloadingChanged)
     Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)
@@ -85,3 +88,5 @@ private:
 };
 
 } // OCC::Mac
+
+Q_DECLARE_METATYPE(OCC::Mac::FileProviderDomainSyncStatus*)

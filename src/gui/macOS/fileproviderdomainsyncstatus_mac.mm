@@ -94,6 +94,7 @@ FileProviderDomainSyncStatus::FileProviderDomainSyncStatus(const QString &domain
     : QObject(parent)
     , d(std::make_unique<MacImplementation>(domainIdentifier, this))
 {
+    qRegisterMetaType<FileProviderDomainSyncStatus*>("FileProviderDomainSyncStatus*");
 }
 
 FileProviderDomainSyncStatus::~FileProviderDomainSyncStatus() = default;
