@@ -90,6 +90,12 @@ Page {
 
             active: vfsEnabledCheckBox.checked
             sourceComponent: ColumnLayout {
+                Rectangle {
+                    Layout.fillWidth: true
+                    height: Style.normalBorderWidth
+                    color: Style.ncSecondaryTextColor
+                }
+
                 FileProviderSyncStatus {
                     syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
                 }
