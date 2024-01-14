@@ -34,6 +34,7 @@ GridLayout {
         Layout.column: 1
         Layout.columnSpan: root.syncStatus.syncing ? 2 : 1
         Layout.fillWidth: true
+        font.bold: true
         text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
     }
 
