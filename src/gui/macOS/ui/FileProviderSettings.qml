@@ -82,124 +82,135 @@ Page {
             onClicked: root.controller.setVfsEnabledForAccount(root.accountUserIdAtHost, checked)
         }
 
-        GridLayout {
-            id: currentSyncGrid
-
-            readonly property var syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
-
-            EnforcedPlainTextLabel {
-                Layout.row: 0
-                Layout.column: 1
-                Layout.columnSpan: currentSyncGrid.syncStatus.syncing ? 2 : 1
-                Layout.fillWidth: true
-                text: currentSyncGrid.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
-            }
-
-            NCBusyIndicator {
-                id: syncIcon
-
-                property int size: Style.trayListItemIconSize * 0.6
-
-                Layout.row: 0
-                Layout.rowSpan: 2
-                Layout.column: 0
-                Layout.preferredWidth: size
-                Layout.preferredHeight: size
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-                imageSource: currentSyncGrid.syncStatus.icon
-                running: currentSyncGrid.syncStatus.syncing
-            }
-
-            ProgressBar {
-                Layout.row: 1
-                Layout.column: 1
-                Layout.fillWidth: true
-                value: currentSyncGrid.syncStatus.fractionCompleted
-                visible: currentSyncGrid.syncStatus.syncing
-            }
-        }
-
-        GridLayout {
-            id: generalActionsGrid
-
-            property real localUsedStorage: root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost)
-            property real remoteUsedStorage: root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost)
+        Loader {
+            id: vfsSettingsLoader
 
             Layout.fillWidth: true
-            columns: 3
-            visible: vfsEnabledCheckBox.checked
+            Layout.fillHeight: true
 
-            Connections {
-                target: root.controller
-                function onLocalStorageUsageForAccountChanged(accountUserIdAtHost) {
-                    if (root.accountUserIdAtHost !== accountUserIdAtHost) {
-                        return;
+            active: vfsEnabledCheckBox.checked
+            sourceComponent: ColumnLayout {
+                GridLayout {
+                    id: currentSyncGrid
+
+                    readonly property var syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
+
+                    EnforcedPlainTextLabel {
+                        Layout.row: 0
+                        Layout.column: 1
+                        Layout.columnSpan: currentSyncGrid.syncStatus.syncing ? 2 : 1
+                        Layout.fillWidth: true
+                        text: currentSyncGrid.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
                     }
 
-                    generalActionsGrid.localUsedStorage = root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost);
-                }
+                    NCBusyIndicator {
+                        id: syncIcon
 
-                function onRemoteStorageUsageForAccountChanged(accountUserIdAtHost) {
-                    if (root.accountUserIdAtHost !== accountUserIdAtHost) {
-                       return;
+                        property int size: Style.trayListItemIconSize * 0.6
+
+                        Layout.row: 0
+                        Layout.rowSpan: 2
+                        Layout.column: 0
+                        Layout.preferredWidth: size
+                        Layout.preferredHeight: size
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+
+                        imageSource: currentSyncGrid.syncStatus.icon
+                        running: currentSyncGrid.syncStatus.syncing
                     }
 
-                    generalActionsGrid.remoteUsedStorage = root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost);
+                    ProgressBar {
+                        Layout.row: 1
+                        Layout.column: 1
+                        Layout.fillWidth: true
+                        value: currentSyncGrid.syncStatus.fractionCompleted
+                        visible: currentSyncGrid.syncStatus.syncing
+                    }
+                }
+
+                GridLayout {
+                    id: generalActionsGrid
+
+                    property real localUsedStorage: root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost)
+                    property real remoteUsedStorage: root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost)
+
+                    Layout.fillWidth: true
+                    columns: 3
+                    visible: vfsEnabledCheckBox.checked
+
+                    Connections {
+                        target: root.controller
+
+                        function onLocalStorageUsageForAccountChanged(accountUserIdAtHost) {
+                            if (root.accountUserIdAtHost !== accountUserIdAtHost) {
+                                return;
+                            }
+
+                            generalActionsGrid.localUsedStorage = root.controller.localStorageUsageGbForAccount(root.accountUserIdAtHost);
+                        }
+
+                        function onRemoteStorageUsageForAccountChanged(accountUserIdAtHost) {
+                            if (root.accountUserIdAtHost !== accountUserIdAtHost) {
+                                return;
+                            }
+
+                            generalActionsGrid.remoteUsedStorage = root.controller.remoteStorageUsageGbForAccount(root.accountUserIdAtHost);
+                        }
+                    }
+
+                    EnforcedPlainTextLabel {
+                        Layout.row: 0
+                        Layout.column: 0
+                        Layout.alignment: Layout.AlignLeft | Layout.AlignVCenter
+                        Layout.fillWidth: true
+                        text: qsTr("Local storage use")
+                        font.bold: true
+                    }
+
+                    EnforcedPlainTextLabel {
+                        Layout.row: 0
+                        Layout.column: 1
+                        Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
+                        text: qsTr("%1 GB of %2 GB remote files synced").arg(generalActionsGrid.localUsedStorage).arg(generalActionsGrid.remoteUsedStorage);
+                        color: Style.ncSecondaryTextColor
+                        horizontalAlignment: Text.AlignRight
+                    }
+
+                    CustomButton {
+                        Layout.row: 0
+                        Layout.column: 2
+                        Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
+                        text: qsTr("Evict local copies...")
+                        onPressed: root.controller.createEvictionWindowForAccount(root.accountUserIdAtHost)
+                    }
+
+                    ProgressBar {
+                        Layout.row: 1
+                        Layout.columnSpan: generalActionsGrid.columns
+                        Layout.fillWidth: true
+                        value: generalActionsGrid.localUsedStorage / generalActionsGrid.remoteUsedStorage
+                    }
+                }
+
+                EnforcedPlainTextLabel {
+                    Layout.fillWidth: true
+                    Layout.topMargin: Style.standardSpacing
+                    text: qsTr("Advanced")
+                    font.bold: true
+                    font.pointSize: root.font.pointSize + 2
+                    elide: Text.ElideRight
+                }
+
+                CustomButton {
+                    text: qsTr("Signal file provider domain")
+                    onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
+                }
+
+                CustomButton {
+                    text: qsTr("Create debug archive")
+                    onClicked: root.controller.createDebugArchive(root.accountUserIdAtHost)
                 }
             }
-
-            EnforcedPlainTextLabel {
-                Layout.row: 0
-                Layout.column: 0
-                Layout.alignment: Layout.AlignLeft | Layout.AlignVCenter
-                Layout.fillWidth: true
-                text: qsTr("Local storage use")
-                font.bold: true
-            }
-
-            EnforcedPlainTextLabel {
-                Layout.row: 0
-                Layout.column: 1
-                Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
-                text: qsTr("%1 GB of %2 GB remote files synced").arg(generalActionsGrid.localUsedStorage).arg(generalActionsGrid.remoteUsedStorage);
-                color: Style.ncSecondaryTextColor
-                horizontalAlignment: Text.AlignRight
-            }
-
-            CustomButton {
-                Layout.row: 0
-                Layout.column: 2
-                Layout.alignment: Layout.AlignRight | Layout.AlignVCenter
-                text: qsTr("Evict local copies...")
-                onPressed: root.controller.createEvictionWindowForAccount(root.accountUserIdAtHost)
-            }
-
-            ProgressBar {
-                Layout.row: 1
-                Layout.columnSpan: generalActionsGrid.columns
-                Layout.fillWidth: true
-                value: generalActionsGrid.localUsedStorage / generalActionsGrid.remoteUsedStorage
-            }
-        }
-
-        EnforcedPlainTextLabel {
-            Layout.fillWidth: true
-            Layout.topMargin: Style.standardSpacing
-            text: qsTr("Advanced")
-            font.bold: true
-            font.pointSize: root.font.pointSize + 2
-            elide: Text.ElideRight
-        }
-
-        CustomButton {
-            text: qsTr("Signal file provider domain")
-            onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
-        }
-
-        CustomButton {
-            text: qsTr("Create debug archive")
-            onClicked: root.controller.createDebugArchive(root.accountUserIdAtHost)
         }
     }
 }
