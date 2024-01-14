@@ -90,42 +90,8 @@ Page {
 
             active: vfsEnabledCheckBox.checked
             sourceComponent: ColumnLayout {
-                GridLayout {
-                    id: currentSyncGrid
-
-                    readonly property var syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
-
-                    EnforcedPlainTextLabel {
-                        Layout.row: 0
-                        Layout.column: 1
-                        Layout.columnSpan: currentSyncGrid.syncStatus.syncing ? 2 : 1
-                        Layout.fillWidth: true
-                        text: currentSyncGrid.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
-                    }
-
-                    NCBusyIndicator {
-                        id: syncIcon
-
-                        property int size: Style.trayListItemIconSize * 0.6
-
-                        Layout.row: 0
-                        Layout.rowSpan: 2
-                        Layout.column: 0
-                        Layout.preferredWidth: size
-                        Layout.preferredHeight: size
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-                        imageSource: currentSyncGrid.syncStatus.icon
-                        running: currentSyncGrid.syncStatus.syncing
-                    }
-
-                    ProgressBar {
-                        Layout.row: 1
-                        Layout.column: 1
-                        Layout.fillWidth: true
-                        value: currentSyncGrid.syncStatus.fractionCompleted
-                        visible: currentSyncGrid.syncStatus.syncing
-                    }
+                FileProviderSyncStatus {
+                    syncStatus: root.controller.domainSyncStatusForAccount(root.accountUserIdAtHost)
                 }
 
                 GridLayout {
