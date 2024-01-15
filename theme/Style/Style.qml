@@ -33,6 +33,10 @@ QtObject {
     // We are using pixel size because this is cross platform comparable, point size isn't
     readonly property int topLinePixelSize: pixelSize
     readonly property int subLinePixelSize: topLinePixelSize - 2
+    readonly property int defaultFontPtSize: fontMetrics.font.pointSize
+    readonly property int subheaderFontPtSize: defaultFontPtSize + 2
+    readonly property int headerFontPtSize: defaultFontPtSize + 4
+    readonly property int titleFontPtSize: defaultFontPtSize + 8
 
     // Dimensions and sizes
     property int trayWindowWidth: variableSize(400)
