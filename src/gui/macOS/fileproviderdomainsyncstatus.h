@@ -36,6 +36,7 @@ class FileProviderDomainSyncStatus : public QObject
     Q_PROPERTY(int uploadFileTotalCount READ uploadFileTotalCount NOTIFY uploadFileTotalCountChanged)
     Q_PROPERTY(int uploadFileCompletedCount READ uploadFileCompletedCount NOTIFY uploadFileCompletedCountChanged)
     // TODO: more detailed reporting (time remaining, megabytes, etc.)
+    Q_PROPERTY(QUrl icon READ icon NOTIFY iconChanged)
 
 public:
     explicit FileProviderDomainSyncStatus(const QString &domainIdentifier, QObject *parent = nullptr);
@@ -51,6 +52,7 @@ public:
     int downloadFileCompletedCount() const;
     int uploadFileTotalCount() const;
     int uploadFileCompletedCount() const;
+    QUrl icon() const;
 
 signals:
     void syncingChanged(bool syncing);
@@ -63,6 +65,7 @@ signals:
     void downloadFileCompletedCountChanged(int downloadFileCompletedCount);
     void uploadFileTotalCountChanged(int uploadFileTotalCount);
     void uploadFileCompletedCountChanged(int uploadFileCompletedCount);
+    void iconChanged(const QUrl &icon);
 
 private:
     void setDownloading(const bool syncing);
@@ -73,6 +76,8 @@ private:
     void setDownloadFileCompletedCount(const int fileCompletedCount);
     void setUploadFileTotalCount(const int fileTotalCount);
     void setUploadFileCompletedCount(const int fileCompletedCount);
+    void setIcon(const QUrl &icon);
+    void updateIcon();
 
     bool _downloading = false;
     bool _uploading = false;
@@ -82,6 +87,7 @@ private:
     int _downloadFileCompletedCount = 0;
     int _uploadFileTotalCount = 0;
     int _uploadFileCompletedCount = 0;
+    QUrl _icon;
 
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;

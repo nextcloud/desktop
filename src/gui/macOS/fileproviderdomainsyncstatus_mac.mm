@@ -17,6 +17,7 @@
 #include <QLoggingCategory>
 
 #include "gui/macOS/fileproviderutils.h"
+#include "libsync/theme.h"
 
 #import <FileProvider/FileProvider.h>
 
@@ -67,6 +68,7 @@ public:
         q->setDownloadFractionCompleted(progress.fractionCompleted);
         q->setDownloadFileTotalCount(progress.fileTotalCount.intValue);
         q->setDownloadFileCompletedCount(progress.fileCompletedCount.intValue);
+        q->updateIcon();
     }
 
     void updateUpload(NSProgress *const progress) const
@@ -80,6 +82,7 @@ public:
         q->setUploadFractionCompleted(progress.fractionCompleted);
         q->setUploadFileTotalCount(progress.fileTotalCount.intValue);
         q->setUploadFileCompletedCount(progress.fileCompletedCount.intValue);
+        q->updateIcon();
     }
 
 private:
@@ -95,6 +98,7 @@ FileProviderDomainSyncStatus::FileProviderDomainSyncStatus(const QString &domain
     , d(std::make_unique<MacImplementation>(domainIdentifier, this))
 {
     qRegisterMetaType<FileProviderDomainSyncStatus*>("FileProviderDomainSyncStatus*");
+    updateIcon();
 }
 
 FileProviderDomainSyncStatus::~FileProviderDomainSyncStatus() = default;
@@ -147,6 +151,11 @@ int FileProviderDomainSyncStatus::uploadFileTotalCount() const
 int FileProviderDomainSyncStatus::uploadFileCompletedCount() const
 {
     return _uploadFileCompletedCount;
+}
+
+QUrl FileProviderDomainSyncStatus::icon() const
+{
+    return _icon;
 }
 
 void FileProviderDomainSyncStatus::setDownloading(const bool downloading)
@@ -231,6 +240,22 @@ void FileProviderDomainSyncStatus::setUploadFileCompletedCount(const int fileCom
 
     _uploadFileCompletedCount = fileCompletedCount;
     emit uploadFileCompletedCountChanged(_uploadFileCompletedCount);
+}
+
+void FileProviderDomainSyncStatus::setIcon(const QUrl &icon)
+{
+    if (_icon == icon) {
+        return;
+    }
+
+    _icon = icon;
+    emit iconChanged(_icon);
+}
+
+void FileProviderDomainSyncStatus::updateIcon()
+{
+    const auto iconUrl = syncing() ? Theme::instance()->syncStatusRunning() : Theme::instance()->syncStatusOk();
+    setIcon(iconUrl);
 }
 
 } // OCC::Mac
