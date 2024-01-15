@@ -32,7 +32,7 @@ GridLayout {
     NCBusyIndicator {
         id: syncIcon
 
-        property int size: Style.trayListItemIconSize * 0.6
+        property int size: Style.trayListItemIconSize * 0.8
 
         Layout.row: 0
         Layout.rowSpan: root.syncStatus.syncing ? 2 : 1
@@ -41,6 +41,8 @@ GridLayout {
         Layout.preferredHeight: size
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
+        padding: 0
+        spacing: 0
         imageSource: root.syncStatus.icon
         running: root.syncStatus.syncing
     }
