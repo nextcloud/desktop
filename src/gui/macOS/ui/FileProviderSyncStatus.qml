@@ -29,15 +29,6 @@ GridLayout {
 
     rows: syncStatus.syncing ? 2 : 1
 
-    EnforcedPlainTextLabel {
-        Layout.row: 0
-        Layout.column: 1
-        Layout.columnSpan: root.syncStatus.syncing ? 2 : 1
-        Layout.fillWidth: true
-        font.bold: true
-        text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
-    }
-
     NCBusyIndicator {
         id: syncIcon
 
@@ -52,6 +43,16 @@ GridLayout {
 
         imageSource: root.syncStatus.icon
         running: root.syncStatus.syncing
+    }
+
+    EnforcedPlainTextLabel {
+        Layout.row: 0
+        Layout.column: 1
+        Layout.columnSpan: root.syncStatus.syncing ? 2 : 1
+        Layout.fillWidth: true
+        font.bold: true
+        font.pointSize: Style.headerFontPtSize
+        text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
     }
 
     ProgressBar {

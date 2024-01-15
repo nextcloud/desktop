@@ -70,7 +70,7 @@ Page {
             Layout.fillWidth: true
             text: qsTr("General settings")
             font.bold: true
-            font.pointSize: root.font.pointSize + 2
+            font.pointSize: Style.subheaderFontPtSize
             elide: Text.ElideRight
         }
 
@@ -131,7 +131,7 @@ Page {
                     Layout.topMargin: Style.standardSpacing
                     text: qsTr("Advanced")
                     font.bold: true
-                    font.pointSize: root.font.pointSize + 2
+                    font.pointSize: Style.subheaderFontPtSize
                     elide: Text.ElideRight
                 }
 
