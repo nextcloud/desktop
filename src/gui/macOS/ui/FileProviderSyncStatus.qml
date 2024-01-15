@@ -57,7 +57,7 @@ GridLayout {
         text: root.syncStatus.syncing ? qsTr("Syncing") : qsTr("All synced!")
     }
 
-    ProgressBar {
+    NCProgressBar {
         Layout.row: 1
         Layout.column: 1
         Layout.fillWidth: true
