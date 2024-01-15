@@ -192,8 +192,7 @@ void NetworkSettings::loadMeteredSettings()
         }
     }
 
-    _ui->pauseSyncWhenMeteredCheckbox->setEnabled(false);
-    _ui->pauseSyncWhenMeteredCheckbox->setToolTip(tr("Querying metered connection status is not supported on this platform"));
+    _ui->pauseSyncWhenMeteredCheckbox->setVisible(false);
 }
 
 void NetworkSettings::saveProxySettings()
