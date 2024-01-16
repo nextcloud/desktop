@@ -61,45 +61,45 @@ class FileProviderItemMetadata
 public:
     static FileProviderItemMetadata fromNSFileProviderItem(const void *const nsFileProviderItem, const QString &domainIdentifier);
 
-    QString identifier() const;
-    QString parentItemIdentifier() const;
-    QString domainIdentifier() const;
-    QString filename() const;
-    QString typeIdentifier() const;
-	QString symlinkTargetPath() const;
-	QString uploadingError() const;
-	QString downloadingError() const;
-	QString mostRecentEditorName() const;
-	QString ownerName() const;
-    QDateTime contentModificationDate() const;
-	QDateTime creationDate() const;
-	QDateTime lastUsedDate() const;
-	QByteArray contentVersion() const;
-	QByteArray metadataVersion() const;
-	QByteArray tagData() const;
-	QHash<QString, QByteArray> extendedAttributes() const;
-    int capabilities() const;
-	int fileSystemFlags() const;
-	unsigned int childItemCount() const;
-    unsigned int typeOsCode() const;
-	unsigned int creatorOsCode() const;
-	unsigned long long documentSize() const;
-	bool mostRecentVersionDownloaded() const;
-	bool uploading() const;
-	bool uploaded() const;
-	bool downloading() const;
-	bool downloaded() const;
-	bool shared() const;
-    bool sharedByCurrentUser() const;
+    [[nodiscard]] QString identifier() const;
+    [[nodiscard]] QString parentItemIdentifier() const;
+    [[nodiscard]] QString domainIdentifier() const;
+    [[nodiscard]] QString filename() const;
+    [[nodiscard]] QString typeIdentifier() const;
+    [[nodiscard]] QString symlinkTargetPath() const;
+    [[nodiscard]] QString uploadingError() const;
+    [[nodiscard]] QString downloadingError() const;
+    [[nodiscard]] QString mostRecentEditorName() const;
+    [[nodiscard]] QString ownerName() const;
+    [[nodiscard]] QDateTime contentModificationDate() const;
+    [[nodiscard]] QDateTime creationDate() const;
+    [[nodiscard]] QDateTime lastUsedDate() const;
+    [[nodiscard]] QByteArray contentVersion() const;
+    [[nodiscard]] QByteArray metadataVersion() const;
+    [[nodiscard]] QByteArray tagData() const;
+    [[nodiscard]] QHash<QString, QByteArray> extendedAttributes() const;
+    [[nodiscard]] int capabilities() const;
+    [[nodiscard]] int fileSystemFlags() const;
+    [[nodiscard]] unsigned int childItemCount() const;
+    [[nodiscard]] unsigned int typeOsCode() const;
+    [[nodiscard]] unsigned int creatorOsCode() const;
+    [[nodiscard]] unsigned long long documentSize() const;
+    [[nodiscard]] bool mostRecentVersionDownloaded() const;
+    [[nodiscard]] bool uploading() const;
+    [[nodiscard]] bool uploaded() const;
+    [[nodiscard]] bool downloading() const;
+    [[nodiscard]] bool downloaded() const;
+    [[nodiscard]] bool shared() const;
+    [[nodiscard]] bool sharedByCurrentUser() const;
 
-    QString userVisiblePath() const;
-    QString fileTypeString() const;
+    [[nodiscard]] QString userVisiblePath() const;
+    [[nodiscard]] QString fileTypeString() const;
 
     // Check equality via identifier, contentVersion, and metadataVersion
     friend bool operator==(const FileProviderItemMetadata &lhs, const FileProviderItemMetadata &rhs);
 
 private:
-    QString getUserVisiblePath() const;
+    [[nodiscard]] QString getUserVisiblePath() const;
 
 	QString _identifier;
 	QString _parentItemIdentifier;

@@ -42,17 +42,17 @@ public:
     explicit FileProviderDomainSyncStatus(const QString &domainIdentifier, QObject *parent = nullptr);
     ~FileProviderDomainSyncStatus() override;
 
-    bool syncing() const;
-    bool downloading() const;
-    bool uploading() const;
-    double fractionCompleted() const;
-    double downloadFractionCompleted() const;
-    double uploadFractionCompleted() const;
-    int downloadFileTotalCount() const;
-    int downloadFileCompletedCount() const;
-    int uploadFileTotalCount() const;
-    int uploadFileCompletedCount() const;
-    QUrl icon() const;
+    [[nodiscard]] bool syncing() const;
+    [[nodiscard]] bool downloading() const;
+    [[nodiscard]] bool uploading() const;
+    [[nodiscard]] double fractionCompleted() const;
+    [[nodiscard]] double downloadFractionCompleted() const;
+    [[nodiscard]] double uploadFractionCompleted() const;
+    [[nodiscard]] int downloadFileTotalCount() const;
+    [[nodiscard]] int downloadFileCompletedCount() const;
+    [[nodiscard]] int uploadFileTotalCount() const;
+    [[nodiscard]] int uploadFileCompletedCount() const;
+    [[nodiscard]] QUrl icon() const;
 
 signals:
     void syncingChanged(bool syncing);

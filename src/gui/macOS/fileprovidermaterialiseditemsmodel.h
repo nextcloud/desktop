@@ -67,11 +67,11 @@ public:
     Q_ENUM(Roles)
 
     explicit FileProviderMaterialisedItemsModel(QObject *parent = nullptr);
-    int rowCount(const QModelIndex &parent = {}) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = {}) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    QVector<FileProviderItemMetadata> items() const;
+    [[nodiscard]] QVector<FileProviderItemMetadata> items() const;
 
 signals:
     void itemsChanged();
