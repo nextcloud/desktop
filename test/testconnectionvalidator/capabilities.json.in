@@ -1,0 +1,179 @@
+{
+    "ocs": {
+        "meta": {
+            "status": "ok",
+            "statuscode": 100,
+            "message": "OK"
+        },
+        "data": {
+            "capabilities": {
+                "core": {
+                    "pollinterval": 60,
+                    "webdav-root": "remote.php/webdav",
+                    "status": {
+                        "installed": true,
+                        "maintenance": false,
+                        "needsDbUpgrade": false,
+                        "version": "@{version}",
+                        "versionstring": "10.11.0",
+                        "edition": "Community",
+                        "productname": "Infinite Scale",
+                        "product": "Infinite Scale",
+                        "productversion": "@{productversion}"
+                    },
+                    "support-url-signing": true,
+                    "support-sse": true
+                },
+                "checksums": {
+                    "supportedTypes": [
+                        "sha1",
+                        "md5",
+                        "adler32"
+                    ],
+                    "preferredUploadType": "sha1"
+                },
+                "files": {
+                    "privateLinks": true,
+                    "bigfilechunking": false,
+                    "undelete": true,
+                    "versioning": true,
+                    "favorites": false,
+                    "full_text_search": false,
+                    "tags": true,
+                    "blacklisted_files": [],
+                    "tus_support": {
+                        "version": "1.0.0",
+                        "resumable": "1.0.0",
+                        "extension": "creation,creation-with-upload",
+                        "max_chunk_size": 100000000,
+                        "http_method_override": ""
+                    },
+                    "archivers": [
+                        {
+                            "enabled": true,
+                            "version": "2.0.0",
+                            "formats": [
+                                "tar",
+                                "zip"
+                            ],
+                            "archiver_url": "/archiver",
+                            "max_num_files": "10000",
+                            "max_size": "1073741824"
+                        }
+                    ],
+                    "app_providers": [
+                        {
+                            "enabled": true,
+                            "version": "1.1.0",
+                            "apps_url": "/app/list",
+                            "open_url": "/app/open",
+                            "open_web_url": "/app/open-with-web",
+                            "new_url": "/app/new"
+                        }
+                    ]
+                },
+                "dav": {
+                    "chunking": "",
+                    "trashbin": "1.0",
+                    "reports": [
+                        "search-files"
+                    ],
+                    "chunkingParallelUploadDisabled": false
+                },
+                "files_sharing": {
+                    "api_enabled": true,
+                    "resharing": true,
+                    "group_sharing": true,
+                    "sharing_roles": true,
+                    "deny_access": false,
+                    "auto_accept_share": true,
+                    "share_with_group_members_only": true,
+                    "share_with_membership_groups_only": true,
+                    "search_min_length": 3,
+                    "default_permissions": 22,
+                    "user_enumeration": {
+                        "enabled": true,
+                        "group_members_only": true
+                    },
+                    "federation": {
+                        "outgoing": false,
+                        "incoming": false
+                    },
+                    "public": {
+                        "enabled": true,
+                        "send_mail": true,
+                        "social_share": true,
+                        "upload": true,
+                        "multiple": true,
+                        "supports_upload_only": true,
+                        "password": {
+                            "enforced_for": {
+                                "read_only": false,
+                                "read_write": false,
+                                "read_write_delete": false,
+                                "upload_only": false
+                            },
+                            "enforced": false
+                        },
+                        "expire_date": {
+                            "enabled": false
+                        },
+                        "can_edit": true,
+                        "alias": true
+                    },
+                    "user": {
+                        "send_mail": true,
+                        "profile_picture": false,
+                        "settings": [
+                            {
+                                "enabled": true,
+                                "version": "1.0.0"
+                            }
+                        ],
+                        "expire_date": {
+                            "enabled": true
+                        }
+                    }
+                },
+                "spaces": {
+                    "version": "1.0.0",
+                    "enabled": true,
+                    "projects": true,
+                    "share_jail": true,
+                    "max_quota": 0
+                },
+                "graph": {
+                    "personal-data-export": true,
+                    "users": {
+                        "read_only_attributes": [
+                            "user.onPremisesSamAccountName",
+                            "user.displayName",
+                            "user.mail",
+                            "user.passwordProfile",
+                            "user.appRoleAssignments"
+                        ],
+                        "create_disabled": true,
+                        "delete_disabled": true,
+                        "change_password_self_disabled": true
+                    }
+                },
+                "notifications": {
+                    "ocs-endpoints": [
+                        "list",
+                        "get",
+                        "delete"
+                    ]
+                }
+            },
+            "version": {
+                "major": 10,
+                "minor": 11,
+                "micro": 0,
+                "string": "10.11.0",
+                "edition": "Community",
+                "product": "Infinite Scale",
+                "productversion": "4.0.5"
+            }
+        }
+    }
+}

@@ -11,6 +11,7 @@ owncloud_add_test(SyncFileItem)
 owncloud_add_test(ConcatUrl)
 owncloud_add_test(XmlParse)
 owncloud_add_test(ChecksumValidator)
+owncloud_add_test(ConnectionValidator)
 
 
 # TODO: we need keychain access for this test

@@ -40,7 +40,10 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
 namespace {
-    const auto timeoutToUse = ConnectionValidator::DefaultCallingInterval - 5s;
+    auto timeoutToUse()
+    {
+        return std::min(ConnectionValidator::DefaultCallingInterval - 5s, AbstractNetworkJob::httpTimeout);
+    };
 }
 
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
@@ -194,7 +197,7 @@ void ConnectionValidator::checkAuthentication()
     // we explicitly use a legacy dav path here
     auto *job = new PropfindJob(_account, _account->url(), Theme::instance()->webDavPath(), PropfindJob::Depth::Zero, this);
     job->setAuthenticationJob(true); // don't retry
-    job->setTimeout(timeoutToUse);
+    job->setTimeout(timeoutToUse());
     job->setProperties({ QByteArrayLiteral("getlastmodified") });
     connect(job, &PropfindJob::finishedWithoutError, this, &ConnectionValidator::slotAuthSuccess);
     connect(job, &PropfindJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);

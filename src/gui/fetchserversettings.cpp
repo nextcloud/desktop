@@ -27,7 +27,10 @@ using namespace OCC;
 Q_LOGGING_CATEGORY(lcfetchserversettings, "sync.fetchserversettings", QtInfoMsg)
 
 namespace {
-constexpr auto timeoutC = 20s;
+auto fetchSettingsTimeout()
+{
+    return std::min(20s, AbstractNetworkJob::httpTimeout);
+}
 }
 
 // TODO: move to libsync?
@@ -43,7 +46,7 @@ void FetchServerSettingsJob::start()
     // The main flow now needs the capabilities
     auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/capabilities"), {}, {}, this);
     job->setAuthenticationJob(isAuthJob());
-    job->setTimeout(timeoutC);
+    job->setTimeout(fetchSettingsTimeout());
 
     connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
         auto caps =
@@ -69,7 +72,7 @@ void FetchServerSettingsJob::start()
             }
             auto *userJob = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), SimpleNetworkJob::UrlQuery{}, QNetworkRequest{}, this);
             userJob->setAuthenticationJob(isAuthJob());
-            userJob->setTimeout(timeoutC);
+            userJob->setTimeout(fetchSettingsTimeout());
             connect(userJob, &JsonApiJob::finishedSignal, this, [userJob, this] {
                 if (userJob->timedOut()) {
                     Q_EMIT finishedSignal(Result::TimeOut);

@@ -1,0 +1,11 @@
+{
+    "installed": true,
+    "maintenance": @{maintenance},
+    "needsDbUpgrade": false,
+    "version": "10.11.0.0",
+    "versionstring": "10.11.0",
+    "edition": "Community",
+    "productname": "Infinite Scale",
+    "product": "Infinite Scale",
+    "productversion": "4.0.5"
+}

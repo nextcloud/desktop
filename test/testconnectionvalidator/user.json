@@ -1,0 +1,17 @@
+{
+    "ocs": {
+        "meta": {
+            "status": "ok",
+            "statuscode": 200,
+            "message": "OK",
+            "totalitems": "",
+            "itemsperpage": ""
+        },
+        "data": {
+            "id": "test",
+            "display-name": "test",
+            "email": "test@test.com",
+            "language": "en"
+        }
+    }
+}
