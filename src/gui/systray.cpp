@@ -730,6 +730,13 @@ QRect Systray::currentScreenRect() const
     return screen->geometry();
 }
 
+QRect Systray::currentAvailableScreenRect() const
+{
+    const auto screen = currentScreen();
+    Q_ASSERT(screen);
+    return screen->availableGeometry();
+}
+
 QPoint Systray::computeWindowReferencePoint() const
 {
     constexpr auto spacing = 4;

@@ -165,6 +165,7 @@ private:
 
     [[nodiscard]] QScreen *currentScreen() const;
     [[nodiscard]] QRect currentScreenRect() const;
+    [[nodiscard]] QRect currentAvailableScreenRect() const;
     [[nodiscard]] QPoint computeWindowReferencePoint() const;
     [[nodiscard]] QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
     [[nodiscard]] QPoint calcTrayIconCenter() const;
