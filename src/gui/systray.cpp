@@ -741,12 +741,10 @@ QPoint Systray::computeWindowReferencePoint() const
 {
     constexpr auto spacing = 4;
     const auto trayIconCenter = calcTrayIconCenter();
-    const auto taskbarRect = taskbarGeometry();
     const auto taskbarScreenEdge = taskbarOrientation();
-    const auto screenRect = currentScreenRect();
+    const auto screenRect = currentAvailableScreenRect();
 
     qCDebug(lcSystray) << "screenRect:" << screenRect;
-    qCDebug(lcSystray) << "taskbarRect:" << taskbarRect;
     qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
     qCDebug(lcSystray) << "trayIconCenter:" << trayIconCenter;
 
@@ -754,21 +752,21 @@ QPoint Systray::computeWindowReferencePoint() const
     case TaskBarPosition::Bottom:
         return {
             trayIconCenter.x(),
-            screenRect.bottom() - taskbarRect.height() - spacing
+            screenRect.bottom() - spacing
         };
     case TaskBarPosition::Left:
         return {
-            screenRect.left() + taskbarRect.width() + spacing,
+            screenRect.left() + spacing,
             trayIconCenter.y()
         };
     case TaskBarPosition::Top:
         return {
             trayIconCenter.x(),
-            screenRect.top() + taskbarRect.height() + spacing
+            screenRect.top() + spacing
         };
     case TaskBarPosition::Right:
         return {
-            screenRect.right() - taskbarRect.width() - spacing,
+            screenRect.right() - spacing,
             trayIconCenter.y()
         };
     }
@@ -779,29 +777,23 @@ QPoint Systray::computeNotificationReferencePoint(int spacing, NotificationPosit
 {
     auto trayIconCenter = calcTrayIconCenter();
     auto taskbarScreenEdge = taskbarOrientation();
-    auto taskbarRect = taskbarGeometry();
-    const auto screenRect = currentScreenRect();
+    const auto screenRect = currentAvailableScreenRect();
     
     if(position == NotificationPosition::TopLeft) {
         taskbarScreenEdge = TaskBarPosition::Top;
         trayIconCenter = QPoint(0, 0);
-        taskbarRect = QRect(0, 0, screenRect.width(), 32);
     } else if(position == NotificationPosition::TopRight) {
         taskbarScreenEdge = TaskBarPosition::Top;
         trayIconCenter = QPoint(screenRect.width(), 0);
-        taskbarRect = QRect(0, 0, screenRect.width(), 32);
     } else if(position == NotificationPosition::BottomLeft) {
         taskbarScreenEdge = TaskBarPosition::Bottom;
         trayIconCenter = QPoint(0, screenRect.height());
-        taskbarRect = QRect(0, 0, screenRect.width(), 32);
     } else if(position == NotificationPosition::BottomRight) {
         taskbarScreenEdge = TaskBarPosition::Bottom;
         trayIconCenter = QPoint(screenRect.width(), screenRect.height());
-        taskbarRect = QRect(0, 0, screenRect.width(), 32);
     }
 
     qCDebug(lcSystray) << "screenRect:" << screenRect;
-    qCDebug(lcSystray) << "taskbarRect:" << taskbarRect;
     qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
     qCDebug(lcSystray) << "trayIconCenter:" << trayIconCenter;
 
@@ -809,21 +801,21 @@ QPoint Systray::computeNotificationReferencePoint(int spacing, NotificationPosit
     case TaskBarPosition::Bottom:
         return {
             trayIconCenter.x() < screenRect.center().x() ? screenRect.left() + spacing :  screenRect.right() - spacing,
-            screenRect.bottom() - taskbarRect.height() - spacing
+            screenRect.bottom() - spacing
         };
     case TaskBarPosition::Left:
         return {
-            screenRect.left() + taskbarRect.width() + spacing,
+            screenRect.left() + spacing,
             trayIconCenter.y() < screenRect.center().y() ? screenRect.top() + spacing : screenRect.bottom() - spacing
         };
     case TaskBarPosition::Top:
         return {
             trayIconCenter.x() < screenRect.center().x() ? screenRect.left() + spacing :  screenRect.right() - spacing,
-            screenRect.top() + taskbarRect.height() + spacing
+            screenRect.top() + spacing
         };
     case TaskBarPosition::Right:
         return {
-            screenRect.right() - taskbarRect.width() - spacing,
+            screenRect.right() - spacing,
             trayIconCenter.y() < screenRect.center().y() ? screenRect.top() + spacing : screenRect.bottom() - spacing
         };
     }
