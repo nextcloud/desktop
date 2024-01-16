@@ -696,33 +696,6 @@ Systray::TaskBarPosition Systray::taskbarOrientation() const
 #endif
 }
 
-// TODO: Get real taskbar dimensions Linux as well
-QRect Systray::taskbarGeometry() const
-{
-#if defined(Q_OS_WIN)
-    QRect tbRect = Utility::getTaskbarDimensions();
-    //QML side expects effective pixels, convert taskbar dimensions if necessary
-    auto pixelRatio = currentScreen()->devicePixelRatio();
-    if (pixelRatio != 1) {
-        tbRect.setHeight(tbRect.height() / pixelRatio);
-        tbRect.setWidth(tbRect.width() / pixelRatio);
-    }
-    return tbRect;
-#elif defined(Q_OS_MACOS)
-    const auto screenWidth = currentScreenRect().width();
-    const auto statusBarHeight = static_cast<int>(OCC::menuBarThickness());
-    return {0, 0, screenWidth, statusBarHeight};
-#else
-    if (taskbarOrientation() == TaskBarPosition::Bottom || taskbarOrientation() == TaskBarPosition::Top) {
-        auto screenWidth = currentScreenRect().width();
-        return {0, 0, screenWidth, 32};
-    } else {
-        auto screenHeight = currentScreenRect().height();
-        return {0, 0, 32, screenHeight};
-    }
-#endif
-}
-
 QRect Systray::currentScreenRect() const
 {
     const auto screen = currentScreen();
