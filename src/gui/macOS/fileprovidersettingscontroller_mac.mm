@@ -69,7 +69,7 @@ public:
         fetchMaterialisedFilesStorageUsage();
     };
 
-    ~MacImplementation() = default;
+    ~MacImplementation() override = default;
 
     [[nodiscard]] QStringList enabledAccounts() const
     {
