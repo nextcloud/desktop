@@ -164,8 +164,8 @@ Folder::Folder(const FolderDefinition &definition,
 
         // Potentially upgrade suffix vfs to windows vfs
         OC_ENFORCE(_vfs);
-        // Initialize the vfs plugin
-        startVfs();
+        // Initialize the vfs plugin. Do this after the UI is running, so we can show a dialog when something goes wrong.
+        QTimer::singleShot(0, this, &Folder::startVfs);
     }
 }
 
