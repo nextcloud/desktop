@@ -824,7 +824,11 @@ FakeErrorReply::FakeErrorReply(QNetworkAccessManager::Operation op, const QNetwo
     setOperation(op);
     open(QIODevice::ReadOnly);
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, httpErrorCode);
-    setError(InternalServerError, QStringLiteral("Internal Server Fake Error"));
+    if (httpErrorCode == 401) {
+        setError(AuthenticationRequiredError, QStringLiteral("Fake credentials error"));
+    } else {
+        setError(InternalServerError, QStringLiteral("Internal Server Fake Error"));
+    }
     QMetaObject::invokeMethod(this, &FakeErrorReply::respond, Qt::QueuedConnection);
 }
 

@@ -75,7 +75,7 @@ private slots:
         QString itemErrorMessage = QStringLiteral("Internal Server Fake Error");
 
         QTest::newRow("400") << 400 << itemErrorMessage << false;
-        QTest::newRow("401") << 401 << itemErrorMessage << false;
+        QTest::newRow("401") << 401 << QStringLiteral("Fake credentials error") << false;
         QTest::newRow("403") << 403 << itemErrorMessage << true;
         QTest::newRow("404") << 404 << itemErrorMessage << true;
         QTest::newRow("500") << 500 << itemErrorMessage << true;
