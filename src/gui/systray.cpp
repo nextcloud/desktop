@@ -587,7 +587,7 @@ void Systray::positionWindowAtScreenCenter(QQuickWindow *window) const
     if(!useNormalWindow()) {
         window->setScreen(currentScreen());
         const QPoint windowAdjustment(window->geometry().width() / 2, window->geometry().height() / 2);
-        const auto position = currentScreen()->virtualGeometry().center() - windowAdjustment;
+        const auto position = currentScreen()->availableGeometry().center() - windowAdjustment;
         window->setPosition(position);
     }
 }
@@ -897,11 +897,11 @@ QPoint Systray::computeNotificationPosition(int width, int height, int spacing, 
 
 QPoint Systray::calcTrayIconCenter() const
 {
-    if(geometry().isValid()) {
+    const auto geo = geometry();
+    if(geo.isValid()) {
         // QSystemTrayIcon::geometry() is broken for ages on most Linux DEs (invalid geometry returned)
         // thus we can use this only for Windows and macOS
-        auto trayIconCenter = geometry().center();
-        return trayIconCenter;
+        return geo.center();
     }
 
     // On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
