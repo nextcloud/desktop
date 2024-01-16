@@ -307,6 +307,8 @@ public:
 
     // useful to be public for testing
     using QNetworkReply::setRawHeader;
+
+    virtual void abort() override;
 };
 
 class FakePropfindReply : public FakeReply
@@ -321,8 +323,6 @@ public:
     Q_INVOKABLE void respond();
 
     Q_INVOKABLE void respond404();
-
-    void abort() override { }
 
     qint64 bytesAvailable() const override;
     qint64 readData(char *data, qint64 maxlen) override;
@@ -339,7 +339,6 @@ public:
 
     Q_INVOKABLE virtual void respond();
 
-    void abort() override;
     qint64 readData(char *, qint64) override { return 0; }
 
 private:
@@ -355,7 +354,6 @@ public:
 
     Q_INVOKABLE void respond();
 
-    void abort() override { }
     qint64 readData(char *, qint64) override { return 0; }
 
 private:
@@ -371,7 +369,6 @@ public:
 
     Q_INVOKABLE void respond();
 
-    void abort() override { }
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -384,7 +381,6 @@ public:
 
     Q_INVOKABLE void respond();
 
-    void abort() override { }
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -398,6 +394,7 @@ public:
         Aborted,
         FileNotFound,
     };
+    Q_ENUM(State);
 
     const FileInfo *fileInfo;
     char payload;
@@ -407,7 +404,7 @@ public:
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
-    Q_INVOKABLE void respond();
+    virtual void respond();
 
     void abort() override;
     virtual qint64 bytesAvailable() const override;
@@ -433,8 +430,6 @@ public:
 
     Q_INVOKABLE void respondPreconditionFailed();
 
-    void abort() override;
-
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -445,9 +440,8 @@ public:
     FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
         const QByteArray &body, QObject *parent);
 
-    void respond();
+    virtual void respond();
 
-    void abort() override { }
     qint64 readData(char *buf, qint64 max) override;
     qint64 bytesAvailable() const override;
     QByteArray _body;
@@ -471,7 +465,6 @@ public slots:
     void slotSetFinished();
 
 public:
-    void abort() override { }
     qint64 readData(char *buf, qint64 max) override;
     qint64 bytesAvailable() const override;
 
@@ -485,7 +478,6 @@ class FakeHangingReply : public FakeReply
 public:
     FakeHangingReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
-    void abort() override;
     qint64 readData(char *, qint64) override { return 0; }
 };
 
