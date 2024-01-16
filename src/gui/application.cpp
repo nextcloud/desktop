@@ -158,6 +158,11 @@ bool Application::configVersionMigration()
         return true;
     }
 
+    // 'Launch on system startup' defaults to true > 3.11.x
+    const auto theme = Theme::instance();
+    configFile.setLaunchOnSystemStartup(configFile.launchOnSystemStartup());
+    Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), configFile.launchOnSystemStartup());
+
     // back up all old config files
     QStringList backupFilesList;
     QDir configDir(configFile.configPath());

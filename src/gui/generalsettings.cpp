@@ -159,10 +159,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         _ui->autostartCheckBox->setChecked(hasSystemAutoStart);
         _ui->autostartCheckBox->setDisabled(hasSystemAutoStart);
         _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
-    } else {
-        const auto hasAutoStart = Utility::hasLaunchOnStartup(Theme::instance()->appName());
+    } else {       
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
-        _ui->autostartCheckBox->setChecked(hasAutoStart);
+        _ui->autostartCheckBox->setChecked(ConfigFile().launchOnSystemStartup());
     }
 
     // setup about section
@@ -455,6 +454,12 @@ void GeneralSettings::saveMiscSettings()
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
 {
     const auto theme = Theme::instance();
+    if (enable == Utility::hasLaunchOnStartup(theme->appName())) {
+        return;
+    }
+
+    ConfigFile configFile;
+    configFile.setLaunchOnSystemStartup(enable);
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
 }
 
