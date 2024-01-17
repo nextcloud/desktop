@@ -103,9 +103,6 @@ private:
     AccountStatePtr _accountState;
     QAction *_toggleSignInOutAction;
     QAction *_toggleReconnect;
-
-    // needed to make sure we show only one dialog at a time
-    QPointer<LoginRequiredDialog> _askForOAuthLoginDialog = nullptr;
 };
 
 } // namespace OCC

@@ -1,0 +1,7 @@
+Bugfix: Client stuck in reconnecting state after application start
+
+We fixed a bug where the client was starting OAuth authentication but
+did not prompt the user properly to renew authentication.
+This resulted in the client apparently getting stuck in the "reconnecting" state.
+
+https://github.com/owncloud/client/pull/11478

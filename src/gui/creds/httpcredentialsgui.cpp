@@ -16,17 +16,17 @@
 #include "creds/httpcredentialsgui.h"
 #include "account.h"
 #include "application.h"
-#include "basicloginwidget.h"
 #include "common/asserts.h"
-#include "loginrequireddialog.h"
+#include "gui/loginrequireddialog/basicloginwidget.h"
+#include "gui/loginrequireddialog/loginrequireddialog.h"
+#include "gui/loginrequireddialog/oauthloginwidget.h"
 #include "networkjobs.h"
 #include "settingsdialog.h"
 #include "theme.h"
 
-#include <QBuffer>
+#include <QClipboard>
 #include <QDesktopServices>
-#include <QMessageBox>
-#include <QNetworkReply>
+#include <QGuiApplication>
 #include <QTimer>
 
 
@@ -42,21 +42,12 @@ void HttpCredentialsGui::openBrowser()
             _asyncAuth->openBrowser();
         } else {
             qCWarning(lcHttpCredentialsGui) << "There is no authentication job running, did the previous attempt fail?";
-            askFromUserAsync();
+            askFromUser();
         }
     }
 }
 
 void HttpCredentialsGui::askFromUser()
-{
-    // This function can be called from AccountState::slotInvalidCredentials,
-    // which (indirectly, through HttpCredentials::invalidateToken) schedules
-    // a cache wipe of the qnam. We can only execute a network job again once
-    // the cache has been cleared, otherwise we'd interfere with the job.
-    QTimer::singleShot(0, this, &HttpCredentialsGui::askFromUserAsync);
-}
-
-void HttpCredentialsGui::askFromUserAsync()
 {
     if (isUsingOAuth()) {
         restartOAuth();
@@ -83,6 +74,11 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
     _asyncAuth.reset();
     switch (r) {
     case OAuth::NotSupported:
+        if (_loginRequiredDialog) {
+            _loginRequiredDialog->deleteLater();
+            _loginRequiredDialog.clear();
+        }
+        // show basic auth dialog for historic reasons
         showDialog();
         return;
     case OAuth::ErrorInsecureUrl:
@@ -93,6 +89,9 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, 
         Q_EMIT oAuthErrorOccurred();
         return;
     case OAuth::LoggedIn:
+        if (_loginRequiredDialog) {
+            _loginRequiredDialog->accept();
+        }
         break;
     }
 
@@ -160,10 +159,45 @@ QUrl HttpCredentialsGui::authorisationLink() const
 
 void HttpCredentialsGui::restartOAuth()
 {
+    qCDebug(lcHttpCredentialsGui) << "showing modal dialog asking user to log in again via OAuth2";
+
+    if (!_loginRequiredDialog) {
+        _loginRequiredDialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::OAuth, ocApp()->gui()->settingsDialog());
+
+        // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
+        _loginRequiredDialog->setAttribute(Qt::WA_DeleteOnClose);
+
+        _loginRequiredDialog->setTopLabelText(
+            tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(_account->displayName()));
+
+        auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget());
+        connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _loginRequiredDialog, [](const QUrl &url) {
+            // TODO: use authorisationLinkAsync
+            qApp->clipboard()->setText(url.toString());
+        });
+
+        connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, &HttpCredentialsGui::openBrowser);
+        connect(_loginRequiredDialog, &LoginRequiredDialog::rejected, this, &HttpCredentials::requestLogout);
+
+        connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _loginRequiredDialog, [contentWidget, this]() {
+            restartOAuth();
+            contentWidget->hideRetryFrame();
+        });
+
+        connect(this, &HttpCredentialsGui::oAuthErrorOccurred, _loginRequiredDialog, [contentWidget, this]() {
+            Q_ASSERT(!ready());
+            ocApp()->gui()->raiseDialog(_loginRequiredDialog);
+            contentWidget->showRetryFrame();
+        });
+
+        _loginRequiredDialog->open();
+        ocApp()->gui()->raiseDialog(_loginRequiredDialog);
+    }
+
     _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));
-    connect(_asyncAuth.data(), &OAuth::result,
-        this, &HttpCredentialsGui::asyncAuthResult);
-    connect(_asyncAuth.data(), &OAuth::authorisationLinkChanged, this, &HttpCredentialsGui::authorisationLinkChanged);
+    connect(_asyncAuth.data(), &OAuth::result, this, &HttpCredentialsGui::asyncAuthResult);
+    connect(_asyncAuth.data(), &OAuth::authorisationLinkChanged, this,
+        [this] { qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget())->setUrl(authorisationLink()); });
     _asyncAuth->startAuthentication();
 }
 

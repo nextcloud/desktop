@@ -682,19 +682,12 @@ void AccountSettings::slotAccountStateChanged()
         _model->slotUpdateFolderState(folder);
     }
 
-    auto acceptOAuthLogin = [this]() {
-        if (_askForOAuthLoginDialog != nullptr) {
-            _askForOAuthLoginDialog->accept();
-        }
-    };
-
     const QString server = QStringLiteral("<a href=\"%1\">%1</a>")
                                .arg(Utility::escape(safeUrl.toString()));
 
     switch (state) {
     case AccountState::PausedDueToMetered:
         showConnectionLabel(tr("Sync to %1 is paused due to metered internet connection.").arg(server));
-        acceptOAuthLogin();
         break;
     case AccountState::Connected: {
         QStringList errors;
@@ -702,7 +695,6 @@ void AccountSettings::slotAccountStateChanged()
             errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
         }
         showConnectionLabel(tr("Connected to %1.").arg(server), errors);
-        acceptOAuthLogin();
         break;
     }
     case AccountState::ServiceUnavailable:
@@ -715,63 +707,7 @@ void AccountSettings::slotAccountStateChanged()
         showConnectionLabel(tr("Signed out from %1.").arg(server));
         break;
     case AccountState::AskingCredentials: {
-        auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials());
-        if (cred && cred->isUsingOAuth()) {
-            if (_askForOAuthLoginDialog != nullptr) {
-                qCDebug(lcAccountSettings) << "ask for OAuth login dialog is shown already";
-                return;
-            }
-
-            qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
-
-            _askForOAuthLoginDialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::OAuth, ocApp()->gui()->settingsDialog());
-
-            // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
-            _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
-
-            _askForOAuthLoginDialog->setTopLabelText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(account->displayName()));
-
-            auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_askForOAuthLoginDialog->contentWidget());
-
-            connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget,
-                [cred, contentWidget] { contentWidget->setUrl(cred->authorisationLink()); });
-
-            connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [](const QUrl &url) {
-                // TODO: use authorisationLinkAsync
-                qApp->clipboard()->setText(url.toString());
-            });
-
-            connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, cred, &HttpCredentialsGui::openBrowser);
-
-            connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, this, [this]() {
-                // if a user dismisses the dialog, we have no choice but signing them out
-                _accountState->signOutByUi();
-            });
-
-            connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _askForOAuthLoginDialog, [contentWidget, accountPtr = account]() {
-                auto creds = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials());
-                creds->restartOAuth();
-                contentWidget->hideRetryFrame();
-            });
-
-            connect(cred, &HttpCredentialsGui::oAuthErrorOccurred, _askForOAuthLoginDialog, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
-                Q_ASSERT(!cred->ready());
-
-                ocApp()->gui()->raiseDialog(loginDialog);
-                contentWidget->showRetryFrame();
-            });
-
-            showConnectionLabel(tr("Reauthorization required."));
-
-            _askForOAuthLoginDialog->open();
-            ocApp()->gui()->raiseDialog(_askForOAuthLoginDialog);
-
-            QTimer::singleShot(0, [contentWidget]() {
-                contentWidget->setFocus(Qt::OtherFocusReason);
-            });
-        } else {
-            showConnectionLabel(tr("Connecting to %1...").arg(server));
-        }
+        showConnectionLabel(tr("Updating credentials for %1...").arg(server));
         break;
     }
     case AccountState::Connecting:

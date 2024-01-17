@@ -16,10 +16,11 @@
 #pragma once
 #include "creds/httpcredentials.h"
 #include "creds/oauth.h"
+
 #include <QPointer>
-#include <QTcpServer>
 
 namespace OCC {
+class LoginRequiredDialog;
 
 /**
  * @brief The HttpCredentialsGui class
@@ -62,16 +63,13 @@ public:
 private slots:
     void asyncAuthResult(OAuth::Result, const QString &accessToken, const QString &refreshToken);
     void showDialog();
-    void askFromUserAsync();
 
 signals:
-    void authorisationLinkChanged();
-
     void oAuthErrorOccurred();
 
 private:
     QScopedPointer<AccountBasedOAuth, QScopedPointerObjectDeleteLater<AccountBasedOAuth>> _asyncAuth;
-    QPointer<QWidget> _loginRequiredDialog;
+    QPointer<LoginRequiredDialog> _loginRequiredDialog;
 };
 
 } // namespace OCC
