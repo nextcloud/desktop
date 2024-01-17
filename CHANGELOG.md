@@ -53,6 +53,7 @@ ownCloud admins and users.
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
+* Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 
 ## Details
 
@@ -134,6 +135,14 @@ ownCloud admins and users.
    discovery.
 
    https://github.com/owncloud/client/pull/11347
+
+* Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
+
+   Instead of a tray message, we now display a modal dialog on Windows to inform
+   the user about a downloaded update. Also, we now can prompt the user to restart
+   the application and apply the update immediately, adding a bit of user comfort.
+
+   https://github.com/owncloud/client/pull/11442
 
 # Changelog for ownCloud Desktop Client [5.2.1] (2024-01-04)
 
