@@ -53,6 +53,7 @@ ownCloud admins and users.
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
+* Enhancement - Use less modal dialogs: [#11304](https://github.com/owncloud/client/issues/11304)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 
@@ -137,6 +138,15 @@ ownCloud admins and users.
    used for the local server during the OAuth process.
 
    https://github.com/owncloud/client/issues/11276
+
+* Enhancement - Use less modal dialogs: [#11304](https://github.com/owncloud/client/issues/11304)
+
+   As the rather high number of modal dialogs we used caused different issues on
+   different platforms, we decided to use them less often and try other concepts.
+
+   https://github.com/owncloud/client/issues/11304
+   https://github.com/owncloud/client/issues/11032
+   https://github.com/owncloud/client/issues/11208
 
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
 
