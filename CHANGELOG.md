@@ -45,6 +45,7 @@ ownCloud admins and users.
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+* Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
@@ -70,6 +71,14 @@ ownCloud admins and users.
    unhandled result, the client could get stuck in a `reconnecting` state.
 
    https://github.com/owncloud/client/pull/11467
+
+* Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
+
+   We fixed a bug where the client was starting OAuth authentication but did not
+   prompt the user properly to renew authentication. This resulted in the client
+   apparently getting stuck in the "reconnecting" state.
+
+   https://github.com/owncloud/client/pull/11478
 
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 
