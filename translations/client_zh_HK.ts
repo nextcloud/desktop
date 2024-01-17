@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="316"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>未知錯誤：網路回覆被刪除</translation>
+        <translation>錯誤不詳：網路回覆被刪除</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="469"/>
@@ -886,7 +886,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="166"/>
         <source>Unknown account state</source>
-        <translation>未知的帳號狀態</translation>
+        <translation>帳號狀態不詳</translation>
     </message>
 </context>
 <context>
@@ -3227,7 +3227,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>無法取得更新狀態： 無法檢查是否有新更新檔。</translation>
+        <translation>更新狀態不詳： 無法檢查是否有新更新檔。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
