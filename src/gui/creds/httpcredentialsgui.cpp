@@ -172,11 +172,6 @@ void HttpCredentialsGui::restartOAuth()
             tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(_account->displayName()));
 
         auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_loginRequiredDialog->contentWidget());
-        connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _loginRequiredDialog, [](const QUrl &url) {
-            // TODO: use authorisationLinkAsync
-            qApp->clipboard()->setText(url.toString());
-        });
-
         connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, this, &HttpCredentialsGui::openBrowser);
         connect(_loginRequiredDialog, &LoginRequiredDialog::rejected, this, &HttpCredentials::requestLogout);
 

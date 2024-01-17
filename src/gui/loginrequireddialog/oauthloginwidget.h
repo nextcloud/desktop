@@ -52,7 +52,6 @@ Q_SIGNALS:
 
 Q_SIGNALS:
     void openBrowserButtonClicked(const QUrl &url);
-    void copyUrlToClipboardButtonClicked(const QUrl &url);
 
 private:
     ::Ui::OAuthLoginWidget *_ui;

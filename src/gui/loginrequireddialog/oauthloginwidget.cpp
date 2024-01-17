@@ -40,7 +40,7 @@ OAuthLoginWidget::OAuthLoginWidget(QWidget *parent)
     });
     connect(_ui->copyUrlToClipboardButton, &QPushButton::clicked, this, [this] {
         Q_ASSERT(_url.isValid());
-        Q_EMIT copyUrlToClipboardButtonClicked(_url);
+        qApp->clipboard()->setText(_url.toString(QUrl::FullyEncoded));
     });
 
     // depending on the theme we have to use a light or dark icon

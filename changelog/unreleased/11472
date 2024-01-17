@@ -1,0 +1,7 @@
+Bugfix: Properly encode scope and prompt items in OAuth URL
+
+Fixed a bug where the scope and prompt items of an OAuth query would not
+be encoded, resulting in an invalid request.
+
+https://github.com/owncloud/client/issues/11472
+https://github.com/owncloud/client/pull/11479

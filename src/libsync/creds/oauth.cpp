@@ -420,9 +420,8 @@ QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &que
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
     QUrlQuery arguments;
-    arguments.setQueryItems(QList<QPair<QString, QString>> { { QStringLiteral("client_id"), _clientId },
-                                { QStringLiteral("client_secret"), _clientSecret },
-                                { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() } }
+    arguments.setQueryItems(QList<QPair<QString, QString>>{{QStringLiteral("client_id"), _clientId}, {QStringLiteral("client_secret"), _clientSecret},
+                                {QStringLiteral("scope"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectScopes()))}}
         << queryItems);
     req.setUrl(requestTokenUrl);
     return _networkAccessManager->post(req, arguments.toString(QUrl::FullyEncoded).toUtf8());
@@ -443,14 +442,12 @@ QUrl OAuth::authorisationLink() const
 
     const QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
-    QUrlQuery query { { QStringLiteral("response_type"), QStringLiteral("code") },
-        { QStringLiteral("client_id"), _clientId },
-        { QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort())) },
-        { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
-        { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
-        { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
-        { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
-        { QStringLiteral("state"), QString::fromUtf8(_state) } };
+    QUrlQuery query{{QStringLiteral("response_type"), QStringLiteral("code")}, {QStringLiteral("client_id"), _clientId},
+        {QStringLiteral("redirect_uri"), QStringLiteral("%1:%2").arg(_redirectUrl, QString::number(_server.serverPort()))},
+        {QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge)}, {QStringLiteral("code_challenge_method"), QStringLiteral("S256")},
+        {QStringLiteral("scope"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectScopes()))},
+        {QStringLiteral("prompt"), QString::fromUtf8(QUrl::toPercentEncoding(Theme::instance()->openIdConnectPrompt()))},
+        {QStringLiteral("state"), QString::fromUtf8(_state)}};
 
     if (!_davUser.isEmpty()) {
         const QString davUser = QString::fromUtf8(QUrl::toPercentEncoding(_davUser)); // Issue #7762;

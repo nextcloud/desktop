@@ -42,8 +42,6 @@ OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &ser
         // TODO: move to OAuthLoginWidget
         _ui->oauthLoginWidget->setOpenBrowserButtonText(tr("Reopen Browser"));
     });
-    connect(
-        _ui->oauthLoginWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, this, [](const QUrl &url) { qApp->clipboard()->setText(url.toString()); });
     connect(this, &AbstractSetupWizardPage::pageDisplayed, _ui->oauthLoginWidget, qOverload<>(&OAuthLoginWidget::setFocus));
 
     _ui->topLabel->setText(tr("Please use your browser to log in to %1.").arg(Theme::instance()->appNameGUI()));
