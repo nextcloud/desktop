@@ -267,31 +267,8 @@ void OAuth::startAuthentication()
     _state = generateRandomString(8);
 
     connect(this, &OAuth::fetchWellKnownFinished, this, [this] {
-        // this slightly complicated construct allows us to log case-specific messages
-        if (!Theme::instance()->oidcEnableDynamicRegistration()) {
-            qCDebug(lcOauth) << "dynamic registration disabled by theme";
-        } else if (!_registrationEndpoint.isValid()) {
-            qCDebug(lcOauth) << "registration endpoint not provided or empty:" << _registrationEndpoint;
-        } else {
-            auto registerJob = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
-            connect(registerJob, &RegisterClientJob::finished, this, [this](const QString &clientId, const QString &clientSecret, const QVariantMap &dynamicRegistrationData) {
-                qCDebug(lcOauth) << "client registration finished successfully";
-                _clientId = clientId;
-                _clientSecret = clientSecret;
-                Q_EMIT dynamicRegistrationDataReceived(dynamicRegistrationData);
-                Q_EMIT authorisationLinkChanged();
-            });
-            connect(registerJob, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
-                qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
-                Q_EMIT authorisationLinkChanged();
-            });
-            registerJob->start();
-
-            return;
-        }
-
-        // this should only run right now if one of the checks above failed
-        Q_EMIT authorisationLinkChanged();
+        connect(this, &AccountBasedOAuth::dynamicRegistrationDataReceived, this, &OAuth::authorisationLinkChanged);
+        updateDynamicRegistration();
     });
 
     fetchWellKnown();
@@ -491,7 +468,36 @@ QUrl OAuth::authorisationLink() const
 
 void OAuth::saveDynamicRegistrationDataForAccount(const OCC::AccountPtr &accountPtr, const QVariantMap &dynamicRegistrationData)
 {
-    accountPtr->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
+    if (!dynamicRegistrationData.isEmpty()) {
+        accountPtr->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
+    }
+}
+
+void OAuth::updateDynamicRegistration()
+{
+    // this slightly complicated construct allows us to log case-specific messages
+    if (!Theme::instance()->oidcEnableDynamicRegistration()) {
+        qCDebug(lcOauth) << "dynamic registration disabled by theme";
+    } else if (!_registrationEndpoint.isValid()) {
+        qCDebug(lcOauth) << "registration endpoint not provided or empty:" << _registrationEndpoint.toString()
+                         << "we asume dynamic registration is not supported by the server";
+    } else {
+        auto registerJob = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
+        connect(registerJob, &RegisterClientJob::finished, this,
+            [this](const QString &clientId, const QString &clientSecret, const QVariantMap &dynamicRegistrationData) {
+                qCDebug(lcOauth) << "client registration finished successfully";
+                _clientId = clientId;
+                _clientSecret = clientSecret;
+                Q_EMIT dynamicRegistrationDataReceived(dynamicRegistrationData);
+            });
+        connect(registerJob, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
+            qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
+            Q_EMIT dynamicRegistrationDataReceived({});
+        });
+        registerJob->start();
+        return;
+    }
+    Q_EMIT dynamicRegistrationDataReceived({});
 }
 
 void OAuth::fetchWellKnown()
@@ -701,30 +707,8 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
         };
 
         connect(this, &OAuth::fetchWellKnownFinished, this, [refresh, this] {
-            // this slightly complicated construct allows us to log case-specific messages
-            if (!Theme::instance()->oidcEnableDynamicRegistration()) {
-                qCDebug(lcOauth) << "dynamic registration disabled by theme";
-            } else if (!_registrationEndpoint.isValid()) {
-                qCDebug(lcOauth) << "registration endpoint not provided or empty:" << _registrationEndpoint;
-            } else {
-                auto registerJob = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
-                connect(registerJob, &RegisterClientJob::finished, this, [this, refresh](const QString &clientId, const QString &clientSecret) {
-                    qCDebug(lcOauth) << "client registration finished successfully";
-                    _clientId = clientId;
-                    _clientSecret = clientSecret;
-                    refresh();
-                });
-                connect(registerJob, &RegisterClientJob::errorOccured, this, [refresh](const QString &error) {
-                    qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
-                    refresh();
-                });
-                registerJob->start();
-
-                return;
-            }
-
-            // this should only run right now if one of the checks above failed
-            refresh();
+            connect(this, &AccountBasedOAuth::dynamicRegistrationDataReceived, this, refresh);
+            updateDynamicRegistration();
         });
         fetchWellKnown();
     });

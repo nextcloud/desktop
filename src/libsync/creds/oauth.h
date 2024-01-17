@@ -82,6 +82,8 @@ Q_SIGNALS:
     void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData);
 
 protected:
+    void updateDynamicRegistration();
+
     QUrl _serverUrl;
     QString _davUser;
     QVariantMap _dynamicRegistrationData;
