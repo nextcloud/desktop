@@ -13,7 +13,6 @@
  */
 
 #include "basiccredentialssetupwizardstate.h"
-#include "jobs/checkbasicauthjobfactory.h"
 #include "networkjobs/fetchuserinfojobfactory.h"
 
 namespace OCC::Wizard {

@@ -40,9 +40,6 @@ add_library(newwizard STATIC
     jobs/resolveurljobfactory.cpp
     jobs/resolveurljobfactory.h
 
-    jobs/checkbasicauthjobfactory.cpp
-    jobs/checkbasicauthjobfactory.h
-
     jobs/discoverwebfingerservicejobfactory.cpp
     jobs/discoverwebfingerservicejobfactory.h
 
