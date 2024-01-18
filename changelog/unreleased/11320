@@ -1,0 +1,8 @@
+Enhancement: Add option to move files to trash instead of deleting
+
+An option has been added that when files on the server are deleted,
+the client will move them to the system trash bin instead of deleting
+those files.
+
+https://github.com/owncloud/client/issues/9001
+https://github.com/owncloud/client/pull/11320
