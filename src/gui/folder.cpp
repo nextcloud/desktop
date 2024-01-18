@@ -688,27 +688,6 @@ void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason re
             }
             if (spurious) {
                 qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
-                Q_ASSERT([&] {
-                    Q_ASSERT(record.isValid());
-                    // we don't intend to burn to many cpu cycles so limit this check on small files
-                    if (!record.isVirtualFile() && record._fileSize < static_cast<qint64>(1_MiB) && !record._checksumHeader.isEmpty()) {
-                        const auto header = ChecksumHeader::parseChecksumHeader(record._checksumHeader);
-                        auto *compute = new ComputeChecksum(this);
-                        compute->setChecksumType(header.type());
-                        quint64 inode = 0;
-                        FileSystem::getInode(path, &inode);
-                        connect(compute, &ComputeChecksum::done, this, [=](CheckSums::Algorithm, const QByteArray &checksum) {
-                            compute->deleteLater();
-                            qWarning() << "Spurious notification:" << path << (checksum == header.checksum()) << checksum << header.checksum()
-                                       << "Inode:" << record._inode << inode;
-                            Q_ASSERT(inode == record._inode);
-                            Q_ASSERT(checksum == header.checksum());
-                        });
-                        compute->start(path);
-                    }
-                    return true;
-                }());
-
                 continue; // probably a spurious notification
             }
         }
