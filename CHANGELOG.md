@@ -52,6 +52,7 @@ ownCloud admins and users.
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
+* Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Use less modal dialogs: [#11304](https://github.com/owncloud/client/issues/11304)
@@ -134,6 +135,14 @@ ownCloud admins and users.
 
    https://github.com/owncloud/client/issues/4808
    https://github.com/owncloud/client/pull/11305
+
+* Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
+
+   An option has been added that when files on the server are deleted, the client
+   will move them to the system trash bin instead of deleting those files.
+
+   https://github.com/owncloud/client/issues/9001
+   https://github.com/owncloud/client/pull/11320
 
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
 
