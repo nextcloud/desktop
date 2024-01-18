@@ -137,6 +137,9 @@ void ConnectionValidator::slotCheckServerAndAuth()
             case QNetworkReply::TooManyRedirectsError:
                 reportResult(MaintenanceMode);
                 return;
+            case QNetworkReply::ContentAccessDenied:
+                reportResult(ClientUnsupported);
+                return;
             default:
                 break;
             }
@@ -218,7 +221,9 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job;
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsWrong;
-
+    } else if (reply->error() == QNetworkReply::ContentAccessDenied) {
+        stat = ClientUnsupported;
+        _errors << extractErrorMessage(job->reply()->readAll());
     } else if (reply->error() != QNetworkReply::NoError) {
         _errors << job->errorStringParsingBody();
 

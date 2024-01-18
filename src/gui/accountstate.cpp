@@ -485,6 +485,8 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::NotConfigured:
         setState(Disconnected);
         break;
+    case ConnectionValidator::ClientUnsupported:
+        [[fallthrough]];
     case ConnectionValidator::ServerVersionMismatch:
         setState(ConfigurationError);
         break;

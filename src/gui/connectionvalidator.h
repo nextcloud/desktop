@@ -99,7 +99,8 @@ public:
         StatusNotFound, // Error retrieving status.php
         ServiceUnavailable, // 503 on authed request
         MaintenanceMode, // maintenance enabled in status.php
-        Timeout // actually also used for other errors on the authed request
+        Timeout, // actually also used for other errors on the authed request
+        ClientUnsupported // The server blocks us as an unsupported client
     };
     Q_ENUM(Status);
 

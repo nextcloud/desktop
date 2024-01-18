@@ -181,7 +181,12 @@ void HttpCredentials::fetchFromKeychain()
 
 void HttpCredentials::fetchFromKeychainHelper()
 {
-    Q_ASSERT(!_user.isEmpty());
+    if (_user.isEmpty()) {
+        _password.clear();
+        _ready = false;
+        emit fetched();
+        return;
+    }
     auto job = _account->credentialManager()->get(isUsingOAuth() ? refreshTokenKeyC() : passwordKeyC());
     connect(job, &CredentialJob::finished, this, [job, this] {
         auto handleError = [job, this] {

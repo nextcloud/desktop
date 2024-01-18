@@ -64,10 +64,12 @@ private Q_SLOTS:
             return value;
         }() << ConnectionValidator::MaintenanceMode;
         QTest::newRow("stauts.php ServiceUnavailable") << FailStage::StatusPhp << defaultValue << ConnectionValidator::StatusNotFound;
+        QTest::newRow("stauts.php UnsupportedClient") << FailStage::StatusPhp << defaultValue << ConnectionValidator::ClientUnsupported;
 
         QTest::newRow("auth 401") << FailStage::AuthValidation << defaultValue << ConnectionValidator::CredentialsWrong;
         QTest::newRow("auth timeout") << FailStage::AuthValidation << defaultValue << ConnectionValidator::Timeout;
         QTest::newRow("auth ServiceUnavailable") << FailStage::AuthValidation << defaultValue << ConnectionValidator::ServiceUnavailable;
+        QTest::newRow("auth UnsupportedClient") << FailStage::AuthValidation << defaultValue << ConnectionValidator::ClientUnsupported;
 
         QTest::newRow("capabilites timeout") << FailStage::Capabilities << defaultValue << ConnectionValidator::CredentialsWrong;
         QTest::newRow("capabilites 401") << FailStage::Capabilities << defaultValue << ConnectionValidator::Timeout;
@@ -103,6 +105,8 @@ private Q_SLOTS:
                             return new FakeHangingReply(op, request, this);
                         } else if (status == ConnectionValidator::StatusNotFound) {
                             return new FakeErrorReply(op, request, this, 500);
+                        } else if (status == ConnectionValidator::ClientUnsupported) {
+                            return new FakeErrorReply(op, request, this, 403);
                         }
                     }
                     return new FakePayloadReply(op, request, getPayloadTemplated(QStringLiteral("status.php.json.in"), values), this);
@@ -135,6 +139,8 @@ private Q_SLOTS:
                     return new FakeHangingReply(op, request, this);
                 } else if (status == ConnectionValidator::ServiceUnavailable) {
                     return new FakeErrorReply(op, request, this, 503);
+                } else if (status == ConnectionValidator::ClientUnsupported) {
+                    return new FakeErrorReply(op, request, this, 403);
                 }
             }
             return nullptr;

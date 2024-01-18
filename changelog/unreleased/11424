@@ -1,0 +1,5 @@
+Enhancement: Improve handling a server blocking an unsupported client
+
+We improved the handling of http 403 codes.
+
+https://github.com/owncloud/client/issues/11424

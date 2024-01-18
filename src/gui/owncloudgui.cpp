@@ -852,7 +852,11 @@ void ownCloudGui::runNewAccountWizard()
 
                     QObject::connect(validator, &ConnectionValidator::connectionResult, accountStatePtr.data(),
                         [accountStatePtr, syncMode, dynamicRegistrationData](ConnectionValidator::Status status, const QStringList &) {
-                            if (OC_ENSURE(status == ConnectionValidator::Connected || status == ConnectionValidator::ServerVersionMismatch)) {
+                            switch (status) {
+                            // a server we no longer support but that might work
+                            case ConnectionValidator::ServerVersionMismatch:
+                                [[fallthrough]];
+                            case ConnectionValidator::Connected: {
                                 // saving once after adding makes sure the account is stored in the config in a working state
                                 // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
                                 // (for instance, when running from a debugger and stopping the process from there)
@@ -918,6 +922,11 @@ void ownCloudGui::runNewAccountWizard()
                                 case OCC::Wizard::SyncMode::Invalid:
                                     Q_UNREACHABLE();
                                 }
+                            }
+                            case ConnectionValidator::ClientUnsupported:
+                                break;
+                            default:
+                                Q_UNREACHABLE();
                             }
                         });
 
