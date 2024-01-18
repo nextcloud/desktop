@@ -50,24 +50,30 @@ void HttpCredentialsGui::openBrowser()
 
 void HttpCredentialsGui::askFromUser()
 {
-    if (isUsingOAuth()) {
-        restartOAuth();
-    } else {
-        // First, we will check what kind of auth we need.
-        auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
-        QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
-            _authType = type;
-            if (type == DetermineAuthTypeJob::AuthType::OAuth) {
-                restartOAuth();
-            } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
-                showDialog();
-            } else {
-                qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
-                emit fetched();
-            }
-        });
-        job->start();
-    }
+    // This function can be called from AccountState::slotInvalidCredentials,
+    // which (indirectly, through HttpCredentials::invalidateToken) schedules
+    // a cache wipe of the qnam. We can only execute a network job again once
+    // the cache has been cleared, otherwise we'd interfere with the job.
+    QTimer::singleShot(0, this, [this] {
+        if (isUsingOAuth()) {
+            restartOAuth();
+        } else {
+            // First, we will check what kind of auth we need.
+            auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+            QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
+                _authType = type;
+                if (type == DetermineAuthTypeJob::AuthType::OAuth) {
+                    restartOAuth();
+                } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
+                    showDialog();
+                } else {
+                    qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
+                    emit fetched();
+                }
+            });
+            job->start();
+        }
+    });
 }
 
 void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &token, const QString &refreshToken)
