@@ -959,7 +959,8 @@ void Account::setLockFileState(const QString &serverRelativePath,
                                const QString &remoteSyncPathWithTrailingSlash,
                                const QString &localSyncPath,
                                SyncJournalDb * const journal,
-                               const SyncFileItem::LockStatus lockStatus)
+                               const SyncFileItem::LockStatus lockStatus,
+                               const SyncFileItem::LockOwnerType lockOwnerType)
 {
     auto& lockStatusJobInProgress = _lockStatusChangeInprogress[serverRelativePath];
     if (lockStatusJobInProgress.contains(lockStatus)) {
@@ -967,7 +968,7 @@ void Account::setLockFileState(const QString &serverRelativePath,
         return;
     }
     lockStatusJobInProgress.push_back(lockStatus);
-    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, remoteSyncPathWithTrailingSlash, localSyncPath, lockStatus);
+    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, remoteSyncPathWithTrailingSlash, localSyncPath, lockStatus, lockOwnerType);
     connect(job.get(), &LockFileJob::finishedWithoutError, this, [this, serverRelativePath, lockStatus]() {
         removeLockStatusChangeInprogress(serverRelativePath, lockStatus);
         Q_EMIT lockFileSuccess();

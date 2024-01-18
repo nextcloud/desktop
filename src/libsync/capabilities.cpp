@@ -254,6 +254,11 @@ bool Capabilities::filesLockAvailable() const
     return _capabilities["files"].toMap()["locking"].toByteArray() >= "1.0";
 }
 
+bool Capabilities::filesLockTypeAvailable() const
+{
+    return _capabilities["files"].toMap()["api-feature-lock-type"].toByteArray() >= "1.0";
+}
+
 bool Capabilities::userStatus() const
 {
     if (!_capabilities.contains("user_status")) {
