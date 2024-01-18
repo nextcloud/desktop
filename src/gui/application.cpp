@@ -639,15 +639,7 @@ void Application::slotownCloudWizardDone(int res)
         _checkConnectionTimer.start();
         slotCheckConnection();
 
-        bool shouldSetAutoStart = true;
-
-#ifdef Q_OS_MAC
-        // Don't auto start when not being 'installed'
-        shouldSetAutoStart = shouldSetAutoStart
-            && QCoreApplication::applicationDirPath().startsWith("/Applications/");
-#endif
-
-        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), shouldSetAutoStart);
+        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
 
         Systray::instance()->showWindow();
     }
