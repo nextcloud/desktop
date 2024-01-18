@@ -819,9 +819,14 @@ FakeErrorReply::FakeErrorReply(QNetworkAccessManager::Operation op, const QNetwo
     setOperation(op);
     open(QIODevice::ReadOnly);
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, httpErrorCode);
-    if (httpErrorCode == 401) {
+    switch (httpErrorCode) {
+    case 401:
         setError(AuthenticationRequiredError, QStringLiteral("Fake credentials error"));
-    } else {
+        break;
+    case 403:
+        setError(ContentAccessDenied, QStringLiteral("Fake access denied error"));
+        break;
+    default:
         setError(InternalServerError, QStringLiteral("Internal Server Fake Error"));
     }
     QMetaObject::invokeMethod(this, &FakeErrorReply::respond, Qt::QueuedConnection);
