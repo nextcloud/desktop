@@ -227,8 +227,5 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState, ChangeReas
     _context->window()->displayPage(_currentState->page(), _currentState->state());
 }
 
-SetupWizardController::~SetupWizardController() noexcept
-{
-    _context->deleteLater();
-}
+SetupWizardController::~SetupWizardController() noexcept { }
 }

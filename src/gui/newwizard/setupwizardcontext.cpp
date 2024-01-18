@@ -26,7 +26,10 @@ SetupWizardContext::SetupWizardContext(SettingsDialog *windowParent, QObject *pa
 
 SetupWizardContext::~SetupWizardContext()
 {
-    _window->deleteLater();
+    // the widget might already have been deleted by the destuction of its parent widget
+    if (_window) {
+        _window->deleteLater();
+    }
     _accessManager->deleteLater();
 }
 

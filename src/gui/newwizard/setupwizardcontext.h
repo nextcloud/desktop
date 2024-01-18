@@ -56,7 +56,7 @@ public:
     CoreJob *startFetchUserInfoJob(QObject *parent) const;
 
 private:
-    SetupWizardWindow *_window = nullptr;
+    QPointer<SetupWizardWindow> _window;
     AccessManager *_accessManager = nullptr;
     SetupWizardAccountBuilder _accountBuilder;
 };
