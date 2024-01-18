@@ -1,0 +1,8 @@
+Bugfix: Fix early-use crash in the folder watcher on Linux
+
+In a few error scenarios, the folder watcher on Linux shows a dialog
+with an error message. A crash has been fixed where this occurred before
+the GUI was fully initialised.
+
+https://github.com/owncloud/client/issues/11460
+https://github.com/owncloud/client/pull/11475
