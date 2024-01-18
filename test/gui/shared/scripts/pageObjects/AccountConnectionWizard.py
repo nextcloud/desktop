@@ -225,8 +225,8 @@ class AccountConnectionWizard:
         squish.mouseClick(
             squish.waitForObject(AccountConnectionWizard.SELECT_LOCAL_FOLDER)
         )
-        squish.nativeType("<Ctrl+a>")
-        squish.nativeType("<Backspace>")
+
+        squish.waitForObject(AccountConnectionWizard.SELECT_LOCAL_FOLDER).setText("")
 
         squish.type(
             squish.waitForObject(AccountConnectionWizard.SELECT_LOCAL_FOLDER),

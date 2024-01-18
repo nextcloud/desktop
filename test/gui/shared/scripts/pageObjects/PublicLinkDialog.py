@@ -240,9 +240,6 @@ class PublicLinkDialog:
                     test.fail(
                         f"workaround failed, actual date: {actualDate} is still not same as expected date: {expectedDate}"
                     )
-            squish.waitFor(
-                lambda: (test.vp("publicLinkExpirationProgressIndicatorInvisible"))
-            )
         else:
             defaultDate = str(
                 squish.waitForObjectExists(

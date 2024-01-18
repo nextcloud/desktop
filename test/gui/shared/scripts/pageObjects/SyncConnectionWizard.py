@@ -80,6 +80,7 @@ class SyncConnectionWizard:
     @staticmethod
     def setSyncPathInSyncConnectionWizardOc10(folderName=''):
         squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
+        squish.waitForObject(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER).setText("")
         if folderName:
             currentSyncPath = getTempResourcePath(folderName)
             squish.type(SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER, currentSyncPath)
