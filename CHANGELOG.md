@@ -55,6 +55,7 @@ ownCloud admins and users.
 * Enhancement - Add support to provide a list of ports for the OAuth process: [#11276](https://github.com/owncloud/client/issues/11276)
 * Enhancement - Use less modal dialogs: [#11304](https://github.com/owncloud/client/issues/11304)
 * Enhancement - Include recent changes in scheduled syncs: [#11347](https://github.com/owncloud/client/pull/11347)
+* Enhancement - Improve handling of a server blocking an unsupported client: [#11424](https://github.com/owncloud/client/issues/11424)
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 
 ## Details
@@ -154,6 +155,12 @@ ownCloud admins and users.
    discovery.
 
    https://github.com/owncloud/client/pull/11347
+
+* Enhancement - Improve handling of a server blocking an unsupported client: [#11424](https://github.com/owncloud/client/issues/11424)
+
+   We improved the handling of HTTP 403 status codes.
+
+   https://github.com/owncloud/client/issues/11424
 
 * Enhancement - Ask user to restart application when update is available on Windows: [#11442](https://github.com/owncloud/client/pull/11442)
 
