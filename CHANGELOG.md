@@ -44,6 +44,7 @@ ownCloud admins and users.
 ## Summary
 
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
+* Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
@@ -66,6 +67,15 @@ ownCloud admins and users.
    aborted.
 
    https://github.com/owncloud/client/pull/11396
+
+* Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
+
+   In a few error scenarios, the folder watcher on Linux shows a dialog with an
+   error message. A crash has been fixed where this occurred before the GUI was
+   fully initialised.
+
+   https://github.com/owncloud/client/issues/11460
+   https://github.com/owncloud/client/pull/11475
 
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
 
