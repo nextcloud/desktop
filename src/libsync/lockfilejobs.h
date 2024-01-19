@@ -25,6 +25,7 @@ public:
                          const QString &remoteSyncPathWithTrailingSlash,
                          const QString &localSyncPath,
                          const SyncFileItem::LockStatus requestedLockState,
+                         const SyncFileItem::LockOwnerType lockOwnerType,
                          QObject *parent = nullptr);
     void start() override;
 
@@ -48,6 +49,7 @@ private:
 
     SyncJournalDb* _journal = nullptr;
     SyncFileItem::LockStatus _requestedLockState = SyncFileItem::LockStatus::LockedItem;
+    SyncFileItem::LockOwnerType _requestedLockOwnerType = SyncFileItem::LockOwnerType::UserLock;
 
     SyncFileItem::LockStatus _lockStatus = SyncFileItem::LockStatus::UnlockedItem;
     SyncFileItem::LockOwnerType _lockOwnerType = SyncFileItem::LockOwnerType::UserLock;

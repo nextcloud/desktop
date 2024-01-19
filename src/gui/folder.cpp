@@ -649,7 +649,7 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
         }
         const auto canUnlockFile = isFileRecordValid
             && rec._lockstate._locked
-            && rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::UserLock)
+            && rec._lockstate._lockOwnerType == static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock)
             && rec._lockstate._lockOwnerId == _accountState->account()->davUser();
 
         if (!canUnlockFile) {
@@ -668,11 +668,13 @@ void Folder::slotFilesLockReleased(const QSet<QString> &files)
             disconnect(_officeFileLockReleaseUnlockFailure);
             qCWarning(lcFolder) << "Failed to unlock a file:" << remoteFilePath << message;
         });
+        const auto lockOwnerType = static_cast<SyncFileItem::LockOwnerType>(rec._lockstate._lockOwnerType);
         _accountState->account()->setLockFileState(remoteFilePath,
                                                    remotePathTrailingSlash(),
                                                    path(),
                                                    journalDb(),
-                                                   SyncFileItem::LockStatus::UnlockedItem);
+                                                   SyncFileItem::LockStatus::UnlockedItem,
+                                                   lockOwnerType);
     }
 }
 
@@ -719,7 +721,8 @@ void Folder::slotLockedFilesFound(const QSet<QString> &files)
                                                    remotePathTrailingSlash(),
                                                    path(),
                                                    journalDb(),
-                                                   SyncFileItem::LockStatus::LockedItem);
+                                                   SyncFileItem::LockStatus::LockedItem,
+                                                   SyncFileItem::LockOwnerType::TokenLock);
     }
 }
 
