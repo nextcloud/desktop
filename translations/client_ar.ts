@@ -1881,29 +1881,29 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>رجاءً، إذهب إلى الإعدادات لاختياره إذا كنت ترغب في تنزيله.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1366"/>
+        <location filename="../src/gui/folder.cpp" line="1369"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>تجاوز المجلد الحجم الأقصى المحدد و هو %1 ميغا بايت: %2. 
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1377"/>
+        <location filename="../src/gui/folder.cpp" line="1380"/>
         <source>Keep syncing</source>
         <translation>إستمِر في المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1385"/>
+        <location filename="../src/gui/folder.cpp" line="1388"/>
         <source>Stop syncing</source>
         <translation>أوقِف المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1396"/>
+        <location filename="../src/gui/folder.cpp" line="1399"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>تجاوز المجلد %1 الحجم الأقصى المحدد و هو %2 ميغا بايت. </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1397"/>
+        <location filename="../src/gui/folder.cpp" line="1400"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>هل ترغب في التوقف عن مزامنة هذا المجلد؟</translation>
     </message>
@@ -1929,7 +1929,7 @@ This means that the synchronization client might not upload local changes immedi
 ٪ 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1518"/>
+        <location filename="../src/gui/folder.cpp" line="1521"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>تعذّر تنزيل الملف الظاهري الذي رمزه: &quot;%1&quot;, الحالة: &quot;%2&quot; و رسالة الخطأ: &quot;%3&quot;</translation>
     </message>
