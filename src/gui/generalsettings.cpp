@@ -137,7 +137,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
                 _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
             };
             connect(ocupdater, &OCUpdater::downloadStateChanged, this, updateInfo);
-            connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller);
+            if (auto *nsisupdater = qobject_cast<NSISUpdater *>(ocupdater)) {
+                connect(_ui->restartButton, &QAbstractButton::clicked, nsisupdater, &NSISUpdater::startInstallerAndQuit);
+            }
             connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit);
             updateInfo();
         }

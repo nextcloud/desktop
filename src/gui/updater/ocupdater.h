@@ -118,8 +118,6 @@ public:
 
     void setUpdateUrl(const QUrl &url);
 
-    bool performUpdate();
-
     void checkForUpdate() override;
 
     QString statusString() const;
@@ -138,10 +136,6 @@ signals:
      * Schedule retry of update check in the future. For use when an update failed previously due to a (temporary) problem which might be resolved in a reasonable amount of time.
      */
     void retryUpdateCheckLater();
-
-public slots:
-    // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater
-    void slotStartInstaller();
 
 protected slots:
     void backgroundCheckForUpdate() override;
@@ -179,6 +173,9 @@ class NSISUpdater : public OCUpdater
 public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
+
+    void startInstallerAndQuit();
+
 private slots:
     void slotSetPreviouslySkippedVersion();
     void slotDownloadFinished();
