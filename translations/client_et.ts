@@ -80,14 +80,6 @@
     </message>
 </context>
 <context>
-    <name>CheckBasicAuthJobFactory</name>
-    <message>
-        <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="48"/>
-        <source>Invalid reply received from server</source>
-        <translation>Serverilt saabus vigane vastus</translation>
-    </message>
-</context>
-<context>
     <name>ChecksumHeader</name>
     <message>
         <location filename="../src/common/checksums.cpp" line="124"/>
@@ -563,7 +555,7 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Updating credentials for %1...</source>
-        <translation type="unfinished"/>
+        <translation>%1 kasutajatunnuste värskendamine...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="717"/>
@@ -862,12 +854,12 @@ Uuendus toimub taustal ja kirjutab praeguse AppImage&apos;i faili üle. Uuendami
         <translation>Ühtegi ownCloud kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="242"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="247"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Palun uuenda server viimasele versioonile ning taaskäivita klient.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="146"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="149"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentimise viga: kasutajanimi või parool on vale</translation>
     </message>
@@ -877,12 +869,12 @@ Uuendus toimub taustal ja kirjutab praeguse AppImage&apos;i faili üle. Uuendami
         <translation>aegumine</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="219"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>Sisestatud kasutajatunnused pole õiged</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="242"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="247"/>
         <source>The configured server for this client is too old.</source>
         <translation>Selle kliendi jaoks seadistatud server on liiga vana.</translation>
     </message>
@@ -1052,46 +1044,46 @@ Uuendus toimub taustal ja kirjutab praeguse AppImage&apos;i faili üle. Uuendami
         <translation>Sünkroniseerimise tegevus</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="809"/>
+        <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
         <translation>VFS režiimi vahetamine kaustas &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="971"/>
+        <location filename="../src/gui/folder.cpp" line="950"/>
         <source>Could not read system exclude file</source>
         <translation>Süsteemi väljajätmiste faili lugemine ebaõnnestus</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1175"/>
+        <location filename="../src/gui/folder.cpp" line="1154"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Lisatud on uus, üle %1 MB suurune kaust: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1178"/>
+        <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Kaust väliselt andmekandjalt on lisatud.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1179"/>
+        <location filename="../src/gui/folder.cpp" line="1158"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Kui soovite seda alla laadida, minge selle valimiseks seadetesse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1233"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Kaust %1 loodi, kuid oli varem sünkroniseerimisest välja jäetud. Selles olevaid andmeid ei sünkroniseerita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1236"/>
+        <location filename="../src/gui/folder.cpp" line="1215"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Fail %1 loodi, kuid jäeti varem sünkroniseerimisest välja. Seda ei sünkroniseerita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1248"/>
+        <location filename="../src/gui/folder.cpp" line="1227"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1103,7 +1095,7 @@ See tähendab, et sünkroniseerimisklient ei pruugi kohalikke muudatusi kohe ül
 % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1114,7 +1106,7 @@ Kui te otsustate failid säilitada, sünkroniseeritakse need uuesti serveriga, k
 Kui te otsustate failid kustutada, on need teile kättesaamatud, välja arvatud juhul, kui te olete omanik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1299"/>
+        <location filename="../src/gui/folder.cpp" line="1278"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1123,17 +1115,17 @@ Kas olete kindel, et soovite neid toiminguid serveriga sünkroniseerida?
 Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroniseeritakse need uuesti serverist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1285"/>
         <source>Remove All Files?</source>
         <translation>Kustutada kõik failid?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1309"/>
+        <location filename="../src/gui/folder.cpp" line="1288"/>
         <source>Remove all files</source>
         <translation>Kustutada kõik failid</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1310"/>
+        <location filename="../src/gui/folder.cpp" line="1289"/>
         <source>Keep files</source>
         <translation>Säilita failid</translation>
     </message>
@@ -1740,12 +1732,12 @@ Pange tähele, et sellega valitakse ainult allikas, millest uuendused võetakse,
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="123"/>
         <source>Please enter your password to log in to the account %1.</source>
         <translation>Kontole %1 sisselogimiseks sisesta palun salasõna.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="166"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="172"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2257,7 +2249,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
         <source>%1 installed successfully. Restart the application to finish installing the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 paigaldati edukalt. Taaskäivitage rakendus, et lõpetada uuenduste paigaldamine.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="175"/>
@@ -3708,7 +3700,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Wizard::BasicCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="43"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
         <translation>Valed kasutajaandmed</translation>
     </message>
@@ -4045,7 +4037,7 @@ Kas olete kindel, et soovite jätkata?</translation>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="945"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
         <translation>Kasutaja peatas konto &apos;%1&apos; sünkroniseerimise</translation>
     </message>
@@ -4269,12 +4261,12 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="20"/>
         <source>Update downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Värskendus allalaaditud</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/updatedownloadeddialog.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Restart required&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;Taaskäivitamine on nõutud&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

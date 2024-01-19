@@ -80,14 +80,6 @@
     </message>
 </context>
 <context>
-    <name>CheckBasicAuthJobFactory</name>
-    <message>
-        <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="48"/>
-        <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>ChecksumHeader</name>
     <message>
         <location filename="../src/common/checksums.cpp" line="124"/>
@@ -860,12 +852,12 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation>තමන්ගේම ක්ලවුඩ් ගිණුමක් වින්‍යාස කර නැත</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="242"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="247"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>කරුණාකර නවතම සේවාදායකයට යාවත්කාලීන කර සේවාලාභියා නැවත ආරම්භ කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="146"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="149"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>සත්‍යාපන දෝෂය: පරිශීලක නාමය හෝ මුරපදය වැරදියි.</translation>
     </message>
@@ -875,12 +867,12 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation>කාලය හමාරයි</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="219"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>සපයා ඇති අක්තපත්‍ර නිවැරදි නොවේ</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="242"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="247"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"/>
     </message>
@@ -1050,46 +1042,46 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation>සමමුහුර්ත ක්‍රියාකාරකම්</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="809"/>
+        <location filename="../src/gui/folder.cpp" line="788"/>
         <source>Switching VFS mode on folder &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="971"/>
+        <location filename="../src/gui/folder.cpp" line="950"/>
         <source>Could not read system exclude file</source>
         <translation>පද්ධතිය බැහැර ගොනුව කියවීමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1175"/>
+        <location filename="../src/gui/folder.cpp" line="1154"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB ට වඩා විශාල නව ෆෝල්ඩරයක් එකතු කර ඇත: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1178"/>
+        <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>බාහිර ගබඩාවකින් ෆෝල්ඩරයක් එක් කර ඇත.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1179"/>
+        <location filename="../src/gui/folder.cpp" line="1158"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>ඔබට එය බාගත කිරීමට අවශ්‍ය නම් එය තේරීමට කරුණාකර සැකසීම් වෙත යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1233"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>ෆෝල්ඩරය %1 නිර්මාණය කරන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කර ඇත. එය තුළ ඇති දත්ත සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1236"/>
+        <location filename="../src/gui/folder.cpp" line="1215"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 ගොනුව සාදන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කරන ලදී. එය සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1248"/>
+        <location filename="../src/gui/folder.cpp" line="1227"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1102,7 +1094,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1293"/>
+        <location filename="../src/gui/folder.cpp" line="1272"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1113,7 +1105,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ඔබ ගොනු මකා දැමීමට තීරණය කරන්නේ නම්, ඔබ හිමිකරු නම් මිස, ඒවා ඔබට ලබාගත නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1299"/>
+        <location filename="../src/gui/folder.cpp" line="1278"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1122,17 +1114,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 මෙය හදිසි අනතුරක් නම් සහ ඔබ ඔබේ ගොනු තබා ගැනීමට තීරණය කරන්නේ නම්, ඒවා සේවාදායකයෙන් නැවත සමමුහුර්ත කරනු ලැබේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1306"/>
+        <location filename="../src/gui/folder.cpp" line="1285"/>
         <source>Remove All Files?</source>
         <translation>සියලුම ගොනු ඉවත් කරන්නද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1309"/>
+        <location filename="../src/gui/folder.cpp" line="1288"/>
         <source>Remove all files</source>
         <translation>සියලුම ගොනු ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1310"/>
+        <location filename="../src/gui/folder.cpp" line="1289"/>
         <source>Keep files</source>
         <translation>ගොනු තබා ගන්න</translation>
     </message>
@@ -1737,12 +1729,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="123"/>
         <source>Please enter your password to log in to the account %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="166"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="172"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -3703,7 +3695,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Wizard::BasicCredentialsSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="43"/>
+        <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
         <translation type="unfinished"/>
     </message>
@@ -4039,7 +4031,7 @@ Are you sure you want to proceed?</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="945"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>User paused sync for account &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
