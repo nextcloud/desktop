@@ -89,6 +89,9 @@ private:
     QProgressIndicator *_progressIndi;
     OwncloudWizard *_ocWizard;
     AddCertificateDialog *addCertDial = nullptr;
+
+    // Grab the forceLoginV2-setting from the wizard
+    bool useFlow2 = _ocWizard->useFlow2();
 };
 
 } // namespace OCC

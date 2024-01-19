@@ -21,6 +21,7 @@
 #include <QSslKey>
 #include <QSslCertificate>
 
+#include "libsync/configfile.h"
 #include "networkjobs.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "accountfwd.h"
@@ -64,6 +65,7 @@ public:
     [[nodiscard]] QString ocUrl() const;
     [[nodiscard]] QString localFolder() const;
     [[nodiscard]] QStringList selectiveSyncBlacklist() const;
+    [[nodiscard]] bool useFlow2() const;
     [[nodiscard]] bool useVirtualFileSync() const;
     [[nodiscard]] bool isConfirmBigFolderChecked() const;
 
@@ -130,6 +132,8 @@ private:
     QStringList _setupLog;
 
     bool _registration = false;
+
+    bool _useFlow2 = ConfigFile().forceLoginV2();
 
     friend class OwncloudSetupWizard;
 };

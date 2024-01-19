@@ -104,6 +104,8 @@ static constexpr char stopSyncingExistingFoldersOverLimitC[] = "stopSyncingExist
 static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
 static constexpr char moveToTrashC[] = "moveToTrash";
 
+static constexpr char forceLoginV2C[] = "forceLoginV2";
+
 static constexpr char certPath[] = "http_certificatePath";
 static constexpr char certPasswd[] = "http_certificatePasswd";
 
@@ -989,6 +991,16 @@ bool ConfigFile::moveToTrash() const
 void ConfigFile::setMoveToTrash(bool isChecked)
 {
     setValue(moveToTrashC, isChecked);
+}
+
+bool ConfigFile::forceLoginV2() const
+{
+    return getValue(forceLoginV2C, QString(), false).toBool();
+}
+
+void ConfigFile::setForceLoginV2(bool isChecked)
+{
+    setValue(forceLoginV2C, isChecked);
 }
 
 bool ConfigFile::showMainDialogAsNormalWindow() const {
