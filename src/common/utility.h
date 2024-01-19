@@ -57,7 +57,7 @@ namespace Utility {
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
     OCSYNC_EXPORT void removeFavLink(const QString &folder);
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
-    OCSYNC_EXPORT QString octetsToString(qint64 octets);
+    OCSYNC_EXPORT QString octetsToString(const qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
     OCSYNC_EXPORT QByteArray friendlyUserAgentString();
     /**
