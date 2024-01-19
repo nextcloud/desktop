@@ -1226,7 +1226,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/nextcloud/NextcloudKit";
+			repositoryURL = "https://github.com/nextcloud/NextcloudKit.git";
 			requirement = {
 				branch = develop;
 				kind = branch;
