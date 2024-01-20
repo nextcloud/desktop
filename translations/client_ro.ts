@@ -5975,6 +5975,16 @@ Server replied with error: %2</source>
 <context>
     <name>Utility</name>
     <message>
+        <location filename="../src/common/utility.cpp" line="147"/>
+        <source>%L1 B</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="134"/>
+        <source>%L1 TB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/common/utility.cpp" line="136"/>
         <source>%L1 GB</source>
         <translation type="unfinished"/>
@@ -5987,11 +5997,6 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/utility.cpp" line="144"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/common/utility.cpp" line="147"/>
-        <source>%L1 B</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
