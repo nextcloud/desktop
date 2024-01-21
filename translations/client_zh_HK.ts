@@ -6011,7 +6011,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>

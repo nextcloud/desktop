@@ -1121,7 +1121,7 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="697"/>
         <source>Restoration failed: %1</source>
-        <translation>Ripristini falliti: %1</translation>
+        <translation>Ripristini non riusciti: %1</translation>
     </message>
 </context>
 <context>
@@ -1889,7 +1889,8 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <location filename="../src/gui/folder.cpp" line="1369"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Una cartella ha superato il limite di dimensione impostato per la cartella di %1MB: %2.
+%3</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1380"/>
@@ -1904,7 +1905,7 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1399"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation type="unfinished"/>
+        <translation>La cartella %1 ha superato il limite di dimensione impostato di %2MB.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1400"/>
@@ -5727,7 +5728,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="287"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Questo elemento non può essere condiviso.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="296"/>
@@ -6428,7 +6429,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Utente errato&lt;/h1&gt;&lt;p&gt;Hai effettuato l&apos;accesso con l&apos;utente &lt;em&gt;%1&lt;/em&gt;, ma devi accedere con l&apos;utente &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Chiudi la sessione di %3 in un&apos;altra scheda, poi &lt;a href=&apos;%4&apos;&gt;clicca qui&lt;/a&gt; e accedi con %2.&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Utente errato&lt;/h1&gt;&lt;p&gt;Hai effettuato l&apos;accesso con l&apos;utente &lt;em&gt;%1&lt;/em&gt;, ma devi accedere con l&apos;utente &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Chiudi la sessione di %3 in un&apos;altra scheda, poi &lt;a href=&apos;%4&apos;&gt;fai clic qui&lt;/a&gt; e accedi con %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
