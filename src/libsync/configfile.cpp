@@ -285,6 +285,8 @@ void ConfigFile::saveGeometry(QWidget *w)
     settings.beginGroup(w->objectName());
     settings.setValue(QLatin1String(geometryC), w->saveGeometry());
     settings.sync();
+#else
+    Q_UNUSED(w)
 #endif
 }
 
@@ -292,6 +294,8 @@ void ConfigFile::restoreGeometry(QWidget *w)
 {
 #ifndef TOKEN_AUTH_ONLY
     w->restoreGeometry(getValue(geometryC, w->objectName()).toByteArray());
+#else
+    Q_UNUSED(w)
 #endif
 }
 
@@ -306,6 +310,8 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
     settings.beginGroup(header->objectName());
     settings.setValue(QLatin1String(geometryC), header->saveState());
     settings.sync();
+#else
+    Q_UNUSED(header)
 #endif
 }
 
@@ -319,6 +325,8 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
     header->restoreState(settings.value(geometryC).toByteArray());
+#else
+    Q_UNUSED(header)
 #endif
 }
 
