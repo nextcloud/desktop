@@ -13,12 +13,14 @@
  */
 
 import Foundation
-import RealmSwift
 import OSLog
+import RealmSwift
 
 extension NextcloudFilesDatabaseManager {
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
-        if let metadata = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId).first {
+        if let metadata = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter(
+            "ocId == %@", ocId
+        ).first {
             return NextcloudLocalFileMetadataTable(value: metadata)
         }
 
@@ -41,10 +43,14 @@ extension NextcloudFilesDatabaseManager {
                 newLocalFileMetadata.exifLongitude = "-1"
 
                 database.add(newLocalFileMetadata, update: .all)
-                Logger.ncFilesDatabase.debug("Added local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: .public)")
+                Logger.ncFilesDatabase.debug(
+                    "Added local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: .public)"
+                )
             }
-        } catch let error {
-            Logger.ncFilesDatabase.error("Could not add local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
+        } catch {
+            Logger.ncFilesDatabase.error(
+                "Could not add local file metadata from item metadata. ocID: \(itemMetadata.ocId, privacy: .public), etag: \(itemMetadata.etag, privacy: .public), fileName: \(itemMetadata.fileName, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+            )
         }
     }
 
@@ -53,34 +59,42 @@ extension NextcloudFilesDatabaseManager {
 
         do {
             try database.write {
-                let results = database.objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId)
+                let results = database.objects(NextcloudLocalFileMetadataTable.self).filter(
+                    "ocId == %@", ocId)
                 database.delete(results)
             }
-        } catch let error {
-            Logger.ncFilesDatabase.error("Could not delete local file metadata with ocId: \(ocId, privacy: .public), received error: \(error.localizedDescription, privacy: .public)")
+        } catch {
+            Logger.ncFilesDatabase.error(
+                "Could not delete local file metadata with ocId: \(ocId, privacy: .public), received error: \(error.localizedDescription, privacy: .public)"
+            )
         }
     }
 
-    private func sortedLocalFileMetadatas(_ metadatas: Results<NextcloudLocalFileMetadataTable>) -> [NextcloudLocalFileMetadataTable] {
+    private func sortedLocalFileMetadatas(_ metadatas: Results<NextcloudLocalFileMetadataTable>)
+        -> [NextcloudLocalFileMetadataTable]
+    {
         let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
         return Array(sortedMetadatas.map { NextcloudLocalFileMetadataTable(value: $0) })
     }
 
     func localFileMetadatas(account: String) -> [NextcloudLocalFileMetadataTable] {
-        let results = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("account == %@", account)
+        let results = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter(
+            "account == %@", account)
         return sortedLocalFileMetadatas(results)
     }
 
     func localFileItemMetadatas(account: String) -> [NextcloudItemMetadataTable] {
         let localFileMetadatas = localFileMetadatas(account: account)
-        let localFileMetadatasOcIds = Array(localFileMetadatas.map { $0.ocId })
+        let localFileMetadatasOcIds = Array(localFileMetadatas.map(\.ocId))
 
         var itemMetadatas: [NextcloudItemMetadataTable] = []
 
         for ocId in localFileMetadatasOcIds {
             guard let itemMetadata = itemMetadataFromOcId(ocId) else {
-                Logger.ncFilesDatabase.error("Could not find matching item metadata for local file metadata with ocId: \(ocId, privacy: .public) with request from account: \(account)")
-                continue;
+                Logger.ncFilesDatabase.error(
+                    "Could not find matching item metadata for local file metadata with ocId: \(ocId, privacy: .public) with request from account: \(account)"
+                )
+                continue
             }
 
             itemMetadatas.append(NextcloudItemMetadataTable(value: itemMetadata))

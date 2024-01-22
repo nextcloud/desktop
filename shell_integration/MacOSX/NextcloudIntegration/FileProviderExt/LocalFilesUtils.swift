@@ -12,17 +12,22 @@
  * for more details.
  */
 
-import Foundation
 import FileProvider
+import Foundation
 import OSLog
 
 func pathForAppGroupContainer() -> URL? {
-    guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
-        Logger.localFileOps.critical("Could not get container url as missing SocketApiPrefix info in app Info.plist")
+    guard
+        let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix")
+            as? String
+    else {
+        Logger.localFileOps.critical(
+            "Could not get container url as missing SocketApiPrefix info in app Info.plist")
         return nil
     }
 
-    return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
+    return FileManager.default.containerURL(
+        forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
 
 func pathForFileProviderExtData() -> URL? {
@@ -32,7 +37,9 @@ func pathForFileProviderExtData() -> URL? {
 
 func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throws -> URL? {
     guard let fpManager = NSFileProviderManager(for: domain) else {
-        Logger.localFileOps.error("Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)")
+        Logger.localFileOps.error(
+            "Unable to get file provider manager for domain: \(domain.displayName, privacy: .public)"
+        )
         throw NSFileProviderError(.providerNotFound)
     }
 
@@ -40,9 +47,13 @@ func pathForFileProviderTempFilesForDomain(_ domain: NSFileProviderDomain) throw
     return fileProviderDataUrl.appendingPathComponent("TemporaryNextcloudFiles/")
 }
 
-func localPathForNCFile(ocId: String, fileNameView: String, domain: NSFileProviderDomain) throws -> URL {
+func localPathForNCFile(ocId _: String, fileNameView: String, domain: NSFileProviderDomain) throws
+    -> URL
+{
     guard let fileProviderFilesPathUrl = try pathForFileProviderTempFilesForDomain(domain) else {
-        Logger.localFileOps.error("Unable to get path for file provider temp files for domain: \(domain.displayName, privacy: .public)")
+        Logger.localFileOps.error(
+            "Unable to get path for file provider temp files for domain: \(domain.displayName, privacy: .public)"
+        )
         throw URLError(.badURL)
     }
 
