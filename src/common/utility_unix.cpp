@@ -17,13 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#include "utility.h"
+#include "config.h"
+
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
 #include <QStandardPaths>
 #include <QtGlobal>
 #include <QProcess>
+#include <QString>
+#include <QTextStream>
 
 namespace OCC {
 
-static void setupFavLink_private(const QString &folder)
+void Utility::setupFavLink(const QString &folder)
 {
     // Nautilus: add to ~/.gtk-bookmarks
     QFile gtkBookmarks(QDir::homePath() + QLatin1String("/.config/gtk-3.0/bookmarks"));
@@ -38,36 +46,36 @@ static void setupFavLink_private(const QString &folder)
     }
 }
 
-static void removeFavLink_private(const QString &folder)
+void Utility::removeFavLink(const QString &folder)
 {
     Q_UNUSED(folder)
 }
 
 // returns the autostart directory the linux way
 // and respects the XDG_CONFIG_HOME env variable
-QString getUserAutostartDir_private()
+static QString getUserAutostartDir()
 {
     QString config = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
     config += QLatin1String("/autostart/");
     return config;
 }
 
-bool hasLaunchOnStartup_private(const QString &appName)
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 {
     Q_UNUSED(appName)
-    QString desktopFileLocation = getUserAutostartDir_private()
-                                    + QLatin1String(LINUX_APPLICATION_ID)
-                                    + QLatin1String(".desktop");
+    return false;
+}
+
+bool Utility::hasLaunchOnStartup(const QString &appName)
+{
+    const QString desktopFileLocation = getUserAutostartDir() + appName + QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
+void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
-    Q_UNUSED(appName)
-    QString userAutoStartPath = getUserAutostartDir_private();
-    QString desktopFileLocation = userAutoStartPath
-                                    + QLatin1String(LINUX_APPLICATION_ID)
-                                    + QLatin1String(".desktop");
+    const auto userAutoStartPath = getUserAutostartDir();
+    const QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
             qCWarning(lcUtility) << "Could not create autostart folder" << userAutoStartPath;
@@ -104,7 +112,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
-static inline bool hasDarkSystray_private()
+bool Utility::hasDarkSystray()
 {
     return true;
 }
