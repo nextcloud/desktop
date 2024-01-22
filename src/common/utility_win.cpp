@@ -148,7 +148,6 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     }
 }
 
-#ifndef TOKEN_AUTH_ONLY
 bool Utility::hasDarkSystray()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
@@ -185,7 +184,6 @@ bool Utility::registryKeyExists(HKEY hRootKey, const QString &subKey)
     RegCloseKey(hKey);
     return result != ERROR_FILE_NOT_FOUND;
 }
-#endif
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
 {
