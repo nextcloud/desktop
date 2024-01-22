@@ -20,7 +20,7 @@
 
 namespace
 {
-constexpr auto statusReportCategoryE2eErrors = "e2e_errors";
+constexpr auto statusReportCategoryE2eErrors = "e2ee_errors";
 constexpr auto statusReportCategoryProblems = "problems";
 constexpr auto statusReportCategorySyncConflicts = "sync_conflicts";
 constexpr auto statusReportCategoryVirus = "virus_detected";
