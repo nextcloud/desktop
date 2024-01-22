@@ -12,11 +12,11 @@
  * for more details.
  */
 
-import Foundation
 import FileProvider
-import OSLog
+import Foundation
 import NCDesktopClientSocketKit
 import NextcloudKit
+import OSLog
 
 extension FileProviderExtension {
     func sendFileProviderDomainIdentifier() {
@@ -28,7 +28,9 @@ extension FileProviderExtension {
 
     private func signalEnumeratorAfterAccountSetup() {
         guard let fpManager = NSFileProviderManager(for: domain) else {
-            Logger.fileProviderExtension.error("Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify after account setup")
+            Logger.fileProviderExtension.error(
+                "Could not get file provider manager for domain \(self.domain.displayName, privacy: .public), cannot notify after account setup"
+            )
             return
         }
 
@@ -36,36 +38,47 @@ extension FileProviderExtension {
 
         fpManager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
-                Logger.fileProviderExtension.error("Error resolving not authenticated, received error: \(error!.localizedDescription)")
+                Logger.fileProviderExtension.error(
+                    "Error resolving not authenticated, received error: \(error!.localizedDescription)"
+                )
             }
         }
 
-        Logger.fileProviderExtension.debug("Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: .public)")
+        Logger.fileProviderExtension.debug(
+            "Signalling enumerators for user \(self.ncAccount!.username) at server \(self.ncAccount!.serverUrl, privacy: .public)"
+        )
 
         fpManager.signalEnumerator(for: .workingSet) { error in
             if error != nil {
-                Logger.fileProviderExtension.error("Error signalling enumerator for working set, received error: \(error!.localizedDescription, privacy: .public)")
+                Logger.fileProviderExtension.error(
+                    "Error signalling enumerator for working set, received error: \(error!.localizedDescription, privacy: .public)"
+                )
             }
         }
     }
 
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
         ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
-        ncKit.setup(user: ncAccount!.username,
-                    userId: ncAccount!.username,
-                    password: ncAccount!.password,
-                    urlBase: ncAccount!.serverUrl,
-                    userAgent: "Nextcloud-macOS/FileProviderExt",
-                    nextcloudVersion: 25,
-                    delegate: nil) // TODO: add delegate methods for self
+        ncKit.setup(
+            user: ncAccount!.username,
+            userId: ncAccount!.username,
+            password: ncAccount!.password,
+            urlBase: ncAccount!.serverUrl,
+            userAgent: "Nextcloud-macOS/FileProviderExt",
+            nextcloudVersion: 25,
+            delegate: nil)  // TODO: add delegate methods for self
 
-        Logger.fileProviderExtension.info("Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)")
+        Logger.fileProviderExtension.info(
+            "Nextcloud account set up in File Provider extension for user: \(user, privacy: .public) at server: \(serverUrl, privacy: .public)"
+        )
 
         signalEnumeratorAfterAccountSetup()
     }
 
     func removeAccountConfig() {
-        Logger.fileProviderExtension.info("Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)")
+        Logger.fileProviderExtension.info(
+            "Received instruction to remove account data for user \(self.ncAccount!.username, privacy: .public) at server \(self.ncAccount!.serverUrl, privacy: .public)"
+        )
         ncAccount = nil
     }
 }
