@@ -6008,7 +6008,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 To</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="136"/>
