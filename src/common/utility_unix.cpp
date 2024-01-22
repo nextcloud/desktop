@@ -112,12 +112,10 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     }
 }
 
-#ifndef TOKEN_AUTH_ONLY
 bool Utility::hasDarkSystray()
 {
     return true;
 }
-#endif
 
 QString Utility::getCurrentUserName()
 {
