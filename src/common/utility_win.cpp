@@ -34,6 +34,7 @@
 #include <QLibrary>
 #include <QSettings>
 #include <QTemporaryFile>
+#include <QFileInfo>
 
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
@@ -42,7 +43,7 @@ static const char runPathC[] = R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\C
 
 namespace OCC {
 
-static void setupFavLink_private(const QString &folder)
+void Utility::setupFavLink(const QString &folder)
 {
     // First create a Desktop.ini so that the folder and favorite link show our application's icon.
     QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
@@ -87,7 +88,7 @@ static void setupFavLink_private(const QString &folder)
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 }
 
-static void removeFavLink_private(const QString &folder)
+void Utility::removeFavLink(const QString &folder)
 {
     const QDir folderDir(folder);
 
@@ -121,21 +122,21 @@ static void removeFavLink_private(const QString &folder)
     }
 }
 
-bool hasSystemLaunchOnStartup_private(const QString &appName)
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 {
     QString runPath = QLatin1String(systemRunPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     return settings.contains(appName);
 }
 
-bool hasLaunchOnStartup_private(const QString &appName)
+bool Utility::hasLaunchOnStartup(const QString &appName)
 {
     QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     return settings.contains(appName);
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
+void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(guiName);
     QString runPath = QLatin1String(runPathC);
@@ -147,8 +148,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
-// TODO: Right now only detection on toggle/startup, not when windows theme is switched while nextcloud is running
-static inline bool hasDarkSystray_private()
+bool Utility::hasDarkSystray()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
                                         QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)"),

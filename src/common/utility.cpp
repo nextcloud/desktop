@@ -39,7 +39,6 @@
 #include <QSysInfo>
 #include <qrandom.h>
 
-
 #ifdef Q_OS_UNIX
 #include <sys/statvfs.h>
 #include <sys/types.h>
@@ -49,14 +48,6 @@
 #include <cmath>
 #include <cstdarg>
 #include <cstring>
-
-#if defined(Q_OS_WIN)
-#include "utility_win.cpp"
-#elif defined(Q_OS_MAC)
-#include "utility_mac.cpp"
-#else
-#include "utility_unix.cpp"
-#endif
 
 namespace {
 constexpr auto bytes = 1024;
@@ -112,15 +103,6 @@ QString Utility::formatFingerprint(const QByteArray &fmhash, bool colonSeparated
     return fp;
 }
 
-void Utility::setupFavLink(const QString &folder)
-{
-    setupFavLink_private(folder);
-}
-
-void Utility::removeFavLink(const QString &folder)
-{
-    removeFavLink_private(folder);
-}
 
 QString Utility::octetsToString(const qint64 octets)
 {
@@ -200,26 +182,6 @@ QByteArray Utility::friendlyUserAgentString()
     const auto pattern = QStringLiteral("%1 (Desktop Client - %2)");
     const auto userAgent = pattern.arg(QSysInfo::machineHostName(), platform());
     return userAgent.toUtf8();
-}
-
-bool Utility::hasSystemLaunchOnStartup(const QString &appName)
-{
-#if defined(Q_OS_WIN)
-    return hasSystemLaunchOnStartup_private(appName);
-#else
-    Q_UNUSED(appName)
-    return false;
-#endif
-}
-
-bool Utility::hasLaunchOnStartup(const QString &appName)
-{
-    return hasLaunchOnStartup_private(appName);
-}
-
-void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
-{
-    setLaunchOnStartup_private(appName, guiName, enable);
 }
 
 qint64 Utility::freeDiskSpace(const QString &path)
@@ -405,12 +367,6 @@ QByteArray Utility::normalizeEtag(QByteArray etag)
     etag.squeeze();
     return etag;
 }
-
-bool Utility::hasDarkSystray()
-{
-    return hasDarkSystray_private();
-}
-
 
 QString Utility::platformName()
 {

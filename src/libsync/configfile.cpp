@@ -84,6 +84,7 @@ static constexpr char logExpireC[] = "logExpire";
 static constexpr char logFlushC[] = "logFlush";
 static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
 static constexpr char clientVersionC[] = "clientVersion";
+static constexpr char launchOnSystemStartupC[] = "launchOnSystemStartup";
 
 static constexpr char proxyHostC[] = "Proxy/host";
 static constexpr char proxyTypeC[] = "Proxy/type";
@@ -1138,6 +1139,18 @@ void ConfigFile::setClientVersionString(const QString &version)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(clientVersionC), version);
+}
+
+bool ConfigFile::launchOnSystemStartup() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(launchOnSystemStartupC), true).toBool();
+}
+
+void ConfigFile::setLaunchOnSystemStartup(const bool autostart)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(launchOnSystemStartupC), autostart);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
