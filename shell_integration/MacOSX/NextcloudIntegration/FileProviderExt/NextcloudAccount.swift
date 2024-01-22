@@ -12,21 +12,20 @@
  * for more details.
  */
 
-import Foundation
 import FileProvider
+import Foundation
 
 class NextcloudAccount: NSObject {
     static let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
     let username, password, ncKitAccount, serverUrl, davFilesUrl: String
 
     init(user: String, serverUrl: String, password: String) {
-        self.username = user
+        username = user
         self.password = password
-        self.ncKitAccount = user + " " + serverUrl
+        ncKitAccount = user + " " + serverUrl
         self.serverUrl = serverUrl
-        self.davFilesUrl = serverUrl + NextcloudAccount.webDavFilesUrlSuffix + user
+        davFilesUrl = serverUrl + NextcloudAccount.webDavFilesUrlSuffix + user
 
         super.init()
     }
 }
-
