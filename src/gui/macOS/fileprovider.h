@@ -39,6 +39,9 @@ public:
 
     static bool fileProviderAvailable();
 
+private slots:
+    void configureXPC();
+
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;
     std::unique_ptr<FileProviderSocketServer> _socketServer;
