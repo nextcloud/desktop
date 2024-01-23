@@ -313,7 +313,7 @@ void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 
 #ifndef TOKEN_AUTH_ONLY
     connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
-    _account->e2e()->initialize(_account);
+    _account->e2e()->initialize(nullptr, _account);
 #else
     reportResult(Connected);
 #endif

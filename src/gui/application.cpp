@@ -661,6 +661,12 @@ void Application::setupLogging()
     logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
     logger->setLogFlush(_logFlush || ConfigFile().logFlush());
     logger->setLogDebug(_logDebug || ConfigFile().logDebug());
+
+#if defined(QT_DEBUG)
+    logger->setLogDebug(true);
+    logger->setLogFlush(true);
+#endif
+
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
         logger->setupTemporaryFolderLogDir();
     }

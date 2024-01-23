@@ -47,21 +47,21 @@ private slots:
         {
             QFile e2eTestFakeCert(QStringLiteral("e2etestsfakecert.pem"));
             if (e2eTestFakeCert.open(QFile::ReadOnly)) {
-                _fakeFolder.syncEngine().account()->e2e()->_certificate = QSslCertificate(e2eTestFakeCert.readAll());
+                _fakeFolder.syncEngine().account()->e2e()->setCertificate(QSslCertificate(e2eTestFakeCert.readAll()));
                 e2eTestFakeCert.close();
             }
         }
         {
             QFile e2etestsfakecertpublickey(QStringLiteral("e2etestsfakecertpublickey.pem"));
             if (e2etestsfakecertpublickey.open(QFile::ReadOnly)) {
-                _fakeFolder.syncEngine().account()->e2e()->_publicKey = QSslKey(e2etestsfakecertpublickey.readAll(), QSsl::KeyAlgorithm::Rsa, QSsl::EncodingFormat::Pem, QSsl::KeyType::PublicKey);
+                _fakeFolder.syncEngine().account()->e2e()->setPublicKey(QSslKey(e2etestsfakecertpublickey.readAll(), QSsl::KeyAlgorithm::Rsa, QSsl::EncodingFormat::Pem, QSsl::KeyType::PublicKey));
                 e2etestsfakecertpublickey.close();
             }
         }
         {
             QFile e2etestsfakecertprivatekey(QStringLiteral("e2etestsfakecertprivatekey.pem"));
             if (e2etestsfakecertprivatekey.open(QFile::ReadOnly)) {
-                _fakeFolder.syncEngine().account()->e2e()->_privateKey = e2etestsfakecertprivatekey.readAll();
+                _fakeFolder.syncEngine().account()->e2e()->setPrivateKey(e2etestsfakecertprivatekey.readAll());
                 e2etestsfakecertprivatekey.close();
             }
         }

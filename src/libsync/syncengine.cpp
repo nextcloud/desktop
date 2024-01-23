@@ -509,8 +509,12 @@ void SyncEngine::startSync()
             for (const auto &e2EeLockedFolder : e2EeLockedFolders) {
                 const auto folderId = e2EeLockedFolder.first;
                 qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
-                const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, e2EeLockedFolder.second);
-                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, folderToken, _journal, this);
+                const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getTokenCertificate(), *_account->e2e(), e2EeLockedFolder.second, _account->e2e()->certificateSha256Fingerprint());
+                if (!folderToken) {
+                    qCWarning(lcEngine()) << "decrypt failed";
+                    return;
+                }
+                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, *folderToken, _journal, this);
                 unlockJob->start();
             }
         }

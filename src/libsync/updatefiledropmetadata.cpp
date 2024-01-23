@@ -87,7 +87,7 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedIdReceived(const QStringList 
 
 void UpdateFileDropMetadataJob::slotTryLock(const QByteArray &fileId)
 {
-    const auto lockJob = new LockEncryptFolderApiJob(propagator()->account(), fileId, propagator()->_journal, propagator()->account()->e2e()->_publicKey, this);
+    const auto lockJob = new LockEncryptFolderApiJob(propagator()->account(), fileId, propagator()->account()->e2e()->certificateSha256Fingerprint(), propagator()->_journal, this);
     connect(lockJob, &LockEncryptFolderApiJob::success, this, &UpdateFileDropMetadataJob::slotFolderLockedSuccessfully);
     connect(lockJob, &LockEncryptFolderApiJob::error, this, &UpdateFileDropMetadataJob::slotFolderLockedError);
     lockJob->start();
@@ -125,7 +125,7 @@ void UpdateFileDropMetadataJob::slotFolderEncryptedMetadataReceived(const QJsonD
     _metadata.reset(new FolderMetadata(propagator()->account(),
                                        FolderMetadata::RequiredMetadataVersion::Version1,
                                        json.toJson(QJsonDocument::Compact), statusCode));
-    if (!_metadata->moveFromFileDropToFiles() && !_metadata->encryptedMetadataNeedUpdate()) {
+    if (!_metadata->moveFromFileDropToFiles() && !_metadata->encryptedMetadataNeedUpdate(propagator()->account()->encryptionCertificateFingerprint())) {
         unlockFolder();
         return;
     }

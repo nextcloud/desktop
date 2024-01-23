@@ -155,6 +155,7 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.h
     systray.cpp
+    EncryptionTokenSelectionWindow.qml
     thumbnailjob.h
     thumbnailjob.cpp
     userinfo.h

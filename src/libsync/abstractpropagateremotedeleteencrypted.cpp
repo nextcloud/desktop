@@ -75,7 +75,7 @@ void AbstractPropagateRemoteDeleteEncrypted::slotFolderEncryptedIdReceived(const
 
 void AbstractPropagateRemoteDeleteEncrypted::slotTryLock(const QByteArray &folderId)
 {
-    auto lockJob = new LockEncryptFolderApiJob(_propagator->account(), folderId, _propagator->_journal, _propagator->account()->e2e()->_publicKey, this);
+    auto lockJob = new LockEncryptFolderApiJob(_propagator->account(), folderId, _propagator->account()->e2e()->certificateSha256Fingerprint(), _propagator->_journal, this);
     connect(lockJob, &LockEncryptFolderApiJob::success, this, &AbstractPropagateRemoteDeleteEncrypted::slotFolderLockedSuccessfully);
     connect(lockJob, &LockEncryptFolderApiJob::error, this, &AbstractPropagateRemoteDeleteEncrypted::taskFailed);
     lockJob->start();

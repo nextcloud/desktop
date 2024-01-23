@@ -237,13 +237,13 @@ bool DeleteMetadataApiJob::finished()
 
 LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr &account,
                                                  const QByteArray &fileId,
+                                                 const QByteArray &certificateSha256Fingerprint,
                                                  SyncJournalDb *journalDb,
-                                                 const QSslKey publicKey,
                                                  QObject *parent)
     : AbstractNetworkJob(account, e2eeBaseUrl() + QStringLiteral("lock/") + fileId, parent)
     , _fileId(fileId)
+    , _certificateSha256Fingerprint(certificateSha256Fingerprint)
     , _journalDb(journalDb)
-    , _publicKey(publicKey)
 {
 }
 
@@ -253,8 +253,12 @@ void LockEncryptFolderApiJob::start()
 
     if (!folderTokenEncrypted.isEmpty()) {
         qCInfo(lcCseJob()) << "lock folder started for:" << path() << " for fileId: " << _fileId << " but we need to first lift the previous lock";
-        const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, folderTokenEncrypted);
-        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, folderToken, _journalDb, this);
+        const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getTokenCertificate(), *_account->e2e(), folderTokenEncrypted, _certificateSha256Fingerprint);
+        if (!folderToken) {
+            qCWarning(lcCseJob()) << "decrypt failed";
+            return;
+        }
+        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, *folderToken, _journalDb, this);
         connect(unlockJob, &UnlockEncryptFolderApiJob::done, this, [this]() {
             this->start();
         });
@@ -295,9 +299,13 @@ bool LockEncryptFolderApiJob::finished()
 
     qCInfo(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;
 
-    if (!_publicKey.isNull()) {
-        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
-        _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    if (!_account->e2e()->getPublicKey().isNull()) {
+        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_account->e2e()->getTokenCertificate(), *_account->e2e(), token);
+        if (!folderTokenEncrypted) {
+            qCWarning(lcCseJob()) << "decrypt failed";
+            return false;
+        }
+        _journalDb->setE2EeLockedFolder(_fileId, *folderTokenEncrypted);
     }
 
     //TODO: Parse the token and submit.
@@ -357,7 +365,7 @@ void StorePrivateKeyApiJob::start()
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(query);
 
-    qCInfo(lcStorePrivateKeyApiJob) << "Sending the private key" << _privKey.data();
+    qCDebug(lcStorePrivateKeyApiJob) << "Sending the private key";
     sendRequest("POST", url, req, &_privKey);
     AbstractNetworkJob::start();
 }
@@ -396,7 +404,7 @@ void SignPublicKeyApiJob::start()
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(query);
 
-    qCInfo(lcSignPublicKeyApiJob) << "Sending the CSR" << _csr.data();
+    qCDebug(lcSignPublicKeyApiJob) << "Sending the CSR";
     sendRequest("POST", url, req, &_csr);
     AbstractNetworkJob::start();
 }

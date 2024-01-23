@@ -694,7 +694,8 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
     } else if (item->_isEncryptedMetadataNeedUpdate) {
         SyncJournalFileRecord record;
         const auto isUnexpectedMetadataFormat = _journal->getFileRecord(item->_file, &record)
-            && record._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2;
+            && record._e2eEncryptionStatus == SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2
+            && record._e2eCertificateFingerprint != _account->encryptionCertificateFingerprint();
         if (isUnexpectedMetadataFormat && _account->shouldSkipE2eeMetadataChecksumValidation()) {
             qCDebug(lcPropagator) << "Getting unexpected metadata format, but allowing to continue as shouldSkipE2eeMetadataChecksumValidation is set.";
         } else if (isUnexpectedMetadataFormat && !_account->shouldSkipE2eeMetadataChecksumValidation()) {
@@ -704,7 +705,7 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
             item->_status = SyncFileItem::NormalError;
             emit itemCompleted(item, OCC::ErrorCategory::GenericError);
         } else {
-            directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+            directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, !item->_encryptedFileName.isEmpty() ? item->_encryptedFileName : item->_file));
             item->_instruction = CSYNC_INSTRUCTION_NONE;
             _anotherSyncNeeded = true;
         }

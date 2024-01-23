@@ -435,6 +435,11 @@ bool DiscoverySingleDirectoryJob::encryptedMetadataNeedUpdate() const
     return _encryptedMetadataNeedUpdate;
 }
 
+QByteArray DiscoverySingleDirectoryJob::certificateSha256Fingerprint() const
+{
+    return _e2eCertificateFingerprint;
+}
+
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
@@ -651,7 +656,9 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
                                          json.toJson(QJsonDocument::Compact),
                                          statusCode);
     _isFileDropDetected = metadata.isFileDropPresent();
-    _encryptedMetadataNeedUpdate = metadata.encryptedMetadataNeedUpdate();
+    _encryptedMetadataNeedUpdate = metadata.encryptedMetadataNeedUpdate(_account->encryptionCertificateFingerprint());
+    _e2eCertificateFingerprint = metadata.certificateSha256Fingerprint();
+    Q_ASSERT(!_e2eCertificateFingerprint.isEmpty());
 
     const auto encryptedFiles = metadata.files();
 
@@ -671,6 +678,8 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         const auto encryptedFileInfo = findEncryptedFile(result.name);
         if (encryptedFileInfo) {
             result._isE2eEncrypted = true;
+            result.e2eCertificateFingerprint = metadata.certificateSha256Fingerprint();
+            Q_ASSERT(!result.e2eCertificateFingerprint.isEmpty());
             result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
             result.name = encryptedFileInfo->originalFilename;
         }

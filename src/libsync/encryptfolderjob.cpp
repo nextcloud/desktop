@@ -57,12 +57,13 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
     }
 
     rec._e2eEncryptionStatus = SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV1_2;
+    rec._e2eCertificateFingerprint = _account->e2e()->certificateSha256Fingerprint();
     const auto result = _journal->setFileRecord(rec);
     if (!result) {
         qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
     }
 
-    const auto lockJob = new LockEncryptFolderApiJob(_account, fileId, _journal, _account->e2e()->_publicKey, this);
+    const auto lockJob = new LockEncryptFolderApiJob(_account, fileId, _account->e2e()->certificateSha256Fingerprint(), _journal, this);
     connect(lockJob, &LockEncryptFolderApiJob::success,
             this, &EncryptFolderJob::slotLockForEncryptionSuccess);
     connect(lockJob, &LockEncryptFolderApiJob::error,
