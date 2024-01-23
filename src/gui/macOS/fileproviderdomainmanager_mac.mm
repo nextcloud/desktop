@@ -450,6 +450,8 @@ void FileProviderDomainManager::setupFileProviderDomains()
     for(auto &accountState : AccountManager::instance()->accounts()) {
         addFileProviderDomainForAccount(accountState.data());
     }
+
+    emit domainSetupComplete();
 }
 
 void FileProviderDomainManager::addFileProviderDomainForAccount(const AccountState * const accountState)
