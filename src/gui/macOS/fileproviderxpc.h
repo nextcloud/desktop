@@ -21,6 +21,12 @@
 
 namespace OCC::Mac {
 
+/*
+ * Establishes communication between the app and the file provider extension.
+ * This is done via File Provider's XPC services API.
+ * Note that this is for client->extension communication, not the other way around.
+ * This is because the extension does not have a way to communicate with the client through the File Provider XPC API
+ */
 class FileProviderXPC : public QObject
 {
     Q_OBJECT
