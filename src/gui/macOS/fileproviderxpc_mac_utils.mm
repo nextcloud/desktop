@@ -45,6 +45,7 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
         for (NSFileProviderDomain *const domain in domains) {
             qCInfo(lcFileProviderXPCUtils) << "Got domain" << domain.identifier;
             NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+            [manager retain];
             [managers addObject:manager];
         }
 
@@ -68,23 +69,18 @@ NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *get
         dispatch_group_t group = dispatch_group_create();
 
         for (NSFileProviderManager *const manager in managers) {
-            __block NSFileProviderService *acquiredService;
             dispatch_group_enter(group);
             [manager getServiceWithName:nsClientCommunicationServiceName
                          itemIdentifier:NSFileProviderRootContainerItemIdentifier
                       completionHandler:^(NSFileProviderService *const service, NSError *const error) {
                 if (error != nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Error getting file provider service" << error;
-                    dispatch_group_leave(group);
-                    return;
                 } else if (service == nil) {
                     qCWarning(lcFileProviderXPCUtils) << "Service is nil";
-                    dispatch_group_leave(group);
-                    return;
+                } else {
+                    [service retain];
+                    [fpServices addObject:@{service.name: service}];
                 }
-
-                [service retain];
-                [fpServices addObject:@{acquiredService.name: acquiredService}];
                 dispatch_group_leave(group);
             }];
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
