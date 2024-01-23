@@ -44,9 +44,10 @@ FileProvider::FileProvider(QObject * const parent)
     }
 
     qCInfo(lcMacFileProvider) << "Initialising file provider domain manager.";
-    _domainManager = std::make_unique<FileProviderDomainManager>(new FileProviderDomainManager(this));
+    _domainManager = std::make_unique<FileProviderDomainManager>(this);
 
     if (_domainManager) {
+        _domainManager->start();
         qCDebug(lcMacFileProvider()) << "Initialized file provider domain manager";
     }
 

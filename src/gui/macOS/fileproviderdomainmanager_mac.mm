@@ -407,35 +407,37 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
 {
     if (@available(macOS 11.0, *)) {
         d.reset(new FileProviderDomainManager::MacImplementation());
-
-        ConfigFile cfg;
-        std::chrono::milliseconds polltime = cfg.remotePollInterval();
-        _enumeratorSignallingTimer.setInterval(polltime.count());
-        connect(&_enumeratorSignallingTimer, &QTimer::timeout,
-                this, &FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout);
-        _enumeratorSignallingTimer.start();
-
-        setupFileProviderDomains();
-
-        connect(AccountManager::instance(), &AccountManager::accountAdded,
-                this, &FileProviderDomainManager::addFileProviderDomainForAccount);
-        // If an account is deleted from the client, accountSyncConnectionRemoved will be
-        // emitted first. So we treat accountRemoved as only being relevant to client
-        // shutdowns.
-        connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
-                this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
-        connect(AccountManager::instance(), &AccountManager::accountRemoved,
-                this, [this](const AccountState * const accountState) {
-
-            const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
-            disconnectFileProviderDomainForAccount(accountState, trReason);
-        });
     } else {
         qCWarning(lcMacFileProviderDomainManager()) << "Trying to run File Provider on system that does not support it.";
     }
 }
 
 FileProviderDomainManager::~FileProviderDomainManager() = default;
+
+void FileProviderDomainManager::start()
+{
+    ConfigFile cfg;
+    std::chrono::milliseconds polltime = cfg.remotePollInterval();
+    _enumeratorSignallingTimer.setInterval(polltime.count());
+    connect(&_enumeratorSignallingTimer, &QTimer::timeout,
+            this, &FileProviderDomainManager::slotEnumeratorSignallingTimerTimeout);
+    _enumeratorSignallingTimer.start();
+
+    setupFileProviderDomains();
+
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+            this, &FileProviderDomainManager::addFileProviderDomainForAccount);
+    // If an account is deleted from the client, accountSyncConnectionRemoved will be
+    // emitted first. So we treat accountRemoved as only being relevant to client
+    // shutdowns.
+    connect(AccountManager::instance(), &AccountManager::accountSyncConnectionRemoved,
+            this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+            this, [this](const AccountState * const accountState) {
+        const auto trReason = tr("%1 application has been closed. Reopen to reconnect.").arg(APPLICATION_NAME);
+        disconnectFileProviderDomainForAccount(accountState, trReason);
+    });
+}
 
 void FileProviderDomainManager::setupFileProviderDomains()
 {
