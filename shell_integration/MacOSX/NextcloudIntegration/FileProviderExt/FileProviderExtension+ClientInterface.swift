@@ -19,6 +19,20 @@ import NextcloudKit
 import OSLog
 
 extension FileProviderExtension: NSFileProviderServicing {
+    /*
+     This FileProviderExtension extension contains everything needed to communicate with the client.
+     We have two systems for communicating between the extensions and the client.
+
+     Apple's XPC based File Provider APIs let us easily communicate client -> extension.
+     This is what ClientCommunicationService is for.
+
+     We also use sockets, because the File Provider XPC system does not let us easily talk from
+     extension->client.
+     We need this because the extension needs to be able to request account details. We can't
+     reliably do this via XPC because the extensions get torn down by the system, out of the control
+     of the app, and we can receive nil/no services from NSFileProviderManager. Once this is done
+     then XPC works ok.
+    */
     func supportedServiceSources(
         for itemIdentifier: NSFileProviderItemIdentifier,
         completionHandler: @escaping ([NSFileProviderServiceSource]?, Error?) -> Void
