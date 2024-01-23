@@ -34,6 +34,8 @@
         <string>F9ZGRXJE7XbQb2Kt36hwaBO4rYjkXYHiNS5hd+MkyKY=</string>
         <key>SUAllowsAutomaticUpdates</key>
         <string>NO</string>
+        <key>LSMinimumSystemVersion</key>
+        <string>${CMAKE_OSX_DEPLOYMENT_TARGET}</string>
 
 <key>UTExportedTypeDeclarations</key>
 <array>
