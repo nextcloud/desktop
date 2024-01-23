@@ -23,6 +23,7 @@ namespace OCC::Mac::FileProviderXPCUtils {
 
 NSArray<NSFileProviderManager *> *getDomainManagers();
 NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *managers);
+NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers);
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServicesAtUrls(NSArray<NSURL *> *urls);
 NSArray<NSXPCConnection *> *connectToFileProviderServices(NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *fpServices);
 void configureFileProviderConnection(NSXPCConnection *connection);

@@ -60,6 +60,42 @@ NSArray<NSFileProviderManager *> *getDomainManagers()
     return managers.copy;
 }
 
+// TODO: This should work for all service names, not just the communication service!
+NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers)
+{
+    if (@available(macOS 13.0, *)) {
+        NSMutableArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *const fpServices = NSMutableArray.array;
+        dispatch_group_t group = dispatch_group_create();
+
+        for (NSFileProviderManager *const manager in managers) {
+            __block NSFileProviderService *acquiredService;
+            dispatch_group_enter(group);
+            [manager getServiceWithName:nsClientCommunicationServiceName
+                         itemIdentifier:NSFileProviderRootContainerItemIdentifier
+                      completionHandler:^(NSFileProviderService *const service, NSError *const error) {
+                if (error != nil) {
+                    qCWarning(lcFileProviderXPCUtils) << "Error getting file provider service" << error;
+                    dispatch_group_leave(group);
+                    return;
+                } else if (service == nil) {
+                    qCWarning(lcFileProviderXPCUtils) << "Service is nil";
+                    dispatch_group_leave(group);
+                    return;
+                }
+
+                [service retain];
+                [fpServices addObject:@{acquiredService.name: acquiredService}];
+                dispatch_group_leave(group);
+            }];
+            dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+        }
+        return fpServices.copy;
+    } else {
+        const auto domainUrls = FileProviderXPCUtils::getDomainUrlsForManagers(managers);
+        return FileProviderXPCUtils::getFileProviderServicesAtUrls(domainUrls);
+    }
+}
+
 NSArray<NSURL *> *getDomainUrlsForManagers(NSArray<NSFileProviderManager *> *managers)
 {
     dispatch_group_t group = dispatch_group_create();

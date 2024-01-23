@@ -33,8 +33,7 @@ void FileProviderXPC::connectToExtensions()
 {
     qCInfo(lcFileProviderXPC) << "Starting file provider XPC";
     const auto managers = FileProviderXPCUtils::getDomainManagers();
-    const auto domainUrls = FileProviderXPCUtils::getDomainUrlsForManagers(managers);
-    const auto fpServices = FileProviderXPCUtils::getFileProviderServicesAtUrls(domainUrls);
+    const auto fpServices = FileProviderXPCUtils::getFileProviderServices(managers);
     const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
     _clientCommServices = FileProviderXPCUtils::processClientCommunicationConnections(connections);
 }
