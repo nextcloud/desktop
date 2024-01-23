@@ -112,7 +112,6 @@ void FileProviderSocketController::sendMessage(const QString &message) const
     }
 }
 
-
 void FileProviderSocketController::start()
 {
     Q_ASSERT(_socket);
@@ -121,6 +120,12 @@ void FileProviderSocketController::start()
         return;
     }
 
+    /*
+     * We have a new file provider extension connection. When this happens, we:
+     * 1. Request the file provider domain identifier
+     * 2. Receive the file provider domain identifier from the extension
+     * 3. Send the account details to the extension according to the domain identifier
+     */
     requestFileProviderDomainInfo();
 }
 
@@ -181,7 +186,11 @@ void FileProviderSocketController::sendAccountDetails() const
     qCDebug(lcFileProviderSocketController) << "About to send account details to file provider extension"
                                             << account->displayName();
 
-    connect(_accountState.data(), &AccountState::stateChanged, this, &FileProviderSocketController::slotAccountStateChanged, Qt::UniqueConnection);
+    // Even though we have XPC send over the account details and related calls when the account state changes, in the
+    // brief window where we start the file provider extension on app startup and the account state changes, we need to
+    // be able to send over the details when the account is done getting configured.
+    connect(_accountState.data(), &AccountState::stateChanged,
+            this, &FileProviderSocketController::slotAccountStateChanged, Qt::UniqueConnection);
 
     if (!_accountState->isConnected()) {
         qCDebug(lcFileProviderSocketController) << "Not sending account details yet as account is not connected"
