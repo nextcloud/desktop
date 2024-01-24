@@ -154,6 +154,8 @@ bool AccountManager::restoreFromLegacySettings()
     // try to open the correctly themed settings
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
 
+    auto displayMessageBoxWarning = false;
+
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
     if (settings->childKeys().isEmpty()) {
@@ -189,6 +191,7 @@ bool AccountManager::restoreFromLegacySettings()
             const auto accountsListSize = oCSettings->childGroups().size();
             oCSettings->endGroup();
             if (const QFileInfo configFileInfo(configFile); configFileInfo.exists() && configFileInfo.isReadable()) {
+                displayMessageBoxWarning = true;
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
                 if (!forceLegacyImport() && accountsListSize > 0) {
                     const auto importQuestion = accountsListSize > 1
@@ -256,16 +259,19 @@ bool AccountManager::restoreFromLegacySettings()
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
             if (const auto acc = loadAccountHelper(*settings)) {
-                addAccount(acc);              
+                addAccount(acc);
             }
             settings->endGroup();
         }
         return true;
     }
 
-    QMessageBox::information(nullptr,
-                             tr("Legacy import"),
-                             tr("Could not import accounts from legacy client configuration."));
+    if (displayMessageBoxWarning) {
+        QMessageBox::information(nullptr,
+                                 tr("Legacy import"),
+                                 tr("Could not import accounts from legacy client configuration."));
+    }
+
     return false;
 }
 
