@@ -1150,6 +1150,84 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testNetworkErrorsWithSmallerBatchSizes()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"bulkupload", "1.0"} } } });
+
+        int nPUT = 0;
+        int nPOST = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            auto contentType = request.header(QNetworkRequest::ContentTypeHeader).toString();
+            if (op == QNetworkAccessManager::PostOperation) {
+                ++nPOST;
+                if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
+                    auto jsonReplyObject = fakeFolder.forEachReplyPart(outgoingData, contentType, [] (const QMap<QString, QByteArray> &allHeaders) -> QJsonObject {
+                        auto reply = QJsonObject{};
+                        const auto fileName = allHeaders[QStringLiteral("X-File-Path")];
+                        if(fileName.endsWith("B/small30") ||
+                            fileName.endsWith("B/small60") ||
+                            fileName.endsWith("B/big30") ||
+                            fileName.endsWith("B/big60")) {
+                            reply.insert(QStringLiteral("error"), true);
+                            reply.insert(QStringLiteral("etag"), {});
+                            return reply;
+                        } else {
+                            reply.insert(QStringLiteral("error"), false);
+                            reply.insert(QStringLiteral("etag"), {});
+                        }
+                        return reply;
+                    });
+                    if (jsonReplyObject.size()) {
+                        auto jsonReply = QJsonDocument{};
+                        jsonReply.setObject(jsonReplyObject);
+                        return new FakeJsonErrorReply{op, request, this, 200, jsonReply};
+                    }
+                    return  nullptr;
+                }
+            } else if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+                const auto fileName = getFilePathFromUrl(request.url());
+                if (fileName.endsWith("B/small30") ||
+                    fileName.endsWith("B/small60") ||
+                    fileName.endsWith("B/big30") ||
+                    fileName.endsWith("B/big60")) {
+                    return new FakeErrorReply(op, request, this, 504);
+                }
+                return  nullptr;
+            }
+            return  nullptr;
+        });
+
+        const auto smallSize = 0.5 * 1000 * 1000;
+        const auto bigSize = 10 * 1000 * 1000;
+
+        for(auto i = 0 ; i < 120; ++i) {
+            fakeFolder.localModifier().insert(QString("A/small%1").arg(i), smallSize);
+        }
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nPOST, 2);
+        nPUT = 0;
+        nPOST = 0;
+
+        for(auto i = 0 ; i < 120; ++i) {
+            fakeFolder.localModifier().insert(QString("B/small%1").arg(i), smallSize);
+            fakeFolder.localModifier().insert(QString("B/big%1").arg(i), bigSize);
+        }
+
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 120);
+        QCOMPARE(nPOST, 2);
+        nPUT = 0;
+        nPOST = 0;
+
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nPOST, 0);
+    }
+
     void testRemoteMoveFailedInsufficientStorageLocalMoveRolledBack()
     {
         FakeFolder fakeFolder{FileInfo{}};
