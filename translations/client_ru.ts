@@ -362,14 +362,14 @@ Should an account import be attempted?</source>
         <translation>Найдена существующая конфигурация из старой версии клиента для ПК. Следует ли попытаться импортировать учётную запись?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="195"/>
+        <location filename="../src/gui/accountmanager.cpp" line="198"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>Обнаружено несколько (%1) учётные записи, созданные в устаревшей версии приложения.
 Импортировать эти учётные записи?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="197"/>
+        <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Обнаружена учётная запись, созданная в устаревшей версии приложения.
@@ -383,12 +383,12 @@ Should the account be imported?</source>
         <translation>Импорт из старой версии</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Import</source>
         <translation>Импортировать</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="201"/>
+        <location filename="../src/gui/accountmanager.cpp" line="204"/>
         <source>Skip</source>
         <translation>Пропустить</translation>
     </message>

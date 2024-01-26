@@ -363,14 +363,14 @@ Should an account import be attempted?</source>
 Kontua inportatzen saiatu behar da?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="195"/>
+        <location filename="../src/gui/accountmanager.cpp" line="198"/>
         <source>%1 accounts were detected from a legacy desktop client.
 Should the accounts be imported?</source>
         <translation>%1 kontu hauteman dira mahaigaineko bezero zaharkitu batetik.
 Kontuak inportatu behar dira?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="197"/>
+        <location filename="../src/gui/accountmanager.cpp" line="200"/>
         <source>1 account was detected from a legacy desktop client.
 Should the account be imported?</source>
         <translation>Kontu 1 hauteman dira mahaigaineko bezero zaharkitu batetik.
@@ -384,12 +384,12 @@ Kontua inportatu behar da?</translation>
         <translation>Zaharraren inportazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="200"/>
+        <location filename="../src/gui/accountmanager.cpp" line="203"/>
         <source>Import</source>
         <translation>Inportatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="201"/>
+        <location filename="../src/gui/accountmanager.cpp" line="204"/>
         <source>Skip</source>
         <translation>Saltatu</translation>
     </message>
