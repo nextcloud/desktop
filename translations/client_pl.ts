@@ -6148,7 +6148,7 @@ Serwer odpowiedział błędem: %2</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open local or group folders</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz katalogi lokalne lub grupowe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="641"/>
