@@ -165,11 +165,11 @@ private:
 
     [[nodiscard]] QScreen *currentScreen() const;
     [[nodiscard]] QRect currentScreenRect() const;
+    [[nodiscard]] QRect currentAvailableScreenRect() const;
     [[nodiscard]] QPoint computeWindowReferencePoint() const;
     [[nodiscard]] QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
     [[nodiscard]] QPoint calcTrayIconCenter() const;
     [[nodiscard]] TaskBarPosition taskbarOrientation() const;
-    [[nodiscard]] QRect taskbarGeometry() const;
     [[nodiscard]] QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
     [[nodiscard]] QPoint computeWindowPosition(int width, int height) const;
     [[nodiscard]] QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
