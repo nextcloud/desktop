@@ -423,7 +423,8 @@ bool LsColJob::finished()
 
     this->deleteLater();
 
-    return true;
+    // fix crash on random deletion mess in the parent class, we never discard this job but always delete it inside this method
+    return false;
 }
 
 /*********************************************************************************************/
