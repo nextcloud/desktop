@@ -107,7 +107,7 @@ void SelectiveSyncWidget::refreshFolders()
 {
     _encryptedPaths.clear();
 
-    auto *job = new LsColJob(_account, _folderPath, this);
+    auto *job = new LsColJob(_account, _folderPath);
     auto props = QList<QByteArray>() << "resourcetype"
                                      << "http://owncloud.org/ns:size";
     if (_account->capabilities().clientSideEncryptionAvailable()) {
@@ -336,7 +336,7 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     if (!_folderPath.isEmpty()) {
         prefix = _folderPath + QLatin1Char('/');
     }
-    auto *job = new LsColJob(_account, prefix + dir, this);
+    auto *job = new LsColJob(_account, prefix + dir);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,

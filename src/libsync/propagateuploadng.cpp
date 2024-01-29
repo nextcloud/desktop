@@ -105,7 +105,7 @@ void PropagateUploadFileNG::doStartUpload()
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size) {
         _transferId = progressInfo._transferid;
 
-        const auto job = new LsColJob(propagator()->account(), chunkUploadFolderUrl(), this);
+        const auto job = new LsColJob(propagator()->account(), chunkUploadFolderUrl());
         _jobs.append(job);
         job->setProperties(QList<QByteArray>() << "resourcetype"
                                                << "getcontentlength");

@@ -99,7 +99,7 @@ void EncryptedFolderMetadataHandler::startFetchMetadata()
 void EncryptedFolderMetadataHandler::fetchFolderEncryptedId()
 {
     qCDebug(lcFetchAndUploadE2eeFolderMetadataJob) << "Folder is encrypted, let's get the Id from it.";
-    const auto job = new LsColJob(_account, _folderPath, this);
+    const auto job = new LsColJob(_account, _folderPath);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
     connect(job, &LsColJob::directoryListingSubfolders, this, &EncryptedFolderMetadataHandler::slotFolderEncryptedIdReceived);
     connect(job, &LsColJob::finishedWithError, this, &EncryptedFolderMetadataHandler::slotFolderEncryptedIdError);
