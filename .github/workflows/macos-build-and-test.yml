@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 1
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/cache
           key: macos-latest-${{ env.CRAFT_TARGET }}
