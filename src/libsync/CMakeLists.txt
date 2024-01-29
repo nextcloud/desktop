@@ -1,4 +1,5 @@
 project(libsync)
+find_package(KF5Archive REQUIRED)
 include(DefinePlatformDefaults)
 
 set(CMAKE_AUTOMOC TRUE)
@@ -41,6 +42,8 @@ set(libsync_SRCS
     discoveryphase.cpp
     encryptfolderjob.h
     encryptfolderjob.cpp
+    encryptedfoldermetadatahandler.h
+    encryptedfoldermetadatahandler.cpp
     filesystem.h
     filesystem.cpp
     helpers.cpp
@@ -62,8 +65,8 @@ set(libsync_SRCS
     owncloudpropagator.cpp
     nextcloudtheme.h
     nextcloudtheme.cpp
-    abstractpropagateremotedeleteencrypted.h
-    abstractpropagateremotedeleteencrypted.cpp
+    basepropagateremotedeleteencrypted.h
+    basepropagateremotedeleteencrypted.cpp
     deletejob.h
     deletejob.cpp
     progressdispatcher.h
@@ -108,16 +111,28 @@ set(libsync_SRCS
     syncoptions.cpp
     theme.h
     theme.cpp
-    updatefiledropmetadata.h
-    updatefiledropmetadata.cpp
+    updatee2eefoldermetadatajob.h
+    updatee2eefoldermetadatajob.cpp
+    updatemigratede2eemetadatajob.h
+    updatemigratede2eemetadatajob.cpp
+    updatee2eefolderusersmetadatajob.h
+    updatee2eefolderusersmetadatajob.cpp
     clientsideencryption.h
     clientsideencryption.cpp
     clientsideencryptionjobs.h
     clientsideencryptionjobs.cpp
+    clientsideencryptionprimitives.h
+    clientsideencryptionprimitives.cpp
     datetimeprovider.h
     datetimeprovider.cpp
+    rootencryptedfolderinfo.h
+    rootencryptedfolderinfo.cpp
+    foldermetadata.h
+    foldermetadata.cpp
     ocsuserstatusconnector.h
     ocsuserstatusconnector.cpp
+    rootencryptedfolderinfo.cpp
+    rootencryptedfolderinfo.h
     userstatusconnector.h
     userstatusconnector.cpp
     ocsprofileconnector.h
@@ -196,6 +211,7 @@ target_link_libraries(nextcloudsync
   Qt5::WebSockets
   Qt5::Xml
   Qt5::Sql
+  KF5::Archive
 )
 
 if (NOT TOKEN_AUTH_ONLY)

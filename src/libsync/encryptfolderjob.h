@@ -13,9 +13,12 @@
  */
 #pragma once
 
-#include <QObject>
-
 #include "account.h"
+#include "encryptedfoldermetadatahandler.h"
+#include "syncfileitem.h"
+#include "owncloudpropagator.h"
+
+#include <QObject>
 
 namespace OCC {
 class SyncJournalDb;
@@ -30,30 +33,41 @@ public:
     };
     Q_ENUM(Status)
 
-    explicit EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QByteArray &fileId, QObject *parent = nullptr);
+    explicit EncryptFolderJob(const AccountPtr &account,
+                              SyncJournalDb *journal,
+                              const QString &path,
+                              const QByteArray &fileId,
+                              OwncloudPropagator *propagator = nullptr,
+                              SyncFileItemPtr item = {},
+                              QObject *parent = nullptr);
     void start();
 
     [[nodiscard]] QString errorString() const;
 
 signals:
-    void finished(int status);
+    void finished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
+
+public slots:
+    void setPathNonEncrypted(const QString &pathNonEncrypted);
+
+private:
+    void uploadMetadata();
 
 private slots:
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
-    void slotLockForEncryptionSuccess(const QByteArray &folderId, const QByteArray &token);
-    void slotLockForEncryptionError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
-    void slotUnlockFolderSuccess(const QByteArray &folderId);
-    void slotUnlockFolderError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
-    void slotUploadMetadataSuccess(const QByteArray &folderId);
-    void slotUpdateMetadataError(const QByteArray &folderId, const int httpReturnCode);
+    void slotUploadMetadataFinished(int statusCode, const QString &message);
+    void slotSetEncryptionFlag();
 
 private:
     AccountPtr _account;
     SyncJournalDb *_journal;
     QString _path;
+    QString _pathNonEncrypted;
     QByteArray _fileId;
-    QByteArray _folderToken;
     QString _errorString;
+    OwncloudPropagator *_propagator = nullptr;
+    SyncFileItemPtr _item;
+    QScopedPointer<EncryptedFolderMetadataHandler> _encryptedFolderMetadataHandler;
 };
 }

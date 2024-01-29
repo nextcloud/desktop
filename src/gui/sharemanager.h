@@ -67,6 +67,8 @@ public:
 
     using Permissions = SharePermissions;
 
+    Q_ENUM(Permissions);
+
     /*
      * Constructor for shares
      */
@@ -411,6 +413,23 @@ public:
         const Share::Permissions permissions,
         const QString &password = "");
 
+        /**
+     * Tell the manager to create and start new UpdateE2eeShareMetadataJob job
+     *
+     * @param path The path of the share relative to the user folder on the server
+     * @param shareType The type of share (TypeUser, TypeGroup, TypeRemote)
+     * @param Permissions The share permissions
+     * @param folderId The id for an E2EE folder
+     * @param password An optional password for a share
+     *
+     * On success the signal shareCreated is emitted
+     * In case of a server error the serverError signal is emitted
+     */
+    void createE2EeShareJob(const QString &path,
+                            const ShareePtr sharee,
+                            const Share::Permissions permissions,
+                            const QString &password = "");
+
     /**
      * Fetch all the shares for path
      *
@@ -440,6 +459,8 @@ private slots:
     void slotLinkShareCreated(const QJsonDocument &reply);
     void slotShareCreated(const QJsonDocument &reply);
     void slotOcsError(int statusCode, const QString &message);
+    void slotCreateE2eeShareJobFinised(int statusCode, const QString &message);
+
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
     QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data);

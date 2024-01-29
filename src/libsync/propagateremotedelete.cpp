@@ -39,7 +39,7 @@ void PropagateRemoteDelete::start()
         } else {
             _deleteEncryptedHelper = new PropagateRemoteDeleteEncryptedRootFolder(propagator(), _item, this);
         }
-        connect(_deleteEncryptedHelper, &AbstractPropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
+        connect(_deleteEncryptedHelper, &BasePropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
             if (!success) {
                 SyncFileItem::Status status = SyncFileItem::NormalError;
                 if (_deleteEncryptedHelper->networkError() != QNetworkReply::NoError && _deleteEncryptedHelper->networkError() != QNetworkReply::ContentNotFoundError) {

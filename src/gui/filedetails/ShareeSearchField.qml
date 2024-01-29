@@ -29,6 +29,7 @@ TextField {
     property var accountState: ({})
     property bool shareItemIsFolder: false
     property var shareeBlocklist: ({})
+    property bool isShareeFetchOngoing: shareeModel.fetchOngoing
     property ShareeModel shareeModel: ShareeModel {
         accountState: root.accountState
         shareItemIsFolder: root.shareItemIsFolder
@@ -44,9 +45,8 @@ TextField {
         shareeListView.count > 0 ? suggestionsPopup.open() : suggestionsPopup.close();
     }
 
-    placeholderText: qsTr("Search for users or groups…")
+    placeholderText: enabled ? qsTr("Search for users or groups…") : qsTr("Sharing is not available for this folder")
     placeholderTextColor: placeholderColor
-    enabled: !shareeModel.fetchOngoing
 
     onActiveFocusChanged: triggerSuggestionsVisibility()
     onTextChanged: triggerSuggestionsVisibility()

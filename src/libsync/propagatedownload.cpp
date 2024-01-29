@@ -379,7 +379,7 @@ QString GETFileJob::errorString() const
 
 GETEncryptedFileJob::GETEncryptedFileJob(AccountPtr account, const QString &path, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-    qint64 resumeStart, EncryptedFile encryptedInfo, QObject *parent)
+    qint64 resumeStart, FolderMetadata::EncryptedFile encryptedInfo, QObject *parent)
     : GETFileJob(account, path, device, headers, expectedEtagForResume, resumeStart, parent)
     , _encryptedFileInfo(encryptedInfo)
 {
@@ -387,7 +387,7 @@ GETEncryptedFileJob::GETEncryptedFileJob(AccountPtr account, const QString &path
 
 GETEncryptedFileJob::GETEncryptedFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-    qint64 resumeStart, EncryptedFile encryptedInfo, QObject *parent)
+    qint64 resumeStart, FolderMetadata::EncryptedFile encryptedInfo, QObject *parent)
     : GETFileJob(account, url, device, headers, expectedEtagForResume, resumeStart, parent)
     , _encryptedFileInfo(encryptedInfo)
 {

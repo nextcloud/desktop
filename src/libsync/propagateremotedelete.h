@@ -20,7 +20,7 @@ namespace OCC {
 
 class DeleteJob;
 
-class AbstractPropagateRemoteDeleteEncrypted;
+class BasePropagateRemoteDeleteEncrypted;
 
 /**
  * @brief The PropagateRemoteDelete class
@@ -30,7 +30,7 @@ class PropagateRemoteDelete : public PropagateItemJob
 {
     Q_OBJECT
     QPointer<DeleteJob> _job;
-    AbstractPropagateRemoteDeleteEncrypted *_deleteEncryptedHelper = nullptr;
+    BasePropagateRemoteDeleteEncrypted *_deleteEncryptedHelper = nullptr;
 
 public:
     PropagateRemoteDelete(OwncloudPropagator *propagator, const SyncFileItemPtr &item)

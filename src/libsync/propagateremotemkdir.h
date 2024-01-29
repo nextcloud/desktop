@@ -53,7 +53,7 @@ private slots:
     void slotStartMkcolJob();
     void slotStartEncryptedMkcolJob(const QString &path, const QString &filename, quint64 size);
     void slotMkcolJobFinished();
-    void slotEncryptFolderFinished();
+    void slotEncryptFolderFinished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus);
     void success();
 
 private:

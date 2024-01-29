@@ -132,6 +132,7 @@ private:
 public:
 };
 
+class FolderMetadata;
 
 /**
  * @brief Run a PROPFIND on a directory and process the results for Discovery
@@ -142,13 +143,21 @@ class DiscoverySingleDirectoryJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
+    explicit DiscoverySingleDirectoryJob(const AccountPtr &account,
+                                         const QString &path,
+        /* TODO for topLevelE2eeFolderPaths, from review: I still do not get why giving the whole QSet instead of just the parent of the folder we are in
+        sounds to me like it would be much more efficient to just have the e2ee parent folder that we are
+        inside*/
+                                         const QSet<QString> &topLevelE2eeFolderPaths,
+                                         QObject *parent = nullptr);
     // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
     [[nodiscard]] bool isFileDropDetected() const;
     [[nodiscard]] bool encryptedMetadataNeedUpdate() const;
+    [[nodiscard]] SyncFileItem::EncryptionStatus currentEncryptionStatus() const;
+    [[nodiscard]] SyncFileItem::EncryptionStatus requiredEncryptionStatus() const;
 
     // This is not actually a network job, it is just a job
 signals:
@@ -166,7 +175,7 @@ private slots:
 
 private:
 
-    [[nodiscard]] bool isE2eEncrypted() const { return _isE2eEncrypted != SyncFileItem::EncryptionStatus::NotEncrypted; }
+    [[nodiscard]] bool isE2eEncrypted() const { return _encryptionStatusCurrent != SyncFileItem::EncryptionStatus::NotEncrypted; }
 
     QVector<RemoteInfo> _results;
     QString _subPath;
@@ -182,13 +191,17 @@ private:
     // If this directory is an external storage (The first item has 'M' in its permission)
     bool _isExternalStorage = false;
     // If this directory is e2ee
-    SyncFileItem::EncryptionStatus _isE2eEncrypted = SyncFileItem::EncryptionStatus::NotEncrypted;
+    SyncFileItem::EncryptionStatus _encryptionStatusCurrent = SyncFileItem::EncryptionStatus::NotEncrypted;
     bool _isFileDropDetected = false;
     bool _encryptedMetadataNeedUpdate = false;
+    SyncFileItem::EncryptionStatus _encryptionStatusRequired = SyncFileItem::EncryptionStatus::NotEncrypted;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;
     QPointer<LsColJob> _lsColJob;
+
+    // store top level E2EE folder paths as they are used later when discovering nested folders
+    QSet<QString> _topLevelE2eeFolderPaths;
 
 public:
     QByteArray _dataFingerprint;
@@ -322,6 +335,8 @@ public:
     bool _hasDownloadRemovedItems = false;
 
     bool _noCaseConflictRecordsInDb = false;
+
+    QSet<QString> _topLevelE2eeFolderPaths;
 
 signals:
     void fatalError(const QString &errorString, const OCC::ErrorCategory errorCategory);

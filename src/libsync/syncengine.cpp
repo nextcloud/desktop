@@ -510,7 +510,9 @@ void SyncEngine::startSync()
                 const auto folderId = e2EeLockedFolder.first;
                 qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
                 const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, e2EeLockedFolder.second);
+                // TODO: We need to rollback changes done to metadata in case we have an active lock, this needs to be implemented on the server first
                 const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, folderToken, _journal, this);
+                unlockJob->setShouldRollbackMetadataChanges(true);
                 unlockJob->start();
             }
         }
@@ -519,6 +521,10 @@ void SyncEngine::startSync()
     if (s_anySyncRunning || _syncRunning) {
         return;
     }
+    const auto currentEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion()));
+    [[maybe_unused]] const auto result = _journal->listAllE2eeFoldersWithEncryptionStatusLessThan(static_cast<int>(currentEncryptionStatus), [this](const SyncJournalFileRecord &record) {
+        _journal->schedulePathForRemoteDiscovery(record.path());
+    });
 
     s_anySyncRunning = true;
     _syncRunning = true;

@@ -91,6 +91,21 @@ Q_LOGGING_CATEGORY(lcChecksums, "nextcloud.sync.checksums", QtInfoMsg)
 
 #define BUFSIZE qint64(500 * 1024) // 500 KiB
 
+static QByteArray calcCryptoHash(const QByteArray &data, QCryptographicHash::Algorithm algo)
+{
+    if (data.isEmpty()) {
+        return {};
+    }
+    QCryptographicHash crypto(algo);
+    crypto.addData(data);
+    return crypto.result().toHex();
+}
+
+QByteArray calcSha256(const QByteArray &data)
+{
+    return calcCryptoHash(data, QCryptographicHash::Sha256);
+}
+
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
     if (checksumType.isEmpty() || checksum.isEmpty())

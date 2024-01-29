@@ -21,6 +21,7 @@
 #include "common/asserts.h"
 #include "encryptfolderjob.h"
 #include "filesystem.h"
+#include "csync/csync.h"
 
 #include <QFile>
 #include <QLoggingCategory>
@@ -156,7 +157,9 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
             // We're expecting directory path in /Foo/Bar convention...
             Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
             // But encryption job expect it in Foo/Bar/ convention
-            auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
+            auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, propagator(), _item);
+            job->setParent(this);
+            job->setPathNonEncrypted(_item->_file);
             connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
             job->start();
         }
@@ -239,11 +242,19 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     }
 }
 
-void PropagateRemoteMkdir::slotEncryptFolderFinished()
+void PropagateRemoteMkdir::slotEncryptFolderFinished(int status, EncryptionStatusEnums::ItemEncryptionStatus encryptionStatus)
 {
+    if (status != EncryptFolderJob::Success) {
+        done(SyncFileItem::FatalError, tr("Failed to encrypt a folder %1").arg(_item->_file), ErrorCategory::GenericError);
+        return;
+    }
     qCDebug(lcPropagateRemoteMkdir) << "Success making the new folder encrypted";
     propagator()->_activeJobList.removeOne(this);
-    _item->_e2eEncryptionStatus = SyncFileItem::EncryptionStatus::EncryptedMigratedV1_2;
+    _item->_e2eEncryptionStatus = encryptionStatus;
+    _item->_e2eEncryptionStatusRemote = encryptionStatus;
+    if (_item->isEncrypted()) {
+        _item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(propagator()->account()->capabilities().clientSideEncryptionVersion());
+    }
     success();
 }
 

@@ -247,6 +247,26 @@ private slots:
         QCOMPARE(generateHash(chunkedOutputDecrypted.readAll()), originalFileHash);
         chunkedOutputDecrypted.close();
     }
+
+    void testGzipThenEncryptDataAndBack()
+    {
+        const auto metadataKeySize = 16;
+
+        const auto keyForEncryption = EncryptionHelper::generateRandom(metadataKeySize);
+        const auto inputData = QByteArrayLiteral("sample text for encryption test");
+        const auto initializationVector = EncryptionHelper::generateRandom(metadataKeySize);
+
+        QByteArray authenticationTag;
+        const auto gzippedThenEncryptData = EncryptionHelper::gzipThenEncryptData(keyForEncryption, inputData, initializationVector, authenticationTag);
+
+        QVERIFY(!gzippedThenEncryptData.isEmpty());
+
+        const auto decryptedThebGzipUnzippedData = EncryptionHelper::decryptThenUnGzipData(keyForEncryption, gzippedThenEncryptData, initializationVector);
+
+        QVERIFY(!decryptedThebGzipUnzippedData.isEmpty());
+
+        QCOMPARE(inputData, decryptedThebGzipUnzippedData);
+    }
 };
 
 QTEST_APPLESS_MAIN(TestClientSideEncryption)

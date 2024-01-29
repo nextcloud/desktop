@@ -628,6 +628,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
     item->_e2eEncryptionStatus = serverEntry.isE2eEncrypted() ? SyncFileItem::EncryptionStatus::Encrypted : SyncFileItem::EncryptionStatus::NotEncrypted;
+    if (serverEntry.isE2eEncrypted()) {
+        item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
+    }
     item->_encryptedFileName = [=] {
         if (serverEntry.e2eMangledName.isEmpty()) {
             return QString();
@@ -1019,6 +1022,13 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_status = SyncFileItem::Status::NormalError;
         }
 
+        if (dbEntry.isValid() && item->isDirectory()) {
+            item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(dbEntry._e2eEncryptionStatus);
+            if (item->isEncrypted()) {
+                item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
+            }
+        }
+
         auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
@@ -1375,8 +1385,22 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // renaming the encrypted folder is done via remove + re-upload hence we need to mark the newly created folder as encrypted
             // base is a record in the SyncJournal database that contains the data about the being-renamed folder with it's old name and encryption information
             item->_e2eEncryptionStatus = EncryptionStatusEnums::fromDbEncryptionStatus(base._e2eEncryptionStatus);
+            item->_e2eEncryptionServerCapability = EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_discoveryData->_account->capabilities().clientSideEncryptionVersion());
         }
         postProcessLocalNew();
+        /*if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW && item->_direction == SyncFileItem::Up
+            && _discoveryData->_account->capabilities().clientSideEncryptionVersion() >= 2.0) {
+            OCC::SyncJournalFileRecord rec;
+            _discoveryData->_statedb->findEncryptedAncestorForRecord(item->_file, &rec);
+            if (rec.isValid() && rec._e2eEncryptionStatus >= OCC::SyncJournalFileRecord::EncryptionStatus::EncryptedMigratedV2_0) {
+                qCDebug(lcDisco) << "Attempting to create a subfolder in top-level E2EE V2 folder. Ignoring.";
+                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                item->_direction = SyncFileItem::None;
+                item->_status = SyncFileItem::NormalError;
+                item->_errorString = tr("Creating nested encrypted folders is not supported yet.");
+            }
+        }*/
+
         finalize();
         return;
     }
@@ -1939,17 +1963,34 @@ void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 {
+    if (_dirItem && _dirItem->isEncrypted() && _dirItem->_encryptedFileName.isEmpty()) {
+        _discoveryData->_topLevelE2eeFolderPaths.insert(QLatin1Char('/') + _dirItem->_file);
+    }
     auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
-        _discoveryData->_remoteFolder + _currentFolder._server, this);
-    if (!_dirItem)
+                                                     _discoveryData->_remoteFolder + _currentFolder._server,
+                                                     _discoveryData->_topLevelE2eeFolderPaths,
+                                                     this);
+    if (!_dirItem) {
         serverJob->setIsRootPath(); // query the fingerprint on the root
+    }
+
     connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
     _discoveryData->_currentlyActiveJobs++;
     _pendingAsyncJobs++;
     connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
         if (_dirItem) {
-            _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
-            _dirItem->_isEncryptedMetadataNeedUpdate = serverJob->encryptedMetadataNeedUpdate();
+            if (_dirItem->isEncrypted()) {
+                _dirItem->_isFileDropDetected = serverJob->isFileDropDetected();
+
+                SyncJournalFileRecord record;
+                const auto alreadyDownloaded = _discoveryData->_statedb->getFileRecord(_dirItem->_file, &record) && record.isValid();
+                // we need to make sure we first download all e2ee files/folders before migrating
+                _dirItem->_isEncryptedMetadataNeedUpdate = alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
+                _dirItem->_e2eEncryptionStatus = serverJob->currentEncryptionStatus();
+                _dirItem->_e2eEncryptionStatusRemote = serverJob->currentEncryptionStatus();
+                _dirItem->_e2eEncryptionServerCapability = serverJob->requiredEncryptionStatus();
+                _discoveryData->_anotherSyncNeeded = !alreadyDownloaded && serverJob->encryptedMetadataNeedUpdate();
+            }
             qCInfo(lcDisco) << "serverJob has finished for folder:" << _dirItem->_file << " and it has _isFileDropDetected:" << true;
         }
         _discoveryData->_currentlyActiveJobs--;

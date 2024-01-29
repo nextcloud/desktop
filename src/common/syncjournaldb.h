@@ -70,6 +70,9 @@ public:
     [[nodiscard]] bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     [[nodiscard]] bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     [[nodiscard]] Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
+    [[nodiscard]] bool getRootE2eFolderRecord(const QString &remoteFolderPath, SyncJournalFileRecord *rec);
+    [[nodiscard]] bool listAllE2eeFoldersWithEncryptionStatusLessThan(const int status, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
+    [[nodiscard]] bool findEncryptedAncestorForRecord(const QString &filename, SyncJournalFileRecord *rec);
 
     void keyValueStoreSet(const QString &key, QVariant value);
     [[nodiscard]] qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
