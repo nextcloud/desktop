@@ -214,9 +214,11 @@ target_link_libraries(nextcloudsync
   KF5::Archive
 )
 
+find_package(Qt5 REQUIRED COMPONENTS Gui Widgets Svg)
+target_link_libraries(nextcloudsync PUBLIC Qt5::Gui Qt5::Widgets Qt5::Svg)
+
 if (NOT TOKEN_AUTH_ONLY)
-    find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
-    target_link_libraries(nextcloudsync PUBLIC Qt5::Widgets Qt5::Svg qt5keychain)
+    target_link_libraries(nextcloudsync PUBLIC qt5keychain)
 endif()
 
 if(Inotify_FOUND)

@@ -1,7 +1,3 @@
-# TODO: OSX and LIB_ONLY seem to require this to go to binary dir only
-if(NOT TOKEN_AUTH_ONLY)
-endif()
-
 include(ECMEnableSanitizers)
 
 set(REQUIRED_QT_VERSION "5.15.0")
