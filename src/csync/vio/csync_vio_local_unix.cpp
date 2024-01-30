@@ -28,9 +28,13 @@
 
 #include <memory>
 
-#ifdef __APPLE__//macOS, iOS
+#ifdef __APPLE__
 #include <CoreFoundation/CFBundle.h>
 #include <CoreServices/CoreServices.h>
+#endif
+
+#ifdef __linux__
+#include <sys/xattr.h>
 #endif
 
 #include "c_private.h"
@@ -125,8 +129,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
       file_stat->type = ItemTypeSkip;
   }
 
+
 #ifdef __APPLE__
-//TODO: GETTAGLISTFROMLOCALFILE
+
   // Create necessary system related objects
   CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault,
                                                 fullPath.constData(),
@@ -165,6 +170,22 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   CFRelease(urlref);
   if(labels!=NULL)CFRelease(labels);
 
+#endif
+
+#ifdef __linux__
+	const int sz=4096;
+	char buffer[sz];
+	int result = getxattr(fullPath.constData(),"user.xdg.tags",buffer,sz);
+	
+	if(result>0)
+	{
+		// Data is store usually as comma(,) separated list.
+		// So we just need to replace ',' by '\n'.
+		QByteArray tagList = QByteArray(buffer,result);
+		tagList.replace(',','\n');
+		printf("%s\n",buffer);
+		file_stat->tagList= tagList;
+	}
 #endif
 
   // Override type for virtual files if desired

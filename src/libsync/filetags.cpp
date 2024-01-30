@@ -12,8 +12,12 @@
  * for more details.
  */
 
-#ifdef __APPLE__//macOS, iOS
+#ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
+#endif
+
+#ifdef __linux__
+#include <sys/xattr.h>
 #endif
 
 #include <QStringList>
@@ -81,9 +85,9 @@ namespace OCC{
 		return tags.join(QChar(0x000A)).toUtf8();
 	}
 	
-	QByteArray FileTagManager::readTagListFromLocalFile(const QString &path)
-	{
-		
+QByteArray FileTagManager::readTagListFromLocalFile(const QString &path)
+{
+#ifdef __APPLE__	
 			// Create necessary system related objects
 		CFStringRef cfstr = path.toCFString();
 		CFURLRef urlref = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
@@ -120,11 +124,30 @@ namespace OCC{
 		CFRelease(urlref);
 		if(labels!=NULL)CFRelease(labels);
 		
-		return tagarray.join(QChar(0x000A)).toUtf8();
-	}
+    return tagarray.join(QChar(0x000A)).toUtf8();
+#endif
+		
+#ifdef __linux__
+	const int sz=4096;
+	char buffer[sz];
+	int result = getxattr(path.toUtf8().constData(),"user.xdg.tags",buffer,sz);
 	
-	bool FileTagManager::writeTagListToLocalFile(const QString &localpath,const QByteArray &taglist)
+	if(result>0)
 	{
+		// Data is stored usually as comma(,) separated list.
+		// So we just need to replace ',' by '\n'.
+		QByteArray tagList = QByteArray(buffer,result);
+		tagList.replace(',','\n');
+		printf("%s\n",buffer);
+		return tagList;
+	}
+    	else return QByteArray();
+#endif
+}
+	
+bool FileTagManager::writeTagListToLocalFile(const QString &localpath,const QByteArray &taglist)
+{
+#ifdef __APPLE__	
 		printf("RMD SYNC LOCAL FS\n");
 		QStringList strlist=QString(taglist).split(QChar(0x000A));
 		
@@ -133,7 +156,7 @@ namespace OCC{
 		CFStringRef* strs = new CFStringRef[newsize];
 		for(int index=0;index<newsize;index++)
 		{
-			strs[index]=strlist[index].toCFString();;
+			strs[index]=strlist[index].toCFString();
 		}
 		
 		CFArrayRef newtags = CFArrayCreate(NULL,(const void**)strs, newsize, &kCFTypeArrayCallBacks);
@@ -167,7 +190,24 @@ namespace OCC{
 		CFRelease(newtags);
 		
 		return result;
-	}
+		
+#endif
+		
+#ifdef __linux__
+
+	QByteArray lcTagList=taglist;
+	lcTagList.replace('\n',',');
+
+	int result = setxattr(localpath.toUtf8().constData(),
+	"user.xdg.tags",
+	lcTagList.constData(),
+	lcTagList.size(),
+	0);
+	
+	if(result==0)return true;
+    	else return false;
+#endif
+}
 	
 	
 	bool FileTagManager::restoreLocalFileTags(const QString &localdir,const QString &file)
