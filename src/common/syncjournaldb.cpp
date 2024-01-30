@@ -49,7 +49,7 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
         "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, " \
-        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, isShared, lastShareStateFetchedTimestmap, sharedByMe" \
+        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout, isShared, lastShareStateFetchedTimestmap, sharedByMe, tagList" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -77,6 +77,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._isShared = query.intValue(19) > 0;
     rec._lastShareStateFetchedTimestamp = query.int64Value(20);
     rec._sharedByMe = query.intValue(21) > 0;
+    rec._tagList = query.baValue(22);
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -832,6 +833,8 @@ bool SyncJournalDb::updateMetadataTableStructure()
     }
     commitInternal(QStringLiteral("update database structure: add basePath index"));
 
+    addColumn(QStringLiteral("tagList"), QStringLiteral("TEXT"));
+
     return re;
 }
 
@@ -958,7 +961,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "lock editor:" << record._lockstate._lockEditorApp
                  << "sharedByMe:" << record._sharedByMe
                  << "isShared:" << record._isShared
-                 << "lastShareStateFetchedTimestamp:" << record._lastShareStateFetchedTimestamp;
+                 << "lastShareStateFetchedTimestamp:" << record._lastShareStateFetchedTimestamp
+                 << "tagList:"<<record._tagList;
 
     const qint64 phash = getPHash(record._path);
     if (!checkConnect()) {
@@ -984,8 +988,8 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                         "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
                                                                                                         "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
-                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, isShared, lastShareStateFetchedTimestmap, sharedByMe) "
-                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28);"),
+                                                                                                        "lockOwnerEditor, lockTime, lockTimeout, isShared, lastShareStateFetchedTimestmap, sharedByMe, tagList) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25, ?26, ?27, ?28, ?29);"),
         _db);
     if (!query) {
         return query->error();
@@ -1019,6 +1023,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     query->bindValue(26, record._isShared);
     query->bindValue(27, record._lastShareStateFetchedTimestamp);
     query->bindValue(28, record._sharedByMe);
+    query->bindValue(29, record._tagList);
 
     if (!query->exec()) {
         return query->error();
@@ -1495,6 +1500,60 @@ int SyncJournalDb::getFileRecordCount()
     }
 
     return -1;
+}
+
+bool SyncJournalDb::updateMetadataTagList(const QString &filename,const QByteArray* tagList)
+{
+    QMutexLocker locker(&_mutex);
+
+    qCInfo(lcDb) << "Updating file tag lists " << filename;
+
+    if (!checkConnect()) {
+        qCWarning(lcDb) << "Failed to connect database.";
+        return false;
+    }
+
+    const qint64 phash = getPHash(filename.toUtf8());
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::UpdateTagListQuery,
+                                         QByteArrayLiteral("UPDATE metadata"
+                                                           " SET tagList = ?2"
+                                                           " WHERE phash = ?1;"),
+                                          _db);
+    if (!query) {
+        return false;
+    }
+    query->bindValue(1, phash);
+    query->bindValue(2, *tagList);
+    printf("RMD UPDATE TAG\n");
+    return query->exec();
+}
+	
+QByteArray SyncJournalDb::tagList(const QString &file)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return QByteArray();
+
+    const qint64 phash = getPHash(file.toUtf8());
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetTagListQuery,
+                                         QByteArrayLiteral("SELECT tagList FROM metadata"
+                                                           " WHERE phash = ?1;"),
+                                         _db);
+    if (!query) {
+        return QByteArray();
+    }
+
+    query->bindValue(1, phash);
+    if (!query->exec())return QByteArray();
+
+    auto next = query->next();
+    if (!next.ok || !next.hasData)return QByteArray();
+
+    QByteArray result = query->baValue(0);
+    printf("RMD YES %lld %s!\n",phash,result.data());
+    return result;
 }
 
 bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,

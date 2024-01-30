@@ -246,6 +246,16 @@ public:
     void setDataFingerprint(const QByteArray &dataFingerprint);
     QByteArray dataFingerprint();
 
+    /*!
+    * \brief Update the taglist in the metadata table.
+     */
+    bool updateMetadataTagList(const QString &file,
+                               const QByteArray* tagList);
+
+    /*!
+     * \brief Returns the taglist of the queried file.
+     */
+    QByteArray tagList(const QString &file);
 
     // Conflict record functions
 

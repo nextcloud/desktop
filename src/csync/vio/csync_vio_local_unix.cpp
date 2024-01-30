@@ -28,6 +28,11 @@
 
 #include <memory>
 
+#ifdef __APPLE__//macOS, iOS
+#include <CoreFoundation/CFBundle.h>
+#include <CoreServices/CoreServices.h>
+#endif
+
 #include "c_private.h"
 #include "c_lib.h"
 #include "csync.h"
@@ -119,6 +124,48 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
       // Will get excluded by _csync_detect_update.
       file_stat->type = ItemTypeSkip;
   }
+
+#ifdef __APPLE__
+//TODO: GETTAGLISTFROMLOCALFILE
+  // Create necessary system related objects
+  CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault,
+                                                fullPath.constData(),
+                                                kCFStringEncodingUTF8);
+  CFURLRef urlref = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,
+                                                  cfstr,
+                                                  kCFURLPOSIXPathStyle,
+                                                  dirent->d_type == DT_DIR);
+
+  // Query tags
+  CFArrayRef labels=NULL;
+  Boolean result = CFURLCopyResourcePropertyForKey(urlref,
+                                                   kCFURLTagNamesKey,
+                                                   &labels,
+                                                   NULL);
+
+  if(result==true && labels != NULL){
+    // Extract the labels to our array
+    int count = (int) CFArrayGetCount(labels);
+
+    if(count>0){
+      QStringList tagarray;
+
+      for(int index=0;index<count;index++){
+        CFStringRef str = (CFStringRef)CFArrayGetValueAtIndex(labels,index);
+        if(CFStringGetLength(str)>0)tagarray << QString::fromCFString(str);
+      }
+      tagarray.sort(Qt::CaseInsensitive);
+      QString tagList = tagarray.join(QChar(0x000A));
+      file_stat->tagList=tagList.toUtf8();
+    }
+  }
+
+  // Clean up
+  CFRelease(cfstr);
+  CFRelease(urlref);
+  if(labels!=NULL)CFRelease(labels);
+
+#endif
 
   // Override type for virtual files if desired
   if (vfs) {

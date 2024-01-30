@@ -16,6 +16,7 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "discovery.h"
+#include "filetags.h"
 #include "helpers.h"
 #include "progressdispatcher.h"
 
@@ -344,6 +345,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
         i.isMetadataMissing = dirent->is_metadata_missing;
         i.type = dirent->type;
+        i.tagList=dirent->tagList;
         results.push_back(i);
     }
     if (errno != 0) {
@@ -391,7 +393,9 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums";
+          << "http://owncloud.org/ns:checksums"
+          << "http://owncloud.org/ns:tags"
+          << "http://nextcloud.org/ns:system-tags";
 
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
@@ -538,7 +542,13 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 result.lockTimeout = 0;
             }
         }
-
+        if(property == "system-tags" || property == "tags"){
+            QByteArray list =FileTagManager::fromPropertiesToTagList(value);
+            if(list.size()>0){
+                if(result.tagList.size()>0)result.tagList.append('\n');
+                result.tagList.append(list);
+            }
+        }
     }
 
     if (result.isDirectory && map.contains("size")) {

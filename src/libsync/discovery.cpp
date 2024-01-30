@@ -17,6 +17,7 @@
 #include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
 #include "filesystem.h"
+#include "filetags.h"
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 #include <QDebug>
@@ -476,13 +477,32 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | e2ee: " << dbEntry.isE2eEncrypted() << "/" << serverEntry.isE2eEncrypted()
                               << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
                               << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked
-                              << " | metadata missing: /" << localEntry.isMetadataMissing << '/';
+                              << " | metadata missing: /" << localEntry.isMetadataMissing << '/'
+                              << " | tagList: " << dbEntry._tagList << "//" << localEntry.tagList << "//" << serverEntry.tagList;
 
     if (localEntry.isValid()
         && !serverEntry.isValid()
         && !dbEntry.isValid()
         && localEntry.modtime < _lastSyncTimestamp) {
         qCWarning(lcDisco) << "File" << path._original << "was modified before the last sync run and is not in the sync journal and server";
+    }
+
+    if(localEntry.isValid()
+        && dbEntry.isValid()) {
+        FileTagManager* tm = FileTagManager::GetInstance();
+
+        // Try tag pull by default (order pull,push is relevant!)
+        tm->pullTags(_discoveryData->_localDir % path._original,
+                     localEntry,
+                     dbEntry);
+
+        // Only if all three entries are valid, we make a full sync.
+        if(serverEntry.isValid()) {
+            tm->pushTags(_discoveryData->_localDir % path._original,
+                         localEntry,
+                         serverEntry,
+                         dbEntry);
+        }
     }
 
     if (_discoveryData->isRenamed(path._original)) {
@@ -650,6 +670,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_lockEditorApp = serverEntry.lockEditorApp;
     item->_lockTime = serverEntry.lockTime;
     item->_lockTimeout = serverEntry.lockTimeout;
+    item->_tagList = serverEntry.tagList;
 
     qCDebug(lcDisco()) << "item lock for:" << item->_file
                        << item->_locked

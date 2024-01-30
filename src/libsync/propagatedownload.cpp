@@ -21,6 +21,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
 #include "filesystem.h"
+#include "filetags.h"
 #include "propagatorjobs.h"
 #include <common/asserts.h>
 #include <common/constants.h>
@@ -1364,6 +1365,8 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     if (isLikelyFinishedQuickly() && duration > 5 * 1000) {
         qCWarning(lcPropagateDownload) << "WARNING: Unexpectedly slow connection, took" << duration << "msec for" << _item->_size - _resumeStart << "bytes for" << _item->_file;
     }
+
+    FileTagManager::GetInstance()->restoreLocalFileTags(propagator()->localPath(),_item->_file);
 }
 
 void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)

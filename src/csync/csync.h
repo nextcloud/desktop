@@ -221,6 +221,8 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   QByteArray directDownloadCookies;
   QByteArray original_path; // only set if locale conversion fails
 
+  QByteArray tagList; // \n-separated List of tags
+
   // In the local tree, this can hold a checksum and its type if it is
   //   computed during discovery for some reason.
   // In the remote tree, this will have the server checksum, if available.

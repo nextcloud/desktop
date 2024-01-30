@@ -51,6 +51,7 @@ bool operator==(const SyncJournalFileRecord &lhs,
         && lhs._fileSize == rhs._fileSize
         && lhs._remotePerm == rhs._remotePerm
         && lhs._serverHasIgnoredFiles == rhs._serverHasIgnoredFiles
-        && lhs._checksumHeader == rhs._checksumHeader;
+        && lhs._checksumHeader == rhs._checksumHeader
+        && lhs._tagList == rhs._tagList;
 }
 }

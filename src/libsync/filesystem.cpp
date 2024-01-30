@@ -13,6 +13,7 @@
  */
 
 #include "filesystem.h"
+#include "filetags.h"
 
 #include "common/utility.h"
 #include <QFile>
@@ -85,10 +86,12 @@ bool FileSystem::setModTime(const QString &filename, time_t modTime)
 
 bool FileSystem::fileChanged(const QString &fileName,
     qint64 previousSize,
-    time_t previousMtime)
+    time_t previousMtime,
+    const QByteArray &taglist)
 {
     return getSize(fileName) != previousSize
-        || getModTime(fileName) != previousMtime;
+        || getModTime(fileName) != previousMtime
+        || FileTagManager::GetInstance()->readTagListFromLocalFile(fileName) != taglist;
 }
 
 bool FileSystem::verifyFileUnchanged(const QString &fileName,

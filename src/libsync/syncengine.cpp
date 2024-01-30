@@ -24,6 +24,7 @@
 #include "common/syncfilestatus.h"
 #include "csync_exclude.h"
 #include "filesystem.h"
+#include "filetags.h"
 #include "deletejob.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"
@@ -115,6 +116,8 @@ SyncEngine::SyncEngine(AccountPtr account,
     connect(this, &SyncEngine::finished, [this](bool /* finished */) {
         _journal->keyValueStoreSet("last_sync", QDateTime::currentSecsSinceEpoch());
     });
+
+    FileTagManager::Init(account,journal);
 }
 
 SyncEngine::~SyncEngine()

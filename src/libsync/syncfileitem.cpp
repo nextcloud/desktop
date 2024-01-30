@@ -18,6 +18,7 @@
 #include "common/utility.h"
 #include "helpers.h"
 #include "filesystem.h"
+#include "filetags.h"
 
 #include <QLoggingCategory>
 #include "csync/vio/csync_vio_local.h"
@@ -125,6 +126,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._lockstate._lockEditorApp = _lockEditorApp;
     rec._lockstate._lockTime = _lockTime;
     rec._lockstate._lockTimeout = _lockTimeout;
+    rec._tagList = _tagList;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -166,6 +168,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_sharedByMe = rec._sharedByMe;
     item->_isShared = rec._isShared;
     item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
+    item->_tagList = rec._tagList;
     return item;
 }
 
@@ -237,6 +240,22 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
     // direction and instruction are decided later
     item->_direction = SyncFileItem::None;
     item->_instruction = CSYNC_INSTRUCTION_NONE;
+
+    // Tags
+    if (properties.contains(QStringLiteral("tags"))) {
+        QByteArray list =FileTagManager::fromPropertiesToTagList(properties.value("tags"));
+        if(list.size()>0){ // Avoid empty entries!
+            if(item->_tagList.size()>0)item->_tagList.append('\n');
+            item->_tagList.append(list);
+        }
+    }
+    if (properties.contains(QStringLiteral("system-tags"))) {
+        QByteArray list =FileTagManager::fromPropertiesToTagList(properties.value("system-tags"));
+        if(list.size()>0){ // Avoid empty entries!
+            if(item->_tagList.size()>0)item->_tagList.append('\n');
+            item->_tagList.append(list);
+        }
+    }
 
     return item;
 }

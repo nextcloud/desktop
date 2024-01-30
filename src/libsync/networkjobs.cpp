@@ -891,7 +891,7 @@ void ProppatchJob::start()
                      "  <d:set><d:prop>\n"
         + propStr + "  </d:prop></d:set>\n"
                     "</d:propertyupdate>\n";
-
+	printf("RMD QUERY: %s\n",xml.data());
     auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
