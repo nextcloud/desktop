@@ -8,7 +8,7 @@ import zipfile
 
 from pageObjects.AccountSetting import AccountSetting
 
-from helpers.SetupClientHelper import getResourcePath
+from helpers.SetupClientHelper import getResourcePath, getTempResourcePath
 from helpers.SyncHelper import waitForClientToBeReady
 from helpers.ConfigHelper import get_config, isWindows
 from helpers.FilesHelper import (
@@ -347,3 +347,11 @@ def step(context, username, zip_file_name):
     destination_dir = getResourcePath('/', username)
     zip_file_path = join(destination_dir, zip_file_name)
     extractZip(zip_file_path, destination_dir)
+
+
+@When('user "|any|" copies file "|any|" to temp folder')
+def step(context, username, source):
+    waitForClientToBeReady()
+    source_dir = getResourcePath(source, username)
+    destination_dir = getTempResourcePath(source)
+    shutil.copy2(source_dir, destination_dir)

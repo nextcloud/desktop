@@ -32,3 +32,18 @@ Feature: Enable/disable virtual file support
         And the placeholder of file "folder1/lorem.txt" should exist on the file system
         And the file "testFile.txt" should be downloaded
         And the file "folder2/lorem.txt" should be downloaded
+
+
+    Scenario: Copy and paste virtual file
+        Given user "Alice" has been created on the server with default attributes and without skeleton files
+        And user "Alice" has uploaded file with content "test file" to "textfile.txt" in the server
+        And user "Alice" has set up a client with default settings
+        When user "Alice" creates a file "localFile.txt" with the following content inside the sync folder
+            """
+            test content
+            """
+        And the user waits for the files to sync
+        Then the file "localFile.txt" should be downloaded
+        And as "Alice" file "localFile.txt" should exist in the server
+        When user "Alice" copies file "textfile.txt" to temp folder
+        Then the file "textfile.txt" should be downloaded
