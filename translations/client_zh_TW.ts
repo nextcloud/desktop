@@ -1059,12 +1059,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="94"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>「%1 無法解鎖加密資料夾 %2」。</translation>
     </message>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器回傳錯誤的 HTTP 狀態碼。預期為 204，但收到的是「%1 %2」。</translation>
     </message>
 </context>
 <context>
@@ -1477,7 +1477,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
         <source>Encrypted metadata setup error!</source>
-        <translation type="unfinished"/>
+        <translation>已加密的詮釋資料設定錯誤！</translation>
     </message>
 </context>
 <context>
@@ -1650,29 +1650,29 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
         <source>Error fetching metadata.</source>
-        <translation type="unfinished"/>
+        <translation>擷取詮釋資料時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="114"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="120"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="213"/>
         <source>Error locking folder.</source>
-        <translation type="unfinished"/>
+        <translation>鎖定資料夾時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
         <source>Error fetching encrypted folder id.</source>
-        <translation type="unfinished"/>
+        <translation>擷取加密資料夾 ID 時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation type="unfinished"/>
+        <translation>解析或解密詮釋資料時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="323"/>
         <source>Failed to upload metadata</source>
-        <translation type="unfinished"/>
+        <translation>上傳詮釋資料時發生錯誤</translation>
     </message>
 </context>
 <context>
@@ -4050,7 +4050,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="248"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>加密資料夾失敗 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
@@ -4340,7 +4340,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="681"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
 </context>
 <context>
@@ -4373,7 +4373,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="855"/>
         <source>Could not find local folder for %1</source>
-        <translation type="unfinished"/>
+        <translation>找不到 %1 的本機資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="993"/>
@@ -5057,17 +5057,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="130"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>更新資料夾詮釋資料失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="153"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>解鎖加密資料夾失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="163"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>無法完成項目。</translation>
     </message>
 </context>
 <context>
@@ -5083,27 +5083,27 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="201"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="260"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>更新資料夾 %1 的詮釋資料時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch publicKey for user %1</source>
-        <translation type="unfinished"/>
+        <translation>無法擷取使用者 %1 的公開金鑰</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>找不到資料夾 %1 的根已加密資料夾</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="121"/>
         <source>Could not add or remove a folder user %1, for folder %2</source>
-        <translation type="unfinished"/>
+        <translation>無法新增或移除資料夾使用者 %1，用於資料夾 %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>解鎖資料夾失敗。</translation>
     </message>
 </context>
 <context>
@@ -5870,7 +5870,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>無法分享此資料夾</translation>
     </message>
 </context>
 <context>
