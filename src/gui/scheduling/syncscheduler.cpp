@@ -134,8 +134,11 @@ SyncScheduler::~SyncScheduler()
 
 void SyncScheduler::enqueueFolder(Folder *folder, Priority priority)
 {
-    Q_ASSERT(folder->isReady());
-    Q_ASSERT(folder->canSync());
+    if (!folder->canSync()) {
+        qCWarning(lcSyncScheduler) << "Cannot enqueue folder" << folder->path() << ": folder is marked as cannot sync";
+        return;
+    }
+
     qCInfo(lcSyncScheduler) << "Enqueue" << folder->path() << priority << "QueueSize:" << _queue->size();
     _queue->enqueueFolder(folder, priority);
     if (!_currentSync) {
