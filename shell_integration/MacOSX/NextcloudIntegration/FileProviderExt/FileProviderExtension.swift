@@ -51,6 +51,19 @@ import OSLog
         return session
     }()
 
+    // Whether or not we are going to recursively scan new folders when they are discovered.
+    // Apple's recommendation is that we should always scan the file hierarchy fully.
+    // This does lead to long load times when a file provider domain is initially configured.
+    // We can instead do a fast enumeration where we only scan folders as the user navigates through
+    // them, thereby avoiding this issue; the trade-off is that we will be unable to detect
+    // materialised file moves to unexplored folders, therefore deleting the item when we could have
+    // just moved it instead.
+    //
+    // Since it's not desirable to cancel a long recursive enumeration half-way through, we do the
+    // fast enumeration by default. We prompt the user on the client side to run a proper, full
+    // enumeration if they want for safety.
+    var fastEnumeration = true
+
     required init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
@@ -787,7 +800,11 @@ import OSLog
         }
 
         return FileProviderEnumerator(
-            enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount, ncKit: ncKit)
+            enumeratedItemIdentifier: containerItemIdentifier,
+            ncAccount: ncAccount,
+            ncKit: ncKit,
+            fastEnumeration: fastEnumeration
+        )
     }
 
     func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
