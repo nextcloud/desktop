@@ -1057,12 +1057,12 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="94"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>« %1 Impossible de déverrouiller le dossier chiffré %2 ».</translation>
     </message>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Le code HTTP retourné par le serveur n&apos;est pas valide. La valeur attendue est 204 mais la valeur retournée est « %1 %2 ».</translation>
     </message>
 </context>
 <context>
@@ -1648,7 +1648,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
         <source>Error fetching metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à la récupération des méta-données.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="114"/>
@@ -4048,7 +4048,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="248"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Échec du chiffrement d&apos;un dossier %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
@@ -4338,7 +4338,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="681"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erreur</translation>
     </message>
 </context>
 <context>
@@ -4371,7 +4371,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="855"/>
         <source>Could not find local folder for %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de trouver le dossier local pour %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="993"/>
@@ -5868,7 +5868,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Le partage n&apos;est pas disponible pour ce dossier</translation>
     </message>
 </context>
 <context>
