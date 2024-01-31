@@ -413,50 +413,50 @@ Failide sünkroniseerimise töölaua rakendus.</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="45"/>
+        <location filename="../src/gui/accountsettings.ui" line="82"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="81"/>
+        <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Preparing the account</source>
         <translation>Konto ettevalmistamine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="181"/>
+        <location filename="../src/gui/accountsettings.ui" line="218"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Märkimata kataloogid &lt;b&gt;eemaldatakse&lt;/b&gt; kohalikust failisüsteemist ning neid ei sünkroniseerita enam sellesse arvutisse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="227"/>
+        <location filename="../src/gui/accountsettings.ui" line="264"/>
         <source>Synchronize all</source>
         <translation>Sünkroniseeri kõik</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="234"/>
+        <location filename="../src/gui/accountsettings.ui" line="271"/>
         <source>Synchronize none</source>
         <translation>Ära sünkroniseeri midagi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="241"/>
+        <location filename="../src/gui/accountsettings.ui" line="278"/>
         <source>Apply manual changes</source>
         <translation>Rakenda käsitsi tehtud muudatused</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="304"/>
+        <location filename="../src/gui/accountsettings.ui" line="341"/>
         <source>Apply</source>
         <translation>Rakenda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="291"/>
+        <location filename="../src/gui/accountsettings.ui" line="328"/>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
-        <location filename="../src/gui/accountsettings.cpp" line="944"/>
+        <location filename="../src/gui/accountsettings.cpp" line="940"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="29"/>
+        <location filename="../src/gui/accountsettings.ui" line="66"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
         <translation>Ühendatud &lt;server&gt; kasutajana &lt;user&gt;</translation>
     </message>
@@ -492,15 +492,15 @@ Failide sünkroniseerimise töölaua rakendus.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="195"/>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
-        <location filename="../src/gui/accountsettings.cpp" line="760"/>
+        <location filename="../src/gui/accountsettings.cpp" line="745"/>
+        <location filename="../src/gui/accountsettings.cpp" line="756"/>
         <source>Add Space</source>
         <translation>Lisa ruum</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
-        <location filename="../src/gui/accountsettings.cpp" line="752"/>
-        <location filename="../src/gui/accountsettings.cpp" line="763"/>
+        <location filename="../src/gui/accountsettings.cpp" line="748"/>
+        <location filename="../src/gui/accountsettings.cpp" line="759"/>
         <source>Add Folder</source>
         <translation>Lisa kaust</translation>
     </message>
@@ -543,32 +543,32 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
         <translation>Eemalda tugi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="588"/>
+        <location filename="../src/gui/accountsettings.cpp" line="584"/>
         <source>Sync Running</source>
         <translation>Sünkroniseerimine on käimas</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="589"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
         <translation>Sünkroniseerimine käib. &lt;br/&gt; Kas soovid katkestada?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="713"/>
+        <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
         <translation>%1 kasutajatunnuste värskendamine...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Connecting to: %1.</source>
         <translation>Ühendun: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="728"/>
+        <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>Disconnected from: %1.</source>
         <translation>Ühendun lahti: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="700"/>
+        <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>Connected to %1.</source>
         <translation>Ühendatud %1</translation>
     </message>
@@ -583,108 +583,108 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
         <translation>Luba virtuaalse faili tugi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="604"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
         <translation>Sünkroniseerimine peatati kasutaja poolt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="638"/>
+        <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
         <translation>Internetiühendus on mahupõhine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="639"/>
+        <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
         <translation>Sünkroniseerimine on peatatud, kuna interneti-ühendus on mahupõhine&lt;p&gt;Kas soovite tõesti sünkroniseerida?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
+        <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
         <translation>Kasutaja käivitas sunnitud sünkroniseerimise</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="693"/>
+        <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
         <translation>Sünkroonimine %1-ga on peatatud mahupõhise internetiühenduse tõttu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="704"/>
+        <location filename="../src/gui/accountsettings.cpp" line="700"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 pole ajutiselt saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="707"/>
+        <location filename="../src/gui/accountsettings.cpp" line="703"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Server %1 on hetkel hooldusrežiimil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="710"/>
+        <location filename="../src/gui/accountsettings.cpp" line="706"/>
         <source>Signed out from %1.</source>
         <translation>Välja logitud %1-st.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="720"/>
+        <location filename="../src/gui/accountsettings.cpp" line="716"/>
         <source>Server configuration error: %1.</source>
         <translation>Serveri konfiguratsiooniviga: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="739"/>
+        <location filename="../src/gui/accountsettings.cpp" line="735"/>
         <source>Log in</source>
         <translation>Logi sisse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="750"/>
+        <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Click this button to add a Space.</source>
         <translation>Vajuta nuppu et lisada ruum</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="753"/>
+        <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Sünkroniseeritava kausta lisamiseks kliki sellele nupule.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="761"/>
+        <location filename="../src/gui/accountsettings.cpp" line="757"/>
         <source>You need to be connected to add a Space.</source>
         <translation>Ruumi lisamiseks pead olema ühendatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="764"/>
+        <location filename="../src/gui/accountsettings.cpp" line="760"/>
         <source>You need to be connected to add a folder.</source>
         <translation>Kausta lisamiseks pead olema ühendatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="897"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Mõned kataloogid jäeti liigse suuruse tõttu sünkroniseerimata:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="903"/>
+        <location filename="../src/gui/accountsettings.cpp" line="899"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Mõned kataloogid jäeti sünkroniseerimata, sest nad asusid välistel ketastel:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="904"/>
+        <location filename="../src/gui/accountsettings.cpp" line="900"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Mõned kataloogid jäeti sünkroniseerimata, sest nad asusid välistel ketastel või olid liiga suured:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="937"/>
+        <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>Confirm Account Removal</source>
         <translation>Kinnita konto eemaldamine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="938"/>
+        <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kas soovid tõesti ühenduse kontoga &lt;i&gt;%1&lt;/i&gt; eemaldada?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; See &lt;b&gt;ei&lt;/b&gt; kustuta ühtegi faili.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="939"/>
         <source>Remove connection</source>
         <translation>Eemalda ühendus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
-        <location filename="../src/gui/accountsettings.cpp" line="741"/>
+        <location filename="../src/gui/accountsettings.cpp" line="737"/>
         <source>Log out</source>
         <translation>Logi välja</translation>
     </message>
@@ -704,7 +704,7 @@ See tegevus katkestab kõik käimasolevad sünkroniseerimised.</translation>
         <translation>&lt;p&gt;Kas soovid tõesti katkestada kataloogi &lt;i&gt;%1&lt;/i&gt; sünkroniseerimist?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Märkus:&lt;/b&gt; See &lt;b&gt;ei&lt;/b&gt; kustuta ühtegi faili.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="698"/>
+        <location filename="../src/gui/accountsettings.cpp" line="694"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Serveri versioon %1 ei ole toetatud! Jätkake omal vastutusel.</translation>
     </message>
@@ -1457,57 +1457,57 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="75"/>
         <source>Create Remote Folder</source>
         <translation>Loo kaugkaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="75"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="76"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Sisestage uue loodava kausta nimi &quot;%1&quot; alla:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="106"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="107"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Kaust %1-le on loodud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="117"/>
         <source>Authentication failed accessing %1</source>
         <translation>Autentimine %1 juurdepääsul ebaõnnestus</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="118"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="119"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Kausta loomine %1-le ebaõnnestus. Palun kontrolli käsitsi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="136"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="137"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Ei õnnestunud kausta loetleda. Viga: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="220"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="221"/>
         <source>Choose this to sync the entire account</source>
         <translation>Vali see sünkroniseerimine tervele kontole</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="334"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
         <source>This folder is already being synced.</source>
         <translation>Seda kataloogi juba sünkroniseeritakse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="337"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation>Antud kausta ei saa sünkroniseerida. Palun valige teine kaust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Sa juba sünkroniseerid &lt;i&gt;%1&lt;/i&gt;, mis on &lt;i&gt;%2&lt;/i&gt; ülemkataloog.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="342"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="343"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Te juba sünkroniseerite &lt;i&gt;%1&lt;/i&gt;, mis on &lt;i&gt;%2&lt;/i&gt; alamkaust.</translation>
     </message>
@@ -1869,6 +1869,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Logi väljund</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="53"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
@@ -1879,11 +1884,6 @@ Kuna logifailid võivad kasvada suureks, siis iga sünkroniseerimise käivtamise
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Lubada logimine ajutisse kausta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="53"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Logid sisaldavad tundlikku teavet, mida te ei tohiks avalikult kättesaadavaks teha&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

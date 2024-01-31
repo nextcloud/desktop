@@ -413,50 +413,50 @@ Mjet njëkohësimi kartelash për desktop.</translation>
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="45"/>
+        <location filename="../src/gui/accountsettings.ui" line="82"/>
         <source>...</source>
         <translation>…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="81"/>
+        <location filename="../src/gui/accountsettings.ui" line="118"/>
         <source>Preparing the account</source>
         <translation>Po përgatitet llogaria</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="181"/>
+        <location filename="../src/gui/accountsettings.ui" line="218"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Dosjeve që iu hoq shenja do të &lt;b&gt;hiqen&lt;/b&gt; nga sistemi juaj vendor i kartelave dhe s’do të njëkohësohen më në këtë kompjuter</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="227"/>
+        <location filename="../src/gui/accountsettings.ui" line="264"/>
         <source>Synchronize all</source>
         <translation>Njëkohësoji krejt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="234"/>
+        <location filename="../src/gui/accountsettings.ui" line="271"/>
         <source>Synchronize none</source>
         <translation>Mos njëkohëso gjë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="241"/>
+        <location filename="../src/gui/accountsettings.ui" line="278"/>
         <source>Apply manual changes</source>
         <translation>Zbato ndryshimet e bëra dorazi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="304"/>
+        <location filename="../src/gui/accountsettings.ui" line="341"/>
         <source>Apply</source>
         <translation>Zbatoje</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="291"/>
+        <location filename="../src/gui/accountsettings.ui" line="328"/>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <location filename="../src/gui/accountsettings.cpp" line="538"/>
-        <location filename="../src/gui/accountsettings.cpp" line="944"/>
+        <location filename="../src/gui/accountsettings.cpp" line="940"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="29"/>
+        <location filename="../src/gui/accountsettings.ui" line="66"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
         <translation>I lidhur me &lt;server&gt; si &lt;user&gt;</translation>
     </message>
@@ -492,15 +492,15 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="195"/>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
-        <location filename="../src/gui/accountsettings.cpp" line="760"/>
+        <location filename="../src/gui/accountsettings.cpp" line="745"/>
+        <location filename="../src/gui/accountsettings.cpp" line="756"/>
         <source>Add Space</source>
         <translation>Shtoni Hapësirë</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="197"/>
-        <location filename="../src/gui/accountsettings.cpp" line="752"/>
-        <location filename="../src/gui/accountsettings.cpp" line="763"/>
+        <location filename="../src/gui/accountsettings.cpp" line="748"/>
+        <location filename="../src/gui/accountsettings.cpp" line="759"/>
         <source>Add Folder</source>
         <translation>Shtoni Dosje</translation>
     </message>
@@ -543,32 +543,32 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <translation>Çaktivizoje mbulimin</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="588"/>
+        <location filename="../src/gui/accountsettings.cpp" line="584"/>
         <source>Sync Running</source>
         <translation>Njëkohësimi Po Kryhet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="589"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>The sync operation is running.&lt;br/&gt;Do you want to stop it?</source>
         <translation>Veprimi i njëkohësimit po kryhet.&lt;br/&gt;Doni të ndalet?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="713"/>
+        <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Updating credentials for %1...</source>
         <translation>Po përditësohen kredenciale për %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Connecting to: %1.</source>
         <translation>Po lidhet te %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="728"/>
+        <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>Disconnected from: %1.</source>
         <translation>U shkëput prej %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="700"/>
+        <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>Connected to %1.</source>
         <translation>I lidhur tek %1.</translation>
     </message>
@@ -583,108 +583,108 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <translation>Aktivizo mbulim kartelash virtuale</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="604"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Sync paused by user</source>
         <translation>Njëkohësim i ndalur nga përdoruesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="638"/>
+        <location filename="../src/gui/accountsettings.cpp" line="634"/>
         <source>Internet connection is metered</source>
         <translation>Lidhja Internet është me masë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="639"/>
+        <location filename="../src/gui/accountsettings.cpp" line="635"/>
         <source>Synchronization is paused because the Internet connection is a metered connection&lt;p&gt;Do you really want to force a Synchronization now?</source>
         <translation>Njëkohësimi është ndalur, ngaqë lidhja Internet është një lidhje me masë&lt;p&gt;Doni vërtet të detyrohet Njëkohësimi tani?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
+        <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>User triggered force sync</source>
         <translation>Përdoruesi shkaktoi njëkohësim të detyruar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="693"/>
+        <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>Sync to %1 is paused due to metered internet connection.</source>
         <translation>Njëkohësimi te %1 është ndërprerë për shkak lidhjeje internet me masë.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="704"/>
+        <location filename="../src/gui/accountsettings.cpp" line="700"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Shërbyesi %1 është përkohësisht i pakapshëm.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="707"/>
+        <location filename="../src/gui/accountsettings.cpp" line="703"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Shërbyesi %1 tani gjendet nën mënyrën mirëmbajtje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="710"/>
+        <location filename="../src/gui/accountsettings.cpp" line="706"/>
         <source>Signed out from %1.</source>
         <translation>U dol nga %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="720"/>
+        <location filename="../src/gui/accountsettings.cpp" line="716"/>
         <source>Server configuration error: %1.</source>
         <translation>Gabim formësimi shërbyesi: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="739"/>
+        <location filename="../src/gui/accountsettings.cpp" line="735"/>
         <source>Log in</source>
         <translation>Hyni</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="750"/>
+        <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Click this button to add a Space.</source>
         <translation>Klikoni mbi këtë buton që të shtoni një Hapësirë.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="753"/>
+        <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Klikoni mbi këtë buton që të shtoni një dosje për njëkohësim.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="761"/>
+        <location filename="../src/gui/accountsettings.cpp" line="757"/>
         <source>You need to be connected to add a Space.</source>
         <translation>Që të shtoni një hapësirë, lypset të jeni i lidhur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="764"/>
+        <location filename="../src/gui/accountsettings.cpp" line="760"/>
         <source>You need to be connected to add a folder.</source>
         <translation>Lypset të jeni i lidhur, që të shtoni një dosje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="897"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Ka dosje që s’u njëkohësuan, ngaqë janë shumë të mëdha: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="903"/>
+        <location filename="../src/gui/accountsettings.cpp" line="899"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Ka dosje që s’u njëkohësuan, ngaqë janë depozita të jashtme: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="904"/>
+        <location filename="../src/gui/accountsettings.cpp" line="900"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Ka dosje që s’u njëkohësuan, ngaqë janë shumë të mëdha ose janë depozita të jashtme: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="937"/>
+        <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>Confirm Account Removal</source>
         <translation>Ripohoni Heqjen e Llogarisë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="938"/>
+        <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Doni vërtet të hiqet lidhja për te llogaria &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Shënim:&lt;/b&gt; Kjo &lt;b&gt;nuk&lt;/b&gt; do të fshijë ndonjë kartelë.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="939"/>
         <source>Remove connection</source>
         <translation>Hiqe lidhjen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
-        <location filename="../src/gui/accountsettings.cpp" line="741"/>
+        <location filename="../src/gui/accountsettings.cpp" line="737"/>
         <source>Log out</source>
         <translation>Dilni</translation>
     </message>
@@ -704,7 +704,7 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <translation>&lt;p&gt;Doni vërtet të ndalet njëkohësimi i dosjes &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Shënim:&lt;/b&gt; Kjo &lt;b&gt;nuk&lt;/b&gt; do të fshijë ndonjë kartelë.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="698"/>
+        <location filename="../src/gui/accountsettings.cpp" line="694"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Versioni %1 i shërbyesit nuk mbulohet! Qari dhe zarari i juaj.</translation>
     </message>
@@ -1458,57 +1458,57 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="75"/>
         <source>Create Remote Folder</source>
         <translation>Krijoni Dosje të Largët</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="75"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="76"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Jepni më poshtë emrin e dosjes së re që duhet krijuar &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="106"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="107"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Dosja u krijua me sukses te %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="116"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="117"/>
         <source>Authentication failed accessing %1</source>
         <translation>Dështoi mirëfilltësimi gjatë hyrjes te %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="118"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="119"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>S’u arrit të krijohej dosja te %1. Ju lutemi, kontrollojeni dorazi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="136"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="137"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Dështoi në paraqitjen e një dosjeje. Gabim: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="220"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="221"/>
         <source>Choose this to sync the entire account</source>
         <translation>Zgjidhni këtë që të njëkohësohet krejt lënda e llogarisë</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="334"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="335"/>
         <source>This folder is already being synced.</source>
         <translation>Kjo dosje është duke u njëkohësuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="337"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="338"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
         <translation>Kjo dosje s’mund të njëkohësohet. Ju lutemi, zgjidhni një tjetër.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="340"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Po e njëkohësoni tashmë &lt;i&gt;%1&lt;/i&gt;, që është dosja mëmë e &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="342"/>
+        <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="343"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Po e njëkohësoni tashmë &lt;i&gt;%1&lt;/i&gt;, që është një nëndosje e &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -1870,6 +1870,11 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <translation>Përgjigje Regjistri</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="53"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;The logs contain sensitive information which you should not make publicly available&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
@@ -1880,11 +1885,6 @@ Ngaqë kartelat regjistër mund të bëhen shumë të mëdha, klienti do të fil
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Aktivizo regjistrim për dosje të përkohshme</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="53"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Regjistrat përmbajnë të dhëna rezervat të cilat s’duhet t’i bëni të passhme publikisht&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
