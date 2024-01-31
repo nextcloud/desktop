@@ -46,6 +46,7 @@ ownCloud admins and users.
 * Bugfix - Schedule syncs after an abort: [#11396](https://github.com/owncloud/client/pull/11396)
 * Bugfix - Fix early-use crash in the folder watcher on Linux: [#11460](https://github.com/owncloud/client/issues/11460)
 * Bugfix - Client stuck in `reconnecting`: [#11467](https://github.com/owncloud/client/pull/11467)
+* Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 * Change - Make messages translatable that occur early in start-up: [#11142](https://github.com/owncloud/client/issues/11142)
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
@@ -84,6 +85,14 @@ ownCloud admins and users.
    unhandled result, the client could get stuck in a `reconnecting` state.
 
    https://github.com/owncloud/client/pull/11467
+
+* Bugfix - Properly encode scope and prompt items in OAuth URL: [#11472](https://github.com/owncloud/client/issues/11472)
+
+   Fixed a bug where the scope and prompt items of an OAuth query would not be
+   encoded, resulting in an invalid request.
+
+   https://github.com/owncloud/client/issues/11472
+   https://github.com/owncloud/client/pull/11479
 
 * Bugfix - Client stuck in reconnecting state after application start: [#11478](https://github.com/owncloud/client/pull/11478)
 
