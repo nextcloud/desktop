@@ -1058,12 +1058,12 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="94"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Der verschlüsselte Ordner %2 konnte nicht entsperrt werden&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Falscher HTTP-Code vom Server zurückgegeben. Erwartet wird 204, jedoch &quot;%1 %2&quot; erhalten.</translation>
     </message>
 </context>
 <context>
@@ -1476,7 +1476,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
         <source>Encrypted metadata setup error!</source>
-        <translation type="unfinished"/>
+        <translation>Verschlüsselte Metadaten Einrichtungsfehler!</translation>
     </message>
 </context>
 <context>
@@ -1649,29 +1649,29 @@ Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="171"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="199"/>
         <source>Error fetching metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Abrufen der Metadaten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="114"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="120"/>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="213"/>
         <source>Error locking folder.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Sperren des Ordners.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="147"/>
         <source>Error fetching encrypted folder id.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Abrufen der verschlüsselten Ordner-ID.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="181"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Lesen oder Entschlüsseln von Metadaten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="323"/>
         <source>Failed to upload metadata</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Hochladen der Metadaten</translation>
     </message>
 </context>
 <context>
@@ -4049,7 +4049,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="248"/>
         <source>Failed to encrypt a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Ordner konnte nicht verschlüsselt werden %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
@@ -4339,7 +4339,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/sharemanager.cpp" line="681"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fehler</translation>
     </message>
 </context>
 <context>
@@ -4372,7 +4372,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="855"/>
         <source>Could not find local folder for %1</source>
-        <translation type="unfinished"/>
+        <translation>Lokaler Ordner für %1 nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="993"/>
@@ -5056,17 +5056,17 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="130"/>
         <source>Failed to update folder metadata.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Aktualisieren der Ordner-Metadaten</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="153"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Verschlüsselter Ordner konnte nicht entsperrt werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="163"/>
         <source>Failed to finalize item.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Fertigstellen des Elements.</translation>
     </message>
 </context>
 <context>
@@ -5082,27 +5082,27 @@ Server antwortete mit Fehler: %2</translation>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="201"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="260"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Aktualisieren der Metadaten für einen Ordner %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch publicKey for user %1</source>
-        <translation type="unfinished"/>
+        <translation>PublicKey für den Benutzer %1 konnte nicht abgerufen werden</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Verschlüsselter Stammordner für den Ordner %1 nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="121"/>
         <source>Could not add or remove a folder user %1, for folder %2</source>
-        <translation type="unfinished"/>
+        <translation>Ordner konnte nicht hinzugefügt oder entfernt werden. Benutzer %1 für Ordner %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="238"/>
         <source>Failed to unlock a folder.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Entsperren eines Ordners.</translation>
     </message>
 </context>
 <context>
@@ -5869,7 +5869,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>Teilen ist für diesen Ordner nicht verfügbar</translation>
     </message>
 </context>
 <context>
