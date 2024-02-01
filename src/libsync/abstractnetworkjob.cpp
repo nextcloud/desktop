@@ -457,16 +457,22 @@ QString errorMessage(const QString &baseError, const QByteArray &body)
 
 QString networkReplyErrorString(const QNetworkReply &reply)
 {
-    QString base = reply.errorString();
-    int httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    const auto base = reply.errorString();
+    const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
 
     // Only adjust HTTP error messages of the expected format.
     if (httpReason.isEmpty() || httpStatus == 0 || !base.contains(httpReason)) {
         return base;
     }
 
-    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus), httpReason, HttpLogger::requestVerb(reply), reply.request().url().toDisplayString());
+    const auto displayString = reply.request().url().toDisplayString();
+    const auto requestVerb = HttpLogger::requestVerb(reply);
+
+    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus),
+                                                                                httpReason,
+                                                                                requestVerb,
+                                                                                displayString);
 }
 
 void AbstractNetworkJob::retry()
