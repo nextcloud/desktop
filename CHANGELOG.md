@@ -52,6 +52,7 @@ ownCloud admins and users.
 * Change - Remove unused command line option --language: [#11245](https://github.com/owncloud/client/issues/11245)
 * Change - Windows: always use fusion style: [#11275](https://github.com/owncloud/client/issues/11275)
 * Change - Deprecate suffix VFS: [#11325](https://github.com/owncloud/client/issues/11325)
+* Change - Fix three badly styled warning messages: [#11412](https://github.com/owncloud/client/issues/11412)
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 * Enhancement - Add option to move files to trash instead of deleting: [#9001](https://github.com/owncloud/client/issues/9001)
 * Enhancement - Prevent same default sync folder for multiple accounts with Spaces: [#11204](https://github.com/owncloud/client/issues/11204)
@@ -135,6 +136,16 @@ ownCloud admins and users.
    removal in 7.0.
 
    https://github.com/owncloud/client/issues/11325
+
+* Change - Fix three badly styled warning messages: [#11412](https://github.com/owncloud/client/issues/11412)
+
+   There were 3 labels for warning messages that were nearly unreadable in dark
+   mode due to bad styling. These have been changed to only use a bold font, but
+   are now displayed with a big warning icon on their left. The places are: the
+   account settings page, the folder wizard remote path page, and the log browser.
+
+   https://github.com/owncloud/client/issues/11412
+   https://github.com/owncloud/client/pull/11470
 
 * Enhancement - Add option to pause synchronization on metered connections: [#4808](https://github.com/owncloud/client/issues/4808)
 
