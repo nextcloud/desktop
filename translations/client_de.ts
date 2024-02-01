@@ -1476,7 +1476,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <location filename="../src/libsync/discoveryphase.cpp" line="668"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="696"/>
         <source>Encrypted metadata setup error!</source>
-        <translation>Verschlüsselte Metadaten Einrichtungsfehler!</translation>
+        <translation>Einrichtungsfehler für verschlüsselte Metadaten!</translation>
     </message>
 </context>
 <context>
@@ -5056,7 +5056,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="130"/>
         <source>Failed to update folder metadata.</source>
-        <translation>Fehler beim Aktualisieren der Ordner-Metadaten</translation>
+        <translation>Fehler beim Aktualisieren der Ordner-Metadaten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="153"/>
@@ -5087,7 +5087,7 @@ Server antwortete mit Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="92"/>
         <source>Could not fetch publicKey for user %1</source>
-        <translation>PublicKey für den Benutzer %1 konnte nicht abgerufen werden</translation>
+        <translation>Öffentlicher Schlüssel für den Benutzer %1 konnte nicht abgerufen werden</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="100"/>
