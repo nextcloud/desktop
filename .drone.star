@@ -376,6 +376,11 @@ def changelog(ctx):
             "ref": branch_ref + [
                 "refs/pull/**",
             ],
+            "event": {
+                "exclude": [
+                    "cron",
+                ],
+            },
         },
     }]
 
